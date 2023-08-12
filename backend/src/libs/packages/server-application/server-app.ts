@@ -3,7 +3,6 @@ import swaggerUi from '@fastify/swagger-ui';
 import Fastify, { type FastifyError } from 'fastify';
 
 import { ServerErrorType } from '~/libs/enums/enums.js';
-import { type ValidationError } from '~/libs/exceptions/exceptions.js';
 import { type IConfig } from '~/libs/packages/config/config.js';
 import { type IDatabase } from '~/libs/packages/database/database.js';
 import { HttpCode, HttpError } from '~/libs/packages/http/http.js';
@@ -11,6 +10,7 @@ import { type ILogger } from '~/libs/packages/logger/logger.js';
 import {
   type ServerCommonErrorResponse,
   type ServerValidationErrorResponse,
+  type ValidationError,
   type ValidationSchema,
 } from '~/libs/types/types.js';
 

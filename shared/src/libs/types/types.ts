@@ -1,8 +1,11 @@
-export { type ServerErrorDetail } from './server-error-detail.type.js';
 export {
   type ServerCommonErrorResponse,
+  type ServerErrorDetail,
   type ServerErrorResponse,
   type ServerValidationErrorResponse,
-} from './server-error-response.type.js';
-export { type ValidationSchema } from './validation-schema.type.js';
+} from './server-error/server-error.js';
+export {
+  type ValidationError,
+  type ValidationSchema,
+} from './validation/validation.js';
 export { type ValueOf } from './value-of.type.js';
