@@ -1,5 +1,5 @@
-import { ValidationError as JoiValidationError } from 'joi';
+import * as joi from 'joi';
 
-class ValidationError extends JoiValidationError {}
+class ValidationError extends joi.ValidationError {}
 
 export { ValidationError };

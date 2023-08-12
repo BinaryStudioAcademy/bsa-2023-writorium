@@ -1,9 +1,9 @@
 import {
+  danger,
+  fail,
   type GitHubMergeRef,
   type GitHubPRDSL as LibraryGitHubDSL,
   type GitHubRepo,
-  danger,
-  fail,
 } from 'danger';
 
 import { ProjectPrefix } from './project.config';
