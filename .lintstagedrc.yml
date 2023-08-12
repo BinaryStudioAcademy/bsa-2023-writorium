@@ -1,6 +1,2 @@
 '*.{ts,tsx,json,md,scss,html}': prettier --write
 '*': npm run lint:editor && npm run lint:fs
-'shared/**/*.ts': cd shared && npm run lint:js && npm run lint:type
-'backend/**/*.ts': cd backend && npm run lint:js && npm run lint:type
-'frontend/**/*.scss': cd frontend && npm run lint:css
-'frontend/**/*.{ts,tsx}': cd frontend && npm run lint:js && npm run lint:type

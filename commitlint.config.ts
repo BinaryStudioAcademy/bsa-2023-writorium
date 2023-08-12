@@ -1,4 +1,4 @@
-import { type UserConfig } from '@commitlint/types';
+import { UserConfig } from '@commitlint/types';
 
 import { ProjectPrefix } from './project.config';
 
