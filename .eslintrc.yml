@@ -52,7 +52,7 @@ rules:
     - all
   unicorn/no-null:
     - off
-  "@typescript-eslint/padding-line-between-statements":
+  '@typescript-eslint/padding-line-between-statements':
     - error
     - blankLine: never
       prev: export
@@ -77,32 +77,32 @@ rules:
     - count: 1
   import/no-default-export:
     - error
-  "@typescript-eslint/consistent-type-definitions":
+  '@typescript-eslint/consistent-type-definitions':
     - off
-  "@typescript-eslint/non-nullable-type-assertion-style":
+  '@typescript-eslint/non-nullable-type-assertion-style':
     - off
-  "@typescript-eslint/return-await":
+  '@typescript-eslint/return-await':
     - error
     - always
-  "@typescript-eslint/quotes":
+  '@typescript-eslint/quotes':
     - error
     - single
-  "@typescript-eslint/consistent-type-imports":
+  '@typescript-eslint/consistent-type-imports':
     - error
-  "@typescript-eslint/consistent-type-exports":
+  '@typescript-eslint/consistent-type-exports':
     - error
-  "@typescript-eslint/explicit-function-return-type":
+  '@typescript-eslint/explicit-function-return-type':
     - error
     - allowTypedFunctionExpressions: true
-  "@typescript-eslint/no-empty-interface":
+  '@typescript-eslint/no-empty-interface':
     - error
     - allowSingleExtends: true
-  "@typescript-eslint/explicit-member-accessibility":
+  '@typescript-eslint/explicit-member-accessibility':
     - error
-  "@typescript-eslint/object-curly-spacing":
+  '@typescript-eslint/object-curly-spacing':
     - error
     - always
-  "@typescript-eslint/semi":
+  '@typescript-eslint/semi':
     - error
     - always
 
@@ -110,7 +110,7 @@ overrides:
   - files:
       - commitlint.config.ts
     rules:
-      "import/no-default-export":
+      'import/no-default-export':
         - off
   - files:
       - commitlint.config.ts
