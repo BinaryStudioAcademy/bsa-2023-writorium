@@ -32,6 +32,23 @@ This is the repository responsible for Writorium's apps.
 5. **`cd frontend && npm run start:dev`** then **`cd backend && npm run start:dev`**
 6. Enjoy <3
 
+**PS:** If you're facing such kind of strange errors from eslint-plugin
+![eslint-plugin-errors](https://github-production-user-asset-6210df.s3.amazonaws.com/19575839/261840747-3a9a36a3-3593-478d-bc10-34c51dc30564.png)
+
+Then you may fix it with such solution (for VS Code IDE):
+
+1. At projects root create `.vscode` folder
+2. Place there `settings.json` file
+3. Add `eslint.workingDirectories` rule in `settings.json` file
+
+```
+  {
+    "eslint.workingDirectories": ["./", "./backend", "./frontend", "./shared"]
+  }
+```
+
+![vs-code-project-config](https://github-production-user-asset-6210df.s3.amazonaws.com/19575839/261840821-27e7f739-b11d-44e7-b397-359e9d02b01a.png)
+
 ## 🏗 Architecture
 
 ### 🛖 Application Schema
