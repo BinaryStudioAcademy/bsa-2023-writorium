@@ -11,3 +11,4 @@ const authApi = new AuthApi({
 });
 
 export { authApi };
+export { type UserAuthResponseDto } from './libs/types/types.js';

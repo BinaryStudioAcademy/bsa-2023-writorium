@@ -2,15 +2,18 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import { DataStatus } from '~/libs/enums/enums.js';
 import { type ValueOf } from '~/libs/types/types.js';
+import { type UserAuthResponseDto as User } from '~/packages/auth/auth.js';
 
 import { signUp } from './actions.js';
 
 type State = {
   dataStatus: ValueOf<typeof DataStatus>;
+  user: User | null;
 };
 
 const initialState: State = {
   dataStatus: DataStatus.IDLE,
+  user: null
 };
 
 const { reducer, actions, name } = createSlice({
