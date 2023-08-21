@@ -69,6 +69,15 @@ class Config implements IConfig {
           default: null,
         },
       },
+      JWT: {
+        SECRET: {
+          doc: 'Secret key for token generation',
+          format: String,
+          env: 'ACCESS_TOKEN_SECRET',
+          default: null,
+        },
+        EXPIRES_IN: '24h',
+      },
     });
   }
 }

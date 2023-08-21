@@ -29,7 +29,7 @@ class UserService implements IService {
 
   public async create(
     payload: UserSignUpRequestDto,
-  ): Promise<UserSignUpResponseDto> {
+  ): Promise<Omit<UserSignUpResponseDto, 'accessToken'>> {
     const user = await this.userRepository.create(
       UserEntity.initializeNew({
         email: payload.email,
