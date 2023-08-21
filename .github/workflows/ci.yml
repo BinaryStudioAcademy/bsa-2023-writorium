@@ -1,10 +1,12 @@
-  name: Continuous Integration
+name: Continuous Integration
 
 on:
   pull_request:
     branches:
       - development
       - production
+
+  workflow_dispatch:
 
 concurrency:
   group: ci-${{ github.ref }}
@@ -26,6 +28,7 @@ jobs:
       - name: Install Dependencies
         run: |
           npm install
+
       - name: Code Linting
         run: |
           npm run lint
