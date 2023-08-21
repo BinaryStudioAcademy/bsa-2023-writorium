@@ -1,3 +1,5 @@
+import bcrypt from 'bcrypt';
+
 import { type IService } from '~/libs/interfaces/interfaces.js';
 import { UserEntity } from '~/packages/users/user.entity.js';
 import { type UserRepository } from '~/packages/users/user.repository.js';
@@ -30,12 +32,15 @@ class UserService implements IService {
   public async create(
     payload: UserSignUpRequestDto,
   ): Promise<UserSignUpResponseDto> {
+    const saltRounds = 10;
+    const salt = await bcrypt.genSalt(saltRounds);
+    const hashedPassword = await bcrypt.hash(payload.password, salt);
+
     const user = await this.userRepository.create(
       UserEntity.initializeNew({
         email: payload.email,
-        /** @todo replace with real implementation */
-        passwordSalt: 'SALT',
-        passwordHash: 'HASH',
+        passwordSalt: salt,
+        passwordHash: hashedPassword,
       }),
     );
 
