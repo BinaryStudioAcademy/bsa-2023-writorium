@@ -2,6 +2,7 @@ import avatar from '~/assets/img/user-avatar.svg';
 import { Link } from '~/libs/components/link/link.jsx';
 import { AppRoute } from '~/libs/enums/app-route.enum';
 
+import { Avatar } from '../avatar/avatar.jsx';
 import styles from './styles.module.scss';
 
 type Properties = {
@@ -15,11 +16,7 @@ const Header: React.FC<Properties> = ({ user }) => (
         <Link to={AppRoute.ROOT}>
           <span className={styles.logo}>WRITORIUM</span>
         </Link>
-        <div className={styles['avatar-info']}>
-          <Link to={AppRoute.PROFILE}>
-            <img src={avatar} alt="avatar" className={styles.avatar} />
-          </Link>
-        </div>
+        <Avatar username="" avatarUrl={avatar} />
       </header>
     )}
   </>
