@@ -25,8 +25,8 @@ class UserDetailsModel extends AbstractModel {
         relation: Model.HasOneRelation,
         modelClass: UserModel,
         join: {
-          from: `${DatabaseTableName.USER_DETAILS}.id`,
-          to: `${DatabaseTableName.USERS}.user_id`,
+          from: `${DatabaseTableName.USER_DETAILS}.userId`,
+          to: `${DatabaseTableName.USERS}.id`,
         },
       },
     };
