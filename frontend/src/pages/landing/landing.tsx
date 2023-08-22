@@ -2,23 +2,29 @@ import { type FC } from 'react';
 
 import { Link } from '~/libs/components/components.js';
 import { AppRoute } from '~/libs/enums/app-route.enum';
-import { useEffect, useMousePosition, useState } from '~/libs/hooks/hooks.js';
+import { getAxisOffset } from '~/libs/helpers/helpers.js';
+import { useMemo, useMousePosition } from '~/libs/hooks/hooks.js';
 
 import styles from './styles.module.scss';
 
-const DEEP = 0.05;
-
 const Landing: FC = () => {
   const { x, y } = useMousePosition();
-  const [backgroundPosition, setBackgroundPosition] = useState('center');
 
-  useEffect(() => {
-    const offsetX = (x - window.innerWidth / 2) * DEEP;
-    const offsetY = (y - window.innerHeight / 2) * DEEP;
+  const backgroundPosition = useMemo(() => {
+    const offsetX = getAxisOffset({
+      axisValue: x,
+      innerAxisValue: window.innerWidth,
+    });
 
-    setBackgroundPosition(
-      ` calc(${offsetX}px + 50%) calc(${offsetY}px + 50%), calc(50% - ${offsetX}px) calc(50% - ${offsetY}px) `,
-    );
+    const offsetY = getAxisOffset({
+      axisValue: y,
+      innerAxisValue: window.innerHeight,
+    });
+
+    return `
+      calc(${offsetX}px + 50%) calc(${offsetY}px + 50%),
+      calc(50% - ${offsetX}px) calc(50% - ${offsetY}px)
+    `;
   }, [x, y]);
 
   return (
