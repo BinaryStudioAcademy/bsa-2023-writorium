@@ -2,14 +2,19 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import { ToastContainer } from 'react-toastify';
 
+import {
+  NotificationPosition,
+  NotificationTheme,
+} from '~/libs/enums/components/components.js';
+
 type Properties = {
-  theme?: 'light' | 'dark' | 'colored';
-  position?: 'top-right' | 'top-left' | 'bottom-left' | 'bottom-right';
+  theme?: (typeof NotificationTheme)[keyof typeof NotificationTheme];
+  position?: (typeof NotificationPosition)[keyof typeof NotificationPosition];
 };
 
 const Notification: React.FC<Properties> = ({
-  theme = 'colored',
-  position = 'top-right',
+  theme = NotificationTheme.COLORED,
+  position = NotificationPosition.TOP_RIGHT,
 }) => {
   return <ToastContainer theme={theme} position={position} draggable={false} />;
 };
