@@ -1,29 +1,21 @@
 import { toast } from 'react-toastify';
 
-import { NotificationMessage, NotificationType } from './libs/enums/enums.js';
+import { NotificationType } from './libs/enums/enums.js';
 
 class AppNotification {
-    public [NotificationType.ERROR] = (
-    message = NotificationMessage.DEFAULT_ERROR_MESSAGE,
-  ): void => {
+  public [NotificationType.ERROR] = (message = 'Unknown Error!'): void => {
     toast.error(message);
   };
 
-  public [NotificationType.SUCCESS] = (
-    message = NotificationMessage.DEFAULT_SUCCESS_MESSAGE,
-  ): void => {
+  public [NotificationType.SUCCESS] = (message = 'Success!'): void => {
     toast.success(message);
   };
 
-  public [NotificationType.WARNING] = (
-    message = NotificationMessage.DEFAULT_WARNING_MESSAGE,
-  ): void => {
+  public [NotificationType.WARNING] = (message = 'Warning!'): void => {
     toast.warn(message);
   };
 
-  public [NotificationType.INFO] = (
-    message = NotificationMessage.DEFAULT_INFO_MESSAGE,
-  ): void => {
+  public [NotificationType.INFO] = (message = 'Info!'): void => {
     toast.info(message);
   };
 }
