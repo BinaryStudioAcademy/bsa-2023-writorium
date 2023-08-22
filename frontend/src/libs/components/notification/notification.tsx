@@ -6,7 +6,7 @@ import { type ValueOf } from 'shared/build';
 import {
   NotificationPosition,
   NotificationTheme,
-} from '~/libs/enums/components/components.js';
+} from '~/libs/enums/components/notification/notification.js';
 
 type Properties = {
   theme?: ValueOf<typeof NotificationTheme>;
