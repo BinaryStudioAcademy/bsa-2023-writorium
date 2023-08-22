@@ -20,12 +20,12 @@ class UserDetailsRepository implements IRepository {
   }
 
   public async create(entity: UserDetailsEntity): Promise<UserDetailsEntity> {
-    const { secondName, firstName, userId } = entity.toNewObject();
+    const { lastName, firstName, userId } = entity.toNewObject();
 
     const item = await this.userDetailsModel
       .query()
       .insert({
-        secondName,
+        lastName,
         firstName,
         userId,
       })

@@ -55,7 +55,7 @@ class UserService implements IService {
     );
     await this.userDetailsRepository.create(
       UserDetailsEntity.initializeNew({
-        secondName: payload.secondName,
+        lastName: payload.lastName,
         firstName: payload.firstName,
         userId: 1000, // temporary. can't set user.id
       }),

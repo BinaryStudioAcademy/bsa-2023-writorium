@@ -19,7 +19,7 @@ const userSignUp = joi.object<UserSignUpRequestDto, true>({
     }),
   password: joi.string().trim().required(),
   firstName: joi.string().trim().required(),
-  secondName: joi.string().trim().required(),
+  lastName: joi.string().trim().required(),
 });
 
 export { userSignUp };

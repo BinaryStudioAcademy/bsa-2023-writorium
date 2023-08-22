@@ -11,7 +11,7 @@ import { UserModel } from './users.js';
 class UserDetailsModel extends AbstractModel {
   public 'firstName': string;
 
-  public 'secondName': string;
+  public 'lastName': string;
 
   public 'userId': number;
 

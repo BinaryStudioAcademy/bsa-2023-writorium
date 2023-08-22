@@ -3,7 +3,7 @@ import { type IEntity } from '~/libs/interfaces/interfaces.js';
 class UserDetailsEntity implements IEntity {
   private 'id': number | null;
 
-  private 'secondName': string;
+  private 'lastName': string;
 
   private 'firstName': string;
 
@@ -11,52 +11,52 @@ class UserDetailsEntity implements IEntity {
 
   private constructor({
     id,
-    secondName,
+    lastName,
     firstName,
     userId,
   }: {
     id: number | null;
-    secondName: string;
+    lastName: string;
     firstName: string;
     userId: number;
   }) {
     this.id = id;
-    this.secondName = secondName;
+    this.lastName = lastName;
     this.firstName = firstName;
     this.userId = userId;
   }
 
   public static initialize({
     id,
-    secondName,
+    lastName,
     firstName,
     userId,
   }: {
     id: number | null;
-    secondName: string;
+    lastName: string;
     firstName: string;
     userId: number;
   }): UserDetailsEntity {
     return new UserDetailsEntity({
       id,
-      secondName,
+      lastName,
       firstName,
       userId,
     });
   }
 
   public static initializeNew({
-    secondName,
+    lastName,
     firstName,
     userId,
   }: {
-    secondName: string;
+    lastName: string;
     firstName: string;
     userId: number;
   }): UserDetailsEntity {
     return new UserDetailsEntity({
       id: null,
-      secondName,
+      lastName,
       firstName,
       userId,
     });
@@ -64,27 +64,27 @@ class UserDetailsEntity implements IEntity {
 
   public toObject(): {
     id: number;
-    secondName: string;
+    lastName: string;
     firstName: string;
     userId: number;
   } {
     return {
       id: this.id as number,
-      secondName: this.secondName,
+      lastName: this.lastName,
       firstName: this.firstName,
-      userId: this.userId ,
+      userId: this.userId,
     };
   }
 
   public toNewObject(): {
-    secondName: string;
+    lastName: string;
     firstName: string;
     userId: number;
   } {
     return {
-      secondName: this.secondName,
+      lastName: this.lastName,
       firstName: this.firstName,
-      userId: this.userId ,
+      userId: this.userId,
     };
   }
 }
