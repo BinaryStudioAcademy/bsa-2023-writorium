@@ -11,17 +11,15 @@ type Properties = {
 
 const Avatar: React.FC<Properties> = ({ avatarUrl, username }) => {
   return (
-    <div className={styles['avatar-info']}>
-      <Link to={AppRoute.PROFILE}>
-        {avatarUrl ? (
-          <img src={avatarUrl} alt="avatar" className={styles.avatar} />
-        ) : (
-          <div className={`${styles.avatar} ${styles.defaultAvatar}`}>
-            <span className={styles.initials}>{getFirstLetters(username)}</span>
-          </div>
-        )}
-      </Link>
-    </div>
+    <Link to={AppRoute.PROFILE} className={styles['avatar-info']}>
+      {avatarUrl ? (
+        <img src={avatarUrl} alt="avatar" className={styles.avatar} />
+      ) : (
+        <span className={`${styles.avatar} ${styles.defaultAvatar}`}>
+          <span className={styles.initials}>{getFirstLetters(username)}</span>
+        </span>
+      )}
+    </Link>
   );
 };
 

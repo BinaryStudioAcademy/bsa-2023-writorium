@@ -13,8 +13,8 @@ const Header: React.FC<Properties> = ({ user }) => (
   <>
     {user && (
       <header className={styles.header}>
-        <Link to={AppRoute.ROOT}>
-          <span className={styles.logo}>WRITORIUM</span>
+        <Link to={AppRoute.ROOT} className={styles.logo}>
+          WRITORIUM
         </Link>
         <Avatar username="" avatarUrl={avatar} />
       </header>
