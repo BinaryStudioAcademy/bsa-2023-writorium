@@ -116,10 +116,9 @@ class AuthController extends Controller {
       body: UserSignInRequestDto;
     }>,
   ): Promise<ApiHandlerResponse> {
-    const user = await this.authService.verifySignInCredentials(options.body);
     return {
       status: HttpCode.OK,
-      payload: await this.authService.signIn(user),
+      payload: await this.authService.signIn(options.body),
     };
   }
 

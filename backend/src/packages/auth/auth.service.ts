@@ -27,18 +27,18 @@ class AuthService {
     return user;
   }
 
-  public signIn(
-    userRequestDto: UserSignInResponseDto,
-  ): Promise<UserAuthResponseDto> {
-    const mockedUserResponse: UserAuthResponseDto = {
-      id: userRequestDto.id,
-      email: userRequestDto.email,
-      firstName: 'Test',
-      lastName: 'User',
-    };
-    return Promise.resolve({
-      ...mockedUserResponse,
-    });
+  public async signIn(
+    userSignInDto: UserSignInRequestDto,
+  ):Promise<UserAuthResponseDto> {
+    const { email } = userSignInDto;
+  
+    const user = await this.userService.findByEmail(email);
+    
+    if (!user) {
+      throw new UserNotFoundError();
+    }
+    
+    return user;
   }
 
   public signUp(
