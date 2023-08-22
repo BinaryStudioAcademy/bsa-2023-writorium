@@ -49,7 +49,7 @@ class UserEntity implements IEntity {
     passwordHash: string;
     passwordSalt: string;
     firstName?: string;
-    lastName?: string; 
+    lastName?: string;
   }): UserEntity {
     return new UserEntity({
       id,

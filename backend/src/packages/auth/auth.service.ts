@@ -31,13 +31,13 @@ class AuthService {
     userSignInDto: UserSignInRequestDto,
   ):Promise<UserAuthResponseDto> {
     const { email } = userSignInDto;
-  
+
     const user = await this.userService.findByEmail(email);
-    
+
     if (!user) {
       throw new UserNotFoundError();
     }
-    
+
     return user;
   }
 
