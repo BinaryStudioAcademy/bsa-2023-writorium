@@ -1,29 +1,36 @@
 import helloImg from '~/assets/img/hello.png';
 import hidePasswordIcon from '~/assets/img/hidePassword.svg';
 import showPasswordIcon from '~/assets/img/showPassword.svg';
-import { Button, Input } from '~/libs/components/components.js';
-import { useAppForm, useCallback,useState } from '~/libs/hooks/hooks.js';
-
-import { DEFAULT_LOGIN_PAYLOAD } from './libs/common/constants.js';
-import styles from './styles.module.scss';
+import { Button, Input, Link, Message } from '~/libs/components/components.js';
+import { useAppForm, useCallback, useState } from '~/libs/hooks/hooks.js';
+import {
+  type UserAuthRequestDto,
+  userSignInValidationSchema,
+} from '~/packages/users/users.js';
+import { DEFAULT_LOGIN_PAYLOAD } from '~/pages/auth/components/sign-in-form/libs/common/constants.js';
+import styles from '~/pages/auth/components/sign-in-form/styles.module.scss';
 
 type Properties = {
-  onSubmit: () => void;
+  onSubmit: (payload: UserAuthRequestDto) => void;
 };
 
-const SignInForm: React.FC<Properties> = () => {
-  const { control, errors } = useAppForm({
+const SignInForm: React.FC<Properties> = ({ onSubmit }) => {
+  const { control, errors, handleSubmit } = useAppForm({
     defaultValues: DEFAULT_LOGIN_PAYLOAD,
-    /**
-     * @todo implement sign in validation
-     */
-    // validationSchema: ''
+    validationSchema: userSignInValidationSchema
   });
   const [isPasswordVisible, setPasswordVisibility] = useState(false);
 
   const togglePasswordVisibility = useCallback((): void => {
     setPasswordVisibility(!isPasswordVisible);
   }, [isPasswordVisible]);
+
+  const handleFormSubmit = useCallback(
+    (event_: React.BaseSyntheticEvent): void => {
+      void handleSubmit(onSubmit)(event_);
+    },
+    [handleSubmit, onSubmit],
+  );
 
   return (
     <>
@@ -35,12 +42,11 @@ const SignInForm: React.FC<Properties> = () => {
         <form
           className={styles.form}
           name="loginForm"
+          onSubmit={handleFormSubmit}
         >
           <fieldset
             className={styles.fieldset}>
             <Input
-              className={styles.input}
-              classNameLabel={styles.label}
               name='email'
               type='email'
               placeholder='Enter your name'
@@ -61,8 +67,6 @@ const SignInForm: React.FC<Properties> = () => {
                 />
               </button>
               <Input
-                className={styles.input}
-                classNameLabel={styles.label}
                 name='password'
                 type={isPasswordVisible ? 'text' : 'password'}
                 placeholder='&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;'
@@ -78,6 +82,10 @@ const SignInForm: React.FC<Properties> = () => {
             label='Sign In'
           />
         </form>
+        <Message>
+          <span className={styles.message}>No account?</span>
+          <Link className={styles.link} to={'/sign-up'}>Sign Up</Link>
+        </Message>
       </div>
     </>
   );
