@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-import { type AsyncThunkConfig } from '~/libs/types/async-thunk-config.type';
-import { type NotificationPayload } from '~/packages/notification/libs/types/notification-payload.type';
+import { type AsyncThunkConfig } from '~/libs/types/types.js';
+import { type NotificationPayload } from '~/packages/notification/notification.js';
 
 import { AppActionType } from './common.js';
 
