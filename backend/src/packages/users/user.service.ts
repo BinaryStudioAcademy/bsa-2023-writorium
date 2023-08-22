@@ -54,15 +54,19 @@ class UserService implements IService {
       }),
     );
 
-    await this.userDetailsRepository.create(
-      UserDetailsEntity.initializeNew({
-        lastName: payload.lastName,
-        firstName: payload.firstName,
-        userId: user.getId() as number,
-      }),
-    );
+    const userDetails = await this.userDetailsRepository
+      .create(
+        UserDetailsEntity.initializeNew({
+          lastName: payload.lastName,
+          firstName: payload.firstName,
+          userId: user.getId() as number,
+        }),
+      )
+      .then((data) => data.toNewObject());
 
-    return user.toObject();
+    const { firstName, lastName } = userDetails;
+
+    return { ...user.toObject(), firstName, lastName };
   }
 
   public update(): ReturnType<IService['update']> {
