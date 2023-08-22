@@ -1,6 +1,7 @@
 import { type Knex } from 'knex';
 
 const TABLE_NAME = 'user_details';
+
 const ColumnName = {
   FIRST_NAME: 'first_name',
   LAST_NAME: 'last_name',

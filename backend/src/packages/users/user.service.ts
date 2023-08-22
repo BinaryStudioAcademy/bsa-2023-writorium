@@ -3,8 +3,6 @@ import bcrypt from 'bcrypt';
 import { type IService } from '~/libs/interfaces/interfaces.js';
 import { UserEntity } from '~/packages/users/user.entity.js';
 import { type UserRepository } from '~/packages/users/user.repository.js';
-import { UserDetailsEntity } from '~/packages/users/user-details.entity.js';
-import { type UserDetailsRepository } from '~/packages/users/user-details.repository.js';
 
 import {
   type UserGetAllResponseDto,
@@ -14,17 +12,9 @@ import {
 
 class UserService implements IService {
   private userRepository: UserRepository;
-  private userDetailsRepository: UserDetailsRepository;
 
-  public constructor({
-    userRepository,
-    userDetailsRepository,
-  }: {
-    userRepository: UserRepository;
-    userDetailsRepository: UserDetailsRepository;
-  }) {
+  public constructor(userRepository: UserRepository) {
     this.userRepository = userRepository;
-    this.userDetailsRepository = userDetailsRepository;
   }
 
   public find(): ReturnType<IService['find']> {
@@ -51,22 +41,12 @@ class UserService implements IService {
         email: payload.email,
         passwordSalt: salt,
         passwordHash: hashedPassword,
+        lastName: payload.lastName,
+        firstName: payload.firstName,
       }),
     );
 
-    const userDetails = await this.userDetailsRepository
-      .create(
-        UserDetailsEntity.initializeNew({
-          lastName: payload.lastName,
-          firstName: payload.firstName,
-          userId: user.getId() as number,
-        }),
-      )
-      .then((data) => data.toNewObject());
-
-    const { firstName, lastName } = userDetails;
-
-    return { ...user.toObject(), firstName, lastName };
+    return user.toObject();
   }
 
   public update(): ReturnType<IService['update']> {
