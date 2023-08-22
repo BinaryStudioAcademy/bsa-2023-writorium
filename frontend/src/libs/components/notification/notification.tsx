@@ -1,12 +1,12 @@
 import 'react-toastify/dist/ReactToastify.css';
 
 import { ToastContainer } from 'react-toastify';
-import { type ValueOf } from 'shared/build';
 
 import {
   NotificationPosition,
   NotificationTheme,
 } from '~/libs/enums/components/notification/notification.js';
+import { type ValueOf } from '~/libs/types/types.js';
 
 type Properties = {
   theme?: ValueOf<typeof NotificationTheme>;
