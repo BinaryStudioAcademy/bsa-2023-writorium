@@ -1,7 +1,7 @@
 import { NotFoundError } from '~/libs/packages/exceptions/exceptions.js';
 import {
-  type UserAuthRequestDto,
   type UserAuthResponseDto,
+  type UserSignInRequestDto,
   type UserSignInResponseDto,
   type UserSignUpRequestDto,
   type UserSignUpResponseDto,
@@ -16,7 +16,7 @@ class AuthService {
   }
 
   public async verifySignInCredentials(
-    userRequestDto: UserAuthRequestDto,
+    userRequestDto: UserSignInRequestDto,
   ):Promise<UserSignInResponseDto> {
     const user = await this.userService.findByEmail(userRequestDto.email);
     

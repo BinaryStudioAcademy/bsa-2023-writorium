@@ -6,7 +6,7 @@ import {
 } from '~/libs/packages/controller/controller.js';
 import { HttpCode } from '~/libs/packages/http/http.js';
 import { type ILogger } from '~/libs/packages/logger/logger.js';
-import { type UserAuthRequestDto, type UserSignUpRequestDto } from '~/packages/users/users.js';
+import { type UserSignInRequestDto, type UserSignUpRequestDto } from '~/packages/users/users.js';
 import { userSignInValidationSchema, userSignUpValidationSchema } from '~/packages/users/users.js';
 
 import { type AuthService } from './auth.service.js';
@@ -29,7 +29,7 @@ class AuthController extends Controller {
       handler: (options) =>
         this.signIn(
           options as ApiHandlerOptions<{
-            body: UserAuthRequestDto;
+            body: UserSignInRequestDto;
           }>,
         ),
     });
@@ -109,7 +109,7 @@ class AuthController extends Controller {
   
   private async signIn(
     options: ApiHandlerOptions<{
-      body: UserAuthRequestDto;
+      body: UserSignInRequestDto;
     }>,
   ): Promise<ApiHandlerResponse> {
     const user = await this.authService.verifySignInCredentials(options.body);
