@@ -12,6 +12,8 @@ import { AppRoute } from '~/libs/enums/enums.js';
 import { store } from '~/libs/packages/store/store.js';
 import { Auth } from '~/pages/auth/auth.js';
 
+import { Profile } from './pages/profile/profile.js';
+
 createRoot(document.querySelector('#root') as HTMLElement).render(
   <StrictMode>
     <StoreProvider store={store.instance}>
@@ -32,6 +34,10 @@ createRoot(document.querySelector('#root') as HTMLElement).render(
               {
                 path: AppRoute.SIGN_UP,
                 element: <Auth />,
+              },
+              {
+                path: AppRoute.PROFILE,
+                element: <Profile />,
               },
             ],
           },
