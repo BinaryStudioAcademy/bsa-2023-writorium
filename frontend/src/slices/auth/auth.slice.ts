@@ -9,6 +9,7 @@ import { signUp } from './actions.js';
 type State = {
   user: User;
   dataStatus: ValueOf<typeof DataStatus>;
+  user: User | null;
 };
 
 const initialState: State = {
@@ -19,6 +20,7 @@ const initialState: State = {
     lastName: 'Doe',
   },
   dataStatus: DataStatus.IDLE,
+  user: null,
 };
 
 const { reducer, actions, name } = createSlice({

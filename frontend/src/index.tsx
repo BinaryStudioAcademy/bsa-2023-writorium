@@ -11,6 +11,7 @@ import {
 import { AppRoute } from '~/libs/enums/enums.js';
 import { store } from '~/libs/packages/store/store.js';
 import { Auth } from '~/pages/auth/auth.js';
+import { Landing } from '~/pages/landing/landing.js';
 
 import { Profile } from './pages/profile/profile.js';
 
@@ -25,7 +26,7 @@ createRoot(document.querySelector('#root') as HTMLElement).render(
             children: [
               {
                 path: AppRoute.ROOT,
-                element: 'Root',
+                element: <Landing />,
               },
               {
                 path: AppRoute.SIGN_IN,
