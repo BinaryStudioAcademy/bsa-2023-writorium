@@ -35,6 +35,22 @@ class AuthApi extends HttpApi {
 
     return await response.json<UserSignUpResponseDto>();
   }
+
+  public async signIn(
+    payload: UserSignUpRequestDto,
+  ): Promise<UserSignUpResponseDto> {
+    const response = await this.load(
+      this.getFullEndpoint(AuthApiPath.SIGN_IN, {}),
+      {
+        method: 'GET',
+        contentType: ContentType.JSON,
+        payload: JSON.stringify(payload),
+        hasAuth: false,
+      },
+    );
+
+    return await response.json<UserSignUpResponseDto>();
+  }
 }
 
 export { AuthApi };

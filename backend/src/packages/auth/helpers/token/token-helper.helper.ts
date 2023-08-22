@@ -2,8 +2,12 @@ import jwt from 'jsonwebtoken';
 
 import { config } from '~/libs/packages/config/config.js';
 
-const createToken = (id: number): string => {
-  return jwt.sign({ id }, config.ENV.JWT.SECRET, {
+type Parameters = {
+  id: number;
+};
+
+const createToken = (id: Parameters): string => {
+  return jwt.sign(id, config.ENV.JWT.SECRET, {
     expiresIn: config.ENV.JWT.EXPIRES_IN,
   });
 };

@@ -1,4 +1,4 @@
-import { createToken } from '~/packages/auth/helpers/token/token-helper.js';
+import { createToken } from '~/packages/auth/helpers/token/token-helper.helper';
 import {
   type UserSignUpRequestDto,
   type UserSignUpResponseDto,
@@ -16,14 +16,14 @@ class AuthService {
     userRequestDto: UserSignUpRequestDto,
   ): Promise<UserSignUpResponseDto> {
     const user = await this.userService.create(userRequestDto);
-    const accessToken = createToken(user.id);
+    const accessToken = createToken({ id: user.id });
 
     return { ...user, accessToken };
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public signIn(user: unknown): unknown {
-    const accessToken = createToken(1);
+    const accessToken = createToken({ id: 1 });
 
     return { accessToken };
   }
