@@ -1,8 +1,8 @@
 import { type TypedStartListening } from '@reduxjs/toolkit';
 import { createListenerMiddleware, isRejected } from '@reduxjs/toolkit';
 
-import { type AsyncThunkConfig } from '~/libs/types/async-thunk-config.type';
-import { NotificationType } from '~/packages/notification/libs/enums/notification-type.enum';
+import { type AsyncThunkConfig } from '~/libs/types/types.js';
+import { NotificationType } from '~/packages/notification/libs/enums/enums.js';
 import { appActions } from '~/slices/app/app.js';
 
 const notificationMiddleware = createListenerMiddleware();
