@@ -10,8 +10,8 @@ import {
   type UserSignInRequestDto,
   userSignInValidationSchema,
   type UserSignUpRequestDto,
-  userSignUpValidationSchema
-  } from '~/packages/users/users.js';
+  userSignUpValidationSchema,
+} from '~/packages/users/users.js';
 
 import { type AuthService } from './auth.service.js';
 import { AuthApiPath } from './libs/enums/enums.js';

@@ -29,7 +29,7 @@ class AuthService {
 
   public async signIn(
     userSignInDto: UserSignInRequestDto,
-  ):Promise<UserAuthResponseDto> {
+  ): Promise<UserAuthResponseDto> {
     const { email } = userSignInDto;
 
     const user = await this.userService.findByEmail(email);
