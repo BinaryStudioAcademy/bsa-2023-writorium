@@ -6,13 +6,13 @@ import {
   type UserSignUpResponseDto,
 } from '~/packages/users/users.js';
 
-import { AuthActionType } from './common.js';
+import { name as sliceName } from './auth.slice.js';
 
 const signUp = createAsyncThunk<
   UserSignUpResponseDto,
   UserSignUpRequestDto,
   AsyncThunkConfig
->(AuthActionType.SIGNUP, (registerPayload, { extra }) => {
+>(`${sliceName}/sign-up`, (registerPayload, { extra }) => {
   const { authApi } = extra;
 
   return authApi.signUp(registerPayload);
