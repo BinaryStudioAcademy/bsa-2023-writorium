@@ -1,12 +1,16 @@
 import { RouterOutlet } from '~/libs/components/components.js';
 
+import { Header } from '../header/header.jsx';
 import styles from './styles.module.scss';
 
 const App: React.FC = () => {
   return (
-    <div className={styles.container}>
-      <RouterOutlet />
-    </div>
+    <>
+      <Header user={null} />
+      <div className={styles.container}>
+        <RouterOutlet />
+      </div>
+    </>
   );
 };
 
