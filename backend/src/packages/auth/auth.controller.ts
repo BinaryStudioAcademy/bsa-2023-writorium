@@ -6,8 +6,12 @@ import {
 } from '~/libs/packages/controller/controller.js';
 import { HttpCode } from '~/libs/packages/http/http.js';
 import { type ILogger } from '~/libs/packages/logger/logger.js';
-import { type UserSignInRequestDto, type UserSignUpRequestDto } from '~/packages/users/users.js';
-import { userSignInValidationSchema, userSignUpValidationSchema } from '~/packages/users/users.js';
+import {
+  type UserSignInRequestDto,
+  userSignInValidationSchema,
+  type UserSignUpRequestDto,
+  userSignUpValidationSchema
+  } from '~/packages/users/users.js';
 
 import { type AuthService } from './auth.service.js';
 import { AuthApiPath } from './libs/enums/enums.js';
@@ -106,7 +110,7 @@ class AuthController extends Controller {
    *                    type: object
    *                    $ref: '#/components/schemas/User'
    */
-  
+
   private async signIn(
     options: ApiHandlerOptions<{
       body: UserSignInRequestDto;

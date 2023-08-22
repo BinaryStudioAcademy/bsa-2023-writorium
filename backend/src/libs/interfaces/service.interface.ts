@@ -1,6 +1,5 @@
 interface IService<T = unknown> {
   find(): Promise<T>;
-  findByEmail(email: string): Promise<T | null>;
   findAll(): Promise<{
     items: T[];
   }>;

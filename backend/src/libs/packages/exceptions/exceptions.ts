@@ -1,1 +1,1 @@
-export { NotFoundError } from 'shared/build/index.js';
+export { UserNotFoundError } from './user-not-found-error/user-not-found-error.exception.js';

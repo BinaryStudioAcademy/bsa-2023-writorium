@@ -1,4 +1,4 @@
-import { NotFoundError } from '~/libs/packages/exceptions/exceptions.js';
+import { UserNotFoundError } from '~/libs/packages/exceptions/exceptions.js';
 import {
   type UserAuthResponseDto,
   type UserSignInRequestDto,
@@ -17,14 +17,11 @@ class AuthService {
 
   public async verifySignInCredentials(
     userRequestDto: UserSignInRequestDto,
-  ):Promise<UserSignInResponseDto> {
+  ): Promise<UserSignInResponseDto> {
     const user = await this.userService.findByEmail(userRequestDto.email);
-    
+
     if (!user) {
-      throw new NotFoundError({ 
-        message: 'User not found', 
-        cause: 'No user email in the database' 
-      });
+      throw new UserNotFoundError();
     }
 
     return user;
@@ -32,7 +29,7 @@ class AuthService {
 
   public signIn(
     userRequestDto: UserSignInResponseDto,
-  ):Promise<UserAuthResponseDto> {
+  ): Promise<UserAuthResponseDto> {
     const mockedUserResponse: UserAuthResponseDto = {
       id: userRequestDto.id,
       email: userRequestDto.email,
