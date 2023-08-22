@@ -1,4 +1,4 @@
-import { type ValueOf } from 'shared/build/index.js';
+import { type ValueOf } from 'shared/build/libs/types/types.js';
 
 import { type NotificationType } from '../enums/notification-type.enum.js';
 
