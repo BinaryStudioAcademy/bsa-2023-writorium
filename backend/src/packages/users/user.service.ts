@@ -53,11 +53,12 @@ class UserService implements IService {
         passwordHash: hashedPassword,
       }),
     );
+
     await this.userDetailsRepository.create(
       UserDetailsEntity.initializeNew({
         lastName: payload.lastName,
         firstName: payload.firstName,
-        userId: 1000, // temporary. can't set user.id
+        userId: user.getId() as number,
       }),
     );
 

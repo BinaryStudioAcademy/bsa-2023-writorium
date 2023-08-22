@@ -83,6 +83,10 @@ class UserEntity implements IEntity {
       passwordSalt: this.passwordSalt,
     };
   }
+
+  public getId(): number | null {
+    return this.id;
+  }
 }
 
 export { UserEntity };
