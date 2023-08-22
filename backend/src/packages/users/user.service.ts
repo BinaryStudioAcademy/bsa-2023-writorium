@@ -4,6 +4,7 @@ import { type UserRepository } from '~/packages/users/user.repository.js';
 
 import {
   type UserGetAllResponseDto,
+  type UserSignInResponseDto,
   type UserSignUpRequestDto,
   type UserSignUpResponseDto,
 } from './libs/types/types.js';
@@ -17,6 +18,12 @@ class UserService implements IService {
 
   public find(): ReturnType<IService['find']> {
     return Promise.resolve(null);
+  }
+
+  public async findByEmail(email: string): Promise<UserSignInResponseDto | null> {
+    const user = await this.userRepository.findByEmail(email);
+
+    return user ? user.toObject() : null;
   }
 
   public async findAll(): Promise<UserGetAllResponseDto> {
