@@ -1,0 +1,30 @@
+.parallaxContainer {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 110%;
+  height: 110%;
+  padding: 0 60px;
+  overflow: hidden;
+  background-color: var(--dark-green-80);
+  background-image: url("../../assets/img/background-leters.png"),
+    url("../../assets/img/background-typewriter.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 1440px, cover;
+  transform: translate(-50%, -50%);
+}
+
+.signLink {
+  max-width: 690px;
+  color: var(--light-grey);
+  font-weight: 700;
+  font-size: 24px;
+  font-family: "Libre Baskerville", serif;
+  letter-spacing: 3.84px;
+  text-align: center;
+  text-transform: uppercase;
+}
