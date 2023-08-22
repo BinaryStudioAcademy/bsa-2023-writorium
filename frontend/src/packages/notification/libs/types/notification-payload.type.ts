@@ -1,7 +1,9 @@
+import { type ValueOf } from 'shared/build/index.js';
+
 import { type NotificationType } from '../enums/notification-type.enum.js';
 
 type NotificationPayload = {
-  type: (typeof NotificationType)[keyof typeof NotificationType];
+  type: ValueOf<typeof NotificationType>;
   message?: string;
 };
 
