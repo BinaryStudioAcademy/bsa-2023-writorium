@@ -1,5 +1,5 @@
-import { AppNotification } from './notification-api.package.js';
+import { Notification } from './notification.package.js';
 
-const notification = new AppNotification();
+const notification = new Notification();
 
 export { notification };

@@ -2,7 +2,7 @@ import { toast } from 'react-toastify';
 
 import { NotificationType } from './libs/enums/enums.js';
 
-class AppNotification {
+class Notification {
   public [NotificationType.ERROR] = (message = 'Unknown Error!'): void => {
     toast.error(message);
   };
@@ -20,4 +20,4 @@ class AppNotification {
   };
 }
 
-export { AppNotification };
+export { Notification };
