@@ -1,4 +1,3 @@
-import avatar from '~/assets/img/user-avatar.svg';
 import { Link } from '~/libs/components/link/link.jsx';
 import { AppRoute } from '~/libs/enums/app-route.enum';
 
@@ -17,7 +16,7 @@ const Header: React.FC<Properties> = ({ user }) => (
           WRITORIUM
         </Link>
         <Link to={AppRoute.PROFILE} className={styles['avatar-info']}>
-          <Avatar username="" avatarUrl={avatar} />
+          <Avatar username="Todd Demoer" />
         </Link>
       </header>
     )}
