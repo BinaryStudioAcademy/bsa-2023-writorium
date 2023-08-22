@@ -4,7 +4,7 @@ import { Link } from '~/libs/components/components.js';
 import { AppRoute } from '~/libs/enums/app-route.enum';
 import { useEffect, useMousePosition, useState } from '~/libs/hooks/hooks.js';
 
-import styles from './landing.module.scss';
+import styles from './styles.module.scss';
 
 const DEEP = 0.05;
 
@@ -22,12 +22,10 @@ const Landing: FC = () => {
   }, [x, y]);
 
   return (
-    <div className={styles.container}>
-      <div className={styles.parallaxContainer} style={{ backgroundPosition }}>
-        <Link className={styles.signLink} to={AppRoute.SIGN_IN}>
-          Unbounded space for freedom of your feather
-        </Link>
-      </div>
+    <div className={styles.parallaxContainer} style={{ backgroundPosition }}>
+      <Link className={styles.signLink} to={AppRoute.SIGN_IN}>
+        Unbounded space for freedom of your feather
+      </Link>
     </div>
   );
 };
