@@ -4,7 +4,7 @@ import styles from './styles.module.scss';
 
 type Properties = {
   username: string;
-  avatarUrl?: string | null;
+  avatarUrl: string | null;
 };
 
 const Avatar: React.FC<Properties> = ({ avatarUrl, username }) => {
