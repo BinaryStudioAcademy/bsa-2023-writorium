@@ -15,7 +15,7 @@ const Header: React.FC<Properties> = ({ user }) => (
           <span className={styles.logo}>WRITORIUM</span>
         </Link>
         <div className={styles['avatar-info']}>
-          <Link to="/profile">
+          <Link to={AppRoute.PROFILE}>
             <img src={avatar} alt="avatar" className={styles.avatar} />
           </Link>
         </div>
