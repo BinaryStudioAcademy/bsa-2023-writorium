@@ -1,8 +1,19 @@
+import { AuthActionType } from '~/slices/auth/common.js';
+
+import { NotificationType } from './notification-type.enum.js';
+
+const FULFILLED = '/fulfilled';
+const REJECTED = '/rejected';
+
 const NotificationMessage = {
-  DEFAULT_ERROR_MESSAGE: 'Unknown error!',
-  DEFAULT_SUCCESS_MESSAGE: 'Success!',
-  DEFAULT_WARNING_MESSAGE: 'Warning!',
-  DEFAULT_INFO_MESSAGE: 'Info!',
+  [`${AuthActionType.SIGNUP}${FULFILLED}`]: {
+    type: NotificationType.SUCCESS,
+    message: 'Registration succeful!',
+  },
+  [`${AuthActionType.SIGNUP}${REJECTED}`]: {
+    type: NotificationType.ERROR,
+    message: 'Registration error!',
+  },
 };
 
 export { NotificationMessage };
