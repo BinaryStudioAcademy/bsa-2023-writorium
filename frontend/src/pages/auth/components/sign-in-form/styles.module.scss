@@ -12,49 +12,20 @@
     margin-bottom: 44px;
 }
 
-form {
+.form {
     width: 100%;
 }
 
-.loginBlock {
-    display: flex;
-    flex-direction: column;
-    margin: 0;
-    padding: 0;
-    border: none;
-}
-
-.socialButtons {
-    gap: 15px;
-    margin-bottom: 24px;
-}
-
-.userInputs {
-    gap: 35px;
-    margin-bottom: 18px;
-}
-
-.button {
+.submitBtn {
     width: 100%;
     height: 45px;
-    font-weight: 700;
-    font-size: 16px;
-    font-family: Lato, sans-serif;
+    color: var(--white);
+    background: var(--dark-green);
     border-radius: 7px;
     cursor: pointer;
 }
 
-.socialButton {
-    color: var(--dark-green);
-    border: 2px solid var(--dark-green);
-}
-
-.submitButton {
-    color: var(--white);
-    background: var(--dark-green);
-}
-
-.passwordToggleButton {
+.passwordToggle {
     display: contents;
 }
 
@@ -80,6 +51,15 @@ form {
     font-size: 14px;
 }
 
+.fieldset {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin: 0 0 18px;
+    padding: 0;
+    border: none;
+}
+
 .label {
     margin-bottom: 5px;
     color: #000000;
@@ -87,7 +67,7 @@ form {
     font-family: Lato, sans-serif;
 }
 
-.passwordInput {
+.passwordInputWrapper {
     position: relative;
     display: flex;
     flex-direction: column;
@@ -101,37 +81,4 @@ form {
     height: 16px;
     cursor: pointer;
     filter: invert(61%) sepia(7%) saturate(75%) hue-rotate(201deg) brightness(93%) contrast(89%);
-}
-
-.resetPassword {
-    position: absolute;
-    right: 0;
-    text-decoration-line: none;
-    color: var(--light-green);
-    font-size: 12px;
-    font-family: Lato, sans-serif;  
-}
-
-.divider {
-    display: flex;
-    align-items: center;
-    margin: 0 0 27px;
-    color: #B6B6B6;
-    font-size: 18px;
-    font-family: Montserrat, sans-serif;
-}
-
-.divider::before, .divider::after {
-    flex: 1;
-    height: 1px;
-    content: '';
-    background: #E5E5E5;        
-}
-
-.divider::before {
-    margin-right: 6px;
-}
-
-.divider::after {
-    margin-left: 6px;
 }

@@ -1,7 +1,7 @@
 import helloImg from '~/assets/img/hello.png';
 import hidePasswordIcon from '~/assets/img/hidePassword.svg';
 import showPasswordIcon from '~/assets/img/showPassword.svg';
-import { Button, Input, Link } from '~/libs/components/components.js';
+import { Button, Input } from '~/libs/components/components.js';
 import { useAppForm, useCallback,useState } from '~/libs/hooks/hooks.js';
 
 import { DEFAULT_LOGIN_PAYLOAD } from './libs/common/constants.js';
@@ -21,14 +21,9 @@ const SignInForm: React.FC<Properties> = () => {
   });
   const [isPasswordVisible, setPasswordVisibility] = useState(false);
 
-  const togglePasswordVisibility = useCallback((): void => setPasswordVisibility(!isPasswordVisible),
-    [isPasswordVisible]);
-
-  const handleKeyPress = useCallback((event: React.KeyboardEvent<HTMLButtonElement>) => {
-    if (event.key === ' ') {
-      togglePasswordVisibility();
-    }
-  }, [togglePasswordVisibility]);
+  const togglePasswordVisibility = useCallback((): void => {
+    setPasswordVisibility(!isPasswordVisible);
+  }, [isPasswordVisible]);
 
   return (
     <>
@@ -41,18 +36,8 @@ const SignInForm: React.FC<Properties> = () => {
           className={styles.form}
           name="loginForm"
         >
-          <fieldset className={`${styles.loginBlock} ${styles.socialButtons}`}>
-            <Button
-              className={`${styles.button} ${styles.socialButton}`}
-              label='Sign in with Google'
-            />
-            <Button
-              className={`${styles.button} ${styles.socialButton}`}
-              label='Sign in with Facebook'
-            />
-          </fieldset>
-          <h5 className={styles.divider}>or</h5>
-          <fieldset className={`${styles.loginBlock} ${styles.userInputs}`}>
+          <fieldset
+            className={styles.fieldset}>
             <Input
               className={styles.input}
               classNameLabel={styles.label}
@@ -63,20 +48,11 @@ const SignInForm: React.FC<Properties> = () => {
               control={control}
               errors={errors}
             />
-            <div className={styles.passwordInput}>
-              <Link
-                className={styles.resetPassword}
-                /* 
-                  Where redirect to when Forget Password clicked?
-                */
-                to='/sign-up'
-              >
-                Forget Password
-              </Link>
+            <div className={styles.passwordInputWrapper}>
               <button
-                className={styles.passwordToggleButton}
+                type='button'
+                className={styles.passwordToggle}
                 onClick={togglePasswordVisibility}
-                onKeyDown={handleKeyPress}
               >
                 <img
                   className={styles.passwordIcon}
@@ -95,10 +71,9 @@ const SignInForm: React.FC<Properties> = () => {
                 errors={errors}
               />
             </div>
-
           </fieldset>
           <Button
-            className={`${styles.button} ${styles.submitButton}`}
+            className={styles.submitBtn}
             type='submit'
             label='Sign In'
           />
