@@ -4,14 +4,17 @@ import { useAppSelector } from '~/libs/hooks/hooks.js';
 import { type ValueOf } from '~/libs/types/types.js';
 
 type Properties = {
-  children: React.ReactNode
+  children: React.ReactNode;
   redirectPath?: ValueOf<typeof AppRoute>;
 };
 
-const ProtectedRoute: React.FC<Properties> = ({ children, redirectPath = AppRoute.SIGN_IN }) => {
-  const { user } = useAppSelector( ({ auth }) => ({
-    user: auth.user
-  }) );
+const ProtectedRoute: React.FC<Properties> = ({
+  children,
+  redirectPath = AppRoute.SIGN_IN,
+}) => {
+  const { user } = useAppSelector(({ auth }) => ({
+    user: auth.user,
+  }));
 
   const hasUser = Boolean(user);
 
@@ -19,7 +22,7 @@ const ProtectedRoute: React.FC<Properties> = ({ children, redirectPath = AppRout
     return <Navigate to={redirectPath} replace />;
   }
 
-  return <>{ children }</>;
+  return <>{children}</>;
 };
 
 export { ProtectedRoute };

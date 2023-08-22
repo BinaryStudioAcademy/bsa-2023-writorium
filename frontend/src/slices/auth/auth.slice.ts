@@ -13,7 +13,7 @@ type State = {
 
 const initialState: State = {
   dataStatus: DataStatus.IDLE,
-  user: null
+  user: null,
 };
 
 const { reducer, actions, name } = createSlice({
