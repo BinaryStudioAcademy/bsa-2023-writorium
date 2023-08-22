@@ -1,30 +1,21 @@
-import { DefaultLoaderColor } from './enum/default-color.enum.js';
+import { getValidClassNames } from '~/libs/helpers/helpers.js';
+
 import styles from './styles.module.scss';
 
 type Properties = {
   children: React.ReactNode;
-  color?: string;
+  className?: string;
   isLoading: boolean;
 };
 
-const Loader: React.FC<Properties> = ({
-  children,
-  color = DefaultLoaderColor.BORDER,
-  isLoading,
-}) => {
+const Loader: React.FC<Properties> = ({ children, className, isLoading }) => {
   if (!isLoading) {
-    return <>{children}</>;
+    return children;
   }
 
   return (
     <div className={styles.container}>
-      <div
-        className={styles.loader}
-        style={{
-          borderColor: color,
-          borderTopColor: DefaultLoaderColor.BORDER_TOP,
-        }}
-      ></div>
+      <div className={getValidClassNames(styles.loader, className)}></div>
     </div>
   );
 };
