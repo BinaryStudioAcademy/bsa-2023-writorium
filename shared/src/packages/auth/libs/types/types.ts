@@ -1,1 +1,0 @@
-export { type UserAuthResponseDto } from './user-auth-response-dto.type.js';
