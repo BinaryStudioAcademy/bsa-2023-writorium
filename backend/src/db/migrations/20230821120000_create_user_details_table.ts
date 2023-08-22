@@ -5,7 +5,6 @@ const ColumnName = {
   FIRST_NAME: 'first_name',
   LAST_NAME: 'last_name',
   USER_ID: 'user_id',
-  //   AVATAR_ID: 'avatar_id',
   CREATED_AT: 'created_at',
   UPDATED_AT: 'updated_at',
 };
@@ -22,12 +21,6 @@ const up = (knex: Knex): Promise<void> => {
       .inTable('users')
       .onDelete('CASCADE')
       .index();
-    // table
-    //   .integer(ColumnName.AVATAR_ID)
-    //   .unsigned()
-    //   .nullable()
-    //   .references('id')
-    //   .inTable('files');
     table
       .dateTime(ColumnName.CREATED_AT)
       .notNullable()
