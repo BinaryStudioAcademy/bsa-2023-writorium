@@ -8,7 +8,8 @@ import {
 import { type UserSignUpRequestDto } from '~/packages/users/users.js';
 import { actions as authActions } from '~/slices/auth/auth.js';
 
-import { AuthLayout, SignInForm, SignUpForm } from './components/components.js';
+import { SignInForm, SignUpForm } from './components/components.js';
+import styles from './styles.module.scss';
 
 const Auth: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -44,14 +45,15 @@ const Auth: React.FC = () => {
   };
 
   return (
-    <AuthLayout
-      formElement={
-        <>
-          state: {dataStatus}
-          {getScreen(pathname)}
-        </>
-      }
-    />
+    <div className={styles.authLayout}>
+      <div className={styles.authFormWrapper}>
+        state: {dataStatus}
+        {getScreen(pathname)}
+      </div>
+      <div className={styles.hero}>
+        <h1 className={styles.heroTitle}>WRITORIUM</h1>
+      </div>
+    </div>
   );
 };
 
