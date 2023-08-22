@@ -1,7 +1,7 @@
 import { type FC } from 'react';
 
 import { Link } from '~/libs/components/components.js';
-import { AppRoute } from '~/libs/enums/app-route.enum';
+import { AppRoute } from '~/libs/enums/enums.js';
 import { getAxisOffset } from '~/libs/helpers/helpers.js';
 import { useMemo, useMousePosition } from '~/libs/hooks/hooks.js';
 
