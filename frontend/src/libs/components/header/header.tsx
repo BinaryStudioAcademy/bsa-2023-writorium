@@ -11,7 +11,7 @@ const Header: React.FC<Properties> = ({ user }) => (
   <>
     {user && (
       <header className={styles.header}>
-        <Link to="/">
+        <Link to={AppRoute.ROOT}>
           <span className={styles.logo}>WRITORIUM</span>
         </Link>
         <div className={styles['avatar-info']}>
