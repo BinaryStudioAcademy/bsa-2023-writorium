@@ -6,6 +6,8 @@ const ColumnName = {
   LAST_NAME: 'last_name',
   USER_ID: 'user_id',
   //   AVATAR_ID: 'avatar_id',
+  CREATED_AT: 'created_at',
+  UPDATED_AT: 'updated_at',
 };
 
 const up = (knex: Knex): Promise<void> => {
@@ -26,6 +28,14 @@ const up = (knex: Knex): Promise<void> => {
     //   .nullable()
     //   .references('id')
     //   .inTable('files');
+    table
+      .dateTime(ColumnName.CREATED_AT)
+      .notNullable()
+      .defaultTo(knex.fn.now());
+    table
+      .dateTime(ColumnName.UPDATED_AT)
+      .notNullable()
+      .defaultTo(knex.fn.now());
   });
 };
 

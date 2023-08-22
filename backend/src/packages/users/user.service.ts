@@ -3,6 +3,8 @@ import bcrypt from 'bcrypt';
 import { type IService } from '~/libs/interfaces/interfaces.js';
 import { UserEntity } from '~/packages/users/user.entity.js';
 import { type UserRepository } from '~/packages/users/user.repository.js';
+import { UserDetailsEntity } from '~/packages/users/user-details.entity.js';
+import { type UserDetailsRepository } from '~/packages/users/user-details.repository.js';
 
 import {
   type UserGetAllResponseDto,
@@ -12,9 +14,17 @@ import {
 
 class UserService implements IService {
   private userRepository: UserRepository;
+  private userDetailsRepository: UserDetailsRepository;
 
-  public constructor(userRepository: UserRepository) {
+  public constructor({
+    userRepository,
+    userDetailsRepository,
+  }: {
+    userRepository: UserRepository;
+    userDetailsRepository: UserDetailsRepository;
+  }) {
     this.userRepository = userRepository;
+    this.userDetailsRepository = userDetailsRepository;
   }
 
   public find(): ReturnType<IService['find']> {
@@ -41,6 +51,13 @@ class UserService implements IService {
         email: payload.email,
         passwordSalt: salt,
         passwordHash: hashedPassword,
+      }),
+    );
+    await this.userDetailsRepository.create(
+      UserDetailsEntity.initializeNew({
+        secondName: payload.secondName,
+        firstName: payload.firstName,
+        userId: 1000, // temporary. can't set user.id
       }),
     );
 

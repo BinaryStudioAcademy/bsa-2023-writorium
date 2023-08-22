@@ -13,6 +13,8 @@ class UserDetailsModel extends AbstractModel {
 
   public 'secondName': string;
 
+  public 'userId': number;
+
   public static override get tableName(): string {
     return DatabaseTableName.USER_DETAILS;
   }
