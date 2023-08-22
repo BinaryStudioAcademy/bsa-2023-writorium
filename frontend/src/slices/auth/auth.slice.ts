@@ -12,8 +12,13 @@ type State = {
 };
 
 const initialState: State = {
+  user: {
+    id: 1,
+    email: 'test@gmail.com',
+    firstName: 'John',
+    lastName: 'Doe',
+  },
   dataStatus: DataStatus.IDLE,
-  user: null,
 };
 
 const { reducer, actions, name } = createSlice({

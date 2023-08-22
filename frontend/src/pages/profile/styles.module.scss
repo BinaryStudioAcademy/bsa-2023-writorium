@@ -1,0 +1,36 @@
+.profile {
+  width: 1591px;
+  margin: 0 auto;
+}
+
+.user_info_block {
+  display: flex;
+  flex-direction: column;
+  width: 270px;
+}
+
+.user_avatar {
+  position: relative;
+  display: block;
+  width: 270px;
+  height: 269px;
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+.user_avatar_image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+.user_info {
+  margin: 20px 0;
+  font-size: 32px;
+  line-height: 38.73px;
+}
+
+.user_info > * {
+  margin: 10px;
+}
