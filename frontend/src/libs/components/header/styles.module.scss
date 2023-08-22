@@ -20,13 +20,13 @@
   text-decoration: none;
 }
 
-.avatar-info {
+.avatarInfo {
   position: relative;
   width: 40px;
   height: 40px;
 }
 
-.avatar-info::before {
+.avatarInfo::before {
   content: "";
   position: absolute;
   right: 0;
