@@ -1,6 +1,7 @@
 import 'react-toastify/dist/ReactToastify.css';
 
 import { ToastContainer } from 'react-toastify';
+import { type ValueOf } from 'shared/build';
 
 import {
   NotificationPosition,
@@ -8,8 +9,8 @@ import {
 } from '~/libs/enums/components/components.js';
 
 type Properties = {
-  theme?: (typeof NotificationTheme)[keyof typeof NotificationTheme];
-  position?: (typeof NotificationPosition)[keyof typeof NotificationPosition];
+  theme?: ValueOf<typeof NotificationTheme>;
+  position?: ValueOf<typeof NotificationPosition>;
 };
 
 const Notification: React.FC<Properties> = ({
