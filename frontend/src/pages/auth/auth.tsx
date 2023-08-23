@@ -44,14 +44,10 @@ const Auth: React.FC = () => {
   };
 
   return (
-    <AuthLayout
-      formElement={
-        <>
-          state: {dataStatus}
-          {getScreen(pathname)}
-        </>
-      }
-    />
+    <AuthLayout>
+      state: {dataStatus}
+      {getScreen(pathname)}
+    </AuthLayout>
   );
 };
 
