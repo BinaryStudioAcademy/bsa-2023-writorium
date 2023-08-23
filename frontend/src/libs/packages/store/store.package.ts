@@ -8,9 +8,12 @@ import { configureStore } from '@reduxjs/toolkit';
 import { AppEnvironment } from '~/libs/enums/enums.js';
 import { type IConfig } from '~/libs/packages/config/config.js';
 import { authApi } from '~/packages/auth/auth.js';
+import { notification } from '~/packages/notification/notification.js';
 import { userApi } from '~/packages/users/users.js';
 import { reducer as authReducer } from '~/slices/auth/auth.js';
 import { reducer as usersReducer } from '~/slices/users/users.js';
+
+import { notificationMiddleware } from './middlewares/notification-middleware.js';
 
 type RootReducer = {
   auth: ReturnType<typeof authReducer>;
@@ -20,6 +23,7 @@ type RootReducer = {
 type ExtraArguments = {
   authApi: typeof authApi;
   userApi: typeof userApi;
+  notification: typeof notification;
 };
 
 class Store {
@@ -27,7 +31,12 @@ class Store {
     typeof configureStore<
       RootReducer,
       AnyAction,
-      MiddlewareArray<[ThunkMiddleware<RootReducer, AnyAction, ExtraArguments>]>
+      MiddlewareArray<
+        [
+          typeof notificationMiddleware.middleware,
+          ThunkMiddleware<RootReducer, AnyAction, ExtraArguments>,
+        ]
+      >
     >
   >;
 
@@ -43,7 +52,7 @@ class Store {
           thunk: {
             extraArgument: this.extraArguments,
           },
-        });
+        }).prepend(notificationMiddleware.middleware);
       },
     });
   }
@@ -52,8 +61,10 @@ class Store {
     return {
       authApi,
       userApi,
+      notification,
     };
   }
 }
 
+export { type ExtraArguments };
 export { Store };
