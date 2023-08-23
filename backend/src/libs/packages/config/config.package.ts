@@ -69,6 +69,14 @@ class Config implements IConfig {
           default: null,
         },
       },
+      ENCRYPTION: {
+        USER_PASSWORD_SALT_ROUNDS: {
+          doc: 'User password salt count',
+          format: Number,
+          env: 'USER_PASSWORD_SALT_ROUNDS',
+          default: null,
+        },
+      },
     });
   }
 }
