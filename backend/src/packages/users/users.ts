@@ -1,3 +1,4 @@
+import { encrypt } from '~/libs/packages/encryption/encrypt.js';
 import { logger } from '~/libs/packages/logger/logger.js';
 
 import { UserController } from './user.controller.js';
@@ -7,7 +8,7 @@ import { UserService } from './user.service.js';
 import { UserDetailsModel } from './user-details.model.js';
 
 const userRepository = new UserRepository(UserModel, UserDetailsModel);
-const userService = new UserService(userRepository);
+const userService = new UserService(encrypt, userRepository);
 const userController = new UserController(logger, userService);
 
 export { userController, userService };
