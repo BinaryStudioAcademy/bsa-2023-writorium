@@ -1,0 +1,18 @@
+.container {
+  width: 80%; // TODO: Remove before PR
+  padding: 32px 0 50.61px;
+
+  // TODO: Remove before PR
+  padding-right: 72px;
+  padding-left: 62px;
+  background-color: #EBECE7;
+}
+
+.header {
+  margin-bottom: calc(36px - 29px / 2);
+  color: var(--dark-grey);
+  font-weight: 700;
+  font-size: 24px;
+  font-family: "Libre Baskerville", serif;
+  line-height: 29.76px;
+}

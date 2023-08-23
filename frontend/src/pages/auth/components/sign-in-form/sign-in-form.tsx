@@ -1,4 +1,4 @@
-import { Button } from '~/libs/components/components.js';
+import { Button , PromptGeneration } from '~/libs/components/components.js';
 
 type Properties = {
   onSubmit: () => void;
@@ -10,6 +10,8 @@ const SignInForm: React.FC<Properties> = () => (
     <form>
       <Button label="Sign in" />
     </form>
+    {/* TODO: Remove before PR */}
+    <PromptGeneration /> 
   </>
 );
 
