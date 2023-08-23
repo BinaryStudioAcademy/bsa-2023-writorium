@@ -4,6 +4,7 @@ import {
   AUTH_FORM_WRAPPER_FLOATING_LETTERS,
   HERO_FLOATING_LETTERS,
 } from './libs/constants.js';
+import { type FloatingLetter } from './libs/types/floating-letter.type.js';
 import styles from './styles.module.scss';
 
 type Properties = {
@@ -11,30 +12,25 @@ type Properties = {
 };
 
 const AuthLayout: React.FC<Properties> = ({ formElement }) => {
+  const renderFloatingLetters = (letters: FloatingLetter[]): ReactNode[] =>
+    letters.map((item) => (
+      <div
+        key={item.value}
+        style={{ ...item.position }}
+        className={styles.floatingLetter}
+      >
+        {item.value}
+      </div>
+    ));
+
   return (
     <div className={styles.authLayout}>
       <div className={styles.authFormWrapper}>
-        {AUTH_FORM_WRAPPER_FLOATING_LETTERS.map((item) => (
-          <div
-            key={item.value}
-            style={{ ...item.position }}
-            className={styles.floatingLetter}
-          >
-            {item.value}
-          </div>
-        ))}
+        {renderFloatingLetters(AUTH_FORM_WRAPPER_FLOATING_LETTERS)}
         {formElement}
       </div>
       <div className={styles.hero}>
-        {HERO_FLOATING_LETTERS.map((item) => (
-          <div
-            key={item.value}
-            style={{ ...item.position }}
-            className={styles.floatingLetter}
-          >
-            {item.value}
-          </div>
-        ))}
+        {renderFloatingLetters(HERO_FLOATING_LETTERS)}
         <h1 className={styles.heroTitle}>WRITORIUM</h1>
       </div>
     </div>
