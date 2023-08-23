@@ -5,7 +5,10 @@ import {
   useCallback,
   useLocation,
 } from '~/libs/hooks/hooks.js';
-import { type UserAuthRequestDto, type UserSignUpRequestDto } from '~/packages/users/users.js';
+import {
+  type UserSignInRequestDto,
+  type UserSignUpRequestDto,
+} from '~/packages/users/users.js';
 import { actions as authActions } from '~/slices/auth/auth.js';
 
 import { SignInForm, SignUpForm } from './components/components.js';
@@ -18,7 +21,7 @@ const Auth: React.FC = () => {
   const { pathname } = useLocation();
 
   const handleSignInSubmit = useCallback(
-    (payload: UserAuthRequestDto): void => {
+    (payload: UserSignInRequestDto): void => {
       void dispatch(authActions.signIn(payload));
     },
     [dispatch],

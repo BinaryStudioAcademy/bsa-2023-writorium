@@ -4,7 +4,7 @@ import { Button, Input, Link } from '~/libs/components/components.js';
 import { AppRoute } from '~/libs/enums/app-route.enum';
 import { useAppForm, useCallback, useState } from '~/libs/hooks/hooks.js';
 import {
-  type UserAuthRequestDto,
+  type UserSignInRequestDto,
   userSignInValidationSchema,
 } from '~/packages/users/users.js';
 import { DEFAULT_LOGIN_PAYLOAD } from '~/pages/auth/components/sign-in-form/libs/common/constants.js';
@@ -12,7 +12,7 @@ import { DEFAULT_LOGIN_PAYLOAD } from '~/pages/auth/components/sign-in-form/libs
 import styles from './styles.module.scss';
 
 type Properties = {
-  onSubmit: (payload: UserAuthRequestDto) => void;
+  onSubmit: (payload: UserSignInRequestDto) => void;
 };
 
 const SignInForm: React.FC<Properties> = ({ onSubmit }) => {
@@ -24,8 +24,7 @@ const SignInForm: React.FC<Properties> = ({ onSubmit }) => {
 
   const handleTogglePasswordVisibility = useCallback((): void => {
     setPasswordVisibility((previousValue) => !previousValue);
-  },
-    [setPasswordVisibility]);
+  }, [setPasswordVisibility]);
 
   const handleFormSubmit = useCallback(
     (event_: React.BaseSyntheticEvent): void => {
