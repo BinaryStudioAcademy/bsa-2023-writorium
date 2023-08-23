@@ -6,7 +6,7 @@ import {
   DatabaseTableName,
 } from '~/libs/packages/database/database.js';
 
-import { UserModel } from './users.js';
+import { UserModel } from './user.model.js';
 
 class UserDetailsModel extends AbstractModel {
   public 'firstName': string;

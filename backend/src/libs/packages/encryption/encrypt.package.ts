@@ -1,12 +1,14 @@
-import bcrypt from 'bcrypt';
+import { genSalt, hash } from 'bcrypt';
 
-class Encrypt {
+import { type IEncrypt } from '~/libs/packages/encryption/encrypt.js';
+
+class Encrypt implements IEncrypt {
   public async generateSalt(saltRounds: number): Promise<string> {
-    return await bcrypt.genSalt(saltRounds);
+    return await genSalt(saltRounds);
   }
 
   public async encrypt(password: string, salt: string): Promise<string> {
-    return await bcrypt.hash(password, salt);
+    return await hash(password, salt);
   }
 }
 

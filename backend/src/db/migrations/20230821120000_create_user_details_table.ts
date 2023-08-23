@@ -17,6 +17,7 @@ const up = (knex: Knex): Promise<void> => {
     table.text(ColumnName.LAST_NAME).notNullable();
     table
       .integer(ColumnName.USER_ID)
+      .notNullable()
       .unsigned()
       .references('id')
       .inTable('users')

@@ -1,5 +1,5 @@
 import { type IService } from '~/libs/interfaces/interfaces.js';
-import { type IConfig } from '~/libs/packages/config/config.js';
+import { type EncryptConfig } from '~/libs/packages/config/config.js';
 import { type IEncrypt } from '~/libs/packages/encryption/encrypt.js';
 import { UserEntity } from '~/packages/users/user.entity.js';
 import { type UserRepository } from '~/packages/users/user.repository.js';
@@ -15,16 +15,16 @@ class UserService implements IService {
 
   private encrypt: IEncrypt;
 
-  private config: IConfig;
+  private ENCRYPTION: EncryptConfig;
 
   public constructor(
-    config: IConfig,
+    ENCRYPTION: EncryptConfig,
     encrypt: IEncrypt,
     userRepository: UserRepository,
   ) {
     this.userRepository = userRepository;
     this.encrypt = encrypt;
-    this.config = config;
+    this.ENCRYPTION = ENCRYPTION;
   }
 
   public find(): ReturnType<IService['find']> {
@@ -43,7 +43,7 @@ class UserService implements IService {
     payload: UserSignUpRequestDto,
   ): Promise<UserSignUpResponseDto> {
     const passwordSalt = await this.encrypt.generateSalt(
-      this.config.ENV.ENCRYPTION.USER_PASSWORD_SALT_ROUNDS,
+      this.ENCRYPTION.USER_PASSWORD_SALT_ROUNDS,
     );
     const passwordHash = await this.encrypt.encrypt(
       payload.password,

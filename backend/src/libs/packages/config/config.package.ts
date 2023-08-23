@@ -4,11 +4,16 @@ import { config } from 'dotenv';
 import { AppEnvironment } from '~/libs/enums/enums.js';
 import { type ILogger } from '~/libs/packages/logger/logger.js';
 
-import { type IConfig } from './libs/interfaces/interfaces.js';
+import {
+  type EncryptConfig,
+  type IConfig,
+} from './libs/interfaces/interfaces.js';
 import { type EnvironmentSchema } from './libs/types/types.js';
 
 class Config implements IConfig {
   private logger: ILogger;
+
+  public ENCRYPTION: EncryptConfig;
 
   public ENV: EnvironmentSchema;
 
@@ -25,6 +30,13 @@ class Config implements IConfig {
 
     this.ENV = this.envSchema.getProperties();
     this.logger.info('.env file found and successfully parsed!');
+    this.ENCRYPTION = this.encryptionConfig;
+  }
+
+  private get encryptionConfig(): EncryptConfig {
+    return {
+      USER_PASSWORD_SALT_ROUNDS: 10,
+    };
   }
 
   private get envSchema(): TConfig<EnvironmentSchema> {
@@ -66,14 +78,6 @@ class Config implements IConfig {
           doc: 'Database pool max count',
           format: Number,
           env: 'DB_POOL_MAX',
-          default: null,
-        },
-      },
-      ENCRYPTION: {
-        USER_PASSWORD_SALT_ROUNDS: {
-          doc: 'User password salt count',
-          format: Number,
-          env: 'USER_PASSWORD_SALT_ROUNDS',
           default: null,
         },
       },
