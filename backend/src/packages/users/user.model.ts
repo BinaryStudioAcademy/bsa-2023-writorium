@@ -1,4 +1,4 @@
-import { Model,type RelationMappings } from 'objection';
+import { Model, type RelationType } from 'objection';
 
 import {
   AbstractModel,
@@ -18,11 +18,19 @@ class UserModel extends AbstractModel {
 
   public 'lastName': string;
 
+  public 'userDetails': UserDetailsModel;
+
   public static override get tableName(): string {
     return DatabaseTableName.USERS;
   }
 
-  public static get relationMappings(): RelationMappings {
+  public static get relationMappings(): {
+    userDetails: {
+      relation: RelationType;
+      modelClass: typeof UserDetailsModel;
+      join: { from: string; to: string };
+    };
+  } {
     return {
       userDetails: {
         relation: Model.HasOneRelation,

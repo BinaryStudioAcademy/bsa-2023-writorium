@@ -1,18 +1,13 @@
 import { type IRepository } from '~/libs/interfaces/interfaces.js';
 import { UserEntity } from '~/packages/users/user.entity.js';
 import { type UserModel } from '~/packages/users/user.model.js';
-import { type UserDetailsModel } from '~/packages/users/user-details.model.js';
 
 class UserRepository implements IRepository {
   private userModel: typeof UserModel;
-  private userDetailsModel: typeof UserDetailsModel;
+  private defaultRelationExpression = 'userDetails';
 
-  public constructor(
-    userModel: typeof UserModel,
-    userDetailsModel: typeof UserDetailsModel,
-  ) {
+  public constructor(userModel: typeof UserModel) {
     this.userModel = userModel;
-    this.userDetailsModel = userDetailsModel;
   }
 
   public find(): ReturnType<IRepository['find']> {
@@ -29,23 +24,28 @@ class UserRepository implements IRepository {
     const { email, passwordSalt, passwordHash, firstName, lastName } =
       entity.toNewObject();
 
-    const item = await this.userModel
+    const user = await this.userModel
       .query()
-      .insert({
+      .insertGraphAndFetch({
         email,
         passwordSalt,
         passwordHash,
+        userDetails: {
+          firstName,
+          lastName,
+        },
       })
-      .returning('*')
+      .withGraphFetched(this.defaultRelationExpression)
       .execute();
 
-    await this.userDetailsModel.query().insert({
-      firstName,
-      lastName,
-      userId: item.id,
+    return UserEntity.initialize({
+      id: user.id,
+      email: user.email,
+      passwordHash: user.passwordHash,
+      passwordSalt: user.passwordSalt,
+      firstName: user.userDetails.firstName,
+      lastName: user.userDetails.lastName,
     });
-
-    return UserEntity.initialize({ ...item, firstName, lastName });
   }
 
   public update(): ReturnType<IRepository['update']> {

@@ -6,9 +6,8 @@ import { UserController } from './user.controller.js';
 import { UserModel } from './user.model.js';
 import { UserRepository } from './user.repository.js';
 import { UserService } from './user.service.js';
-import { UserDetailsModel } from './user-details.model.js';
 
-const userRepository = new UserRepository(UserModel, UserDetailsModel);
+const userRepository = new UserRepository(UserModel);
 const userService = new UserService(ENCRYPTION, encrypt, userRepository);
 const userController = new UserController(logger, userService);
 
