@@ -4,11 +4,11 @@ import { config } from 'dotenv';
 import { AppEnvironment } from '~/libs/enums/enums.js';
 import { type ILogger } from '~/libs/packages/logger/logger.js';
 
+import { type IConfig } from './libs/interfaces/interfaces.js';
 import {
   type EncryptConfig,
-  type IConfig,
-} from './libs/interfaces/interfaces.js';
-import { type EnvironmentSchema } from './libs/types/types.js';
+  type EnvironmentSchema,
+} from './libs/types/types.js';
 
 class Config implements IConfig {
   private logger: ILogger;

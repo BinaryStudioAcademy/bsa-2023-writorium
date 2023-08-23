@@ -113,10 +113,6 @@ class UserEntity implements IEntity {
       lastName: this.lastName,
     };
   }
-
-  public getId(): number | null {
-    return this.id;
-  }
 }
 
 export { UserEntity };

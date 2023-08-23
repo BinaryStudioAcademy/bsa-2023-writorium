@@ -3,6 +3,7 @@ import { type Knex } from 'knex';
 const TABLE_NAME = 'user_details';
 
 const ColumnName = {
+  ID: 'id',
   FIRST_NAME: 'first_name',
   LAST_NAME: 'last_name',
   USER_ID: 'user_id',
@@ -12,7 +13,7 @@ const ColumnName = {
 
 const up = (knex: Knex): Promise<void> => {
   return knex.schema.createTable(TABLE_NAME, (table) => {
-    table.increments();
+    table.increments(ColumnName.ID).primary();
     table.text(ColumnName.FIRST_NAME).notNullable();
     table.text(ColumnName.LAST_NAME).notNullable();
     table

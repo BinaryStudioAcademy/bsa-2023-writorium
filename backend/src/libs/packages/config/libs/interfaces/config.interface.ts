@@ -1,10 +1,9 @@
 import { type IConfig as ILibraryConfig } from 'shared/build/index.js';
 
-import { type EnvironmentSchema } from '../types/types.js';
+import { type EncryptConfig, type EnvironmentSchema } from '../types/types.js';
 
-interface IConfig extends ILibraryConfig<EnvironmentSchema> {}
-interface EncryptConfig {
-  USER_PASSWORD_SALT_ROUNDS: number;
+interface IConfig extends ILibraryConfig<EnvironmentSchema> {
+  ENCRYPTION: EncryptConfig;
 }
 
-export { type EncryptConfig, type IConfig };
+export { type IConfig };

@@ -1,6 +1,6 @@
 import { genSalt, hash } from 'bcrypt';
 
-import { type IEncrypt } from '~/libs/packages/encryption/encrypt.js';
+import { type IEncrypt } from './libs/interfaces/interfaces.js';
 
 class Encrypt implements IEncrypt {
   public async generateSalt(saltRounds: number): Promise<string> {
