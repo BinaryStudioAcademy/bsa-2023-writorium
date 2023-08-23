@@ -7,13 +7,17 @@ import { type IConfig } from '~/libs/packages/config/config.js';
 import { type IDatabase } from '~/libs/packages/database/database.js';
 import { HttpCode, HttpError } from '~/libs/packages/http/http.js';
 import { type ILogger } from '~/libs/packages/logger/logger.js';
+import { authorization } from '~/libs/plugins/authorization/authorization.plugin.js';
 import {
   type ServerCommonErrorResponse,
   type ServerValidationErrorResponse,
   type ValidationError,
   type ValidationSchema,
 } from '~/libs/types/types.js';
+import { authService } from '~/packages/auth/auth.js';
+import { userService } from '~/packages/users/users.js';
 
+import { WHITE_ROUTES } from './libs/constants/constants.js';
 import {
   type IServerApp,
   type IServerAppApi,
@@ -90,6 +94,14 @@ class ServerApp implements IServerApp {
 
         await this.app.register(swaggerUi, {
           routePrefix: `${it.version}/documentation`,
+        });
+
+        await this.app.register(authorization, {
+          services: {
+            userService,
+            authService,
+          },
+          routesWhiteList: WHITE_ROUTES,
         });
       }),
     );

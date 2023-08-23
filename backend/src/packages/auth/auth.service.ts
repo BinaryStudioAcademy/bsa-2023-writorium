@@ -1,4 +1,8 @@
-import { createToken } from '~/packages/auth/helpers/token/token-helper.helper';
+import { type ITokenPayload } from '~/libs/interfaces/interfaces.js';
+import {
+  createToken,
+  verifyToken,
+} from '~/packages/auth/helpers/token/token-helper.helper';
 import {
   type UserSignUpRequestDto,
   type UserSignUpResponseDto,
@@ -26,6 +30,10 @@ class AuthService {
     const accessToken = createToken({ id: 1 });
 
     return { accessToken };
+  }
+
+  public verifyToken(token: string): ITokenPayload {
+    return verifyToken(token);
   }
 }
 

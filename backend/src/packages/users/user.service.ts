@@ -41,6 +41,17 @@ class UserService implements IService {
 
     return user.toObject();
   }
+  public async findById(
+    id: number,
+  ): Promise<{ id: number; email: string } | null> {
+    const user = await this.userRepository.findById(id);
+
+    if (!user) {
+      return null;
+    }
+
+    return user.toObject();
+  }
 
   public update(): ReturnType<IService['update']> {
     return Promise.resolve(null);
