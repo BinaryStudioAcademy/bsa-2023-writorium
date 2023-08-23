@@ -15,7 +15,7 @@ const AuthLayout: React.FC<Properties> = ({ children }) => {
   const renderFloatingLetters = (letters: FloatingLetter[]): ReactNode[] =>
     letters.map((item) => (
       <div
-        key={item.value}
+        key={item.key}
         style={{ ...item.position }}
         className={styles.floatingLetter}
       >
