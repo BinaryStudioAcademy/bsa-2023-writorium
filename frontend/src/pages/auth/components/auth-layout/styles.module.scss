@@ -13,13 +13,17 @@
   font-family: "Libre Baskerville", sans-serif;
 }
 
+.hero,
 .authFormWrapper {
   position: relative;
   display: flex;
-  flex-basis: 553px;
   justify-content: center;
   align-items: center;
   height: 100%;
+}
+
+.authFormWrapper {
+  flex-basis: 553px;
 }
 
 .authFormWrapper .floatingLetter {
@@ -27,12 +31,7 @@
 }
 
 .hero {
-  position: relative;
-  display: flex;
   flex: 1;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
   background-image: linear-gradient(
       to bottom right,
       var(--dark-green-80),
