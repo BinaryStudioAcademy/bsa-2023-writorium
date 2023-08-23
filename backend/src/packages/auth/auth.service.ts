@@ -2,7 +2,7 @@ import { type ITokenPayload } from '~/libs/interfaces/interfaces.js';
 import {
   createToken,
   verifyToken,
-} from '~/packages/auth/helpers/token/token-helper.helper';
+} from '~/packages/auth/helpers/token/token-helper.helper.js';
 import {
   type UserSignUpRequestDto,
   type UserSignUpResponseDto,

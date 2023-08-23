@@ -15,31 +15,35 @@ type Options = {
   };
 };
 
-const authorization = fp((fastify, { routesWhiteList, services }: Options) => {
-  fastify.decorateRequest('user', null);
+const authorization = fp(
+  (fastify, { routesWhiteList, services }: Options, done) => {
+    fastify.decorateRequest('user', null);
 
-  fastify.addHook('onRequest', async (request, reply) => {
-    try {
-      const isWhiteRoute = routesWhiteList.has(request.routerPath);
+    fastify.addHook('onRequest', async (request, reply) => {
+      try {
+        const isWhiteRoute = routesWhiteList.has(request.routerPath);
 
-      if (isWhiteRoute) {
-        return;
+        if (isWhiteRoute) {
+          return;
+        }
+
+        const [, token] = request.headers?.authorization?.split(' ') ?? [];
+        const { userService, authService } = services;
+        const { id } = authService.verifyToken(token);
+
+        const authorizedUser = await userService.findById(id);
+        if (!authorizedUser) {
+          throw new InvalidCredentialsError(ExceptionMessage.INVALID_TOKEN);
+        }
+
+        (<IFastifyRequest>request).user = authorizedUser;
+      } catch (error) {
+        void reply.code(HttpCode.UNAUTHORIZED).send(error);
       }
+    });
 
-      const [, token] = request.headers?.authorization?.split(' ') ?? [];
-      const { userService, authService } = services;
-      const { id } = authService.verifyToken(token);
-
-      const authorizedUser = await userService.findById(id);
-      if (!authorizedUser) {
-        throw new InvalidCredentialsError(ExceptionMessage.INVALID_TOKEN);
-      }
-
-      (<IFastifyRequest>request).user = authorizedUser;
-    } catch (error) {
-      void reply.code(HttpCode.UNAUTHORIZED).send(error);
-    }
-  });
-});
+    done();
+  },
+);
 
 export { authorization };
