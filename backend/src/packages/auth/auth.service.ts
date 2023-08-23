@@ -1,9 +1,12 @@
 import { type ITokenPayload } from '~/libs/interfaces/interfaces.js';
+import { UserNotFoundError } from '~/libs/packages/exceptions/exceptions.js';
 import {
   createToken,
   verifyToken,
 } from '~/packages/auth/helpers/token/token-helper.helper.js';
 import {
+  type UserAuthResponseDto,
+  type UserSignInRequestDto,
   type UserSignUpRequestDto,
   type UserSignUpResponseDto,
 } from '~/packages/users/libs/types/types.js';
@@ -16,6 +19,21 @@ class AuthService {
     this.userService = userService;
   }
 
+  public async signIn(
+    userSignInDto: UserSignInRequestDto,
+  ): Promise<UserAuthResponseDto> {
+    const { email } = userSignInDto;
+
+    const user = await this.userService.findByEmail(email);
+
+    if (!user) {
+      throw new UserNotFoundError();
+    }
+    const accessToken = createToken({ id: user.id });
+
+    return { ...user, accessToken };
+  }
+
   public async signUp(
     userRequestDto: UserSignUpRequestDto,
   ): Promise<UserSignUpResponseDto> {
@@ -23,13 +41,6 @@ class AuthService {
     const accessToken = createToken({ id: user.id });
 
     return { ...user, accessToken };
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  public signIn(user: unknown): unknown {
-    const accessToken = createToken({ id: 1 });
-
-    return { accessToken };
   }
 
   public verifyToken(token: string): ITokenPayload {

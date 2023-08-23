@@ -3,6 +3,7 @@ type UserAuthResponseDto = {
   email: string;
   firstName: string;
   lastName: string;
+  accessToken: string;
 };
 
 export { type UserAuthResponseDto };
