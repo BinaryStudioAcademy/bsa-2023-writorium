@@ -18,6 +18,8 @@
     "build": "tsc && tsc-alias"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "3.397.0",
+    "@fastify/multipart": "7.7.3",
     "@fastify/swagger": "8.8.0",
     "@fastify/swagger-ui": "1.9.3",
     "convict": "6.2.4",
