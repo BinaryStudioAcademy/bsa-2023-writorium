@@ -8,8 +8,14 @@ type Properties = {
   className?: string;
 };
 
-const Button: React.FC<Properties> = ({ type = 'button', label, className }) => (
-  <button className={getValidClassNames(styles.btn, className)} type={type}>{label}</button>
+const Button: React.FC<Properties> = ({
+  type = 'button',
+  label,
+  className,
+}) => (
+  <button className={getValidClassNames(styles.btn, className)} type={type}>
+    {label}
+  </button>
 );
 
 export { Button };

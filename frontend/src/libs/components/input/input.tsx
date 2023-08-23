@@ -38,8 +38,15 @@ const Input = <T extends FieldValues>({
 
   return (
     <label>
-      <span className={getValidClassNames(styles.label, labelClassName)}>{label}</span>
-      <input className={getValidClassNames(styles.input, className)} {...field} type={type} placeholder={placeholder} />
+      <span className={getValidClassNames(styles.label, labelClassName)}>
+        {label}
+      </span>
+      <input
+        className={getValidClassNames(styles.input, className)}
+        {...field}
+        type={type}
+        placeholder={placeholder}
+      />
       {hasError && <span>{error as string}</span>}
     </label>
   );
