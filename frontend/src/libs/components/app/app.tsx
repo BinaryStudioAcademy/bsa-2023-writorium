@@ -1,6 +1,5 @@
-import { RouterOutlet } from '~/libs/components/components.js';
+import { Header, RouterOutlet } from '~/libs/components/components.js';
 
-import { Header } from '../header/header.jsx';
 import styles from './styles.module.scss';
 
 const App: React.FC = () => {
