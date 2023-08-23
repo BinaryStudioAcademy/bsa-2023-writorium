@@ -22,9 +22,11 @@ const Profile: React.FC = () => {
   return (
     <div className={styles.profile}>
       <div className={styles.userInfoBlock}>
-        <div className={styles.avatar}>
-          <Avatar username={userName} avatarUrl={null} />
-        </div>
+        <Avatar
+          username={userName}
+          avatarUrl={null}
+          className={styles.avatar}
+        />
         <div className={styles.userInfo}>
           <p>{userName}</p>
           <p>{currentUser.email}</p>

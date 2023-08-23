@@ -11,7 +11,7 @@ type Properties = {
 };
 
 const Button: React.FC<Properties> = ({
-  type = ButtonType.Button,
+  type = ButtonType.BUTTON,
   label,
   className = '',
 }) => (

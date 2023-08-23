@@ -1,6 +1,6 @@
 const ButtonType = {
-  Button: 'button',
-  Submit: 'submit',
+  BUTTON: 'button',
+  SUBMIT: 'submit',
 } as const;
 
 export { ButtonType };

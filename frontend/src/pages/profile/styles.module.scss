@@ -1,31 +1,28 @@
 .profile {
-  width: 1591px;
+  width: 100%;
+  max-width: 1591px;
   margin: 0 auto;
 }
 
 .userInfoBlock {
   display: flex;
   flex-direction: column;
+  gap: 20px;
   width: 270px;
 }
 
 .avatar {
-  position: relative;
-  display: block;
   width: 270px;
   height: 269px;
-  overflow: hidden;
-  border-radius: 50%;
 }
 
 .userInfo {
-  margin: 20px 0;
   font-size: 32px;
-  line-height: 38px;
+  line-height: normal;
 }
 
 .userInfo > * {
-  margin: 10px;
+  margin: 10px 0;
 }
 
 .editProfileBtn {
