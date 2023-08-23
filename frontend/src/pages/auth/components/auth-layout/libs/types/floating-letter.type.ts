@@ -1,11 +1,8 @@
+import { type Position } from './position.type.js';
+
 type FloatingLetter = {
   value: string;
-  position: {
-    left?: number;
-    top?: number;
-    bottom?: number;
-    right?: number;
-  };
+  position: Position;
 };
 
 export { type FloatingLetter };
