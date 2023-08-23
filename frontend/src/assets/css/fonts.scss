@@ -1,0 +1,29 @@
+@font-face {
+  font-weight: 700;
+  font-family: Lato;
+  font-style: normal;
+  font-display: swap;
+  src:
+    url("/fonts/lato-bold.woff2") format("woff2"),
+    url("/fonts/lato-bold.woff") format("woff");
+}
+
+@font-face {
+  font-weight: normal;
+  font-family: Lato;
+  font-style: normal;
+  font-display: swap;
+  src:
+    url("/fonts/lato-regular.woff2") format("woff2"),
+    url("/fonts/lato-regular.woff") format("woff");
+}
+
+@font-face {
+  font-weight: bold;
+  font-family: "Libre Baskerville";
+  font-style: normal;
+  font-display: swap;
+  src:
+    url("/fonts/libre-baskerville-bold.woff2") format("woff2"),
+    url("/fonts/libre-baskerville-bold.woff") format("woff");
+}
