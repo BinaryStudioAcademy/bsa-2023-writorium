@@ -2,7 +2,6 @@ import { UserNotFoundError } from '~/libs/packages/exceptions/exceptions.js';
 import {
   type UserAuthResponseDto,
   type UserSignInRequestDto,
-  type UserSignInResponseDto,
   type UserSignUpRequestDto,
   type UserSignUpResponseDto,
 } from '~/packages/users/libs/types/types.js';
@@ -13,18 +12,6 @@ class AuthService {
 
   public constructor(userService: UserService) {
     this.userService = userService;
-  }
-
-  public async verifySignInCredentials(
-    userRequestDto: UserSignInRequestDto,
-  ): Promise<UserSignInResponseDto> {
-    const user = await this.userService.findByEmail(userRequestDto.email);
-
-    if (!user) {
-      throw new UserNotFoundError();
-    }
-
-    return user;
   }
 
   public async signIn(
