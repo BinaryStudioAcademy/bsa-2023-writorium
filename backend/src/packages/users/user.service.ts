@@ -3,6 +3,7 @@ import { UserEntity } from '~/packages/users/user.entity.js';
 import { type UserRepository } from '~/packages/users/user.repository.js';
 
 import {
+  type UserAuthResponseDto,
   type UserGetAllResponseDto,
   type UserSignUpRequestDto,
   type UserSignUpResponseDto,
@@ -17,6 +18,12 @@ class UserService implements IService {
 
   public find(): ReturnType<IService['find']> {
     return Promise.resolve(null);
+  }
+
+  public async findByEmail(email: string): Promise<UserAuthResponseDto | null> {
+    const user = await this.userRepository.findByEmail(email);
+
+    return user ? user.toObject() : null;
   }
 
   public async findAll(): Promise<UserGetAllResponseDto> {
