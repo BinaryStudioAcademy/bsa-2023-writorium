@@ -3,13 +3,13 @@
   margin: 0 auto;
 }
 
-.user_info_block {
+.userInfoBlock {
   display: flex;
   flex-direction: column;
   width: 270px;
 }
 
-.user_avatar {
+.avatar {
   position: relative;
   display: block;
   width: 270px;
@@ -18,19 +18,20 @@
   border-radius: 50%;
 }
 
-.user_avatar_image {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-}
-
-.user_info {
+.userInfo {
   margin: 20px 0;
   font-size: 32px;
-  line-height: 38.73px;
+  line-height: 38px;
 }
 
-.user_info > * {
+.userInfo > * {
   margin: 10px;
+}
+
+.editProfileBtn {
+  width: 100%;
+  height: 45px;
+  color: var(--white);
+  background-color: var(--dark-green);
+  border: none;
 }
