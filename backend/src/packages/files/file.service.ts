@@ -9,6 +9,10 @@ class FileService implements IService {
     this.fileRepository = userRepository;
   }
 
+  public upload(): Promise<null> {
+    return Promise.resolve(null);
+  }
+
   public find(): ReturnType<IService['find']> {
     return Promise.resolve(null);
   }
