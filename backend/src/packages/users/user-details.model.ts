@@ -1,4 +1,4 @@
-import { Model,type RelationType } from 'objection';
+import { Model, type RelationType } from 'objection';
 
 import {
   AbstractModel,

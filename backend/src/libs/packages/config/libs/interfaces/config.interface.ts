@@ -7,4 +7,4 @@ interface EncryptConfig {
   USER_PASSWORD_SALT_ROUNDS: number;
 }
 
-export { type EncryptConfig,type IConfig };
+export { type EncryptConfig, type IConfig };
