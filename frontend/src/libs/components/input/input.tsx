@@ -5,9 +5,10 @@ import {
   type FieldValues,
 } from 'react-hook-form';
 
-import styles from '~/libs/components/input/styles.module.scss';
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
 import { useFormController } from '~/libs/hooks/hooks.js';
+
+import styles from './styles.module.scss';
 
 type Properties<T extends FieldValues> = {
   control: Control<T, null>;
@@ -16,8 +17,8 @@ type Properties<T extends FieldValues> = {
   name: FieldPath<T>;
   placeholder?: string;
   type?: 'text' | 'email' | 'password';
-  className?: string | undefined;
-  labelClassName?: string | undefined;
+  className?: string;
+  labelClassName?: string;
 };
 
 const Input = <T extends FieldValues>({

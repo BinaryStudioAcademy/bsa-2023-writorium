@@ -1,10 +1,11 @@
-import styles from '~/libs/components/button/styles.module.scss';
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
+
+import styles from './styles.module.scss';
 
 type Properties = {
   label: string;
   type?: 'button' | 'submit';
-  className?: string | undefined;
+  className?: string;
 };
 
 const Button: React.FC<Properties> = ({ type = 'button', label, className }) => (
