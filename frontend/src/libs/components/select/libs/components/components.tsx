@@ -1,13 +1,13 @@
 import { components } from 'react-select';
 
-import Arrow from '../../../../../assets/img/arrow.svg';
+import { Icon } from '~/libs/components/components.js';
 
 const IndicatorSeparator = (): null => null;
 
 const DropdownIndicator: typeof components.DropdownIndicator = (properties) => {
   return (
     <components.DropdownIndicator {...properties}>
-      <img src={Arrow} alt="" />
+      <Icon iconName="arrow" />
     </components.DropdownIndicator>
   );
 };
