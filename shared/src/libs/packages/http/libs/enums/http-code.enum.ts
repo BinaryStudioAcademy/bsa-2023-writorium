@@ -3,6 +3,9 @@ const HttpCode = {
   CREATED: 201,
   UNPROCESSED_ENTITY: 422,
   INTERNAL_SERVER_ERROR: 500,
+  CONTENT_TOO_LARGE: 413,
+  UNSUPPORTED_MEDIA_TYPE: 415,
+  BAD_REQUEST: 400,
 } as const;
 
 export { HttpCode };

@@ -1,3 +1,4 @@
+import multipartPlugin from '@fastify/multipart';
 import swagger, { type StaticDocumentSpec } from '@fastify/swagger';
 import swaggerUi from '@fastify/swagger-ui';
 import Fastify, { type FastifyError } from 'fastify';
@@ -7,6 +8,7 @@ import { type IConfig } from '~/libs/packages/config/config.js';
 import { type IDatabase } from '~/libs/packages/database/database.js';
 import { HttpCode, HttpError } from '~/libs/packages/http/http.js';
 import { type ILogger } from '~/libs/packages/logger/logger.js';
+import { fileUploadPlugin } from '~/libs/plugins/plugins.js';
 import {
   type ServerCommonErrorResponse,
   type ServerValidationErrorResponse,
@@ -14,6 +16,10 @@ import {
   type ValidationSchema,
 } from '~/libs/types/types.js';
 
+import {
+  MAX_FILE_SIZE_MB,
+  SUPPORTED_MIME_TYPES,
+} from '../file/file.package.js';
 import {
   type IServerApp,
   type IServerAppApi,
@@ -90,6 +96,13 @@ class ServerApp implements IServerApp {
 
         await this.app.register(swaggerUi, {
           routePrefix: `${it.version}/documentation`,
+        });
+
+        await this.app.register(multipartPlugin);
+
+        await this.app.register(fileUploadPlugin, {
+          supportedFileTypes: SUPPORTED_MIME_TYPES,
+          fileSizeLimit: MAX_FILE_SIZE_MB,
         });
       }),
     );

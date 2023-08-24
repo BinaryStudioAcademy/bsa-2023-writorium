@@ -17,7 +17,7 @@ class FileController extends Controller {
 
     this.addRoute({
       path: FilesApiPath.ROOT,
-      method: 'PUT',
+      method: 'POST',
       handler: () => this.upload(),
     });
   }
