@@ -1,3 +1,4 @@
+import { ReactComponent as Arrow } from '~/assets/img/icons/arrow.svg';
 import { ReactComponent as ArrowDown } from '~/assets/img/icons/arrow-down-icon.svg';
 import { ReactComponent as ArrowUp } from '~/assets/img/icons/arrow-up-icon.svg';
 import { ReactComponent as Bell } from '~/assets/img/icons/bell-icon.svg';
@@ -29,6 +30,7 @@ import { ReactComponent as View } from '~/assets/img/icons/view-icon.svg';
 type IconName =
   | 'arrowDown'
   | 'arrowUp'
+  | 'arrow'
   | 'bell'
   | 'comment'
   | 'crossMark'
@@ -61,6 +63,7 @@ const iconNameToIcon: Record<
 > = {
   arrowDown: ArrowDown,
   arrowUp: ArrowUp,
+  arrow: Arrow,
   bell: Bell,
   comment: Comment,
   crossMark: CrossMark,
