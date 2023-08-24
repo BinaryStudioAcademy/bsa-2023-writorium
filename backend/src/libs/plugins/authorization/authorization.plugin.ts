@@ -1,5 +1,4 @@
 import fp from 'fastify-plugin';
-import { type JWTPayload } from 'jose';
 
 import {
   HttpCode,
@@ -8,23 +7,14 @@ import {
 } from '~/libs/packages/http/http.js';
 import { type WhiteRoute } from '~/libs/packages/server-application/libs/types/types.js';
 import { token } from '~/libs/packages/token/token.js';
-import { type AuthService } from '~/packages/auth/auth.service';
 import { type UserService } from '~/packages/users/user.service';
 
 type Options = {
   routesWhiteList: WhiteRoute[];
   services: {
     userService: UserService;
-    authService: AuthService;
   };
 };
-
-interface IPayload extends JWTPayload {
-  id: number;
-}
-
-const errorMessage =
-  'You do not have the necessary authorization to access this resource. Please log in.';
 
 const authorization = fp(
   (fastify, { routesWhiteList, services }: Options, done) => {
@@ -48,7 +38,7 @@ const authorization = fp(
       if (!authorizationHeader) {
         throw new HttpError({
           status: HttpCode.UNAUTHORIZED,
-          message: errorMessage,
+          message: 'Authorization header should be present.',
         });
       }
 
@@ -57,20 +47,20 @@ const authorization = fp(
       if (!requestToken) {
         throw new HttpError({
           status: HttpCode.UNAUTHORIZED,
-          message: errorMessage,
+          message: 'Invalid token.',
         });
       }
 
       const { userService } = services;
-      const { payload } = await token.verifyToken(requestToken);
-      const id = payload.id as IPayload['id'];
+      const { id } = await token.verifyToken(requestToken);
 
       const authorizedUser = await userService.find(id);
 
       if (!authorizedUser) {
         throw new HttpError({
           status: HttpCode.UNAUTHORIZED,
-          message: errorMessage,
+          message:
+            'You do not have the necessary authorization to access this resource. Please log in.',
         });
       }
 

@@ -14,7 +14,6 @@ import {
   type ValidationError,
   type ValidationSchema,
 } from '~/libs/types/types.js';
-import { authService } from '~/packages/auth/auth.js';
 import { userService } from '~/packages/users/users.js';
 
 import { WHITE_ROUTES } from './libs/constants/constants.js';
@@ -99,7 +98,6 @@ class ServerApp implements IServerApp {
         await this.app.register(authorization, {
           services: {
             userService,
-            authService,
           },
           routesWhiteList: WHITE_ROUTES,
         });
