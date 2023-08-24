@@ -13,6 +13,7 @@ const userController = new UserController(logger, userService);
 
 export { userController, userService };
 export {
+  type UserAuthResponseDto,
   type UserSignInRequestDto,
   type UserSignUpRequestDto,
   type UserSignUpResponseDto,
