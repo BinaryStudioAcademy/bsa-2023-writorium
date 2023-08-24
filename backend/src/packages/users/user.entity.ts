@@ -18,15 +18,15 @@ class UserEntity implements IEntity {
     email,
     passwordHash,
     passwordSalt,
-    firstName = 'MockedFirstName',
-    lastName = 'MockedLastName',
+    lastName,
+    firstName,
   }: {
     id: number | null;
     email: string;
     passwordHash: string;
     passwordSalt: string;
-    firstName?: string;
-    lastName?: string;
+    lastName: string;
+    firstName: string;
   }) {
     this.id = id;
     this.email = email;
@@ -48,16 +48,16 @@ class UserEntity implements IEntity {
     email: string;
     passwordHash: string;
     passwordSalt: string;
-    firstName?: string;
-    lastName?: string;
+    lastName: string;
+    firstName: string;
   }): UserEntity {
     return new UserEntity({
       id,
       email,
       passwordHash,
       passwordSalt,
-      firstName,
       lastName,
+      firstName,
     });
   }
 
@@ -65,16 +65,22 @@ class UserEntity implements IEntity {
     email,
     passwordHash,
     passwordSalt,
+    lastName,
+    firstName,
   }: {
     email: string;
     passwordHash: string;
     passwordSalt: string;
+    lastName: string;
+    firstName: string;
   }): UserEntity {
     return new UserEntity({
       id: null,
       email,
       passwordHash,
       passwordSalt,
+      firstName,
+      lastName,
     });
   }
 
@@ -96,11 +102,15 @@ class UserEntity implements IEntity {
     email: string;
     passwordHash: string;
     passwordSalt: string;
+    firstName: string;
+    lastName: string;
   } {
     return {
       email: this.email,
       passwordHash: this.passwordHash,
       passwordSalt: this.passwordSalt,
+      firstName: this.firstName,
+      lastName: this.lastName,
     };
   }
 }
