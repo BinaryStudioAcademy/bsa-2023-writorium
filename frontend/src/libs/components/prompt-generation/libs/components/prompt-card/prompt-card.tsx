@@ -1,11 +1,15 @@
 import styles from './styles.module.scss';
 
-const PromptCard: React.FC = () => {
+type Properties = {
+  category: string;
+};
+
+const PromptCard: React.FC<Properties> = ({ category }) => {
   
   return (
     <div className={styles.container}>
       <div className={styles.category}>
-          <span className={styles.categoryText}>Character</span>
+          <span className={styles.categoryText}>{category}</span>
         </div>
       <div className={styles.prompt}>
         <p className={styles.promptText}>Girl</p>
