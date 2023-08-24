@@ -1,11 +1,13 @@
 import * as jose from 'jose';
 
-import { config } from '../config/config.js';
+import { config, type IConfig } from '../config/config.js';
 
 class Token {
-  private secret: Uint8Array = new TextEncoder().encode(
-    config.ENV.JWT.SECRET_KEY,
-  );
+  private secret: Uint8Array;
+
+  public constructor(config: IConfig) {
+    this.secret = new TextEncoder().encode(config.ENV.JWT.SECRET_KEY);
+  }
 
   public create(payload: { id: number }): Promise<string> {
     return new jose.SignJWT(payload)

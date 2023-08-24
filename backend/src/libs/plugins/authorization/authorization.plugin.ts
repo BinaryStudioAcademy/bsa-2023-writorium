@@ -23,6 +23,9 @@ interface IPayload extends JWTPayload {
   id: number;
 }
 
+const errorMessage =
+  'You do not have the necessary authorization to access this resource. Please log in.';
+
 const authorization = fp(
   (fastify, { routesWhiteList, services }: Options, done) => {
     fastify.decorateRequest('user', null);
@@ -43,13 +46,19 @@ const authorization = fp(
       const authorizationHeader = request.headers.authorization;
 
       if (!authorizationHeader) {
-        throw Error;
+        throw new HttpError({
+          status: HttpCode.UNAUTHORIZED,
+          message: errorMessage,
+        });
       }
 
       const [, requestToken] = authorizationHeader.split(' ');
 
       if (!requestToken) {
-        throw Error;
+        throw new HttpError({
+          status: HttpCode.UNAUTHORIZED,
+          message: errorMessage,
+        });
       }
 
       const { userService } = services;
@@ -61,8 +70,7 @@ const authorization = fp(
       if (!authorizedUser) {
         throw new HttpError({
           status: HttpCode.UNAUTHORIZED,
-          message:
-            'You do not have the necessary authorization to access this resource. Please log in.',
+          message: errorMessage,
         });
       }
 

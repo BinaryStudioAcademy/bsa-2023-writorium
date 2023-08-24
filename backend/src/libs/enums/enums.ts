@@ -1,6 +1,6 @@
 export {
   ApiPath,
   AppEnvironment,
-  ExceptionMessage,
+  AuthApiPath,
   ServerErrorType,
 } from 'shared/build/index.js';

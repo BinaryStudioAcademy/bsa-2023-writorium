@@ -1,4 +1,4 @@
-import { ApiPath, AuthApiPath } from 'shared/build/index.js';
+import { ApiPath, AuthApiPath } from '~/libs/enums/enums.js';
 
 import { type WhiteRoute } from '../types/types.js';
 
