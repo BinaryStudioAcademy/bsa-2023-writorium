@@ -1,6 +1,7 @@
 .input {
   width: 100%;
   height: 45px;
+  margin-top: 5px;
   padding: 14px 0 14px 19px;
   color: var(--input-text);
   font-size: 14px;
@@ -18,8 +19,12 @@
   color: var(--black);
 }
 
-.text {
+.error {
   margin-bottom: 5px;
+  border: 2px solid var(--red);
+}
+
+.text {
   color: var(--black);
   font-size: 12px;
   font-family: Lato, sans-serif;

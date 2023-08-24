@@ -1,5 +1,3 @@
-import { UserValidationMessage } from 'shared/build/packages/users/users.js';
-
 import { Button, Icon, Input, Link } from '~/libs/components/components.js';
 import { AppRoute } from '~/libs/enums/app-route.enum';
 import { useAppForm, useCallback, useState } from '~/libs/hooks/hooks.js';
@@ -49,11 +47,6 @@ const SignInForm: React.FC<Properties> = ({ onSubmit }) => {
             label="Email"
             control={control}
             errors={errors}
-            className={
-              errors?.email?.message === UserValidationMessage.EMAIL_REQUIRE
-                ? styles.errorInput
-                : ''
-            }
           />
           <div className={styles.passwordInputWrapper}>
             <button
@@ -73,12 +66,6 @@ const SignInForm: React.FC<Properties> = ({ onSubmit }) => {
               label="Password"
               control={control}
               errors={errors}
-              className={
-                errors?.password?.message ===
-                UserValidationMessage.PASSWORD_REQUIRE
-                  ? styles.errorInput
-                  : ''
-              }
             />
           </div>
         </fieldset>
