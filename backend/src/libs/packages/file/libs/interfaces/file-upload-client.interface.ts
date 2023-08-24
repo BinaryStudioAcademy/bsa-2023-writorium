@@ -1,5 +1,5 @@
 interface IFileUploadClient {
-  upload(fileBuffer: Buffer): Promise<{ url: string }>;
+  upload(fileBuffer: Buffer): Promise<string>;
 }
 
 export { type IFileUploadClient };

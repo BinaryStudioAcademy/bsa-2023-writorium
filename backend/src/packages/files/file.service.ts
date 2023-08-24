@@ -1,6 +1,9 @@
+import { type FileUploadResponseDto } from 'shared/build/packages/files/files.js';
+
 import { type IService } from '~/libs/interfaces/interfaces.js';
 import { type IFileUploadClient } from '~/libs/packages/file/file.package.js';
 
+import { FileEntity } from './file.entity.js';
 import { type FileRepository } from './file.repository.js';
 
 class FileService implements IService {
@@ -15,8 +18,14 @@ class FileService implements IService {
     this.fileUploadClient = fileUploadClient;
   }
 
-  public upload(fileBuffer: Buffer): Promise<string> {
-    return Promise.resolve(fileBuffer.toString());
+  public async upload(fileBuffer: Buffer): Promise<FileUploadResponseDto> {
+    const uploadedFileUrl = await this.fileUploadClient.upload(fileBuffer);
+
+    const fileEntity = await this.fileRepository.create(
+      FileEntity.initializeNew({ url: uploadedFileUrl }),
+    );
+
+    return fileEntity.toObject();
   }
 
   public find(): ReturnType<IService['find']> {

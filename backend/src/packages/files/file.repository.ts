@@ -1,5 +1,6 @@
 import { type IRepository } from '~/libs/interfaces/interfaces.js';
 
+import { FileEntity } from './file.entity.js';
 import { type FileModel } from './file.model.js';
 
 class FileRepository implements IRepository {
@@ -9,16 +10,26 @@ class FileRepository implements IRepository {
     this.fileModel = fileModel;
   }
 
+  public async create(entity: FileEntity): Promise<FileEntity> {
+    const { url } = entity.toNewObject();
+
+    const item = await this.fileModel
+      .query()
+      .insert({
+        url,
+      })
+      .returning('*')
+      .execute();
+
+    return FileEntity.initialize(item);
+  }
+
   public find(): ReturnType<IRepository['find']> {
     return Promise.resolve(null);
   }
 
   public findAll(): ReturnType<IRepository['findAll']> {
     return Promise.resolve([]);
-  }
-
-  public create(payload: unknown): ReturnType<IRepository['create']> {
-    return Promise.resolve(payload);
   }
 
   public update(): ReturnType<IRepository['update']> {

@@ -1,4 +1,6 @@
-import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import crypto from 'node:crypto';
+
+import { S3Client } from '@aws-sdk/client-s3';
 
 import { type IConfig } from '~/libs/packages/config/config.js';
 import { type IFileUploadClient } from '~/libs/packages/file/file.package.js';
@@ -21,20 +23,20 @@ class FileUploadClient implements IFileUploadClient {
     });
   }
 
-  public async upload(fileBuffer: Buffer): Promise<{ url: string }> {
-    const { AWS } = this.config.ENV;
+  public async upload(fileBuffer: Buffer): Promise<string> {
+    // const { AWS } = this.config.ENV;
 
-    const fileName = crypto.randomUUID();
+    // const fileName = crypto.randomUUID();
 
-    const command = new PutObjectCommand({
-      Bucket: AWS.AWS_BUCKET_NAME,
-      Key: fileName,
-      Body: fileBuffer,
-    });
+    // const command = new PutObjectCommand({
+    //   Bucket: AWS.AWS_BUCKET_NAME,
+    //   Key: fileName,
+    //   Body: fileBuffer,
+    // });
 
-    await this.s3Client.send(command);
+    // await this.s3Client.send(command);
 
-    return { url: '' };
+    return await Promise.resolve(crypto.randomUUID() + fileBuffer.byteLength);
   }
 }
 
