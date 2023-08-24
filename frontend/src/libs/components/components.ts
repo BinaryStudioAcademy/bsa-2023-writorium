@@ -1,4 +1,5 @@
 export { App } from './app/app.js';
+export { ArticleCard } from './article-card/article-card.js';
 export { Button } from './button/button.js';
 export { Header } from './header/header.js';
 export { Icon } from './icon/icon.js';
