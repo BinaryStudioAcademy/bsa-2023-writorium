@@ -1,4 +1,4 @@
-const MimeType = {
+const FileType = {
   JPEG: 'image/jpeg',
   PNG: 'image/png',
   WEBP: 'image/webp',
@@ -6,4 +6,4 @@ const MimeType = {
   SVG: 'image/svg+xml',
 } as const;
 
-export { MimeType };
+export { FileType };

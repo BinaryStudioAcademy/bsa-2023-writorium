@@ -5,7 +5,7 @@ import {
   FileSizeLimitExceededError,
   UnsupportedFileTypeError,
 } from '~/libs/packages/exceptions/exceptions.js';
-import { type MimeType } from '~/libs/packages/file/file.package.js';
+import { type FileType } from '~/libs/packages/file/file.package.js';
 import { mbToBytes } from '~/libs/packages/file/file.package.js';
 import { type ValueOf } from '~/libs/types/types.js';
 
@@ -18,7 +18,7 @@ declare module 'fastify' {
 
 type FileUploadPluginOptions = {
   fileSizeLimit?: number;
-  supportedFileTypes?: ValueOf<typeof MimeType>[];
+  supportedFileTypes?: ValueOf<typeof FileType>[];
 };
 
 const fileUploadPlugin = fp(
@@ -43,7 +43,7 @@ const fileUploadPlugin = fp(
 
       if (
         supportedFileTypes?.length &&
-        !supportedFileTypes.includes(data.mimetype as ValueOf<typeof MimeType>)
+        !supportedFileTypes.includes(data.mimetype as ValueOf<typeof FileType>)
       ) {
         throw new UnsupportedFileTypeError();
       }

@@ -1,1 +1,1 @@
-export { MimeType } from './mime-type.enum.js';
+export { FileType } from './file-type.enum.js';

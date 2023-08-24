@@ -18,7 +18,7 @@ import {
 
 import {
   MAX_FILE_SIZE_MB,
-  SUPPORTED_MIME_TYPES,
+  SUPPORTED_FILE_TYPES,
 } from '../file/file.package.js';
 import {
   type IServerApp,
@@ -101,7 +101,7 @@ class ServerApp implements IServerApp {
         await this.app.register(multipartPlugin);
 
         await this.app.register(fileUploadPlugin, {
-          supportedFileTypes: SUPPORTED_MIME_TYPES,
+          supportedFileTypes: SUPPORTED_FILE_TYPES,
           fileSizeLimit: MAX_FILE_SIZE_MB,
         });
       }),
