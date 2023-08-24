@@ -10,6 +10,7 @@ import {
 } from '~/libs/components/components.js';
 import { AppRoute } from '~/libs/enums/enums.js';
 import { store } from '~/libs/packages/store/store.js';
+import { Article } from '~/pages/article/article.js';
 import { Auth } from '~/pages/auth/auth.js';
 import { Landing } from '~/pages/landing/landing.js';
 
@@ -33,6 +34,10 @@ createRoot(document.querySelector('#root') as HTMLElement).render(
               {
                 path: AppRoute.SIGN_UP,
                 element: <Auth />,
+              },
+              {
+                path: AppRoute.ARTICLE,
+                element: <Article />,
               },
             ],
           },
