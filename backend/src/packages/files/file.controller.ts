@@ -1,5 +1,8 @@
 import { ApiPath } from '~/libs/enums/enums.js';
-import { type ApiHandlerResponse } from '~/libs/packages/controller/controller.js';
+import {
+  type ApiHandlerOptions,
+  type ApiHandlerResponse,
+} from '~/libs/packages/controller/controller.js';
 import { Controller } from '~/libs/packages/controller/controller.js';
 import { HttpCode } from '~/libs/packages/http/http.js';
 import { type ILogger } from '~/libs/packages/logger/logger.js';
@@ -18,7 +21,11 @@ class FileController extends Controller {
     this.addRoute({
       path: FilesApiPath.ROOT,
       method: 'POST',
-      handler: () => this.upload(),
+      handler: (options) => {
+        return this.upload(
+          options as ApiHandlerOptions<{ fileBuffer: Buffer }>,
+        );
+      },
     });
   }
 
@@ -37,10 +44,12 @@ class FileController extends Controller {
    *         schema:
    *           type: string
    */
-  private async upload(): Promise<ApiHandlerResponse> {
+  private async upload({
+    fileBuffer,
+  }: ApiHandlerOptions<{ fileBuffer: Buffer }>): Promise<ApiHandlerResponse> {
     return {
       status: HttpCode.OK,
-      payload: await this.fileService.upload(),
+      payload: await this.fileService.upload(fileBuffer),
     };
   }
 }
