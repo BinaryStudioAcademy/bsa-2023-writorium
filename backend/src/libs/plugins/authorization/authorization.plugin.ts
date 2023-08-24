@@ -61,7 +61,8 @@ const authorization = fp(
       if (!authorizedUser) {
         throw new HttpError({
           status: HttpCode.UNAUTHORIZED,
-          message: 'Token is invalid',
+          message:
+            'You do not have the necessary authorization to access this resource. Please log in.',
         });
       }
 
