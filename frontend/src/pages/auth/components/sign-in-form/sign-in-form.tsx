@@ -1,5 +1,5 @@
-import hidePasswordIcon from '~/assets/img/hidePassword.svg';
-import showPasswordIcon from '~/assets/img/showPassword.svg';
+import hidePasswordIcon from '~/assets/img/hide-password.svg';
+import showPasswordIcon from '~/assets/img/show-password.svg';
 import { Button, Input, Link } from '~/libs/components/components.js';
 import { AppRoute } from '~/libs/enums/app-route.enum';
 import { useAppForm, useCallback, useState } from '~/libs/hooks/hooks.js';
@@ -7,8 +7,8 @@ import {
   type UserSignInRequestDto,
   userSignInValidationSchema,
 } from '~/packages/users/users.js';
-import { DEFAULT_LOGIN_PAYLOAD } from '~/pages/auth/components/sign-in-form/libs/common/constants.js';
 
+import { DEFAULT_LOGIN_PAYLOAD } from './libs/constants/constants.js';
 import styles from './styles.module.scss';
 
 type Properties = {

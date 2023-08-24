@@ -12,9 +12,6 @@
   color: var(--light-green);
   font-size: 24px;
   font-family: "Libre Baskerville", sans-serif;
-  text-shadow: 0 4px 4px var(--black-25);
-  -webkit-text-stroke-color: var(--black);
-  -webkit-text-stroke-width: 1px;
 }
 
 .form {
@@ -62,7 +59,7 @@
 
 .message {
   margin-right: 5px;
-  color: #14253f;
+  color: var(--dark-blue-70);
   font-size: 16px;
   font-family: Lato, sans-serif;
   opacity: 0.7;
