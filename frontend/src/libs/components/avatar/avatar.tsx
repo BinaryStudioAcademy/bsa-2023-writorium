@@ -10,13 +10,21 @@ type Properties = {
 const Avatar: React.FC<Properties> = ({ avatarUrl, username }) => {
   if (!avatarUrl) {
     return (
-      <span className={getValidClassNames(styles.avatar, styles.defaultAvatar)}>
-        <span className={styles.initials}>{getFirstLetters(username)}</span>
-      </span>
+      <div className={styles.avatarInfo}>
+        <span
+          className={getValidClassNames(styles.avatar, styles.defaultAvatar)}
+        >
+          <span className={styles.initials}>{getFirstLetters(username)}</span>
+        </span>
+      </div>
     );
   }
 
-  return <img src={avatarUrl} alt="avatar" className={styles.avatar} />;
+  return (
+    <div className={styles.avatarInfo}>
+      <img src={avatarUrl} alt="avatar" className={styles.avatar} />
+    </div>
+  );
 };
 
 export { Avatar };

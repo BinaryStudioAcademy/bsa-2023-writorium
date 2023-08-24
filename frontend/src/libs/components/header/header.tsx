@@ -15,7 +15,7 @@ const Header: React.FC<Properties> = ({ user }) => (
         <Link to={AppRoute.ROOT} className={styles.logo}>
           WRITORIUM
         </Link>
-        <Link to={AppRoute.PROFILE} className={styles.avatarInfo}>
+        <Link to={AppRoute.PROFILE}>
           <Avatar username="Todd Demoer" avatarUrl={null} />
         </Link>
       </header>
