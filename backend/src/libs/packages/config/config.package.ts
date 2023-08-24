@@ -8,10 +8,15 @@ import {
   type IAuthConfig,
   type IConfig,
 } from './libs/interfaces/interfaces.js';
-import { type EnvironmentSchema } from './libs/types/types.js';
+import {
+  type EncryptConfig,
+  type EnvironmentSchema,
+} from './libs/types/types.js';
 
 class Config implements IConfig {
   private logger: ILogger;
+
+  public ENCRYPTION: EncryptConfig;
 
   public ENV: EnvironmentSchema;
   public AUTH: IAuthConfig;
@@ -30,6 +35,13 @@ class Config implements IConfig {
     this.ENV = this.envSchema.getProperties();
     this.logger.info('.env file found and successfully parsed!');
     this.AUTH = this.authConfig;
+    this.ENCRYPTION = this.encryptionConfig;
+  }
+
+  private get encryptionConfig(): EncryptConfig {
+    return {
+      USER_PASSWORD_SALT_ROUNDS: 10,
+    };
   }
 
   private get envSchema(): TConfig<EnvironmentSchema> {
