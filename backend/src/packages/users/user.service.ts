@@ -1,8 +1,11 @@
 import { type IService } from '~/libs/interfaces/interfaces.js';
+import { type IConfig } from '~/libs/packages/config/config.js';
+import { type IEncrypt } from '~/libs/packages/encrypt/encrypt.js';
 import { UserEntity } from '~/packages/users/user.entity.js';
 import { type UserRepository } from '~/packages/users/user.repository.js';
 
 import {
+  type UserAuthResponseDto,
   type UserGetAllResponseDto,
   type UserSignUpRequestDto,
   type UserSignUpResponseDto,
@@ -11,12 +14,28 @@ import {
 class UserService implements IService {
   private userRepository: UserRepository;
 
-  public constructor(userRepository: UserRepository) {
+  private encrypt: IEncrypt;
+
+  private config: IConfig;
+
+  public constructor(
+    config: IConfig,
+    encrypt: IEncrypt,
+    userRepository: UserRepository,
+  ) {
     this.userRepository = userRepository;
+    this.encrypt = encrypt;
+    this.config = config;
   }
 
   public find(): ReturnType<IService['find']> {
     return Promise.resolve(null);
+  }
+
+  public async findByEmail(email: string): Promise<UserAuthResponseDto | null> {
+    const user = await this.userRepository.findByEmail(email);
+
+    return user ? user.toObject() : null;
   }
 
   public async findAll(): Promise<UserGetAllResponseDto> {
@@ -30,12 +49,21 @@ class UserService implements IService {
   public async create(
     payload: UserSignUpRequestDto,
   ): Promise<UserSignUpResponseDto> {
+    const passwordSalt = await this.encrypt.generateSalt(
+      this.config.ENCRYPTION.USER_PASSWORD_SALT_ROUNDS,
+    );
+    const passwordHash = await this.encrypt.encrypt(
+      payload.password,
+      passwordSalt,
+    );
+
     const user = await this.userRepository.create(
       UserEntity.initializeNew({
         email: payload.email,
-        /** @todo replace with real implementation */
-        passwordSalt: 'SALT',
-        passwordHash: 'HASH',
+        passwordSalt,
+        passwordHash,
+        lastName: payload.lastName,
+        firstName: payload.firstName,
       }),
     );
 
