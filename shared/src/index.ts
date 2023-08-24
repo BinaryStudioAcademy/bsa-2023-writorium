@@ -23,6 +23,7 @@ export {
   type ValidationError,
   type ValidationSchema,
   type ValueOf,
+  type WithNullableKeys,
 } from './libs/types/types.js';
 export { AuthApiPath } from './packages/auth/auth.js';
 export {
