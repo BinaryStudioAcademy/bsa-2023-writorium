@@ -69,6 +69,32 @@ class Config implements IConfig {
           default: null,
         },
       },
+      AWS: {
+        AWS_ACCESS_KEY: {
+          doc: 'AWS access key',
+          format: String,
+          env: 'AWS_ACCESS_KEY',
+          default: null,
+        },
+        AWS_SECRET_ACCESS_KEY: {
+          doc: 'AWS secret access key',
+          format: String,
+          env: 'AWS_SECRET_ACCESS_KEY',
+          default: null,
+        },
+        AWS_REGION: {
+          doc: 'AWS region',
+          format: String,
+          env: 'AWS_REGION',
+          default: null,
+        },
+        AWS_BUCKET_NAME: {
+          doc: 'AWS S3 bucket name',
+          format: String,
+          env: 'AWS_BUCKET_NAME',
+          default: null,
+        },
+      },
     });
   }
 }
