@@ -1,6 +1,6 @@
 .profile {
   width: 100%;
-  max-width: 1591px;
+  max-width: 1590px;
   margin: 0 auto;
 }
 
@@ -8,21 +8,19 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
-  width: 270px;
+  width: 100%;
+  max-width: 270px;
 }
 
 .avatar {
-  width: 270px;
-  height: 269px;
+  height: 270px;
 }
 
 .userInfo {
+  display: grid;
+  gap: 10px;
   font-size: 32px;
   line-height: normal;
-}
-
-.userInfo > * {
-  margin: 10px 0;
 }
 
 .editProfileBtn {
