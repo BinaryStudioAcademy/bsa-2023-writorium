@@ -1,6 +1,4 @@
-import hidePasswordIcon from '~/assets/img/hide-password.svg';
-import showPasswordIcon from '~/assets/img/show-password.svg';
-import { Button, Input, Link } from '~/libs/components/components.js';
+import { Button, Icon, Input, Link } from '~/libs/components/components.js';
 import { AppRoute } from '~/libs/enums/app-route.enum';
 import { useAppForm, useCallback, useState } from '~/libs/hooks/hooks.js';
 import {
@@ -56,15 +54,11 @@ const SignInForm: React.FC<Properties> = ({ onSubmit }) => {
               className={styles.passwordToggle}
               onClick={handleTogglePasswordVisibility}
             >
-              <img
-                className={styles.passwordIcon}
-                src={isPasswordVisible ? showPasswordIcon : hidePasswordIcon}
-                alt={
-                  isPasswordVisible
-                    ? 'hide-password-icon'
-                    : 'show-password-icon'
-                }
-              />
+              {isPasswordVisible ? (
+                <Icon iconName="view" className={styles.icon} />
+              ) : (
+                <Icon iconName="hide" className={styles.icon} />
+              )}
             </button>
             <Input
               name="password"
