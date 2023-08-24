@@ -9,8 +9,14 @@ class UserRepository implements IRepository {
     this.userModel = userModel;
   }
 
-  public find(): ReturnType<IRepository['find']> {
-    return Promise.resolve(null);
+  public async find(id: number): Promise<UserEntity | null> {
+    const user = await this.userModel.query().findById(id);
+
+    if (!user) {
+      return null;
+    }
+
+    return UserEntity.initialize(user);
   }
 
   public async findByEmail(email: string): Promise<UserEntity | null> {
@@ -26,14 +32,6 @@ class UserRepository implements IRepository {
     const users = await this.userModel.query().execute();
 
     return users.map((it) => UserEntity.initialize(it));
-  }
-
-  public async findById(id: number): Promise<UserEntity | null> {
-    const user = await this.userModel.query().findById(id);
-    if (!user) {
-      return null;
-    }
-    return UserEntity.initialize(user);
   }
 
   public async create(entity: UserEntity): Promise<UserEntity> {

@@ -7,7 +7,7 @@ import { type IConfig } from '~/libs/packages/config/config.js';
 import { type IDatabase } from '~/libs/packages/database/database.js';
 import { HttpCode, HttpError } from '~/libs/packages/http/http.js';
 import { type ILogger } from '~/libs/packages/logger/logger.js';
-import { authorization } from '~/libs/plugins/authorization/authorization.plugin.js';
+import { authorization } from '~/libs/plugins/authorization/authorization.js';
 import {
   type ServerCommonErrorResponse,
   type ServerValidationErrorResponse,

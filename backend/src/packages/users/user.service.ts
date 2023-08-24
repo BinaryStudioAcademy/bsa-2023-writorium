@@ -6,7 +6,6 @@ import {
   type UserAuthResponseDto,
   type UserGetAllResponseDto,
   type UserSignUpRequestDto,
-  type UserSignUpResponseDto,
 } from './libs/types/types.js';
 
 class UserService implements IService {
@@ -16,13 +15,17 @@ class UserService implements IService {
     this.userRepository = userRepository;
   }
 
-  public find(): ReturnType<IService['find']> {
-    return Promise.resolve(null);
+  public async find(id: number): Promise<UserAuthResponseDto | null> {
+    const user = await this.userRepository.find(id);
+
+    if (!user) {
+      return null;
+    }
+
+    return user.toObject();
   }
 
-  public async findByEmail(
-    email: string,
-  ): Promise<Omit<UserAuthResponseDto, 'accessToken'> | null> {
+  public async findByEmail(email: string): Promise<UserAuthResponseDto | null> {
     const user = await this.userRepository.findByEmail(email);
 
     return user ? user.toObject() : null;
@@ -38,7 +41,7 @@ class UserService implements IService {
 
   public async create(
     payload: UserSignUpRequestDto,
-  ): Promise<Omit<UserSignUpResponseDto, 'accessToken'>> {
+  ): Promise<UserAuthResponseDto> {
     const user = await this.userRepository.create(
       UserEntity.initializeNew({
         email: payload.email,
@@ -47,17 +50,6 @@ class UserService implements IService {
         passwordHash: 'HASH',
       }),
     );
-
-    return user.toObject();
-  }
-  public async findById(
-    id: number,
-  ): Promise<{ id: number; email: string } | null> {
-    const user = await this.userRepository.findById(id);
-
-    if (!user) {
-      return null;
-    }
 
     return user.toObject();
   }

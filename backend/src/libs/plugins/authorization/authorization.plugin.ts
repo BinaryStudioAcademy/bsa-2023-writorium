@@ -1,45 +1,71 @@
 import fp from 'fastify-plugin';
+import { type JWTPayload } from 'jose';
 
-import { ExceptionMessage } from '~/libs/enums/enums.js';
-import { InvalidCredentialsError } from '~/libs/exceptions/exceptions.js';
-import { type IFastifyRequest } from '~/libs/interfaces/interfaces.js';
-import { HttpCode } from '~/libs/packages/http/http.js';
+import {
+  HttpCode,
+  HttpError,
+  type HttpMethod,
+} from '~/libs/packages/http/http.js';
+import { type WhiteRoute } from '~/libs/packages/server-application/libs/types/types.js';
+import { token } from '~/libs/packages/token/token.js';
 import { type AuthService } from '~/packages/auth/auth.service';
 import { type UserService } from '~/packages/users/user.service';
 
 type Options = {
-  routesWhiteList: Set<string>;
+  routesWhiteList: WhiteRoute[];
   services: {
     userService: UserService;
     authService: AuthService;
   };
 };
 
+interface IPayload extends JWTPayload {
+  id: number;
+}
+
 const authorization = fp(
   (fastify, { routesWhiteList, services }: Options, done) => {
     fastify.decorateRequest('user', null);
 
-    fastify.addHook('onRequest', async (request, reply) => {
-      try {
-        const isWhiteRoute = routesWhiteList.has(request.routerPath);
+    fastify.addHook('onRequest', async (request) => {
+      const isWhiteRoute = routesWhiteList.some((whiteRoute) => {
+        const isWhitePath = whiteRoute.routerPath === request.routerPath;
+        const isAllowedMethod = whiteRoute.methods.includes(
+          request.method as HttpMethod,
+        );
+        return isWhitePath && isAllowedMethod;
+      });
 
-        if (isWhiteRoute) {
-          return;
-        }
-
-        const [, token] = request.headers?.authorization?.split(' ') ?? [];
-        const { userService, authService } = services;
-        const { id } = authService.verifyToken(token);
-
-        const authorizedUser = await userService.findById(id);
-        if (!authorizedUser) {
-          throw new InvalidCredentialsError(ExceptionMessage.INVALID_TOKEN);
-        }
-
-        (<IFastifyRequest>request).user = authorizedUser;
-      } catch (error) {
-        void reply.code(HttpCode.UNAUTHORIZED).send(error);
+      if (isWhiteRoute) {
+        return;
       }
+
+      const authorizationHeader = request.headers.authorization;
+
+      if (!authorizationHeader) {
+        throw Error;
+      }
+
+      const [, requestToken] = authorizationHeader.split(' ');
+
+      if (!requestToken) {
+        throw Error;
+      }
+
+      const { userService } = services;
+      const { payload } = await token.verifyToken(requestToken);
+      const id: IPayload['id'] = payload.id as IPayload['id'];
+
+      const authorizedUser = await userService.find(id);
+
+      if (!authorizedUser) {
+        throw new HttpError({
+          status: HttpCode.UNAUTHORIZED,
+          message: 'Token is invalid',
+        });
+      }
+
+      request.user = authorizedUser;
     });
 
     done();
