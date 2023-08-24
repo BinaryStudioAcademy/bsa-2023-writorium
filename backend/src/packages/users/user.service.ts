@@ -1,6 +1,6 @@
 import { type IService } from '~/libs/interfaces/interfaces.js';
 import { type IConfig } from '~/libs/packages/config/config.js';
-import { type IEncrypt } from '~/libs/packages/encryption/libs/interfaces/encrypt.interface.js';
+import { type IEncrypt } from '~/libs/packages/encrypt/encrypt.js';
 import { UserEntity } from '~/packages/users/user.entity.js';
 import { type UserRepository } from '~/packages/users/user.repository.js';
 

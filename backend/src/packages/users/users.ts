@@ -1,5 +1,5 @@
 import { config } from '~/libs/packages/config/config.js';
-import { encrypt } from '~/libs/packages/encryption/encrypt.js';
+import { encrypt } from '~/libs/packages/encrypt/encrypt.js';
 import { logger } from '~/libs/packages/logger/logger.js';
 
 import { UserController } from './user.controller.js';
