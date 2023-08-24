@@ -1,0 +1,154 @@
+.article {
+  width: 830px;
+  padding: 31px 24px 0 31px;
+  background: var(--white);
+  border: 2px solid var(--pale-gray);
+  border-radius: 10px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.header .info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header .publisherName {
+  color: var(--dark-gray);
+  font-weight: 500;
+  font-size: 16px;
+  font-style: normal;
+  line-height: normal;
+}
+
+.header .publicationTime {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-left: 20px;
+  color: var(--dark-gray-40);
+  font-weight: 400;
+  font-size: 14px;
+  font-style: normal;
+  line-height: normal;
+}
+
+.header .publicationTime::before {
+  content: "";
+  position: absolute;
+  left: -20px;
+  border: 5px solid var(--light-green);
+  border-radius: 50%;
+}
+
+.body {
+  display: flex;
+  gap: 40px;
+  margin-bottom: 23px;
+  padding-right: 19px;
+}
+
+.body .title {
+  margin: 0;
+  color: var(--dark-gray);
+  font-weight: 700;
+  font-size: 24px;
+  font-family: "Libre Baskerville", serif;
+  font-style: normal;
+  line-height: normal;
+}
+
+.body .content {
+  margin: 15px 0 25px;
+  color: var(--dark-gray);
+  font-weight: 400;
+  font-size: 14px;
+  font-style: normal;
+  line-height: normal;
+}
+
+.body .tags {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 4px 9px;
+  color: var(--medium-brightness-gray);
+  font-weight: 400;
+  font-size: 14px;
+  font-style: normal;
+  line-height: normal;
+  background: var(--light-grey);
+  border-radius: 4px;
+}
+
+.body .preview {
+  border-radius: 5px;
+}
+
+.footer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  padding: 12px 33px 20px 4px;
+}
+
+.footer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: -24px;
+  left: -31px;
+  border-top: 2px solid var(--pale-gray);
+}
+
+.footer .reactions {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.reaction {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.reaction .reactionIcon {
+  width: 16px;
+  height: 15px;
+}
+
+.reaction .reactionCount {
+  color: var(--dark-gray-50);
+  font-weight: 400;
+  font-size: 12px;
+  font-style: normal;
+  line-height: normal;
+}
+
+.footer .readMore {
+  margin-left: auto;
+  color: var(--light-green);
+  font-weight: 700;
+  font-size: 16px;
+  font-style: normal;
+  line-height: normal;
+}
+
+.header .favoriteIcon,
+.footer .reactionIcon {
+  cursor: pointer;
+}
