@@ -65,7 +65,9 @@ const ArticleCard: React.FC = () => (
         </div>
       </div>
       <Icon iconName="share" className={styles.reactionIcon} />
-      <Link to={AppRoute.ROOT} className={styles.readMore}>Read more</Link>
+      <Link to={AppRoute.ROOT} className={styles.readMore}>
+        Read more
+      </Link>
     </div>
   </article>
 );
