@@ -1,6 +1,6 @@
 import { createRef } from 'react';
 
-import { Portal } from '~/libs/components/components.js';
+import { Icon, Portal } from '~/libs/components/components.js';
 import { useCallback, useEffect } from '~/libs/hooks/hooks.js';
 
 import styles from './styles.module.scss';
@@ -49,7 +49,7 @@ const Modal: React.FC<Properties> = ({
       <div className={styles.modal} ref={outsideModalDivReference}>
         <div className={styles.content} role="button" tabIndex={0}>
           <button className={styles.closeBtn} onClick={handleOnClose}>
-            x
+            <Icon iconName="crossMark" />
           </button>
 
           {children}

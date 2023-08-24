@@ -23,15 +23,11 @@
   position: absolute;
   top: 0;
   right: 0;
-  margin: 5px;
+  padding: 5px 5px 0 0;
   background-color: var(--white);
-  border: 2px solid var(--dark-blue);
+  border: none;
   border-radius: 5px;
   cursor: pointer;
-}
-
-.closeBtn:hover {
-  background-color: var(--light-grey);
 }
 
 @media only screen and (width < 768px) {
