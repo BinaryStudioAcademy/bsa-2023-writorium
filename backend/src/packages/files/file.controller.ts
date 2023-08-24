@@ -10,6 +10,20 @@ import { type ILogger } from '~/libs/packages/logger/logger.js';
 import { type FileService } from './file.service.js';
 import { FilesApiPath } from './libs/enums/enums.js';
 
+/**
+ * @swagger
+ * components:
+ *    schemas:
+ *      File:
+ *        type: object
+ *        properties:
+ *          id:
+ *            type: number
+ *            format: number
+ *          url:
+ *            type: string
+ *            format: string
+ */
 class FileController extends Controller {
   private fileService: FileService;
 
@@ -29,20 +43,29 @@ class FileController extends Controller {
     });
   }
 
-  // @todo: add resposes to swagger doc
-
   /**
    * @swagger
    * /files:
-   *    put:
+   *    post:
    *      description: Uploads a file
-   *      parameters:
-   *       - in: path
-   *         name: objectName
-   *         required: true
-   *         description: The name of file to upload.
-   *         schema:
-   *           type: string
+   *      requestBody:
+   *        required: true
+   *        content:
+   *          multipart/form-data:
+   *            schema:
+   *              required: ['file']
+   *              type: object
+   *              properties:
+   *                file:
+   *                  type: string
+   *                  format: binary
+   *      responses:
+   *       '200':
+   *         description: Successful operation
+   *         content:
+   *          application/json:
+   *            schema:
+   *              $ref: '#/components/schemas/File'
    */
   private async upload({
     fileBuffer,
