@@ -119,7 +119,7 @@ class ServerApp implements IServerApp {
 
   private initErrorHandler(): void {
     this.app.setErrorHandler(
-      (error: FastifyError | ValidationError, _request, replay) => {
+      (error: FastifyError | ValidationError, _request, reply) => {
         if ('isJoi' in error) {
           this.logger.error(`[Validation Error]: ${error.message}`);
 
@@ -136,7 +136,7 @@ class ServerApp implements IServerApp {
             })),
           };
 
-          return replay.status(HttpCode.UNPROCESSED_ENTITY).send(response);
+          return reply.status(HttpCode.UNPROCESSED_ENTITY).send(response);
         }
 
         if (error instanceof HttpError) {
@@ -149,7 +149,7 @@ class ServerApp implements IServerApp {
             message: error.message,
           };
 
-          return replay.status(error.status).send(response);
+          return reply.status(error.status).send(response);
         }
 
         this.logger.error(error.message);
@@ -159,7 +159,7 @@ class ServerApp implements IServerApp {
           message: error.message,
         };
 
-        return replay.status(HttpCode.INTERNAL_SERVER_ERROR).send(response);
+        return reply.status(HttpCode.INTERNAL_SERVER_ERROR).send(response);
       },
     );
   }
