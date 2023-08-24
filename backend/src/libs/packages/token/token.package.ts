@@ -19,10 +19,6 @@ class Token {
   public verifyToken(token: string): Promise<jose.JWTVerifyResult> {
     return jose.jwtVerify(token, this.secret);
   }
-
-  public decode(token: string): jose.JWTPayload {
-    return jose.decodeJwt(token);
-  }
 }
 
 export { Token };

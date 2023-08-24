@@ -63,7 +63,7 @@ const authorization = fp(
 
       const { userService } = services;
       const { payload } = await token.verifyToken(requestToken);
-      const id: IPayload['id'] = payload.id as IPayload['id'];
+      const id = payload.id as IPayload['id'];
 
       const authorizedUser = await userService.find(id);
 
