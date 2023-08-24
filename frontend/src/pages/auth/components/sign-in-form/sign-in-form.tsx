@@ -1,3 +1,5 @@
+import { UserValidationMessage } from 'shared/build/packages/users/users.js';
+
 import { Button, Icon, Input, Link } from '~/libs/components/components.js';
 import { AppRoute } from '~/libs/enums/app-route.enum';
 import { useAppForm, useCallback, useState } from '~/libs/hooks/hooks.js';
@@ -47,6 +49,11 @@ const SignInForm: React.FC<Properties> = ({ onSubmit }) => {
             label="Email"
             control={control}
             errors={errors}
+            className={
+              errors?.email?.message === UserValidationMessage.EMAIL_REQUIRE
+                ? styles.errorInput
+                : ''
+            }
           />
           <div className={styles.passwordInputWrapper}>
             <button
@@ -54,11 +61,10 @@ const SignInForm: React.FC<Properties> = ({ onSubmit }) => {
               className={styles.passwordToggle}
               onClick={handleTogglePasswordVisibility}
             >
-              {isPasswordVisible ? (
-                <Icon iconName="view" className={styles.icon} />
-              ) : (
-                <Icon iconName="hide" className={styles.icon} />
-              )}
+              <Icon
+                iconName={isPasswordVisible ? 'view' : 'hide'}
+                className={styles.icon}
+              />
             </button>
             <Input
               name="password"
@@ -67,10 +73,16 @@ const SignInForm: React.FC<Properties> = ({ onSubmit }) => {
               label="Password"
               control={control}
               errors={errors}
+              className={
+                errors?.password?.message ===
+                UserValidationMessage.PASSWORD_REQUIRE
+                  ? styles.errorInput
+                  : ''
+              }
             />
           </div>
         </fieldset>
-        <Button className={styles.submitBtn} type="submit" label="Sign In" />
+        <Button className={styles.submitButton} type="submit" label="Sign In" />
       </form>
       <div>
         <span className={styles.message}>No account?</span>
