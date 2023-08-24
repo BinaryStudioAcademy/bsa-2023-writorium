@@ -85,13 +85,9 @@ const Select = <
     placeholder: (styles) => ({ ...styles, fontSize: '13px' }),
   };
 
-  const OnChange = (option: unknown): void => {
+  const handleChange = useCallback((option: unknown) => {
     field.onChange((option as SelectOption).value);
-  };
-  const handleChange = useCallback(
-    (option: unknown) => OnChange(option),
-    [OnChange],
-  );
+  }, []);
 
   return (
     <label>
