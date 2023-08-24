@@ -1,12 +1,8 @@
-import { type ITokenPayload } from '~/libs/interfaces/interfaces.js';
 import { UserNotFoundError } from '~/libs/packages/exceptions/exceptions.js';
+import { token as accessToken } from '~/libs/packages/token/token.js';
 import {
-  createToken,
-  verifyToken,
-} from '~/packages/auth/helpers/token/token-helper.helper.js';
-import {
-  type UserAuthResponseDto,
   type UserSignInRequestDto,
+  type UserSignInResponseDto,
   type UserSignUpRequestDto,
   type UserSignUpResponseDto,
 } from '~/packages/users/libs/types/types.js';
@@ -21,7 +17,7 @@ class AuthService {
 
   public async signIn(
     userSignInDto: UserSignInRequestDto,
-  ): Promise<UserAuthResponseDto> {
+  ): Promise<UserSignInResponseDto> {
     const { email } = userSignInDto;
 
     const user = await this.userService.findByEmail(email);
@@ -29,22 +25,18 @@ class AuthService {
     if (!user) {
       throw new UserNotFoundError();
     }
-    const accessToken = createToken({ id: user.id });
+    const token = await accessToken.create({ id: user.id });
 
-    return { ...user, accessToken };
+    return { user, token };
   }
 
   public async signUp(
     userRequestDto: UserSignUpRequestDto,
   ): Promise<UserSignUpResponseDto> {
     const user = await this.userService.create(userRequestDto);
-    const accessToken = createToken({ id: user.id });
+    const token = await accessToken.create({ id: user.id });
 
-    return { ...user, accessToken };
-  }
-
-  public verifyToken(token: string): ITokenPayload {
-    return verifyToken(token);
+    return { user, token };
   }
 }
 

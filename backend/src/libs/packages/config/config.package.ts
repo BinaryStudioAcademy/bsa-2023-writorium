@@ -4,13 +4,17 @@ import { config } from 'dotenv';
 import { AppEnvironment } from '~/libs/enums/enums.js';
 import { type ILogger } from '~/libs/packages/logger/logger.js';
 
-import { type IConfig } from './libs/interfaces/interfaces.js';
+import {
+  type IAuthConfig,
+  type IConfig,
+} from './libs/interfaces/interfaces.js';
 import { type EnvironmentSchema } from './libs/types/types.js';
 
 class Config implements IConfig {
   private logger: ILogger;
 
   public ENV: EnvironmentSchema;
+  public AUTH: IAuthConfig;
 
   public constructor(logger: ILogger) {
     this.logger = logger;
@@ -25,6 +29,7 @@ class Config implements IConfig {
 
     this.ENV = this.envSchema.getProperties();
     this.logger.info('.env file found and successfully parsed!');
+    this.AUTH = this.authConfig;
   }
 
   private get envSchema(): TConfig<EnvironmentSchema> {
@@ -70,15 +75,21 @@ class Config implements IConfig {
         },
       },
       JWT: {
-        SECRET: {
+        SECRET_KEY: {
           doc: 'Secret key for token generation',
           format: String,
-          env: 'ACCESS_TOKEN_SECRET',
+          env: 'SECRET_KEY',
           default: null,
         },
-        EXPIRES_IN: '24h',
       },
     });
+  }
+
+  private get authConfig(): IAuthConfig {
+    return {
+      ALGORITHM: 'HS256',
+      EXPIRES_IN: '24h',
+    };
   }
 }
 

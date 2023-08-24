@@ -13,8 +13,7 @@ type EnvironmentSchema = {
     POOL_MAX: number;
   };
   JWT: {
-    SECRET: string;
-    EXPIRES_IN: string;
+    SECRET_KEY: string;
   };
 };
 
