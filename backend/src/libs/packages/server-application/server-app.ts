@@ -18,6 +18,7 @@ import {
 
 import {
   MAX_FILE_SIZE_MB,
+  mbToBytes,
   SUPPORTED_FILE_TYPES,
 } from '../file/file.package.js';
 import {
@@ -98,11 +99,14 @@ class ServerApp implements IServerApp {
           routePrefix: `${it.version}/documentation`,
         });
 
-        await this.app.register(multipartPlugin);
+        await this.app.register(multipartPlugin, {
+          attachFieldsToBody: true,
+          throwFileSizeLimit: false,
+          limits: { fileSize: mbToBytes(MAX_FILE_SIZE_MB) },
+        });
 
         await this.app.register(fileUploadPlugin, {
           supportedFileTypes: SUPPORTED_FILE_TYPES,
-          fileSizeLimit: MAX_FILE_SIZE_MB,
         });
       }),
     );
