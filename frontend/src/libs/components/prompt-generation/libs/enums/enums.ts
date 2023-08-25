@@ -1,1 +1,4 @@
-export { PromptCategory } from './prompt-category.enum.js';
+export {
+  PromptCategory,
+  type PromptCategoryValue,
+} from './prompt-category.enum.js';

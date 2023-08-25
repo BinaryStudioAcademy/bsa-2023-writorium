@@ -6,4 +6,6 @@ const PromptCategory = {
   GENRE: 'genre',
 } as const;
 
-export { PromptCategory };
+type PromptCategoryValue = (typeof PromptCategory)[keyof typeof PromptCategory];
+
+export { PromptCategory, type PromptCategoryValue };

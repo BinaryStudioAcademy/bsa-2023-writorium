@@ -5,13 +5,15 @@
 .prompt {
   height: 73px;
   padding: 29.61px 5px 21.39px;
-  overflow: auto;
+  overflow: hidden;
   text-align: center;
   background-color: var(--white);
   border-radius: 5px;
 }
 
 .category {
+  position: relative;
+  z-index: 10;
   width: fit-content;
   height: 29px;
   margin: 0 auto;
@@ -31,13 +33,27 @@
 }
 
 .categoryText::first-letter {
-  text-transform: capitalize; 
+  text-transform: capitalize;
 }
 
 .promptText {
-  max-height: 22px;
+  height: 165px;
   margin: 0;
   color: var(--dark-grey);
   font-weight: 700;
   font-size: 18px;
+}
+
+.scroll {
+  animation: scroll 0.5s linear infinite;
+}
+
+@keyframes scroll {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(-100%);
+  }
 }
