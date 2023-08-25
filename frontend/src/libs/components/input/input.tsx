@@ -5,8 +5,10 @@ import {
   type FieldValues,
 } from 'react-hook-form';
 
+import { InputType } from '~/libs/enums/input-type.enum';
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
 import { useFormController } from '~/libs/hooks/hooks.js';
+import { type ValueOf } from '~/libs/types/types.js';
 
 import styles from './styles.module.scss';
 
@@ -16,7 +18,7 @@ type Properties<T extends FieldValues> = {
   label: string;
   name: FieldPath<T>;
   placeholder?: string;
-  type?: 'text' | 'email' | 'password';
+  type?: ValueOf<typeof InputType>;
   className?: string;
   labelClassName?: string;
 };
@@ -27,7 +29,7 @@ const Input = <T extends FieldValues>({
   label,
   name,
   placeholder = '',
-  type = 'text',
+  type = InputType.TEXT,
   className,
   labelClassName,
 }: Properties<T>): JSX.Element => {
