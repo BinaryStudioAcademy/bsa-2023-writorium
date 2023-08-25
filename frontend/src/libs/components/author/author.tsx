@@ -7,7 +7,7 @@ type Properties = {
   name?: string;
   followers?: number;
   rating?: number;
-  date?: string;
+  publishedAt?: string;
   readingTime?: string;
   genre?: string;
 };
@@ -16,7 +16,7 @@ const Author: FC<Properties> = ({
   name = 'Charlie Culhane',
   followers = 10,
   rating = 700,
-  date = 'May 28',
+  publishedAt = '2023-04-22',
   readingTime = '7 min',
   genre = 'Fiction',
 }) => {
@@ -47,7 +47,7 @@ const Author: FC<Properties> = ({
           <Icon iconName="notes" />
           <ul className={styles.articleInfoList}>
             <li className={styles.articleInfoItem}>
-              <span>{date}</span>
+              <span>{publishedAt}</span>
             </li>
             <li className={styles.articleInfoItem}>
               <span className={styles.articleTimeValue}>{readingTime}</span>
