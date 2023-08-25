@@ -78,7 +78,7 @@ class FileController extends Controller {
       status: HttpCode.OK,
       payload: await this.fileService.upload(
         fileToUpload.buffer,
-        fileToUpload.extenstion,
+        fileToUpload.extension,
       ),
     };
   }

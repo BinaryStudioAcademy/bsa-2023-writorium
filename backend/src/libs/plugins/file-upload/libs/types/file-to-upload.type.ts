@@ -1,6 +1,6 @@
 type FileToUpload = {
   buffer: Buffer;
-  extenstion: string;
+  extension: string;
 };
 
 export { type FileToUpload };

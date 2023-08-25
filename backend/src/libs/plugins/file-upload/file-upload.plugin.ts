@@ -62,7 +62,7 @@ const fileUploadPlugin = fp(
 
         request.fileToUpload = {
           buffer: fileBuffer,
-          extenstion: getFileExtensionFromFileName(data.filename),
+          extension: getFileExtensionFromFileName(data.filename),
         };
       },
     );
