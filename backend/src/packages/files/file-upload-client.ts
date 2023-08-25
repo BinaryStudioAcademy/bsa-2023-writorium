@@ -28,7 +28,7 @@ class FileUploadClient implements IFileUploadClient {
   }
 
   private generateFileKey(extension: string): string {
-    return 'file_' + Date.now().toString() + extension;
+    return `file_${Date.now().toString()}${extension}`;
   }
 
   public async upload(fileBuffer: Buffer, extension: string): Promise<string> {
