@@ -1,4 +1,4 @@
-@import url("../../../assets/css/styles.scss");
+@import "src/assets/css/styles.scss";
 
 .modal {
   display: flex;
@@ -30,31 +30,31 @@
   cursor: pointer;
 }
 
-@media only screen and (width < 768px) {
+@media only screen and (max-width: $medium) {
   .content {
     width: 95%;
   }
 }
 
-@media only screen and (width >= 768px) {
+@media only screen and (min-width: $medium) and (max-width: $large) {
   .content {
     width: 88%;
   }
 }
 
-@media only screen and (width >= 992px) {
+@media only screen and (min-width: $large) and (max-width: $extra-large) {
   .content {
     width: 850px;
   }
 }
 
-@media only screen and (width >= 1200px) {
+@media only screen and (min-width: $extra-large) and (max-width: $extra-extra-large) {
   .content {
     width: 900px;
   }
 }
 
-@media only screen and (width >= 1920px) {
+@media only screen and (min-width: $extra-extra-large) {
   .content {
     width: 950px;
   }
