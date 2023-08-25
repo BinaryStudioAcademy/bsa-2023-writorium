@@ -1,4 +1,5 @@
 export { App } from './app/app.js';
+export { ArticleForm } from './article-form/article-form.js';
 export { Button } from './button/button.js';
 export { Header } from './header/header.js';
 export { Icon } from './icon/icon.js';
@@ -7,5 +8,6 @@ export { Link } from './link/link.js';
 export { Notification } from './notification/notification.js';
 export { ProtectedRoute } from './protected-route/protected-route.jsx';
 export { RouterProvider } from './router-provider/router-provider.jsx';
+export { Textarea } from './textarea/textarea.js';
 export { Provider as StoreProvider } from 'react-redux';
 export { Navigate, Outlet as RouterOutlet } from 'react-router-dom';

@@ -1,0 +1,53 @@
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.titleInput,
+.postContentTextarea {
+  width: 100%;
+  max-width: 830px;
+  font-family: Lato, sans-serif;
+  line-height: 17px;
+  background-color: var(--white-smoke);
+  border: none;
+  border-radius: 5px;
+}
+
+.titleInput {
+  height: 85px;
+  padding: 0 20px 20px;
+}
+
+.postContentTextarea {
+  height: 360px;
+  padding: 60px 20px;
+}
+
+.buttonWrapper {
+  display: flex;
+  gap: 20px;
+  height: 45px;
+  color: var(--dark-green);
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 19px;
+  border-radius: 5px;
+}
+
+.cancelBtn,
+.saveDraftBtn,
+.publishBtn {
+  width: 100%;
+  max-width: 160px;
+  font-family: Lato, sans-serif;
+  background-color: var(--light-grey);
+  border: 2px solid var(--dark-green);
+}
+
+.publishBtn {
+  color: var(--white);
+  background-color: var(--dark-green);
+  border: 1px solid var(--dark-blue);
+}

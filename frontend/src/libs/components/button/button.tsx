@@ -7,15 +7,21 @@ import styles from './styles.module.scss';
 type Properties = {
   label: string;
   type?: ValueOf<typeof ButtonType>;
+  name?: string;
   className?: string;
 };
 
 const Button: React.FC<Properties> = ({
   type = ButtonType.BUTTON,
   label,
+  name = '',
   className = '',
 }) => (
-  <button type={type} className={getValidClassNames(styles.button, className)}>
+  <button
+    type={type}
+    name={name}
+    className={getValidClassNames(styles.button, className)}
+  >
     {label}
   </button>
 );

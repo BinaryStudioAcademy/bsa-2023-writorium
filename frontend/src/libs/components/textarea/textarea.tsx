@@ -11,21 +11,17 @@ import { useFormController } from '~/libs/hooks/hooks.js';
 type Properties<T extends FieldValues> = {
   control: Control<T, null>;
   errors: FieldErrors<T>;
-  label?: string;
   name: FieldPath<T>;
-  placeholder?: string;
-  type?: 'text' | 'email';
+  placeholder: string;
   className?: string;
 };
 
-const Input = <T extends FieldValues>({
+const Textarea = <T extends FieldValues>({
   control,
   errors,
-  label,
-  name,
-  placeholder = '',
-  type = 'text',
+  placeholder,
   className,
+  name,
 }: Properties<T>): JSX.Element => {
   const { field } = useFormController({ name, control });
 
@@ -34,10 +30,8 @@ const Input = <T extends FieldValues>({
 
   return (
     <label>
-      <span>{label}</span>
-      <input
+      <textarea
         {...field}
-        type={type}
         placeholder={placeholder}
         className={getValidClassNames(className)}
       />
@@ -46,4 +40,4 @@ const Input = <T extends FieldValues>({
   );
 };
 
-export { Input };
+export { Textarea };
