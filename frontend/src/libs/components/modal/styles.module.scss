@@ -1,4 +1,4 @@
-@import "src/assets/css/styles.scss";
+@use "src/assets/css/breakpoints.scss";
 
 .modal {
   display: flex;
@@ -30,31 +30,31 @@
   cursor: pointer;
 }
 
-@media only screen and (max-width: $medium) {
+@media only screen and (max-width: breakpoints.$medium) {
   .content {
     width: 95%;
   }
 }
 
-@media only screen and (min-width: $medium) and (max-width: $large) {
+@media only screen and (min-width: breakpoints.$medium) and (max-width: breakpoints.$large) {
   .content {
     width: 88%;
   }
 }
 
-@media only screen and (min-width: $large) and (max-width: $extra-large) {
+@media only screen and (min-width: breakpoints.$large) and (max-width: breakpoints.$extra-large) {
   .content {
     width: 850px;
   }
 }
 
-@media only screen and (min-width: $extra-large) and (max-width: $extra-extra-large) {
+@media only screen and (min-width: breakpoints.$extra-large) and (max-width: breakpoints.$extra-extra-large) {
   .content {
     width: 900px;
   }
 }
 
-@media only screen and (min-width: $extra-extra-large) {
+@media only screen and (min-width: breakpoints.$extra-extra-large) {
   .content {
     width: 950px;
   }
