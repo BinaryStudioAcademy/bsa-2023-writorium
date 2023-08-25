@@ -3,8 +3,8 @@ import { HttpApi } from '~/libs/packages/api/api.js';
 import { type IHttp } from '~/libs/packages/http/http.js';
 import { type IStorage } from '~/libs/packages/storage/storage.js';
 import {
-  type UserAuthResponseDto,
   type UserSignInRequestDto,
+  type UserSignInResponseDto,
   type UserSignUpRequestDto,
   type UserSignUpResponseDto,
 } from '~/packages/users/users.js';
@@ -40,7 +40,7 @@ class AuthApi extends HttpApi {
 
   public async signIn(
     payload: UserSignInRequestDto,
-  ): Promise<UserAuthResponseDto> {
+  ): Promise<UserSignInResponseDto> {
     const response = await this.load(
       this.getFullEndpoint(AuthApiPath.SIGN_IN, {}),
       {
@@ -51,7 +51,7 @@ class AuthApi extends HttpApi {
       },
     );
 
-    return await response.json<UserAuthResponseDto>();
+    return await response.json<UserSignInResponseDto>();
   }
 }
 

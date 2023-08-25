@@ -24,11 +24,16 @@ const { reducer, actions, name } = createSlice({
     builder.addMatcher(isAnyOf(signUp.pending, signIn.pending), (state) => {
       state.dataStatus = DataStatus.PENDING;
     });
-    builder.addMatcher(isAnyOf(signUp.fulfilled, signIn.fulfilled), (state) => {
-      state.dataStatus = DataStatus.FULFILLED;
-    });
+    builder.addMatcher(
+      isAnyOf(signUp.fulfilled, signIn.fulfilled),
+      (state, action) => {
+        state.dataStatus = DataStatus.FULFILLED;
+        state.user = action.payload;
+      },
+    );
     builder.addMatcher(isAnyOf(signUp.rejected, signIn.rejected), (state) => {
       state.dataStatus = DataStatus.REJECTED;
+      state.user = null;
     });
   },
 });
