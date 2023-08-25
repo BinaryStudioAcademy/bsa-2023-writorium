@@ -5,7 +5,12 @@ import {
   type FieldValues,
 } from 'react-hook-form';
 
+import { InputType } from '~/libs/enums/input-type.enum';
+import { getValidClassNames } from '~/libs/helpers/helpers.js';
 import { useFormController } from '~/libs/hooks/hooks.js';
+import { type ValueOf } from '~/libs/types/types.js';
+
+import styles from './styles.module.scss';
 
 type Properties<T extends FieldValues> = {
   control: Control<T, null>;
@@ -13,7 +18,9 @@ type Properties<T extends FieldValues> = {
   label: string;
   name: FieldPath<T>;
   placeholder?: string;
-  type?: 'text' | 'email';
+  type?: ValueOf<typeof InputType>;
+  className?: string;
+  labelClassName?: string;
 };
 
 const Input = <T extends FieldValues>({
@@ -22,7 +29,9 @@ const Input = <T extends FieldValues>({
   label,
   name,
   placeholder = '',
-  type = 'text',
+  type = InputType.TEXT,
+  className,
+  labelClassName,
 }: Properties<T>): JSX.Element => {
   const { field } = useFormController({ name, control });
 
@@ -31,9 +40,24 @@ const Input = <T extends FieldValues>({
 
   return (
     <label>
-      <span>{label}</span>
-      <input {...field} type={type} placeholder={placeholder} />
-      {hasError && <span>{error as string}</span>}
+      <span className={getValidClassNames(styles.text, labelClassName)}>
+        {label}
+      </span>
+      <input
+        className={getValidClassNames(
+          styles.input,
+          hasError && styles.error,
+          className,
+        )}
+        {...field}
+        type={type}
+        placeholder={placeholder}
+      />
+      {hasError && (
+        <span className={getValidClassNames(styles.text)}>
+          {error as string}
+        </span>
+      )}
     </label>
   );
 };
