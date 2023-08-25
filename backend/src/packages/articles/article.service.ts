@@ -18,16 +18,12 @@ class ArticleService implements IService {
     this.articleRepository = articleRepository;
   }
 
-  public find(): Promise<unknown> {
-    return Promise.resolve();
-  }
-
   public findAll(): Promise<{ items: unknown[] }> {
     return Promise.resolve({ items: [] });
   }
 
-  public async findById(id: number): Promise<ArticleGetItemResponseDto | null> {
-    const article = await this.articleRepository.findById(id);
+  public async find(id: number): Promise<ArticleGetItemResponseDto | null> {
+    const article = await this.articleRepository.find(id);
 
     if (!article) {
       return null;
@@ -57,7 +53,7 @@ class ArticleService implements IService {
     id: number,
     payload: ArticleUpdateRequestDto,
   ): Promise<ArticleUpdateResponseDto> {
-    const article = await this.findById(id);
+    const article = await this.find(id);
 
     if (!article) {
       throw new ApplicationError({
