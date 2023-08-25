@@ -21,7 +21,7 @@ class FileUploadClient implements IFileUploadClient {
     });
   }
 
-  public getFileUrl(key: string): string {
+  private getFileUrl(key: string): string {
     const { AWS } = this.config.ENV;
 
     return `https://${AWS.AWS_BUCKET_NAME}.s3.${AWS.AWS_REGION}.amazonaws.com/${key}`;
