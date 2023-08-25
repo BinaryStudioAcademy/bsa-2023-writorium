@@ -13,6 +13,7 @@ import { store } from '~/libs/packages/store/store.js';
 import { Article } from '~/pages/article/article.js';
 import { Auth } from '~/pages/auth/auth.js';
 import { Landing } from '~/pages/landing/landing.js';
+import { Profile } from '~/pages/profile/profile.js';
 
 createRoot(document.querySelector('#root') as HTMLElement).render(
   <StrictMode>
@@ -34,6 +35,10 @@ createRoot(document.querySelector('#root') as HTMLElement).render(
               {
                 path: AppRoute.SIGN_UP,
                 element: <Auth />,
+              },
+              {
+                path: AppRoute.PROFILE,
+                element: <Profile />,
               },
               {
                 path: AppRoute.ARTICLE,
