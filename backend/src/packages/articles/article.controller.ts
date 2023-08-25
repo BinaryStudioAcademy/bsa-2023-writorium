@@ -19,8 +19,6 @@ import {
   articleUpdateValidationSchema,
 } from './libs/validation-schemas/validation-schemas.js';
 
-const MOCK_USER_ID = 1; // substitute here the id of an existing user in the database
-
 class ArticleController extends Controller {
   private articleService: ArticleService;
 
@@ -62,17 +60,14 @@ class ArticleController extends Controller {
 
   private async create(
     options: ApiHandlerOptions<{
-      user: UserAuthResponseDto /** @todo uncomment when authorizationPlugin will be ready */;
+      user: UserAuthResponseDto;
       body: ArticleCreateRequestDto;
     }>,
   ): Promise<ApiHandlerResponse> {
     return {
       status: HttpCode.CREATED,
       payload: await this.articleService.create({
-        /** @todo replace with real implementation */
-        /** @todo uncomment when authorizationPlugin will be ready */
-        // userId: options.user.id
-        userId: MOCK_USER_ID,
+        userId: options.user.id,
         ...options.body,
       }),
     };
