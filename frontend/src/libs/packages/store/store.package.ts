@@ -1,19 +1,19 @@
 import {
   type AnyAction,
+  configureStore,
   type MiddlewareArray,
   type ThunkMiddleware,
 } from '@reduxjs/toolkit';
-import { configureStore } from '@reduxjs/toolkit';
 
 import { AppEnvironment } from '~/libs/enums/enums.js';
 import { type IConfig } from '~/libs/packages/config/config.js';
+import { storage } from '~/libs/packages/storage/storage.js';
 import { authApi } from '~/packages/auth/auth.js';
 import { notification } from '~/packages/notification/notification.js';
 import { userApi } from '~/packages/users/users.js';
 import { reducer as authReducer } from '~/slices/auth/auth.js';
 import { reducer as usersReducer } from '~/slices/users/users.js';
 
-import { storage } from '../storage/storage.js';
 import { notificationMiddleware } from './middlewares/notification-middleware.js';
 
 type RootReducer = {
