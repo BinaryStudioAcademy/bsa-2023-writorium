@@ -1,5 +1,5 @@
 type SelectOption = {
-  value: string;
+  value: string | number;
   label: string;
 };
 
