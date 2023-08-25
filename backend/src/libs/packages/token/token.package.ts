@@ -13,19 +13,19 @@ class Token {
     this.expirationTime = config.AUTH.EXPIRES_IN;
   }
 
-  public create(payload: { id: number }): Promise<string> {
+  public create<T extends Record<string, unknown>>(
+    payload: T,
+  ): Promise<string> {
     return new SignJWT(payload)
       .setProtectedHeader({ alg: this.algorithm })
       .setExpirationTime(this.expirationTime)
       .sign(this.secret);
   }
 
-  public async verifyToken(
-    token: string,
-  ): Promise<JWTPayload & { id: number }> {
+  public async verifyToken<T>(token: string): Promise<JWTPayload & T> {
     const { payload } = await jwtVerify(token, this.secret);
 
-    return payload as JWTPayload & { id: number };
+    return payload as JWTPayload & T;
   }
 }
 

@@ -25,7 +25,9 @@ class AuthService {
     if (!user) {
       throw new UserNotFoundError();
     }
-    const token = await accessToken.create({ id: user.id });
+    const token = await accessToken.create<{ userId: number }>({
+      userId: user.id,
+    });
 
     return { user, token };
   }
@@ -34,7 +36,9 @@ class AuthService {
     userRequestDto: UserSignUpRequestDto,
   ): Promise<UserSignUpResponseDto> {
     const user = await this.userService.create(userRequestDto);
-    const token = await accessToken.create({ id: user.id });
+    const token = await accessToken.create<{ userId: number }>({
+      userId: user.id,
+    });
 
     return { user, token };
   }
