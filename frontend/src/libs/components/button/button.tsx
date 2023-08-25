@@ -1,19 +1,22 @@
+import { ButtonType } from '~/libs/enums/enums.js';
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
+import { type ValueOf } from '~/libs/types/types.js';
 
 import styles from './styles.module.scss';
 
 type Properties = {
   label: string;
-  type?: 'button' | 'submit';
+  type?: ValueOf<typeof ButtonType>;
   className?: string;
 };
 
 const Button: React.FC<Properties> = ({
-  type = 'button',
+ 
+  type = ButtonType.BUTTON,
   label,
-  className,
+  className = '',
 }) => (
-  <button className={getValidClassNames(styles.button, className)} type={type}>
+  <button type={type} className={getValidClassNames(styles.button, className)}>
     {label}
   </button>
 );
