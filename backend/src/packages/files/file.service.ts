@@ -18,8 +18,14 @@ class FileService implements IService {
     this.fileUploadClient = fileUploadClient;
   }
 
-  public async upload(fileBuffer: Buffer): Promise<FileUploadResponseDto> {
-    const uploadedFileUrl = await this.fileUploadClient.upload(fileBuffer);
+  public async upload(
+    fileBuffer: Buffer,
+    extension: string,
+  ): Promise<FileUploadResponseDto> {
+    const uploadedFileUrl = await this.fileUploadClient.upload(
+      fileBuffer,
+      extension,
+    );
 
     const fileEntity = await this.fileRepository.create(
       FileEntity.initializeNew({ url: uploadedFileUrl }),

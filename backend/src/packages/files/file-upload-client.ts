@@ -1,6 +1,4 @@
-import crypto from 'node:crypto';
-
-import { S3Client } from '@aws-sdk/client-s3';
+import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 
 import { type IConfig } from '~/libs/packages/config/config.js';
 import { type IFileUploadClient } from '~/libs/packages/file/file.package.js';
@@ -23,20 +21,30 @@ class FileUploadClient implements IFileUploadClient {
     });
   }
 
-  public async upload(fileBuffer: Buffer): Promise<string> {
-    // const { AWS } = this.config.ENV;
+  public getFileUrl(key: string): string {
+    const { AWS } = this.config.ENV;
 
-    // const fileName = crypto.randomUUID();
+    return `https://${AWS.AWS_BUCKET_NAME}.s3.${AWS.AWS_REGION}.amazonaws.com/${key}`;
+  }
 
-    // const command = new PutObjectCommand({
-    //   Bucket: AWS.AWS_BUCKET_NAME,
-    //   Key: fileName,
-    //   Body: fileBuffer,
-    // });
+  private generateFileKey(extension: string): string {
+    return 'file_' + Date.now().toString() + extension;
+  }
 
-    // await this.s3Client.send(command);
+  public async upload(fileBuffer: Buffer, extension: string): Promise<string> {
+    const { AWS } = this.config.ENV;
 
-    return await Promise.resolve(crypto.randomUUID() + fileBuffer.byteLength);
+    const fileKey = this.generateFileKey(extension);
+
+    const putObjectCommand = new PutObjectCommand({
+      Bucket: AWS.AWS_BUCKET_NAME,
+      Key: fileKey,
+      Body: fileBuffer,
+    });
+
+    await this.s3Client.send(putObjectCommand);
+
+    return this.getFileUrl(fileKey);
   }
 }
 

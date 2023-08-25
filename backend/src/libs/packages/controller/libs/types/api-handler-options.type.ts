@@ -1,8 +1,10 @@
+import { type FileToUpload } from '~/libs/plugins/file-upload/libs/types/types.js';
+
 type DefaultApiHandlerOptions = {
   body?: unknown;
   query?: unknown;
   params?: unknown;
-  fileBuffer?: Buffer | null;
+  fileToUpload?: FileToUpload | null;
 };
 
 type ApiHandlerOptions<
@@ -11,7 +13,7 @@ type ApiHandlerOptions<
   body: T['body'];
   query: T['query'];
   params: T['params'];
-  fileBuffer: T['fileBuffer'];
+  fileToUpload: T['fileToUpload'];
 };
 
 export { type ApiHandlerOptions };

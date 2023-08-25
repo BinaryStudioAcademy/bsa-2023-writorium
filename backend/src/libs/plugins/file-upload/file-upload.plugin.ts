@@ -8,12 +8,16 @@ import {
   UnsupportedFileTypeError,
 } from '~/libs/packages/exceptions/exceptions.js';
 import { type FileType } from '~/libs/packages/file/file.package.js';
+import { getFileExtensionFromFileName } from '~/libs/packages/file/libs/helpers/helpers.js';
 import { type ValueOf } from '~/libs/types/types.js';
+
+import { FileUploadDecoratedPropety } from './libs/enums/enums.js';
+import { type FileToUpload } from './libs/types/types.js';
 
 // @todo: move to index.d.ts
 declare module 'fastify' {
   interface FastifyRequest {
-    fileBuffer: Buffer | null;
+    [FileUploadDecoratedPropety.FILE_TO_UPLOAD]: FileToUpload | null;
   }
 }
 
@@ -23,7 +27,7 @@ type FileUploadPluginOptions = {
 
 const fileUploadPlugin = fp(
   (fastify, options: FileUploadPluginOptions, done) => {
-    fastify.decorateRequest('fileBuffer', null);
+    fastify.decorateRequest(FileUploadDecoratedPropety.FILE_TO_UPLOAD, null);
 
     fastify.addHook(
       'preValidation',
@@ -56,7 +60,10 @@ const fileUploadPlugin = fp(
 
         const fileBuffer = await data.toBuffer();
 
-        request.fileBuffer = fileBuffer;
+        request.fileToUpload = {
+          buffer: fileBuffer,
+          extenstion: getFileExtensionFromFileName(data.filename),
+        };
       },
     );
 

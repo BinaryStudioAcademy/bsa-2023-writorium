@@ -6,6 +6,7 @@ import {
 import { Controller } from '~/libs/packages/controller/controller.js';
 import { HttpCode } from '~/libs/packages/http/http.js';
 import { type ILogger } from '~/libs/packages/logger/logger.js';
+import { type FileToUpload } from '~/libs/plugins/file-upload/libs/types/types.js';
 
 import { type FileService } from './file.service.js';
 import { FilesApiPath } from './libs/enums/enums.js';
@@ -36,7 +37,11 @@ class FileController extends Controller {
       path: FilesApiPath.ROOT,
       method: 'POST',
       handler: (options) =>
-        this.upload(options as ApiHandlerOptions<{ fileBuffer: Buffer }>),
+        this.upload(
+          options as ApiHandlerOptions<{
+            fileToUpload: FileToUpload;
+          }>,
+        ),
     });
   }
 
@@ -65,11 +70,16 @@ class FileController extends Controller {
    *              $ref: '#/components/schemas/File'
    */
   private async upload({
-    fileBuffer,
-  }: ApiHandlerOptions<{ fileBuffer: Buffer }>): Promise<ApiHandlerResponse> {
+    fileToUpload,
+  }: ApiHandlerOptions<{
+    fileToUpload: FileToUpload;
+  }>): Promise<ApiHandlerResponse> {
     return {
       status: HttpCode.OK,
-      payload: await this.fileService.upload(fileBuffer),
+      payload: await this.fileService.upload(
+        fileToUpload.buffer,
+        fileToUpload.extenstion,
+      ),
     };
   }
 }
