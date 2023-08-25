@@ -52,9 +52,16 @@ const authorization = fp(
       }
 
       const { userService } = services;
-      const { userId } = await token.verifyToken<{ userId: number }>(
+      const { userId } = await token.verifyToken<{ userId?: number }>(
         requestToken,
       );
+
+      if (!userId) {
+        throw new HttpError({
+          status: HttpCode.UNAUTHORIZED,
+          message: 'Invalid token.',
+        });
+      }
 
       const authorizedUser = await userService.find(userId);
 
