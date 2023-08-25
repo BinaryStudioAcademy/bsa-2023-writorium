@@ -7,7 +7,7 @@ const IndicatorSeparator = (): null => null;
 const DropdownIndicator: typeof components.DropdownIndicator = (properties) => {
   return (
     <components.DropdownIndicator {...properties}>
-      <Icon iconName="arrow" />
+      <Icon iconName="arrowDown" />
     </components.DropdownIndicator>
   );
 };
