@@ -1,0 +1,70 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 327px;
+  margin: auto;
+}
+
+.title {
+  align-self: flex-start;
+  margin: 0 0 44px;
+  color: var(--light-green);
+  font-size: 24px;
+  font-family: "Libre Baskerville", sans-serif;
+}
+
+.form {
+  width: 100%;
+  margin-bottom: 18px;
+}
+
+.submitButton {
+  width: 100%;
+  height: 45px;
+  color: var(--white);
+  background: var(--dark-green);
+  border-radius: 7px;
+}
+
+.passwordToggle {
+  display: contents;
+}
+
+.fieldset {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 0 0 18px;
+  padding: 0;
+  border: none;
+}
+
+.passwordInputWrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.icon {
+  position: absolute;
+  top: 40px;
+  right: 20px;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.message {
+  margin-right: 5px;
+  color: var(--dark-blue-70);
+  font-size: 16px;
+  font-family: Lato, sans-serif;
+  opacity: 0.7;
+}
+
+.link {
+  color: var(--light-green);
+  font-size: 16px;
+  font-family: Lato, sans-serif;
+}

@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, isAnyOf } from '@reduxjs/toolkit';
 
 import { DataStatus } from '~/libs/enums/enums.js';
 import { type ValueOf } from '~/libs/types/types.js';
@@ -21,25 +21,19 @@ const { reducer, actions, name } = createSlice({
   name: 'auth',
   reducers: {},
   extraReducers(builder) {
-    builder.addCase(signUp.pending, (state) => {
+    builder.addMatcher(isAnyOf(signUp.pending, signIn.pending), (state) => {
       state.dataStatus = DataStatus.PENDING;
     });
-    builder.addCase(signUp.fulfilled, (state, action) => {
-      state.dataStatus = DataStatus.FULFILLED;
-      state.user = action.payload;
-    });
-    builder.addCase(signUp.rejected, (state) => {
+    builder.addMatcher(
+      isAnyOf(signUp.fulfilled, signIn.fulfilled),
+      (state, action) => {
+        state.dataStatus = DataStatus.FULFILLED;
+        state.user = action.payload;
+      },
+    );
+    builder.addMatcher(isAnyOf(signUp.rejected, signIn.rejected), (state) => {
       state.dataStatus = DataStatus.REJECTED;
-    });
-    builder.addCase(signIn.pending, (state) => {
-      state.dataStatus = DataStatus.PENDING;
-    });
-    builder.addCase(signIn.fulfilled, (state, action) => {
-      state.dataStatus = DataStatus.FULFILLED;
-      state.user = action.payload;
-    });
-    builder.addCase(signIn.rejected, (state) => {
-      state.dataStatus = DataStatus.REJECTED;
+      state.user = null;
     });
   },
 });
