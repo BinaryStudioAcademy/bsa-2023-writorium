@@ -1,8 +1,8 @@
 import ArticlePreview from '~/assets/img/article-preview.png';
+import { Avatar } from '~/libs/components/avatar/avatar.js';
+import { Icon, Link } from '~/libs/components/components.js';
 import { AppRoute } from '~/libs/enums/app-route.enum.js';
 
-import { Avatar } from '../avatar/avatar.js';
-import { Icon, Link } from '../components.js';
 import styles from './styles.module.scss';
 
 const ArticleCard: React.FC = () => (
