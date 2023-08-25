@@ -5,7 +5,7 @@
 .prompt {
   height: 73px;
   padding: 29.61px 5px 21.39px;
-  overflow: hidden;
+  overflow: auto;
   text-align: center;
   background-color: var(--white);
   border-radius: 5px;
@@ -37,23 +37,9 @@
 }
 
 .promptText {
-  height: 165px;
+  max-height: 22px;
   margin: 0;
   color: var(--dark-grey);
   font-weight: 700;
   font-size: 18px;
-}
-
-.scroll {
-  animation: scroll 0.5s linear infinite;
-}
-
-@keyframes scroll {
-  from {
-    transform: translateY(0);
-  }
-
-  to {
-    transform: translateY(-100%);
-  }
 }

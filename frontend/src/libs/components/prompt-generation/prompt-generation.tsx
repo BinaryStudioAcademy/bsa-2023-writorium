@@ -4,10 +4,22 @@ import { useCallback, useState } from '~/libs/hooks/hooks.js';
 
 import { PromptCard } from './libs/components/components.js';
 import { PromptCategory } from './libs/enums/enums.js';
+import { categoryPrompts } from './libs/mocks/mocks.js';
 import styles from './styles.module.scss';
+
+const { CHARACTER, SITUATION, SETTING, PROP, GENRE } = PromptCategory;
+
+const defaultPrompt = {
+  [CHARACTER]: 'Girl',
+  [SITUATION]: 'Street',
+  [SETTING]: '',
+  [PROP]: 'Red hair',
+  [GENRE]: 'Fiction',
+};
 
 const PromptGeneration: React.FC = () => {
   const [isSpinning, setIsSpinning] = useState(false);
+  const [generatedPrompt, setGeneratedPrompt] = useState(defaultPrompt);
 
   const promptCategories = Object.values(PromptCategory);
 
@@ -15,9 +27,18 @@ const PromptGeneration: React.FC = () => {
     setIsSpinning(true);
 
     setTimeout(() => {
+      setGeneratedPrompt((previousGeneratedPrompt) => {
+        const updatedGeneratedPrompt = { ...previousGeneratedPrompt };
+        for (const category of promptCategories) {
+          const prompts = categoryPrompts[category];
+          const randomIndex = Math.floor(Math.random() * prompts.length);
+          updatedGeneratedPrompt[category] = prompts[randomIndex];
+        }
+        return updatedGeneratedPrompt;
+      });
       setIsSpinning(false);
     }, 3000);
-  }, []);
+  }, [promptCategories]);
 
   return (
     <div className={styles.container}>
@@ -27,14 +48,14 @@ const PromptGeneration: React.FC = () => {
           <PromptCard
             key={category}
             category={category}
-            isSpinning={isSpinning}
+            text={generatedPrompt[category]}
           />
         ))}
         <Button
           className={styles.shuffleButton}
           label={
             <Icon
-              iconName={'refresh'}
+              iconName="refresh"
               className={getValidClassNames(isSpinning && styles.spin)}
             />
           }
