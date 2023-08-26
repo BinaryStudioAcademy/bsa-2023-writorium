@@ -23,29 +23,29 @@ const PromptGeneration: React.FC = () => {
 
   const promptCategories = Object.values(PromptCategory);
 
-  const handleButtonClick = useCallback((): void => {
-    setIsSpinning(true);
-
-    setTimeout(() => {
-      setGeneratedPrompt((previousGeneratedPrompt) => {
-        const updatedGeneratedPrompt = { ...previousGeneratedPrompt };
-        for (const category of promptCategories) {
-          const prompts = categoryPrompts[category];
-          const randomIndex = Math.floor(Math.random() * prompts.length);
-          updatedGeneratedPrompt[category] = prompts[randomIndex];
-        }
-        return updatedGeneratedPrompt;
-      });
-      setIsSpinning(false);
-    }, 3000);
-  }, [promptCategories]);
-
   useEffect(() => {
-    const timerId = setTimeout(() => {}, 3000);
+    if (isSpinning) {
+      const timerId = setTimeout(() => {
+        setGeneratedPrompt((previousGeneratedPrompt) => {
+          const updatedGeneratedPrompt = { ...previousGeneratedPrompt };
+          for (const category of promptCategories) {
+            const prompts = categoryPrompts[category];
+            const randomIndex = Math.floor(Math.random() * prompts.length);
+            updatedGeneratedPrompt[category] = prompts[randomIndex];
+          }
+          return updatedGeneratedPrompt;
+        });
+        setIsSpinning(false);
+      }, 3000);
 
-    return () => {
-      clearTimeout(timerId);
-    };
+      return () => {
+        clearTimeout(timerId);
+      };
+    }
+  }, [isSpinning, promptCategories]);
+
+  const handleButtonClick = useCallback(() => {
+    setIsSpinning(true);
   }, []);
 
   return (
