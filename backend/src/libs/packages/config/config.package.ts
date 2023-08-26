@@ -65,7 +65,7 @@ class Config implements IConfig {
         CONNECTION_STRING: {
           doc: 'Database connection string',
           format: String,
-          env: 'DB_CONNECTION_STRING',
+          env: 'DATABASE_URL',
           default: null,
         },
         DIALECT: {
