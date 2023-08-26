@@ -1,6 +1,7 @@
 {
   "extends": "../tsconfig.json",
   "include": ["src", "knexfile.ts"],
+  "files": ["src/index.d.ts"],
   "exclude": ["node_modules"],
   "compilerOptions": {
     "target": "ESNext",

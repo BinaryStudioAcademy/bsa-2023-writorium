@@ -12,14 +12,6 @@ import { getFileExtensionFromFileName } from '~/libs/packages/file/libs/helpers/
 import { type ValueOf } from '~/libs/types/types.js';
 
 import { FileUploadDecoratedPropety } from './libs/enums/enums.js';
-import { type FileToUpload } from './libs/types/types.js';
-
-// @todo: move to index.d.ts
-declare module 'fastify' {
-  interface FastifyRequest {
-    [FileUploadDecoratedPropety.FILE_TO_UPLOAD]: FileToUpload | null;
-  }
-}
 
 type FileUploadPluginOptions = {
   supportedFileTypes?: ValueOf<typeof FileType>[];
