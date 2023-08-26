@@ -36,7 +36,7 @@ class Database implements IDatabase {
       client: this.appConfig.ENV.DB.DIALECT,
       connection: {
         connectString: this.appConfig.ENV.DB.CONNECTION_STRING,
-        ssl: { rejectUnauthorized: false },
+        ssl: false,
       },
       pool: {
         min: this.appConfig.ENV.DB.POOL_MIN,
