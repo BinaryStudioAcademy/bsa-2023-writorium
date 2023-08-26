@@ -26,15 +26,12 @@ export {
   type WithNullableKeys,
 } from './libs/types/types.js';
 export {
+  type ArticleBaseResponseDto,
   type ArticleCreateDto,
-  type ArticleCreateRequestDto,
-  type ArticleCreateResponseDto,
   articleCreateValidationSchema,
   type ArticleEntityType,
-  type ArticleGetItemResponseDto,
+  type ArticleRequestDto,
   ArticlesApiPath,
-  type ArticleUpdateRequestDto,
-  type ArticleUpdateResponseDto,
   articleUpdateValidationSchema,
 } from './packages/articles/articles.js';
 export { AuthApiPath } from './packages/auth/auth.js';

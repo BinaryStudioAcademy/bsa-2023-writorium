@@ -10,10 +10,7 @@ import { type ArticleService } from '~/packages/articles/article.service.js';
 import { type UserAuthResponseDto } from '~/packages/users/users.js';
 
 import { ArticlesApiPath } from './libs/enums/enums.js';
-import {
-  type ArticleCreateRequestDto,
-  type ArticleUpdateRequestDto,
-} from './libs/types/types.js';
+import { type ArticleRequestDto } from './libs/types/types.js';
 import {
   articleCreateValidationSchema,
   articleUpdateValidationSchema,
@@ -37,14 +34,14 @@ class ArticleController extends Controller {
         this.create(
           options as ApiHandlerOptions<{
             user: UserAuthResponseDto;
-            body: ArticleCreateRequestDto;
+            body: ArticleRequestDto;
           }>,
         ),
     });
 
     this.addRoute({
       path: ArticlesApiPath.$ID,
-      method: 'PUT',
+      method: 'PATCH',
       validation: {
         body: articleUpdateValidationSchema,
       },
@@ -52,7 +49,7 @@ class ArticleController extends Controller {
         this.update(
           options as ApiHandlerOptions<{
             params: { id: number };
-            body: ArticleUpdateRequestDto;
+            body: Partial<ArticleRequestDto>;
           }>,
         ),
     });
@@ -61,7 +58,7 @@ class ArticleController extends Controller {
   private async create(
     options: ApiHandlerOptions<{
       user: UserAuthResponseDto;
-      body: ArticleCreateRequestDto;
+      body: ArticleRequestDto;
     }>,
   ): Promise<ApiHandlerResponse> {
     return {
@@ -76,7 +73,7 @@ class ArticleController extends Controller {
   private async update(
     options: ApiHandlerOptions<{
       params: { id: number };
-      body: ArticleUpdateRequestDto;
+      body: Partial<ArticleRequestDto>;
     }>,
   ): Promise<ApiHandlerResponse> {
     return {

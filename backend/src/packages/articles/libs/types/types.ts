@@ -1,9 +1,6 @@
 export {
+  type ArticleBaseResponseDto,
   type ArticleCreateDto,
-  type ArticleCreateRequestDto,
-  type ArticleCreateResponseDto,
   type ArticleEntityType,
-  type ArticleGetItemResponseDto,
-  type ArticleUpdateRequestDto,
-  type ArticleUpdateResponseDto,
+  type ArticleRequestDto,
 } from 'shared/build/index.js';

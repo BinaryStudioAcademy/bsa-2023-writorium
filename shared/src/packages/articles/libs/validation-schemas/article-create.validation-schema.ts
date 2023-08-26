@@ -4,9 +4,9 @@ import {
   ArticleValidationMessage,
   ArticleValidationRule,
 } from '~/packages/articles/libs/enums/enums.js';
-import { type ArticleCreateRequestDto } from '~/packages/articles/libs/types/types.js';
+import { type ArticleRequestDto } from '~/packages/articles/libs/types/types.js';
 
-const articleCreate = joi.object<ArticleCreateRequestDto, true>({
+const articleCreate = joi.object<ArticleRequestDto, true>({
   title: joi
     .string()
     .min(ArticleValidationRule.ARTICLE_TITLE_MIN_LENGTH)
