@@ -7,6 +7,7 @@ import { configureStore } from '@reduxjs/toolkit';
 
 import { AppEnvironment } from '~/libs/enums/enums.js';
 import { type IConfig } from '~/libs/packages/config/config.js';
+import { storage } from '~/libs/packages/storage/storage.js';
 import { authApi } from '~/packages/auth/auth.js';
 import { notification } from '~/packages/notification/notification.js';
 import { userApi } from '~/packages/users/users.js';
@@ -24,6 +25,7 @@ type ExtraArguments = {
   authApi: typeof authApi;
   userApi: typeof userApi;
   notification: typeof notification;
+  storage: typeof storage;
 };
 
 class Store {
@@ -62,6 +64,7 @@ class Store {
       authApi,
       userApi,
       notification,
+      storage,
     };
   }
 }
