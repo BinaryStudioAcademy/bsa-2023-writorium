@@ -3,7 +3,7 @@ type ArticleCreateRequestDto = {
   text: string;
   promptId?: number;
   genreId: number;
-  publishedAt?: string;
+  publishedAt: string | null;
 };
 
 export { type ArticleCreateRequestDto };

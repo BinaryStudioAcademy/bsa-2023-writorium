@@ -7,15 +7,8 @@ import {
 import { actions as articlesActions } from '~/slices/articles/articles.js';
 
 import { Button, Input, Textarea } from '../components.js';
+import { DEFAULT_ARTICLE_FORM_PAYLOAD } from './libs/constants.js';
 import styles from './styles.module.scss';
-
-const DEFAULT_ARTICLE_FORM_PAYLOAD: ArticleCreateRequestDto = {
-  title: '',
-  text: '',
-  genreId: 1,
-};
-// replace to src/pages/article/components/article-form/libs/constant.ts
-//when Article component will be implemented
 
 const ArticleForm: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -26,13 +19,12 @@ const ArticleForm: React.FC = () => {
     });
 
   const handleArticleSubmit = useCallback(
-    (buttonName: string) =>
+    (submitType: 'draft' | 'publish') =>
       (payload: ArticleCreateRequestDto): void => {
         const updatedPayload = {
           ...payload,
-          ...(buttonName === 'publish' && {
-            publishedAt: new Date().toISOString(),
-          }),
+          publishedAt:
+            submitType === 'publish' ? new Date().toISOString() : null,
         };
 
         void dispatch(articlesActions.createArticle(updatedPayload));
@@ -43,7 +35,9 @@ const ArticleForm: React.FC = () => {
   const handleFormSubmit = useCallback(
     (event_: React.BaseSyntheticEvent<SubmitEvent>): void => {
       const button = event_.nativeEvent.submitter as HTMLButtonElement;
-      void handleSubmit(handleArticleSubmit(button.name))(event_);
+      void handleSubmit(
+        handleArticleSubmit(button.name as 'draft' | 'publish'),
+      )(event_);
     },
     [handleSubmit, handleArticleSubmit],
   );
