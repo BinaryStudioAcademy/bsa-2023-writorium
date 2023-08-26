@@ -3,24 +3,8 @@ import { Avatar, Icon, Link, Tag } from '~/libs/components/components.js';
 import { AppRoute } from '~/libs/enums/enums.js';
 import { type UserSignUpResponseDto } from '~/packages/users/users.js';
 
+import { type ArticleType, type TagType } from './libs/types/types.js';
 import styles from './styles.module.scss';
-
-type TagType = {
-  id: number;
-  name: string;
-};
-
-type ArticleType = {
-  publishedAt: string;
-  timeSincePublication: string;
-  title: string;
-  text: string;
-  comments: string;
-  views: string;
-  likes: string;
-  dislikes: string;
-  tags: TagType[];
-};
 
 type Properties = {
   article: ArticleType;
