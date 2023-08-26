@@ -10,15 +10,11 @@ class ArticleRepository implements IRepository {
     this.articleModel = articleModel;
   }
 
-  public find(): Promise<unknown> {
-    return Promise.resolve();
-  }
-
   public findAll(): Promise<unknown[]> {
     return Promise.resolve([]);
   }
 
-  public async findById(id: number): Promise<ArticleEntity | null> {
+  public async find(id: number): Promise<ArticleEntity | null> {
     const article = await this.articleModel.query().findById(id).execute();
 
     if (!article) {
