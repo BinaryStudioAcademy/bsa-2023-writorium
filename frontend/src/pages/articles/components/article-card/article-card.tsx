@@ -1,7 +1,6 @@
 import ArticlePreview from '~/assets/img/article-preview.png';
-import { Avatar } from '~/libs/components/avatar/avatar.js';
-import { Icon, Link, Tag } from '~/libs/components/components.js';
-import { AppRoute } from '~/libs/enums/app-route.enum.js';
+import { Avatar, Icon, Link, Tag } from '~/libs/components/components.js';
+import { AppRoute } from '~/libs/enums/enums.js';
 import { type UserSignUpResponseDto } from '~/packages/users/users.js';
 
 import styles from './styles.module.scss';

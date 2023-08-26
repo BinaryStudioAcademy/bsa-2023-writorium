@@ -1,7 +1,6 @@
-import { Link } from '~/libs/components/link/link.jsx';
-import { AppRoute } from '~/libs/enums/app-route.enum';
+import { Avatar, Link } from '~/libs/components/components.js';
+import { AppRoute } from '~/libs/enums/enums.js';
 
-import { Avatar } from '../avatar/avatar.jsx';
 import styles from './styles.module.scss';
 
 type Properties = {
