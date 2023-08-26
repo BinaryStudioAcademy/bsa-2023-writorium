@@ -90,7 +90,7 @@ class Config implements IConfig {
         SECRET_KEY: {
           doc: 'Secret key for token generation',
           format: String,
-          env: 'SECRET_KEY',
+          env: 'JWT_SECRET_KEY',
           default: null,
         },
       },
