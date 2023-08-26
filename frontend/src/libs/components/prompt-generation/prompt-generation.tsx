@@ -1,6 +1,6 @@
 import { Button, Icon } from '~/libs/components/components.js';
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
-import { useCallback, useState } from '~/libs/hooks/hooks.js';
+import { useCallback, useEffect, useState } from '~/libs/hooks/hooks.js';
 
 import { PromptCard } from './libs/components/components.js';
 import { PromptCategory } from './libs/enums/enums.js';
@@ -39,6 +39,14 @@ const PromptGeneration: React.FC = () => {
       setIsSpinning(false);
     }, 3000);
   }, [promptCategories]);
+
+  useEffect(() => {
+    const timerId = setTimeout(() => {}, 3000);
+
+    return () => {
+      clearTimeout(timerId);
+    };
+  }, []);
 
   return (
     <div className={styles.container}>
