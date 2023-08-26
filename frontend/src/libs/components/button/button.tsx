@@ -21,3 +21,4 @@ const Button: React.FC<Properties> = ({
 );
 
 export { Button };
+export { type Properties as ButtonProperties };

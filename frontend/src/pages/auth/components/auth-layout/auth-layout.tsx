@@ -27,7 +27,10 @@ const AuthLayout: React.FC<Properties> = ({ children }) => {
     <div className={styles.authLayout}>
       <div className={styles.authFormWrapper}>
         {renderFloatingLetters(AUTH_FORM_WRAPPER_FLOATING_LETTERS)}
-        {children}
+        <div className={styles.authFormWrapperInner}>
+          <h2 className={styles.authFormTitle}>Hello!</h2>
+          {children}
+        </div>
       </div>
       <div className={styles.hero}>
         {renderFloatingLetters(HERO_FLOATING_LETTERS)}
