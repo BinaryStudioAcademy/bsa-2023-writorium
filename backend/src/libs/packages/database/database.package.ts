@@ -34,7 +34,10 @@ class Database implements IDatabase {
   private get initialConfig(): TKnex.Config {
     return {
       client: this.appConfig.ENV.DB.DIALECT,
-      connection: this.appConfig.ENV.DB.CONNECTION_STRING,
+      connection: {
+        connectString: this.appConfig.ENV.DB.CONNECTION_STRING,
+        ssl: { rejectUnauthorized: false },
+      },
       pool: {
         min: this.appConfig.ENV.DB.POOL_MIN,
         max: this.appConfig.ENV.DB.POOL_MAX,
