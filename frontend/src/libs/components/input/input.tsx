@@ -54,7 +54,7 @@ const Input = <T extends FieldValues>({
         type={type}
         placeholder={placeholder}
       />
-      {hasError && <ErrorMessage error={error as string}/>}
+      {hasError && <ErrorMessage error={error as string} />}
     </label>
   );
 };
