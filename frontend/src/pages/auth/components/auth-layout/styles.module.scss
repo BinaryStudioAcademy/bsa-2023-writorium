@@ -13,6 +13,11 @@
   font-family: "Libre Baskerville", sans-serif;
 }
 
+.heroTitle,
+.floatingLetter {
+  user-select: none;
+}
+
 .hero,
 .authFormWrapper {
   position: relative;
@@ -24,6 +29,22 @@
 
 .authFormWrapper {
   flex-basis: 553px;
+}
+
+.authFormWrapperInner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 327px;
+}
+
+.authFormTitle {
+  align-self: flex-start;
+  margin: 0 0 44px;
+  color: var(--light-green);
+  font-size: 24px;
+  font-family: "Libre Baskerville", sans-serif;
 }
 
 .authFormWrapper .floatingLetter {
