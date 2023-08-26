@@ -1,6 +1,7 @@
 import { type FC } from 'react';
 
-import { Avatar, Icon } from '../components.js';
+import { Avatar, Icon } from '~/libs/components/components.js';
+
 import styles from './styles.module.scss';
 
 type Properties = {

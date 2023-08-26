@@ -1,7 +1,7 @@
 import { type FC } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { Author } from '~/libs/components/author/author.jsx';
+import { Author } from './components/author/author.js';
 
 const Article: FC = () => {
   const { id } = useParams();
