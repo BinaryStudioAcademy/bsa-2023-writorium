@@ -1,7 +1,5 @@
-import { createRef } from 'react';
-
 import { Icon, Portal } from '~/libs/components/components.js';
-import { useCallback, useEffect } from '~/libs/hooks/hooks.js';
+import { useCallback, useEffect, useRef } from '~/libs/hooks/hooks.js';
 
 import styles from './styles.module.scss';
 
@@ -11,34 +9,30 @@ type Properties = {
   isOpen: boolean;
 };
 
-const Modal: React.FC<Properties> = ({
-  isOpen,
-  onClose: handleOnClose,
-  children,
-}) => {
-  const outsideModalDivReference = createRef<HTMLDivElement>();
+const Modal: React.FC<Properties> = ({ isOpen, onClose, children }) => {
+  const overlayReference = useRef<HTMLDivElement>(null);
 
-  const handleClickOutsideModal = useCallback(
+  const handleClickOnOverlay = useCallback(
     (event: MouseEvent): void => {
-      if (event.target !== outsideModalDivReference.current) {
+      if (event.target !== overlayReference.current) {
         return;
       }
-      handleOnClose();
+      onClose();
     },
-    [handleOnClose, outsideModalDivReference],
+    [onClose, overlayReference],
   );
 
   useEffect(() => {
-    const outsideModalDiv = outsideModalDivReference.current;
-    if (!outsideModalDiv) {
+    const overlayElement = overlayReference.current;
+    if (!overlayElement) {
       return;
     }
-    outsideModalDiv.addEventListener('click', handleClickOutsideModal);
+    overlayElement.addEventListener('click', handleClickOnOverlay);
 
     return () => {
-      outsideModalDiv.removeEventListener('click', handleClickOutsideModal);
+      overlayElement.removeEventListener('click', handleClickOnOverlay);
     };
-  }, [outsideModalDivReference, handleClickOutsideModal]);
+  }, [overlayReference, handleClickOnOverlay]);
 
   if (!isOpen) {
     return null;
@@ -46,9 +40,9 @@ const Modal: React.FC<Properties> = ({
 
   return (
     <Portal>
-      <div className={styles.modal} ref={outsideModalDivReference}>
+      <div className={styles.modal} ref={overlayReference}>
         <div className={styles.content} role="button" tabIndex={0}>
-          <button className={styles.closeBtn} onClick={handleOnClose}>
+          <button className={styles.closeBtn} onClick={onClose}>
             <Icon iconName="crossMark" />
           </button>
 
