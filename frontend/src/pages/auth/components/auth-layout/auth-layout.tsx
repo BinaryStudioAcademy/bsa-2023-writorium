@@ -4,7 +4,7 @@ import {
   AUTH_FORM_WRAPPER_FLOATING_LETTERS,
   HERO_FLOATING_LETTERS,
 } from './libs/constants.js';
-import { type FloatingLetter } from './libs/types/floating-letter.type.js';
+import { type FloatingLetter } from './libs/types/types.js';
 import styles from './styles.module.scss';
 
 type Properties = {
