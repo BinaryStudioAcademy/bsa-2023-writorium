@@ -12,9 +12,9 @@ const MOCKED_COMMENT = {
   id: 1,
   userId: 5,
   articleId: 1,
-  text: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Semper arcu natoque ultricies 
-  lobortis sit sit vulputate. Commodo dictumst neque in ultricies eros sed iaculis eget. Netus 
-  fames vulputate vitae nunc, orci ut. Vitae, neque, pharetra imperdiet nunc, commodo at. 
+  text: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Semper arcu natoque ultricies
+  lobortis sit sit vulputate. Commodo dictumst neque in ultricies eros sed iaculis eget. Netus
+  fames vulputate vitae nunc, orci ut. Vitae, neque, pharetra imperdiet nunc, commodo at.
   Ultrices nibh sit a justo ac.`,
   createdAt: '2 hours ago',
 };
