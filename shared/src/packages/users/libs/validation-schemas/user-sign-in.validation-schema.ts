@@ -15,6 +15,7 @@ const userSignIn = joi.object<UserSignInRequestDto, true>({
     .trim()
     .required()
     .messages({
+      'string.email': UserValidationMessage.EMAIL_WRONG,
       'string.pattern.base': UserValidationMessage.EMAIL_WRONG,
       'string.empty': UserValidationMessage.EMAIL_REQUIRE,
     }),
