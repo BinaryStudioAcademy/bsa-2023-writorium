@@ -3,6 +3,7 @@
   "include": ["src", "knexfile.ts"],
   "files": ["src/index.d.ts"],
   "exclude": ["node_modules"],
+  "files": ["src/index.d.ts"],
   "compilerOptions": {
     "target": "ESNext",
     "module": "ESNext",

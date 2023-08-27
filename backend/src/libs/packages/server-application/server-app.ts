@@ -1,4 +1,8 @@
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
 import multipartPlugin from '@fastify/multipart';
+import fastifyStatic from '@fastify/static';
 import swagger, { type StaticDocumentSpec } from '@fastify/swagger';
 import swaggerUi from '@fastify/swagger-ui';
 import Fastify, { type FastifyError } from 'fastify';
@@ -8,6 +12,7 @@ import { type IConfig } from '~/libs/packages/config/config.js';
 import { type IDatabase } from '~/libs/packages/database/database.js';
 import { HttpCode, HttpError } from '~/libs/packages/http/http.js';
 import { type ILogger } from '~/libs/packages/logger/logger.js';
+import { authorization } from '~/libs/plugins/authorization/authorization.js';
 import { fileUploadPlugin } from '~/libs/plugins/plugins.js';
 import {
   type ServerCommonErrorResponse,
@@ -15,12 +20,14 @@ import {
   type ValidationError,
   type ValidationSchema,
 } from '~/libs/types/types.js';
+import { userService } from '~/packages/users/users.js';
 
 import {
   MAX_FILE_SIZE_MB,
   mbToBytes,
   SUPPORTED_FILE_TYPES,
 } from '../file/file.package.js';
+import { WHITE_ROUTES } from './libs/constants/constants.js';
 import {
   type IServerApp,
   type IServerAppApi,
@@ -108,8 +115,31 @@ class ServerApp implements IServerApp {
         await this.app.register(fileUploadPlugin, {
           supportedFileTypes: SUPPORTED_FILE_TYPES,
         });
+
+        await this.app.register(authorization, {
+          services: {
+            userService,
+          },
+          routesWhiteList: WHITE_ROUTES,
+        });
       }),
     );
+  }
+
+  private async initServe(): Promise<void> {
+    const staticPath = join(
+      dirname(fileURLToPath(import.meta.url)),
+      '../../../../public',
+    );
+
+    await this.app.register(fastifyStatic, {
+      root: staticPath,
+      prefix: '/',
+    });
+
+    this.app.setNotFoundHandler(async (_request, response) => {
+      await response.sendFile('index.html', staticPath);
+    });
   }
 
   private initValidationCompiler(): void {
@@ -172,6 +202,8 @@ class ServerApp implements IServerApp {
   public async init(): Promise<void> {
     this.logger.info('Application initialization…');
 
+    await this.initServe();
+
     await this.initMiddlewares();
 
     this.initValidationCompiler();
@@ -185,6 +217,7 @@ class ServerApp implements IServerApp {
     await this.app
       .listen({
         port: this.config.ENV.APP.PORT,
+        host: this.config.ENV.APP.HOST,
       })
       .catch((error: Error) => {
         this.logger.error(error.message, {

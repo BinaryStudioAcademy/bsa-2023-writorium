@@ -15,11 +15,16 @@
     "migrate:dev:make": "node --loader ts-paths-esm-loader ../node_modules/knex/bin/cli.js migrate:make -x ts",
     "migrate:dev:down": "node --loader ts-paths-esm-loader ../node_modules/knex/bin/cli.js migrate:down",
     "migrate:dev:rollback": "node --loader ts-paths-esm-loader ../node_modules/knex/bin/cli.js migrate:rollback --all",
-    "build": "tsc && tsc-alias"
+    "build": "tsc && tsc-alias && npm run build:copy",
+    "build:copy": "cp -r package.json build",
+    "prestart": "npm run migrate",
+    "migrate": "knex migrate:latest",
+    "start": "node ./src/index.js"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "3.397.0",
     "@fastify/multipart": "7.7.3",
+    "@fastify/static": "6.10.2",
     "@fastify/swagger": "8.8.0",
     "@fastify/swagger-ui": "1.9.3",
     "bcrypt": "5.1.1",
@@ -27,6 +32,7 @@
     "dotenv": "16.3.1",
     "fastify": "4.21.0",
     "fastify-plugin": "4.5.1",
+    "jose": "4.14.4",
     "knex": "2.5.1",
     "objection": "3.1.1",
     "pg": "8.11.2",

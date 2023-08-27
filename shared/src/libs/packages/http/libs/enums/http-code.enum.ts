@@ -6,6 +6,7 @@ const HttpCode = {
   CONTENT_TOO_LARGE: 413,
   UNSUPPORTED_MEDIA_TYPE: 415,
   BAD_REQUEST: 400,
+  UNAUTHORIZED: 401,
 } as const;
 
 export { HttpCode };

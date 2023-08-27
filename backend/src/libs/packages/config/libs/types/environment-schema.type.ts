@@ -3,6 +3,7 @@ import { type ValueOf } from '~/libs/types/types.js';
 
 type EnvironmentSchema = {
   APP: {
+    HOST: string;
     PORT: number;
     ENVIRONMENT: ValueOf<typeof AppEnvironment>;
   };
@@ -17,6 +18,9 @@ type EnvironmentSchema = {
     AWS_ACCESS_KEY: string;
     AWS_BUCKET_NAME: string;
     AWS_SECRET_ACCESS_KEY: string;
+  };
+  JWT: {
+    SECRET_KEY: string;
   };
 };
 
