@@ -1,4 +1,4 @@
-import { type ValueOf } from 'shared/build/index.js';
+import { type ValueOf } from '~/libs/types/types.js';
 
 import { FileType } from '../enums/enums.js';
 
