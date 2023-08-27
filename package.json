@@ -3,7 +3,8 @@
   "workspaces": [
     "shared",
     "backend",
-    "frontend"
+    "frontend",
+    "build"
   ],
   "scripts": {
     "postinstall": "npm run build:shared",
@@ -17,7 +18,9 @@
     "lint:css": "npm run lint:css --workspaces --if-present",
     "lint:prettify": "prettier --check \"**/*.{ts,tsx,json,md,scss,html}\"",
     "lint": "npm run lint:editor && npm run lint:fs && npm run lint:prettify && npm run lint:type && npm run lint:js && npm run lint:css",
-    "prettify": "prettier --write \"**/*.{ts,tsx,json,md,scss,html}\""
+    "prettify": "prettier --write \"**/*.{ts,tsx,json,md,scss,html}\"",
+    "build": "npm run build:backend && npm run build:frontend && sh ./prepare-build.sh",
+    "start": "cd ./build/backend && npm run start"
   },
   "simple-git-hooks": {
     "pre-commit": "npx lint-staged",
