@@ -23,8 +23,8 @@ import {
 import { userService } from '~/packages/users/users.js';
 
 import {
+  convertMbToBytes,
   MAX_FILE_SIZE_MB,
-  mbToBytes,
   SUPPORTED_FILE_TYPES,
 } from '../file/file.package.js';
 import { WHITE_ROUTES } from './libs/constants/constants.js';
@@ -109,7 +109,7 @@ class ServerApp implements IServerApp {
         await this.app.register(multipartPlugin, {
           attachFieldsToBody: true,
           throwFileSizeLimit: false,
-          limits: { fileSize: mbToBytes(MAX_FILE_SIZE_MB) },
+          limits: { fileSize: convertMbToBytes(MAX_FILE_SIZE_MB) },
         });
 
         await this.app.register(fileUploadPlugin, {
