@@ -32,6 +32,7 @@ export {
   type ArticleEntityType,
   type ArticleRequestDto,
   ArticlesApiPath,
+  type ArticleUpdateRequestDto,
   articleUpdateValidationSchema,
 } from './packages/articles/articles.js';
 export { AuthApiPath } from './packages/auth/auth.js';

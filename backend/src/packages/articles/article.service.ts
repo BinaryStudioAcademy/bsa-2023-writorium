@@ -6,7 +6,7 @@ import { type ArticleRepository } from './article.repository.js';
 import {
   type ArticleBaseResponseDto,
   type ArticleCreateDto,
-  type ArticleRequestDto,
+  type ArticleUpdateRequestDto,
 } from './libs/types/types.js';
 
 class ArticleService implements IService {
@@ -49,7 +49,7 @@ class ArticleService implements IService {
 
   public async update(
     id: number,
-    payload: Partial<ArticleRequestDto>,
+    payload: ArticleUpdateRequestDto,
   ): Promise<ArticleBaseResponseDto> {
     const article = await this.find(id);
 

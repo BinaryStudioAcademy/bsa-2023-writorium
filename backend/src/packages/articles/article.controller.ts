@@ -10,7 +10,10 @@ import { type ArticleService } from '~/packages/articles/article.service.js';
 import { type UserAuthResponseDto } from '~/packages/users/users.js';
 
 import { ArticlesApiPath } from './libs/enums/enums.js';
-import { type ArticleRequestDto } from './libs/types/types.js';
+import {
+  type ArticleRequestDto,
+  type ArticleUpdateRequestDto,
+} from './libs/types/types.js';
 import {
   articleCreateValidationSchema,
   articleUpdateValidationSchema,
@@ -91,7 +94,7 @@ class ArticleController extends Controller {
         this.update(
           options as ApiHandlerOptions<{
             params: { id: number };
-            body: Partial<ArticleRequestDto>;
+            body: ArticleUpdateRequestDto;
           }>,
         ),
     });
@@ -161,7 +164,7 @@ class ArticleController extends Controller {
   private async update(
     options: ApiHandlerOptions<{
       params: { id: number };
-      body: Partial<ArticleRequestDto>;
+      body: ArticleUpdateRequestDto;
     }>,
   ): Promise<ApiHandlerResponse> {
     return {

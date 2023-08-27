@@ -4,6 +4,7 @@ export {
   type ArticleCreateDto,
   type ArticleEntityType,
   type ArticleRequestDto,
+  type ArticleUpdateRequestDto,
 } from './libs/types/types.js';
 export {
   articleCreate as articleCreateValidationSchema,
