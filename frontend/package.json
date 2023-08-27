@@ -12,7 +12,7 @@
     "lint:type": "npx tsc --noEmit",
     "lint": "npm run lint:type && npm run lint:js",
     "start:dev": "vite",
-    "build": "tsc && vite build",
+    "build": "tsc --build --clean && vite build",
     "preview": "vite preview"
   },
   "dependencies": {
