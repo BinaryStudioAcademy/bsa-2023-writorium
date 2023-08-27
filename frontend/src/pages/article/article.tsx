@@ -1,5 +1,6 @@
 import { type FC } from 'react';
-import { useParams } from 'react-router-dom';
+
+import { useParams } from '~/libs/hooks/hooks.js';
 
 import { Author } from './components/author/author.js';
 
