@@ -4,6 +4,10 @@ import { type WhiteRoute } from '../types/types.js';
 
 const WHITE_ROUTES: WhiteRoute[] = [
   {
+    routerPath: '/*',
+    methods: ['GET'],
+  },
+  {
     routerPath: `/api/v1${ApiPath.AUTH}${AuthApiPath.SIGN_UP}`,
     methods: ['POST'],
   },

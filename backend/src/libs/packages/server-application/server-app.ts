@@ -1,3 +1,7 @@
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+import fastifyStatic from '@fastify/static';
 import swagger, { type StaticDocumentSpec } from '@fastify/swagger';
 import swaggerUi from '@fastify/swagger-ui';
 import Fastify, { type FastifyError } from 'fastify';
@@ -105,6 +109,22 @@ class ServerApp implements IServerApp {
     );
   }
 
+  private async initServe(): Promise<void> {
+    const staticPath = join(
+      dirname(fileURLToPath(import.meta.url)),
+      '../../../../public',
+    );
+
+    await this.app.register(fastifyStatic, {
+      root: staticPath,
+      prefix: '/',
+    });
+
+    this.app.setNotFoundHandler(async (_request, response) => {
+      await response.sendFile('index.html', staticPath);
+    });
+  }
+
   private initValidationCompiler(): void {
     this.app.setValidatorCompiler<ValidationSchema>(({ schema }) => {
       return <T>(data: T): ReturnType<ValidationSchema['validate']> => {
@@ -165,6 +185,8 @@ class ServerApp implements IServerApp {
   public async init(): Promise<void> {
     this.logger.info('Application initialization…');
 
+    await this.initServe();
+
     await this.initMiddlewares();
 
     this.initValidationCompiler();
@@ -178,6 +200,7 @@ class ServerApp implements IServerApp {
     await this.app
       .listen({
         port: this.config.ENV.APP.PORT,
+        host: this.config.ENV.APP.HOST,
       })
       .catch((error: Error) => {
         this.logger.error(error.message, {
