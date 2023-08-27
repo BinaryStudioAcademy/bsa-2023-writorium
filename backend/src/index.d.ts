@@ -1,5 +1,7 @@
-import { type FileUploadDecoratedPropety } from './libs/plugins/file-upload/libs/enums/enums.js';
-import { type FileToUpload } from './libs/plugins/file-upload/libs/types/types.js';
+import {
+  type FileToUpload,
+  type FileUploadDecoratedPropety,
+} from './libs/plugins/file-upload/file-upload.js';
 import { type UserAuthResponseDto } from './packages/users/users.js';
 
 declare module 'fastify' {

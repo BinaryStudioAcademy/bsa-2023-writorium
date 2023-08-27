@@ -13,7 +13,7 @@ import { type IDatabase } from '~/libs/packages/database/database.js';
 import { HttpCode, HttpError } from '~/libs/packages/http/http.js';
 import { type ILogger } from '~/libs/packages/logger/logger.js';
 import { authorization } from '~/libs/plugins/authorization/authorization.js';
-import { fileUploadPlugin } from '~/libs/plugins/plugins.js';
+import { fileUploadPlugin } from '~/libs/plugins/file-upload/file-upload.js';
 import {
   type ServerCommonErrorResponse,
   type ServerValidationErrorResponse,
@@ -106,6 +106,13 @@ class ServerApp implements IServerApp {
           routePrefix: `${it.version}/documentation`,
         });
 
+        await this.app.register(authorization, {
+          services: {
+            userService,
+          },
+          routesWhiteList: WHITE_ROUTES,
+        });
+
         await this.app.register(multipartPlugin, {
           attachFieldsToBody: true,
           throwFileSizeLimit: false,
@@ -114,13 +121,6 @@ class ServerApp implements IServerApp {
 
         await this.app.register(fileUploadPlugin, {
           supportedFileTypes: SUPPORTED_FILE_TYPES,
-        });
-
-        await this.app.register(authorization, {
-          services: {
-            userService,
-          },
-          routesWhiteList: WHITE_ROUTES,
         });
       }),
     );
