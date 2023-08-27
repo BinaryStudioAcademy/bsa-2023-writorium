@@ -16,10 +16,12 @@ type Properties = {
 };
 
 const SignUpForm: React.FC<Properties> = ({ onSubmit }) => {
-  const { control, errors, handleSubmit } = useAppForm<UserSignUpRequestDto>({
-    defaultValues: DEFAULT_SIGN_UP_PAYLOAD,
-    validationSchema: userSignUpValidationSchema,
-  });
+  const { control, errors, handleSubmit, isValid } =
+    useAppForm<UserSignUpRequestDto>({
+      mode: 'onTouched',
+      defaultValues: DEFAULT_SIGN_UP_PAYLOAD,
+      validationSchema: userSignUpValidationSchema,
+    });
 
   const handleFormSubmit = useCallback(
     (event_: React.BaseSyntheticEvent): void => {
@@ -68,7 +70,7 @@ const SignUpForm: React.FC<Properties> = ({ onSubmit }) => {
             placeholder="Enter password"
           />
         </fieldset>
-        <AuthSubmitButton label="Sign Up" />
+        <AuthSubmitButton label="Sign Up" disabled={!isValid} />
       </form>
       <div className={styles.messageWrapper}>
         <span className={styles.message}>Already have an account?</span>

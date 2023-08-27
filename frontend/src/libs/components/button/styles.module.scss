@@ -7,3 +7,7 @@
   border-radius: 7px;
   cursor: pointer;
 }
+
+.button:disabled {
+  cursor: not-allowed;
+}

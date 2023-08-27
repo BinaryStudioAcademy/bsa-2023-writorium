@@ -3,11 +3,11 @@ import { Button } from '~/libs/components/components.js';
 
 import styles from './styles.module.scss';
 
-type Properties = Pick<ButtonProperties, 'label'>;
+type Properties = Pick<ButtonProperties, 'label' | 'disabled'>;
 
-const AuthSubmitButton: React.FC<Properties> = ({ label }) => {
+const AuthSubmitButton: React.FC<Properties> = (properties) => {
   return (
-    <Button className={styles.authSubmitButton} type="submit" label={label} />
+    <Button {...properties} className={styles.authSubmitButton} type="submit" />
   );
 };
 

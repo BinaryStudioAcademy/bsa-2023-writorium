@@ -5,3 +5,7 @@
   background: var(--dark-green);
   border-radius: 7px;
 }
+
+.authSubmitButton:disabled {
+  background-color: var(--pale-grey);
+}
