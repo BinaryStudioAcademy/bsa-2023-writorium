@@ -1,5 +1,6 @@
 :root {
   --white: #ffffff;
+  --white-90: rgba(255 255 255 / 90%);
   --dark-green: #2e453b;
   --dark-green-80: rgb(46 69 59 / 80%);
   --light-green: #44996b;
@@ -13,9 +14,6 @@
   --dark-gray-50: rgba(53 53 53 / 50%);
   --medium-brightness-gray: #919191;
   --red: #df1c3d;
-  --pale-gray: #f8f8f8;
-  --dark-gray: #353535;
-  --medium-brightness-gray: #919191;
 }
 
 input {
