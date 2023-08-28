@@ -4,4 +4,4 @@ export { useAppSelector } from './use-app-selector/use-app-selector.hook.js';
 export { useMousePosition } from './use-mouse-position/use-mouse-position.hook.js';
 export { useCallback, useEffect, useMemo, useState } from 'react';
 export { useController as useFormController } from 'react-hook-form';
-export { useLocation } from 'react-router-dom';
+export { useLocation, useParams } from 'react-router-dom';
