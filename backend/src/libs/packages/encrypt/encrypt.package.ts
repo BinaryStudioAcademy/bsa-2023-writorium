@@ -21,6 +21,7 @@ class Encrypt implements IEncrypt {
     passwordHash: string;
   }): Promise<boolean> {
     const hashToCompare = await this.encrypt(passwordToCompare, salt);
+
     return hashToCompare === passwordHash;
   }
 }

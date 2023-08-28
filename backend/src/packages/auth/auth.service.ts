@@ -37,11 +37,13 @@ class AuthService {
     const userPrivateData = (await this.userService.findPrivateData(
       user.id,
     )) as UserPrivateData;
+
     const hasSamePassword = await this.encrypt.compare({
       passwordToCompare: password,
       salt: userPrivateData.passwordSalt,
       passwordHash: userPrivateData.passwordHash,
     });
+
     if (!hasSamePassword) {
       throw new InvalidCredentialsError();
     }
@@ -57,6 +59,7 @@ class AuthService {
     userRequestDto: UserSignUpRequestDto,
   ): Promise<UserSignUpResponseDto> {
     const user = await this.userService.create(userRequestDto);
+
     const token = await accessToken.create<{ userId: number }>({
       userId: user.id,
     });
