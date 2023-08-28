@@ -1,4 +1,4 @@
-import { type TagType } from './types.js';
+import { type TagType } from './tag.type.js';
 
 type ArticleType = {
   title: string;
