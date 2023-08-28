@@ -1,7 +1,7 @@
 import { type IService } from '~/libs/interfaces/interfaces.js';
 
-import { type GenreModel } from './genre.model.js';
 import { type GenreRepository } from './genre.repository.js';
+import { type GenreGetAllResponseDto } from './lib/types/types.js';
 
 class GenreService implements IService {
   private genreRepository: GenreRepository;
@@ -9,10 +9,10 @@ class GenreService implements IService {
   public constructor(genreRepository: GenreRepository) {
     this.genreRepository = genreRepository;
   }
-  public async findAll(): Promise<{ items: GenreModel[] }> {
+  public async findAll(): Promise<GenreGetAllResponseDto> {
     const items = await this.genreRepository.findAll();
 
-    return { items };
+    return { items: items.map((it) => it.toObject()) };
   }
 
   public find(id: number): Promise<unknown> {

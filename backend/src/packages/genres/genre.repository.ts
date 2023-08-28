@@ -1,5 +1,5 @@
 import { type IRepository } from '~/libs/interfaces/interfaces.js';
-import { type GenreModel } from '~/packages/genres/genre.js';
+import { GenreEntity, type GenreModel } from '~/packages/genres/genre.js';
 
 class GenreRepository implements IRepository {
   private genreModel: typeof GenreModel;
@@ -8,8 +8,10 @@ class GenreRepository implements IRepository {
     this.genreModel = genreModel;
   }
 
-  public async findAll(): Promise<GenreModel[]> {
-    return await this.genreModel.query().execute();
+  public async findAll(): Promise<GenreEntity[]> {
+    const genres = await this.genreModel.query().execute();
+
+    return genres.map((it) => GenreEntity.initialize(it));
   }
 
   public find(id: number): Promise<unknown> {

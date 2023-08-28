@@ -25,7 +25,11 @@ export {
   type ValueOf,
 } from './libs/types/types.js';
 export { AuthApiPath } from './packages/auth/auth.js';
-export { GenresApiPath } from './packages/genres/genres.js';
+export {
+  type GenreGetAllItemResponseDto,
+  type GenreGetAllResponseDto,
+  GenresApiPath,
+} from './packages/genres/genres.js';
 export {
   type UserAuthResponseDto,
   type UserGetAllItemResponseDto,
