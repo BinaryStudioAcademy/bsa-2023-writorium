@@ -7,6 +7,7 @@ import { type UserRepository } from '~/packages/users/user.repository.js';
 import {
   type UserAuthResponseDto,
   type UserGetAllResponseDto,
+  type UserSignInRequestDto,
   type UserSignUpRequestDto,
 } from './libs/types/types.js';
 
@@ -49,6 +50,21 @@ class UserService implements IService {
     return {
       items: items.map((it) => it.toObject()),
     };
+  }
+
+  public async checkUserPassword(
+    payload: UserSignInRequestDto,
+  ): Promise<boolean> {
+    const { email, password } = payload;
+
+    const user = await this.userRepository.findByEmail(email);
+
+    return user
+      ? await this.encrypt.checkPassword(
+          password,
+          user.toNewObject().passwordHash,
+        )
+      : false;
   }
 
   public async create(

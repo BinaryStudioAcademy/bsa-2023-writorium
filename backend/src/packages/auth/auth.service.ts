@@ -1,4 +1,4 @@
-import { UserNotFoundError } from '~/libs/packages/exceptions/exceptions.js';
+import { InvalidCredentialsError } from '~/libs/packages/exceptions/exceptions.js';
 import { token as accessToken } from '~/libs/packages/token/token.js';
 import {
   type UserSignInRequestDto,
@@ -22,9 +22,14 @@ class AuthService {
 
     const user = await this.userService.findByEmail(email);
 
-    if (!user) {
-      throw new UserNotFoundError();
+    const checkUserPassword = user
+      ? await this.userService.checkUserPassword(userSignInDto)
+      : null;
+
+    if (!user || !checkUserPassword) {
+      throw new InvalidCredentialsError();
     }
+
     const token = await accessToken.create<{ userId: number }>({
       userId: user.id,
     });
