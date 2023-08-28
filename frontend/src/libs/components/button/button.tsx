@@ -8,6 +8,7 @@ type Properties = {
   disabled?: boolean;
   label: string;
   type?: ValueOf<typeof ButtonType>;
+  onClick?: (event: React.MouseEvent) => void;
   className?: string;
 };
 
@@ -15,10 +16,12 @@ const Button: React.FC<Properties> = ({
   type = ButtonType.BUTTON,
   label,
   className = '',
+  onClick,
   disabled,
 }) => (
   <button
     type={type}
+    onClick={onClick}
     disabled={disabled}
     className={getValidClassNames(styles.button, className)}
   >
