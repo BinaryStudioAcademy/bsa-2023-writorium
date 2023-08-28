@@ -1,3 +1,5 @@
+import { type UserAuthResponseDto } from 'shared/build';
+
 type DefaultApiHandlerOptions = {
   body?: unknown;
   query?: unknown;
@@ -10,6 +12,7 @@ type ApiHandlerOptions<
   body: T['body'];
   query: T['query'];
   params: T['params'];
+  user: UserAuthResponseDto;
 };
 
 export { type ApiHandlerOptions };
