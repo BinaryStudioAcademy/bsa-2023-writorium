@@ -7,6 +7,7 @@ import {
 import { type GroupBase, type Props } from 'react-select';
 import { default as ReactSelect } from 'react-select';
 
+import { ErrorMessage } from '~/libs/components/components.js';
 import { useCallback, useFormController } from '~/libs/hooks/hooks.js';
 import { type SelectOption } from '~/libs/types/types.js';
 
@@ -43,7 +44,6 @@ const Select = <
 }: Properties<T, IsMulti, Group>): JSX.Element => {
   const { field } = useFormController({ name, control });
   const error = errors[name]?.message;
-  const hasError = Boolean(error);
 
   const handleChange = useCallback(
     (option: unknown) => {
@@ -62,7 +62,7 @@ const Select = <
         styles={{ ...getDefaultStyles<IsMulti, Group>(), ...styles }}
         components={{ DropdownIndicator, IndicatorSeparator }}
       />
-      {hasError && <span className={cssStyles.error}>{error as string}</span>}
+      <ErrorMessage error={error as string} />
     </label>
   );
 };
