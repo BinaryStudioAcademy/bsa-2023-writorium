@@ -1,9 +1,9 @@
 import {
   type AnyAction,
+  configureStore,
   type MiddlewareArray,
   type ThunkMiddleware,
 } from '@reduxjs/toolkit';
-import { configureStore } from '@reduxjs/toolkit';
 
 import { AppEnvironment } from '~/libs/enums/enums.js';
 import { type IConfig } from '~/libs/packages/config/config.js';
