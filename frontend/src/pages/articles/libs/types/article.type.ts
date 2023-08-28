@@ -1,6 +1,7 @@
-import { type TagType } from './types.js';
+import { type TagType } from '../../components/article-card/libs/types/types.js';
 
 type ArticleType = {
+  id: number;
   publishedAt: string;
   timeSincePublication: string;
   title: string;
