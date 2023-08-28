@@ -32,7 +32,7 @@ const App: React.FC = () => {
     if (hasToken) {
       void dispatch(actions.getCurrentUser());
     }
-  }, [hasToken, dispatch]);
+  }, [hasToken, hasUser, dispatch]);
 
   return (
     <Loader isLoading={isLoading}>
