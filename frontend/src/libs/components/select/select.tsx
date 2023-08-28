@@ -44,7 +44,6 @@ const Select = <
 }: Properties<T, IsMulti, Group>): JSX.Element => {
   const { field } = useFormController({ name, control });
   const error = errors[name]?.message;
-  const hasError = Boolean(error);
 
   const handleChange = useCallback(
     (option: unknown) => {
@@ -63,7 +62,7 @@ const Select = <
         styles={{ ...getDefaultStyles<IsMulti, Group>(), ...styles }}
         components={{ DropdownIndicator, IndicatorSeparator }}
       />
-      {hasError && <ErrorMessage error={error as string} />}
+      <ErrorMessage error={error as string} />
     </label>
   );
 };

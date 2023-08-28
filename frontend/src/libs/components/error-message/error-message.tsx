@@ -8,10 +8,12 @@ type Properties = {
 };
 
 const ErrorMessage: React.FC<Properties> = ({ error, className }) => {
+  const hasError = Boolean(error);
+
   return (
-    <div className={getValidClassNames(styles.errorMessage, className)}>
-      {error}
-    </div>
+    <span className={getValidClassNames(styles.errorMessage, className)}>
+      {hasError && error}
+    </span>
   );
 };
 
