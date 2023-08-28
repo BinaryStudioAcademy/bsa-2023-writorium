@@ -16,6 +16,9 @@ type EnvironmentSchema = {
   JWT: {
     SECRET_KEY: string;
   };
+  OPEN_AI: {
+    API_KEY: string;
+  };
 };
 
 export { type EnvironmentSchema };
