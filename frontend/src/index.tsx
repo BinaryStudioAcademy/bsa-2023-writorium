@@ -14,6 +14,8 @@ import { Auth } from '~/pages/auth/auth.js';
 import { Landing } from '~/pages/landing/landing.js';
 import { Profile } from '~/pages/profile/profile.js';
 
+import { Articles } from './pages/articles/articles.js';
+
 createRoot(document.querySelector('#root') as HTMLElement).render(
   <StrictMode>
     <StoreProvider store={store.instance}>
@@ -38,6 +40,12 @@ createRoot(document.querySelector('#root') as HTMLElement).render(
               {
                 path: AppRoute.PROFILE,
                 element: <Profile />,
+              },
+              {
+                path: AppRoute.ARTICLES,
+                element: (
+                  <Articles />
+                ),
               },
             ],
           },
