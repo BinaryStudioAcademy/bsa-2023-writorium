@@ -52,7 +52,7 @@ class AuthController extends Controller {
         ),
     });
     this.addRoute({
-      path: AuthApiPath.USER,
+      path: AuthApiPath.CURRENT,
       method: 'GET',
       handler: (options) => this.getCurrentUser(options),
     });

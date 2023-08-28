@@ -57,7 +57,7 @@ class AuthApi extends HttpApi {
 
   public async getCurentUser(): Promise<UserAuthResponseDto> {
     const response = await this.load(
-      this.getFullEndpoint(AuthApiPath.USER, {}),
+      this.getFullEndpoint(AuthApiPath.CURRENT, {}),
       {
         method: 'GET',
         contentType: ContentType.JSON,
