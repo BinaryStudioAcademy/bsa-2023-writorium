@@ -1,12 +1,12 @@
 import { type Knex } from 'knex';
 
-import { DatabaseTableName } from '~/libs/packages/database/libs/enums/enums.js';
-
 import { achievements } from '../seed-data/achievements.js';
 
+const TABLE_NAME = 'achievements';
+
 const seed = async (knex: Knex): Promise<void> => {
-  await knex(DatabaseTableName.ACHIEVEMENTS).del();
-  await knex(DatabaseTableName.ACHIEVEMENTS).insert(achievements);
+  await knex(TABLE_NAME).del();
+  await knex(TABLE_NAME).insert(achievements);
 };
 
 export { seed };

@@ -1,6 +1,6 @@
 import { type Knex } from 'knex';
 
-import { DatabaseTableName } from '~/libs/packages/database/libs/enums/enums.js';
+const TABLE_NAME = 'achievements';
 
 const ColumnName = {
   ID: 'id',
@@ -12,7 +12,7 @@ const ColumnName = {
 } as const;
 
 const up = (knex: Knex): Promise<void> => {
-  return knex.schema.createTable(DatabaseTableName.ACHIEVEMENTS, (table) => {
+  return knex.schema.createTable(TABLE_NAME, (table) => {
     table.increments(ColumnName.ID).primary();
     table.string(ColumnName.KEY).notNullable();
     table.string(ColumnName.NAME).notNullable();
@@ -29,7 +29,7 @@ const up = (knex: Knex): Promise<void> => {
 };
 
 const down = (knex: Knex): Promise<void> => {
-  return knex.schema.dropTableIfExists(DatabaseTableName.ACHIEVEMENTS);
+  return knex.schema.dropTableIfExists(TABLE_NAME);
 };
 
 export { down, up };

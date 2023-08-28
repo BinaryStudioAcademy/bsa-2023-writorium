@@ -25,6 +25,7 @@ export {
   type ValueOf,
   type WithNullableKeys,
 } from './libs/types/types.js';
+export { type AchievementEntityType } from './packages/achievements/achievements.js';
 export {
   type ArticleBaseResponseDto,
   type ArticleCreateDto,
