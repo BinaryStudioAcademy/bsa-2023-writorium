@@ -1,0 +1,14 @@
+@import url("../../../assets/css/styles.scss");
+
+.noOverflow {
+  overflow: hidden;
+}
+
+.portal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: var(--z-index-level-one);
+  width: 100%;
+  height: 100%;
+}
