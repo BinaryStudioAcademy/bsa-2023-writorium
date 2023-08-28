@@ -1,5 +1,5 @@
 .container {
-  padding: 32px 0 50.61px;
+  padding: 32px 0 50px;
 }
 
 .header {
@@ -8,20 +8,20 @@
   font-weight: 700;
   font-size: 24px;
   font-family: "Libre Baskerville", serif;
-  line-height: 29.76px;
+  line-height: 30px;
 }
 
 .promptsContainer {
   display: grid;
   grid-template-columns: repeat(6, auto);
-  gap: 20.35px;
+  gap: 20px;
 }
 
 .shuffleButton {
   align-self: end;
   width: 78px;
   height: 78px;
-  margin-left: calc(31.23px - 20.35px);
+  margin-left: calc(31px - 20px);
   color: var(--white);
   line-height: 0;
   background-color: var(--light-green);

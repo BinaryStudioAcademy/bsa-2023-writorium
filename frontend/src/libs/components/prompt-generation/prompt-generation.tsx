@@ -12,14 +12,12 @@ import { PromptCategory } from './libs/enums/enums.js';
 import { categoryPrompts } from './libs/mocks/mocks.js';
 import styles from './styles.module.scss';
 
-const { CHARACTER, SITUATION, SETTING, PROP, GENRE } = PromptCategory;
-
 const defaultPrompt = {
-  [CHARACTER]: 'Girl',
-  [SITUATION]: 'Street',
-  [SETTING]: '',
-  [PROP]: 'Red hair',
-  [GENRE]: 'Fiction',
+  [PromptCategory.CHARACTER]: 'Girl',
+  [PromptCategory.SITUATION]: 'Street',
+  [PromptCategory.SETTING]: '',
+  [PromptCategory.PROP]: 'Red hair',
+  [PromptCategory.GENRE]: 'Fiction',
 };
 
 const PromptGeneration: React.FC = () => {

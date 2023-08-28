@@ -4,7 +4,7 @@
 
 .prompt {
   height: 73px;
-  padding: 29.61px 5px 21.39px;
+  padding: 30px 5px 21px;
   overflow: auto;
   text-align: center;
   background-color: var(--white);
@@ -12,8 +12,6 @@
 }
 
 .category {
-  position: relative;
-  z-index: 10;
   width: fit-content;
   height: 29px;
   margin: 0 auto;

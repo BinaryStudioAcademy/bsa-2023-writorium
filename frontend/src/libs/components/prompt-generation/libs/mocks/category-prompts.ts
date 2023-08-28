@@ -1,10 +1,15 @@
 import { PromptCategory } from '../enums/enums.js';
 
-const { CHARACTER, SITUATION, SETTING, PROP, GENRE } = PromptCategory;
-
 const categoryPrompts = {
-  [CHARACTER]: ['Girl', 'Detective', '', 'Alien', 'Wizard', 'Superhero'],
-  [SITUATION]: [
+  [PromptCategory.CHARACTER]: [
+    'Girl',
+    'Detective',
+    '',
+    'Alien',
+    'Wizard',
+    'Superhero',
+  ],
+  [PromptCategory.SITUATION]: [
     'Street',
     'Cracks a code',
     'Time travel',
@@ -12,7 +17,7 @@ const categoryPrompts = {
     'Is trapped',
     'Runs away',
   ],
-  [SETTING]: [
+  [PromptCategory.SETTING]: [
     '',
     'Ancient castle',
     'Outer space',
@@ -20,7 +25,7 @@ const categoryPrompts = {
     'Parisian cafe',
     'High-tech laboratory',
   ],
-  [PROP]: [
+  [PromptCategory.PROP]: [
     'Red hair',
     'Mysterious key',
     'Magic potion',
@@ -28,7 +33,7 @@ const categoryPrompts = {
     'Dark secret',
     '',
   ],
-  [GENRE]: [
+  [PromptCategory.GENRE]: [
     'Fiction',
     'Fantasy',
     'Mystery',
