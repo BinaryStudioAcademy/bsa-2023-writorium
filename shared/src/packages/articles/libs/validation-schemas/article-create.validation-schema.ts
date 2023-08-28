@@ -27,11 +27,11 @@ const articleCreate = joi.object<ArticleRequestDto, true>({
       'string.min': ArticleValidationMessage.ARTICLE_TEXT_MIN_LENGTH,
       'string.empty': ArticleValidationMessage.ARTICLE_TEXT_REQUIRE,
     }),
-  promptId: joi.number().integer().positive(),
+  promptId: joi.number().integer().positive().required().allow(null),
   genreId: joi.number().integer().positive().required().messages({
     'string.empty': ArticleValidationMessage.ARTICLE_GENRE_ID_REQUIRE,
   }),
-  publishedAt: joi.string().isoDate().messages({
+  publishedAt: joi.string().isoDate().required().allow(null).messages({
     'string.isoDate': ArticleValidationMessage.ARTICLE_PUBLISHED_ISO_DATE,
   }),
 });
