@@ -8,7 +8,6 @@ import {
   type UserAuthResponseDto,
   type UserGetAllResponseDto,
   type UserSignUpRequestDto,
-  type UserSignUpResponseDto,
 } from './libs/types/types.js';
 
 class UserService implements IService {
@@ -28,8 +27,14 @@ class UserService implements IService {
     this.config = config;
   }
 
-  public find(): ReturnType<IService['find']> {
-    return Promise.resolve(null);
+  public async find(id: number): Promise<UserAuthResponseDto | null> {
+    const user = await this.userRepository.find(id);
+
+    if (!user) {
+      return null;
+    }
+
+    return user.toObject();
   }
 
   public async findByEmail(email: string): Promise<UserAuthResponseDto | null> {
@@ -48,7 +53,7 @@ class UserService implements IService {
 
   public async create(
     payload: UserSignUpRequestDto,
-  ): Promise<UserSignUpResponseDto> {
+  ): Promise<UserAuthResponseDto> {
     const passwordSalt = await this.encrypt.generateSalt(
       this.config.ENCRYPTION.USER_PASSWORD_SALT_ROUNDS,
     );

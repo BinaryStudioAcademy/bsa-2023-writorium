@@ -1,0 +1,58 @@
+name: Continuous Delivery
+
+on:
+  push:
+    branches:
+      - development
+      - production
+
+jobs:
+  cd:
+    runs-on: ubuntu-latest
+
+    permissions:
+      deployments: write
+
+    steps:
+      - name: Set Up Variables
+        uses: kanga333/variable-mapper@master
+        with:
+          key: ${{ github.ref_name }}
+          map: |
+            {
+              "development": {
+                "HEROKU_APP_NAME": "writorium-development",
+                "APP_URL": "https://writorium-development.herokuapp.com/"
+              },
+              "production": {
+                "HEROKU_APP_NAME": "writorium-production",
+                "APP_URL": "https://writorium-production.herokuapp.com/"
+              }
+            }
+
+      - name: Checkout Source Code
+        uses: actions/checkout@v3
+
+      - name: Create Deployment
+        uses: chrnorm/deployment-action@v2
+        id: deployment
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          environment-url: ${{ env.APP_URL }}
+          environment: ${{ github.ref_name }}
+
+      - name: Deployment
+        uses: akhileshns/heroku-deploy@v3.12.13
+        with:
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: ${{ env.HEROKU_APP_NAME }}
+          heroku_email: ${{ secrets.HEROKU_OWNER_EMAIL }}
+
+      - name: Update Deployment Status
+        if: ${{ always() }}
+        uses: chrnorm/deployment-status@v2
+        with:
+          token: '${{ secrets.GITHUB_TOKEN }}'
+          environment-url: ${{ steps.deployment.outputs.environment_url }}
+          deployment-id: ${{ steps.deployment.outputs.deployment_id }}
+          state: ${{ job.status }}
