@@ -20,15 +20,15 @@ const App: React.FC = () => {
   const hasUser = Boolean(user);
   const hasToken = Boolean(storage.get(StorageKey.TOKEN));
 
-  if (hasUser && !hasToken) {
-    void dispatch(actions.logout());
-  }
-
   const isLoading = !(
     dataStatus === DataStatus.FULFILLED || dataStatus == DataStatus.REJECTED
   );
 
   useEffect(() => {
+    if (hasUser && !hasToken) {
+      void dispatch(actions.logout());
+    }
+
     if (hasToken) {
       void dispatch(actions.getCurrentUser());
     }
