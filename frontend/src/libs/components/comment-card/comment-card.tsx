@@ -1,5 +1,4 @@
-import { Avatar, Icon, Link } from '~/libs/components/components.js';
-import { AppRoute } from '~/libs/enums/enums.js';
+import { Avatar, Icon } from '~/libs/components/components.js';
 import { type Comment } from '~/libs/types/comment.type.js';
 import { type UserAuthResponseDto } from '~/packages/users/users.js';
 
@@ -19,9 +18,7 @@ const CommentCard: React.FC<Properties> = ({ user, comment }) => {
     <section className={styles.comment}>
       <div className={styles.header}>
         <div className={styles.userInfo}>
-          <Link to={AppRoute.PROFILE}>
-            <Avatar username={userName} avatarUrl={null} />
-          </Link>
+          <Avatar username={userName} avatarUrl={null} />
           <span className={styles.userName}>{userName}</span>
           <span className={styles.publicationTime}>{createdAt}</span>
         </div>
