@@ -63,3 +63,4 @@ const Input = <T extends FieldValues>({
 };
 
 export { Input };
+export { type Properties as InputProperties };

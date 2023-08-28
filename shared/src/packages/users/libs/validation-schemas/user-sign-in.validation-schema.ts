@@ -6,10 +6,16 @@ import { type UserSignInRequestDto } from '../types/types.js';
 const userSignIn = joi.object<UserSignInRequestDto, true>({
   email: joi
     .string()
+    .email({
+      tlds: {
+        allow: false,
+      },
+    })
+    .regex(UserValidationRule.EMAIL_PATTERN)
     .trim()
-    .regex(UserValidationRule.PASSWORD_PATTERN)
     .required()
     .messages({
+      'string.email': UserValidationMessage.EMAIL_WRONG,
       'string.pattern.base': UserValidationMessage.EMAIL_WRONG,
       'string.empty': UserValidationMessage.EMAIL_REQUIRE,
     }),
