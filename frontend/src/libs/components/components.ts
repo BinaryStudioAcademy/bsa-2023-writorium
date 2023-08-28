@@ -1,5 +1,6 @@
 export { App } from './app/app.js';
 export { Button } from './button/button.js';
+export { ErrorMessage } from './error-message/error-message.js';
 export { Header } from './header/header.js';
 export { Icon } from './icon/icon.js';
 export { Input } from './input/input.js';
