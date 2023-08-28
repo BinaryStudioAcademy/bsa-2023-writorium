@@ -1,6 +1,7 @@
 import { config } from '~/libs/packages/config/config.js';
 import { database } from '~/libs/packages/database/database.js';
 import { logger } from '~/libs/packages/logger/logger.js';
+import { articleController } from '~/packages/articles/articles.js';
 import { authController } from '~/packages/auth/auth.js';
 import { fileController } from '~/packages/files/files.js';
 import { userController } from '~/packages/users/users.js';
@@ -14,6 +15,7 @@ const apiV1 = new ServerAppApi(
   ...authController.routes,
   ...userController.routes,
   ...fileController.routes,
+  ...articleController.routes,
 );
 const serverApp = new ServerApp({
   config,
