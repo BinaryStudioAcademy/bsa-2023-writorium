@@ -1,6 +1,11 @@
 import { Button, Icon } from '~/libs/components/components.js';
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
-import { useCallback, useEffect, useState } from '~/libs/hooks/hooks.js';
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from '~/libs/hooks/hooks.js';
 
 import { PromptCard } from './libs/components/components.js';
 import { PromptCategory } from './libs/enums/enums.js';
@@ -23,29 +28,35 @@ const PromptGeneration: React.FC = () => {
 
   const promptCategories = Object.values(PromptCategory);
 
-  useEffect(() => {
-    if (isSpinning) {
-      const timerId = setTimeout(() => {
-        setGeneratedPrompt((previousGeneratedPrompt) => {
-          const updatedGeneratedPrompt = { ...previousGeneratedPrompt };
-          for (const category of promptCategories) {
-            const prompts = categoryPrompts[category];
-            const randomIndex = Math.floor(Math.random() * prompts.length);
-            updatedGeneratedPrompt[category] = prompts[randomIndex];
-          }
-          return updatedGeneratedPrompt;
-        });
-        setIsSpinning(false);
-      }, 3000);
-
-      return () => {
-        clearTimeout(timerId);
-      };
-    }
-  }, [isSpinning, promptCategories]);
+  const timeoutReference = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handleButtonClick = useCallback(() => {
     setIsSpinning(true);
+
+    if (timeoutReference.current) {
+      clearTimeout(timeoutReference.current);
+    }
+
+    timeoutReference.current = setTimeout(() => {
+      setGeneratedPrompt((previousGeneratedPrompt) => {
+        const updatedGeneratedPrompt = { ...previousGeneratedPrompt };
+        for (const category of promptCategories) {
+          const prompts = categoryPrompts[category];
+          const randomIndex = Math.floor(Math.random() * prompts.length);
+          updatedGeneratedPrompt[category] = prompts[randomIndex];
+        }
+        return updatedGeneratedPrompt;
+      });
+      setIsSpinning(false);
+    }, 3000);
+  }, [promptCategories]);
+
+  useEffect(() => {
+    return () => {
+      if (timeoutReference.current) {
+        clearTimeout(timeoutReference.current);
+      }
+    };
   }, []);
 
   return (
