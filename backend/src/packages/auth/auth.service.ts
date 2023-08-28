@@ -1,7 +1,8 @@
 import { UserNotFoundError } from '~/libs/packages/exceptions/exceptions.js';
+import { token as accessToken } from '~/libs/packages/token/token.js';
 import {
-  type UserAuthResponseDto,
   type UserSignInRequestDto,
+  type UserSignInResponseDto,
   type UserSignUpRequestDto,
   type UserSignUpResponseDto,
 } from '~/packages/users/libs/types/types.js';
@@ -16,7 +17,7 @@ class AuthService {
 
   public async signIn(
     userSignInDto: UserSignInRequestDto,
-  ): Promise<UserAuthResponseDto> {
+  ): Promise<UserSignInResponseDto> {
     const { email } = userSignInDto;
 
     const user = await this.userService.findByEmail(email);
@@ -24,14 +25,22 @@ class AuthService {
     if (!user) {
       throw new UserNotFoundError();
     }
+    const token = await accessToken.create<{ userId: number }>({
+      userId: user.id,
+    });
 
-    return user;
+    return { user, token };
   }
 
-  public signUp(
+  public async signUp(
     userRequestDto: UserSignUpRequestDto,
   ): Promise<UserSignUpResponseDto> {
-    return this.userService.create(userRequestDto);
+    const user = await this.userService.create(userRequestDto);
+    const token = await accessToken.create<{ userId: number }>({
+      userId: user.id,
+    });
+
+    return { user, token };
   }
 }
 
