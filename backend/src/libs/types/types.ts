@@ -5,4 +5,5 @@ export {
   type ValidationError,
   type ValidationSchema,
   type ValueOf,
+  type WithNullableKeys,
 } from 'shared/build/index.js';
