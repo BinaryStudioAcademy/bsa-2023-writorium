@@ -1,14 +1,17 @@
 import ArticlePreview from '~/assets/img/article-preview.png';
 import { Avatar, Icon, Link, Tag } from '~/libs/components/components.js';
 import { AppRoute } from '~/libs/enums/enums.js';
-import { type UserSignUpResponseDto } from '~/packages/users/users.js';
 
-import { type ArticleType, type TagType } from './libs/types/types.js';
+import {
+  type ArticleType,
+  type TagType,
+  type UserAuthResponseDto,
+} from './libs/types/types.js';
 import styles from './styles.module.scss';
 
 type Properties = {
   article: ArticleType;
-  user: UserSignUpResponseDto;
+  user: UserAuthResponseDto;
 };
 
 const MOCKED_TEXT: string = `The developer technology landscape changes all the time as new tools
@@ -36,7 +39,7 @@ const MOCKED_ARTICLE: ArticleType = {
   tags: MOCKED_TAGS,
 };
 
-const MOCKED_USER: UserSignUpResponseDto = {
+const MOCKED_USER: UserAuthResponseDto = {
   id: 7,
   email: 'nolanaris@gmail.com',
   firstName: 'Nolan',
