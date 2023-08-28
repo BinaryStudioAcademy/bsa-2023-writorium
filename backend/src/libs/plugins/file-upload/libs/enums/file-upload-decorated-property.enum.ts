@@ -1,5 +1,5 @@
-const FileUploadDecoratedPropety = {
+const FileUploadDecoratedProperty = {
   FILE_TO_UPLOAD: 'fileToUpload',
 } as const;
 
-export { FileUploadDecoratedPropety };
+export { FileUploadDecoratedProperty };

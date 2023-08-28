@@ -1,1 +1,1 @@
-export { FileUploadDecoratedPropety } from './file-upload-decorated-property.enum.js';
+export { FileUploadDecoratedProperty } from './file-upload-decorated-property.enum.js';

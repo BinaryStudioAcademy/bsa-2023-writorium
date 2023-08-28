@@ -11,7 +11,7 @@ import { type FileType } from '~/libs/packages/file/file.package.js';
 import { getFileExtensionFromFileName } from '~/libs/packages/file/libs/helpers/helpers.js';
 import { type ValueOf } from '~/libs/types/types.js';
 
-import { FileUploadDecoratedPropety } from './libs/enums/enums.js';
+import { FileUploadDecoratedProperty } from './libs/enums/enums.js';
 
 type FileUploadPluginOptions = {
   supportedFileTypes?: ValueOf<typeof FileType>[];
@@ -19,7 +19,7 @@ type FileUploadPluginOptions = {
 
 const fileUploadPlugin = fp(
   (fastify, options: FileUploadPluginOptions, done) => {
-    fastify.decorateRequest(FileUploadDecoratedPropety.FILE_TO_UPLOAD, null);
+    fastify.decorateRequest(FileUploadDecoratedProperty.FILE_TO_UPLOAD, null);
 
     fastify.addHook(
       'preValidation',
