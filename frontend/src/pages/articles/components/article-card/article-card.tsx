@@ -70,9 +70,7 @@ const ArticleCard: React.FC<Properties> = ({
     <article className={styles.article}>
       <div className={styles.header}>
         <div className={styles.info}>
-          <Link to={AppRoute.PROFILE}>
-            <Avatar username={fullName} avatarUrl={null} />
-          </Link>
+          <Avatar username={fullName} avatarUrl={null} />
           <span className={styles.publisherName}>{fullName}</span>
           <span className={styles.publicationTime}>{publishedAt}</span>
           <span className={styles.publicationTime}>{timeSincePublication}</span>
