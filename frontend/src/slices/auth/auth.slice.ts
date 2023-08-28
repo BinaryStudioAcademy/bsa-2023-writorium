@@ -4,7 +4,7 @@ import { DataStatus } from '~/libs/enums/enums.js';
 import { type ValueOf } from '~/libs/types/types.js';
 import { type UserAuthResponseDto as User } from '~/packages/users/users.js';
 
-import { getCurrentUser, logout,signIn, signUp } from './actions.js';
+import { getCurrentUser, logout, signIn, signUp } from './actions.js';
 
 type State = {
   dataStatus: ValueOf<typeof DataStatus>;

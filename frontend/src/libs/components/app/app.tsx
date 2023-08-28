@@ -5,7 +5,7 @@ import {
   useAppSelector,
   useEffect,
 } from '~/libs/hooks/hooks.js';
-import { storage,StorageKey } from '~/libs/packages/storage/storage.js';
+import { storage, StorageKey } from '~/libs/packages/storage/storage.js';
 import { actions } from '~/slices/auth/auth.js';
 
 import { Loader } from '../loader/loader.js';
