@@ -5,6 +5,7 @@ import {
   type FieldValues,
 } from 'react-hook-form';
 
+import { ErrorMessage } from '~/libs/components/components.js';
 import { InputType } from '~/libs/enums/input-type.enum';
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
 import { useFormController } from '~/libs/hooks/hooks.js';
@@ -53,13 +54,10 @@ const Input = <T extends FieldValues>({
         type={type}
         placeholder={placeholder}
       />
-      {hasError && (
-        <span className={getValidClassNames(styles.text)}>
-          {error as string}
-        </span>
-      )}
+      <ErrorMessage error={error as string} />
     </label>
   );
 };
 
 export { Input };
+export { type Properties as InputProperties };

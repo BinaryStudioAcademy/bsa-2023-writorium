@@ -1,16 +1,3 @@
-.wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  max-width: 327px;
-}
-
-.messageWrapper {
-  position: absolute;
-  bottom: 40px;
-}
-
 .form {
   width: 100%;
 }
@@ -36,4 +23,9 @@
   color: var(--light-green);
   font-size: 16px;
   font-family: Lato, sans-serif;
+}
+
+.messageWrapper {
+  position: absolute;
+  bottom: 40px;
 }
