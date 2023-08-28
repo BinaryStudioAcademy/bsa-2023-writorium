@@ -1,3 +1,4 @@
+import { type FastifyInstance, type FastifyRequest } from 'fastify';
 import fp from 'fastify-plugin';
 
 import {
@@ -17,10 +18,10 @@ type Options = {
 };
 
 const authorization = fp(
-  (fastify, { routesWhiteList, services }: Options, done) => {
+  (fastify: FastifyInstance, { routesWhiteList, services }: Options, done) => {
     fastify.decorateRequest('user', null);
 
-    fastify.addHook('onRequest', async (request) => {
+    fastify.addHook('onRequest', async (request: FastifyRequest) => {
       const isWhiteRoute = routesWhiteList.some((whiteRoute) => {
         const isWhitePath = whiteRoute.routerPath === request.routerPath;
         const isAllowedMethod = whiteRoute.methods.includes(
