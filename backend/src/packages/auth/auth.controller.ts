@@ -51,6 +51,11 @@ class AuthController extends Controller {
           }>,
         ),
     });
+    this.addRoute({
+      path: AuthApiPath.USER,
+      method: 'GET',
+      handler: (options) => this.getCurrentUser(options),
+    });
   }
 
   /**
@@ -135,6 +140,13 @@ class AuthController extends Controller {
     return {
       status: HttpCode.CREATED,
       payload: await this.authService.signUp(options.body),
+    };
+  }
+
+  private getCurrentUser(options: ApiHandlerOptions): ApiHandlerResponse {
+    return {
+      status: HttpCode.OK,
+      payload: options.user,
     };
   }
 }
