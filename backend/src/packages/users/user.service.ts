@@ -1,3 +1,4 @@
+import { ExceptionMessage } from '~/libs/enums/enums.js';
 import { ApplicationError } from '~/libs/exceptions/exceptions.js';
 import { type IService } from '~/libs/interfaces/interfaces.js';
 import { type IConfig } from '~/libs/packages/config/config.js';
@@ -97,7 +98,7 @@ class UserService implements IService {
 
     if (user && user.id !== id) {
       throw new ApplicationError({
-        message: 'Email is already used!',
+        message: ExceptionMessage.EMAIL_IS_ALREADY_USED,
       });
     }
 
