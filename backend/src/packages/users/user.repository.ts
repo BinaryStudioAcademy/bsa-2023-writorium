@@ -95,8 +95,30 @@ class UserRepository implements IRepository {
     });
   }
 
-  public update(): ReturnType<IRepository['update']> {
-    return Promise.resolve(null);
+  public async update(entity: UserEntity): Promise<UserEntity> {
+    const { id, firstName, lastName, email } = entity.toObject();
+
+    const user = await this.userModel
+      .query()
+      .upsertGraphAndFetch({
+        id,
+        email,
+        userDetails: {
+          firstName,
+          lastName,
+        },
+      })
+      .withGraphFetched(this.defaultRelationExpression)
+      .execute();
+
+    return UserEntity.initialize({
+      id: user.id,
+      email: user.email,
+      firstName: user.userDetails.firstName,
+      lastName: user.userDetails.lastName,
+      passwordHash: user.passwordHash,
+      passwordSalt: user.passwordSalt,
+    });
   }
 
   public delete(): ReturnType<IRepository['delete']> {
