@@ -37,4 +37,22 @@ const signIn = createAsyncThunk<
   return user;
 });
 
-export { signIn, signUp };
+const getCurrentUser = createAsyncThunk<
+  UserAuthResponseDto,
+  undefined,
+  AsyncThunkConfig
+>(`${sliceName}/getCurrentUser`, async (_loginPayload, { extra }) => {
+  const { authApi } = extra;
+  return await authApi.getCurentUser();
+});
+
+const logout = createAsyncThunk<null, undefined, AsyncThunkConfig>(
+  `${sliceName}/logout`,
+  async (_loginPayload, { extra }) => {
+    const { storage } = extra;
+    await storage.drop(StorageKey.TOKEN);
+    return null;
+  },
+);
+
+export { getCurrentUser, logout, signIn, signUp };
