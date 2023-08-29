@@ -10,7 +10,7 @@ type Properties = {
 
 const PublicRoute: React.FC<Properties> = ({
   children,
-  redirectPath = AppRoute.ROOT,
+  redirectPath = AppRoute.PROFILE,
 }) => {
   const { user } = useAppSelector(({ auth }) => ({
     user: auth.user,
