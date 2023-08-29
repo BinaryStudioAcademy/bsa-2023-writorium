@@ -58,8 +58,10 @@ class ArticleService implements IService {
       return null;
     }
 
+    const detectedGenreKey = convertPlainStringToSnakeCase(detectedGenre);
+
     const existingGenre = await this.genreRepository.findByKey(
-      convertPlainStringToSnakeCase(detectedGenre),
+      detectedGenreKey,
     );
 
     if (existingGenre) {
@@ -68,7 +70,7 @@ class ArticleService implements IService {
       const newGenreEntity = await this.genreRepository.create(
         GenreEntity.initializeNew({
           name: detectedGenre,
-          key: convertPlainStringToSnakeCase(detectedGenre),
+          key: convertPlainStringToSnakeCase(detectedGenreKey),
         }),
       );
 
