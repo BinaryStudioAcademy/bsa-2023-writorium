@@ -1,12 +1,11 @@
-import { type ArticleCreateDto } from '~/packages/articles/articles.js';
+import { type ArticleRequestDto } from '~/packages/articles/articles.js';
 
-const DEFAULT_ARTICLE_FORM_PAYLOAD: ArticleCreateDto = {
+const DEFAULT_ARTICLE_FORM_PAYLOAD: ArticleRequestDto = {
   title: '',
   text: '',
-  userId: 1,
-  promptId: 1,
   genreId: 1,
   publishedAt: null,
+  promptId: null,
 };
 
 export { DEFAULT_ARTICLE_FORM_PAYLOAD };

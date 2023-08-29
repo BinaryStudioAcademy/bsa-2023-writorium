@@ -5,8 +5,11 @@ import {
   type FieldValues,
 } from 'react-hook-form';
 
+import { ErrorMessage } from '~/libs/components/components.js';
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
 import { useFormController } from '~/libs/hooks/hooks.js';
+
+import styles from './styles.module.scss';
 
 type Properties<T extends FieldValues> = {
   control: Control<T, null>;
@@ -33,9 +36,13 @@ const Textarea = <T extends FieldValues>({
       <textarea
         {...field}
         placeholder={placeholder}
-        className={getValidClassNames(className)}
+        className={getValidClassNames(
+          styles.textarea,
+          hasError && styles.error,
+          className,
+        )}
       />
-      {hasError && <span>{error as string}</span>}
+      <ErrorMessage error={error as string} />
     </label>
   );
 };

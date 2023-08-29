@@ -1,4 +1,4 @@
-import { Input, Link } from '~/libs/components/components.js';
+import { ArticleForm, Input, Link } from '~/libs/components/components.js';
 import { AppRoute } from '~/libs/enums/app-route.enum';
 import { useAppForm, useCallback } from '~/libs/hooks/hooks.js';
 import {
@@ -60,6 +60,7 @@ const SignInForm: React.FC<Properties> = ({ onSubmit }) => {
           Sign Up
         </Link>
       </div>
+      <ArticleForm />
     </>
   );
 };

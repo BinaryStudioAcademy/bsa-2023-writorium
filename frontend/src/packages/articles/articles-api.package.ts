@@ -6,7 +6,7 @@ import { type IStorage } from '~/libs/packages/storage/storage.js';
 import { ArticlesApiPath } from './libs/enums/enums.js';
 import {
   type ArticleBaseResponseDto,
-  type ArticleCreateDto,
+  type ArticleRequestDto,
 } from './libs/types/types.js';
 
 type Constructor = {
@@ -20,7 +20,7 @@ class ArticleApi extends HttpApi {
   }
 
   public async create(
-    payload: ArticleCreateDto,
+    payload: ArticleRequestDto,
   ): Promise<ArticleBaseResponseDto> {
     const response = await this.load(
       this.getFullEndpoint(ArticlesApiPath.ROOT, {}),

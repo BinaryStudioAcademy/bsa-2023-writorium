@@ -1,8 +1,8 @@
 import { ButtonType } from '~/libs/enums/button-type.enum.js';
 import { useAppDispatch, useAppForm, useCallback } from '~/libs/hooks/hooks.js';
 import {
-  type ArticleCreateDto,
   articleCreateValidationSchema,
+  type ArticleRequestDto,
 } from '~/packages/articles/articles.js';
 import { actions as articlesActions } from '~/slices/articles/articles.js';
 
@@ -12,16 +12,15 @@ import styles from './styles.module.scss';
 
 const ArticleForm: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { control, errors, handleSubmit, reset } = useAppForm<ArticleCreateDto>(
-    {
+  const { control, errors, handleSubmit, reset } =
+    useAppForm<ArticleRequestDto>({
       defaultValues: DEFAULT_ARTICLE_FORM_PAYLOAD,
       validationSchema: articleCreateValidationSchema,
-    },
-  );
+    });
 
   const handleArticleSubmit = useCallback(
     (submitType: 'draft' | 'publish') =>
-      (payload: ArticleCreateDto): void => {
+      (payload: ArticleRequestDto): void => {
         const updatedPayload = {
           ...payload,
           publishedAt:

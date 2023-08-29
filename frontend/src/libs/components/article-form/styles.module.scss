@@ -15,13 +15,8 @@
 }
 
 .postContentTextarea {
-  width: 100%;
   height: 360px;
   padding: 60px 20px;
-  font-family: Lato, sans-serif;
-  background-color: var(--white-smoke);
-  border: none;
-  border-radius: 7px;
 }
 
 .buttonWrapper {
@@ -35,9 +30,9 @@
   border-radius: 5px;
 }
 
-.cancelBtn,
-.saveDraftBtn,
-.publishBtn {
+.buttonWrapper .cancelBtn,
+.buttonWrapper .saveDraftBtn,
+.buttonWrapper .publishBtn {
   width: 100%;
   max-width: 160px;
   font-family: Lato, sans-serif;
@@ -45,7 +40,7 @@
   border: 2px solid var(--dark-green);
 }
 
-.publishBtn {
+.buttonWrapper .publishBtn {
   color: var(--white);
   background-color: var(--dark-green);
   border: 1px solid var(--dark-blue);
