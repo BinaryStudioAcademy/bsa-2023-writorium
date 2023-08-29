@@ -6,17 +6,15 @@ type Properties = {
   text: string;
 };
 
-const PromptCard: React.FC<Properties> = ({ category, text }) => {
-  return (
-    <div className={styles.container}>
-      <div className={styles.category}>
-        <span className={styles.categoryText}>{category}</span>
-      </div>
-      <div className={styles.prompt}>
-        <p className={styles.promptText}>{text}</p>
-      </div>
+const PromptCard: React.FC<Properties> = ({ category, text }) => (
+  <div className={styles.container}>
+    <div className={styles.category}>
+      <span className={styles.categoryText}>{category}</span>
     </div>
-  );
-};
+    <div className={styles.prompt}>
+      <p className={styles.promptText}>{text}</p>
+    </div>
+  </div>
+);
 
 export { PromptCard };

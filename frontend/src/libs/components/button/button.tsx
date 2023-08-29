@@ -6,7 +6,7 @@ import styles from './styles.module.scss';
 
 type Properties = {
   disabled?: boolean;
-  label: string | React.ReactNode;
+  label: React.ReactNode;
   type?: ValueOf<typeof ButtonType>;
   className?: string;
   onClick?: () => void;

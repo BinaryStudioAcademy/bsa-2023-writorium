@@ -43,9 +43,9 @@ const PromptGeneration: React.FC = () => {
           const randomIndex = Math.floor(Math.random() * prompts.length);
           updatedGeneratedPrompt[category] = prompts[randomIndex];
         }
+        setIsSpinning(false);
         return updatedGeneratedPrompt;
       });
-      setIsSpinning(false);
     }, 3000);
   }, [promptCategories]);
 
