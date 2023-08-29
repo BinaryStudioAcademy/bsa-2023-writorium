@@ -49,7 +49,8 @@ class FileController extends Controller {
    * @swagger
    * /files:
    *    post:
-   *      description: Uploads a file
+   *      summary: Upload a file
+   *      description: Uploads a file to S3 bucket
    *      requestBody:
    *        required: true
    *        content:
