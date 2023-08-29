@@ -1,8 +1,11 @@
 import { ApplicationError } from '~/libs/exceptions/exceptions.js';
+import { safeJSONParse } from '~/libs/helpers/helpers.js';
 import { type IService } from '~/libs/interfaces/service.interface.js';
+import { type OpenAIService } from '~/libs/packages/openai/openai.package.js';
 
 import { ArticleEntity } from './article.entity.js';
 import { type ArticleRepository } from './article.repository.js';
+import { getDetectArticleGenrePrompt } from './libs/helpers/get-detect-article-genre-prompt.helper.js';
 import {
   type ArticleBaseResponseDto,
   type ArticleCreateDto,
@@ -11,9 +14,31 @@ import {
 
 class ArticleService implements IService {
   private articleRepository: ArticleRepository;
+  private openAIService: OpenAIService;
 
-  public constructor(articleRepository: ArticleRepository) {
+  public constructor(
+    articleRepository: ArticleRepository,
+    openAIService: OpenAIService,
+  ) {
     this.articleRepository = articleRepository;
+    this.openAIService = openAIService;
+  }
+
+  public async detectArticleGenreFromText(
+    text: string,
+  ): Promise<string | null> {
+    const generesJSON = await this.openAIService.createCompletion({
+      temperature: 0,
+      prompt: getDetectArticleGenrePrompt(text),
+    });
+
+    if (!generesJSON) {
+      return null;
+    }
+
+    const parsedGenres = safeJSONParse<string[]>(generesJSON);
+
+    return parsedGenres?.[0] ?? null;
   }
 
   public findAll(): Promise<{ items: unknown[] }> {
