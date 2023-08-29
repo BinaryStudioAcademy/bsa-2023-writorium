@@ -1,6 +1,7 @@
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+import multipartPlugin from '@fastify/multipart';
 import fastifyStatic from '@fastify/static';
 import swagger, { type StaticDocumentSpec } from '@fastify/swagger';
 import swaggerUi from '@fastify/swagger-ui';
@@ -13,6 +14,7 @@ import { HttpCode, HttpError } from '~/libs/packages/http/http.js';
 import { type ILogger } from '~/libs/packages/logger/logger.js';
 import { token } from '~/libs/packages/token/token.js';
 import { authorization } from '~/libs/plugins/authorization/authorization.js';
+import { fileUploadPlugin } from '~/libs/plugins/file-upload/file-upload.js';
 import {
   type ServerCommonErrorResponse,
   type ServerValidationErrorResponse,
@@ -21,6 +23,11 @@ import {
 } from '~/libs/types/types.js';
 import { userService } from '~/packages/users/users.js';
 
+import {
+  convertMbToBytes,
+  MAX_FILE_SIZE_MB,
+  SUPPORTED_FILE_TYPES,
+} from '../file/file.package.js';
 import { WHITE_ROUTES } from './libs/constants/constants.js';
 import {
   type IServerApp,
@@ -87,6 +94,16 @@ class ServerApp implements IServerApp {
       whiteRoutesConfig: WHITE_ROUTES,
       userService,
       token,
+    });
+
+    await this.app.register(multipartPlugin, {
+      attachFieldsToBody: true,
+      throwFileSizeLimit: false,
+      limits: { fileSize: convertMbToBytes(MAX_FILE_SIZE_MB) },
+    });
+
+    await this.app.register(fileUploadPlugin, {
+      supportedFileTypes: SUPPORTED_FILE_TYPES,
     });
   }
 
