@@ -109,25 +109,6 @@
   gap: 22px;
 }
 
-.reaction {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.reaction .reactionIcon {
-  width: 16px;
-  height: 15px;
-}
-
-.reaction .reactionCount {
-  color: var(--dark-gray-50);
-  font-weight: 400;
-  font-size: 12px;
-  font-style: normal;
-  line-height: normal;
-}
-
 .footer .readMore {
   margin-left: auto;
   color: var(--light-green);

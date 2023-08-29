@@ -4,6 +4,8 @@ import { AppRoute } from '~/libs/enums/enums.js';
 import { type UserAuthResponseDto } from '~/packages/users/users.js';
 import { type ArticleType } from '~/pages/articles/libs/types/types.js';
 
+import { Reaction } from '../components.js';
+import { REACTIONS_LIST } from './libs/constants.js';
 import styles from './styles.module.scss';
 
 type Properties = {
@@ -12,22 +14,18 @@ type Properties = {
 };
 
 const ArticleCard: React.FC<Properties> = ({ article, user }) => {
-  const {
-    publishedAt,
-    timeSincePublication,
-    title,
-    text,
-    comments,
-    views,
-    likes,
-    dislikes,
-    tags,
-  } = article;
+  const { publishedAt, timeSincePublication, title, text, tags } = article;
 
   const { firstName, lastName } = user;
   const fullName = `${firstName} ${lastName}`;
   const renderTags = tags.map((tag) => <Tag key={tag.id} name={tag.name} />);
-
+  const renderReactions = REACTIONS_LIST.map((reaction) => (
+    <Reaction
+      key={reaction.reaction}
+      iconName={reaction.iconName}
+      reactions={article[reaction.reaction]}
+    />
+  ));
   return (
     <article className={styles.article}>
       <div className={styles.header}>
@@ -53,22 +51,7 @@ const ArticleCard: React.FC<Properties> = ({ article, user }) => {
       </div>
       <div className={styles.footer}>
         <div className={styles.reactions}>
-          <div className={styles.reaction}>
-            <Icon iconName="comment" className={styles.reactionIcon} />
-            <span className={styles.reactionCount}>{comments}</span>
-          </div>
-          <div className={styles.reaction}>
-            <Icon iconName="view" className={styles.reactionIcon} />
-            <span className={styles.reactionCount}>{views}</span>
-          </div>
-          <div className={styles.reaction}>
-            <Icon iconName="like" className={styles.reactionIcon} />
-            <span className={styles.reactionCount}>{likes}</span>
-          </div>
-          <div className={styles.reaction}>
-            <Icon iconName="dislike" className={styles.reactionIcon} />
-            <span className={styles.reactionCount}>{dislikes}</span>
-          </div>
+          {renderReactions}
           <Icon iconName="share" className={styles.reactionIcon} />
         </div>
         <Link to={AppRoute.ROOT} className={styles.readMore}>
