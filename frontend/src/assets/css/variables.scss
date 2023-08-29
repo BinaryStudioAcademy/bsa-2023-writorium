@@ -2,6 +2,7 @@
   --white: #ffffff;
   --dark-green: #2e453b;
   --dark-green-80: rgb(46 69 59 / 80%);
+  --dark-blue: #14253f;
   --light-green: #44996b;
   --light-grey: #ebece7;
   --pale-grey: #dbdbdb;
@@ -15,6 +16,9 @@
   --dark-gray-50: rgba(53 53 53 / 50%);
   --medium-brightness-gray: #919191;
   --red: #df1c3d;
+
+  /* z-index */
+  --z-index-level-one: 100;
 }
 
 input {
