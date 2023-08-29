@@ -5,6 +5,7 @@ type CompletionConfig = {
   model?: CompletionCreateParamsBase['model'];
   temperature?: number;
   maxTokens?: number;
+  frequencyPenalty?: number;
 };
 
 export { type CompletionConfig };

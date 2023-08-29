@@ -8,8 +8,9 @@ class OpenAIService {
   private openAIClient: OpenAIClient;
 
   private DEFAULT_COMPLETION_MODEL = 'gpt-3.5-turbo';
-  private DEFAULT_TEMPERATURE = 1.2;
+  private DEFAULT_TEMPERATURE = 1.5;
   private DEFAULT_MAX_TOKENS = 256;
+  private DEFAULT_FREQUENCY_PENALTY = 0.5;
 
   public constructor(config: IConfig) {
     this.config = config;
@@ -24,20 +25,23 @@ class OpenAIService {
     model = this.DEFAULT_COMPLETION_MODEL,
     temperature = this.DEFAULT_TEMPERATURE,
     maxTokens = this.DEFAULT_MAX_TOKENS,
+    frequencyPenalty = this.DEFAULT_FREQUENCY_PENALTY,
   }: CompletionConfig): Promise<string | null | undefined> {
     const modelResponse = await this.openAIClient.chat.completions.create({
       model,
       temperature,
       max_tokens: maxTokens,
+      frequency_penalty: frequencyPenalty,
       messages: [
         {
-          'role': 'system',
+          'role': 'user',
           'content': prompt,
         },
       ],
     });
 
-    return modelResponse.choices.pop()?.message.content;
+    const [modelChoice] = modelResponse.choices;
+    return modelChoice?.message.content;
   }
 }
 
