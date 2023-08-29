@@ -9,6 +9,21 @@ import { type ILogger } from '~/libs/packages/logger/logger.js';
 import { type GenreService } from './genre.service.js';
 import { GenresApiPath } from './lib/enums/enums.js';
 
+/**
+ * @swagger
+ * components:
+ *    schemas:
+ *      Genre:
+ *        type: object
+ *        properties:
+ *          id:
+ *            type: number
+ *            format: number
+ *          name:
+ *            type: string
+ *          key:
+ *            type: string
+ */
 class GenreController extends Controller {
   private genreService: GenreService;
 
@@ -24,6 +39,21 @@ class GenreController extends Controller {
     });
   }
 
+  /**
+   * @swagger
+   * /users:
+   *    get:
+   *      description: Returns an array of genres
+   *      responses:
+   *        200:
+   *          description: Successful operation
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: array
+   *                items:
+   *                  $ref: '#/components/schemas/Genre'
+   */
   private async findAll(): Promise<ApiHandlerResponse> {
     return {
       status: HttpCode.OK,
