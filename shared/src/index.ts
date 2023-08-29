@@ -37,6 +37,7 @@ export {
 } from './packages/articles/articles.js';
 export { AuthApiPath } from './packages/auth/auth.js';
 export { FilesApiPath } from './packages/files/files.js';
+export { PromptsApiPath } from './packages/prompts/prompts.js';
 export {
   type UserAuthResponseDto,
   type UserGetAllItemResponseDto,
