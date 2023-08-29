@@ -86,8 +86,6 @@ const ArticleCard: React.FC<Properties> = ({
         <img
           src={ArticlePreview}
           alt="article preview"
-          width="134"
-          height="134"
           className={styles.preview}
         />
       </div>
