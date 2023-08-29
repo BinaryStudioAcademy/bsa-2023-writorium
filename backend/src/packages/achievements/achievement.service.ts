@@ -1,7 +1,10 @@
 import { type IService } from '~/libs/interfaces/service.interface.js';
 
 import { type AchievementRepository } from './achievement.repository.js';
-import { type AchievementBaseResponseDto, type AchievementGetAllResponseDto } from './libs/types/types.js';
+import {
+  type AchievementBaseResponseDto,
+  type AchievementGetAllResponseDto,
+} from './libs/types/types.js';
 
 class AchievementService implements IService {
   private achievementRepository: AchievementRepository;

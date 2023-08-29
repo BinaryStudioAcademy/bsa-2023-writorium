@@ -4,7 +4,6 @@ import { AchievementEntity } from './achievement.entity.js';
 import { type AchievementModel } from './achievement.model.js';
 
 class AchievementRepository implements IRepository {
-
   private achievementModel: typeof AchievementModel;
 
   public constructor(achievementModel: typeof AchievementModel) {
@@ -12,7 +11,10 @@ class AchievementRepository implements IRepository {
   }
 
   public async find(id: number): Promise<AchievementEntity | null> {
-    const achievement = await this.achievementModel.query().findById(id).execute();
+    const achievement = await this.achievementModel
+      .query()
+      .findById(id)
+      .execute();
 
     if (!achievement) {
       return null;

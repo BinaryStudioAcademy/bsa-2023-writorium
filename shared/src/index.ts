@@ -25,7 +25,12 @@ export {
   type ValueOf,
   type WithNullableKeys,
 } from './libs/types/types.js';
-export { type AchievementBaseResponseDto, type AchievementEntityType,type AchievementGetAllResponseDto } from './packages/achievements/achievements.js';
+export {
+  type AchievementBaseResponseDto,
+  type AchievementEntityType,
+  type AchievementGetAllResponseDto,
+  AchievementsApiPath,
+} from './packages/achievements/achievements.js';
 export {
   type ArticleBaseResponseDto,
   type ArticleCreateDto,
