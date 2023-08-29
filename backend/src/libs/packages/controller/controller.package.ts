@@ -49,7 +49,6 @@ class Controller implements IController {
     request: Parameters<ServerAppRouteParameters['handler']>[0],
   ): ApiHandlerOptions {
     const { body, query, params, user } = request;
-
     return {
       body,
       query,
