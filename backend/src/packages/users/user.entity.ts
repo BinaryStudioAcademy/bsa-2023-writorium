@@ -119,8 +119,8 @@ class UserEntity implements IEntity {
     passwordSalt: string;
   } {
     return {
-      passwordHash: this.passwordHash,
-      passwordSalt: this.passwordSalt,
+      passwordHash: this.passwordHash as string,
+      passwordSalt: this.passwordSalt as string,
     };
   }
 }
