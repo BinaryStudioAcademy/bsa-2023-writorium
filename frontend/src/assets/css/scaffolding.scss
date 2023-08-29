@@ -1,6 +1,7 @@
 * {
   box-sizing: border-box;
   margin: 0;
+  padding: 0;
 }
 
 body {
@@ -12,6 +13,7 @@ body {
   font-size: 14px;
   font-family: Lato, Arial, sans-serif;
   line-height: 1.5;
+  background-color: var(--light-grey);
 }
 
 #root {
@@ -31,4 +33,18 @@ body {
   border: 0;
   clip: rect(0 0 0 0);
   clip-path: inset(100%);
+}
+
+ul,
+ol,
+li {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+button {
+  cursor: pointer;
 }
