@@ -43,9 +43,6 @@ class Database implements IDatabase {
         directory: 'src/db/migrations',
         tableName: DatabaseTableName.MIGRATIONS,
       },
-      seeds: {
-        directory: 'src/db/seeds',
-      },
       debug: false,
       ...knexSnakeCaseMappers({ underscoreBetweenUppercaseLetters: true }),
     };
