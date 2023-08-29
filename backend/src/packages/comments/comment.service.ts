@@ -1,0 +1,75 @@
+import { ApplicationError } from '~/libs/exceptions/exceptions.js';
+import { type IService } from '~/libs/interfaces/service.interface.js';
+
+import { CommentEntity } from './comment.entity.js';
+import { type CommentRepository } from './comment.repository.js';
+import {
+  type CommentBaseResponseDto,
+  type CommentCreateDto,
+  type CommentUpdateRequestDto,
+} from './libs/types/types.js';
+
+class CommentService implements IService {
+  private commentRepository: CommentRepository;
+
+  public constructor(commentRepository: CommentRepository) {
+    this.commentRepository = commentRepository;
+  }
+
+  public findAll(): Promise<{ items: unknown[] }> {
+    return Promise.resolve({ items: [] });
+  }
+
+  public async find(id: number): Promise<CommentBaseResponseDto | null> {
+    const comment = await this.commentRepository.find(id);
+
+    if (!comment) {
+      return null;
+    }
+
+    return comment.toObject();
+  }
+
+  public async create(
+    payload: CommentCreateDto,
+  ): Promise<CommentBaseResponseDto> {
+    const comment = await this.commentRepository.create(
+      CommentEntity.initializeNew({
+        text: payload.text,
+        userId: payload.userId,
+        articleId: payload.articleId,
+        publishedAt: payload?.publishedAt ?? null,
+      }),
+    );
+
+    return comment.toObject();
+  }
+
+  public async update(
+    id: number,
+    payload: CommentUpdateRequestDto,
+  ): Promise<CommentBaseResponseDto> {
+    const comment = await this.find(id);
+
+    if (!comment) {
+      throw new ApplicationError({
+        message: `Comment with id ${id} not found`,
+      });
+    }
+
+    const updatedComment = await this.commentRepository.update(
+      CommentEntity.initialize({
+        ...comment,
+        ...payload,
+      }),
+    );
+
+    return updatedComment.toObject();
+  }
+
+  public delete(): Promise<boolean> {
+    return Promise.resolve(false);
+  }
+}
+
+export { CommentService };
