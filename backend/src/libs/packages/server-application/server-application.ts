@@ -1,7 +1,9 @@
 import { config } from '~/libs/packages/config/config.js';
 import { database } from '~/libs/packages/database/database.js';
 import { logger } from '~/libs/packages/logger/logger.js';
+import { articleController } from '~/packages/articles/articles.js';
 import { authController } from '~/packages/auth/auth.js';
+import { fileController } from '~/packages/files/files.js';
 import { genreController } from '~/packages/genres/genre.js';
 import { userController } from '~/packages/users/users.js';
 
@@ -14,6 +16,8 @@ const apiV1 = new ServerAppApi(
   ...authController.routes,
   ...userController.routes,
   ...genreController.routes,
+  ...fileController.routes,
+  ...articleController.routes,
 );
 const serverApp = new ServerApp({
   config,
@@ -23,4 +27,7 @@ const serverApp = new ServerApp({
 });
 
 export { serverApp };
-export { type ServerAppRouteParameters } from './libs/types/types.js';
+export {
+  type ServerAppRouteParameters,
+  type WhiteRoute,
+} from './libs/types/types.js';

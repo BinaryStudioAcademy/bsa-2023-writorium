@@ -23,8 +23,20 @@ export {
   type ValidationError,
   type ValidationSchema,
   type ValueOf,
+  type WithNullableKeys,
 } from './libs/types/types.js';
+export {
+  type ArticleBaseResponseDto,
+  type ArticleCreateDto,
+  articleCreateValidationSchema,
+  type ArticleEntityType,
+  type ArticleRequestDto,
+  ArticlesApiPath,
+  type ArticleUpdateRequestDto,
+  articleUpdateValidationSchema,
+} from './packages/articles/articles.js';
 export { AuthApiPath } from './packages/auth/auth.js';
+export { FilesApiPath } from './packages/files/files.js';
 export {
   type GenreGetAllItemResponseDto,
   type GenreGetAllResponseDto,
