@@ -100,7 +100,9 @@ createRoot(document.querySelector('#root') as HTMLElement).render(
               {
                 path: AppRoute.ARTICLES,
                 element: (
-                  <Articles articles={MOCKED_ARTICLES} user={MOCKED_USER} />
+                  <ProtectedRoute>
+                    <Articles articles={MOCKED_ARTICLES} user={MOCKED_USER} />
+                  </ProtectedRoute>
                 ),
               },
             ],
