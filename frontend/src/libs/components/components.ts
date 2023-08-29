@@ -1,11 +1,14 @@
 export { App } from './app/app.js';
 export { Avatar } from './avatar/avatar.js';
 export { Button } from './button/button.js';
+export { ErrorMessage } from './error-message/error-message.js';
 export { Header } from './header/header.js';
 export { Icon } from './icon/icon.js';
 export { Input } from './input/input.js';
 export { Link } from './link/link.js';
+export { Modal } from './modal/modal.js';
 export { Notification } from './notification/notification.js';
+export { Portal } from './portal/portal.js';
 export { ProtectedRoute } from './protected-route/protected-route.jsx';
 export { RouterProvider } from './router-provider/router-provider.jsx';
 export { Tag } from './tag/tag.js';

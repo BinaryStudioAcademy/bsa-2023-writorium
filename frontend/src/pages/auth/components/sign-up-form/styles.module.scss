@@ -1,0 +1,31 @@
+.form {
+  width: 100%;
+}
+
+.fieldset {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 0 0 18px;
+  padding: 0;
+  border: none;
+}
+
+.message {
+  margin-right: 5px;
+  color: var(--dark-blue-70);
+  font-size: 16px;
+  font-family: Lato, sans-serif;
+  opacity: 0.7;
+}
+
+.link {
+  color: var(--light-green);
+  font-size: 16px;
+  font-family: Lato, sans-serif;
+}
+
+.messageWrapper {
+  position: absolute;
+  bottom: 40px;
+}
