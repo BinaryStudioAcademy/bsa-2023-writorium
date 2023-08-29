@@ -3,6 +3,8 @@ import { type WithNullableKeys } from '~/libs/types/types.js';
 
 import { type AchievementEntityType } from './libs/types/types.js';
 
+type AchievementEntityPayloadType = Omit<AchievementEntityType, 'id'>;
+
 class AchievementEntity implements IEntity {
   private 'id': number | null;
 
@@ -42,7 +44,7 @@ class AchievementEntity implements IEntity {
     key,
     name,
     description,
-  }: Omit<AchievementEntityType, 'id'>): AchievementEntity {
+  }: AchievementEntityPayloadType): AchievementEntity {
     return new AchievementEntity({
       id: null,
       key,
@@ -60,7 +62,7 @@ class AchievementEntity implements IEntity {
     };
   }
 
-  public toNewObject(): Omit<AchievementEntityType, 'id'> {
+  public toNewObject(): AchievementEntityPayloadType {
     return {
       key: this.key,
       name: this.name,
