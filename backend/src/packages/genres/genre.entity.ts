@@ -1,4 +1,5 @@
 import { type IEntity } from '~/libs/interfaces/interfaces.js';
+import { type WithNullableKeys } from '~/libs/types/types.js';
 
 type Genre = {
   id: number;
@@ -7,13 +8,13 @@ type Genre = {
 };
 
 class GenreEntity implements IEntity {
-  private 'id': number;
+  private 'id': number | null;
 
   private 'name': string;
 
   private 'key': string;
 
-  private constructor({ id, name, key }: Genre) {
+  private constructor({ id, name, key }: WithNullableKeys<Genre, 'id'>) {
     this.id = id;
     this.name = name;
     this.key = key;
@@ -27,16 +28,24 @@ class GenreEntity implements IEntity {
     });
   }
 
+  public static initializeNew({ name, key }: Omit<Genre, 'id'>): GenreEntity {
+    return new GenreEntity({
+      id: null,
+      name,
+      key,
+    });
+  }
+
   public toObject(): Genre {
     return {
-      id: this.id,
+      id: this.id as number,
       name: this.name,
       key: this.key,
     };
   }
 
-  public toNewObject(): unknown {
-    return;
+  public toNewObject(): Omit<Genre, 'id'> {
+    return { name: this.name, key: this.key };
   }
 }
 
