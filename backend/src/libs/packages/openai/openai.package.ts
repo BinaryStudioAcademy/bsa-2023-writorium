@@ -26,7 +26,7 @@ class OpenAIService {
     temperature = this.DEFAULT_TEMPERATURE,
     maxTokens = this.DEFAULT_MAX_TOKENS,
     frequencyPenalty = this.DEFAULT_FREQUENCY_PENALTY,
-  }: CompletionConfig): Promise<string | null | undefined> {
+  }: CompletionConfig): Promise<string | null> {
     const modelResponse = await this.openAIClient.chat.completions.create({
       model,
       temperature,
@@ -41,7 +41,7 @@ class OpenAIService {
     });
 
     const [modelChoice] = modelResponse.choices;
-    return modelChoice?.message.content;
+    return modelChoice?.message.content ?? null;
   }
 }
 
