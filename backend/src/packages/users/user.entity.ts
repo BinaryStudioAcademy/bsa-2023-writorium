@@ -113,6 +113,16 @@ class UserEntity implements IEntity {
       lastName: this.lastName,
     };
   }
+
+  public get privateData(): {
+    passwordHash: string;
+    passwordSalt: string;
+  } {
+    return {
+      passwordHash: this.passwordHash,
+      passwordSalt: this.passwordSalt,
+    };
+  }
 }
 
 export { UserEntity };
