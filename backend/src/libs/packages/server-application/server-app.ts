@@ -12,6 +12,7 @@ import { type IConfig } from '~/libs/packages/config/config.js';
 import { type IDatabase } from '~/libs/packages/database/database.js';
 import { HttpCode, HttpError } from '~/libs/packages/http/http.js';
 import { type ILogger } from '~/libs/packages/logger/logger.js';
+import { token } from '~/libs/packages/token/token.js';
 import { authorization } from '~/libs/plugins/authorization/authorization.js';
 import { fileUploadPlugin } from '~/libs/plugins/file-upload/file-upload.js';
 import {
@@ -88,6 +89,24 @@ class ServerApp implements IServerApp {
     this.addRoutes(routers);
   }
 
+  private async initPlugins(): Promise<void> {
+    await this.app.register(authorization, {
+      whiteRoutesConfig: WHITE_ROUTES,
+      userService,
+      token,
+    });
+
+    await this.app.register(multipartPlugin, {
+      attachFieldsToBody: true,
+      throwFileSizeLimit: false,
+      limits: { fileSize: convertMbToBytes(MAX_FILE_SIZE_MB) },
+    });
+
+    await this.app.register(fileUploadPlugin, {
+      supportedFileTypes: SUPPORTED_FILE_TYPES,
+    });
+  }
+
   public async initMiddlewares(): Promise<void> {
     await Promise.all(
       this.apis.map(async (it) => {
@@ -104,23 +123,6 @@ class ServerApp implements IServerApp {
 
         await this.app.register(swaggerUi, {
           routePrefix: `${it.version}/documentation`,
-        });
-
-        await this.app.register(authorization, {
-          services: {
-            userService,
-          },
-          routesWhiteList: WHITE_ROUTES,
-        });
-
-        await this.app.register(multipartPlugin, {
-          attachFieldsToBody: true,
-          throwFileSizeLimit: false,
-          limits: { fileSize: convertMbToBytes(MAX_FILE_SIZE_MB) },
-        });
-
-        await this.app.register(fileUploadPlugin, {
-          supportedFileTypes: SUPPORTED_FILE_TYPES,
         });
       }),
     );
@@ -203,6 +205,8 @@ class ServerApp implements IServerApp {
     this.logger.info('Application initialization…');
 
     await this.initServe();
+
+    await this.initPlugins();
 
     await this.initMiddlewares();
 
