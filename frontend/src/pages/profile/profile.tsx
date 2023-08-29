@@ -12,7 +12,7 @@ import {
 } from '~/packages/users/users.js';
 import { actions as usersActions } from '~/slices/users/users.js';
 
-import { ProfileEditForm } from './components/profile-edit-form/profile-edit-form.js';
+import { ProfileEditForm } from './components/components.js';
 import styles from './styles.module.scss';
 
 const mockedUser = {
@@ -23,7 +23,7 @@ const mockedUser = {
 };
 
 const Profile: React.FC = () => {
-  const [editMode, setEditMode] = useState(false);
+  const [isEditingProfile, setIsEditingProfile] = useState(false);
   const { user } = useAppSelector(({ auth }) => ({
     user: auth.user as UserAuthResponseDto,
   }));
@@ -39,7 +39,10 @@ const Profile: React.FC = () => {
     [dispatch],
   );
 
-  const handleEditMode = useCallback((value = true) => setEditMode(value), []);
+  const handleEditMode = useCallback(
+    (value = true) => setIsEditingProfile(value),
+    [],
+  );
 
   return (
     <div className={styles.profile}>
@@ -49,7 +52,7 @@ const Profile: React.FC = () => {
           avatarUrl={null}
           className={styles.avatar}
         />
-        {editMode ? (
+        {isEditingProfile ? (
           <ProfileEditForm
             user={currentUser}
             onUpdateUser={handleUpdateUser}
