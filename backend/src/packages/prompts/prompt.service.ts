@@ -1,3 +1,4 @@
+import { safeJSONParse } from '~/libs/helpers/helpers.js';
 import { type IService } from '~/libs/interfaces/interfaces.js';
 import { FailedToGeneratePromptError } from '~/libs/packages/exceptions/exceptions.js';
 import { type OpenAIService } from '~/libs/packages/openai/openai.package.js';
@@ -15,10 +16,6 @@ class PromptService implements IService {
     this.openAIService = openAIService;
   }
 
-  private parsePromptJSON(promptJSON: string): GeneratedArticlePrompt {
-    return JSON.parse(promptJSON) as GeneratedArticlePrompt;
-  }
-
   public async generate(): Promise<GenerateArticlePromptResponseDto> {
     const promptJSON = await this.openAIService.createCompletion({
       prompt: ARTICLE_PROMPT_COMPLETION_MESSAGE,
@@ -28,11 +25,13 @@ class PromptService implements IService {
       throw new FailedToGeneratePromptError();
     }
 
-    try {
-      return this.parsePromptJSON(promptJSON);
-    } catch {
+    const parsedPrompt = safeJSONParse<GeneratedArticlePrompt>(promptJSON);
+
+    if (!parsedPrompt) {
       throw new FailedToGeneratePromptError();
     }
+
+    return parsedPrompt;
   }
 
   public find(): ReturnType<IService['find']> {

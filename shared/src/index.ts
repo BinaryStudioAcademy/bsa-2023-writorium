@@ -5,7 +5,7 @@ export {
   ServerErrorType,
 } from './libs/enums/enums.js';
 export { ApplicationError, HttpError } from './libs/exceptions/exceptions.js';
-export { configureString } from './libs/helpers/helpers.js';
+export { configureString, safeJSONParse } from './libs/helpers/helpers.js';
 export { type IConfig } from './libs/packages/config/config.js';
 export {
   HttpCode,
