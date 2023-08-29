@@ -1,1 +1,1 @@
-export { type AchievementEntityType } from 'shared/build/index.js';
+export { type AchievementBaseResponseDto, type AchievementEntityType, type AchievementGetAllResponseDto } from 'shared/build/index.js';
