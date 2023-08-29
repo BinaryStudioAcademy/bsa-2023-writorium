@@ -11,13 +11,55 @@ import { type UserAuthResponseDto } from '~/packages/users/users.js';
 
 import { ArticlesApiPath } from './libs/enums/enums.js';
 import {
-  type ArticleCreateRequestDto,
+  type ArticleRequestDto,
   type ArticleUpdateRequestDto,
 } from './libs/types/types.js';
 import {
   articleCreateValidationSchema,
   articleUpdateValidationSchema,
 } from './libs/validation-schemas/validation-schemas.js';
+
+/**
+ * @swagger
+ * components:
+ *    schemas:
+ *      Article:
+ *        type: object
+ *        properties:
+ *          id:
+ *            type: integer
+ *            format: int64
+ *            minimum: 1
+ *            example: 10
+ *            readOnly: true
+ *          title:
+ *            type: string
+ *            minLength: 3
+ *            maxLength: 30
+ *          text:
+ *            type: string
+ *            minLength: 50
+ *          userId:
+ *            type: integer
+ *            format: int64
+ *            minimum: 1
+ *            example: 10
+ *            readOnly: true
+ *          promptId:
+ *            type: integer
+ *            format: int64
+ *            nullable: true
+ *            example: null
+ *          genreId:
+ *            type: integer
+ *            format: int64
+ *            example: 198772
+ *          publishedAt:
+ *           type: string
+ *           format: date-time
+ *           nullable: true
+ *           example: 2023-08-26T11:21:14.994Z
+ */
 
 class ArticleController extends Controller {
   private articleService: ArticleService;
@@ -37,14 +79,14 @@ class ArticleController extends Controller {
         this.create(
           options as ApiHandlerOptions<{
             user: UserAuthResponseDto;
-            body: ArticleCreateRequestDto;
+            body: ArticleRequestDto;
           }>,
         ),
     });
 
     this.addRoute({
       path: ArticlesApiPath.$ID,
-      method: 'PUT',
+      method: 'PATCH',
       validation: {
         body: articleUpdateValidationSchema,
       },
@@ -58,10 +100,33 @@ class ArticleController extends Controller {
     });
   }
 
+  /**
+   * @swagger
+   * /articles/:
+   *    post:
+   *      summary: Add a new article
+   *      description: Add a new article
+   *      security:
+   *        - bearerAuth: []
+   *      requestBody:
+   *        description: Create a new article
+   *        required: true
+   *        content:
+   *          application/json:
+   *            schema:
+   *              $ref: '#/components/schemas/Article'
+   *      responses:
+   *        200:
+   *          description: Successful operation
+   *          content:
+   *            application/json:
+   *              schema:
+   *                $ref: '#/components/schemas/Article'
+   */
   private async create(
     options: ApiHandlerOptions<{
       user: UserAuthResponseDto;
-      body: ArticleCreateRequestDto;
+      body: ArticleRequestDto;
     }>,
   ): Promise<ApiHandlerResponse> {
     return {
@@ -73,6 +138,29 @@ class ArticleController extends Controller {
     };
   }
 
+  /**
+   * @swagger
+   * /articles/:id:
+   *    put:
+   *      summary: Update an existing article
+   *      description: Update an existing article by id
+   *      security:
+   *        - bearerAuth: []
+   *      requestBody:
+   *        description: Create a new article
+   *        required: true
+   *        content:
+   *          application/json:
+   *            schema:
+   *              $ref: '#/components/schemas/Article'
+   *      responses:
+   *        200:
+   *          description: Successful operation
+   *          content:
+   *            application/json:
+   *              schema:
+   *                $ref: '#/components/schemas/Article'
+   */
   private async update(
     options: ApiHandlerOptions<{
       params: { id: number };

@@ -5,8 +5,8 @@ import { type IStorage } from '~/libs/packages/storage/storage.js';
 
 import { ArticlesApiPath } from './libs/enums/enums.js';
 import {
-  type ArticleCreateRequestDto,
-  type ArticleCreateResponseDto,
+  type ArticleBaseResponseDto,
+  type ArticleCreateDto,
 } from './libs/types/types.js';
 
 type Constructor = {
@@ -20,8 +20,8 @@ class ArticleApi extends HttpApi {
   }
 
   public async create(
-    payload: ArticleCreateRequestDto,
-  ): Promise<ArticleCreateResponseDto> {
+    payload: ArticleCreateDto,
+  ): Promise<ArticleBaseResponseDto> {
     const response = await this.load(
       this.getFullEndpoint(ArticlesApiPath.ROOT, {}),
       {
@@ -32,7 +32,7 @@ class ArticleApi extends HttpApi {
       },
     );
 
-    return await response.json<ArticleCreateResponseDto>();
+    return await response.json<ArticleBaseResponseDto>();
   }
 }
 

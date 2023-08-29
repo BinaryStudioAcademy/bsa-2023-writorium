@@ -2,15 +2,15 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { type AsyncThunkConfig } from '~/libs/types/types.js';
 import {
-  type ArticleCreateRequestDto,
-  type ArticleCreateResponseDto,
+  type ArticleBaseResponseDto,
+  type ArticleCreateDto,
 } from '~/packages/articles/articles.js';
 
 import { name as sliceName } from './articles.slice.js';
 
 const createArticle = createAsyncThunk<
-  ArticleCreateResponseDto,
-  ArticleCreateRequestDto,
+  ArticleBaseResponseDto,
+  ArticleCreateDto,
   AsyncThunkConfig
 >(`${sliceName}/create`, (articlePayload, { extra }) => {
   const { articleApi } = extra;

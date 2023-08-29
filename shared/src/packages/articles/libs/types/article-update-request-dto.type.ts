@@ -1,5 +1,5 @@
-import { type ArticleCreateRequestDto } from './article-create-request-dto.type.js';
+import { type ArticleRequestDto } from './article-request-dto.type.js';
 
-type ArticleUpdateRequestDto = Partial<ArticleCreateRequestDto>;
+type ArticleUpdateRequestDto = Partial<ArticleRequestDto>;
 
 export { type ArticleUpdateRequestDto };

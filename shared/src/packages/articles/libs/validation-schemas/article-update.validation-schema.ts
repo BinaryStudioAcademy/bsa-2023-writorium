@@ -4,10 +4,10 @@ import {
   ArticleValidationMessage,
   ArticleValidationRule,
 } from '~/packages/articles/libs/enums/enums.js';
-import { type ArticleCreateRequestDto } from '~/packages/articles/libs/types/types.js';
+import { type ArticleRequestDto } from '~/packages/articles/libs/types/types.js';
 
 const articleUpdate = joi
-  .object<ArticleCreateRequestDto, true>({
+  .object<ArticleRequestDto, true>({
     title: joi
       .string()
       .min(ArticleValidationRule.ARTICLE_TITLE_MIN_LENGTH)
@@ -24,9 +24,9 @@ const articleUpdate = joi
       .messages({
         'string.min': ArticleValidationMessage.ARTICLE_TEXT_MIN_LENGTH,
       }),
-    promptId: joi.number().integer().positive(),
+    promptId: joi.number().integer().positive().allow(null),
     genreId: joi.number().integer().positive(),
-    publishedAt: joi.string().isoDate().messages({
+    publishedAt: joi.string().isoDate().allow(null).messages({
       'string.isoDate': ArticleValidationMessage.ARTICLE_PUBLISHED_ISO_DATE,
     }),
   })

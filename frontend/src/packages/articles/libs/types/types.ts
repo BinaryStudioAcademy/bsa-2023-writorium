@@ -1,4 +1,4 @@
 export {
-  type ArticleCreateRequestDto,
-  type ArticleCreateResponseDto,
+  type ArticleBaseResponseDto,
+  type ArticleCreateDto,
 } from 'shared/build/index.js';

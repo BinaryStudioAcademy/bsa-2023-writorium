@@ -4,11 +4,9 @@ import { type IService } from '~/libs/interfaces/service.interface.js';
 import { ArticleEntity } from './article.entity.js';
 import { type ArticleRepository } from './article.repository.js';
 import {
+  type ArticleBaseResponseDto,
   type ArticleCreateDto,
-  type ArticleCreateResponseDto,
-  type ArticleGetItemResponseDto,
   type ArticleUpdateRequestDto,
-  type ArticleUpdateResponseDto,
 } from './libs/types/types.js';
 
 class ArticleService implements IService {
@@ -22,7 +20,7 @@ class ArticleService implements IService {
     return Promise.resolve({ items: [] });
   }
 
-  public async find(id: number): Promise<ArticleGetItemResponseDto | null> {
+  public async find(id: number): Promise<ArticleBaseResponseDto | null> {
     const article = await this.articleRepository.find(id);
 
     if (!article) {
@@ -34,7 +32,7 @@ class ArticleService implements IService {
 
   public async create(
     payload: ArticleCreateDto,
-  ): Promise<ArticleCreateResponseDto> {
+  ): Promise<ArticleBaseResponseDto> {
     const article = await this.articleRepository.create(
       ArticleEntity.initializeNew({
         title: payload.title,
@@ -52,7 +50,7 @@ class ArticleService implements IService {
   public async update(
     id: number,
     payload: ArticleUpdateRequestDto,
-  ): Promise<ArticleUpdateResponseDto> {
+  ): Promise<ArticleBaseResponseDto> {
     const article = await this.find(id);
 
     if (!article) {

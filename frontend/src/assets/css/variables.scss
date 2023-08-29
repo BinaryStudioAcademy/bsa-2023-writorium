@@ -3,13 +3,22 @@
   --white-smoke: #f8f8f8;
   --dark-green: #2e453b;
   --dark-green-80: rgb(46 69 59 / 80%);
+  --dark-blue: #14253f;
   --light-green: #44996b;
   --light-grey: #ebece7;
+  --pale-grey: #dbdbdb;
   --black: #000000;
   --dark-blue-70: rgb(20 37 63 / 70%);
   --green: #12b76a;
-  --dark-blue: #14253f;
+  --pale-gray: #f8f8f8;
+  --dark-gray: #353535;
+  --dark-gray-40: rgba(53 53 53 / 40%);
+  --dark-gray-50: rgba(53 53 53 / 50%);
+  --medium-brightness-gray: #919191;
   --red: #df1c3d;
+
+  /* z-index */
+  --z-index-level-one: 100;
 }
 
 input {
