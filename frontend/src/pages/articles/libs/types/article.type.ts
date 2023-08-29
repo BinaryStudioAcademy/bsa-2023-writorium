@@ -1,4 +1,4 @@
-import { type TagType } from '../../components/article-card/libs/types/types.js';
+import { type TagType } from './tag.type.js';
 
 type ArticleType = {
   id: number;
