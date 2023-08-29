@@ -1,5 +1,11 @@
 import { type IEntity } from '~/libs/interfaces/interfaces.js';
 
+type Genre = {
+  id: number;
+  name: string;
+  key: string;
+};
+
 class GenreEntity implements IEntity {
   private 'id': number;
 
@@ -7,29 +13,13 @@ class GenreEntity implements IEntity {
 
   private 'key': string;
 
-  private constructor({
-    id,
-    name,
-    key,
-  }: {
-    id: number;
-    name: string;
-    key: string;
-  }) {
+  private constructor({ id, name, key }: Genre) {
     this.id = id;
     this.name = name;
     this.key = key;
   }
 
-  public static initialize({
-    id,
-    name,
-    key,
-  }: {
-    id: number;
-    name: string;
-    key: string;
-  }): GenreEntity {
+  public static initialize({ id, name, key }: Genre): GenreEntity {
     return new GenreEntity({
       id,
       name,
@@ -37,11 +27,7 @@ class GenreEntity implements IEntity {
     });
   }
 
-  public toObject(): {
-    id: number;
-    name: string;
-    key: string;
-  } {
+  public toObject(): Genre {
     return {
       id: this.id,
       name: this.name,
