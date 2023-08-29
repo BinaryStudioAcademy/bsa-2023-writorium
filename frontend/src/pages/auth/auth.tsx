@@ -1,5 +1,3 @@
-import { useNavigate } from 'react-router-dom';
-
 import { AppRoute } from '~/libs/enums/enums.js';
 import {
   useAppDispatch,
@@ -16,23 +14,20 @@ import { AuthLayout, SignInForm, SignUpForm } from './components/components.js';
 
 const Auth: React.FC = () => {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
   const { pathname } = useLocation();
 
   const handleSignInSubmit = useCallback(
     (payload: UserSignInRequestDto): void => {
-      void dispatch(authActions.signIn(payload)).unwrap();
-      navigate(AppRoute.PROFILE);
+      void dispatch(authActions.signIn(payload));
     },
-    [dispatch, navigate],
+    [dispatch],
   );
 
   const handleSignUpSubmit = useCallback(
     (payload: UserSignUpRequestDto): void => {
       void dispatch(authActions.signUp(payload)).unwrap();
-      navigate(AppRoute.PROFILE);
     },
-    [dispatch, navigate],
+    [dispatch],
   );
 
   const getScreen = (screen: string): React.ReactNode => {
