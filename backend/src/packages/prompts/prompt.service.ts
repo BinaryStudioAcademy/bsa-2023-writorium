@@ -25,7 +25,11 @@ class PromptService implements IService {
       throw new FailedToGeneratePromptError();
     }
 
-    return this.parsePromptJSON(promptJSON);
+    try {
+      return this.parsePromptJSON(promptJSON);
+    } catch {
+      throw new FailedToGeneratePromptError();
+    }
   }
 
   public find(): ReturnType<IService['find']> {
