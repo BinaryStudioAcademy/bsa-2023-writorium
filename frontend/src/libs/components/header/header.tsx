@@ -1,7 +1,6 @@
-import { Link } from '~/libs/components/link/link.jsx';
-import { AppRoute } from '~/libs/enums/app-route.enum';
+import { Avatar, Link } from '~/libs/components/components.js';
+import { AppRoute } from '~/libs/enums/enums.js';
 
-import { Avatar } from '../avatar/avatar.jsx';
 import styles from './styles.module.scss';
 
 type Properties = {
@@ -15,7 +14,7 @@ const Header: React.FC<Properties> = ({ user }) => (
         <Link to={AppRoute.ROOT} className={styles.logo}>
           WRITORIUM
         </Link>
-        <Link to={AppRoute.PROFILE} className={styles.avatarInfo}>
+        <Link to={AppRoute.PROFILE}>
           <Avatar username="Todd Demoer" avatarUrl={null} />
         </Link>
       </header>
