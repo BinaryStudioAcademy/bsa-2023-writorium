@@ -1,11 +1,10 @@
-import { Button } from '~/libs/components/components.js';
+import { Button, Link } from '~/libs/components/components.js';
+import { AppRoute } from '~/libs/enums/enums.js';
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
-import { useCallback, useState } from '~/libs/hooks/hooks.js';
-import { type ValueOf } from '~/libs/types/types.js';
+import { useCallback, useEffect, useLocation } from '~/libs/hooks/hooks.js';
 import { type UserAuthResponseDto } from '~/packages/users/users.js';
 
 import { ArticleCard } from './components/components.js';
-import { ActivePage } from './libs/constants.js';
 import { type ArticleType } from './libs/types/types.js';
 import styles from './styles.module.scss';
 
@@ -15,17 +14,22 @@ type Properties = {
 };
 
 const Articles: React.FC<Properties> = ({ articles, user }) => {
-  const [currentPage, setCurrentPage] = useState<ValueOf<typeof ActivePage>>(
-    ActivePage.FEED,
-  );
+  const { pathname } = useLocation();
+  const activePage = pathname.split('/').pop();
 
-  const handleShowFeed = useCallback(() => {
-    setCurrentPage(ActivePage.FEED);
-  }, []);
+  const handleShowFeed = useCallback(() => {}, []);
 
-  const handleShowArticles = useCallback(() => {
-    setCurrentPage(ActivePage.ARTICLES);
-  }, []);
+  const handleShowMyArticles = useCallback(() => {}, []);
+
+  useEffect(() => {
+    if (activePage === AppRoute.FEED) {
+      return handleShowFeed();
+    }
+
+    if (activePage === AppRoute.MY_ARTICLES) {
+      return handleShowMyArticles();
+    }
+  }, [handleShowFeed, handleShowMyArticles, activePage]);
 
   const renderArticles = articles.map((article) => (
     <ArticleCard key={article.id} article={article} user={user} />
@@ -34,22 +38,26 @@ const Articles: React.FC<Properties> = ({ articles, user }) => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.buttonsWrapper}>
-        <Button
-          label="Feed"
-          onClick={handleShowFeed}
-          className={getValidClassNames(
-            styles.button,
-            currentPage === ActivePage.FEED && styles.activeButton,
-          )}
-        />
-        <Button
-          label="My articles"
-          onClick={handleShowArticles}
-          className={getValidClassNames(
-            styles.button,
-            currentPage === ActivePage.ARTICLES && styles.activeButton,
-          )}
-        />
+        <Link to={AppRoute.FEED}>
+          <Button
+            label="Feed"
+            onClick={handleShowFeed}
+            className={getValidClassNames(
+              styles.button,
+              activePage === AppRoute.FEED && styles.activeButton,
+            )}
+          />
+        </Link>
+        <Link to={AppRoute.MY_ARTICLES}>
+          <Button
+            label="My articles"
+            onClick={handleShowMyArticles}
+            className={getValidClassNames(
+              styles.button,
+              activePage === AppRoute.MY_ARTICLES && styles.activeButton,
+            )}
+          />
+        </Link>
       </div>
       <div className={styles.articles}>{renderArticles}</div>
     </div>

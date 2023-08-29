@@ -5,6 +5,8 @@ const AppRoute = {
   PROFILE: '/profile',
   ARTICLES: '/articles',
   ARTICLE: '/articles/:id',
+  FEED: 'feed',
+  MY_ARTICLES: 'my-articles',
 } as const;
 
 export { AppRoute };

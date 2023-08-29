@@ -105,6 +105,14 @@ createRoot(document.querySelector('#root') as HTMLElement).render(
                     <Articles articles={MOCKED_ARTICLES} user={MOCKED_USER} />
                   </ProtectedRoute>
                 ),
+                children: [
+                  {
+                    path: AppRoute.FEED,
+                  },
+                  {
+                    path: AppRoute.MY_ARTICLES,
+                  },
+                ],
               },
               {
                 path: AppRoute.ARTICLE,
