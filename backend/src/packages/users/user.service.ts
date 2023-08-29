@@ -7,6 +7,7 @@ import { type UserRepository } from '~/packages/users/user.repository.js';
 import {
   type UserAuthResponseDto,
   type UserGetAllResponseDto,
+  type UserPrivateData,
   type UserSignUpRequestDto,
 } from './libs/types/types.js';
 
@@ -51,12 +52,23 @@ class UserService implements IService {
     };
   }
 
+  public async findPrivateData(id: number): Promise<UserPrivateData | null> {
+    const user = await this.userRepository.find(id);
+
+    if (!user) {
+      return null;
+    }
+
+    return user.privateData;
+  }
+
   public async create(
     payload: UserSignUpRequestDto,
   ): Promise<UserAuthResponseDto> {
     const passwordSalt = await this.encrypt.generateSalt(
       this.config.ENCRYPTION.USER_PASSWORD_SALT_ROUNDS,
     );
+
     const passwordHash = await this.encrypt.encrypt(
       payload.password,
       passwordSalt,
