@@ -13,6 +13,7 @@ import {
 import { AppRoute } from '~/libs/enums/enums.js';
 import { store } from '~/libs/packages/store/store.js';
 import { type UserAuthResponseDto } from '~/packages/users/users.js';
+import { Article } from '~/pages/article/article.js';
 import { Auth } from '~/pages/auth/auth.js';
 import { Landing } from '~/pages/landing/landing.js';
 import { Profile } from '~/pages/profile/profile.js';
@@ -104,6 +105,10 @@ createRoot(document.querySelector('#root') as HTMLElement).render(
                     <Articles articles={MOCKED_ARTICLES} user={MOCKED_USER} />
                   </ProtectedRoute>
                 ),
+              },
+              {
+                path: AppRoute.ARTICLE,
+                element: <Article />,
               },
             ],
           },
