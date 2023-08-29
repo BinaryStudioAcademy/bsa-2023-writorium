@@ -1,8 +1,9 @@
 import { type JWTPayload, jwtVerify, SignJWT } from 'jose';
 
 import { type IConfig } from '../config/config.js';
+import { type IToken } from './libs/interfaces/interfaces.js';
 
-class Token {
+class Token implements IToken {
   private secret: Uint8Array;
   private algorithm: string;
   private expirationTime: string;
@@ -22,7 +23,9 @@ class Token {
       .sign(this.secret);
   }
 
-  public async verifyToken<T>(token: string): Promise<JWTPayload & T> {
+  public async verifyToken<T extends Record<string, unknown>>(
+    token: string,
+  ): Promise<JWTPayload & T> {
     const { payload } = await jwtVerify(token, this.secret);
 
     return payload as JWTPayload & T;

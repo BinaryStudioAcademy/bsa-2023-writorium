@@ -1,0 +1,61 @@
+@use "src/assets/css/breakpoints.scss";
+
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0 0 0 / 60%);
+}
+
+.content {
+  position: relative;
+  width: 100%;
+  padding: 20px;
+  text-align: center;
+  background: var(--white);
+  border-radius: 5px;
+}
+
+.closeBtn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 5px 5px 0 0;
+  padding: 0;
+  background-color: var(--white);
+  border: none;
+  cursor: pointer;
+}
+
+@media only screen and (max-width: breakpoints.$medium) {
+  .content {
+    width: 95%;
+  }
+}
+
+@media only screen and (min-width: breakpoints.$medium) and (max-width: breakpoints.$large) {
+  .content {
+    width: 88%;
+  }
+}
+
+@media only screen and (min-width: breakpoints.$large) and (max-width: breakpoints.$extra-large) {
+  .content {
+    width: 850px;
+  }
+}
+
+@media only screen and (min-width: breakpoints.$extra-large) and (max-width: breakpoints.$extra-extra-large) {
+  .content {
+    width: 900px;
+  }
+}
+
+@media only screen and (min-width: breakpoints.$extra-extra-large) {
+  .content {
+    width: 950px;
+  }
+}

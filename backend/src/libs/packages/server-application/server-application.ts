@@ -25,4 +25,7 @@ const serverApp = new ServerApp({
 });
 
 export { serverApp };
-export { type ServerAppRouteParameters } from './libs/types/types.js';
+export {
+  type ServerAppRouteParameters,
+  type WhiteRoute,
+} from './libs/types/types.js';
