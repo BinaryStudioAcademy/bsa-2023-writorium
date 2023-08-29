@@ -9,6 +9,12 @@ type Properties = {
   article: ArticleType;
 };
 
+const onButtonClick = (): void => {
+  /**
+   * @todo implement handle logic for buttons clicked events(favorite, comment, share)
+   */
+};
+
 const ArticleView: React.FC<Properties> = ({ article }) => {
   const { title, text, tags } = article;
 
@@ -25,16 +31,19 @@ const ArticleView: React.FC<Properties> = ({ article }) => {
             iconName="favorite"
             className={styles.iconButton}
             iconClassName={styles.icon}
+            onClick={onButtonClick}
           />
           <IconButton
             iconName="comment"
             className={styles.iconButton}
             iconClassName={styles.icon}
+            onClick={onButtonClick}
           />
           <IconButton
             iconName="share"
             className={styles.iconButton}
             iconClassName={styles.icon}
+            onClick={onButtonClick}
           />
         </div>
       </div>

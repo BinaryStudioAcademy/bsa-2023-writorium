@@ -31,11 +31,6 @@ const Article: FC = () => {
     tags: MOCKED_TAGS,
   };
 
-  /* TODO: handlers for buttons clicked events*/
-  // const handleFavoriteClick = () => {};
-  // const handleCommentClick = () => {};
-  // const handleShareClick = () => {};
-
   return (
     <>
       {id && <Author />}

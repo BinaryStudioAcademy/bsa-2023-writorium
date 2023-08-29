@@ -1,4 +1,4 @@
-import { ButtonType } from '~/libs/enums/button-type.enum.js';
+import { ButtonType } from '~/libs/enums/enums.js';
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
 
 import { type IconName } from '../icon/common.js';
