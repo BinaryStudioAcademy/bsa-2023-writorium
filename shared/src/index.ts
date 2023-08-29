@@ -37,6 +37,16 @@ export {
 } from './packages/articles/articles.js';
 export { AuthApiPath } from './packages/auth/auth.js';
 export {
+  type CommentBaseResponseDto,
+  type CommentCreateDto,
+  commentCreateValidationSchema,
+  type CommentEntityType,
+  type CommentRequestDto,
+  CommentsApiPath,
+  type CommentUpdateRequestDto,
+  commentUpdateValidationSchema,
+} from './packages/comments/comments.js';
+export {
   type UserAuthResponseDto,
   type UserGetAllItemResponseDto,
   type UserGetAllResponseDto,
