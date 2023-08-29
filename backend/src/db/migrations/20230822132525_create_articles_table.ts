@@ -28,7 +28,7 @@ const up = (knex: Knex): Promise<void> => {
       .references(ColumnName.ID)
       .inTable(TableName.USERS);
     table.integer(ColumnName.PROMPT_ID).unsigned().nullable();
-    table.integer(ColumnName.GENRE_ID).unsigned();
+    table.integer(ColumnName.GENRE_ID).unsigned().nullable();
     table
       .dateTime(ColumnName.CREATED_AT)
       .notNullable()
