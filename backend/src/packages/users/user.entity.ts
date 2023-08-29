@@ -5,9 +5,9 @@ class UserEntity implements IEntity {
 
   private 'email': string;
 
-  private 'passwordHash': string;
+  private 'passwordHash': string | null;
 
-  private 'passwordSalt': string;
+  private 'passwordSalt': string | null;
 
   private 'firstName': string;
 
@@ -23,8 +23,8 @@ class UserEntity implements IEntity {
   }: {
     id: number | null;
     email: string;
-    passwordHash: string;
-    passwordSalt: string;
+    passwordHash: string | null;
+    passwordSalt: string | null;
     lastName: string;
     firstName: string;
   }) {
@@ -46,8 +46,8 @@ class UserEntity implements IEntity {
   }: {
     id: number;
     email: string;
-    passwordHash: string;
-    passwordSalt: string;
+    passwordHash: string | null;
+    passwordSalt: string | null;
     lastName: string;
     firstName: string;
   }): UserEntity {
@@ -107,8 +107,8 @@ class UserEntity implements IEntity {
   } {
     return {
       email: this.email,
-      passwordHash: this.passwordHash,
-      passwordSalt: this.passwordSalt,
+      passwordHash: this.passwordHash as string,
+      passwordSalt: this.passwordSalt as string,
       firstName: this.firstName,
       lastName: this.lastName,
     };
