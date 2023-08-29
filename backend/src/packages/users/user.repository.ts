@@ -11,13 +11,24 @@ class UserRepository implements IRepository {
   }
 
   public async find(id: number): Promise<UserEntity | null> {
-    const user = await this.userModel.query().findById(id);
+    const user = await this.userModel
+      .query()
+      .findById(id)
+      .first()
+      .withGraphJoined(this.defaultRelationExpression);
 
     if (!user) {
       return null;
     }
 
-    return UserEntity.initialize(user);
+    return UserEntity.initialize({
+      id: user.id,
+      email: user.email,
+      firstName: user.userDetails.firstName,
+      lastName: user.userDetails.lastName,
+      passwordHash: user.passwordHash,
+      passwordSalt: user.passwordSalt,
+    });
   }
 
   public async findByEmail(email: string): Promise<UserEntity | null> {
@@ -25,14 +36,35 @@ class UserRepository implements IRepository {
       .query()
       .where({ email })
       .first()
-      .execute();
-    return user ? UserEntity.initialize(user) : null;
+      .withGraphJoined(this.defaultRelationExpression);
+
+    if (!user) {
+      return null;
+    }
+
+    return UserEntity.initialize({
+      id: user.id,
+      email: user.email,
+      firstName: user.userDetails.firstName,
+      lastName: user.userDetails.lastName,
+      passwordHash: user.passwordHash,
+      passwordSalt: user.passwordSalt,
+    });
   }
 
   public async findAll(): Promise<UserEntity[]> {
     const users = await this.userModel.query().execute();
 
-    return users.map((it) => UserEntity.initialize(it));
+    return users.map((user) =>
+      UserEntity.initialize({
+        id: user.id,
+        email: user.email,
+        firstName: user.userDetails.firstName,
+        lastName: user.userDetails.lastName,
+        passwordHash: user.passwordHash,
+        passwordSalt: user.passwordSalt,
+      }),
+    );
   }
 
   public async create(entity: UserEntity): Promise<UserEntity> {
