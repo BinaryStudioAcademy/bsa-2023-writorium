@@ -1,5 +1,5 @@
 class InvalidCredentialsError extends Error {
-  public constructor(message = 'Incorrect email or password') {
+  public constructor(message = 'Login failed. Invalid Email or Password') {
     super(message);
     this.name = 'InvalidCredentials';
   }
