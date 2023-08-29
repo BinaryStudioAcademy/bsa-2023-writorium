@@ -38,6 +38,11 @@ export {
 export { AuthApiPath } from './packages/auth/auth.js';
 export { FilesApiPath } from './packages/files/files.js';
 export {
+  type GenreGetAllItemResponseDto,
+  type GenreGetAllResponseDto,
+  GenresApiPath,
+} from './packages/genres/genres.js';
+export {
   type GenerateArticlePromptResponseDto,
   type GeneratedArticlePrompt,
   PromptsApiPath,

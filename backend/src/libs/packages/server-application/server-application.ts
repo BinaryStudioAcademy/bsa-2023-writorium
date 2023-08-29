@@ -4,6 +4,7 @@ import { logger } from '~/libs/packages/logger/logger.js';
 import { articleController } from '~/packages/articles/articles.js';
 import { authController } from '~/packages/auth/auth.js';
 import { fileController } from '~/packages/files/files.js';
+import { genreController } from '~/packages/genres/genre.js';
 import { promptController } from '~/packages/prompts/prompts.js';
 import { userController } from '~/packages/users/users.js';
 
@@ -15,6 +16,7 @@ const apiV1 = new ServerAppApi(
   config,
   ...authController.routes,
   ...userController.routes,
+  ...genreController.routes,
   ...fileController.routes,
   ...articleController.routes,
   ...promptController.routes,
