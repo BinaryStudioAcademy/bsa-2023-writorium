@@ -3,6 +3,7 @@ const ApiPath = {
   AUTH: '/auth',
   FILES: '/files',
   ARTICLES: '/articles',
+  PROMPTS: '/prompts',
 } as const;
 
 export { ApiPath };
