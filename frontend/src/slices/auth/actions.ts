@@ -52,7 +52,7 @@ const getCurrentUser = createAsyncThunk<
   }
 
   try {
-    return await authApi.getCurentUser();
+    return await authApi.getCurrentUser();
   } catch {
     await storage.drop(StorageKey.TOKEN);
 
