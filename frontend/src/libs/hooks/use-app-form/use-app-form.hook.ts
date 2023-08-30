@@ -4,10 +4,11 @@ import {
   type DefaultValues,
   type FieldErrors,
   type FieldValues,
+  useForm,
   type UseFormHandleSubmit,
+  type UseFormReset,
   type ValidationMode,
 } from 'react-hook-form';
-import { useForm } from 'react-hook-form';
 
 import { type ValidationSchema } from '~/libs/types/types.js';
 
@@ -22,6 +23,9 @@ type ReturnValue<T extends FieldValues = FieldValues> = {
   errors: FieldErrors<T>;
   handleSubmit: UseFormHandleSubmit<T>;
   isValid: boolean;
+  isDirty: boolean;
+  isSubmitting: boolean;
+  handleReset: UseFormReset<T>;
 };
 
 const useAppForm = <T extends FieldValues = FieldValues>({
@@ -32,7 +36,8 @@ const useAppForm = <T extends FieldValues = FieldValues>({
   const {
     control,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors, isValid, isDirty, isSubmitting },
+    reset: handleReset,
   } = useForm<T>({
     mode,
     defaultValues,
@@ -44,6 +49,9 @@ const useAppForm = <T extends FieldValues = FieldValues>({
     control,
     errors,
     handleSubmit,
+    handleReset,
+    isDirty,
+    isSubmitting,
   };
 };
 
