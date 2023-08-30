@@ -3,7 +3,7 @@
   max-width: 830px;
 }
 
-.buttonsWrapper {
+.tabsWrapper {
   position: relative;
   display: flex;
   gap: 29px;
@@ -11,7 +11,7 @@
   padding-left: 2px;
 }
 
-.button {
+.tab {
   flex: 1 0 auto;
   padding-bottom: 15px;
   font-weight: 400;
@@ -23,12 +23,12 @@
   border: none;
 }
 
-.activeButton {
+.activeTab {
   position: relative;
   color: var(--light-green);
 }
 
-.activeButton::after {
+.activeTab::after {
   content: "";
   position: absolute;
   bottom: -1px;

@@ -55,12 +55,12 @@ const Articles: React.FC = () => {
 
   return (
     <div className={styles.wrapper}>
-      <div className={styles.buttonsWrapper}>
+      <div className={styles.tabsWrapper}>
         <Link
           to={ArticleSubRoute.FEED}
           className={getValidClassNames(
-            styles.button,
-            activePage === ArticleSubRoute.FEED && styles.activeButton,
+            styles.tab,
+            activePage === ArticleSubRoute.FEED && styles.activeTab,
           )}
         >
           Feed
@@ -68,8 +68,8 @@ const Articles: React.FC = () => {
         <Link
           to={ArticleSubRoute.MY_ARTICLES}
           className={getValidClassNames(
-            styles.button,
-            activePage === ArticleSubRoute.MY_ARTICLES && styles.activeButton,
+            styles.tab,
+            activePage === ArticleSubRoute.MY_ARTICLES && styles.activeTab,
           )}
         >
           My articles
