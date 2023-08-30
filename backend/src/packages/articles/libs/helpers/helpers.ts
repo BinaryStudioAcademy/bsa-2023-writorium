@@ -1,1 +1,1 @@
-export { getDetectArticleGenrePrompt } from './get-detect-article-genre-prompt.helper.js';
+export { getDetectArticleGenreCompletionConfig } from './get-detect-article-genre-completion-config.helper.js';

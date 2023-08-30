@@ -7,7 +7,7 @@ import { GenreEntity } from '../genres/genre.entity.js';
 import { type GenreRepository } from '../genres/genre.repository.js';
 import { ArticleEntity } from './article.entity.js';
 import { type ArticleRepository } from './article.repository.js';
-import { getDetectArticleGenrePrompt } from './libs/helpers/get-detect-article-genre-prompt.helper.js';
+import { getDetectArticleGenreCompletionConfig } from './libs/helpers/helpers.js';
 import {
   type ArticleBaseResponseDto,
   type ArticleCreateDto,
@@ -33,10 +33,9 @@ class ArticleService implements IService {
   public async detectArticleGenreFromText(
     text: string,
   ): Promise<DetectedArticleGenre | null> {
-    const genresJSON = await this.openAIService.createCompletion({
-      temperature: 0,
-      prompt: getDetectArticleGenrePrompt(text),
-    });
+    const genresJSON = await this.openAIService.createCompletion(
+      getDetectArticleGenreCompletionConfig(text),
+    );
 
     if (!genresJSON) {
       return null;
