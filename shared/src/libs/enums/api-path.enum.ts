@@ -4,6 +4,7 @@ const ApiPath = {
   GENRES: '/genres',
   FILES: '/files',
   ARTICLES: '/articles',
+  PROMPTS: '/prompts',
 } as const;
 
 export { ApiPath };
