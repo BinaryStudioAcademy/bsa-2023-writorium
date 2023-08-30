@@ -63,13 +63,13 @@ class ArticleService implements IService {
 
     if (existingGenre) {
       return existingGenre.toObject().id;
-    } else {
-      const newGenreEntity = await this.genreRepository.create(
-        GenreEntity.initializeNew(detectedGenre),
-      );
-
-      return newGenreEntity.toObject().id;
     }
+
+    const newGenreEntity = await this.genreRepository.create(
+      GenreEntity.initializeNew(detectedGenre),
+    );
+
+    return newGenreEntity.toObject().id;
   }
 
   public findAll(): Promise<{ items: unknown[] }> {
