@@ -37,7 +37,7 @@ const App: React.FC = () => {
   return (
     <Loader isLoading={isLoading}>
       <>
-        {hasUser && <Header user={user} />}
+        <Header user={user} />
         <div className={styles.container}>
           <RouterOutlet />
         </div>
