@@ -28,9 +28,7 @@ const articleCreate = joi.object<ArticleRequestDto, true>({
       'string.empty': ArticleValidationMessage.ARTICLE_TEXT_REQUIRE,
     }),
   promptId: joi.number().integer().positive().required().allow(null),
-  genreId: joi.number().integer().positive().messages({
-    'string.empty': ArticleValidationMessage.ARTICLE_GENRE_ID_REQUIRE,
-  }),
+  genreId: joi.number().integer().positive().allow(null),
   publishedAt: joi.string().isoDate().required().allow(null).messages({
     'string.isoDate': ArticleValidationMessage.ARTICLE_PUBLISHED_ISO_DATE,
   }),
