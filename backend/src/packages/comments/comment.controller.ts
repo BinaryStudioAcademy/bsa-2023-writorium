@@ -121,7 +121,7 @@ class CommentController extends Controller {
       handler: (options) =>
         this.delete(
           options as ApiHandlerOptions<{
-            params: { id: number }
+            params: { id: number };
           }>,
         ),
     });
