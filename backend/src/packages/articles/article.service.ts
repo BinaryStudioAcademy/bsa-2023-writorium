@@ -33,18 +33,19 @@ class ArticleService implements IService {
   public async detectArticleGenreFromText(
     text: string,
   ): Promise<DetectedArticleGenre | null> {
-    const generesJSON = await this.openAIService.createCompletion({
+    const genresJSON = await this.openAIService.createCompletion({
       temperature: 0,
       prompt: getDetectArticleGenrePrompt(text),
     });
 
-    if (!generesJSON) {
+    if (!genresJSON) {
       return null;
     }
 
-    const parsedGenres = safeJSONParse<DetectedArticleGenre[]>(generesJSON);
+    const [firstParsedGenre] =
+      safeJSONParse<DetectedArticleGenre[]>(genresJSON) ?? [];
 
-    return parsedGenres?.[0] ?? null;
+    return firstParsedGenre ?? null;
   }
 
   private async getGenreIdForArticle(
