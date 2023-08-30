@@ -62,11 +62,7 @@ createRoot(document.querySelector('#root') as HTMLElement).render(
               },
               {
                 path: AppRoute.ARTICLES,
-                element: (
-                  <ProtectedRoute>
-                    <Articles />
-                  </ProtectedRoute>
-                ),
+                element: <Articles />,
                 children: [
                   {
                     path: ArticleSubRoute.FEED,
