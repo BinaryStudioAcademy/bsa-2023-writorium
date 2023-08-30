@@ -1,8 +1,5 @@
 import { ApplicationError } from '~/libs/exceptions/exceptions.js';
-import {
-  convertPlainStringToSnakeCase,
-  safeJSONParse,
-} from '~/libs/helpers/helpers.js';
+import { safeJSONParse } from '~/libs/helpers/helpers.js';
 import { type IService } from '~/libs/interfaces/service.interface.js';
 import { type OpenAIService } from '~/libs/packages/openai/openai.package.js';
 
@@ -15,6 +12,7 @@ import {
   type ArticleBaseResponseDto,
   type ArticleCreateDto,
   type ArticleUpdateRequestDto,
+  type DetectedArticleGenre,
 } from './libs/types/types.js';
 
 class ArticleService implements IService {
@@ -34,7 +32,7 @@ class ArticleService implements IService {
 
   public async detectArticleGenreFromText(
     text: string,
-  ): Promise<string | null> {
+  ): Promise<DetectedArticleGenre | null> {
     const generesJSON = await this.openAIService.createCompletion({
       temperature: 0,
       prompt: getDetectArticleGenrePrompt(text),
@@ -44,7 +42,7 @@ class ArticleService implements IService {
       return null;
     }
 
-    const parsedGenres = safeJSONParse<string[]>(generesJSON);
+    const parsedGenres = safeJSONParse<DetectedArticleGenre[]>(generesJSON);
 
     return parsedGenres?.[0] ?? null;
   }
@@ -58,20 +56,15 @@ class ArticleService implements IService {
       return null;
     }
 
-    const detectedGenreKey = convertPlainStringToSnakeCase(detectedGenre);
-
     const existingGenre = await this.genreRepository.findByKey(
-      detectedGenreKey,
+      detectedGenre.key,
     );
 
     if (existingGenre) {
       return existingGenre.toObject().id;
     } else {
       const newGenreEntity = await this.genreRepository.create(
-        GenreEntity.initializeNew({
-          name: detectedGenre,
-          key: convertPlainStringToSnakeCase(detectedGenreKey),
-        }),
+        GenreEntity.initializeNew(detectedGenre),
       );
 
       return newGenreEntity.toObject().id;
