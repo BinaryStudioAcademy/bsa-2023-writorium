@@ -38,6 +38,12 @@ export {
 export { AuthApiPath } from './packages/auth/auth.js';
 export { FilesApiPath } from './packages/files/files.js';
 export {
+  type GenreGetAllItemResponseDto,
+  type GenreGetAllResponseDto,
+  GenresApiPath,
+} from './packages/genres/genres.js';
+export { PromptsApiPath } from './packages/prompts/prompts.js';
+export {
   type UserAuthResponseDto,
   type UserGetAllItemResponseDto,
   type UserGetAllResponseDto,
@@ -48,4 +54,6 @@ export {
   type UserSignUpRequestDto,
   type UserSignUpResponseDto,
   userSignUpValidationSchema,
+  type UserUpdateRequestDto,
+  userUpdateValidationSchema,
 } from './packages/users/users.js';
