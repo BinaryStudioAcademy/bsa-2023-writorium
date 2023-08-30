@@ -10,11 +10,15 @@
   padding: 0 60px;
   overflow: hidden;
   background-color: var(--dark-green-80);
-  background-image: url("../../assets/img/background-leters.png"),
-    url("../../assets/img/background-typewriter.jpg");
-  background-repeat: no-repeat;
   background-position: center;
   background-size: 1440px, cover;
+  transform: translate(-50%, -50%);
+}
+
+.parallaxImg {
+  position: fixed;
+  top: 50%;
+  left: 50%;
   transform: translate(-50%, -50%);
 }
 
@@ -27,4 +31,13 @@
   letter-spacing: 3.84px;
   text-align: center;
   text-transform: uppercase;
+}
+
+.lettersImg {
+  z-index: -5;
+}
+
+.typewriterImg {
+  z-index: -10;
+  width: 110vw;
 }
