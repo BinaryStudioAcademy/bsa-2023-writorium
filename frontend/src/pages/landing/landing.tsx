@@ -1,11 +1,16 @@
-import { type FC, useCallback,useRef } from 'react';
+import { type FC } from 'react';
 
 import backgroundLetters from '~/assets/img/background-leters.png';
 import backgroundTypewriter from '~/assets/img/background-typewriter.jpg';
 import { Link } from '~/libs/components/components.js';
 import { AppRoute } from '~/libs/enums/enums.js';
 import { getAxisOffset } from '~/libs/helpers/helpers.js';
-import { useMousePosition } from '~/libs/hooks/hooks.js';
+import {
+  useCallback,
+  useMemo,
+  useMousePosition,
+  useRef,
+} from '~/libs/hooks/hooks.js';
 
 import styles from './styles.module.scss';
 
@@ -15,17 +20,25 @@ const Landing: FC = () => {
   const lettersElementReference = useRef<HTMLImageElement | null>(null);
   const typewriterElementReference = useRef<HTMLImageElement | null>(null);
 
+  const offsetX = useMemo(
+    () =>
+      getAxisOffset({
+        axisValue: x,
+        innerAxisValue: window.innerWidth,
+      }),
+    [x],
+  );
+
+  const offsetY = useMemo(
+    () =>
+      getAxisOffset({
+        axisValue: y,
+        innerAxisValue: window.innerHeight,
+      }),
+    [y],
+  );
+
   const parallaxHandler = useCallback(() => {
-    const offsetX = getAxisOffset({
-      axisValue: x,
-      innerAxisValue: window.innerWidth,
-    });
-
-    const offsetY = getAxisOffset({
-      axisValue: y,
-      innerAxisValue: window.innerHeight,
-    });
-
     if (lettersElementReference.current) {
       lettersElementReference.current.style.top = `calc(${offsetY}px + 50%)`;
       lettersElementReference.current.style.left = `calc(${offsetX}px + 50%)`;
@@ -34,7 +47,7 @@ const Landing: FC = () => {
       typewriterElementReference.current.style.top = `calc(50% - ${offsetY}px)`;
       typewriterElementReference.current.style.left = `calc(50% - ${offsetX}px)`;
     }
-  }, [x, y]);
+  }, [offsetX, offsetY]);
 
   return (
     <div className={styles.parallaxContainer} onMouseMove={parallaxHandler}>
