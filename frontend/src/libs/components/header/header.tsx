@@ -1,10 +1,11 @@
 import { Avatar, Link } from '~/libs/components/components.js';
 import { AppRoute } from '~/libs/enums/enums.js';
+import { type UserAuthResponseDto } from '~/packages/users/users.js';
 
 import styles from './styles.module.scss';
 
 type Properties = {
-  user: null;
+  user: UserAuthResponseDto | null;
 };
 
 const Header: React.FC<Properties> = ({ user }) => (
