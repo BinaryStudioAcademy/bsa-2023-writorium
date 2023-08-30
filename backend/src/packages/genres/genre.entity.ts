@@ -1,11 +1,7 @@
 import { type IEntity } from '~/libs/interfaces/interfaces.js';
 import { type WithNullableKeys } from '~/libs/types/types.js';
 
-type Genre = {
-  id: number;
-  name: string;
-  key: string;
-};
+import { type GenreEntityType } from './lib/types/types.js';
 
 class GenreEntity implements IEntity {
   private 'id': number | null;
@@ -14,13 +10,17 @@ class GenreEntity implements IEntity {
 
   private 'key': string;
 
-  private constructor({ id, name, key }: WithNullableKeys<Genre, 'id'>) {
+  private constructor({
+    id,
+    name,
+    key,
+  }: WithNullableKeys<GenreEntityType, 'id'>) {
     this.id = id;
     this.name = name;
     this.key = key;
   }
 
-  public static initialize({ id, name, key }: Genre): GenreEntity {
+  public static initialize({ id, name, key }: GenreEntityType): GenreEntity {
     return new GenreEntity({
       id,
       name,
@@ -28,7 +28,10 @@ class GenreEntity implements IEntity {
     });
   }
 
-  public static initializeNew({ name, key }: Omit<Genre, 'id'>): GenreEntity {
+  public static initializeNew({
+    name,
+    key,
+  }: Omit<GenreEntityType, 'id'>): GenreEntity {
     return new GenreEntity({
       id: null,
       name,
@@ -36,7 +39,7 @@ class GenreEntity implements IEntity {
     });
   }
 
-  public toObject(): Genre {
+  public toObject(): GenreEntityType {
     return {
       id: this.id as number,
       name: this.name,
@@ -44,7 +47,7 @@ class GenreEntity implements IEntity {
     };
   }
 
-  public toNewObject(): Omit<Genre, 'id'> {
+  public toNewObject(): Omit<GenreEntityType, 'id'> {
     return { name: this.name, key: this.key };
   }
 }

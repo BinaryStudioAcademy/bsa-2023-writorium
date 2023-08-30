@@ -42,6 +42,7 @@ export {
 export { AuthApiPath } from './packages/auth/auth.js';
 export { FilesApiPath } from './packages/files/files.js';
 export {
+  type GenreEntityType,
   type GenreGetAllItemResponseDto,
   type GenreGetAllResponseDto,
   GenresApiPath,
