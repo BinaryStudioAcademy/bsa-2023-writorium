@@ -19,41 +19,43 @@
 }
 
 .hero,
-.authFormWrapper {
+.formWrapper {
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100%;
 }
 
-.authFormWrapper {
+.formWrapper {
   flex-basis: 553px;
+  flex-direction: column;
+  min-height: 100%;
 }
 
-.authFormWrapperInner {
+.formWrapperInner {
   z-index: 1;
   display: flex;
+  flex: 1;
   flex-direction: column;
   align-items: center;
   width: 100%;
   max-width: 327px;
+  height: 100%;
 }
 
-.authFormTitle {
-  align-self: flex-start;
-  margin: 0 0 44px;
-  color: var(--light-green);
-  font-size: 24px;
-  font-family: "Libre Baskerville", sans-serif;
+.scrollableFormWrapper {
+  flex-basis: 553px;
+  height: 100%;
+  overflow: auto;
 }
 
-.authFormWrapper .floatingLetter {
+.formWrapper .floatingLetter {
   color: var(--pale-grey);
 }
 
 .hero {
   flex: 1;
+  height: 100%;
   background-image: linear-gradient(
       to bottom right,
       var(--dark-green-80),
