@@ -10,6 +10,7 @@ type Properties = {
   type?: ValueOf<typeof ButtonType>;
   name?: string;
   className?: string;
+  onClick?: () => void;
 };
 
 const Button: React.FC<Properties> = ({
@@ -17,6 +18,7 @@ const Button: React.FC<Properties> = ({
   label,
   name = '',
   className = '',
+  onClick,
   disabled,
 }) => (
   <button
@@ -24,10 +26,10 @@ const Button: React.FC<Properties> = ({
     name={name}
     disabled={disabled}
     className={getValidClassNames(styles.button, className)}
+    onClick={onClick}
   >
     {label}
   </button>
 );
 
-export { Button };
-export { type Properties as ButtonProperties };
+export { Button, type Properties as ButtonProperties };

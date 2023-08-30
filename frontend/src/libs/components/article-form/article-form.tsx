@@ -15,7 +15,7 @@ import styles from './styles.module.scss';
 // TODO: Should be moved out from common components.
 const ArticleForm: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { control, errors, handleSubmit, reset, isDirty, isSubmitting } =
+  const { control, errors, handleSubmit, handleReset, isDirty, isSubmitting } =
     useAppForm<ArticleRequestDto>({
       defaultValues: DEFAULT_ARTICLE_FORM_PAYLOAD,
       validationSchema: articleCreateValidationSchema,
@@ -47,16 +47,16 @@ const ArticleForm: React.FC = () => {
     [handleSubmit, handleArticleSubmit],
   );
 
-  const handleCancelReset = useCallback((): void => {
-    reset(DEFAULT_ARTICLE_FORM_PAYLOAD);
-  }, [reset]);
+  const handleCancel = useCallback(() => {
+    handleReset(DEFAULT_ARTICLE_FORM_PAYLOAD);
+  }, [handleReset]);
 
   return (
     <div>
       <form
         method="POST"
         onSubmit={handleFormSubmit}
-        onReset={handleCancelReset}
+        onReset={handleCancel}
         className={styles.formContainer}
       >
         <Input
