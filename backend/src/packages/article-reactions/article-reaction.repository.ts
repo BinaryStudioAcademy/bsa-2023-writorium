@@ -64,9 +64,9 @@ class ArticleReactionRepository implements IRepository {
       .first()
       .execute();
 
-      if (!reaction) {
-        return null;
-      }
+    if (!reaction) {
+      return null;
+    }
 
     return ArticleReactionEntity.initialize(reaction);
   }
