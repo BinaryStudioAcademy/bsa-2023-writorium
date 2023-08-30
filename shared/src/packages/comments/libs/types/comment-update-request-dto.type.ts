@@ -1,5 +1,5 @@
-import { type CommentRequestDto } from './comment-request-dto.type.js';
+import { type CommentEntityType } from '~/packages/comments/libs/types/comment-entity.type.js';
 
-type CommentUpdateRequestDto = Partial<CommentRequestDto>;
+type CommentUpdateRequestDto = Pick<CommentEntityType, 'text' | 'publishedAt'>;
 
 export { type CommentUpdateRequestDto };
