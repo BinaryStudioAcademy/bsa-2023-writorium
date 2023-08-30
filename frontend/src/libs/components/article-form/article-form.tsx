@@ -1,5 +1,7 @@
 import { ButtonType } from '~/libs/enums/button-type.enum.js';
+import { SubmitType } from '~/libs/enums/enums.js';
 import { useAppDispatch, useAppForm, useCallback } from '~/libs/hooks/hooks.js';
+import { type ValueOf } from '~/libs/types/types.js';
 import {
   articleCreateValidationSchema,
   type ArticleRequestDto,
@@ -12,19 +14,23 @@ import styles from './styles.module.scss';
 
 const ArticleForm: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { control, errors, handleSubmit, reset } =
+  const { control, errors, handleSubmit, reset, dirtyFields } =
     useAppForm<ArticleRequestDto>({
       defaultValues: DEFAULT_ARTICLE_FORM_PAYLOAD,
       validationSchema: articleCreateValidationSchema,
     });
 
+  const areFieldsDirty = !!dirtyFields.title && !!dirtyFields.text;
+
+  type SubmitType = ValueOf<typeof SubmitType>;
+
   const handleArticleSubmit = useCallback(
-    (submitType: 'draft' | 'publish') =>
+    (submitType: SubmitType) =>
       (payload: ArticleRequestDto): void => {
         const updatedPayload = {
           ...payload,
           publishedAt:
-            submitType === 'publish' ? new Date().toISOString() : null,
+            submitType === SubmitType.PUBLISH ? new Date().toISOString() : null,
         };
 
         void dispatch(articlesActions.createArticle(updatedPayload));
@@ -35,9 +41,7 @@ const ArticleForm: React.FC = () => {
   const handleFormSubmit = useCallback(
     (event_: React.BaseSyntheticEvent<SubmitEvent>): void => {
       const button = event_.nativeEvent.submitter as HTMLButtonElement;
-      void handleSubmit(
-        handleArticleSubmit(button.name as 'draft' | 'publish'),
-      )(event_);
+      void handleSubmit(handleArticleSubmit(button.name as SubmitType))(event_);
     },
     [handleSubmit, handleArticleSubmit],
   );
@@ -81,12 +85,14 @@ const ArticleForm: React.FC = () => {
             label="Save draft"
             name="draft"
             className={styles.saveDraftBtn}
+            disabled={!areFieldsDirty}
           />
           <Button
             type={ButtonType.SUBMIT}
             label="Publish"
             name="publish"
             className={styles.publishBtn}
+            disabled={!areFieldsDirty}
           />
         </div>
       </form>
