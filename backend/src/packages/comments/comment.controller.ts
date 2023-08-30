@@ -11,7 +11,8 @@ import { type UserAuthResponseDto } from '~/packages/users/users.js';
 
 import { CommentsApiPath } from './libs/enums/enums.js';
 import {
-  type CommentRequestDto,
+  type CommentBaseRequestDto,
+  type CommentGetAllRequestDto,
   type CommentUpdateRequestDto,
 } from './libs/types/types.js';
 import {
@@ -64,6 +65,28 @@ class CommentController extends Controller {
 
     this.addRoute({
       path: CommentsApiPath.ROOT,
+      method: 'GET',
+      handler: (options) =>
+        this.findAllByArticleId(
+          options as ApiHandlerOptions<{
+            body: CommentGetAllRequestDto;
+          }>,
+        ),
+    });
+
+    this.addRoute({
+      path: CommentsApiPath.$ID,
+      method: 'GET',
+      handler: (options) =>
+        this.findOneByCommentId(
+          options as ApiHandlerOptions<{
+            params: { id: number };
+          }>,
+        ),
+    });
+
+    this.addRoute({
+      path: CommentsApiPath.ROOT,
       method: 'POST',
       validation: {
         body: commentCreateValidationSchema,
@@ -72,7 +95,7 @@ class CommentController extends Controller {
         this.create(
           options as ApiHandlerOptions<{
             user: UserAuthResponseDto;
-            body: CommentRequestDto;
+            body: CommentBaseRequestDto;
           }>,
         ),
     });
@@ -91,6 +114,71 @@ class CommentController extends Controller {
           }>,
         ),
     });
+
+    this.addRoute({
+      path: CommentsApiPath.$ID,
+      method: 'DELETE',
+      handler: (options) =>
+        this.delete(
+          options as ApiHandlerOptions<{
+            params: { id: number }
+          }>,
+        ),
+    });
+  }
+
+  /**
+   * @swagger
+   * /comments:
+   *    get:
+   *      summary: Return array of comments that belong to an article
+   *      description: Return array of all comments that belong to an article with provided Id
+   *      responses:
+   *        200:
+   *          description: Successful operation
+   *          content:
+   *            application/json:
+   *              schema:
+   *                $ref: '#/components/schemas/Comment'
+   */
+
+  private async findAllByArticleId(
+    options: ApiHandlerOptions<{
+      body: { articleId: number };
+    }>,
+  ): Promise<ApiHandlerResponse> {
+    return {
+      status: HttpCode.OK,
+      payload: await this.commentService.findAllByArticleId(
+        options.body.articleId,
+      ),
+    };
+  }
+
+  /**
+   * @swagger
+   * /comments/:id:
+   *    get:
+   *      summary: Return an existing comment
+   *      description: Return comment by provided comment id
+   *      responses:
+   *        200:
+   *          description: Successful operation
+   *          content:
+   *            application/json:
+   *              schema:
+   *                $ref: '#/components/schemas/Comment'
+   */
+
+  private async findOneByCommentId(
+    options: ApiHandlerOptions<{
+      params: { id: number };
+    }>,
+  ): Promise<ApiHandlerResponse> {
+    return {
+      status: HttpCode.OK,
+      payload: await this.commentService.find(options.params.id),
+    };
   }
 
   /**
@@ -119,7 +207,7 @@ class CommentController extends Controller {
   private async create(
     options: ApiHandlerOptions<{
       user: UserAuthResponseDto;
-      body: CommentRequestDto;
+      body: CommentBaseRequestDto;
     }>,
   ): Promise<ApiHandlerResponse> {
     return {
@@ -134,7 +222,7 @@ class CommentController extends Controller {
   /**
    * @swagger
    * /comments/:id:
-   *    put:
+   *    patch:
    *      summary: Update an existing comment
    *      description: Update an existing comment by id
    *      security:
@@ -166,6 +254,33 @@ class CommentController extends Controller {
         options.params.id,
         options.body,
       ),
+    };
+  }
+
+  /**
+   * @swagger
+   * /comments/:id:
+   *    delete:
+   *      summary: Delete an existing comment
+   *      description: Delete an existing comment by id
+   *      security:
+   *        - bearerAuth: []
+   *      responses:
+   *        200:
+   *          description: Successful operation
+   *          content:
+   *            application/json:
+   *              schema:
+   *                $ref: '#/components/schemas/Comment'
+   */
+  private async delete(
+    options: ApiHandlerOptions<{
+      params: { id: number };
+    }>,
+  ): Promise<ApiHandlerResponse> {
+    return {
+      status: HttpCode.OK,
+      payload: await this.commentService.delete(options.params.id),
     };
   }
 }

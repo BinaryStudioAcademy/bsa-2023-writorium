@@ -1,7 +1,9 @@
 export {
+  type CommentBaseRequestDto,
   type CommentBaseResponseDto,
   type CommentCreateDto,
   type CommentEntityType,
-  type CommentRequestDto,
+  type CommentGetAllRequestDto,
+  type CommentGetAllResponseDto,
   type CommentUpdateRequestDto,
 } from 'shared/build/index.js';

@@ -3,6 +3,8 @@ import { type WithNullableKeys } from '~/libs/types/types.js';
 
 import { type CommentEntityType } from './libs/types/types.js';
 
+type CommentEntityPayloadType = Omit<CommentEntityType, 'id'>;
+
 class CommentEntity implements IEntity {
   private 'id': number | null;
   private 'text': string;
@@ -45,7 +47,7 @@ class CommentEntity implements IEntity {
     userId,
     articleId,
     publishedAt,
-  }: Omit<CommentEntityType, 'id'>): CommentEntity {
+  }: CommentEntityPayloadType): CommentEntity {
     return new CommentEntity({
       id: null,
       text,
@@ -65,7 +67,7 @@ class CommentEntity implements IEntity {
     };
   }
 
-  public toNewObject(): Omit<CommentEntityType, 'id'> {
+  public toNewObject(): CommentEntityPayloadType {
     return {
       text: this.text,
       userId: this.userId,

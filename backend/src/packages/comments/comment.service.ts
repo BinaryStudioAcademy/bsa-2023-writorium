@@ -6,6 +6,7 @@ import { type CommentRepository } from './comment.repository.js';
 import {
   type CommentBaseResponseDto,
   type CommentCreateDto,
+  type CommentGetAllResponseDto,
   type CommentUpdateRequestDto,
 } from './libs/types/types.js';
 
@@ -18,6 +19,16 @@ class CommentService implements IService {
 
   public findAll(): Promise<{ items: unknown[] }> {
     return Promise.resolve({ items: [] });
+  }
+
+  public async findAllByArticleId(
+    articleId: number,
+  ): Promise<CommentGetAllResponseDto | []> {
+    const items = await this.commentRepository.findAllByArticleId(articleId);
+
+    return {
+      items: items.map((it) => it.toObject()),
+    };
   }
 
   public async find(id: number): Promise<CommentBaseResponseDto | null> {
@@ -67,8 +78,8 @@ class CommentService implements IService {
     return updatedComment.toObject();
   }
 
-  public delete(): Promise<boolean> {
-    return Promise.resolve(false);
+  public async delete(id: number): Promise<boolean> {
+    return await this.commentRepository.delete(id);
   }
 }
 

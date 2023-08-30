@@ -14,6 +14,17 @@ class CommentRepository implements IRepository {
     return Promise.resolve([]);
   }
 
+  public async findAllByArticleId(
+    articleId: number,
+  ): Promise<CommentEntity[] | []> {
+    const comments = await this.commentModel
+      .query()
+      .where('articleId', articleId)
+      .execute();
+
+    return comments.map((it) => CommentEntity.initialize(it));
+  }
+
   public async find(id: number): Promise<CommentEntity | null> {
     const comment = await this.commentModel.query().findById(id).execute();
 
@@ -51,8 +62,9 @@ class CommentRepository implements IRepository {
     return CommentEntity.initialize(comment);
   }
 
-  public delete(): Promise<boolean> {
-    return Promise.resolve(false);
+  public async delete(id: number): Promise<boolean> {
+    const result = await this.commentModel.query().deleteById(id).execute();
+    return Boolean(result);
   }
 }
 
