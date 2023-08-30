@@ -1,1 +1,1 @@
-export { type GeneratedArticlePrompt } from './generated-article-prompt.type.js';
+export { type PromptBaseResponseDto } from 'shared/build/index.js';

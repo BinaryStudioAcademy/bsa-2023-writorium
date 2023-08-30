@@ -3,7 +3,7 @@ import { FailedToGeneratePromptError } from '~/libs/packages/exceptions/exceptio
 import { type OpenAIService } from '~/libs/packages/openai/openai.package.js';
 
 import { ARTICLE_PROMPT_COMPLETION_MESSAGE } from './libs/constants/constants.js';
-import { type GeneratedArticlePrompt } from './libs/types/types.js';
+import { type PromptBaseResponseDto } from './libs/types/types.js';
 
 class PromptService implements IService {
   private openAIService: OpenAIService;
@@ -12,11 +12,11 @@ class PromptService implements IService {
     this.openAIService = openAIService;
   }
 
-  private parsePromptJSON(promptJSON: string): GeneratedArticlePrompt {
-    return JSON.parse(promptJSON) as GeneratedArticlePrompt;
+  private parsePromptJSON(promptJSON: string): PromptBaseResponseDto {
+    return JSON.parse(promptJSON) as PromptBaseResponseDto;
   }
 
-  public async generate(): Promise<GeneratedArticlePrompt> {
+  public async generate(): Promise<PromptBaseResponseDto> {
     const promptJSON = await this.openAIService.createCompletion({
       prompt: ARTICLE_PROMPT_COMPLETION_MESSAGE,
     });

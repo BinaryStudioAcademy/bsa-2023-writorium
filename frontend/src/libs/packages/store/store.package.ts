@@ -10,6 +10,7 @@ import { type IConfig } from '~/libs/packages/config/config.js';
 import { storage } from '~/libs/packages/storage/storage.js';
 import { authApi } from '~/packages/auth/auth.js';
 import { notification } from '~/packages/notification/notification.js';
+import { promptApi } from '~/packages/prompts/prompts.js';
 import { userApi } from '~/packages/users/users.js';
 import { reducer as authReducer } from '~/slices/auth/auth.js';
 import { reducer as usersReducer } from '~/slices/users/users.js';
@@ -24,6 +25,7 @@ type RootReducer = {
 type ExtraArguments = {
   authApi: typeof authApi;
   userApi: typeof userApi;
+  promptApi: typeof promptApi;
   notification: typeof notification;
   storage: typeof storage;
 };
@@ -63,6 +65,7 @@ class Store {
     return {
       authApi,
       userApi,
+      promptApi,
       notification,
       storage,
     };

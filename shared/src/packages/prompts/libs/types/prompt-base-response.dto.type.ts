@@ -1,4 +1,4 @@
-type GeneratedArticlePrompt = {
+type PromptBaseResponseDto = {
   genre: string;
   character: string;
   setting: string;
@@ -6,4 +6,4 @@ type GeneratedArticlePrompt = {
   prop: string;
 };
 
-export { type GeneratedArticlePrompt };
+export { type PromptBaseResponseDto };
