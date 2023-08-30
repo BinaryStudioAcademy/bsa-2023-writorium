@@ -36,8 +36,8 @@ const ColumnName = {
 const up = async (knex: Knex): Promise<void> => {
   await knex.schema.createTable(TABLE_NAME, (table) => {
     table.increments(ColumnName.ID).primary();
-    table.string('Name').notNullable().unique();
-    table.string('Key').notNullable().unique();
+    table.string(ColumnName.NAME).notNullable().unique();
+    table.string(ColumnName.KEY).notNullable().unique();
     table
       .dateTime(ColumnName.CREATED_AT)
       .notNullable()
