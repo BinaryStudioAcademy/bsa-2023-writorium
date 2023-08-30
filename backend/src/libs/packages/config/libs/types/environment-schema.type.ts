@@ -13,8 +13,17 @@ type EnvironmentSchema = {
     POOL_MIN: number;
     POOL_MAX: number;
   };
+  AWS: {
+    AWS_REGION: string;
+    AWS_ACCESS_KEY: string;
+    AWS_BUCKET_NAME: string;
+    AWS_SECRET_ACCESS_KEY: string;
+  };
   JWT: {
     SECRET_KEY: string;
+  };
+  OPEN_AI: {
+    API_KEY: string;
   };
 };
 

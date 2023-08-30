@@ -19,21 +19,3 @@
   text-transform: uppercase;
   text-decoration: none;
 }
-
-.avatarInfo {
-  position: relative;
-  width: 40px;
-  height: 40px;
-}
-
-.avatarInfo::before {
-  content: "";
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  width: 10px;
-  height: 10px;
-  background: var(--green);
-  border: 1.5px solid var(--white);
-  border-radius: 50%;
-}

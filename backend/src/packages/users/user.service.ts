@@ -1,3 +1,5 @@
+import { ExceptionMessage } from '~/libs/enums/enums.js';
+import { ApplicationError } from '~/libs/exceptions/exceptions.js';
 import { type IService } from '~/libs/interfaces/interfaces.js';
 import { type IConfig } from '~/libs/packages/config/config.js';
 import { type IEncrypt } from '~/libs/packages/encrypt/encrypt.js';
@@ -7,7 +9,9 @@ import { type UserRepository } from '~/packages/users/user.repository.js';
 import {
   type UserAuthResponseDto,
   type UserGetAllResponseDto,
+  type UserPrivateData,
   type UserSignUpRequestDto,
+  type UserUpdateRequestDto,
 } from './libs/types/types.js';
 
 class UserService implements IService {
@@ -51,12 +55,23 @@ class UserService implements IService {
     };
   }
 
+  public async findPrivateData(id: number): Promise<UserPrivateData | null> {
+    const user = await this.userRepository.find(id);
+
+    if (!user) {
+      return null;
+    }
+
+    return user.privateData;
+  }
+
   public async create(
     payload: UserSignUpRequestDto,
   ): Promise<UserAuthResponseDto> {
     const passwordSalt = await this.encrypt.generateSalt(
       this.config.ENCRYPTION.USER_PASSWORD_SALT_ROUNDS,
     );
+
     const passwordHash = await this.encrypt.encrypt(
       payload.password,
       passwordSalt,
@@ -75,8 +90,30 @@ class UserService implements IService {
     return user.toObject();
   }
 
-  public update(): ReturnType<IService['update']> {
-    return Promise.resolve(null);
+  public async update(
+    id: number,
+    payload: UserUpdateRequestDto,
+  ): Promise<UserAuthResponseDto> {
+    const user = await this.findByEmail(payload.email);
+
+    if (user && user.id !== id) {
+      throw new ApplicationError({
+        message: ExceptionMessage.EMAIL_IS_ALREADY_USED,
+      });
+    }
+
+    const updatedUser = await this.userRepository.update(
+      UserEntity.initialize({
+        id,
+        firstName: payload.firstName,
+        lastName: payload.lastName,
+        email: payload.email,
+        passwordHash: null,
+        passwordSalt: null,
+      }),
+    );
+
+    return updatedUser.toObject();
   }
 
   public delete(): ReturnType<IService['delete']> {
