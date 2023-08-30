@@ -58,7 +58,7 @@ class ArticleReactionService implements IService {
 
     if (!reactionEntity) {
       throw new ApplicationError({
-        message: `Reaction for article with ${articleId} not found`,
+        message: `Reaction for article with ID ${articleId} not found`,
       });
     }
 
