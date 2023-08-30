@@ -1,10 +1,10 @@
 import ArticlePreview from '~/assets/img/article-preview.png';
-import { Avatar, Icon, Link, Tag } from '~/libs/components/components.js';
+import { Avatar, Icon, Link } from '~/libs/components/components.js';
 import { AppRoute } from '~/libs/enums/enums.js';
 import { type UserAuthResponseDto } from '~/packages/users/users.js';
 import { type ArticleType } from '~/pages/articles/libs/types/types.js';
 
-import { Reactions } from '../components.js';
+import { Reactions, Tags } from '../components.js';
 import styles from './styles.module.scss';
 
 type Properties = {
@@ -27,7 +27,6 @@ const ArticleCard: React.FC<Properties> = ({ article, user }) => {
 
   const { firstName, lastName } = user;
   const fullName = `${firstName} ${lastName}`;
-  const renderTags = tags.map((tag) => <Tag key={tag.id} name={tag.name} />);
 
   return (
     <article className={styles.article}>
@@ -44,7 +43,7 @@ const ArticleCard: React.FC<Properties> = ({ article, user }) => {
         <div>
           <h4 className={styles.title}>{title}</h4>
           <p className={styles.text}>{text}</p>
-          <div className={styles.tags}>{renderTags}</div>
+          <Tags tags={tags} />
         </div>
         <img
           src={ArticlePreview}
