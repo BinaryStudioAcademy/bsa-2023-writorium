@@ -5,14 +5,14 @@
   border-radius: 10px;
 }
 
-.authorWrpr {
+.authorWrapper {
   display: flex;
   align-items: center;
   padding: 30px 41px 21px;
   border-bottom: 2px solid rgba(172 186 215 / 20%);
 }
 
-.avatarWrpr {
+.avatarWrapper {
   width: 78px;
   height: 78px;
   margin-right: 16px;
@@ -28,7 +28,7 @@
   line-height: normal;
 }
 
-.authorInfoWrpr {
+.authorInfoWrapper {
   display: flex;
   align-items: center;
   padding: 0;
@@ -53,11 +53,11 @@
   margin-left: 10px;
 }
 
-.articleInfoWrpr {
+.articleInfoWrapper {
   padding: 32px 61px 54px;
 }
 
-.articleInfoListWrpr {
+.articleInfoListWrapper {
   display: flex;
   align-items: flex-start;
   margin-bottom: 37px;
