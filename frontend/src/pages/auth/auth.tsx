@@ -25,7 +25,7 @@ const Auth: React.FC = () => {
 
   const handleSignUpSubmit = useCallback(
     (payload: UserSignUpRequestDto): void => {
-      void dispatch(authActions.signUp(payload));
+      void dispatch(authActions.signUp(payload)).unwrap();
     },
     [dispatch],
   );

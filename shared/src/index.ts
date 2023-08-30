@@ -48,6 +48,13 @@ export {
   type CommentUpdateRequestDto,
   commentUpdateValidationSchema,
 } from './packages/comments/comments.js';
+export { FilesApiPath } from './packages/files/files.js';
+export {
+  type GenreGetAllItemResponseDto,
+  type GenreGetAllResponseDto,
+  GenresApiPath,
+} from './packages/genres/genres.js';
+export { PromptsApiPath } from './packages/prompts/prompts.js';
 export {
   type UserAuthResponseDto,
   type UserGetAllItemResponseDto,

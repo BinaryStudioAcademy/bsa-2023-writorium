@@ -5,6 +5,8 @@ import { createRoot } from 'react-dom/client';
 
 import {
   App,
+  ProtectedRoute,
+  PublicRoute,
   RouterProvider,
   StoreProvider,
 } from '~/libs/components/components.js';
@@ -26,19 +28,35 @@ createRoot(document.querySelector('#root') as HTMLElement).render(
             children: [
               {
                 path: AppRoute.ROOT,
-                element: <Landing />,
+                element: (
+                  <PublicRoute>
+                    <Landing />
+                  </PublicRoute>
+                ),
               },
               {
                 path: AppRoute.SIGN_IN,
-                element: <Auth />,
+                element: (
+                  <PublicRoute>
+                    <Auth />
+                  </PublicRoute>
+                ),
               },
               {
                 path: AppRoute.SIGN_UP,
-                element: <Auth />,
+                element: (
+                  <PublicRoute>
+                    <Auth />
+                  </PublicRoute>
+                ),
               },
               {
                 path: AppRoute.PROFILE,
-                element: <Profile />,
+                element: (
+                  <ProtectedRoute>
+                    <Profile />
+                  </ProtectedRoute>
+                ),
               },
               {
                 path: AppRoute.ARTICLE,
