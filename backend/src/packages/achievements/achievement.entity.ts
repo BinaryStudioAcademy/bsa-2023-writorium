@@ -1,9 +1,9 @@
 import { type IEntity } from '~/libs/interfaces/interfaces.js';
 import { type WithNullableKeys } from '~/libs/types/types.js';
 
-import { type AchievementEntityType } from './libs/types/types.js';
+import { type Achievement } from './libs/types/types.js';
 
-type AchievementEntityPayloadType = Omit<AchievementEntityType, 'id'>;
+type AchievementEntityPayload = Omit<Achievement, 'id'>;
 
 class AchievementEntity implements IEntity {
   private 'id': number | null;
@@ -19,7 +19,7 @@ class AchievementEntity implements IEntity {
     key,
     name,
     description,
-  }: WithNullableKeys<AchievementEntityType, 'id'>) {
+  }: WithNullableKeys<Achievement, 'id'>) {
     this.id = id;
     this.key = key;
     this.name = name;
@@ -31,7 +31,7 @@ class AchievementEntity implements IEntity {
     key,
     name,
     description,
-  }: AchievementEntityType): AchievementEntity {
+  }: Achievement): AchievementEntity {
     return new AchievementEntity({
       id,
       key,
@@ -44,7 +44,7 @@ class AchievementEntity implements IEntity {
     key,
     name,
     description,
-  }: AchievementEntityPayloadType): AchievementEntity {
+  }: AchievementEntityPayload): AchievementEntity {
     return new AchievementEntity({
       id: null,
       key,
@@ -53,7 +53,7 @@ class AchievementEntity implements IEntity {
     });
   }
 
-  public toObject(): AchievementEntityType {
+  public toObject(): Achievement {
     return {
       id: this.id as number,
       key: this.key,
@@ -62,7 +62,7 @@ class AchievementEntity implements IEntity {
     };
   }
 
-  public toNewObject(): AchievementEntityPayloadType {
+  public toNewObject(): AchievementEntityPayload {
     return {
       key: this.key,
       name: this.name,

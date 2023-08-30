@@ -1,7 +1,7 @@
-import { type AchievementEntityType } from '~/packages/achievements/libs/types/achievement-entity.type.js';
+import { type Achievement } from '~/packages/achievements/libs/types/achievement.type.js';
 
 type AchievementBaseResponseDto = Pick<
-  AchievementEntityType,
+  Achievement,
   'id' | 'key' | 'name' | 'description'
 >;
 

@@ -1,8 +1,8 @@
-type AchievementEntityType = {
+type Achievement = {
   id: number;
   key: string;
   name: string;
   description: string;
 };
 
-export { type AchievementEntityType };
+export { type Achievement };
