@@ -1,5 +1,5 @@
 import { Button, Link } from '~/libs/components/components.js';
-import { AppRoute } from '~/libs/enums/enums.js';
+import { ArticleSubRoute } from '~/libs/enums/enums.js';
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
 import { useCallback, useEffect, useLocation } from '~/libs/hooks/hooks.js';
 import { type UserAuthResponseDto } from '~/packages/users/users.js';
@@ -54,11 +54,11 @@ const Articles: React.FC = () => {
   const handleShowMyArticles = useCallback(() => {}, []);
 
   useEffect(() => {
-    if (activePage === AppRoute.FEED) {
+    if (activePage === ArticleSubRoute.FEED) {
       return handleShowFeed();
     }
 
-    if (activePage === AppRoute.MY_ARTICLES) {
+    if (activePage === ArticleSubRoute.MY_ARTICLES) {
       return handleShowMyArticles();
     }
   }, [handleShowFeed, handleShowMyArticles, activePage]);
@@ -70,23 +70,23 @@ const Articles: React.FC = () => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.buttonsWrapper}>
-        <Link to={AppRoute.FEED}>
+        <Link to={ArticleSubRoute.FEED}>
           <Button
             label="Feed"
             onClick={handleShowFeed}
             className={getValidClassNames(
               styles.button,
-              activePage === AppRoute.FEED && styles.activeButton,
+              activePage === ArticleSubRoute.FEED && styles.activeButton,
             )}
           />
         </Link>
-        <Link to={AppRoute.MY_ARTICLES}>
+        <Link to={ArticleSubRoute.MY_ARTICLES}>
           <Button
             label="My articles"
             onClick={handleShowMyArticles}
             className={getValidClassNames(
               styles.button,
-              activePage === AppRoute.MY_ARTICLES && styles.activeButton,
+              activePage === ArticleSubRoute.MY_ARTICLES && styles.activeButton,
             )}
           />
         </Link>

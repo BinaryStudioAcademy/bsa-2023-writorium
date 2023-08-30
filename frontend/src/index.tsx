@@ -10,7 +10,7 @@ import {
   RouterProvider,
   StoreProvider,
 } from '~/libs/components/components.js';
-import { AppRoute } from '~/libs/enums/enums.js';
+import { AppRoute, ArticleSubRoute } from '~/libs/enums/enums.js';
 import { store } from '~/libs/packages/store/store.js';
 import { Article } from '~/pages/article/article.js';
 import { Auth } from '~/pages/auth/auth.js';
@@ -69,10 +69,10 @@ createRoot(document.querySelector('#root') as HTMLElement).render(
                 ),
                 children: [
                   {
-                    path: AppRoute.FEED,
+                    path: ArticleSubRoute.FEED,
                   },
                   {
-                    path: AppRoute.MY_ARTICLES,
+                    path: ArticleSubRoute.MY_ARTICLES,
                   },
                 ],
               },
