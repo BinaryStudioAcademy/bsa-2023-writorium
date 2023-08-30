@@ -1,0 +1,23 @@
+.reactions {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.reaction {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.reactionIcon {
+  cursor: pointer;
+}
+
+.reactionCount {
+  color: var(--dark-gray-50);
+  font-weight: 400;
+  font-size: 12px;
+  font-style: normal;
+  line-height: normal;
+}

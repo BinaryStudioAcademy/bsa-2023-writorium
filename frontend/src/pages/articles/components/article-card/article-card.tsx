@@ -4,6 +4,7 @@ import { AppRoute } from '~/libs/enums/enums.js';
 import { type UserAuthResponseDto } from '~/packages/users/users.js';
 import { type ArticleType } from '~/pages/articles/libs/types/types.js';
 
+import { Reactions } from '../components.js';
 import styles from './styles.module.scss';
 
 type Properties = {
@@ -37,7 +38,7 @@ const ArticleCard: React.FC<Properties> = ({ article, user }) => {
           <span className={styles.publicationTime}>{publishedAt}</span>
           <span className={styles.publicationTime}>{timeSincePublication}</span>
         </div>
-        <Icon iconName="favorite" className={styles.favoriteIcon} />
+        <Icon iconName="favorite" className={styles.icon} />
       </div>
       <div className={styles.body}>
         <div>
@@ -52,25 +53,13 @@ const ArticleCard: React.FC<Properties> = ({ article, user }) => {
         />
       </div>
       <div className={styles.footer}>
-        <ul className={styles.reactions}>
-          <li className={styles.reaction}>
-            <Icon iconName="comment" className={styles.reactionIcon} />
-            <span className={styles.reactionCount}>{comments}</span>
-          </li>
-          <li className={styles.reaction}>
-            <Icon iconName="view" className={styles.reactionIcon} />
-            <span className={styles.reactionCount}>{views}</span>
-          </li>
-          <li className={styles.reaction}>
-            <Icon iconName="like" className={styles.reactionIcon} />
-            <span className={styles.reactionCount}>{likes}</span>
-          </li>
-          <li className={styles.reaction}>
-            <Icon iconName="dislike" className={styles.reactionIcon} />
-            <span className={styles.reactionCount}>{dislikes}</span>
-          </li>
-          <Icon iconName="share" className={styles.reactionIcon} />
-        </ul>
+        <Reactions
+          comments={comments}
+          views={views}
+          likes={likes}
+          dislikes={dislikes}
+        />
+        <Icon iconName="share" className={styles.icon} />
         <Link to={AppRoute.ROOT} className={styles.readMore}>
           Read more
         </Link>
