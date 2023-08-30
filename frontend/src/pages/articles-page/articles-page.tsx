@@ -45,7 +45,7 @@ const MOCKED_ARTICLES: ArticleType[] = Array.from({ length: 3 })
   .fill(MOCKED_ARTICLE)
   .map((article, index) => ({ ...(article as ArticleType), id: index }));
 
-const Articles: React.FC = () => {
+const ArticlesPage: React.FC = () => {
   const { pathname } = useLocation();
   const activePage = pathname.split('/').pop();
 
@@ -80,4 +80,4 @@ const Articles: React.FC = () => {
   );
 };
 
-export { Articles };
+export { ArticlesPage };

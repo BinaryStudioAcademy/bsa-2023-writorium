@@ -17,7 +17,7 @@ import { Auth } from '~/pages/auth/auth.js';
 import { Landing } from '~/pages/landing/landing.js';
 import { Profile } from '~/pages/profile/profile.js';
 
-import { Articles } from './pages/articles/articles.js';
+import { ArticlesPage } from './pages/articles-page/articles-page.js';
 
 createRoot(document.querySelector('#root') as HTMLElement).render(
   <StrictMode>
@@ -62,7 +62,11 @@ createRoot(document.querySelector('#root') as HTMLElement).render(
               },
               {
                 path: AppRoute.ARTICLES,
-                element: <Articles />,
+                element: (
+                  <ProtectedRoute>
+                    <ArticlesPage />
+                  </ProtectedRoute>
+                ),
                 children: [
                   {
                     path: ArticleSubRoute.FEED,
