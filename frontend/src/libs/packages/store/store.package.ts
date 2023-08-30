@@ -13,6 +13,7 @@ import { notification } from '~/packages/notification/notification.js';
 import { promptApi } from '~/packages/prompts/prompts.js';
 import { userApi } from '~/packages/users/users.js';
 import { reducer as authReducer } from '~/slices/auth/auth.js';
+import { reducer as promptsReducer } from '~/slices/prompts/prompts.js';
 import { reducer as usersReducer } from '~/slices/users/users.js';
 
 import { notificationMiddleware } from './middlewares/notification-middleware.js';
@@ -20,6 +21,7 @@ import { notificationMiddleware } from './middlewares/notification-middleware.js
 type RootReducer = {
   auth: ReturnType<typeof authReducer>;
   users: ReturnType<typeof usersReducer>;
+  prompts: ReturnType<typeof promptsReducer>; 
 };
 
 type ExtraArguments = {
@@ -50,6 +52,7 @@ class Store {
       reducer: {
         auth: authReducer,
         users: usersReducer,
+        prompts: promptsReducer,
       },
       middleware: (getDefaultMiddleware) => {
         return getDefaultMiddleware({

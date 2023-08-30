@@ -24,11 +24,10 @@ const { reducer, actions, name } = createSlice({
     builder.addCase(generatePrompt.pending, (state) => {
       state.dataStatus = DataStatus.PENDING;
     });
-    // builder.addCase(generatePrompt.fulfilled, (state, action) => {
-    //   const { prompt } = action.payload;
-    //   state.prompt = { ...prompt };
-    //   state.dataStatus = DataStatus.FULFILLED;
-    // });
+    builder.addCase(generatePrompt.fulfilled, (state, action) => {
+      state.prompt = action.payload;
+      state.dataStatus = DataStatus.FULFILLED;
+    });
     builder.addCase(generatePrompt.rejected, (state) => {
       state.dataStatus = DataStatus.REJECTED;
     });
