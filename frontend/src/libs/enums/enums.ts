@@ -1,6 +1,5 @@
 export { AppRoute } from './app-route.enum.js';
 export { ButtonType } from './button-type.enum.js';
-export { SubmitType } from './components/components.js';
 export { DataStatus } from './data-status.enum.js';
 export { InputType } from './input-type.enum.js';
 export {

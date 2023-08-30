@@ -1,5 +1,4 @@
-import { ButtonType } from '~/libs/enums/button-type.enum.js';
-import { SubmitType } from '~/libs/enums/enums.js';
+import { ButtonType } from '~/libs/enums/enums.js';
 import { useAppDispatch, useAppForm, useCallback } from '~/libs/hooks/hooks.js';
 import { type ValueOf } from '~/libs/types/types.js';
 import {
@@ -10,8 +9,10 @@ import { actions as articlesActions } from '~/slices/articles/articles.js';
 
 import { Button, Input, Textarea } from '../components.js';
 import { DEFAULT_ARTICLE_FORM_PAYLOAD } from './libs/constants.js';
+import { ArticleSubmitType } from './libs/enums/enums.js';
 import styles from './styles.module.scss';
 
+// TODO: Should be moved out from common components.
 const ArticleForm: React.FC = () => {
   const dispatch = useAppDispatch();
   const { control, errors, handleSubmit, reset, dirtyFields } =
@@ -22,15 +23,15 @@ const ArticleForm: React.FC = () => {
 
   const areFieldsDirty = !!dirtyFields.title && !!dirtyFields.text;
 
-  type SubmitType = ValueOf<typeof SubmitType>;
-
   const handleArticleSubmit = useCallback(
-    (submitType: SubmitType) =>
+    (articleSubmitType: ValueOf<typeof ArticleSubmitType>) =>
       (payload: ArticleRequestDto): void => {
         const updatedPayload = {
           ...payload,
           publishedAt:
-            submitType === SubmitType.PUBLISH ? new Date().toISOString() : null,
+            articleSubmitType === ArticleSubmitType.PUBLISH
+              ? new Date().toISOString()
+              : null,
         };
 
         void dispatch(articlesActions.createArticle(updatedPayload));
@@ -41,7 +42,9 @@ const ArticleForm: React.FC = () => {
   const handleFormSubmit = useCallback(
     (event_: React.BaseSyntheticEvent<SubmitEvent>): void => {
       const button = event_.nativeEvent.submitter as HTMLButtonElement;
-      void handleSubmit(handleArticleSubmit(button.name as SubmitType))(event_);
+      void handleSubmit(
+        handleArticleSubmit(button.name as ValueOf<typeof ArticleSubmitType>),
+      )(event_);
     },
     [handleSubmit, handleArticleSubmit],
   );

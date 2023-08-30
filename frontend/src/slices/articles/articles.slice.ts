@@ -25,7 +25,7 @@ const { reducer, actions, name } = createSlice({
       state.dataStatus = DataStatus.PENDING;
     });
     builder.addCase(createArticle.fulfilled, (state, action) => {
-      state.articles.push(action.payload);
+      state.articles = [...state.articles, action.payload];
       state.dataStatus = DataStatus.FULFILLED;
     });
     builder.addCase(createArticle.rejected, (state) => {
