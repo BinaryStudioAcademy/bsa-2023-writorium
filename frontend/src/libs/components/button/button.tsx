@@ -8,8 +8,8 @@ type Properties = {
   disabled?: boolean;
   label: string;
   type?: ValueOf<typeof ButtonType>;
-  onClick?: (event: React.MouseEvent) => void;
   className?: string;
+  onClick?: () => void;
 };
 
 const Button: React.FC<Properties> = ({
@@ -21,13 +21,12 @@ const Button: React.FC<Properties> = ({
 }) => (
   <button
     type={type}
-    onClick={onClick}
     disabled={disabled}
     className={getValidClassNames(styles.button, className)}
+    onClick={onClick}
   >
     {label}
   </button>
 );
 
-export { Button };
-export { type Properties as ButtonProperties };
+export { Button, type Properties as ButtonProperties };

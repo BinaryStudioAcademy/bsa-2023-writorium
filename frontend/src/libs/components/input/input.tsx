@@ -40,7 +40,7 @@ const Input = <T extends FieldValues>({
   const hasError = Boolean(error);
 
   return (
-    <label>
+    <label className={styles.label}>
       <span className={getValidClassNames(styles.text, labelClassName)}>
         {label}
       </span>
@@ -59,5 +59,4 @@ const Input = <T extends FieldValues>({
   );
 };
 
-export { Input };
-export { type Properties as InputProperties };
+export { Input, type Properties as InputProperties };
