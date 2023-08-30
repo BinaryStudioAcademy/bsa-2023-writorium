@@ -78,8 +78,8 @@ class CommentService implements IService {
     return updatedComment.toObject();
   }
 
-  public async delete(id: number): Promise<boolean> {
-    return await this.commentRepository.delete(id);
+  public delete(id: number): Promise<boolean> {
+    return this.commentRepository.delete(id);
   }
 }
 
