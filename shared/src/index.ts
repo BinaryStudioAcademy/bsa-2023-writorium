@@ -46,6 +46,7 @@ export {
   type GenreGetAllResponseDto,
   GenresApiPath,
 } from './packages/genres/genres.js';
+export { PromptsApiPath } from './packages/prompts/prompts.js';
 export {
   type GenerateArticlePromptResponseDto,
   type GeneratedArticlePrompt,
