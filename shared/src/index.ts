@@ -42,7 +42,10 @@ export {
   type GenreGetAllResponseDto,
   GenresApiPath,
 } from './packages/genres/genres.js';
-export { type PromptBaseResponseDto, PromptsApiPath } from './packages/prompts/prompts.js';
+export {
+  type PromptBaseResponseDto,
+  PromptsApiPath,
+} from './packages/prompts/prompts.js';
 export {
   type UserAuthResponseDto,
   type UserGetAllItemResponseDto,

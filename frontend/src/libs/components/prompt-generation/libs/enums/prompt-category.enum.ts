@@ -1,5 +1,3 @@
-import { type ValueOf } from '~/libs/types/types.js';
-
 const PromptCategory = {
   CHARACTER: 'character',
   SITUATION: 'situation',
@@ -8,6 +6,4 @@ const PromptCategory = {
   GENRE: 'genre',
 } as const;
 
-type PromptCategoryValue = ValueOf<typeof PromptCategory>;
-
-export { PromptCategory, type PromptCategoryValue };
+export { PromptCategory };

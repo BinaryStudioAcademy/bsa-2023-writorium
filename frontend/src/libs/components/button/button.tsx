@@ -16,7 +16,6 @@ const Button: React.FC<Properties> = ({
   type = ButtonType.BUTTON,
   label,
   className = '',
-  onClick,
   disabled,
   onClick,
 }) => (

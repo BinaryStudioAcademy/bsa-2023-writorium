@@ -18,7 +18,7 @@ const initialState: State = {
 
 const { reducer, actions, name } = createSlice({
   initialState,
-  name: 'prompt',
+  name: 'prompts',
   reducers: {},
   extraReducers(builder) {
     builder.addCase(generatePrompt.pending, (state) => {

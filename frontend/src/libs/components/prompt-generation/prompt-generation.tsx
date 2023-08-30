@@ -1,61 +1,37 @@
 import { Button, Icon } from '~/libs/components/components.js';
+import { DataStatus } from '~/libs/enums/data-status.enum.js';
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
 import {
+  useAppDispatch,
+  useAppSelector,
   useCallback,
   useEffect,
-  useRef,
-  useState,
 } from '~/libs/hooks/hooks.js';
+import { actions as promptsActions } from '~/slices/prompts/prompts.js';
 
 import { PromptCard } from './libs/components/components.js';
 import { PromptCategory } from './libs/enums/enums.js';
-import { categoryPrompts } from './libs/mocks/mocks.js';
 import styles from './styles.module.scss';
 
-const defaultPrompt = {
-  [PromptCategory.CHARACTER]: 'Girl',
-  [PromptCategory.SITUATION]: 'Street',
-  [PromptCategory.SETTING]: '',
-  [PromptCategory.PROP]: 'Red hair',
-  [PromptCategory.GENRE]: 'Fiction',
-};
-
 const PromptGeneration: React.FC = () => {
-  const [isSpinning, setIsSpinning] = useState(false);
-  const [generatedPrompt, setGeneratedPrompt] = useState(defaultPrompt);
+  const { prompt, dataStatus } = useAppSelector(({ prompts }) => ({
+    prompt: prompts.prompt,
+    dataStatus: prompts.dataStatus,
+  }));
+  const isSpinning = !(
+    dataStatus === DataStatus.FULFILLED || dataStatus == DataStatus.REJECTED
+  );
+  const dispatch = useAppDispatch();
 
   const promptCategories = Object.values(PromptCategory);
 
-  const timeoutReference = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  const handleButtonClick = useCallback(() => {
-    setIsSpinning(true);
-
-    if (timeoutReference.current) {
-      clearTimeout(timeoutReference.current);
-    }
-
-    timeoutReference.current = setTimeout(() => {
-      setGeneratedPrompt((previousGeneratedPrompt) => {
-        const updatedGeneratedPrompt = { ...previousGeneratedPrompt };
-        for (const category of promptCategories) {
-          const prompts = categoryPrompts[category];
-          const randomIndex = Math.floor(Math.random() * prompts.length);
-          updatedGeneratedPrompt[category] = prompts[randomIndex];
-        }
-        setIsSpinning(false);
-        return updatedGeneratedPrompt;
-      });
-    }, 3000);
-  }, [promptCategories]);
+  const handlePromptGenerate = useCallback(() => {
+    void dispatch(promptsActions.generatePrompt());
+  }, [dispatch]);
 
   useEffect(() => {
-    return () => {
-      if (timeoutReference.current) {
-        clearTimeout(timeoutReference.current);
-      }
-    };
-  }, []);
+    void dispatch(promptsActions.generatePrompt());
+  }, [dispatch]);
 
   return (
     <div className={styles.container}>
@@ -65,7 +41,7 @@ const PromptGeneration: React.FC = () => {
           <PromptCard
             key={category}
             category={category}
-            text={generatedPrompt[category]}
+            text={prompt ? prompt[category] : ''}
           />
         ))}
         <Button
@@ -76,7 +52,7 @@ const PromptGeneration: React.FC = () => {
               className={getValidClassNames(isSpinning && styles.spin)}
             />
           }
-          onClick={handleButtonClick}
+          onClick={handlePromptGenerate}
         />
       </div>
     </div>

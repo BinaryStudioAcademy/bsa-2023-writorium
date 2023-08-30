@@ -21,7 +21,7 @@ import { notificationMiddleware } from './middlewares/notification-middleware.js
 type RootReducer = {
   auth: ReturnType<typeof authReducer>;
   users: ReturnType<typeof usersReducer>;
-  prompts: ReturnType<typeof promptsReducer>; 
+  prompts: ReturnType<typeof promptsReducer>;
 };
 
 type ExtraArguments = {

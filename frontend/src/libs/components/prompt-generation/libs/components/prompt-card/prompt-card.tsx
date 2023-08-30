@@ -1,5 +1,9 @@
-import { type PromptCategoryValue } from '../../enums/enums.js';
+import { type ValueOf } from '~/libs/types/types.js';
+
+import { type PromptCategory } from '../../enums/enums.js';
 import styles from './styles.module.scss';
+
+type PromptCategoryValue = ValueOf<typeof PromptCategory>;
 
 type Properties = {
   category: PromptCategoryValue;
