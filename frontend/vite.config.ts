@@ -27,7 +27,6 @@ const config = ({ mode }: ConfigEnv): ReturnType<typeof defineConfig> => {
     },
     resolve: {
       alias: {
-        '@img': path.resolve(__dirname, './src/assets/img'),
         '@assets': path.resolve(__dirname, './src/assets'),
       },
     },
