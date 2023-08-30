@@ -16,6 +16,7 @@ const Button: React.FC<Properties> = ({
   type = ButtonType.BUTTON,
   label,
   className = '',
+  onClick,
   disabled,
   onClick,
 }) => (
@@ -29,5 +30,4 @@ const Button: React.FC<Properties> = ({
   </button>
 );
 
-export { Button };
-export { type Properties as ButtonProperties };
+export { Button, type Properties as ButtonProperties };
