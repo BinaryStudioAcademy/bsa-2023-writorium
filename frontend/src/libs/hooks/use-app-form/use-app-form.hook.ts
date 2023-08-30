@@ -1,7 +1,6 @@
 import { joiResolver } from '@hookform/resolvers/joi';
 import {
   type Control,
-  type DeepMap,
   type DefaultValues,
   type FieldErrors,
   type FieldValues,
@@ -25,7 +24,8 @@ type ReturnValue<T extends FieldValues = FieldValues> = {
   handleSubmit: UseFormHandleSubmit<T>;
   reset: UseFormReset<T>;
   isValid: boolean;
-  dirtyFields: DeepMap<FieldValues, true>;
+  isDirty: boolean;
+  isSubmitting: boolean;
 };
 
 const useAppForm = <T extends FieldValues = FieldValues>({
@@ -36,7 +36,7 @@ const useAppForm = <T extends FieldValues = FieldValues>({
   const {
     control,
     handleSubmit,
-    formState: { errors, isValid, dirtyFields },
+    formState: { errors, isValid, isDirty, isSubmitting },
     reset,
   } = useForm<T>({
     mode,
@@ -45,8 +45,9 @@ const useAppForm = <T extends FieldValues = FieldValues>({
   });
 
   return {
-    dirtyFields,
+    isDirty,
     isValid,
+    isSubmitting,
     control,
     errors,
     handleSubmit,

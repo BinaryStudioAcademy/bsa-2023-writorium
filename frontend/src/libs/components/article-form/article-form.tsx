@@ -15,13 +15,11 @@ import styles from './styles.module.scss';
 // TODO: Should be moved out from common components.
 const ArticleForm: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { control, errors, handleSubmit, reset, dirtyFields } =
+  const { control, errors, handleSubmit, reset, isDirty, isSubmitting } =
     useAppForm<ArticleRequestDto>({
       defaultValues: DEFAULT_ARTICLE_FORM_PAYLOAD,
       validationSchema: articleCreateValidationSchema,
     });
-
-  const areFieldsDirty = !!dirtyFields.title && !!dirtyFields.text;
 
   const handleArticleSubmit = useCallback(
     (articleSubmitType: ValueOf<typeof ArticleSubmitType>) =>
@@ -88,14 +86,14 @@ const ArticleForm: React.FC = () => {
             label="Save draft"
             name="draft"
             className={styles.saveDraftBtn}
-            disabled={!areFieldsDirty}
+            disabled={!isDirty || isSubmitting}
           />
           <Button
             type={ButtonType.SUBMIT}
             label="Publish"
             name="publish"
             className={styles.publishBtn}
-            disabled={!areFieldsDirty}
+            disabled={!isDirty || isSubmitting}
           />
         </div>
       </form>
