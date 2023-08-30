@@ -4,6 +4,7 @@ import {
   AbstractModel,
   DatabaseTableName,
 } from '~/libs/packages/database/database.js';
+import { composeDatabaseRelationPath } from '~/libs/packages/database/libs/helpers/helpers.js';
 
 import { UserModel } from './user.model.js';
 
@@ -24,8 +25,11 @@ class UserDetailsModel extends AbstractModel {
         relation: Model.HasOneRelation,
         modelClass: UserModel,
         join: {
-          from: `${DatabaseTableName.USER_DETAILS}.userId`,
-          to: `${DatabaseTableName.USERS}.id`,
+          from: composeDatabaseRelationPath<UserDetailsModel>(
+            'user_details',
+            'userId',
+          ),
+          to: composeDatabaseRelationPath('users', 'id'),
         },
       },
     };
