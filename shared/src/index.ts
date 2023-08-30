@@ -26,6 +26,13 @@ export {
   type WithNullableKeys,
 } from './libs/types/types.js';
 export {
+  type ArticleReactionCreateDto,
+  type ArticleReactionEntityType,
+  type ArticleReactionRequestDto,
+  type ArticleReactionResponseDto,
+  articleReactionValidationSchema,
+} from './packages/article-reactions/article-reactions.js';
+export {
   type ArticleBaseResponseDto,
   type ArticleCreateDto,
   articleCreateValidationSchema,
