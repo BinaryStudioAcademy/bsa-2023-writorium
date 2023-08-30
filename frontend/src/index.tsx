@@ -17,7 +17,11 @@ import { Auth } from '~/pages/auth/auth.js';
 import { Landing } from '~/pages/landing/landing.js';
 import { Profile } from '~/pages/profile/profile.js';
 
-import { ArticlesPage } from './pages/articles-page/articles-page.js';
+import {
+  ArticlesFeed,
+  ArticlesPage,
+  MyArticles,
+} from './pages/articles/articles.js';
 
 createRoot(document.querySelector('#root') as HTMLElement).render(
   <StrictMode>
@@ -70,9 +74,11 @@ createRoot(document.querySelector('#root') as HTMLElement).render(
                 children: [
                   {
                     path: ArticleSubRoute.FEED,
+                    element: <ArticlesFeed />,
                   },
                   {
                     path: ArticleSubRoute.MY_ARTICLES,
+                    element: <MyArticles />,
                   },
                 ],
               },

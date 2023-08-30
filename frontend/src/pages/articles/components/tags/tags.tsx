@@ -1,4 +1,5 @@
-import { type TagType } from '../../libs/types/types.js';
+import { type TagType } from '~/pages/articles/libs/types/types.js';
+
 import styles from './styles.module.scss';
 
 type Properties = {

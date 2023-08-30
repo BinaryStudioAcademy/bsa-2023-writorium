@@ -2,9 +2,9 @@ import ArticlePreview from '~/assets/img/article-preview.png';
 import { Avatar, Icon, Link } from '~/libs/components/components.js';
 import { AppRoute } from '~/libs/enums/enums.js';
 import { type UserAuthResponseDto } from '~/packages/users/users.js';
-import { type ArticleType } from '~/pages/articles-page/libs/types/types.js';
+import { type ArticleType } from '~/pages/articles/libs/types/types.js';
 
-import { Reactions, Tags } from '../components.js';
+import { Tags } from '../components.js';
 import styles from './styles.module.scss';
 
 type Properties = {
@@ -52,12 +52,24 @@ const ArticleCard: React.FC<Properties> = ({ article, user }) => {
         />
       </div>
       <div className={styles.footer}>
-        <Reactions
-          comments={comments}
-          views={views}
-          likes={likes}
-          dislikes={dislikes}
-        />
+        <ul className={styles.reactions}>
+          <li className={styles.reaction}>
+            <Icon iconName="comment" className={styles.reactionIcon} />
+            <span className={styles.reactionCount}>{comments}</span>
+          </li>
+          <li className={styles.reaction}>
+            <Icon iconName="view" className={styles.reactionIcon} />
+            <span className={styles.reactionCount}>{views}</span>
+          </li>
+          <li className={styles.reaction}>
+            <Icon iconName="like" className={styles.reactionIcon} />
+            <span className={styles.reactionCount}>{likes}</span>
+          </li>
+          <li className={styles.reaction}>
+            <Icon iconName="dislike" className={styles.reactionIcon} />
+            <span className={styles.reactionCount}>{dislikes}</span>
+          </li>
+        </ul>
         <Icon iconName="share" className={styles.icon} />
         <Link to={AppRoute.ROOT} className={styles.readMore}>
           Read more
