@@ -54,19 +54,18 @@ const Landing: FC = () => {
       <Link className={styles.signLink} to={AppRoute.SIGN_IN}>
         Unbounded space for freedom of your feather
       </Link>
-
-      <img
-        ref={lettersElementReference}
-        className={`${styles.parallaxImg} ${styles.lettersImg}`}
-        src={backgroundLetters}
-        alt="letters"
-      ></img>
       <img
         ref={typewriterElementReference}
         className={`${styles.parallaxImg} ${styles.typewriterImg}`}
         src={backgroundTypewriter}
         alt="typewriter"
-      ></img>
+      />
+      <img
+        ref={lettersElementReference}
+        className={styles.parallaxImg}
+        src={backgroundLetters}
+        alt="letters"
+      />
     </div>
   );
 };

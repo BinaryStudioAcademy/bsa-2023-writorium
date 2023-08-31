@@ -18,6 +18,7 @@
 }
 
 .signLink {
+  z-index: 5;
   max-width: 690px;
   color: var(--light-grey);
   font-weight: 700;
@@ -28,11 +29,6 @@
   text-transform: uppercase;
 }
 
-.lettersImg {
-  z-index: -5;
-}
-
 .typewriterImg {
-  z-index: -10;
   width: 110vw;
 }
