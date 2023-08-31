@@ -1,3 +1,4 @@
+export { RESET_PASSWORD_ROUTE } from './libs/constants/constants.js';
 export {
   ApiPath,
   AppEnvironment,
@@ -35,7 +36,13 @@ export {
   type ArticleUpdateRequestDto,
   articleUpdateValidationSchema,
 } from './packages/articles/articles.js';
-export { AuthApiPath } from './packages/auth/auth.js';
+export {
+  AuthApiPath,
+  type AuthRequestPasswordDto,
+  type AuthResetPasswordDto,
+  requestPasswordValidationSchema,
+  resetPasswordValidationSchema,
+} from './packages/auth/auth.js';
 export { FilesApiPath } from './packages/files/files.js';
 export {
   type GenreGetAllItemResponseDto,
