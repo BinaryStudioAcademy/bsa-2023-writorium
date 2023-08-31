@@ -23,13 +23,13 @@ const Author: FC<Properties> = ({
 }) => {
   return (
     <div className={styles.container}>
-      <div className={styles.authorWrpr}>
-        <div className={styles.avatarWrpr}>
+      <div className={styles.authorWrapper}>
+        <div className={styles.avatarWrapper}>
           <Avatar username={name} avatarUrl={null} />
         </div>
         <div>
           <h2 className={styles.authorName}>{name}</h2>
-          <ul className={styles.authorInfoWrpr}>
+          <ul className={styles.authorInfoWrapper}>
             <li className={styles.authorInfo}>
               <Icon iconName="renew" />
               <span className={styles.authorInfoValue}>{followers}</span>
@@ -43,8 +43,8 @@ const Author: FC<Properties> = ({
           </ul>
         </div>
       </div>
-      <div className={styles.articleInfoWrpr}>
-        <div className={styles.articleInfoListWrpr}>
+      <div className={styles.articleInfoWrapper}>
+        <div className={styles.articleInfoListWrapper}>
           <Icon iconName="notes" />
           <ul className={styles.articleInfoList}>
             <li className={styles.articleInfoItem}>
