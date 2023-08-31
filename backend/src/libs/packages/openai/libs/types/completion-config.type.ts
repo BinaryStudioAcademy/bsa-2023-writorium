@@ -1,4 +1,4 @@
-import { type CompletionCreateParamsBase } from 'openai/resources/completions';
+import { type CompletionCreateParamsBase } from 'openai/resources/chat/completions';
 
 type CompletionConfig = {
   prompt: string;
