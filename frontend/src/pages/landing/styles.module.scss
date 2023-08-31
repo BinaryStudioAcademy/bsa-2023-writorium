@@ -18,7 +18,7 @@
 }
 
 .signLink {
-  z-index: 5;
+  z-index: var(--z-index-level-one);
   max-width: 690px;
   color: var(--light-grey);
   font-weight: 700;
