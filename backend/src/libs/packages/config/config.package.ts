@@ -117,6 +117,12 @@ class Config implements IConfig {
           env: 'AWS_BUCKET_NAME',
           default: null,
         },
+        AWS_SES_EMAIL: {
+          doc: 'AWS SES email',
+          format: String,
+          env: 'AWS_SES_EMAIL',
+          default: null,
+        },
       },
       JWT: {
         SECRET_KEY: {
