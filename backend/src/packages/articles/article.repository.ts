@@ -10,8 +10,10 @@ class ArticleRepository implements IRepository {
     this.articleModel = articleModel;
   }
 
-  public findAll(): Promise<unknown[]> {
-    return Promise.resolve([]);
+  public async findAll(): Promise<ArticleEntity[]> {
+    const articles = await this.articleModel.query().execute();
+    
+    return articles.map((article) => ArticleEntity.initialize(article));
   }
 
   public async find(id: number): Promise<ArticleEntity | null> {
