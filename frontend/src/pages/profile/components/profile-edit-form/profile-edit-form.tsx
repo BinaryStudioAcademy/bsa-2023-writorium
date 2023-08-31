@@ -63,7 +63,7 @@ const ProfileEditForm: FC<Properties> = ({ user, onEdit }: Properties) => {
         onEdit(false);
       }
     },
-    [handleSubmit, handleUpdateUser, onEdit, isValid],
+    [errorImageUpload, handleSubmit, handleUpdateUser, isValid, onEdit],
   );
 
   const handleUpdateAvatarId = useCallback((value: number | null) => {
