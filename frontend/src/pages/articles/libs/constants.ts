@@ -7,6 +7,7 @@ const MOCKED_USER: UserAuthResponseDto = {
   email: 'nolanaris@gmail.com',
   firstName: 'Nolan',
   lastName: 'Saris',
+  avatarUrl: '',
 };
 
 const MOCKED_TEXT: string = `The developer technology landscape changes all the time as new tools
