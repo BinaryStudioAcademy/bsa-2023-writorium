@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { Layout } from '~/libs/components/components.js';
 import { AppRoute } from '~/libs/enums/enums.js';
 import {
   useAppDispatch,
@@ -12,6 +13,7 @@ import { actions } from '~/slices/articles/articles.js';
 
 import { ArticleView } from './components/article-view/article-view.jsx';
 import { Author } from './components/author/author.js';
+import styles from './styles.module.scss';
 
 const Article: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -51,10 +53,12 @@ const Article: React.FC = () => {
   };
 
   return (
-    <>
-      {id && <Author />}
-      <ArticleView article={ARTICLE} />
-    </>
+    <Layout>
+      <div className={styles.container}>
+        <ArticleView article={ARTICLE} />
+        {id && <Author />}
+      </div>
+    </Layout>
   );
 };
 

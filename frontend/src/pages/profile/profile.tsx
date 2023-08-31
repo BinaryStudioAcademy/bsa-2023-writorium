@@ -1,5 +1,4 @@
-import { Avatar } from '~/libs/components/avatar/avatar.js';
-import { Button } from '~/libs/components/components.js';
+import { Avatar, Button, Layout } from '~/libs/components/components.js';
 import {
   useAppDispatch,
   useAppSelector,
@@ -45,34 +44,36 @@ const Profile: React.FC = () => {
   );
 
   return (
-    <div className={styles.profile}>
-      <div className={styles.userInfoBlock}>
-        <Avatar
-          username={userName}
-          avatarUrl={null}
-          className={styles.avatar}
-        />
-        {isEditingProfile ? (
-          <ProfileEditForm
-            user={currentUser}
-            onUpdateUser={handleUpdateUser}
-            onEdit={handleEditMode}
+    <Layout>
+      <div className={styles.profile}>
+        <div className={styles.userInfoBlock}>
+          <Avatar
+            username={userName}
+            avatarUrl={null}
+            className={styles.avatar}
           />
-        ) : (
-          <>
-            <div className={styles.userInfo}>
-              <p>{userName}</p>
-              <p>{currentUser.email}</p>
-            </div>
-            <Button
-              label="Edit profile"
-              className={styles.editProfileBtn}
-              onClick={handleEditMode}
+          {isEditingProfile ? (
+            <ProfileEditForm
+              user={currentUser}
+              onUpdateUser={handleUpdateUser}
+              onEdit={handleEditMode}
             />
-          </>
-        )}
+          ) : (
+            <>
+              <div className={styles.userInfo}>
+                <p>{userName}</p>
+                <p>{currentUser.email}</p>
+              </div>
+              <Button
+                label="Edit profile"
+                className={styles.editProfileBtn}
+                onClick={handleEditMode}
+              />
+            </>
+          )}
+        </div>
       </div>
-    </div>
+    </Layout>
   );
 };
 
