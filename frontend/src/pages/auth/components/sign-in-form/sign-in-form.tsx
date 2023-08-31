@@ -52,7 +52,7 @@ const SignInForm: React.FC<Properties> = ({ onSubmit }) => {
             placeholder="Enter password"
           />
           <Link
-            className={styles['forgot-password-link']}
+            className={styles.forgotPasswordLink}
             to={AppRoute.FORGOT_PASSWORD}
           >
             Forgot password ?
