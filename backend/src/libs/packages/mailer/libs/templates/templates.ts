@@ -1,1 +1,1 @@
-export { getResetPasswordEmailTemplate } from './reset-password-email.template.js';
+export { getResetPasswordEmailTemplate } from './reset-password-template/reset-password-email.template.js';
