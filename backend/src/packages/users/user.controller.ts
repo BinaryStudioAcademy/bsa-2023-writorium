@@ -23,8 +23,8 @@ import { userUpdateValidationSchema } from './libs/validation-schemas/validation
  *        type: object
  *        properties:
  *          id:
- *            type: number
- *            format: number
+ *            type: integer
+ *            format: int64
  *            minimum: 1
  *            readOnly: true
  *          email:
@@ -34,6 +34,9 @@ import { userUpdateValidationSchema } from './libs/validation-schemas/validation
  *             type: string
  *          lastName:
  *              type: string
+ *          avatarUrl:
+ *              type: string
+ *              nullable: true
  */
 class UserController extends Controller {
   private userService: UserService;
@@ -107,6 +110,10 @@ class UserController extends Controller {
    *                  type: string
    *                email:
    *                  type: string
+   *                avatarId:
+   *                  type: number
+   *                  nullable: true
+   *
    *      responses:
    *        200:
    *          description: Successful update
