@@ -16,10 +16,11 @@ class Token implements IToken {
 
   public create<T extends Record<string, unknown>>(
     payload: T,
+    expirationTime: string = this.expirationTime,
   ): Promise<string> {
     return new SignJWT(payload)
       .setProtectedHeader({ alg: this.algorithm })
-      .setExpirationTime(this.expirationTime)
+      .setExpirationTime(expirationTime)
       .sign(this.secret);
   }
 
