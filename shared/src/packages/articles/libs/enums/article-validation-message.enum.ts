@@ -5,7 +5,7 @@ const ArticleValidationMessage = {
   ARTICLE_TITLE_MIN_LENGTH: `Title must contain at least ${ArticleValidationRule.ARTICLE_TITLE_MIN_LENGTH} characters`,
   ARTICLE_TITLE_MAX_LENGTH: `Title should contain no more than ${ArticleValidationRule.ARTICLE_TITLE_MAX_LENGTH} characters`,
   ARTICLE_TEXT_REQUIRE: 'Text is required',
-  ARTICLE_TEXT_MIN_LENGTH: `Title must contain at least ${ArticleValidationRule.ARTICLE_TEXT_MIN_LENGTH} characters`,
+  ARTICLE_TEXT_MIN_LENGTH: `Text must contain at least ${ArticleValidationRule.ARTICLE_TEXT_MIN_LENGTH} characters`,
   ARTICLE_GENRE_ID_REQUIRE: 'Genre id is required',
   ARTICLE_PUBLISHED_ISO_DATE:
     'The date of publication should be in ISO 8601 format',
