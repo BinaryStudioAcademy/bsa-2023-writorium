@@ -3,6 +3,7 @@ import { createSlice, isAnyOf } from '@reduxjs/toolkit';
 import { DataStatus } from '~/libs/enums/enums.js';
 import { type ValueOf } from '~/libs/types/types.js';
 import { type UserAuthResponseDto as User } from '~/packages/users/users.js';
+import { actions as usersActions } from '~/slices/users/users.js';
 
 import { getCurrentUser, logout, signIn, signUp } from './actions.js';
 
@@ -21,10 +22,12 @@ const { reducer, actions, name } = createSlice({
   name: 'auth',
   reducers: {},
   extraReducers(builder) {
+    builder.addCase(usersActions.updateUser.fulfilled, (state, action) => {
+      state.user = action.payload;
+    });
     builder.addMatcher(isAnyOf(signUp.pending, signIn.pending), (state) => {
       state.dataStatus = DataStatus.PENDING;
     });
-
     builder.addMatcher(
       isAnyOf(
         signIn.rejected,

@@ -1,0 +1,20 @@
+.tags {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 4px 9px;
+  color: var(--medium-brightness-gray);
+  font-weight: 400;
+  font-size: 14px;
+  font-family: Lato, sans-serif;
+  font-style: normal;
+  line-height: normal;
+  background: var(--light-grey);
+  border-radius: 4px;
+}

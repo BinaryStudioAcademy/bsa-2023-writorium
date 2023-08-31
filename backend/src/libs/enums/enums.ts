@@ -1,3 +1,4 @@
+export { ExceptionMessage } from './exception-message.enum.js';
 export {
   ApiPath,
   AppEnvironment,
