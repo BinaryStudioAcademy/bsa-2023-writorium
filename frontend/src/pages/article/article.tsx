@@ -1,5 +1,6 @@
 import { type FC } from 'react';
 
+import { Layout } from '~/libs/components/components.js';
 import { useParams } from '~/libs/hooks/hooks.js';
 import { type TagType } from '~/libs/types/types.js';
 
@@ -33,10 +34,12 @@ const Article: FC = () => {
   };
 
   return (
-    <div className={styles.container}>
-      <ArticleView article={MOCKED_ARTICLE} />
-      {id && <Author />}
-    </div>
+    <Layout>
+      <div className={styles.container}>
+        <ArticleView article={MOCKED_ARTICLE} />
+        {id && <Author />}
+      </div>
+    </Layout>
   );
 };
 
