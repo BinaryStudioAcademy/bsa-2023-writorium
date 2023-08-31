@@ -12,10 +12,20 @@ const createArticle = createAsyncThunk<
   ArticleBaseResponseDto,
   ArticleRequestDto,
   AsyncThunkConfig
->(`${sliceName}/create`, (articlePayload, { extra }) => {
+>(`${sliceName}/create`, async (articlePayload, { extra }) => {
   const { articleApi } = extra;
 
-  return articleApi.create(articlePayload);
+  return await articleApi.create(articlePayload);
 });
 
-export { createArticle };
+const getArticle = createAsyncThunk<
+  ArticleBaseResponseDto,
+  string,
+  AsyncThunkConfig
+>(`${sliceName}/getArticle`, async (id, { extra }) => {
+  const { articleApi } = extra;
+
+  return await articleApi.getArticle(id);
+});
+
+export { createArticle, getArticle };

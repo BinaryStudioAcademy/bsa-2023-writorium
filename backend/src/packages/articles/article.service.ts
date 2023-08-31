@@ -71,6 +71,25 @@ class ArticleService implements IService {
     return newGenreEntity.toObject().id;
   }
 
+  public async create(
+    payload: ArticleCreateDto,
+  ): Promise<ArticleBaseResponseDto> {
+    // const genreId = await this.getGenreIdForArticle(payload.text);
+
+    const article = await this.articleRepository.create(
+      ArticleEntity.initializeNew({
+        genreId: 1,
+        title: payload.title,
+        text: payload.text,
+        userId: payload.userId,
+        promptId: payload?.promptId ?? null,
+        publishedAt: payload?.publishedAt ?? null,
+      }),
+    );
+
+    return article.toObject();
+  }
+
   public findAll(): Promise<{ items: unknown[] }> {
     return Promise.resolve({ items: [] });
   }
@@ -81,25 +100,6 @@ class ArticleService implements IService {
     if (!article) {
       return null;
     }
-
-    return article.toObject();
-  }
-
-  public async create(
-    payload: ArticleCreateDto,
-  ): Promise<ArticleBaseResponseDto> {
-    const genreId = await this.getGenreIdForArticle(payload.text);
-
-    const article = await this.articleRepository.create(
-      ArticleEntity.initializeNew({
-        genreId,
-        title: payload.title,
-        text: payload.text,
-        userId: payload.userId,
-        promptId: payload?.promptId ?? null,
-        publishedAt: payload?.publishedAt ?? null,
-      }),
-    );
 
     return article.toObject();
   }
