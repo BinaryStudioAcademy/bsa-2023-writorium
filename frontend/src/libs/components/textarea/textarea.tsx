@@ -6,33 +6,25 @@ import {
 } from 'react-hook-form';
 
 import { ErrorMessage } from '~/libs/components/components.js';
-import { InputType } from '~/libs/enums/input-type.enum';
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
 import { useFormController } from '~/libs/hooks/hooks.js';
-import { type ValueOf } from '~/libs/types/types.js';
 
 import styles from './styles.module.scss';
 
 type Properties<T extends FieldValues> = {
   control: Control<T, null>;
   errors: FieldErrors<T>;
-  label?: string;
   name: FieldPath<T>;
-  placeholder?: string;
-  type?: ValueOf<typeof InputType>;
+  placeholder: string;
   className?: string;
-  labelClassName?: string;
 };
 
-const Input = <T extends FieldValues>({
+const Textarea = <T extends FieldValues>({
   control,
   errors,
-  label,
-  name,
-  placeholder = '',
-  type = InputType.TEXT,
+  placeholder,
   className,
-  labelClassName,
+  name,
 }: Properties<T>): JSX.Element => {
   const { field } = useFormController({ name, control });
 
@@ -40,23 +32,19 @@ const Input = <T extends FieldValues>({
   const hasError = Boolean(error);
 
   return (
-    <label className={styles.label}>
-      <span className={getValidClassNames(styles.text, labelClassName)}>
-        {label}
-      </span>
-      <input
+    <label>
+      <textarea
+        {...field}
+        placeholder={placeholder}
         className={getValidClassNames(
-          styles.input,
+          styles.textarea,
           hasError && styles.error,
           className,
         )}
-        {...field}
-        type={type}
-        placeholder={placeholder}
       />
       <ErrorMessage error={error as string} />
     </label>
   );
 };
 
-export { Input, type Properties as InputProperties };
+export { Textarea };
