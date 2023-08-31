@@ -1,14 +1,21 @@
+.label {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
 .input {
   width: 100%;
-  height: 45px;
+  min-height: 45px;
   margin-top: 5px;
   padding: 14px 0 14px 19px;
   color: var(--input-text);
   font-size: 14px;
   font-family: Lato, sans-serif;
   background: var(--input-bg);
-  border: none;
+  border: 2px solid transparent;
   border-radius: 7px;
+  outline: none;
 }
 
 .input::placeholder {
@@ -17,14 +24,18 @@
 
 .input:focus {
   color: var(--black);
+  border-color: var(--black);
+  box-shadow:
+    0 4px 8px -2px var(--dark-green-80),
+    inset 0 2px 4px -2px var(--dark-green-80);
 }
 
-.error {
-  border: 2px solid var(--red);
+.input.error {
+  border-color: var(--red);
 }
 
 .text {
-  color: var(--black);
+  color: var(--dark-gray);
   font-size: 12px;
   font-family: Lato, sans-serif;
 }
