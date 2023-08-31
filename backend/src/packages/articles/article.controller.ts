@@ -71,6 +71,12 @@ class ArticleController extends Controller {
 
     this.addRoute({
       path: ArticlesApiPath.ROOT,
+      method: 'GET',
+      handler: () => this.findAll(),
+    });
+
+    this.addRoute({
+      path: ArticlesApiPath.ROOT,
       method: 'POST',
       validation: {
         body: articleCreateValidationSchema,
@@ -98,6 +104,29 @@ class ArticleController extends Controller {
           }>,
         ),
     });
+  }
+
+  /**
+   * @swagger
+   * /articles:
+   *    get:
+   *      description: Returns an array of articles
+   *      responses:
+   *        200:
+   *          description: Successful operation
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: array
+   *                items:
+   *                  $ref: '#/components/schemas/Article'
+   */
+
+  private async findAll(): Promise<ApiHandlerResponse> {
+    return {
+      status: HttpCode.OK,
+      payload: await this.articleService.findAll(),
+    };
   }
 
   /**
