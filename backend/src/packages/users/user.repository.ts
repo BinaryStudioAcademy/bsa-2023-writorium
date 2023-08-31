@@ -125,8 +125,7 @@ class UserRepository implements IRepository {
     const { passwordHash, passwordSalt } = entity.privateData;
     const user = await this.userModel
       .query()
-      .upsertGraphAndFetch({
-        id,
+      .patchAndFetchById(id, {
         passwordHash,
         passwordSalt,
       })
