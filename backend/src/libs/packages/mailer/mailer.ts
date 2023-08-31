@@ -6,3 +6,4 @@ const mailer = new Mailer(config);
 
 export { mailer };
 export { type SendEmailResponse } from './libs/types/types.js';
+export { type Mailer } from './mailer.package.js';
