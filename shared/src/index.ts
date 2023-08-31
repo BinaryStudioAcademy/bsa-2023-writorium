@@ -5,7 +5,7 @@ export {
   ServerErrorType,
 } from './libs/enums/enums.js';
 export { ApplicationError, HttpError } from './libs/exceptions/exceptions.js';
-export { configureString } from './libs/helpers/helpers.js';
+export { configureString, safeJSONParse } from './libs/helpers/helpers.js';
 export { type IConfig } from './libs/packages/config/config.js';
 export {
   HttpCode,
@@ -26,6 +26,12 @@ export {
   type WithNullableKeys,
 } from './libs/types/types.js';
 export {
+  type Achievement,
+  type AchievementBaseResponseDto,
+  type AchievementGetAllResponseDto,
+  AchievementsApiPath,
+} from './packages/achievements/achievements.js';
+export {
   type ArticleBaseResponseDto,
   type ArticleCreateDto,
   articleCreateValidationSchema,
@@ -39,11 +45,17 @@ export {
 export { AuthApiPath } from './packages/auth/auth.js';
 export { FilesApiPath } from './packages/files/files.js';
 export {
+  type GenreEntityType,
   type GenreGetAllItemResponseDto,
   type GenreGetAllResponseDto,
   GenresApiPath,
 } from './packages/genres/genres.js';
-export { PromptsApiPath } from './packages/prompts/prompts.js';
+export {
+  type GenerateArticlePromptResponseDto,
+  type GeneratedArticlePrompt,
+  PromptCategory,
+  PromptsApiPath,
+} from './packages/prompts/prompts.js';
 export {
   type UserAuthResponseDto,
   type UserGetAllItemResponseDto,

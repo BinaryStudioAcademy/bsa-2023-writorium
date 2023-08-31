@@ -25,7 +25,7 @@ const articleUpdate = joi
         'string.min': ArticleValidationMessage.ARTICLE_TEXT_MIN_LENGTH,
       }),
     promptId: joi.number().integer().positive().allow(null),
-    genreId: joi.number().integer().positive(),
+    genreId: joi.number().integer().positive().allow(null),
     publishedAt: joi.string().isoDate().allow(null).messages({
       'string.isoDate': ArticleValidationMessage.ARTICLE_PUBLISHED_ISO_DATE,
     }),
