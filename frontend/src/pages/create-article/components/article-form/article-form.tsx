@@ -1,3 +1,4 @@
+import { Button, Input, Textarea } from '~/libs/components/components.js';
 import { ButtonType } from '~/libs/enums/enums.js';
 import { useAppDispatch, useAppForm, useCallback } from '~/libs/hooks/hooks.js';
 import { type ValueOf } from '~/libs/types/types.js';
@@ -7,12 +8,10 @@ import {
 } from '~/packages/articles/articles.js';
 import { actions as articlesActions } from '~/slices/articles/articles.js';
 
-import { Button, Input, Textarea } from '../components.js';
-import { DEFAULT_ARTICLE_FORM_PAYLOAD } from './libs/constants.js';
+import { DEFAULT_ARTICLE_FORM_PAYLOAD } from './libs/constants/constants.js';
 import { ArticleSubmitType } from './libs/enums/enums.js';
 import styles from './styles.module.scss';
 
-// TODO: Should be moved out from common components.
 const ArticleForm: React.FC = () => {
   const dispatch = useAppDispatch();
   const { control, errors, handleSubmit, handleReset, isDirty, isSubmitting } =

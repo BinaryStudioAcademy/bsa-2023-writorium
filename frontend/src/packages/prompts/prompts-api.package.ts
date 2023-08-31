@@ -23,7 +23,7 @@ class PromptApi extends HttpApi {
       {
         method: 'GET',
         contentType: ContentType.JSON,
-        hasAuth: false,
+        hasAuth: true,
       },
     );
 
