@@ -26,6 +26,12 @@ export {
   type WithNullableKeys,
 } from './libs/types/types.js';
 export {
+  type Achievement,
+  type AchievementBaseResponseDto,
+  type AchievementGetAllResponseDto,
+  AchievementsApiPath,
+} from './packages/achievements/achievements.js';
+export {
   type ArticleReactionCreateDto,
   type ArticleReactionCreateResponseDto,
   type ArticleReactionEntityType,
@@ -33,12 +39,6 @@ export {
   type ArticleReactionResponseDto,
   articleReactionValidationSchema,
 } from './packages/article-reactions/article-reactions.js';
-export{
-  type Achievement,
-  type AchievementBaseResponseDto,
-  type AchievementGetAllResponseDto,
-  AchievementsApiPath,
-} from './packages/achievements/achievements.js';
 export {
   type ArticleBaseResponseDto,
   type ArticleCreateDto,
