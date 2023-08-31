@@ -6,6 +6,7 @@ export {
   type CommentEntityType,
   type CommentGetAllRequestDto,
   type CommentGetAllResponseDto,
+  type CommentUpdateDto,
   type CommentUpdateRequestDto,
 } from './libs/types/types.js';
 export {

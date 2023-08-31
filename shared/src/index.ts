@@ -45,6 +45,7 @@ export {
   type CommentGetAllRequestDto,
   type CommentGetAllResponseDto,
   CommentsApiPath,
+  type CommentUpdateDto,
   type CommentUpdateRequestDto,
   commentUpdateValidationSchema,
 } from './packages/comments/comments.js';
