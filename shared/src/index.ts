@@ -30,6 +30,7 @@ export {
   type ArticleCreateDto,
   articleCreateValidationSchema,
   type ArticleEntityType,
+  type ArticleGetAllResponseDto,
   type ArticleRequestDto,
   ArticlesApiPath,
   type ArticleUpdateRequestDto,

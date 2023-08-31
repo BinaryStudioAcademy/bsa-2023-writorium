@@ -3,6 +3,7 @@ export {
   type ArticleBaseResponseDto,
   type ArticleCreateDto,
   type ArticleEntityType,
+  type ArticleGetAllResponseDto,
   type ArticleRequestDto,
   type ArticleUpdateRequestDto,
 } from './libs/types/types.js';
