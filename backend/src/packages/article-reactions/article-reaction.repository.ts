@@ -102,10 +102,19 @@ class ArticleReactionRepository implements IRepository {
     return ArticleReactionEntity.initialize(updatedReaction);
   }
 
-  public async delete(id: number): Promise<boolean> {
-    return Boolean(
-      await this.articleReactionModel.query().deleteById(id).execute(),
-    );
+  public async delete(id: number): Promise<ArticleReactionEntity | null> {
+    const deletedReaction = await this.articleReactionModel
+      .query()
+      .deleteById(id)
+      .returning('*')
+      .first()
+      .execute();
+
+    if (!deletedReaction) {
+      return null;
+    }
+
+    return ArticleReactionEntity.initialize(deletedReaction);
   }
 }
 

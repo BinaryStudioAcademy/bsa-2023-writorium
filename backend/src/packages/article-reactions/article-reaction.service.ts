@@ -65,15 +65,7 @@ class ArticleReactionService implements IService {
     const reaction = reactionEntity.toObject();
 
     if (reaction.isLike === isLike) {
-      const isDeleted = await this.delete(reaction.id);
-
-      if (!isDeleted) {
-        throw new ApplicationError({
-          message: `Failed to delete reaction to article with ID ${articleId}`,
-        });
-      }
-
-      return reaction;
+      return await this.delete(reaction.id);
     }
 
     const updatedReaction = await this.articleReactionRepository.update(
@@ -86,8 +78,16 @@ class ArticleReactionService implements IService {
     return updatedReaction.toObject();
   }
 
-  public async delete(id: number): Promise<boolean> {
-    return await this.articleReactionRepository.delete(id);
+  public async delete(id: number): Promise<ArticleReactionResponseDto> {
+    const deletedReaction = await this.articleReactionRepository.delete(id);
+
+    if (!deletedReaction) {
+      throw new ApplicationError({
+        message: `Failed to delete reaction with ID ${id}`,
+      });
+    }
+
+    return deletedReaction.toObject();
   }
 }
 
