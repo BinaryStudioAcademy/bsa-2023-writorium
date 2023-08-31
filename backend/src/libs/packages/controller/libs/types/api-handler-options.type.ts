@@ -7,6 +7,7 @@ type DefaultApiHandlerOptions = {
   params?: unknown;
   fileToUpload?: FileToUpload | null;
   user?: UserAuthResponseDto | null;
+  origin?: string | undefined;
 };
 
 type ApiHandlerOptions<
@@ -17,6 +18,7 @@ type ApiHandlerOptions<
   params: T['params'];
   fileToUpload: T['fileToUpload'];
   user: T['user'];
+  origin: T['origin'];
 };
 
 export { type ApiHandlerOptions };
