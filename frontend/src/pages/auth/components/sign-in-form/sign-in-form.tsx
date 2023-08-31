@@ -51,6 +51,12 @@ const SignInForm: React.FC<Properties> = ({ onSubmit }) => {
             control={control}
             placeholder="Enter password"
           />
+          <Link
+            className={styles['forgot-password-link']}
+            to={AppRoute.FORGOT_PASSWORD}
+          >
+            Forgot password ?
+          </Link>
         </fieldset>
         <AuthSubmitButton label="Sign In" />
       </form>
