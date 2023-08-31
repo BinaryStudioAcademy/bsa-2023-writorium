@@ -21,8 +21,13 @@ const Link: React.FC<Properties> = ({
   to,
 }) => {
   const handleGetClassesByLinkState = useCallback(
-    ({ isActive }: { isActive: boolean }): string =>
-      getValidClassNames(styles.link, className, isActive && activeClassName),
+    ({ isActive }: { isActive: boolean }): string => {
+      return getValidClassNames(
+        styles.link,
+        className,
+        isActive && activeClassName,
+      );
+    },
     [className, activeClassName],
   );
 
