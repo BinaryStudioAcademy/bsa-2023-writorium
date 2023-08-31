@@ -6,7 +6,7 @@ import styles from './styles.module.scss';
 
 type Properties = {
   disabled?: boolean;
-  label: string;
+  label: React.ReactNode;
   type?: ValueOf<typeof ButtonType>;
   name?: string;
   className?: string;
@@ -18,8 +18,8 @@ const Button: React.FC<Properties> = ({
   label,
   name = '',
   className = '',
-  onClick,
   disabled,
+  onClick,
 }) => (
   <button
     type={type}

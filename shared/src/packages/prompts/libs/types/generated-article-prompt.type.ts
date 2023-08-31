@@ -1,9 +1,11 @@
+import { type PromptCategory } from '~/packages/prompts/libs/enums/prompt-category.enum.js';
+
 type GeneratedArticlePrompt = {
-  genre: string;
-  character: string;
-  setting: string;
-  situation: string;
-  prop: string;
+  [PromptCategory.GENRE]: string;
+  [PromptCategory.CHARACTER]: string;
+  [PromptCategory.SETTING]: string;
+  [PromptCategory.SITUATION]: string;
+  [PromptCategory.PROP]: string;
 };
 
 export { type GeneratedArticlePrompt };

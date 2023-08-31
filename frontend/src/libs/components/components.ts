@@ -10,6 +10,7 @@ export { Link } from './link/link.js';
 export { Modal } from './modal/modal.js';
 export { Notification } from './notification/notification.js';
 export { Portal } from './portal/portal.js';
+export { PromptGeneration } from './prompt-generation/prompt-generation.js';
 export { ProtectedRoute } from './protected-route/protected-route.js';
 export { PublicRoute } from './public-route/public-route.js';
 export { RouterProvider } from './router-provider/router-provider.js';
