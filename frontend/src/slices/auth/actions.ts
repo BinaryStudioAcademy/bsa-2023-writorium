@@ -3,6 +3,10 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { StorageKey } from '~/libs/packages/storage/storage.js';
 import { type AsyncThunkConfig } from '~/libs/types/types.js';
 import {
+  type AuthRequestPasswordDto,
+  type AuthResetPasswordDto,
+} from '~/packages/auth/auth.js';
+import {
   type UserAuthResponseDto,
   type UserSignInRequestDto,
   type UserSignUpRequestDto,
@@ -43,14 +47,11 @@ const getCurrentUser = createAsyncThunk<
   AsyncThunkConfig
 >(`${sliceName}/getCurrentUser`, async (_loginPayload, { extra }) => {
   const { authApi, storage } = extra;
-
   const token = await storage.get(StorageKey.TOKEN);
   const hasToken = Boolean(token);
-
   if (!hasToken) {
     return null;
   }
-
   try {
     return await authApi.getCurrentUser();
   } catch {
@@ -69,4 +70,35 @@ const logout = createAsyncThunk<null, undefined, AsyncThunkConfig>(
   },
 );
 
-export { getCurrentUser, logout, signIn, signUp };
+const emailResetPasswordLink = createAsyncThunk<
+  unknown,
+  AuthRequestPasswordDto,
+  AsyncThunkConfig
+>(`${sliceName}/email-reset-password-link`, async (payload, { extra }) => {
+  const { authApi } = extra;
+
+  return await authApi.emailResetPasswordLink(payload);
+});
+
+const resetPassword = createAsyncThunk<
+  UserAuthResponseDto,
+  AuthResetPasswordDto,
+  AsyncThunkConfig
+>(`${sliceName}/reset-password`, async (payload, { extra }) => {
+  const { authApi, storage } = extra;
+
+  const { token, user } = await authApi.resetPassword(payload);
+
+  await storage.set(StorageKey.TOKEN, token);
+
+  return user;
+});
+
+export {
+  emailResetPasswordLink,
+  getCurrentUser,
+  logout,
+  resetPassword,
+  signIn,
+  signUp,
+};
