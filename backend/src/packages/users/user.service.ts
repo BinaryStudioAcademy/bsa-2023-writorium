@@ -119,7 +119,7 @@ class UserService implements IService {
   }
   public async updatePassword(
     id: number,
-    dto: AuthResetPasswordDto,
+    privateDataToSet: AuthResetPasswordDto,
   ): Promise<UserAuthResponseDto> {
     const user = await this.find(id);
     if (!user) {
@@ -130,7 +130,10 @@ class UserService implements IService {
       this.config.ENCRYPTION.USER_PASSWORD_SALT_ROUNDS,
     );
 
-    const passwordHash = await this.encrypt.encrypt(dto.password, passwordSalt);
+    const passwordHash = await this.encrypt.encrypt(
+      privateDataToSet.password,
+      passwordSalt,
+    );
 
     const updatedUser = await this.userRepository.updatePassword(
       UserEntity.initialize({
