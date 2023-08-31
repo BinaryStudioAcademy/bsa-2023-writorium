@@ -44,9 +44,11 @@ const Input = <T extends FieldValues>({
   return (
     <label className={styles.label}>
       <span
-        className={getValidClassNames(styles.text, labelClassName, {
-          [styles.required]: required,
-        })}
+        className={getValidClassNames(
+          styles.text,
+          labelClassName,
+          required && styles.required,
+        )}
       >
         {label}
       </span>
