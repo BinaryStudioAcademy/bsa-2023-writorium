@@ -5,7 +5,6 @@ import {
   useAppSelector,
   useEffect,
 } from '~/libs/hooks/hooks.js';
-import { storage, StorageKey } from '~/libs/packages/storage/storage.js';
 import { actions } from '~/slices/auth/auth.js';
 
 import { Loader } from '../loader/loader.js';
@@ -18,26 +17,21 @@ const App: React.FC = () => {
   }));
   const dispatch = useAppDispatch();
   const hasUser = Boolean(user);
-  const hasToken = Boolean(storage.get(StorageKey.TOKEN));
 
   const isLoading = !(
     dataStatus === DataStatus.FULFILLED || dataStatus == DataStatus.REJECTED
   );
 
   useEffect(() => {
-    if (hasUser && !hasToken) {
-      void dispatch(actions.logout());
-    }
-
-    if (hasToken) {
+    if (!hasUser) {
       void dispatch(actions.getCurrentUser());
     }
-  }, [hasToken, hasUser, dispatch]);
+  }, [hasUser, dispatch]);
 
   return (
     <Loader isLoading={isLoading}>
       <>
-        <Header user={null} />
+        <Header user={user} />
         <div className={styles.container}>
           <RouterOutlet />
         </div>
