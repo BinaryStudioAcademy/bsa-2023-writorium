@@ -1,8 +1,14 @@
+import { RESET_PASSWORD_ROUTE } from '~/libs/constants/constants.js';
 import { type IEncrypt } from '~/libs/packages/encrypt/encrypt.js';
 import {
   InvalidCredentialsError,
   UserNotFoundError,
 } from '~/libs/packages/exceptions/exceptions.js';
+import { HttpCode, HttpError } from '~/libs/packages/http/http.js';
+import {
+  type Mailer,
+  type SendEmailResponse,
+} from '~/libs/packages/mailer/mailer.js';
 import { token as accessToken } from '~/libs/packages/token/token.js';
 import {
   type UserSignInRequestDto,
@@ -13,15 +19,25 @@ import {
 import { type UserService } from '~/packages/users/user.service.js';
 
 import { type UserPrivateData } from '../users/libs/types/types.js';
+import {
+  type AuthRequestPasswordDto,
+  type AuthResetPasswordDto,
+} from './libs/types/types.js';
 
 class AuthService {
   private userService: UserService;
+  private mailer: Mailer;
 
   private encrypt: IEncrypt;
 
-  public constructor(userService: UserService, encrypt: IEncrypt) {
+  public constructor(
+    userService: UserService,
+    encrypt: IEncrypt,
+    mailer: Mailer,
+  ) {
     this.userService = userService;
     this.encrypt = encrypt;
+    this.mailer = mailer;
   }
 
   public async signIn(
@@ -60,6 +76,53 @@ class AuthService {
   ): Promise<UserSignUpResponseDto> {
     const user = await this.userService.create(userRequestDto);
 
+    const token = await accessToken.create<{ userId: number }>({
+      userId: user.id,
+    });
+
+    return { user, token };
+  }
+
+  public async emailResetPasswordLink(
+    authRequestPasswordDto: AuthRequestPasswordDto,
+    url: string,
+  ): Promise<SendEmailResponse> {
+    const { email } = authRequestPasswordDto;
+    const user = await this.userService.findByEmail(email);
+    if (!user) {
+      throw new UserNotFoundError();
+    }
+    const token = await accessToken.create<{ userId: number }>(
+      {
+        userId: user.id,
+      },
+      '1h',
+    );
+
+    const reseetLink = url + RESET_PASSWORD_ROUTE.BASE + '/' + token;
+
+    return await this.mailer.sendResetPasswordEmail(email, reseetLink);
+  }
+
+  public async resetPassword(
+    authResetPasswordDto: AuthResetPasswordDto,
+  ): Promise<UserSignUpResponseDto> {
+    const { resetPasswordToken } = authResetPasswordDto;
+    const { userId } = await accessToken.verifyToken<{ userId?: number }>(
+      resetPasswordToken,
+    );
+
+    if (!userId) {
+      throw new HttpError({
+        message: 'Invalid token',
+        status: HttpCode.UNAUTHORIZED,
+      });
+    }
+
+    const user = await this.userService.updatePassword(
+      userId,
+      authResetPasswordDto,
+    );
     const token = await accessToken.create<{ userId: number }>({
       userId: user.id,
     });
