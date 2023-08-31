@@ -40,6 +40,7 @@ const userUpdate = joi.object<UserUpdateRequestDto, true>({
       'string.pattern.base': UserValidationMessage.EMAIL_WRONG,
       'string.empty': UserValidationMessage.EMAIL_REQUIRE,
     }),
+  avatarId: joi.number().integer().required().allow(null),
 });
 
 export { userUpdate };
