@@ -1,12 +1,10 @@
 import joi from 'joi';
 
-import {
-  UserValidationMessage,
-  UserValidationRule,
-} from '~/packages/users/libs/enums/enums.js';
-import { type UserUpdateRequestDto } from '~/packages/users/libs/types/types.js';
+import { UserValidationMessage } from '~/packages/users/libs/enums/user-validation-message.enum.js';
+import { UserValidationRule } from '~/packages/users/libs/enums/user-validation-rule.enum.js';
+import { type UserUpdateRequestDto } from '~/packages/users/libs/types/user-update-request-dto.type.js';
 
-const userUpdate = joi.object<Omit<UserUpdateRequestDto, 'avatarId'>, true>({
+const userUpdateWithAvatar = joi.object<UserUpdateRequestDto, true>({
   firstName: joi
     .string()
     .trim()
@@ -40,6 +38,7 @@ const userUpdate = joi.object<Omit<UserUpdateRequestDto, 'avatarId'>, true>({
       'string.pattern.base': UserValidationMessage.EMAIL_WRONG,
       'string.empty': UserValidationMessage.EMAIL_REQUIRE,
     }),
+  avatarId: joi.number().integer().positive().required().allow(null),
 });
 
-export { userUpdate };
+export { userUpdateWithAvatar };

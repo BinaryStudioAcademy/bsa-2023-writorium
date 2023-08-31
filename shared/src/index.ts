@@ -71,4 +71,5 @@ export {
   userSignUpValidationSchema,
   type UserUpdateRequestDto,
   userUpdateValidationSchema,
+  userUpdateWithAvatarIdValidationSchema,
 } from './packages/users/users.js';

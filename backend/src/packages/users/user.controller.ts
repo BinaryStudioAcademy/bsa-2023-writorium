@@ -13,7 +13,7 @@ import {
   type UserAuthResponseDto,
   type UserUpdateRequestDto,
 } from './libs/types/types.js';
-import { userUpdateValidationSchema } from './libs/validation-schemas/validation-schemas.js';
+import { userUpdateWithAvatarIdValidationSchema } from './libs/validation-schemas/validation-schemas.js';
 
 /**
  * @swagger
@@ -55,7 +55,9 @@ class UserController extends Controller {
     this.addRoute({
       path: UsersApiPath.ROOT,
       method: 'PUT',
-      validation: { body: userUpdateValidationSchema },
+      validation: {
+        body: userUpdateWithAvatarIdValidationSchema,
+      },
       handler: (options) =>
         this.update(
           options as ApiHandlerOptions<{
