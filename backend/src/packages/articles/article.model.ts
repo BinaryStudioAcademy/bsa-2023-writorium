@@ -27,7 +27,10 @@ class ArticleModel extends AbstractModel {
         relation: Model.HasManyRelation,
         modelClass: ArticleReactionModel,
         join: {
-          from: composeDatabaseRelationPath(DatabaseTableName.ARTICLES, 'id'),
+          from: composeDatabaseRelationPath<ArticleModel>(
+            DatabaseTableName.ARTICLES,
+            'id',
+          ),
           to: composeDatabaseRelationPath<ArticleReactionModel>(
             DatabaseTableName.ARTICLE_REACTIONS,
             'articleId',
@@ -42,7 +45,10 @@ class ArticleModel extends AbstractModel {
             DatabaseTableName.ARTICLES,
             'userId',
           ),
-          to: composeDatabaseRelationPath(DatabaseTableName.USERS, 'id'),
+          to: composeDatabaseRelationPath<UserModel>(
+            DatabaseTableName.USERS,
+            'id',
+          ),
         },
       },
     };

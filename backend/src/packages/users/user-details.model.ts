@@ -29,7 +29,10 @@ class UserDetailsModel extends AbstractModel {
             DatabaseTableName.USER_DETAILS,
             'userId',
           ),
-          to: composeDatabaseRelationPath(DatabaseTableName.USERS, 'id'),
+          to: composeDatabaseRelationPath<UserModel>(
+            DatabaseTableName.USERS,
+            'id',
+          ),
         },
       },
     };

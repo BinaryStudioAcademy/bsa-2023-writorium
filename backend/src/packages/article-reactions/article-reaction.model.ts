@@ -28,7 +28,10 @@ class ArticleReactionModel extends AbstractModel {
             DatabaseTableName.ARTICLE_REACTIONS,
             'articleId',
           ),
-          to: composeDatabaseRelationPath(DatabaseTableName.ARTICLES, 'id'),
+          to: composeDatabaseRelationPath<ArticleModel>(
+            DatabaseTableName.ARTICLES,
+            'id',
+          ),
         },
       },
       user: {
@@ -39,7 +42,10 @@ class ArticleReactionModel extends AbstractModel {
             DatabaseTableName.ARTICLE_REACTIONS,
             'userId',
           ),
-          to: composeDatabaseRelationPath(DatabaseTableName.USERS, 'id'),
+          to: composeDatabaseRelationPath<UserModel>(
+            DatabaseTableName.USERS,
+            'id',
+          ),
         },
       },
     };
