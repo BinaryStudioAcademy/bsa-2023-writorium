@@ -27,6 +27,7 @@ export {
 } from './libs/types/types.js';
 export {
   type ArticleReactionCreateDto,
+  type ArticleReactionCreateResponseDto,
   type ArticleReactionEntityType,
   type ArticleReactionRequestDto,
   type ArticleReactionResponseDto,
