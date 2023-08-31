@@ -4,21 +4,24 @@ import { fileURLToPath } from 'node:url';
 import { type default as Mail } from 'nodemailer/lib/mailer/index.js';
 import pug from 'pug';
 
-import { WORK_EMAIL } from '../../constants/constants.js';
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const getResetPasswordEmailTemplate = (
-  recipient: string,
-  resetLink: string,
-): Mail.Options => {
+const getResetPasswordEmailTemplate = ({
+  sender,
+  recipient,
+  resetLink,
+}: {
+  sender: string;
+  recipient: string;
+  resetLink: string;
+}): Mail.Options => {
   const compiledFunction = pug.compileFile(
     __dirname + '/reset-password-template.pug',
   );
 
   return {
-    from: WORK_EMAIL,
+    from: `Writorium Team ${sender}`,
     to: recipient,
 
     subject: 'Reset your password',

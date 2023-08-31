@@ -34,7 +34,12 @@ class Mailer {
     recipient: string,
     resetLink: string,
   ): Promise<SendEmailResponse> {
-    const mail = getResetPasswordEmailTemplate(recipient, resetLink);
+    const { AWS } = this.config.ENV;
+    const mail = getResetPasswordEmailTemplate({
+      sender: AWS.AWS_SES_EMAIL,
+      recipient,
+      resetLink,
+    });
     return await this.sendMail(mail);
   }
 
