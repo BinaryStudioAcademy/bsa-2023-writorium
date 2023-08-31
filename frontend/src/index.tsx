@@ -10,12 +10,18 @@ import {
   RouterProvider,
   StoreProvider,
 } from '~/libs/components/components.js';
-import { AppRoute } from '~/libs/enums/enums.js';
+import { AppRoute, ArticleSubRoute } from '~/libs/enums/enums.js';
 import { store } from '~/libs/packages/store/store.js';
 import { Article } from '~/pages/article/article.js';
 import { Auth } from '~/pages/auth/auth.js';
 import { Landing } from '~/pages/landing/landing.js';
 import { Profile } from '~/pages/profile/profile.js';
+
+import {
+  ArticlesFeed,
+  ArticlesPage,
+  MyArticles,
+} from './pages/articles/articles.js';
 
 createRoot(document.querySelector('#root') as HTMLElement).render(
   <StrictMode>
@@ -57,6 +63,24 @@ createRoot(document.querySelector('#root') as HTMLElement).render(
                     <Profile />
                   </ProtectedRoute>
                 ),
+              },
+              {
+                path: AppRoute.ARTICLES,
+                element: (
+                  <ProtectedRoute>
+                    <ArticlesPage />
+                  </ProtectedRoute>
+                ),
+                children: [
+                  {
+                    path: ArticleSubRoute.FEED,
+                    element: <ArticlesFeed />,
+                  },
+                  {
+                    path: ArticleSubRoute.MY_ARTICLES,
+                    element: <MyArticles />,
+                  },
+                ],
               },
               {
                 path: AppRoute.ARTICLE,
