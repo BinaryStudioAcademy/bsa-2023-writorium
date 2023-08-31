@@ -5,6 +5,7 @@ import { type TagType } from '~/libs/types/types.js';
 
 import { ArticleView } from './components/article-view/article-view.jsx';
 import { Author } from './components/author/author.js';
+import styles from './styles.module.scss';
 
 const Article: FC = () => {
   const { id } = useParams();
@@ -32,10 +33,10 @@ const Article: FC = () => {
   };
 
   return (
-    <>
-      {id && <Author />}
+    <div className={styles.container}>
       <ArticleView article={MOCKED_ARTICLE} />
-    </>
+      {id && <Author />}
+    </div>
   );
 };
 
