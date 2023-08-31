@@ -8,6 +8,7 @@ type Properties = {
   disabled?: boolean;
   label: string;
   type?: ValueOf<typeof ButtonType>;
+  name?: string;
   className?: string;
   onClick?: () => void;
 };
@@ -15,12 +16,14 @@ type Properties = {
 const Button: React.FC<Properties> = ({
   type = ButtonType.BUTTON,
   label,
+  name = '',
   className = '',
   onClick,
   disabled,
 }) => (
   <button
     type={type}
+    name={name}
     disabled={disabled}
     className={getValidClassNames(styles.button, className)}
     onClick={onClick}
