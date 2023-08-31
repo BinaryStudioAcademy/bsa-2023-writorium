@@ -5,6 +5,7 @@ const AppRoute = {
   SIGN_IN: '/sign-in',
   SIGN_UP: '/sign-up',
   PROFILE: '/profile',
+  ARTICLES: '/articles',
   ARTICLE: '/articles/:id',
   FORGOT_PASSWORD: '/forgot-password',
   RESET_PASSWORD: RESET_PASSWORD_ROUTE.WITH_PARAM,

@@ -1,0 +1,47 @@
+.wrapper {
+  width: 100%;
+  max-width: 830px;
+}
+
+.tabsWrapper {
+  position: relative;
+  display: flex;
+  gap: 29px;
+  width: 130px;
+  padding-left: 2px;
+}
+
+.tab {
+  flex: 1 0 auto;
+  padding-bottom: 15px;
+  font-weight: 400;
+  font-size: 14px;
+  font-family: Lato, sans-serif;
+  font-style: normal;
+  line-height: normal;
+  background: none;
+  border: none;
+}
+
+.activeTab {
+  position: relative;
+  color: var(--light-green);
+}
+
+.activeTab::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--light-green);
+}
+
+.articles {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding-top: 15px;
+  border-top: 1px solid var(--gray);
+}
