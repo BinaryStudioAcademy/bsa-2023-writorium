@@ -2,10 +2,18 @@ import { createSlice, isAnyOf } from '@reduxjs/toolkit';
 
 import { DataStatus } from '~/libs/enums/enums.js';
 import { type ValueOf } from '~/libs/types/types.js';
+import { notification } from '~/packages/notification/notification.js';
 import { type UserAuthResponseDto as User } from '~/packages/users/users.js';
 import { actions as usersActions } from '~/slices/users/users.js';
 
-import { getCurrentUser, logout, signIn, signUp } from './actions.js';
+import {
+  emailResetPasswordLink,
+  getCurrentUser,
+  logout,
+  resetPassword,
+  signIn,
+  signUp,
+} from './actions.js';
 
 type State = {
   dataStatus: ValueOf<typeof DataStatus>;
@@ -25,15 +33,34 @@ const { reducer, actions, name } = createSlice({
     builder.addCase(usersActions.updateUser.fulfilled, (state, action) => {
       state.user = action.payload;
     });
-    builder.addMatcher(isAnyOf(signUp.pending, signIn.pending), (state) => {
-      state.dataStatus = DataStatus.PENDING;
+    builder.addCase(emailResetPasswordLink.fulfilled, (state) => {
+      state.dataStatus = DataStatus.FULFILLED;
+      notification.success(
+        'Email with reset password link was send to your email address',
+      );
     });
+    builder.addCase(emailResetPasswordLink.rejected, (state) => {
+      state.dataStatus = DataStatus.REJECTED;
+    });
+    builder.addMatcher(
+      isAnyOf(
+        signUp.pending,
+        signIn.pending,
+        emailResetPasswordLink.pending,
+        resetPassword.pending,
+      ),
+      (state) => {
+        state.dataStatus = DataStatus.PENDING;
+      },
+    );
+
     builder.addMatcher(
       isAnyOf(
         signIn.rejected,
         signUp.rejected,
         getCurrentUser.rejected,
         logout.rejected,
+        resetPassword.rejected,
       ),
       (state) => {
         state.dataStatus = DataStatus.REJECTED;
@@ -46,6 +73,7 @@ const { reducer, actions, name } = createSlice({
         signUp.fulfilled,
         signIn.fulfilled,
         getCurrentUser.fulfilled,
+        resetPassword.fulfilled,
       ),
       (state, action) => {
         state.dataStatus = DataStatus.FULFILLED;
