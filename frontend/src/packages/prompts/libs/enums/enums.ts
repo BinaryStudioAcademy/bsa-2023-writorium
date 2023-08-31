@@ -1,1 +1,1 @@
-export { PromptsApiPath } from 'shared/build/index.js';
+export { PromptCategory, PromptsApiPath } from 'shared/build/index.js';

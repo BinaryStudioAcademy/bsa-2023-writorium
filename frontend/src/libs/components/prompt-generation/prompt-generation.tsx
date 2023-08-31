@@ -5,12 +5,11 @@ import {
   useAppDispatch,
   useAppSelector,
   useCallback,
-  useEffect,
 } from '~/libs/hooks/hooks.js';
+import { PromptCategory } from '~/packages/prompts/libs/enums/enums.js';
 import { actions as promptsActions } from '~/slices/prompts/prompts.js';
 
 import { PromptCard } from './libs/components/components.js';
-import { PromptCategory } from './libs/enums/enums.js';
 import styles from './styles.module.scss';
 
 const PromptGeneration: React.FC = () => {
@@ -18,30 +17,24 @@ const PromptGeneration: React.FC = () => {
     prompt: prompts.prompt,
     dataStatus: prompts.dataStatus,
   }));
-  const isSpinning = !(
-    dataStatus === DataStatus.FULFILLED || dataStatus == DataStatus.REJECTED
-  );
+
+  const isSpinning = dataStatus === DataStatus.PENDING;
+
   const dispatch = useAppDispatch();
 
-  const promptCategories = Object.values(PromptCategory);
-
   const handlePromptGenerate = useCallback(() => {
-    void dispatch(promptsActions.generatePrompt());
-  }, [dispatch]);
-
-  useEffect(() => {
     void dispatch(promptsActions.generatePrompt());
   }, [dispatch]);
 
   return (
     <div className={styles.container}>
       <h1 className={styles.header}>Write your own story</h1>
-      <div className={styles.promptsContainer}>
-        {promptCategories.map((category) => (
+      <ul className={styles.promptsContainer}>
+        {Object.values(PromptCategory).map((category) => (
           <PromptCard
             key={category}
             category={category}
-            text={prompt ? prompt[category] : ''}
+            text={prompt?.[category] ?? ''}
           />
         ))}
         <Button
@@ -54,7 +47,7 @@ const PromptGeneration: React.FC = () => {
           }
           onClick={handlePromptGenerate}
         />
-      </div>
+      </ul>
     </div>
   );
 };

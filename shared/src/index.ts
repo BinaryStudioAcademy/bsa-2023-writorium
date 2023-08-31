@@ -44,6 +44,7 @@ export {
 } from './packages/genres/genres.js';
 export {
   type PromptBaseResponseDto,
+  PromptCategory,
   PromptsApiPath,
 } from './packages/prompts/prompts.js';
 export {
