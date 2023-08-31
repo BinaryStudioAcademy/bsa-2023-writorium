@@ -5,7 +5,7 @@ import { ArticleReactionEntity } from './article-reaction.entity.js';
 import { type ArticleReactionRepository } from './article-reaction.repository.js';
 import {
   type ArticleReactionCreateDto,
-  type ArticleReactionEntityType,
+  type ArticleReactionCreateResponseDto,
   type ArticleReactionRequestDto,
   type ArticleReactionResponseDto,
 } from './libs/types/types.js';
@@ -21,7 +21,7 @@ class ArticleReactionService implements IService {
     return Promise.resolve({ items: [] });
   }
 
-  public async find(id: number): Promise<ArticleReactionEntityType | null> {
+  public async find(id: number): Promise<ArticleReactionResponseDto | null> {
     const reaction = await this.articleReactionRepository.find(id);
 
     if (!reaction) {
@@ -33,7 +33,7 @@ class ArticleReactionService implements IService {
 
   public async create(
     payload: ArticleReactionCreateDto,
-  ): Promise<ArticleReactionResponseDto> {
+  ): Promise<ArticleReactionCreateResponseDto> {
     await this.articleReactionRepository.create(
       ArticleReactionEntity.initializeNew({
         ...payload,
@@ -64,20 +64,30 @@ class ArticleReactionService implements IService {
 
     const reaction = reactionEntity.toObject();
 
-    await (reaction.isLike === isLike
-      ? this.articleReactionRepository.delete(reaction.id)
-      : this.articleReactionRepository.update(
-          ArticleReactionEntity.initialize({
-            ...reaction,
-            isLike,
-          }),
-        ));
+    if (reaction.isLike === isLike) {
+      const isDeleted = await this.delete(reaction.id);
 
-    return await this.articleReactionRepository.findAllByArticleId(articleId);
+      if (!isDeleted) {
+        throw new ApplicationError({
+          message: `Failed to delete reaction to article with ID ${articleId}`,
+        });
+      }
+
+      return reaction;
+    }
+
+    const updatedReaction = await this.articleReactionRepository.update(
+      ArticleReactionEntity.initialize({
+        ...reaction,
+        isLike,
+      }),
+    );
+
+    return updatedReaction.toObject();
   }
 
-  public delete(): Promise<boolean> {
-    return Promise.resolve(false);
+  public async delete(id: number): Promise<boolean> {
+    return await this.articleReactionRepository.delete(id);
   }
 }
 
