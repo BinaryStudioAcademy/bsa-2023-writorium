@@ -8,6 +8,7 @@ const MOCKED_USER: UserAuthResponseDto = {
   firstName: 'Nolan',
   lastName: 'Saris',
   avatarUrl: '',
+  avatarId: null,
 };
 
 const MOCKED_TEXT: string = `The developer technology landscape changes all the time as new tools
