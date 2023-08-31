@@ -1,4 +1,4 @@
-import { ApplicationError } from '~/libs/exceptions/exceptions.js';
+import { ApplicationError, HttpError } from '~/libs/exceptions/exceptions.js';
 import { type IService } from '~/libs/interfaces/service.interface.js';
 
 import { CommentEntity } from './comment.entity.js';
@@ -7,7 +7,7 @@ import {
   type CommentBaseResponseDto,
   type CommentCreateDto,
   type CommentGetAllResponseDto,
-  type CommentUpdateRequestDto,
+  type CommentUpdateDto,
 } from './libs/types/types.js';
 
 class CommentService implements IService {
@@ -49,7 +49,6 @@ class CommentService implements IService {
         text: payload.text,
         userId: payload.userId,
         articleId: payload.articleId,
-        publishedAt: payload?.publishedAt ?? null,
       }),
     );
 
@@ -58,8 +57,44 @@ class CommentService implements IService {
 
   public async update(
     id: number,
-    payload: CommentUpdateRequestDto,
+    payload: CommentUpdateDto,
   ): Promise<CommentBaseResponseDto> {
+    const comment = await this.findComment(id);
+
+    if (comment.userId !== payload.userId) {
+      throw new HttpError({
+        status: 403,
+        message: `User with id "${payload.userId}" has no rights to update this comment`,
+      });
+    }
+
+    const updatedComment = await this.commentRepository.update(
+      CommentEntity.initialize({
+        ...comment,
+        text: payload.text,
+      }),
+    );
+
+    return updatedComment.toObject();
+  }
+
+  public async delete(
+    id: number,
+    payload: { userId: number },
+  ): Promise<boolean> {
+    const comment = await this.findComment(id);
+
+    if (comment.userId !== payload.userId) {
+      throw new HttpError({
+        status: 403,
+        message: `User with id "${payload.userId}" has no rights to delete this comment`,
+      });
+    }
+
+    return await this.commentRepository.delete(id);
+  }
+
+  private async findComment(id: number): Promise<CommentBaseResponseDto> {
     const comment = await this.find(id);
 
     if (!comment) {
@@ -68,18 +103,7 @@ class CommentService implements IService {
       });
     }
 
-    const updatedComment = await this.commentRepository.update(
-      CommentEntity.initialize({
-        ...comment,
-        ...payload,
-      }),
-    );
-
-    return updatedComment.toObject();
-  }
-
-  public delete(id: number): Promise<boolean> {
-    return this.commentRepository.delete(id);
+    return comment;
   }
 }
 

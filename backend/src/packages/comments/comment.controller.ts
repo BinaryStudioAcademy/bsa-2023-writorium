@@ -48,11 +48,6 @@ import {
  *            minimum: 1
  *            example: 10
  *            readOnly: true
- *          publishedAt:
- *           type: string
- *           format: date-time
- *           nullable: true
- *           example: 2023-08-26T11:21:14.994Z
  */
 
 class CommentController extends Controller {
@@ -69,7 +64,7 @@ class CommentController extends Controller {
       handler: (options) =>
         this.findAllByArticleId(
           options as ApiHandlerOptions<{
-            body: CommentGetAllRequestDto;
+            query: CommentGetAllRequestDto;
           }>,
         ),
     });
@@ -110,6 +105,7 @@ class CommentController extends Controller {
         this.update(
           options as ApiHandlerOptions<{
             params: { id: number };
+            user: UserAuthResponseDto;
             body: CommentUpdateRequestDto;
           }>,
         ),
@@ -122,6 +118,7 @@ class CommentController extends Controller {
         this.delete(
           options as ApiHandlerOptions<{
             params: { id: number };
+            user: UserAuthResponseDto;
           }>,
         ),
     });
@@ -132,7 +129,14 @@ class CommentController extends Controller {
    * /comments:
    *    get:
    *      summary: Return array of comments that belong to an article
-   *      description: Return array of all comments that belong to an article with provided Id
+   *      description: Return array of all comments that belong to an article with provided ID in query
+   *      parameters:
+   *        - in: query
+   *          name: articleId
+   *          schema:
+   *            type: integer
+   *          required: true
+   *          description: ID of the article for which to retrieve comments
    *      responses:
    *        200:
    *          description: Successful operation
@@ -144,13 +148,13 @@ class CommentController extends Controller {
 
   private async findAllByArticleId(
     options: ApiHandlerOptions<{
-      body: { articleId: number };
+      query: { articleId: number };
     }>,
   ): Promise<ApiHandlerResponse> {
     return {
       status: HttpCode.OK,
       payload: await this.commentService.findAllByArticleId(
-        options.body.articleId,
+        options.query.articleId,
       ),
     };
   }
@@ -246,14 +250,15 @@ class CommentController extends Controller {
     options: ApiHandlerOptions<{
       params: { id: number };
       body: CommentUpdateRequestDto;
+      user: UserAuthResponseDto;
     }>,
   ): Promise<ApiHandlerResponse> {
     return {
       status: HttpCode.OK,
-      payload: await this.commentService.update(
-        options.params.id,
-        options.body,
-      ),
+      payload: await this.commentService.update(options.params.id, {
+        userId: options.user.id,
+        ...options.body,
+      }),
     };
   }
 
@@ -276,11 +281,14 @@ class CommentController extends Controller {
   private async delete(
     options: ApiHandlerOptions<{
       params: { id: number };
+      user: UserAuthResponseDto;
     }>,
   ): Promise<ApiHandlerResponse> {
     return {
       status: HttpCode.OK,
-      payload: await this.commentService.delete(options.params.id),
+      payload: await this.commentService.delete(options.params.id, {
+        userId: options.user.id,
+      }),
     };
   }
 }

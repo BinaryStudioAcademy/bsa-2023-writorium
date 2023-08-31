@@ -36,7 +36,7 @@ class CommentRepository implements IRepository {
   }
 
   public async create(entity: CommentEntity): Promise<CommentEntity> {
-    const { text, userId, articleId, publishedAt } = entity.toNewObject();
+    const { text, userId, articleId } = entity.toNewObject();
 
     const comment = await this.commentModel
       .query()
@@ -44,7 +44,6 @@ class CommentRepository implements IRepository {
         text,
         userId,
         articleId,
-        publishedAt,
       })
       .returning('*')
       .execute();
