@@ -108,6 +108,7 @@ class UserEntity implements IEntity {
     firstName: string;
     lastName: string;
     avatarUrl: string | null;
+    avatarId: number | null;
   } {
     return {
       id: this.id as number,
@@ -115,6 +116,7 @@ class UserEntity implements IEntity {
       firstName: this.firstName,
       lastName: this.lastName,
       avatarUrl: this.avatarUrl,
+      avatarId: this.avatarId,
     };
   }
 
