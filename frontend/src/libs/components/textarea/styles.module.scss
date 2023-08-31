@@ -1,0 +1,13 @@
+.textarea {
+  width: 100%;
+  color: var(--dark-blue);
+  font-size: 14px;
+  font-family: Lato, sans-serif;
+  background-color: var(--white-smoke);
+  border: none;
+  border-radius: 5px;
+}
+
+.error {
+  border: 2px solid var(--red);
+}

@@ -8,7 +8,7 @@ class ArticleModel extends AbstractModel {
   public 'text': string;
   public 'userId': number;
   public 'promptId': number | null;
-  public 'genreId': number;
+  public 'genreId': number | null;
   public 'publishedAt': string | null;
 
   public static override get tableName(): string {

@@ -18,8 +18,29 @@ class GenreRepository implements IRepository {
     return Promise.resolve(id);
   }
 
-  public create(payload: unknown): Promise<unknown> {
-    return Promise.resolve(payload);
+  public async findByKey(key: string): Promise<GenreEntity | null> {
+    const genre = await this.genreModel.query().findOne({ key }).execute();
+
+    if (!genre) {
+      return null;
+    }
+
+    return GenreEntity.initialize(genre);
+  }
+
+  public async create(entity: GenreEntity): Promise<GenreEntity> {
+    const { key, name } = entity.toNewObject();
+
+    const item = await this.genreModel
+      .query()
+      .insert({
+        key,
+        name,
+      })
+      .returning('*')
+      .execute();
+
+    return GenreEntity.initialize(item);
   }
 
   public update(): Promise<unknown> {
