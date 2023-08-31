@@ -15,6 +15,14 @@ import {
 
 import { type AuthService } from './auth.service.js';
 import { AuthApiPath } from './libs/enums/enums.js';
+import {
+  type AuthRequestPasswordDto,
+  type AuthResetPasswordDto,
+} from './libs/types/types.js';
+import {
+  requestPasswordValidationSchema,
+  resetPasswordValidationSchema,
+} from './libs/validation-schemas/validation-schemas.js';
 
 class AuthController extends Controller {
   private authService: AuthService;
@@ -55,6 +63,28 @@ class AuthController extends Controller {
       path: AuthApiPath.CURRENT,
       method: 'GET',
       handler: (options) => this.getCurrentUser(options),
+    });
+    this.addRoute({
+      path: AuthApiPath.FORGOTTEN_PASSWORD,
+      method: 'POST',
+      handler: (options) =>
+        this.emailResetPasswordLink(
+          options as ApiHandlerOptions<{ body: AuthRequestPasswordDto }>,
+        ),
+      validation: {
+        body: requestPasswordValidationSchema,
+      },
+    });
+    this.addRoute({
+      path: AuthApiPath.RESET_PASSWORD,
+      method: 'POST',
+      handler: (options) =>
+        this.resetPassword(
+          options as ApiHandlerOptions<{ body: AuthResetPasswordDto }>,
+        ),
+      validation: {
+        body: resetPasswordValidationSchema,
+      },
     });
   }
 
@@ -147,6 +177,30 @@ class AuthController extends Controller {
     return {
       status: HttpCode.OK,
       payload: options.user,
+    };
+  }
+
+  private async emailResetPasswordLink(
+    options: ApiHandlerOptions<{
+      body: AuthRequestPasswordDto;
+    }>,
+  ): Promise<ApiHandlerResponse> {
+    const { origin, body } = options;
+    const url = origin as string;
+    return {
+      status: HttpCode.OK,
+      payload: await this.authService.emailResetPasswordLink(body, url),
+    };
+  }
+
+  private async resetPassword(
+    options: ApiHandlerOptions<{
+      body: AuthResetPasswordDto;
+    }>,
+  ): Promise<ApiHandlerResponse> {
+    return {
+      status: HttpCode.OK,
+      payload: await this.authService.resetPassword(options.body),
     };
   }
 }
