@@ -2,7 +2,7 @@ import { type CommentEntityType } from '~/packages/comments/libs/types/comment-e
 
 type CommentBaseResponseDto = Pick<
   CommentEntityType,
-  'id' | 'text' | 'userId' | 'articleId' | 'publishedAt'
+  'id' | 'text' | 'userId' | 'articleId' | 'createdAt'
 >;
 
 export { type CommentBaseResponseDto };

@@ -38,7 +38,6 @@ const up = (knex: Knex): Promise<void> => {
       .dateTime(ColumnName.UPDATED_AT)
       .notNullable()
       .defaultTo(knex.fn.now());
-    table.dateTime(ColumnName.PUBLISHED_AT).nullable();
   });
 };
 
