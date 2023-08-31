@@ -52,6 +52,7 @@ export {
 export {
   type GenerateArticlePromptResponseDto,
   type GeneratedArticlePrompt,
+  PromptCategory,
   PromptsApiPath,
 } from './packages/prompts/prompts.js';
 export {
