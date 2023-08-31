@@ -110,6 +110,8 @@ class UserService implements IService {
         email: payload.email,
         passwordHash: null,
         passwordSalt: null,
+        avatarId: payload.avatarId,
+        avatarUrl: null,
       }),
     );
 
