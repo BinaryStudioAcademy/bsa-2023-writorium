@@ -6,6 +6,7 @@ export { ErrorMessage } from './error-message/error-message.js';
 export { Header } from './header/header.js';
 export { Icon } from './icon/icon.js';
 export { Input } from './input/input.js';
+export { Layout } from './layout/layout.js';
 export { Link } from './link/link.js';
 export { Modal } from './modal/modal.js';
 export { Notification } from './notification/notification.js';
