@@ -3,7 +3,7 @@ import { type IRepository } from '~/libs/interfaces/interfaces.js';
 import { ArticleReactionEntity } from './article-reaction.entity.js';
 import { type ArticleReactionModel } from './article-reaction.model.js';
 import { getReactionsQuery } from './libs/helpers/helpers.js';
-import { type ArticleReactionResponseDto } from './libs/types/types.js';
+import { type ArticleReactionCreateResponseDto } from './libs/types/types.js';
 
 class ArticleReactionRepository implements IRepository {
   private articleReactionModel: typeof ArticleReactionModel;
@@ -31,7 +31,7 @@ class ArticleReactionRepository implements IRepository {
 
   public async findAllByArticleId(
     articleId: number,
-  ): Promise<ArticleReactionResponseDto> {
+  ): Promise<ArticleReactionCreateResponseDto> {
     const reactions = await this.articleReactionModel
       .query()
       .select(
@@ -40,7 +40,7 @@ class ArticleReactionRepository implements IRepository {
       )
       .where('articleId', articleId)
       .first()
-      .castTo<ArticleReactionModel & ArticleReactionResponseDto>()
+      .castTo<ArticleReactionModel & ArticleReactionCreateResponseDto>()
       .execute();
 
     if (!reactions) {
