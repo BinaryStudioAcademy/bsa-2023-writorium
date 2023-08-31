@@ -39,3 +39,9 @@
   font-size: 12px;
   font-family: Lato, sans-serif;
 }
+
+.text.required::after {
+  margin-left: 3px;
+  color: var(--red);
+  content: "*";
+}

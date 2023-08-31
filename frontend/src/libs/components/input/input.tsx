@@ -22,6 +22,7 @@ type Properties<T extends FieldValues> = {
   type?: ValueOf<typeof InputType>;
   className?: string;
   labelClassName?: string;
+  required?: boolean;
 };
 
 const Input = <T extends FieldValues>({
@@ -33,6 +34,7 @@ const Input = <T extends FieldValues>({
   type = InputType.TEXT,
   className,
   labelClassName,
+  required,
 }: Properties<T>): JSX.Element => {
   const { field } = useFormController({ name, control });
 
@@ -41,7 +43,11 @@ const Input = <T extends FieldValues>({
 
   return (
     <label className={styles.label}>
-      <span className={getValidClassNames(styles.text, labelClassName)}>
+      <span
+        className={getValidClassNames(styles.text, labelClassName, {
+          [styles.required]: required,
+        })}
+      >
         {label}
       </span>
       <input
