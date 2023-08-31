@@ -47,6 +47,7 @@ class Mailer {
     try {
       return (await this.transporter.sendMail(mail)) as SendEmailResponse;
     } catch {
+      //ATTENTION:AWS SES may still return errors in response that will not be caught by this try/catch block
       throw new EmailFailedToSendError();
     }
   }
