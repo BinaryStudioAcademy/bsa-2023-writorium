@@ -49,6 +49,7 @@ export {
   type GenreGetAllResponseDto,
   GenresApiPath,
 } from './packages/genres/genres.js';
+export { type SendEmailResponse } from './packages/mailer/mailer.js';
 export { PromptsApiPath } from './packages/prompts/prompts.js';
 export {
   type UserAuthResponseDto,
