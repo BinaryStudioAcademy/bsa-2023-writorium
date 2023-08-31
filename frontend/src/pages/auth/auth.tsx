@@ -43,7 +43,7 @@ const Auth: React.FC = () => {
   );
   const handleForgotPasswordSubmit = useCallback(
     (payload: AuthRequestPasswordDto): void => {
-      void dispatch(authActions.emailResetPasswordLink(payload));
+      void dispatch(authActions.sendEmailResetPasswordLink(payload));
     },
     [dispatch],
   );

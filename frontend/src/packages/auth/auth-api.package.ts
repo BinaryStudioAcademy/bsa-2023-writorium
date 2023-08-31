@@ -73,7 +73,7 @@ class AuthApi extends HttpApi {
     return await response.json<UserAuthResponseDto>();
   }
 
-  public async emailResetPasswordLink(
+  public async sendEmailResetPasswordLink(
     payload: AuthRequestPasswordDto,
   ): Promise<SendEmailResponse> {
     const response = await this.load(

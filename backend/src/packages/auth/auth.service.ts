@@ -83,7 +83,7 @@ class AuthService {
     return { user, token };
   }
 
-  public async emailResetPasswordLink(
+  public async sendEmailResetPasswordLink(
     authRequestPasswordDto: AuthRequestPasswordDto,
     url: string,
   ): Promise<SendEmailResponse> {

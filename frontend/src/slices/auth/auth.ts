@@ -1,8 +1,8 @@
 import {
-  emailResetPasswordLink,
   getCurrentUser,
   logout,
   resetPassword,
+  sendEmailResetPasswordLink,
   signIn,
   signUp,
 } from './actions.js';
@@ -14,7 +14,7 @@ const allActions = {
   signUp,
   getCurrentUser,
   logout,
-  emailResetPasswordLink,
+  sendEmailResetPasswordLink,
   resetPassword,
 };
 

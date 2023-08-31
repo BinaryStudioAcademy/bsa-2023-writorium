@@ -7,10 +7,10 @@ import { type UserAuthResponseDto as User } from '~/packages/users/users.js';
 import { actions as usersActions } from '~/slices/users/users.js';
 
 import {
-  emailResetPasswordLink,
   getCurrentUser,
   logout,
   resetPassword,
+  sendEmailResetPasswordLink,
   signIn,
   signUp,
 } from './actions.js';
@@ -33,20 +33,20 @@ const { reducer, actions, name } = createSlice({
     builder.addCase(usersActions.updateUser.fulfilled, (state, action) => {
       state.user = action.payload;
     });
-    builder.addCase(emailResetPasswordLink.fulfilled, (state) => {
+    builder.addCase(sendEmailResetPasswordLink.fulfilled, (state) => {
       state.dataStatus = DataStatus.FULFILLED;
       notification.success(
         'Email with reset password link was send to your email address',
       );
     });
-    builder.addCase(emailResetPasswordLink.rejected, (state) => {
+    builder.addCase(sendEmailResetPasswordLink.rejected, (state) => {
       state.dataStatus = DataStatus.REJECTED;
     });
     builder.addMatcher(
       isAnyOf(
         signUp.pending,
         signIn.pending,
-        emailResetPasswordLink.pending,
+        sendEmailResetPasswordLink.pending,
         resetPassword.pending,
       ),
       (state) => {

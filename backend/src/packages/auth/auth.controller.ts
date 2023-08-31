@@ -68,7 +68,7 @@ class AuthController extends Controller {
       path: AuthApiPath.FORGOTTEN_PASSWORD,
       method: 'POST',
       handler: (options) =>
-        this.emailResetPasswordLink(
+        this.sendEmailResetPasswordLink(
           options as ApiHandlerOptions<{ body: AuthRequestPasswordDto }>,
         ),
       validation: {
@@ -180,7 +180,7 @@ class AuthController extends Controller {
     };
   }
 
-  private async emailResetPasswordLink(
+  private async sendEmailResetPasswordLink(
     options: ApiHandlerOptions<{
       body: AuthRequestPasswordDto;
     }>,
@@ -196,7 +196,7 @@ class AuthController extends Controller {
     const url = origin as string;
     return {
       status: HttpCode.OK,
-      payload: await this.authService.emailResetPasswordLink(body, url),
+      payload: await this.authService.sendEmailResetPasswordLink(body, url),
     };
   }
 
