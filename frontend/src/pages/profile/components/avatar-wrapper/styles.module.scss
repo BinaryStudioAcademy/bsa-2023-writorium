@@ -1,0 +1,45 @@
+.imageGroup {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  column-gap: 15px;
+}
+
+.imageGroupControls {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  row-gap: 10px;
+  cursor: pointer;
+}
+
+.control {
+  font-weight: 400;
+  background-color: transparent;
+}
+
+.imageUpdate {
+  color: var(--light-green);
+  cursor: pointer;
+}
+
+.imageRemove {
+  color: var(--red);
+}
+
+.imageWrapper {
+  display: flex;
+  flex-shrink: 0;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 60%;
+  cursor: pointer;
+}
+
+.avatar {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  height: auto;
+}
