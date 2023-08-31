@@ -26,10 +26,10 @@ class UserDetailsModel extends AbstractModel {
         modelClass: UserModel,
         join: {
           from: composeDatabaseRelationPath<UserDetailsModel>(
-            'user_details',
+            DatabaseTableName.USER_DETAILS,
             'userId',
           ),
-          to: composeDatabaseRelationPath('users', 'id'),
+          to: composeDatabaseRelationPath(DatabaseTableName.USERS, 'id'),
         },
       },
     };
