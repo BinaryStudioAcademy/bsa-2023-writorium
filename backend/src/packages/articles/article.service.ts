@@ -6,6 +6,7 @@ import { type ArticleRepository } from './article.repository.js';
 import {
   type ArticleBaseResponseDto,
   type ArticleCreateDto,
+  type ArticleGetAllResponseDto,
   type ArticleUpdateRequestDto,
 } from './libs/types/types.js';
 
@@ -16,8 +17,10 @@ class ArticleService implements IService {
     this.articleRepository = articleRepository;
   }
 
-  public findAll(): Promise<{ items: unknown[] }> {
-    return Promise.resolve({ items: [] });
+  public async findAll(): Promise<ArticleGetAllResponseDto> {
+    const articles = await this.articleRepository.findAll();
+
+    return { items: articles.map((article) => article.toObject()) };
   }
 
   public async find(id: number): Promise<ArticleBaseResponseDto | null> {
