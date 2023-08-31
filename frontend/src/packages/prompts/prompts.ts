@@ -11,4 +11,4 @@ const promptApi = new PromptApi({
 });
 
 export { promptApi };
-export { type PromptBaseResponseDto } from './libs/types/types.js';
+export { type GenerateArticlePromptResponseDto } from './libs/types/types.js';

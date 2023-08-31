@@ -1,6 +1,6 @@
 import { type PromptCategory } from '~/packages/prompts/libs/enums/prompt-category.enum.js';
 
-type PromptBaseResponseDto = {
+type GeneratedArticlePrompt = {
   [PromptCategory.GENRE]: string;
   [PromptCategory.CHARACTER]: string;
   [PromptCategory.SETTING]: string;
@@ -8,4 +8,4 @@ type PromptBaseResponseDto = {
   [PromptCategory.PROP]: string;
 };
 
-export { type PromptBaseResponseDto };
+export { type GeneratedArticlePrompt };

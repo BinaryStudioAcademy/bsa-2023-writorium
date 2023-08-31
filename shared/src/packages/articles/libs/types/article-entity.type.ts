@@ -4,7 +4,7 @@ type ArticleEntityType = {
   text: string;
   userId: number;
   promptId: number | null;
-  genreId: number;
+  genreId: number | null;
   publishedAt: string | null;
 };
 

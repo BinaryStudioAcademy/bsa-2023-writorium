@@ -1,1 +1,1 @@
-export { type PromptBaseResponseDto } from 'shared/build/index.js';
+export { type GenerateArticlePromptResponseDto } from 'shared/build/index.js';

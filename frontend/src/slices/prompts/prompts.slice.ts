@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import { DataStatus } from '~/libs/enums/enums.js';
 import { type ValueOf } from '~/libs/types/types.js';
-import { type PromptBaseResponseDto as Prompt } from '~/packages/prompts/prompts.js';
+import { type GenerateArticlePromptResponseDto as Prompt } from '~/packages/prompts/prompts.js';
 
 import { generatePrompt } from './actions.js';
 

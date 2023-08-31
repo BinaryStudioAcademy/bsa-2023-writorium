@@ -1,9 +1,13 @@
+import { safeJSONParse } from '~/libs/helpers/helpers.js';
 import { type IService } from '~/libs/interfaces/interfaces.js';
 import { FailedToGeneratePromptError } from '~/libs/packages/exceptions/exceptions.js';
 import { type OpenAIService } from '~/libs/packages/openai/openai.package.js';
 
 import { ARTICLE_PROMPT_COMPLETION_MESSAGE } from './libs/constants/constants.js';
-import { type PromptBaseResponseDto } from './libs/types/types.js';
+import {
+  type GenerateArticlePromptResponseDto,
+  type GeneratedArticlePrompt,
+} from './libs/types/types.js';
 
 class PromptService implements IService {
   private openAIService: OpenAIService;
@@ -12,11 +16,7 @@ class PromptService implements IService {
     this.openAIService = openAIService;
   }
 
-  private parsePromptJSON(promptJSON: string): PromptBaseResponseDto {
-    return JSON.parse(promptJSON) as PromptBaseResponseDto;
-  }
-
-  public async generate(): Promise<PromptBaseResponseDto> {
+  public async generate(): Promise<GenerateArticlePromptResponseDto> {
     const promptJSON = await this.openAIService.createCompletion({
       prompt: ARTICLE_PROMPT_COMPLETION_MESSAGE,
     });
@@ -25,11 +25,13 @@ class PromptService implements IService {
       throw new FailedToGeneratePromptError();
     }
 
-    try {
-      return this.parsePromptJSON(promptJSON);
-    } catch {
+    const parsedPrompt = safeJSONParse<GeneratedArticlePrompt>(promptJSON);
+
+    if (!parsedPrompt) {
       throw new FailedToGeneratePromptError();
     }
+
+    return parsedPrompt;
   }
 
   public find(): ReturnType<IService['find']> {
