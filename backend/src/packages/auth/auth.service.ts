@@ -99,9 +99,9 @@ class AuthService {
       '1h',
     );
 
-    const reseetLink = url + RESET_PASSWORD_ROUTE.BASE + '/' + token;
+    const resetLink = url + RESET_PASSWORD_ROUTE.BASE + '/' + token;
 
-    return await this.mailer.sendResetPasswordEmail(email, reseetLink);
+    return await this.mailer.sendResetPasswordEmail(email, resetLink);
   }
 
   public async resetPassword(
