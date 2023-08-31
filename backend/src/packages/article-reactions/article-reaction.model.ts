@@ -25,10 +25,10 @@ class ArticleReactionModel extends AbstractModel {
         modelClass: ArticleModel,
         join: {
           from: composeDatabaseRelationPath<ArticleReactionModel>(
-            'article_reactions',
+            DatabaseTableName.ARTICLE_REACTIONS,
             'articleId',
           ),
-          to: composeDatabaseRelationPath('articles', 'id'),
+          to: composeDatabaseRelationPath(DatabaseTableName.ARTICLES, 'id'),
         },
       },
       user: {
@@ -36,10 +36,10 @@ class ArticleReactionModel extends AbstractModel {
         modelClass: UserModel,
         join: {
           from: composeDatabaseRelationPath<ArticleReactionModel>(
-            'article_reactions',
+            DatabaseTableName.ARTICLE_REACTIONS,
             'userId',
           ),
-          to: composeDatabaseRelationPath('users', 'id'),
+          to: composeDatabaseRelationPath(DatabaseTableName.USERS, 'id'),
         },
       },
     };
