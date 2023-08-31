@@ -15,6 +15,7 @@ export {
   type HttpOptions,
   type IHttp,
 } from './libs/packages/http/http.js';
+export { type SendEmailResponse } from './libs/packages/mailer/mailer.js';
 export { type IStorage } from './libs/packages/storage/storage.js';
 export {
   type ServerCommonErrorResponse,
@@ -49,7 +50,6 @@ export {
   type GenreGetAllResponseDto,
   GenresApiPath,
 } from './packages/genres/genres.js';
-export { type SendEmailResponse } from './packages/mailer/mailer.js';
 export { PromptsApiPath } from './packages/prompts/prompts.js';
 export {
   type UserAuthResponseDto,
