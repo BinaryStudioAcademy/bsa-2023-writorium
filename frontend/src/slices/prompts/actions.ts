@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { type AsyncThunkConfig } from '~/libs/types/types.js';
-import { type GenerateArticlePromptResponseDto } from '~/packages/prompts/prompts.js';
+import { type GenerateArticlePromptResponseDto, type PromptBaseResponseDto, type PromptRequestDto } from '~/packages/prompts/prompts.js';
 
 import { name as sliceName } from './prompts.slice.js';
 
@@ -15,4 +15,14 @@ const generatePrompt = createAsyncThunk<
   return promptApi.generate();
 });
 
-export { generatePrompt };
+const createPrompt = createAsyncThunk<
+  PromptBaseResponseDto,
+  PromptRequestDto,
+  AsyncThunkConfig
+>(`${sliceName}/create`, (promptPayload, { extra }) => {
+  const { promptApi } = extra;
+
+  return promptApi.create(promptPayload);
+});
+
+export { createPrompt, generatePrompt };

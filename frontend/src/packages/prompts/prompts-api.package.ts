@@ -4,7 +4,7 @@ import { type IHttp } from '~/libs/packages/http/http.js';
 import { type IStorage } from '~/libs/packages/storage/storage.js';
 
 import { PromptsApiPath } from './libs/enums/enums.js';
-import { type GenerateArticlePromptResponseDto } from './libs/types/types.js';
+import { type GenerateArticlePromptResponseDto, type PromptBaseResponseDto, type PromptRequestDto } from './libs/types/types.js';
 
 type Constructor = {
   baseUrl: string;
@@ -28,6 +28,22 @@ class PromptApi extends HttpApi {
     );
 
     return await response.json<GenerateArticlePromptResponseDto>();
+  }
+
+  public async create(
+    payload: PromptRequestDto,
+  ): Promise<PromptBaseResponseDto> {
+    const response = await this.load(
+      this.getFullEndpoint(PromptsApiPath.ROOT, {}),
+      {
+        method: 'POST',
+        contentType: ContentType.JSON,
+        payload: JSON.stringify(payload),
+        hasAuth: true,
+      },
+    );
+
+    return await response.json<PromptBaseResponseDto>();
   }
 }
 

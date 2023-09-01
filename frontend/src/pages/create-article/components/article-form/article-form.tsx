@@ -1,6 +1,6 @@
 import { Button, Input, Textarea } from '~/libs/components/components.js';
 import { ButtonType } from '~/libs/enums/enums.js';
-import { useAppDispatch, useAppForm, useCallback } from '~/libs/hooks/hooks.js';
+import { useAppDispatch, useAppForm, useAppSelector, useCallback } from '~/libs/hooks/hooks.js';
 import { type ValueOf } from '~/libs/types/types.js';
 import {
   articleCreateValidationSchema,
@@ -13,6 +13,9 @@ import { ArticleSubmitType } from './libs/enums/enums.js';
 import styles from './styles.module.scss';
 
 const ArticleForm: React.FC = () => {
+  const { createdPrompt } = useAppSelector(({ prompts }) => ({
+    createdPrompt: prompts.createdPrompt,
+  }));
   const dispatch = useAppDispatch();
   const { control, errors, handleSubmit, handleReset, isDirty, isSubmitting } =
     useAppForm<ArticleRequestDto>({
@@ -22,7 +25,7 @@ const ArticleForm: React.FC = () => {
 
   const handleArticleSubmit = useCallback(
     (articleSubmitType: ValueOf<typeof ArticleSubmitType>) =>
-      (payload: ArticleRequestDto): void => {
+    (payload: ArticleRequestDto): void => {
         const updatedPayload = {
           ...payload,
           publishedAt:
@@ -31,9 +34,16 @@ const ArticleForm: React.FC = () => {
               : null,
         };
 
+        if (createdPrompt) {
+          const { genreId, id: promptId } = createdPrompt;
+
+          updatedPayload.genreId = genreId;
+          updatedPayload.promptId = promptId;
+        }
+
         void dispatch(articlesActions.createArticle(updatedPayload));
       },
-    [dispatch],
+    [dispatch, createdPrompt],
   );
 
   const handleFormSubmit = useCallback(

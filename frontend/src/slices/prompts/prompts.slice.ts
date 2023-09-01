@@ -1,18 +1,20 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, isAnyOf } from '@reduxjs/toolkit';
 
 import { DataStatus } from '~/libs/enums/enums.js';
 import { type ValueOf } from '~/libs/types/types.js';
-import { type GenerateArticlePromptResponseDto as Prompt } from '~/packages/prompts/prompts.js';
+import { type GenerateArticlePromptResponseDto as generatedPrompt, type PromptBaseResponseDto as createdPrompt } from '~/packages/prompts/prompts.js';
 
-import { generatePrompt } from './actions.js';
+import { createPrompt, generatePrompt } from './actions.js';
 
 type State = {
-  prompt: Prompt | null;
+  createdPrompt: createdPrompt | null;
+  generatedPrompt: generatedPrompt | null;
   dataStatus: ValueOf<typeof DataStatus>;
 };
 
 const initialState: State = {
-  prompt: null,
+  createdPrompt: null,
+  generatedPrompt: null,
   dataStatus: DataStatus.IDLE,
 };
 
@@ -21,16 +23,32 @@ const { reducer, actions, name } = createSlice({
   name: 'prompts',
   reducers: {},
   extraReducers(builder) {
-    builder.addCase(generatePrompt.pending, (state) => {
-      state.dataStatus = DataStatus.PENDING;
-    });
     builder.addCase(generatePrompt.fulfilled, (state, action) => {
-      state.prompt = action.payload;
+      state.generatedPrompt = action.payload;
       state.dataStatus = DataStatus.FULFILLED;
     });
-    builder.addCase(generatePrompt.rejected, (state) => {
-      state.dataStatus = DataStatus.REJECTED;
+    builder.addCase(createPrompt.fulfilled, (state, action) => {
+      state.createdPrompt = action.payload;
+      state.dataStatus = DataStatus.FULFILLED;
     });
+    builder.addMatcher(
+      isAnyOf(
+        generatePrompt.pending,
+        createPrompt.pending,
+      ),
+      (state) => {
+        state.dataStatus = DataStatus.PENDING;
+      },
+    );
+    builder.addMatcher(
+      isAnyOf(
+        generatePrompt.rejected,
+        createPrompt.rejected,
+      ),
+      (state) => {
+        state.dataStatus = DataStatus.REJECTED;
+      },
+    );
   },
 });
 
