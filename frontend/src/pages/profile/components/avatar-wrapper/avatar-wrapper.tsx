@@ -1,10 +1,12 @@
 import { type ChangeEvent, type FC } from 'react';
 
-import { Avatar, Button, ErrorMessage } from '~/libs/components/components.js';
+import { Avatar, ErrorMessage } from '~/libs/components/components.js';
+import { IconButton } from '~/libs/components/icon-button/icon-button.js';
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
-import { useCallback, useRef, useState } from '~/libs/hooks/hooks.js';
-import { fileApi } from '~/libs/packages/image/file-api.js';
+import { useAppDispatch, useCallback, useState } from '~/libs/hooks/hooks.js';
 import { type UserAuthResponseDto } from '~/packages/users/users.js';
+import { SUPPORTED_FILE_TYPES_STRING } from '~/pages/profile/constants/constants.js';
+import { actions as filesActions } from '~/slices/file/file.js';
 
 import styles from './styles.module.scss';
 
@@ -24,8 +26,8 @@ const AvatarWrapper: FC<Properties> = ({
   onUpdateAvatarId,
   onErrorUpload,
 }): JSX.Element => {
+  const dispatch = useAppDispatch();
   const [previewUrl, setPreviewUrl] = useState<string | null>(user.avatarUrl);
-  const reference = useRef<HTMLLabelElement>(null);
 
   const handleUploadUserAvatar = useCallback(
     (event_: ChangeEvent<HTMLInputElement>): void => {
@@ -35,22 +37,19 @@ const AvatarWrapper: FC<Properties> = ({
         const formData = new FormData();
         formData.append('file', image);
 
-        void fileApi
-          .uploadFile(formData)
+        void dispatch(filesActions.uploadFile(formData))
+          .unwrap()
           .then((fileData) => {
             onUpdateAvatarId(fileData.id);
             setPreviewUrl(fileData.url);
             onErrorUpload(null);
           })
-          .catch((error: unknown) => {
-            if (error instanceof Error) {
-              setPreviewUrl(null);
-              onErrorUpload(error.message);
-            }
+          .catch((error: Error) => {
+            onErrorUpload(error.message);
           });
       }
     },
-    [onErrorUpload, setPreviewUrl, onUpdateAvatarId],
+    [dispatch, onUpdateAvatarId, onErrorUpload],
   );
 
   const handleRemoveAvatar = useCallback(() => {
@@ -59,17 +58,9 @@ const AvatarWrapper: FC<Properties> = ({
     onErrorUpload(null);
   }, [onErrorUpload, onRemoveAvatar]);
 
-  const handleUpdateAvatar = useCallback(() => {
-    if (!reference.current) {
-      return null;
-    }
-
-    reference.current.click();
-  }, []);
-
   return (
     <div className={styles.imageGroup}>
-      <label className={styles.imageWrapper} ref={reference} htmlFor="avatarId">
+      <label className={styles.imageWrapper} htmlFor="avatarId">
         <Avatar
           username={`${user.firstName} ${user.lastName}`}
           avatarUrl={previewUrl}
@@ -80,21 +71,28 @@ const AvatarWrapper: FC<Properties> = ({
           id="avatarId"
           onChange={handleUploadUserAvatar}
           type="file"
-          accept=".jpg, .jpeg, .png, .webp, .bmp, .svg"
+          accept={SUPPORTED_FILE_TYPES_STRING}
+        />
+        <IconButton
+          iconName="edit"
+          className={getValidClassNames(
+            styles.iconButtonEdit,
+            styles.iconButton,
+          )}
+          iconClassName={styles.iconEdit}
         />
       </label>
-      <div className={styles.imageGroupControls}>
-        <Button
-          className={getValidClassNames(styles.control, styles.imageUpdate)}
-          onClick={handleUpdateAvatar}
-          label="Update"
-        />
-        <Button
-          className={getValidClassNames(styles.control, styles.imageRemove)}
+      {previewUrl && (
+        <IconButton
+          iconName="crossMark"
+          className={getValidClassNames(
+            styles.iconButtonRemove,
+            styles.iconButton,
+          )}
+          iconClassName={styles.iconRemove}
           onClick={handleRemoveAvatar}
-          label="Remove"
         />
-      </div>
+      )}
       <ErrorMessage error={errorImageUpload as string} />
     </div>
   );
