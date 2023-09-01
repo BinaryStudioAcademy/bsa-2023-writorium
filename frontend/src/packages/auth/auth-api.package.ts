@@ -88,6 +88,7 @@ class AuthApi extends HttpApi {
 
     return await response.json<SendEmailResponse>();
   }
+
   public async resetPassword(
     payload: AuthResetPasswordDto,
   ): Promise<UserSignInResponseDto> {
