@@ -1,6 +1,6 @@
-import { Avatar, Button, Link } from '~/libs/components/components.js';
+import { Avatar, Link } from '~/libs/components/components.js';
 import { AppRoute } from '~/libs/enums/enums.js';
-import { getFullName, getValidClassNames } from '~/libs/helpers/helpers.js';
+import { getFullName } from '~/libs/helpers/helpers.js';
 import { type UserAuthResponseDto } from '~/packages/users/users.js';
 
 import styles from './styles.module.scss';
@@ -17,11 +17,8 @@ const Header: React.FC<Properties> = ({ user }) => (
           WRITORIUM
         </Link>
         <div className={styles.rightSide}>
-          <Link to={AppRoute.CREATE_ARTICLE}>
-            <Button
-              label="Write"
-              className={getValidClassNames(styles.linkBtn, styles.writeLink)}
-            />
+          <Link to={AppRoute.CREATE_ARTICLE} className={styles.writeLink}>
+            Write
           </Link>
           <Link to={AppRoute.PROFILE}>
             <Avatar

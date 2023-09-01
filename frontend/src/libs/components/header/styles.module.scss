@@ -25,12 +25,14 @@
   align-items: center;
 }
 
-.linkBtn {
-  padding: 12px 26px;
-}
-
 .writeLink {
   margin-right: 35px;
+  padding: 12px 26px;
   color: var(--white);
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 19px;
   background-color: var(--dark-green);
+  border-radius: 5px;
+  cursor: pointer;
 }
