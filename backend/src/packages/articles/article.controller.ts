@@ -76,6 +76,13 @@ class ArticleController extends Controller {
     });
 
     this.addRoute({
+      path: ArticlesApiPath.$ID,
+      method: 'GET',
+      handler: (options) =>
+        this.findOwn(options as ApiHandlerOptions<{ params: { id: number } }>),
+    });
+
+    this.addRoute({
       path: ArticlesApiPath.ROOT,
       method: 'POST',
       validation: {
@@ -126,6 +133,31 @@ class ArticleController extends Controller {
     return {
       status: HttpCode.OK,
       payload: await this.articleService.findAll(),
+    };
+  }
+
+  /**
+   * @swagger
+   * /articles/:id:
+   *    get:
+   *      description: Returns an array of user's articles
+   *      responses:
+   *        200:
+   *          description: Successful operation
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: array
+   *                items:
+   *                  $ref: '#/components/schemas/Article'
+   */
+
+  private async findOwn(
+    options: ApiHandlerOptions<{ params: { id: number } }>,
+  ): Promise<ApiHandlerResponse> {
+    return {
+      status: HttpCode.OK,
+      payload: await this.articleService.findOwn(options.params.id),
     };
   }
 
