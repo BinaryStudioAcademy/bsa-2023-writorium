@@ -13,7 +13,6 @@ const ColumnName = {
   ARTICLE_ID: 'article_id',
   CREATED_AT: 'created_at',
   UPDATED_AT: 'updated_at',
-  PUBLISHED_AT: 'published_at',
 } as const;
 
 const up = (knex: Knex): Promise<void> => {
