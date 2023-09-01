@@ -9,7 +9,10 @@ import {
   type Mailer,
   type SendEmailResponse,
 } from '~/libs/packages/mailer/mailer.js';
-import { token as accessToken } from '~/libs/packages/token/token.js';
+import {
+  token as accessToken,
+  TokenExpirationTime,
+} from '~/libs/packages/token/token.js';
 import {
   type UserSignInRequestDto,
   type UserSignInResponseDto,
@@ -96,10 +99,10 @@ class AuthService {
       {
         userId: user.id,
       },
-      '1h',
+      TokenExpirationTime.ONE_HOUR,
     );
 
-    const resetLink = url + RESET_PASSWORD_ROUTE.BASE + '/' + token;
+    const resetLink = `${url}${RESET_PASSWORD_ROUTE.BASE}/${token}`;
 
     return await this.mailer.sendResetPasswordEmail(email, resetLink);
   }
