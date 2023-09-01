@@ -23,21 +23,97 @@ import { userUpdateWithAvatarIdValidationSchema } from './libs/validation-schema
  *        type: object
  *        properties:
  *          id:
- *            type: integer
- *            format: int64
+ *            type: number
+ *            format: number
  *            minimum: 1
  *            readOnly: true
  *          email:
- *            type: string
- *            format: email
+ *           $ref: '#/components/schemas/EmailPattern'
  *          firstName:
- *             type: string
+ *            $ref: '#/components/schemas/NamePattern'
  *          lastName:
- *              type: string
+ *            $ref: '#/components/schemas/NamePattern'
  *          avatarUrl:
- *              type: string
- *              nullable: true
+ *            type: string
+ *            nullable: true
+ *          avatarId:
+ *            type: number
+ *            nullable: true
+ *          createdAt:
+ *            type: string
+ *            format: date-time
+ *          updatedAt:
+ *            type: string
+ *            format: date-time
+ *      UserResponse:
+ *        type: object
+ *        properties:
+ *         id:
+ *           type: number
+ *           format: number
+ *           minimum: 1
+ *           readOnly: true
+ *         email:
+ *           $ref: '#/components/schemas/EmailPattern'
+ *         firstName:
+ *           $ref: '#/components/schemas/NamePattern'
+ *         lastName:
+ *           $ref: '#/components/schemas/NamePattern'
+ *         avatarUrl:
+ *            type: string
+ *            nullable: true
+ *         avatarId:
+ *            type: number
+ *            nullable: true
+ *      UserUpdateRequest:
+ *        type: object
+ *        properties:
+ *         email:
+ *           $ref: '#/components/schemas/EmailPattern'
+ *         firstName:
+ *           $ref: '#/components/schemas/NamePattern'
+ *         lastName:
+ *           $ref: '#/components/schemas/NamePattern'
+ *         avatarId:
+ *            type: number
+ *            nullable: true
+ *      UserSignUpRequest:
+ *        type: object
+ *        properties:
+ *         email:
+ *           $ref: '#/components/schemas/EmailPattern'
+ *         password:
+ *           $ref: '#/components/schemas/PasswordPattern'
+ *         firstName:
+ *           $ref: '#/components/schemas/NamePattern'
+ *         lastName:
+ *           $ref: '#/components/schemas/NamePattern'
+ *      UserSignInRequest:
+ *        type: object
+ *        properties:
+ *         email:
+ *           $ref: '#/components/schemas/EmailPattern'
+ *         password:
+ *           $ref: '#/components/schemas/PasswordPattern'
+ *      NamePattern:
+ *        type: string
+ *        pattern: "^[ A-Za-z-]+$"
+ *        description: Must match the specified regex pattern.
+ *        minLength: 1
+ *        maxLength: 64
+ *      EmailPattern:
+ *        type: string
+ *        format: email
+ *        pattern: "^(?=.{1,64}@.{1,255}$)[\w.-]+(?<!\.)(?<!\.\.)@[\dA-Za-z-]+(?:\.[\dA-Za-z-]+)*$"
+ *        description: The email address of the user. Must match the specified regex pattern.
+ *      PasswordPattern:
+ *        type: string
+ *        pattern: "^(?=.*[A-Z])(?=.*[a-z])(?=.*[!#$%&()*+,.:;<=>?@[\]^_{}~-])[\w!#$%&()*+,.:;<=>?@^{}~-]$"
+ *        description: Must match the specified regex pattern.
+ *        minLength: 4
+ *        maxLength: 20
  */
+
 class UserController extends Controller {
   private userService: UserService;
 
@@ -81,7 +157,7 @@ class UserController extends Controller {
    *              schema:
    *                type: array
    *                items:
-   *                  $ref: '#/components/schemas/User'
+   *                  $ref: '#/components/schemas/UserResponse'
    */
   private async findAll(): Promise<ApiHandlerResponse> {
     return {
@@ -104,25 +180,15 @@ class UserController extends Controller {
    *        content:
    *          application/json:
    *            schema:
-   *              type: object
-   *              properties:
-   *                firstName:
-   *                  type: string
-   *                lastName:
-   *                  type: string
-   *                email:
-   *                  type: string
-   *                avatarId:
-   *                  type: number
-   *                  nullable: true
-   *
+   *              $ref: '#/components/schemas/UserUpdateRequest'
+
    *      responses:
    *        200:
    *          description: Successful update
    *          content:
    *            application/json:
    *              schema:
-   *                $ref: '#/components/schemas/User'
+   *                $ref: '#/components/schemas/UserResponse'
    */
   private async update(
     options: ApiHandlerOptions<{
