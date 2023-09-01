@@ -34,13 +34,13 @@ const ResetPasswordForm: React.FC<Properties> = ({ onSubmit }) => {
     <>
       <Notification />
       <div className={styles.formWrapper}>
+        <h2 className={styles.authFormTitle}>Reset your password</h2>
         <form
           className={styles.form}
           name="loginForm"
           onSubmit={handleFormSubmit}
         >
           <fieldset className={styles.fieldset}>
-            <span className={styles.link}>Reset your password</span>
             <Input
               name="password"
               type="password"

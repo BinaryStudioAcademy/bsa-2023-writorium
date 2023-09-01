@@ -30,13 +30,13 @@ const ForgotPasswordForm: React.FC<Properties> = ({ onSubmit }) => {
     <>
       <Notification />
       <div className={styles.formWrapper}>
+        <h2 className={styles.authFormTitle}>Forgot password ?</h2>
         <form
           className={styles.form}
           name="loginForm"
           onSubmit={handleFormSubmit}
         >
           <fieldset className={styles.fieldset}>
-            <span className={styles.link}>Reset your password</span>
             <Input
               name="email"
               type="email"
