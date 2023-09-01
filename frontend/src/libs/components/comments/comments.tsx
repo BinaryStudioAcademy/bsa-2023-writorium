@@ -19,12 +19,10 @@ const MOCKED_COMMENT = {
   createdAt: '2 hours ago',
 };
 
-const Comments: React.FC = () => {
-  return (
-    <div className={styles.container}>
-      <CommentCard user={MOCKED_USER} comment={MOCKED_COMMENT} />
-    </div>
-  );
-};
+const Comments: React.FC = () => (
+  <div className={styles.container}>
+    <CommentCard user={MOCKED_USER} comment={MOCKED_COMMENT} />
+  </div>
+);
 
 export { Comments };
