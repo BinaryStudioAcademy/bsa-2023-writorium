@@ -35,13 +35,15 @@ class ArticleApi extends HttpApi {
     return await response.json<ArticleBaseResponseDto>();
   }
 
-  public async getArticle(id: string): Promise<ArticleBaseResponseDto> {
-    const articleApiPath = ArticlesApiPath.ROOT + id;
-    const response = await this.load(this.getFullEndpoint(articleApiPath, {}), {
-      method: 'GET',
-      contentType: ContentType.JSON,
-      hasAuth: true,
-    });
+  public async getArticle(id: number): Promise<ArticleBaseResponseDto> {
+    const response = await this.load(
+      this.getFullEndpoint(ArticlesApiPath.$ID, { id: String(id) }),
+      {
+        method: 'GET',
+        contentType: ContentType.JSON,
+        hasAuth: true,
+      },
+    );
     return await response.json<ArticleBaseResponseDto>();
   }
 }

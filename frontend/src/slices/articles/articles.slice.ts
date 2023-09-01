@@ -7,13 +7,13 @@ import { type ArticleBaseResponseDto } from '~/packages/articles/articles.js';
 import { createArticle, getArticle } from './actions.js';
 
 type State = {
-  article: ArticleBaseResponseDto;
+  article: ArticleBaseResponseDto | null;
   articles: ArticleBaseResponseDto[];
   dataStatus: ValueOf<typeof DataStatus>;
 };
 
 const initialState: State = {
-  article: {} as ArticleBaseResponseDto,
+  article: null,
   articles: [],
   dataStatus: DataStatus.IDLE,
 };

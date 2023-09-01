@@ -1,42 +1,37 @@
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-
 import { Layout } from '~/libs/components/components.js';
-import { AppRoute } from '~/libs/enums/enums.js';
+import { Loader } from '~/libs/components/loader/loader.js';
+import { DataStatus } from '~/libs/enums/enums.js';
 import {
   useAppDispatch,
   useAppSelector,
+  useEffect,
   useParams,
 } from '~/libs/hooks/hooks.js';
-import { type TagType } from '~/libs/types/types.js';
+import { type ArticleType, type TagType } from '~/libs/types/types.js';
 import { actions } from '~/slices/articles/articles.js';
 
 import { ArticleView } from './components/article-view/article-view.jsx';
-import { Author } from './components/author/author.js';
+import { AuthorDetails } from './components/author-details/author-details.js';
 import styles from './styles.module.scss';
 
 const Article: React.FC = () => {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
   const { id } = useParams();
 
-  if (!id) {
-    navigate(AppRoute.ARTICLES);
-  }
-
   useEffect(() => {
-    void dispatch(actions.getArticle(String(id)));
+    void dispatch(actions.getArticle(Number(id)));
   }, [dispatch, id]);
 
-  const { article } = useAppSelector(({ articles }) => ({
+  const { article, dataStatus } = useAppSelector(({ articles }) => ({
     article: articles.article,
+    dataStatus: articles.dataStatus,
   }));
 
-  if (!article) {
-    navigate(AppRoute.ARTICLES);
-  }
+  const isLoading = !(
+    dataStatus === DataStatus.FULFILLED || dataStatus == DataStatus.REJECTED
+  );
 
-  const { text, title } = article;
+  const { text, title } = article ?? {};
 
   const MOCKED_TAGS: TagType[] = [
     { id: 1, name: 'IT' },
@@ -46,19 +41,21 @@ const Article: React.FC = () => {
     { id: 5, name: 'Tech' },
   ];
 
-  const ARTICLE = {
-    title,
-    text,
-    tags: MOCKED_TAGS,
-  };
+  if (dataStatus === DataStatus.REJECTED) {
+    return null;
+  }
 
   return (
-    <Layout>
-      <div className={styles.container}>
-        <ArticleView article={ARTICLE} />
-        {id && <Author />}
-      </div>
-    </Layout>
+    <Loader isLoading={isLoading}>
+      <Layout>
+        <div className={styles.container}>
+          <ArticleView
+            article={{ title, text, tags: MOCKED_TAGS } as ArticleType}
+          />
+          <AuthorDetails name={'FirstName LastName'} />
+        </div>
+      </Layout>
+    </Loader>
   );
 };
 

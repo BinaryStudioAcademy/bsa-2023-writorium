@@ -20,7 +20,7 @@ const createArticle = createAsyncThunk<
 
 const getArticle = createAsyncThunk<
   ArticleBaseResponseDto,
-  string,
+  number,
   AsyncThunkConfig
 >(`${sliceName}/getArticle`, async (id, { extra }) => {
   const { articleApi } = extra;
