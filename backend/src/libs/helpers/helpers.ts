@@ -1,1 +1,1 @@
-export { safeJSONParse } from 'shared/build/index.js';
+export { convertPlainStringToSnakeCase, safeJSONParse } from 'shared/build/index.js';

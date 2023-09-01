@@ -5,7 +5,7 @@ export {
   ServerErrorType,
 } from './libs/enums/enums.js';
 export { ApplicationError, HttpError } from './libs/exceptions/exceptions.js';
-export { configureString, safeJSONParse } from './libs/helpers/helpers.js';
+export { configureString, convertPlainStringToSnakeCase, safeJSONParse } from './libs/helpers/helpers.js';
 export { type IConfig } from './libs/packages/config/config.js';
 export {
   HttpCode,
@@ -53,7 +53,9 @@ export {
   type GenerateArticlePromptResponseDto,
   type GeneratedArticlePrompt,
   type Prompt,
+  type PromptBaseResponseDto,
   PromptCategory,
+  type PromptRequestDto,
   PromptsApiPath,
   PromptType,
 } from './packages/prompts/prompts.js';

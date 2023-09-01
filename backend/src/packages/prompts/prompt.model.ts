@@ -16,7 +16,7 @@ class PromptModel extends AbstractModel {
   public 'situation': string | null;
   public 'prop': string | null;
   public 'type': ValueOf<typeof PromptType>;
-  public 'genreId': string | null;
+  public 'genreId': number | null;
 
   public static override get tableName(): string {
     return DatabaseTableName.PROMPTS;

@@ -3,4 +3,6 @@ export {
   type GenerateArticlePromptResponseDto,
   type GeneratedArticlePrompt,
   type Prompt,
+  type PromptBaseResponseDto,
+  type PromptRequestDto,
 } from './libs/types/types.js';
