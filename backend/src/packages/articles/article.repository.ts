@@ -16,6 +16,15 @@ class ArticleRepository implements IRepository {
     return articles.map((article) => ArticleEntity.initialize(article));
   }
 
+  public async findOwn(id: number): Promise<ArticleEntity[]> {
+    const articles = await this.articleModel
+      .query()
+      .where('userId', id)
+      .execute();
+
+    return articles.map((article) => ArticleEntity.initialize(article));
+  }
+
   public async find(id: number): Promise<ArticleEntity | null> {
     const article = await this.articleModel.query().findById(id).execute();
 
