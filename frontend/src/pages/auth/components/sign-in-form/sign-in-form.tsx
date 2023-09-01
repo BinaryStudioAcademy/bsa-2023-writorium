@@ -30,30 +30,33 @@ const SignInForm: React.FC<Properties> = ({ onSubmit }) => {
 
   return (
     <>
-      <form
-        className={styles.form}
-        name="loginForm"
-        onSubmit={handleFormSubmit}
-      >
-        <fieldset className={styles.fieldset}>
-          <Input
-            name="email"
-            type="email"
-            placeholder="Enter your email"
-            label="Email"
-            control={control}
-            errors={errors}
-          />
-          <PasswordInput
-            name="password"
-            label="Password"
-            errors={errors}
-            control={control}
-            placeholder="Enter password"
-          />
-        </fieldset>
-        <AuthSubmitButton label="Sign In" />
-      </form>
+      <div className={styles.formWrapper}>
+        <h2 className={styles.authFormTitle}>Hello!</h2>
+        <form
+          className={styles.form}
+          name="loginForm"
+          onSubmit={handleFormSubmit}
+        >
+          <fieldset className={styles.fieldset}>
+            <Input
+              name="email"
+              type="email"
+              placeholder="Enter your email"
+              label="Email"
+              control={control}
+              errors={errors}
+            />
+            <PasswordInput
+              name="password"
+              label="Password"
+              errors={errors}
+              control={control}
+              placeholder="Enter password"
+            />
+          </fieldset>
+          <AuthSubmitButton label="Sign In" />
+        </form>
+      </div>
       <div className={styles.messageWrapper}>
         <span className={styles.message}>No account?</span>
         <Link className={styles.link} to={AppRoute.SIGN_UP}>

@@ -10,6 +10,7 @@ const ColumnName = {
   CHARACTER: 'character',
   SETTING: 'setting',
   SITUATION: 'situation',
+  PROP: 'prop',
   TYPE: 'type',
   GENRE_ID: 'genre_id',
   CREATED_AT: 'created_at',
@@ -21,12 +22,15 @@ const PromptType = {
   MANUAL: 'manual',
 } as const;
 
+const CASCADE_RELATION_RULE = 'CASCADE';
+
 const up = (knex: Knex): Promise<void> => {
   return knex.schema.createTable(TableName.PROMPTS, (table) => {
     table.increments(ColumnName.ID).primary();
     table.text(ColumnName.CHARACTER).nullable();
     table.text(ColumnName.SETTING).nullable();
     table.text(ColumnName.SITUATION).nullable();
+    table.text(ColumnName.PROP).nullable();
     table
       .enu(ColumnName.TYPE, [PromptType.DAILY, PromptType.MANUAL])
       .notNullable();
@@ -35,7 +39,8 @@ const up = (knex: Knex): Promise<void> => {
       .unsigned()
       .nullable()
       .references(ColumnName.ID)
-      .inTable(TableName.GENRES);
+      .inTable(TableName.GENRES)
+      .onDelete(CASCADE_RELATION_RULE);
     table
       .dateTime(ColumnName.CREATED_AT)
       .notNullable()
@@ -52,3 +57,4 @@ const down = (knex: Knex): Promise<void> => {
 };
 
 export { down, up };
+
