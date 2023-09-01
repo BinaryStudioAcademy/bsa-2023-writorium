@@ -32,46 +32,53 @@ const SignUpForm: React.FC<Properties> = ({ onSubmit }) => {
 
   return (
     <>
-      <form
-        name="signUpForm"
-        className={styles.form}
-        onSubmit={handleFormSubmit}
-      >
-        <fieldset className={styles.fieldset}>
-          <Input
-            type="text"
-            label="Email"
-            placeholder="Enter your email"
-            name="email"
-            control={control}
-            errors={errors}
-          />
-          <Input
-            type="text"
-            label="First Name"
-            placeholder="Enter your first name"
-            name="firstName"
-            control={control}
-            errors={errors}
-          />
-          <Input
-            type="text"
-            label="Last Name"
-            placeholder="Enter your last name"
-            name="lastName"
-            control={control}
-            errors={errors}
-          />
-          <PasswordInput
-            name="password"
-            control={control}
-            errors={errors}
-            label="Password"
-            placeholder="Enter password"
-          />
-        </fieldset>
-        <AuthSubmitButton label="Sign Up" disabled={!isValid} />
-      </form>
+      <div className={styles.formWrapper}>
+        <h2 className={styles.authFormTitle}>Hello!</h2>
+        <form
+          name="signUpForm"
+          className={styles.form}
+          onSubmit={handleFormSubmit}
+        >
+          <fieldset className={styles.fieldset}>
+            <Input
+              required
+              type="text"
+              label="Email"
+              placeholder="Enter your email"
+              name="email"
+              control={control}
+              errors={errors}
+            />
+            <Input
+              required
+              type="text"
+              label="First Name"
+              placeholder="Enter your first name"
+              name="firstName"
+              control={control}
+              errors={errors}
+            />
+            <Input
+              required
+              type="text"
+              label="Last Name"
+              placeholder="Enter your last name"
+              name="lastName"
+              control={control}
+              errors={errors}
+            />
+            <PasswordInput
+              required
+              name="password"
+              control={control}
+              errors={errors}
+              label="Password"
+              placeholder="Enter password"
+            />
+          </fieldset>
+          <AuthSubmitButton label="Sign Up" disabled={!isValid} />
+        </form>
+      </div>
       <div className={styles.messageWrapper}>
         <span className={styles.message}>Already have an account?</span>
         <Link className={styles.link} to={AppRoute.SIGN_IN}>
