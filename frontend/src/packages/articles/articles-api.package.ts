@@ -6,6 +6,7 @@ import { type IStorage } from '~/libs/packages/storage/storage.js';
 import { ArticlesApiPath } from './libs/enums/enums.js';
 import {
   type ArticleBaseResponseDto,
+  type ArticleGetAllResponseDto,
   type ArticleRequestDto,
 } from './libs/types/types.js';
 
@@ -14,9 +15,19 @@ type Constructor = {
   http: IHttp;
   storage: IStorage;
 };
+
 class ArticleApi extends HttpApi {
   public constructor({ baseUrl, http, storage }: Constructor) {
     super({ path: ApiPath.ARTICLES, baseUrl, http, storage });
+  }
+
+  public async getAll(): Promise<ArticleGetAllResponseDto> {
+    const response = await this.load(
+      this.getFullEndpoint(ArticlesApiPath.ROOT, {}),
+      { method: 'GET', contentType: ContentType.JSON, hasAuth: true },
+    );
+
+    return await response.json<ArticleGetAllResponseDto>();
   }
 
   public async create(
