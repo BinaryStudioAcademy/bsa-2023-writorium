@@ -1,7 +1,11 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { type AsyncThunkConfig } from '~/libs/types/types.js';
-import { type GenerateArticlePromptResponseDto, type PromptBaseResponseDto, type PromptRequestDto } from '~/packages/prompts/prompts.js';
+import {
+  type GenerateArticlePromptResponseDto,
+  type PromptBaseResponseDto,
+  type PromptRequestDto,
+} from '~/packages/prompts/prompts.js';
 
 import { name as sliceName } from './prompts.slice.js';
 

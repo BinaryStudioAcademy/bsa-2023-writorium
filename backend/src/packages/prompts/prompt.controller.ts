@@ -1,5 +1,9 @@
 import { ApiPath } from '~/libs/enums/enums.js';
-import { type ApiHandlerOptions, type ApiHandlerResponse, Controller } from '~/libs/packages/controller/controller.js';
+import {
+  type ApiHandlerOptions,
+  type ApiHandlerResponse,
+  Controller,
+} from '~/libs/packages/controller/controller.js';
 import { HttpCode } from '~/libs/packages/http/http.js';
 import { type ILogger } from '~/libs/packages/logger/logger.js';
 
@@ -40,7 +44,7 @@ import { type PromptService } from './prompt.service.js';
  *            type: string
  *          prop:
  *            type: string
- *          type: 
+ *          type:
  *            type: string
               enum:
                 - daily
@@ -97,26 +101,26 @@ class PromptsController extends Controller {
     };
   }
 
-/**
- * @swagger
- * /prompts:
- *    post:
- *      summary: Create a new prompt
- *      description: Create a new prompt
- *      requestBody:
- *        required: true
- *        content:
- *          application/json:
- *            schema:
- *              $ref: '#components/schemas/PromptRequestDto'
- *      responses:
- *        201:
- *          description: Prompt created successfully
- *          content:
- *            application/json:
- *              schema:
- *                $ref: '#/components/schemas/Prompt'
- */
+  /**
+   * @swagger
+   * /prompts:
+   *    post:
+   *      summary: Create a new prompt
+   *      description: Create a new prompt
+   *      requestBody:
+   *        required: true
+   *        content:
+   *          application/json:
+   *            schema:
+   *              $ref: '#components/schemas/PromptRequestDto'
+   *      responses:
+   *        201:
+   *          description: Prompt created successfully
+   *          content:
+   *            application/json:
+   *              schema:
+   *                $ref: '#/components/schemas/Prompt'
+   */
 
   private async create(
     options: ApiHandlerOptions<{

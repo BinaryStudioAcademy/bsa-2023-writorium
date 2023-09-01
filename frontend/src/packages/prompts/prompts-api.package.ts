@@ -4,7 +4,11 @@ import { type IHttp } from '~/libs/packages/http/http.js';
 import { type IStorage } from '~/libs/packages/storage/storage.js';
 
 import { PromptsApiPath } from './libs/enums/enums.js';
-import { type GenerateArticlePromptResponseDto, type PromptBaseResponseDto, type PromptRequestDto } from './libs/types/types.js';
+import {
+  type GenerateArticlePromptResponseDto,
+  type PromptBaseResponseDto,
+  type PromptRequestDto,
+} from './libs/types/types.js';
 
 type Constructor = {
   baseUrl: string;

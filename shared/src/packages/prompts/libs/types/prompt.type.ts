@@ -1,5 +1,8 @@
 import { type ValueOf } from '~/libs/types/types.js';
-import { type PromptCategory , type PromptType } from '~/packages/prompts/prompts.js';
+import {
+  type PromptCategory,
+  type PromptType,
+} from '~/packages/prompts/prompts.js';
 
 type Prompt = {
   id: number;

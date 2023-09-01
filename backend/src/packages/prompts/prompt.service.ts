@@ -1,4 +1,7 @@
-import { convertPlainStringToSnakeCase, safeJSONParse } from '~/libs/helpers/helpers.js';
+import {
+  convertPlainStringToSnakeCase,
+  safeJSONParse,
+} from '~/libs/helpers/helpers.js';
 import { type IService } from '~/libs/interfaces/interfaces.js';
 import { FailedToGeneratePromptError } from '~/libs/packages/exceptions/exceptions.js';
 import { type OpenAIService } from '~/libs/packages/openai/openai.package.js';
@@ -48,14 +51,10 @@ class PromptService implements IService {
     return parsedPrompt;
   }
 
-  private async getGenreIdForPrompt(
-    genre: string,
-  ): Promise<number | null> {
+  private async getGenreIdForPrompt(genre: string): Promise<number | null> {
     const genreKey = convertPlainStringToSnakeCase(genre);
 
-    const existingGenre = await this.genreRepository.findByKey(
-      genreKey,
-    );
+    const existingGenre = await this.genreRepository.findByKey(genreKey);
 
     if (existingGenre) {
       return existingGenre.toObject().id;

@@ -4,11 +4,10 @@ import { Layout } from '~/libs/components/components.js';
 import { useParams } from '~/libs/hooks/hooks.js';
 import { type TagType } from '~/libs/types/types.js';
 
-import { ArticleView } from './components/article-view/article-view.jsx';
-import { Author } from './components/author/author.js';
+import { ArticleView, Author } from './components/components.js';
 import styles from './styles.module.scss';
 
-const Article: FC = () => {
+const ArticlePage: FC = () => {
   const { id } = useParams();
 
   const MOCKED_TEXT = `Envision this: there is a technology currently undergoing testing that, when released to the public, will become a long-awaited revolution in energy. This new technology promises to be safer and more efficient than anything we have on the market now. It  will affect that which we consider mundane — power tools, toys, laptops, smartphones —
@@ -35,7 +34,7 @@ const Article: FC = () => {
 
   return (
     <Layout>
-      <div className={styles.container}>
+      <div className={styles.wrapper}>
         <ArticleView article={MOCKED_ARTICLE} />
         {id && <Author />}
       </div>
@@ -43,4 +42,4 @@ const Article: FC = () => {
   );
 };
 
-export { Article };
+export { ArticlePage };

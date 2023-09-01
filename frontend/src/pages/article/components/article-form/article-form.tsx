@@ -1,6 +1,11 @@
 import { Button, Input, Textarea } from '~/libs/components/components.js';
 import { ButtonType } from '~/libs/enums/enums.js';
-import { useAppDispatch, useAppForm, useAppSelector, useCallback } from '~/libs/hooks/hooks.js';
+import {
+  useAppDispatch,
+  useAppForm,
+  useAppSelector,
+  useCallback,
+} from '~/libs/hooks/hooks.js';
 import { type ValueOf } from '~/libs/types/types.js';
 import {
   articleCreateValidationSchema,
@@ -25,7 +30,7 @@ const ArticleForm: React.FC = () => {
 
   const handleArticleSubmit = useCallback(
     (articleSubmitType: ValueOf<typeof ArticleSubmitType>) =>
-    (payload: ArticleRequestDto): void => {
+      (payload: ArticleRequestDto): void => {
         const updatedPayload = {
           ...payload,
           publishedAt:

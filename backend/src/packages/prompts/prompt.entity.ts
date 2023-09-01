@@ -21,7 +21,7 @@ class PromptEntity implements IEntity {
     situation,
     prop,
     type,
-    genreId
+    genreId,
   }: WithNullableKeys<Prompt, 'id'>) {
     this.id = id;
     this.character = character;

@@ -2,7 +2,10 @@ import { createSlice, isAnyOf } from '@reduxjs/toolkit';
 
 import { DataStatus } from '~/libs/enums/enums.js';
 import { type ValueOf } from '~/libs/types/types.js';
-import { type GenerateArticlePromptResponseDto as generatedPrompt, type PromptBaseResponseDto as createdPrompt } from '~/packages/prompts/prompts.js';
+import {
+  type GenerateArticlePromptResponseDto as generatedPrompt,
+  type PromptBaseResponseDto as createdPrompt,
+} from '~/packages/prompts/prompts.js';
 
 import { createPrompt, generatePrompt } from './actions.js';
 
@@ -32,19 +35,13 @@ const { reducer, actions, name } = createSlice({
       state.dataStatus = DataStatus.FULFILLED;
     });
     builder.addMatcher(
-      isAnyOf(
-        generatePrompt.pending,
-        createPrompt.pending,
-      ),
+      isAnyOf(generatePrompt.pending, createPrompt.pending),
       (state) => {
         state.dataStatus = DataStatus.PENDING;
       },
     );
     builder.addMatcher(
-      isAnyOf(
-        generatePrompt.rejected,
-        createPrompt.rejected,
-      ),
+      isAnyOf(generatePrompt.rejected, createPrompt.rejected),
       (state) => {
         state.dataStatus = DataStatus.REJECTED;
       },

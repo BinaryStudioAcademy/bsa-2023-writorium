@@ -1,4 +1,8 @@
-export { PromptCategory, PromptsApiPath, PromptType } from './libs/enums/enums.js';
+export {
+  PromptCategory,
+  PromptsApiPath,
+  PromptType,
+} from './libs/enums/enums.js';
 export {
   type GenerateArticlePromptResponseDto,
   type GeneratedArticlePrompt,

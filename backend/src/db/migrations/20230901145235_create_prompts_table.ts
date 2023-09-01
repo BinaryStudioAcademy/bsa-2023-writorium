@@ -57,4 +57,3 @@ const down = (knex: Knex): Promise<void> => {
 };
 
 export { down, up };
-
