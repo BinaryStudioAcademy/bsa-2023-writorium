@@ -37,4 +37,36 @@ const signIn = createAsyncThunk<
   return user;
 });
 
-export { signIn, signUp };
+const getCurrentUser = createAsyncThunk<
+  UserAuthResponseDto | null,
+  undefined,
+  AsyncThunkConfig
+>(`${sliceName}/getCurrentUser`, async (_loginPayload, { extra }) => {
+  const { authApi, storage } = extra;
+
+  const token = await storage.get(StorageKey.TOKEN);
+  const hasToken = Boolean(token);
+
+  if (!hasToken) {
+    return null;
+  }
+
+  try {
+    return await authApi.getCurrentUser();
+  } catch {
+    await storage.drop(StorageKey.TOKEN);
+
+    return null;
+  }
+});
+
+const logout = createAsyncThunk<null, undefined, AsyncThunkConfig>(
+  `${sliceName}/logout`,
+  async (_loginPayload, { extra }) => {
+    const { storage } = extra;
+    await storage.drop(StorageKey.TOKEN);
+    return null;
+  },
+);
+
+export { getCurrentUser, logout, signIn, signUp };

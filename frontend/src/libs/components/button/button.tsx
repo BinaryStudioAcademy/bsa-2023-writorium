@@ -5,19 +5,31 @@ import { type ValueOf } from '~/libs/types/types.js';
 import styles from './styles.module.scss';
 
 type Properties = {
-  label: string;
+  disabled?: boolean;
+  label: React.ReactNode;
   type?: ValueOf<typeof ButtonType>;
+  name?: string;
   className?: string;
+  onClick?: () => void;
 };
 
 const Button: React.FC<Properties> = ({
   type = ButtonType.BUTTON,
   label,
+  name = '',
   className = '',
+  disabled,
+  onClick,
 }) => (
-  <button type={type} className={getValidClassNames(styles.button, className)}>
+  <button
+    type={type}
+    name={name}
+    disabled={disabled}
+    className={getValidClassNames(styles.button, className)}
+    onClick={onClick}
+  >
     {label}
   </button>
 );
 
-export { Button };
+export { Button, type Properties as ButtonProperties };

@@ -3,8 +3,9 @@ import { createSlice, isAnyOf } from '@reduxjs/toolkit';
 import { DataStatus } from '~/libs/enums/enums.js';
 import { type ValueOf } from '~/libs/types/types.js';
 import { type UserAuthResponseDto as User } from '~/packages/users/users.js';
+import { actions as usersActions } from '~/slices/users/users.js';
 
-import { signIn, signUp } from './actions.js';
+import { getCurrentUser, logout, signIn, signUp } from './actions.js';
 
 type State = {
   dataStatus: ValueOf<typeof DataStatus>;
@@ -21,20 +22,36 @@ const { reducer, actions, name } = createSlice({
   name: 'auth',
   reducers: {},
   extraReducers(builder) {
+    builder.addCase(usersActions.updateUser.fulfilled, (state, action) => {
+      state.user = action.payload;
+    });
     builder.addMatcher(isAnyOf(signUp.pending, signIn.pending), (state) => {
       state.dataStatus = DataStatus.PENDING;
     });
     builder.addMatcher(
-      isAnyOf(signUp.fulfilled, signIn.fulfilled),
+      isAnyOf(
+        signIn.rejected,
+        signUp.rejected,
+        getCurrentUser.rejected,
+        logout.rejected,
+      ),
+      (state) => {
+        state.dataStatus = DataStatus.REJECTED;
+        state.user = null;
+      },
+    );
+    builder.addMatcher(
+      isAnyOf(
+        logout.fulfilled,
+        signUp.fulfilled,
+        signIn.fulfilled,
+        getCurrentUser.fulfilled,
+      ),
       (state, action) => {
         state.dataStatus = DataStatus.FULFILLED;
         state.user = action.payload;
       },
     );
-    builder.addMatcher(isAnyOf(signUp.rejected, signIn.rejected), (state) => {
-      state.dataStatus = DataStatus.REJECTED;
-      state.user = null;
-    });
   },
 });
 

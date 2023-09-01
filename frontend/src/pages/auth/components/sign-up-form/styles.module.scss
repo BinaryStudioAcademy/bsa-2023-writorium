@@ -1,0 +1,48 @@
+.formWrapper {
+  display: flex;
+  flex: 1 0 auto;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+}
+
+.form {
+  width: 100%;
+}
+
+.fieldset {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 0 0 18px;
+  padding: 0;
+  border: none;
+}
+
+.message {
+  margin-right: 5px;
+  color: var(--dark-blue-70);
+  font-size: 16px;
+  font-family: Lato, sans-serif;
+  opacity: 0.7;
+}
+
+.link {
+  color: var(--light-green);
+  font-size: 16px;
+  font-family: Lato, sans-serif;
+}
+
+.messageWrapper {
+  flex-shrink: 0;
+  padding: 40px 0;
+}
+
+.authFormTitle {
+  align-self: flex-start;
+  margin: 0 0 44px;
+  padding-top: 40px;
+  color: var(--light-green);
+  font-size: 24px;
+  font-family: "Libre Baskerville", sans-serif;
+}

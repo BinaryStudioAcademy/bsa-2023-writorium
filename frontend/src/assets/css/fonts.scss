@@ -27,3 +27,13 @@
     url("/fonts/libre-baskerville-bold.woff2") format("woff2"),
     url("/fonts/libre-baskerville-bold.woff") format("woff");
 }
+
+@font-face {
+  font-weight: bold;
+  font-family: Raleway;
+  font-style: normal;
+  font-display: swap;
+  src:
+    url("/fonts/raleway-bold.woff2") format("woff2"),
+    url("/fonts/raleway-bold.woff") format("woff");
+}

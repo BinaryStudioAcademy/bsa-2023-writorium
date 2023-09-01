@@ -5,14 +5,24 @@ import { createRoot } from 'react-dom/client';
 
 import {
   App,
+  Navigate,
+  ProtectedRoute,
+  PublicRoute,
   RouterProvider,
   StoreProvider,
 } from '~/libs/components/components.js';
-import { AppRoute } from '~/libs/enums/enums.js';
+import { AppRoute, ArticleSubRoute } from '~/libs/enums/enums.js';
 import { store } from '~/libs/packages/store/store.js';
+import { Article } from '~/pages/article/article.js';
 import { Auth } from '~/pages/auth/auth.js';
 import { Landing } from '~/pages/landing/landing.js';
 import { Profile } from '~/pages/profile/profile.js';
+
+import {
+  ArticlesFeed,
+  ArticlesPage,
+  MyArticles,
+} from './pages/articles/articles.js';
 
 createRoot(document.querySelector('#root') as HTMLElement).render(
   <StrictMode>
@@ -25,19 +35,61 @@ createRoot(document.querySelector('#root') as HTMLElement).render(
             children: [
               {
                 path: AppRoute.ROOT,
-                element: <Landing />,
+                element: (
+                  <PublicRoute>
+                    <Landing />
+                  </PublicRoute>
+                ),
               },
               {
                 path: AppRoute.SIGN_IN,
-                element: <Auth />,
+                element: (
+                  <PublicRoute>
+                    <Auth />
+                  </PublicRoute>
+                ),
               },
               {
                 path: AppRoute.SIGN_UP,
-                element: <Auth />,
+                element: (
+                  <PublicRoute>
+                    <Auth />
+                  </PublicRoute>
+                ),
               },
               {
                 path: AppRoute.PROFILE,
-                element: <Profile />,
+                element: (
+                  <ProtectedRoute>
+                    <Profile />
+                  </ProtectedRoute>
+                ),
+              },
+              {
+                path: AppRoute.ARTICLES,
+                element: (
+                  <ProtectedRoute>
+                    <ArticlesPage />
+                  </ProtectedRoute>
+                ),
+                children: [
+                  {
+                    path: ArticleSubRoute.FEED,
+                    element: <ArticlesFeed />,
+                  },
+                  {
+                    path: ArticleSubRoute.MY_ARTICLES,
+                    element: <MyArticles />,
+                  },
+                  {
+                    index: true,
+                    element: <Navigate to={ArticleSubRoute.FEED} />,
+                  },
+                ],
+              },
+              {
+                path: AppRoute.ARTICLE,
+                element: <Article />,
               },
             ],
           },

@@ -1,0 +1,18 @@
+.passwordInputWrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.icon {
+  position: absolute;
+  top: 40px;
+  right: 20px;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.passwordToggle {
+  display: contents;
+}

@@ -1,0 +1,79 @@
+.authLayout {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+  background-color: var(--light-grey);
+}
+
+.floatingLetter {
+  position: absolute;
+  font-weight: 700;
+  font-size: 70px;
+  font-family: "Libre Baskerville", sans-serif;
+}
+
+.heroTitle,
+.floatingLetter {
+  user-select: none;
+}
+
+.hero,
+.formWrapper {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.formWrapper {
+  flex-basis: 553px;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+.formWrapperInner {
+  z-index: 1;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 327px;
+  height: 100%;
+}
+
+.scrollableFormWrapper {
+  flex-basis: 553px;
+  height: 100%;
+  overflow: auto;
+}
+
+.formWrapper .floatingLetter {
+  color: var(--pale-grey);
+}
+
+.hero {
+  flex: 1;
+  height: 100%;
+  background-image: linear-gradient(
+      to bottom right,
+      var(--dark-green-80),
+      var(--dark-green-80)
+    ),
+    url("@assets/img/hero-background-typewriter.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.hero .floatingLetter {
+  color: var(--light-green);
+}
+
+.heroTitle {
+  color: var(--light-grey);
+  font-weight: 700;
+  font-size: 70px;
+  font-family: "Libre Baskerville", sans-serif;
+  letter-spacing: 15px;
+}

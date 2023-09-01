@@ -1,11 +1,12 @@
-import { Link } from '~/libs/components/link/link.jsx';
-import { AppRoute } from '~/libs/enums/app-route.enum';
+import { Avatar, Link } from '~/libs/components/components.js';
+import { AppRoute } from '~/libs/enums/enums.js';
+import { getFullName } from '~/libs/helpers/helpers.js';
+import { type UserAuthResponseDto } from '~/packages/users/users.js';
 
-import { Avatar } from '../avatar/avatar.jsx';
 import styles from './styles.module.scss';
 
 type Properties = {
-  user: null;
+  user: UserAuthResponseDto | null;
 };
 
 const Header: React.FC<Properties> = ({ user }) => (
@@ -15,8 +16,11 @@ const Header: React.FC<Properties> = ({ user }) => (
         <Link to={AppRoute.ROOT} className={styles.logo}>
           WRITORIUM
         </Link>
-        <Link to={AppRoute.PROFILE} className={styles.avatarInfo}>
-          <Avatar username="Todd Demoer" avatarUrl={null} />
+        <Link to={AppRoute.PROFILE}>
+          <Avatar
+            username={getFullName(user.firstName, user.lastName)}
+            avatarUrl={null}
+          />
         </Link>
       </header>
     )}
