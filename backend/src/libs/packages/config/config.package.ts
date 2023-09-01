@@ -4,7 +4,6 @@ import { config } from 'dotenv';
 import { AppEnvironment } from '~/libs/enums/enums.js';
 import { type ILogger } from '~/libs/packages/logger/logger.js';
 
-import { TokenExpirationTime } from '../token/token.js';
 import {
   type IAuthConfig,
   type IConfig,
@@ -147,7 +146,7 @@ class Config implements IConfig {
   private get authConfig(): IAuthConfig {
     return {
       ALGORITHM: 'HS256',
-      EXPIRES_IN: TokenExpirationTime.ONE_DAY,
+      EXPIRES_IN: '24h',
     };
   }
 }
