@@ -1,0 +1,64 @@
+.textEditorWrapper {
+  display: flex;
+  flex-direction: column;
+  row-gap: 14px;
+  max-width: 828px;
+  min-height: 410px;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+}
+
+.textEditor {
+  height: 360px;
+  max-height: 360px;
+  padding: 100px 23px;
+  overflow: auto;
+  background-color: #f8f8f8;
+  border: 2px solid transparent;
+  border-radius: 5px;
+}
+
+.textEditor:focus {
+  outline: none;
+}
+
+.placeholder:first-child::before {
+  float: left;
+  height: 0;
+  color: #adb5bd;
+  content: attr(data-placeholder);
+  pointer-events: none;
+}
+
+.buttonsGroup {
+  display: inline-flex;
+  overflow: hidden;
+  border: 1px solid #b6b6b6;
+  border-radius: 3px;
+}
+
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  transition: background-color 0.2s ease;
+}
+
+.button:not(:last-child) {
+  border-right: 1px solid #b6b6b6;
+}
+
+.button:hover {
+  background-color: rgb(255 255 255 / 1%);
+}
+
+.button.active {
+  background-color: #ffffff;
+}

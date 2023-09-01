@@ -1,0 +1,21 @@
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  transition: background-color 0.2s ease;
+}
+
+.button:not(:last-child) {
+  border-right: 1px solid #b6b6b6;
+}
+
+.button:hover {
+  background-color: rgb(255 255 255 / 1%);
+}
+
+.button.active {
+  background-color: #ffffff;
+}
