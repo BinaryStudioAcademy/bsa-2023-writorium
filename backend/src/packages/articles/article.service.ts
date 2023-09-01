@@ -75,10 +75,12 @@ class ArticleService implements IService {
   public async findAll(): Promise<ArticleGetAllResponseDto> {
     const articles = await this.articleRepository.findAll();
 
-    return { items: articles.map((article) => article.toObject()) };
+    return { items: articles.map((article) => article.toObjectWithUser()) };
   }
 
-  public async findOwn(id: number): Promise<ArticleGetAllResponseDto> {
+  public async findOwn(
+    id: number,
+  ): Promise<{ items: ArticleBaseResponseDto[] }> {
     const articles = await this.articleRepository.findOwn(id);
 
     return { items: articles.map((article) => article.toObject()) };
