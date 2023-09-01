@@ -24,10 +24,8 @@
 
 .input:focus {
   color: var(--black);
-  border-color: var(--black);
-  box-shadow:
-    0 4px 8px -2px var(--dark-green-80),
-    inset 0 2px 4px -2px var(--dark-green-80);
+  border-color: var(--light-green);
+  box-shadow: 0 4px 8px -2px var(--input-shadow-color);
 }
 
 .input.error {
@@ -38,4 +36,10 @@
   color: var(--dark-gray);
   font-size: 12px;
   font-family: Lato, sans-serif;
+}
+
+.text.required::after {
+  margin-left: 3px;
+  color: var(--red);
+  content: "*";
 }
