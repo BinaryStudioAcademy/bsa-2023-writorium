@@ -26,8 +26,8 @@ const userSignIn = joi.object<UserSignInRequestDto, true>({
     .max(UserValidationRule.PASSWORD_MAX_LENGTH)
     .required()
     .messages({
-      'string.min': UserValidationMessage.PASSWORD_LENGTH,
-      'string.max': UserValidationMessage.PASSWORD_LENGTH,
+      'string.min': UserValidationMessage.PASSWORD_MIN_LENGTH,
+      'string.max': UserValidationMessage.PASSWORD_MAX_LENGTH,
       'string.empty': UserValidationMessage.PASSWORD_REQUIRE,
     }),
 });
