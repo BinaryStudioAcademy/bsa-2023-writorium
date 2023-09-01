@@ -1,7 +1,10 @@
 import { type IEntity } from '~/libs/interfaces/interfaces.js';
 import { type WithNullableKeys } from '~/libs/types/types.js';
 
-import { type ArticleEntityType } from './libs/types/types.js';
+import {
+  type ArticleEntityType,
+  type UserDetailsResponseDto,
+} from './libs/types/types.js';
 
 class ArticleEntity implements IEntity {
   private 'id': number | null;
@@ -11,6 +14,7 @@ class ArticleEntity implements IEntity {
   private 'promptId': number | null;
   private 'genreId': number | null;
   private 'publishedAt': string | null;
+  private 'userDetails'?: UserDetailsResponseDto;
 
   private constructor({
     id,
@@ -20,6 +24,7 @@ class ArticleEntity implements IEntity {
     promptId,
     genreId,
     publishedAt,
+    userDetails,
   }: WithNullableKeys<ArticleEntityType, 'id'>) {
     this.id = id;
     this.title = title;
@@ -28,6 +33,7 @@ class ArticleEntity implements IEntity {
     this.promptId = promptId;
     this.genreId = genreId;
     this.publishedAt = publishedAt;
+    this.userDetails = userDetails;
   }
 
   public static initialize({
@@ -47,6 +53,31 @@ class ArticleEntity implements IEntity {
       promptId,
       genreId,
       publishedAt,
+    });
+  }
+
+  public static initializeWithUser({
+    id,
+    title,
+    text,
+    userId,
+    promptId,
+    genreId,
+    publishedAt,
+    userDetails,
+  }: ArticleEntityType): ArticleEntity {
+    return new ArticleEntity({
+      id,
+      title,
+      text,
+      userId,
+      promptId,
+      genreId,
+      publishedAt,
+      userDetails: {
+        firstName: userDetails?.firstName as string,
+        lastName: userDetails?.lastName as string,
+      },
     });
   }
 
@@ -78,6 +109,19 @@ class ArticleEntity implements IEntity {
       promptId: this.promptId,
       genreId: this.genreId,
       publishedAt: this.publishedAt,
+    };
+  }
+
+  public toObjectWithUser(): ArticleEntityType {
+    return {
+      id: this.id as number,
+      title: this.title,
+      text: this.text,
+      userId: this.userId,
+      promptId: this.promptId,
+      genreId: this.genreId,
+      publishedAt: this.publishedAt,
+      userDetails: this.userDetails,
     };
   }
 
