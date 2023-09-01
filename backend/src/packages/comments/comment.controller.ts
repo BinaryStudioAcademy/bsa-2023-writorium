@@ -110,18 +110,6 @@ class CommentController extends Controller {
           }>,
         ),
     });
-
-    this.addRoute({
-      path: CommentsApiPath.$ID,
-      method: 'DELETE',
-      handler: (options) =>
-        this.delete(
-          options as ApiHandlerOptions<{
-            params: { id: number };
-            user: UserAuthResponseDto;
-          }>,
-        ),
-    });
   }
 
   /**
@@ -258,36 +246,6 @@ class CommentController extends Controller {
       payload: await this.commentService.update(options.params.id, {
         userId: options.user.id,
         ...options.body,
-      }),
-    };
-  }
-
-  /**
-   * @swagger
-   * /comments/:id:
-   *    delete:
-   *      summary: Delete an existing comment
-   *      description: Delete an existing comment by id
-   *      security:
-   *        - bearerAuth: []
-   *      responses:
-   *        200:
-   *          description: Successful operation
-   *          content:
-   *            application/json:
-   *              schema:
-   *                $ref: '#/components/schemas/Comment'
-   */
-  private async delete(
-    options: ApiHandlerOptions<{
-      params: { id: number };
-      user: UserAuthResponseDto;
-    }>,
-  ): Promise<ApiHandlerResponse> {
-    return {
-      status: HttpCode.OK,
-      payload: await this.commentService.delete(options.params.id, {
-        userId: options.user.id,
       }),
     };
   }
