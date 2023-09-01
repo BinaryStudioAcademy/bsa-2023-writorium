@@ -9,7 +9,7 @@ class ArticleEntity implements IEntity {
   private 'text': string;
   private 'userId': number;
   private 'promptId': number | null;
-  private 'genreId': number;
+  private 'genreId': number | null;
   private 'publishedAt': string | null;
 
   private constructor({
