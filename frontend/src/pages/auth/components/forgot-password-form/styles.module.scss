@@ -7,8 +7,8 @@
 }
 
 .messageWrapper {
-  position: absolute;
-  bottom: 40px;
+  flex-shrink: 0;
+  padding: 40px 0;
 }
 
 .form {
@@ -36,4 +36,13 @@
   color: var(--light-green);
   font-size: 16px;
   font-family: Lato, sans-serif;
+}
+
+.authFormTitle {
+  align-self: flex-start;
+  margin: 0 0 44px;
+  padding-top: 40px;
+  color: var(--light-green);
+  font-size: 24px;
+  font-family: "Libre Baskerville", sans-serif;
 }
