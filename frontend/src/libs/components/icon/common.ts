@@ -6,6 +6,7 @@ import { ReactComponent as CrossMark } from '~/assets/img/icons/cross-mark-icon.
 import { ReactComponent as Dislike } from '~/assets/img/icons/dislike-icon.svg';
 import { ReactComponent as Favorite } from '~/assets/img/icons/favorite-icon.svg';
 import { ReactComponent as TextAlignCenter } from '~/assets/img/icons/format-text-align-center-icon.svg';
+import { ReactComponent as TextAlignJustify } from '~/assets/img/icons/format-text-align-justify.svg';
 import { ReactComponent as TextAlignLeft } from '~/assets/img/icons/format-text-align-left-icon.svg';
 import { ReactComponent as TextAlignRight } from '~/assets/img/icons/format-text-align-right-icon.svg';
 import { ReactComponent as TextBold } from '~/assets/img/icons/format-text-bold-icon.svg';
@@ -38,6 +39,7 @@ type IconName =
   | 'textAlignLeft'
   | 'textAlignCenter'
   | 'textAlignRight'
+  | 'textAlignJustify'
   | 'textBold'
   | 'textItalic'
   | 'textStrikeThrough'
@@ -86,6 +88,7 @@ const iconNameToIcon: Record<
   sparkles: Sparkles,
   star: Star,
   view: View,
+  textAlignJustify: TextAlignJustify,
 };
 
 export { type IconName, iconNameToIcon };
