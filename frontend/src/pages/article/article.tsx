@@ -1,10 +1,11 @@
 import { Layout } from '~/libs/components/components.js';
 import { Loader } from '~/libs/components/loader/loader.js';
-import { DataStatus } from '~/libs/enums/enums.js';
+import { AppRoute, DataStatus } from '~/libs/enums/enums.js';
 import {
   useAppDispatch,
   useAppSelector,
   useEffect,
+  useNavigate,
   useParams,
 } from '~/libs/hooks/hooks.js';
 import { type ArticleType, type TagType } from '~/libs/types/types.js';
@@ -16,6 +17,7 @@ import styles from './styles.module.scss';
 
 const Article: React.FC = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const { id } = useParams();
 
   useEffect(() => {
@@ -31,7 +33,12 @@ const Article: React.FC = () => {
     dataStatus === DataStatus.FULFILLED || dataStatus == DataStatus.REJECTED
   );
 
-  const { text, title } = article ?? {};
+  if (!article) {
+    navigate(AppRoute.ARTICLES);
+    return null;
+  }
+
+  const { text, title } = article;
 
   const MOCKED_TAGS: TagType[] = [
     { id: 1, name: 'IT' },
