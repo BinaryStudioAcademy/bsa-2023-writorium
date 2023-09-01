@@ -27,7 +27,9 @@ const up = (knex: Knex): Promise<void> => {
     table.text(ColumnName.CHARACTER).nullable();
     table.text(ColumnName.SETTING).nullable();
     table.text(ColumnName.SITUATION).nullable();
-    table.enu(ColumnName.TYPE, [PromptType.DAILY, PromptType.MANUAL]).notNullable();
+    table
+      .enu(ColumnName.TYPE, [PromptType.DAILY, PromptType.MANUAL])
+      .notNullable();
     table
       .integer(ColumnName.GENRE_ID)
       .unsigned()
@@ -49,5 +51,4 @@ const down = (knex: Knex): Promise<void> => {
   return knex.schema.dropTableIfExists(TableName.PROMPTS);
 };
 
-export { down,up };
-
+export { down, up };
