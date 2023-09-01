@@ -16,8 +16,8 @@ const resetPassword = joi.object<AuthResetPasswordDto, true>({
     .regex(UserValidationRule.PASSWORD_PATTERN)
     .required()
     .messages({
-      'string.min': UserValidationMessage.PASSWORD_LENGTH,
-      'string.max': UserValidationMessage.PASSWORD_LENGTH,
+      'string.min': UserValidationMessage.PASSWORD_MIN_LENGTH,
+      'string.max': UserValidationMessage.PASSWORD_MAX_LENGTH,
       'string.empty': UserValidationMessage.PASSWORD_REQUIRE,
       'string.pattern.base': UserValidationMessage.PASSWORD_WRONG,
     }),
