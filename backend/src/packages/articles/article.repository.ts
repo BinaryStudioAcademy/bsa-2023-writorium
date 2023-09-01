@@ -11,9 +11,11 @@ class ArticleRepository implements IRepository {
   }
 
   public async findAll(): Promise<ArticleEntity[]> {
-    const articles = await this.articleModel.query().execute();
-    
-    return articles.map((article) => ArticleEntity.initialize(article));
+    const articles = await this.articleModel
+      .query()
+      .withGraphFetched('userDetails');
+
+    return articles.map((article) => ArticleEntity.initializeWithUser(article));
   }
 
   public async findOwn(id: number): Promise<ArticleEntity[]> {
