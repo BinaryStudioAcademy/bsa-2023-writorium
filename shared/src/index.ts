@@ -58,6 +58,8 @@ export {
 } from './packages/prompts/prompts.js';
 export {
   type UserAuthResponseDto,
+  type UserDetailsDto,
+  type UserDetailsResponseDto,
   type UserGetAllItemResponseDto,
   type UserGetAllResponseDto,
   UsersApiPath,
