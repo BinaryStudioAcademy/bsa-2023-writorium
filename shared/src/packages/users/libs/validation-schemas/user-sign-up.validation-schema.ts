@@ -27,16 +27,18 @@ const userSignUp = joi.object<UserSignUpRequestDto, true>({
     .regex(UserValidationRule.PASSWORD_PATTERN)
     .required()
     .messages({
-      'string.min': UserValidationMessage.PASSWORD_LENGTH,
-      'string.max': UserValidationMessage.PASSWORD_LENGTH,
+      'string.min': UserValidationMessage.PASSWORD_MIN_LENGTH,
+      'string.max': UserValidationMessage.PASSWORD_MAX_LENGTH,
       'string.empty': UserValidationMessage.PASSWORD_REQUIRE,
       'string.pattern.base': UserValidationMessage.PASSWORD_WRONG,
     }),
   firstName: joi
     .string()
     .trim()
-    .required()
+    .min(UserValidationRule.NAME_MIN_LENGTH)
+    .max(UserValidationRule.NAME_MAX_LENGTH)
     .regex(UserValidationRule.NAME_PATTERN)
+    .required()
     .messages({
       'string.empty': UserValidationMessage.FIRST_NAME_REQUIRE,
       'string.pattern.base': UserValidationMessage.FIRST_NAME_WRONG,
@@ -46,6 +48,8 @@ const userSignUp = joi.object<UserSignUpRequestDto, true>({
     .string()
     .trim()
     .required()
+    .min(UserValidationRule.NAME_MIN_LENGTH)
+    .max(UserValidationRule.NAME_MAX_LENGTH)
     .regex(UserValidationRule.NAME_PATTERN)
     .messages({
       'string.empty': UserValidationMessage.LAST_NAME_REQUIRE,
