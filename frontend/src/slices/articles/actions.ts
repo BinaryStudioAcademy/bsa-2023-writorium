@@ -19,6 +19,16 @@ const loadAll = createAsyncThunk<
   return articleApi.getAll();
 });
 
+const loadOwn = createAsyncThunk<
+  ArticleGetAllResponseDto,
+  { id: number },
+  AsyncThunkConfig
+>(`${sliceName}/get-own`, ({ id }, { extra }) => {
+  const { articleApi } = extra;
+
+  return articleApi.getOwn(id);
+});
+
 const createArticle = createAsyncThunk<
   ArticleBaseResponseDto,
   ArticleRequestDto,
@@ -29,4 +39,4 @@ const createArticle = createAsyncThunk<
   return articleApi.create(articlePayload);
 });
 
-export { createArticle, loadAll };
+export { createArticle, loadAll, loadOwn };
