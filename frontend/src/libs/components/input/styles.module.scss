@@ -25,9 +25,7 @@
 .input:focus {
   color: var(--black);
   border-color: var(--black);
-  box-shadow:
-    0 4px 8px -2px var(--dark-green-80),
-    inset 0 2px 4px -2px var(--dark-green-80);
+  box-shadow: 0 4px 8px -2px var(--input-shadow-color);
 }
 
 .input.error {

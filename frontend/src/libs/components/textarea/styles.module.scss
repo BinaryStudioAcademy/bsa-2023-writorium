@@ -1,13 +1,23 @@
+.label {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
 .textarea {
   width: 100%;
-  color: var(--dark-blue);
+  color: var(--textarea-text);
   font-size: 14px;
   font-family: Lato, sans-serif;
-  background-color: var(--white-smoke);
-  border: none;
+  background-color: var(--textarea-bg);
+  border: 2px solid transparent;
   border-radius: 5px;
 }
 
+.textarea:focus {
+  box-shadow: 0 4px 8px -2px var(--textarea-shadow-color);
+}
+
 .error {
-  border: 2px solid var(--red);
+  border: var(--red);
 }

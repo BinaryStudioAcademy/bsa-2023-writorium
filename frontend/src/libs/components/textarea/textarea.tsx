@@ -32,7 +32,7 @@ const Textarea = <T extends FieldValues>({
   const hasError = Boolean(error);
 
   return (
-    <label>
+    <label className={styles.label}>
       <textarea
         {...field}
         placeholder={placeholder}
