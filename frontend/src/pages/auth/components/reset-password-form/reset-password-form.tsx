@@ -1,8 +1,6 @@
-import { useParams } from 'react-router-dom';
-
 import { Input, Link, Notification } from '~/libs/components/components.js';
 import { AppRoute } from '~/libs/enums/app-route.enum';
-import { useAppForm, useCallback } from '~/libs/hooks/hooks.js';
+import { useAppForm, useCallback, useParams } from '~/libs/hooks/hooks.js';
 import { type AuthResetPasswordDto } from '~/packages/auth/auth.js';
 import { resetPasswordValidationSchema } from '~/packages/auth/auth.js';
 
