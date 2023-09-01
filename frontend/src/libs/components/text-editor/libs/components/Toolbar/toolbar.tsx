@@ -2,7 +2,7 @@ import { type Editor } from '@tiptap/react';
 import { useCallback } from 'react';
 import { type ValueOf } from 'shared/build/index.js';
 
-import { TextAlignment } from '../../enums/text-alignment.js';
+import { TextAlignment, TextStyle } from '../../enums/enums.js';
 import { type ToggleButtonProperties } from '../ToggleButtonsGroup/toggle-buttons-group.js';
 import { ToggleButtonsGroup } from '../ToggleButtonsGroup/toggle-buttons-group.js';
 import styles from './styles.module.scss';
@@ -12,9 +12,21 @@ type Properties = {
 };
 
 const Toolbar: React.FC<Properties> = ({ editor }) => {
-  const handleToggleTextAlignmentChange = useCallback(
+  const handleTextAlignmentChange = useCallback(
     (alignment: string) => () => {
       editor.chain().focus().setTextAlign(alignment).run();
+    },
+    [editor],
+  );
+
+  const handleTextStyleChange = useCallback(
+    (style: ValueOf<typeof TextStyle>) => () => {
+      const command = {
+        [TextStyle.BOLD]: 'toggleBold',
+        [TextStyle.ITALIC]: 'toggleItalic',
+      } as const;
+
+      editor.chain().focus()[command[style]]().run();
     },
     [editor],
   );
@@ -23,9 +35,16 @@ const Toolbar: React.FC<Properties> = ({ editor }) => {
     key: ValueOf<typeof TextAlignment>;
   })[] = [
     { icon: 'textAlignLeft', key: TextAlignment.LEFT },
-    { icon: 'textAlignLeft', key: TextAlignment.CENTER },
-    { icon: 'textAlignLeft', key: TextAlignment.RIGHT },
-    { icon: 'textAlignLeft', key: TextAlignment.JUSTIFY },
+    { icon: 'textAlignCenter', key: TextAlignment.CENTER },
+    { icon: 'textAlignRight', key: TextAlignment.RIGHT },
+    { icon: 'textAlignJustify', key: TextAlignment.JUSTIFY },
+  ];
+
+  const textStyleButtons: (Pick<ToggleButtonProperties, 'icon'> & {
+    key: ValueOf<typeof TextStyle>;
+  })[] = [
+    { icon: 'textBold', key: TextStyle.BOLD },
+    { icon: 'textItalic', key: TextStyle.ITALIC },
   ];
 
   return (
@@ -37,7 +56,19 @@ const Toolbar: React.FC<Properties> = ({ editor }) => {
               key={key}
               icon={icon}
               isActive={editor.isActive({ textAlign: key })}
-              onClick={handleToggleTextAlignmentChange(key)}
+              onClick={handleTextAlignmentChange(key)}
+            />
+          );
+        })}
+      </ToggleButtonsGroup>
+      <ToggleButtonsGroup>
+        {textStyleButtons.map(({ icon, key }) => {
+          return (
+            <ToggleButtonsGroup.Button
+              key={key}
+              icon={icon}
+              isActive={editor.isActive(key)}
+              onClick={handleTextStyleChange(key)}
             />
           );
         })}
