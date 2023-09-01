@@ -18,6 +18,7 @@ import { ReactComponent as Image } from '~/assets/img/icons/image-icon.svg';
 import { ReactComponent as Like } from '~/assets/img/icons/like-icon.svg';
 import { ReactComponent as Link } from '~/assets/img/icons/link-icon.svg';
 import { ReactComponent as Notes } from '~/assets/img/icons/notes-icon.svg';
+import { ReactComponent as Edit } from '~/assets/img/icons/pencil-edit-icon.svg';
 import { ReactComponent as Refresh } from '~/assets/img/icons/refresh-icon.svg';
 import { ReactComponent as Renew } from '~/assets/img/icons/renew-icon.svg';
 import { ReactComponent as Search } from '~/assets/img/icons/search-icon.svg';
@@ -53,7 +54,8 @@ type IconName =
   | 'share'
   | 'sparkles'
   | 'star'
-  | 'view';
+  | 'view'
+  | 'edit';
 
 const iconNameToIcon: Record<
   IconName,
@@ -86,6 +88,7 @@ const iconNameToIcon: Record<
   sparkles: Sparkles,
   star: Star,
   view: View,
+  edit: Edit,
 };
 
 export { type IconName, iconNameToIcon };
