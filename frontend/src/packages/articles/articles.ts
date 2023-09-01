@@ -13,6 +13,7 @@ const articleApi = new ArticleApi({
 export { articleApi };
 export {
   type ArticleBaseResponseDto,
+  type ArticleGetAllResponseDto,
   type ArticleRequestDto,
 } from './libs/types/types.js';
 export { articleCreateValidationSchema } from './libs/validation-schemas/validation-schemas.js';
