@@ -5,6 +5,7 @@ const DatabaseTableName = {
   FILES: 'files',
   USER_DETAILS: 'user_details',
   COMMENTS: 'comments',
+  ACHIEVEMENTS: 'achievements',
   GENRES: 'genres',
 } as const;
 

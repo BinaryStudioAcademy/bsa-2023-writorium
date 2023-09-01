@@ -5,6 +5,7 @@ const ApiPath = {
   FILES: '/files',
   ARTICLES: '/articles',
   COMMENTS: '/comments',
+  ACHIEVEMENTS: '/achievements',
   PROMPTS: '/prompts',
 } as const;
 
