@@ -30,6 +30,15 @@ class ArticleApi extends HttpApi {
     return await response.json<ArticleGetAllResponseDto>();
   }
 
+  public async getOwn(id: number): Promise<ArticleGetAllResponseDto> {
+    const response = await this.load(
+      this.getFullEndpoint(`${ArticlesApiPath.ROOT}${id}`, {}),
+      { method: 'GET', contentType: ContentType.JSON, hasAuth: true },
+    );
+
+    return await response.json<ArticleGetAllResponseDto>();
+  }
+
   public async create(
     payload: ArticleRequestDto,
   ): Promise<ArticleBaseResponseDto> {
