@@ -44,7 +44,10 @@ export {
 export { AuthApiPath } from './packages/auth/auth.js';
 export {
   FilesApiPath,
+  FileType,
   type FileUploadResponseDto,
+  MAX_FILE_SIZE_MB,
+  SUPPORTED_FILE_TYPES,
 } from './packages/files/files.js';
 export {
   type GenreEntityType,
