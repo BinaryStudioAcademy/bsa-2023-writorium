@@ -29,24 +29,26 @@ const ForgotPasswordForm: React.FC<Properties> = ({ onSubmit }) => {
   return (
     <>
       <Notification />
-      <form
-        className={styles.form}
-        name="loginForm"
-        onSubmit={handleFormSubmit}
-      >
-        <fieldset className={styles.fieldset}>
-          <span className={styles.link}>Reset your password</span>
-          <Input
-            name="email"
-            type="email"
-            placeholder="Enter your email"
-            label="Email"
-            control={control}
-            errors={errors}
-          />
-        </fieldset>
-        <AuthSubmitButton label="Send" />
-      </form>
+      <div className={styles.formWrapper}>
+        <form
+          className={styles.form}
+          name="loginForm"
+          onSubmit={handleFormSubmit}
+        >
+          <fieldset className={styles.fieldset}>
+            <span className={styles.link}>Reset your password</span>
+            <Input
+              name="email"
+              type="email"
+              placeholder="Enter your email"
+              label="Email"
+              control={control}
+              errors={errors}
+            />
+          </fieldset>
+          <AuthSubmitButton label="Send" />
+        </form>
+      </div>
       <div className={styles.messageWrapper}>
         <span className={styles.message}>No account?</span>
         <Link className={styles.link} to={AppRoute.SIGN_UP}>
