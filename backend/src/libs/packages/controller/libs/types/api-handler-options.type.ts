@@ -7,7 +7,7 @@ type DefaultApiHandlerOptions = {
   params?: unknown;
   fileToUpload?: FileToUpload | null;
   user?: UserAuthResponseDto | null;
-  origin?: string | undefined;
+  origin?: string;
 };
 
 type ApiHandlerOptions<
