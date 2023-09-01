@@ -71,16 +71,7 @@ class AuthController extends Controller {
    *            schema:
    *              type: object
    *              properties:
-   *                email:
-   *                  type: string
-   *                  format: email
-   *                password:
-   *                  type: string
-   *                firstName:
-   *                  type: string
-   *                lastName:
-   *                  type: string
-   *
+   *                $ref: '#/components/schemas/UserSignUpRequest'
    *      responses:
    *        201:
    *          description: Successful operation
@@ -89,9 +80,14 @@ class AuthController extends Controller {
    *              schema:
    *                type: object
    *                properties:
-   *                  message:
+   *                  status:
+   *                    type: string
+   *                  payload:
    *                    type: object
-   *                    $ref: '#/components/schemas/User'
+   *                      user:
+   *                        $ref: '#/components/schemas/UserResponse'
+   *                      token:
+   *                        type: string
    * /auth/sign-in:
    *    post:
    *      description: Sign in user into the system
@@ -103,11 +99,7 @@ class AuthController extends Controller {
    *            schema:
    *              type: object
    *              properties:
-   *                email:
-   *                  type: string
-   *                  format: email
-   *                password:
-   *                  type: string
+   *                $ref: '#/components/schemas/UserSignInRequest'
    *      responses:
    *        200:
    *          description: Successful operation
@@ -116,9 +108,14 @@ class AuthController extends Controller {
    *              schema:
    *                type: object
    *                properties:
-   *                  message:
+   *                  status:
+   *                    type: string
+   *                  payload:
    *                    type: object
-   *                    $ref: '#/components/schemas/User'
+   *                      user:
+   *                        $ref: '#/components/schemas/UserResponse'
+   *                      token:
+   *                        type: string
    */
 
   private async signIn(
