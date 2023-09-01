@@ -1,4 +1,5 @@
 import { RESET_PASSWORD_ROUTE } from '~/libs/constants/constants.js';
+import { TokenExpirationTime } from '~/libs/enums/enums.js';
 import { type IEncrypt } from '~/libs/packages/encrypt/encrypt.js';
 import {
   InvalidCredentialsError,
@@ -9,10 +10,7 @@ import {
   type Mailer,
   type SendEmailResponse,
 } from '~/libs/packages/mailer/mailer.js';
-import {
-  token as accessToken,
-  TokenExpirationTime,
-} from '~/libs/packages/token/token.js';
+import { token as accessToken } from '~/libs/packages/token/token.js';
 import {
   type UserSignInRequestDto,
   type UserSignInResponseDto,

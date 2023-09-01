@@ -1,7 +1,7 @@
 import convict, { type Config as TConfig } from 'convict';
 import { config } from 'dotenv';
 
-import { AppEnvironment } from '~/libs/enums/enums.js';
+import { AppEnvironment, TokenExpirationTime } from '~/libs/enums/enums.js';
 import { type ILogger } from '~/libs/packages/logger/logger.js';
 
 import {
@@ -146,7 +146,7 @@ class Config implements IConfig {
   private get authConfig(): IAuthConfig {
     return {
       ALGORITHM: 'HS256',
-      EXPIRES_IN: '24h',
+      EXPIRES_IN: TokenExpirationTime.ONE_DAY,
     };
   }
 }
