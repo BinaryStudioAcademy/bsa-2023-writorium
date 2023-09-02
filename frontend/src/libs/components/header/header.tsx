@@ -1,3 +1,4 @@
+import WritoriumHeaderLogo from '~/assets/img/icons/writorium-header-logo.svg';
 import { Avatar, Link } from '~/libs/components/components.js';
 import { AppRoute } from '~/libs/enums/enums.js';
 import { getFullName } from '~/libs/helpers/helpers.js';
@@ -14,7 +15,7 @@ const Header: React.FC<Properties> = ({ user }) => (
     {user && (
       <header className={styles.header}>
         <Link to={AppRoute.ROOT} className={styles.logo}>
-          WRITORIUM
+          <img src={WritoriumHeaderLogo} alt="WRITORIUM LOGO" />
         </Link>
         <Link to={AppRoute.PROFILE}>
           <Avatar
