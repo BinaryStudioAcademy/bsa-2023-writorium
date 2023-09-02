@@ -76,10 +76,14 @@ class ArticleController extends Controller {
     });
 
     this.addRoute({
-      path: ArticlesApiPath.$ID,
+      path: ArticlesApiPath.OWN,
       method: 'GET',
       handler: (options) =>
-        this.findOwn(options as ApiHandlerOptions<{ params: { id: number } }>),
+        this.findOwn(
+          options as ApiHandlerOptions<{
+            user: UserAuthResponseDto;
+          }>,
+        ),
     });
 
     this.addRoute({
@@ -153,11 +157,13 @@ class ArticleController extends Controller {
    */
 
   private async findOwn(
-    options: ApiHandlerOptions<{ params: { id: number } }>,
+    options: ApiHandlerOptions<{
+      user: UserAuthResponseDto;
+    }>,
   ): Promise<ApiHandlerResponse> {
     return {
       status: HttpCode.OK,
-      payload: await this.articleService.findOwn(options.params.id),
+      payload: await this.articleService.findOwn(options.user.id),
     };
   }
 

@@ -21,12 +21,12 @@ const loadAll = createAsyncThunk<
 
 const loadOwn = createAsyncThunk<
   ArticleGetAllResponseDto,
-  { id: number },
+  undefined,
   AsyncThunkConfig
->(`${sliceName}/get-own`, ({ id }, { extra }) => {
+>(`${sliceName}/get-own`, (_, { extra }) => {
   const { articleApi } = extra;
 
-  return articleApi.getOwn(id);
+  return articleApi.getOwn();
 });
 
 const createArticle = createAsyncThunk<

@@ -22,18 +22,13 @@ const MyArticles: React.FC = () => {
     lastName: user?.lastName,
   } as UserDetailsResponseDto;
 
-  const handleGetMyArticles = useCallback(
-    (id: number) => {
-      void dispatch(articlesActions.loadOwn({ id }));
-    },
-    [dispatch],
-  );
+  const handleGetMyArticles = useCallback(() => {
+    void dispatch(articlesActions.loadOwn());
+  }, [dispatch]);
 
   useEffect(() => {
-    if (user) {
-      handleGetMyArticles(user.id);
-    }
-  }, [handleGetMyArticles, user]);
+    handleGetMyArticles();
+  }, [handleGetMyArticles]);
 
   return (
     <>
