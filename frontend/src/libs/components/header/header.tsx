@@ -7,6 +7,7 @@ import {
   useLocation,
   useModal,
   useRef,
+  useState,
 } from '~/libs/hooks/hooks.js';
 import { type UserAuthResponseDto } from '~/packages/users/users.js';
 
@@ -22,11 +23,14 @@ const Header: React.FC<Properties> = ({ user }) => {
 
   const location = useLocation();
 
+  const [previousLocation, setPreviousLocation] = useState(location);
+
   useEffect(() => {
-    if (isOpen) {
+    if (isOpen && location !== previousLocation) {
       handleToggleModalOpen();
+      setPreviousLocation(location);
     }
-  }, [location, isOpen, handleToggleModalOpen]);
+  }, [location, previousLocation, isOpen, handleToggleModalOpen]);
 
   const avatarReference = useRef<HTMLDivElement>(null);
 
