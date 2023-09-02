@@ -12,7 +12,7 @@ import { MOCKED_REACTIONS, MOCKED_TAGS } from './libs/constants.js';
 
 const ArticlesFeed: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { articles } = useAppSelector((state) => state.articles);
+  const { articles } = useAppSelector(({ articles }) => articles);
 
   const handleGetFeed = useCallback(() => {
     void dispatch(articlesActions.loadAll());

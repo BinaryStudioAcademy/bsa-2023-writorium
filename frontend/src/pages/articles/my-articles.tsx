@@ -12,9 +12,9 @@ import { MOCKED_REACTIONS, MOCKED_TAGS } from './libs/constants.js';
 
 const MyArticles: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { articles, user } = useAppSelector((state) => ({
-    articles: state.articles.articles,
-    user: state.auth.user,
+  const { articles, user } = useAppSelector(({ articles, auth }) => ({
+    articles: articles.articles,
+    user: auth.user,
   }));
 
   const userDetails = {
