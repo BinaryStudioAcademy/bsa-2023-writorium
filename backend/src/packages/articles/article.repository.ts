@@ -2,6 +2,7 @@ import { type IRepository } from '~/libs/interfaces/repository.interface.js';
 
 import { ArticleEntity } from './article.entity.js';
 import { type ArticleModel } from './article.model.js';
+import { SortingOrder } from './libs/enums/enums.js';
 
 class ArticleRepository implements IRepository {
   private articleModel: typeof ArticleModel;
@@ -13,7 +14,7 @@ class ArticleRepository implements IRepository {
   public async findAll(): Promise<ArticleEntity[]> {
     const articles = await this.articleModel
       .query()
-      .orderBy('publishedAt', 'desc')
+      .orderBy('publishedAt', SortingOrder.DESCENDING)
       .withGraphFetched('author');
 
     return articles.map((article) => ArticleEntity.initializeWithUser(article));
@@ -23,7 +24,7 @@ class ArticleRepository implements IRepository {
     const articles = await this.articleModel
       .query()
       .where('userId', id)
-      .orderBy('publishedAt', 'desc')
+      .orderBy('publishedAt', SortingOrder.DESCENDING)
       .execute();
 
     return articles.map((article) => ArticleEntity.initialize(article));
