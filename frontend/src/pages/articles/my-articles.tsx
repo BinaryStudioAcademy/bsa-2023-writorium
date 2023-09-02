@@ -1,7 +1,6 @@
 import {
   useAppDispatch,
   useAppSelector,
-  useCallback,
   useEffect,
 } from '~/libs/hooks/hooks.js';
 import { type UserDetailsResponseDto } from '~/packages/users/users.js';
@@ -22,13 +21,9 @@ const MyArticles: React.FC = () => {
     lastName: user?.lastName,
   } as UserDetailsResponseDto;
 
-  const handleGetMyArticles = useCallback(() => {
+  useEffect(() => {
     void dispatch(articlesActions.fetchOwn());
   }, [dispatch]);
-
-  useEffect(() => {
-    handleGetMyArticles();
-  }, [handleGetMyArticles]);
 
   return (
     <>

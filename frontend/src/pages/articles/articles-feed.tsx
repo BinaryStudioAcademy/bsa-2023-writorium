@@ -1,7 +1,6 @@
 import {
   useAppDispatch,
   useAppSelector,
-  useCallback,
   useEffect,
 } from '~/libs/hooks/hooks.js';
 import { type UserDetailsResponseDto } from '~/packages/users/users.js';
@@ -14,13 +13,9 @@ const ArticlesFeed: React.FC = () => {
   const dispatch = useAppDispatch();
   const { articles } = useAppSelector(({ articles }) => articles);
 
-  const handleGetFeed = useCallback(() => {
+  useEffect(() => {
     void dispatch(articlesActions.fetchAll());
   }, [dispatch]);
-
-  useEffect(() => {
-    handleGetFeed();
-  }, [handleGetFeed]);
 
   return (
     <>
