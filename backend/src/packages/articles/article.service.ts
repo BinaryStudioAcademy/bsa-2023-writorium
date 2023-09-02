@@ -88,8 +88,8 @@ class ArticleService implements IService {
   public async create(
     payload: ArticleCreateDto,
   ): Promise<ArticleBaseResponseDto> {
-    const genreId = await this.getGenreIdForArticle(payload.text);
-
+    const genreId =
+      payload.genreId ?? (await this.getGenreIdForArticle(payload.text));
     const article = await this.articleRepository.create(
       ArticleEntity.initializeNew({
         genreId,

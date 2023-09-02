@@ -5,20 +5,24 @@ import {
   useAppForm,
   useAppSelector,
   useCallback,
+  useEffect,
 } from '~/libs/hooks/hooks.js';
 import { type ValueOf } from '~/libs/types/types.js';
 import {
   articleCreateValidationSchema,
   type ArticleRequestDto,
 } from '~/packages/articles/articles.js';
+import { PromptType } from '~/packages/prompts/prompts.js';
 import { actions as articlesActions } from '~/slices/articles/articles.js';
+import { actions as promptsActions } from '~/slices/prompts/prompts.js';
 
 import { DEFAULT_ARTICLE_FORM_PAYLOAD } from './libs/constants/constants.js';
 import { ArticleSubmitType } from './libs/enums/enums.js';
 import styles from './styles.module.scss';
 
 const ArticleForm: React.FC = () => {
-  const { createdPrompt } = useAppSelector(({ prompts }) => ({
+  const { createdPrompt, generatedPrompt } = useAppSelector(({ prompts }) => ({
+    generatedPrompt: prompts.generatedPrompt,
     createdPrompt: prompts.createdPrompt,
   }));
   const dispatch = useAppDispatch();
@@ -27,6 +31,17 @@ const ArticleForm: React.FC = () => {
       defaultValues: DEFAULT_ARTICLE_FORM_PAYLOAD,
       validationSchema: articleCreateValidationSchema,
     });
+
+  useEffect(() => {
+    if (generatedPrompt) {
+      void dispatch(
+        promptsActions.createPrompt({
+          type: PromptType.MANUAL,
+          ...generatedPrompt,
+        }),
+      );
+    }
+  }, [dispatch, generatedPrompt]);
 
   const handleArticleSubmit = useCallback(
     (articleSubmitType: ValueOf<typeof ArticleSubmitType>) =>
@@ -41,7 +56,6 @@ const ArticleForm: React.FC = () => {
 
         if (createdPrompt) {
           const { genreId, id: promptId } = createdPrompt;
-
           updatedPayload.genreId = genreId;
           updatedPayload.promptId = promptId;
         }
@@ -50,6 +64,17 @@ const ArticleForm: React.FC = () => {
       },
     [dispatch, createdPrompt],
   );
+
+  useEffect(() => {
+    if (generatedPrompt) {
+      void dispatch(
+        promptsActions.createPrompt({
+          type: PromptType.MANUAL,
+          ...generatedPrompt,
+        }),
+      );
+    }
+  }, [dispatch, generatedPrompt]);
 
   const handleFormSubmit = useCallback(
     (event_: React.BaseSyntheticEvent<SubmitEvent>): void => {

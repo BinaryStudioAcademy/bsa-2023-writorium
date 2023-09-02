@@ -23,10 +23,10 @@ const createPrompt = createAsyncThunk<
   PromptBaseResponseDto,
   PromptRequestDto,
   AsyncThunkConfig
->(`${sliceName}/create`, (promptPayload, { extra }) => {
+>(`${sliceName}/create`, async (promptPayload, { extra }) => {
   const { promptApi } = extra;
 
-  return promptApi.create(promptPayload);
+  return await promptApi.create(promptPayload);
 });
 
 export { createPrompt, generatePrompt };

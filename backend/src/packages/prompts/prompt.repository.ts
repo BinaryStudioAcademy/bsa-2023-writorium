@@ -28,7 +28,7 @@ class PromptRepository implements IRepository {
     const { character, setting, situation, prop, type, genreId } =
       entity.toNewObject();
 
-    const prompt = await this.promptModel
+    const item = await this.promptModel
       .query()
       .insert({
         character,
@@ -41,7 +41,7 @@ class PromptRepository implements IRepository {
       .returning('*')
       .execute();
 
-    return PromptEntity.initialize(prompt);
+    return PromptEntity.initialize(item);
   }
 
   public update(): ReturnType<IRepository['update']> {
