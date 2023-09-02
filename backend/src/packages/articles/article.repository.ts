@@ -13,6 +13,7 @@ class ArticleRepository implements IRepository {
   public async findAll(): Promise<ArticleEntity[]> {
     const articles = await this.articleModel
       .query()
+      .orderBy('publishedAt', 'desc')
       .withGraphFetched('userDetails');
 
     return articles.map((article) => ArticleEntity.initializeWithUser(article));
@@ -22,6 +23,7 @@ class ArticleRepository implements IRepository {
     const articles = await this.articleModel
       .query()
       .where('userId', id)
+      .orderBy('publishedAt', 'desc')
       .execute();
 
     return articles.map((article) => ArticleEntity.initialize(article));
