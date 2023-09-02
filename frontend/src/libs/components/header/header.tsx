@@ -4,6 +4,7 @@ import { getFullName } from '~/libs/helpers/helpers.js';
 import {
   useCallback,
   useEffect,
+  useLocation,
   useRef,
   useState,
 } from '~/libs/hooks/hooks.js';
@@ -18,6 +19,12 @@ type Properties = {
 
 const Header: React.FC<Properties> = ({ user }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const location = useLocation();
+
+  useEffect(() => {
+    setIsDropdownOpen(false);
+  }, [location]);
 
   const avatarReference = useRef<HTMLDivElement>(null);
 
@@ -61,7 +68,9 @@ const Header: React.FC<Properties> = ({ user }) => {
           <Modal
             isOpen={isDropdownOpen}
             onClose={closeDropdown}
-            className={`${styles.dropdownModal} ${styles.dropdownModalStyle}`}
+            className={`${styles.dropdownModal} ${styles.dropdownModalStyle} ${
+              isDropdownOpen ? styles.open : ''
+            }`}
           >
             <DropDown />
           </Modal>
