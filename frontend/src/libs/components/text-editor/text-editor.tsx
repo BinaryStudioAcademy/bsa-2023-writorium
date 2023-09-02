@@ -1,12 +1,18 @@
 import { Placeholder } from '@tiptap/extension-placeholder';
 import { TextAlign } from '@tiptap/extension-text-align';
 import { Underline } from '@tiptap/extension-underline';
+import { type EditorOptions } from '@tiptap/react';
 import { EditorContent, useEditor } from '@tiptap/react';
 import { StarterKit } from '@tiptap/starter-kit';
 
 import { Toolbar } from './libs/components/components.js';
 import { TEXT_EDITOR_PLACEHOLDER_TEXT } from './libs/constants/constants.js';
 import styles from './styles.module.scss';
+
+type Properties = {
+  content?: string;
+  onUpdate?: (content: string) => void;
+};
 
 const extensions = [
   Underline,
@@ -20,9 +26,15 @@ const extensions = [
   StarterKit,
 ];
 
-const TextEditor = (): React.ReactNode => {
+const TextEditor: React.FC<Properties> = ({ content, onUpdate }) => {
+  const handleEditorUpdate: EditorOptions['onUpdate'] = ({ editor }): void => {
+    onUpdate?.(editor.getText());
+  };
+
   const editor = useEditor({
+    content,
     extensions,
+    onUpdate: handleEditorUpdate,
     editorProps: {
       attributes: { class: styles.textEditor },
     },
