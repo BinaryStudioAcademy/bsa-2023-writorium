@@ -1,5 +1,7 @@
 import { type ReactNode } from 'react';
 
+import WritoriumLogo from '~/assets/img/icons/writorium-auth-page-logo.svg';
+
 import {
   AUTH_FORM_WRAPPER_FLOATING_LETTERS,
   HERO_FLOATING_LETTERS,
@@ -33,7 +35,10 @@ const AuthLayout: React.FC<Properties> = ({ children }) => {
       </div>
       <div className={styles.hero}>
         {renderFloatingLetters(HERO_FLOATING_LETTERS)}
-        <h1 className={styles.heroTitle}>WRITORIUM</h1>
+        <h1 className={styles.heroTitle}>
+          <img src={WritoriumLogo} alt="WRITORIUM LOGO" />
+          {/* WRITORIUM */}
+        </h1>
       </div>
     </div>
   );
