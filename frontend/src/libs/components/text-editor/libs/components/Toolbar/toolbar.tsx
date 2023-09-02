@@ -3,6 +3,7 @@ import { useCallback } from 'react';
 import { type ValueOf } from 'shared/build/index.js';
 
 import {
+  HeaderLevel,
   ListType,
   TextAlignment,
   TextDecoration,
@@ -66,6 +67,13 @@ const Toolbar: React.FC<Properties> = ({ editor }) => {
     [editor],
   );
 
+  const handleToggleHeader = useCallback(
+    (level: ValueOf<typeof HeaderLevel>) => () => {
+      editor.chain().focus().toggleHeading({ level }).run();
+    },
+    [editor],
+  );
+
   const textAlignmentButtons: (Pick<ToggleButtonProperties, 'icon'> & {
     key: ValueOf<typeof TextAlignment>;
   })[] = [
@@ -96,9 +104,20 @@ const Toolbar: React.FC<Properties> = ({ editor }) => {
     { icon: 'listBulleted', key: ListType.BULLETED },
   ];
 
+  const headerButtons: (Pick<ToggleButtonProperties, 'icon'> & {
+    key: ValueOf<typeof HeaderLevel>;
+  })[] = [
+    { icon: 'header1', key: HeaderLevel.ONE },
+    { icon: 'header2', key: HeaderLevel.TWO },
+    { icon: 'header3', key: HeaderLevel.THREE },
+    { icon: 'header4', key: HeaderLevel.FOUR },
+    { icon: 'header5', key: HeaderLevel.FIVE },
+    { icon: 'header6', key: HeaderLevel.SIX },
+  ];
+
   return (
     <div className={styles.toolbar}>
-      <ToggleButtonsGroup className={styles.textAlignmentButtons}>
+      <ToggleButtonsGroup>
         {textAlignmentButtons.map(({ icon, key }) => {
           return (
             <ToggleButtonsGroup.Button
@@ -110,7 +129,7 @@ const Toolbar: React.FC<Properties> = ({ editor }) => {
           );
         })}
       </ToggleButtonsGroup>
-      <ToggleButtonsGroup className={styles.textStyleButtons}>
+      <ToggleButtonsGroup>
         {textStyleButtons.map(({ icon, key }) => {
           return (
             <ToggleButtonsGroup.Button
@@ -122,7 +141,7 @@ const Toolbar: React.FC<Properties> = ({ editor }) => {
           );
         })}
       </ToggleButtonsGroup>
-      <ToggleButtonsGroup className={styles.textDecorationButtons}>
+      <ToggleButtonsGroup>
         {textDecorationButtons.map(({ icon, key }) => {
           return (
             <ToggleButtonsGroup.Button
@@ -142,6 +161,18 @@ const Toolbar: React.FC<Properties> = ({ editor }) => {
               icon={icon}
               isActive={editor.isActive(key)}
               onClick={handleToggleList(key)}
+            />
+          );
+        })}
+      </ToggleButtonsGroup>
+      <ToggleButtonsGroup>
+        {headerButtons.map(({ icon, key }) => {
+          return (
+            <ToggleButtonsGroup.Button
+              key={key}
+              icon={icon}
+              isActive={editor.isActive('heading', { level: key })}
+              onClick={handleToggleHeader(key)}
             />
           );
         })}

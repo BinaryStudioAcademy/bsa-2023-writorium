@@ -15,7 +15,7 @@
 .textEditor {
   height: 360px;
   max-height: 360px;
-  padding: 100px 23px;
+  padding: 50px 23px;
   overflow: auto;
   background-color: #f8f8f8;
   border: 2px solid transparent;
@@ -66,4 +66,8 @@
 .textEditor ul,
 ol {
   padding-left: 40px;
+}
+
+.textEditor li p {
+  margin: initial;
 }

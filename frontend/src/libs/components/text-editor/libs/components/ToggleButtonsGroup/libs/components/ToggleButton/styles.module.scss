@@ -13,9 +13,14 @@
 }
 
 .button:hover {
-  background-color: rgb(255 255 255 / 1%);
+  background-color: rgb(255 255 255 / 50%);
 }
 
 .button.active {
   background-color: #ffffff;
+}
+
+.button svg {
+  width: 24px;
+  height: 24px;
 }

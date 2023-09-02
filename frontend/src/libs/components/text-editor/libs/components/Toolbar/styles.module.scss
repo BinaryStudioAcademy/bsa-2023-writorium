@@ -1,14 +1,7 @@
 .toolbar {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
+  gap: 16px;
   background-color: transparent;
-}
-
-.textAlignmentButtons {
-  margin-right: 45px;
-}
-
-.textStyleButtons,
-.textDecorationButtons {
-  margin-right: 16px;
 }
