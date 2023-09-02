@@ -7,6 +7,8 @@ import { SortingOrder } from './libs/enums/enums.js';
 class ArticleRepository implements IRepository {
   private articleModel: typeof ArticleModel;
 
+  private defaultRelationExpression = 'author';
+
   public constructor(articleModel: typeof ArticleModel) {
     this.articleModel = articleModel;
   }
@@ -15,7 +17,7 @@ class ArticleRepository implements IRepository {
     const articles = await this.articleModel
       .query()
       .orderBy('publishedAt', SortingOrder.DESCENDING)
-      .withGraphFetched('author');
+      .withGraphJoined(this.defaultRelationExpression);
 
     return articles.map((article) => ArticleEntity.initializeWithUser(article));
   }
