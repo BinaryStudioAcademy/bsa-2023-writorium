@@ -7,7 +7,7 @@ const UserValidationMessage = {
   PASSWORD_MIN_LENGTH: `The minimal password length - ${UserValidationRule.PASSWORD_MIN_LENGTH}`,
   PASSWORD_MAX_LENGTH: `The maximal password length - ${UserValidationRule.PASSWORD_MAX_LENGTH}`,
   PASSWORD_WRONG:
-    'Password must contain at least one special character and one uppercase latin letter',
+    'Password must contain at least one special character, one digit and one uppercase latin letter',
   FIRST_NAME_REQUIRE: 'The first name is required',
   LAST_NAME_REQUIRE: 'The last name is required',
   LAST_NAME_WRONG: 'Please, enter a valid last name',
