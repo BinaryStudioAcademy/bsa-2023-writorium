@@ -23,7 +23,7 @@ const MyArticles: React.FC = () => {
   } as UserDetailsResponseDto;
 
   const handleGetMyArticles = useCallback(() => {
-    void dispatch(articlesActions.loadOwn());
+    void dispatch(articlesActions.fetchOwn());
   }, [dispatch]);
 
   useEffect(() => {

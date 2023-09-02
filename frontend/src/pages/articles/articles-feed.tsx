@@ -15,7 +15,7 @@ const ArticlesFeed: React.FC = () => {
   const { articles } = useAppSelector(({ articles }) => articles);
 
   const handleGetFeed = useCallback(() => {
-    void dispatch(articlesActions.loadAll());
+    void dispatch(articlesActions.fetchAll());
   }, [dispatch]);
 
   useEffect(() => {

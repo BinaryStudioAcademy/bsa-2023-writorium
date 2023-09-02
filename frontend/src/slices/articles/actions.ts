@@ -9,7 +9,7 @@ import {
 
 import { name as sliceName } from './articles.slice.js';
 
-const loadAll = createAsyncThunk<
+const fetchAll = createAsyncThunk<
   ArticleGetAllResponseDto,
   undefined,
   AsyncThunkConfig
@@ -19,7 +19,7 @@ const loadAll = createAsyncThunk<
   return articleApi.getAll();
 });
 
-const loadOwn = createAsyncThunk<
+const fetchOwn = createAsyncThunk<
   ArticleGetAllResponseDto,
   undefined,
   AsyncThunkConfig
@@ -39,4 +39,4 @@ const createArticle = createAsyncThunk<
   return articleApi.create(articlePayload);
 });
 
-export { createArticle, loadAll, loadOwn };
+export { createArticle, fetchAll, fetchOwn };

@@ -4,7 +4,7 @@ import { DataStatus } from '~/libs/enums/enums.js';
 import { type ValueOf } from '~/libs/types/types.js';
 import { type ArticleBaseResponseDto } from '~/packages/articles/articles.js';
 
-import { createArticle, loadAll, loadOwn } from './actions.js';
+import { createArticle, fetchAll, fetchOwn } from './actions.js';
 
 type State = {
   articles: ArticleBaseResponseDto[];
@@ -26,20 +26,20 @@ const { reducer, actions, name } = createSlice({
       state.dataStatus = DataStatus.FULFILLED;
     });
     builder.addMatcher(
-      isAnyOf(loadAll.fulfilled, loadOwn.fulfilled),
+      isAnyOf(fetchAll.fulfilled, fetchOwn.fulfilled),
       (state, action) => {
         state.dataStatus = DataStatus.FULFILLED;
         state.articles = action.payload.items;
       },
     );
     builder.addMatcher(
-      isAnyOf(loadAll.pending, loadOwn.pending, createArticle.pending),
+      isAnyOf(fetchAll.pending, fetchOwn.pending, createArticle.pending),
       (state) => {
         state.dataStatus = DataStatus.PENDING;
       },
     );
     builder.addMatcher(
-      isAnyOf(loadAll.rejected, loadOwn.rejected, createArticle.rejected),
+      isAnyOf(fetchAll.rejected, fetchOwn.rejected, createArticle.rejected),
       (state) => {
         state.dataStatus = DataStatus.REJECTED;
       },

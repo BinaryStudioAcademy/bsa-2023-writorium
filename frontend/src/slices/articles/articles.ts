@@ -1,10 +1,10 @@
-import { createArticle, loadAll, loadOwn } from './actions.js';
+import { createArticle, fetchAll, fetchOwn } from './actions.js';
 import { actions } from './articles.slice.js';
 
 const allActions = {
   ...actions,
-  loadAll,
-  loadOwn,
+  fetchAll,
+  fetchOwn,
   createArticle,
 };
 
