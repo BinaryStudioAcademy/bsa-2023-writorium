@@ -5,8 +5,8 @@ import {
   useCallback,
   useEffect,
   useLocation,
+  useModal,
   useRef,
-  useState,
 } from '~/libs/hooks/hooks.js';
 import { type UserAuthResponseDto } from '~/packages/users/users.js';
 
@@ -18,23 +18,29 @@ type Properties = {
 };
 
 const Header: React.FC<Properties> = ({ user }) => {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const { handleToggleModalOpen, isOpen } = useModal();
 
   const location = useLocation();
 
   useEffect(() => {
-    setIsDropdownOpen(false);
-  }, [location]);
+    if (isOpen) {
+      handleToggleModalOpen();
+    }
+  }, [location, isOpen, handleToggleModalOpen]);
 
   const avatarReference = useRef<HTMLDivElement>(null);
 
   const closeDropdown = useCallback((): void => {
-    setIsDropdownOpen(false);
-  }, [isDropdownOpen]);
+    if (isOpen) {
+      handleToggleModalOpen();
+    }
+  }, [handleToggleModalOpen, isOpen]);
 
   const handleClickOnAvatar = useCallback((): void => {
-    setIsDropdownOpen(true);
-  }, []);
+    if (!isOpen) {
+      handleToggleModalOpen();
+    }
+  }, [handleToggleModalOpen, isOpen]);
 
   useEffect(() => {
     const avatarElement = avatarReference.current;
@@ -65,15 +71,17 @@ const Header: React.FC<Properties> = ({ user }) => {
             </div>
           </header>
 
-          <Modal
-            isOpen={isDropdownOpen}
-            onClose={closeDropdown}
-            className={`${styles.dropdownModal} ${styles.dropdownModalStyle} ${
-              isDropdownOpen ? styles.open : ''
-            }`}
-          >
-            <DropDown />
-          </Modal>
+          {isOpen && (
+            <Modal
+              isOpen
+              onClose={closeDropdown}
+              className={`${styles.dropdownModal} ${
+                styles.dropdownModalStyle
+              } ${isOpen ? styles.open : ''}`}
+            >
+              <DropDown />
+            </Modal>
+          )}
         </div>
       )}
     </>
