@@ -1,6 +1,8 @@
 .dropdown {
   display: flex;
   flex-direction: column;
+  background: var(--light-grey);
+  border-radius: 7px;
 }
 
 .profileLink {

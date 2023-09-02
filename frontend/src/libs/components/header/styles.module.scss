@@ -1,5 +1,3 @@
-@use "src/assets/css/breakpoints.scss";
-
 .header {
   position: relative;
   display: flex;
@@ -26,13 +24,16 @@
   background-color: var(--light-grey-15);
 }
 
+.dropdownModal .dropdownModal.dropdownModalStyle.open {
+  animation: fade 0.3s ease-in-out both normal;
+}
+
 .dropdownModal .dropdownModal {
   position: absolute;
   top: 102px;
   right: 60px;
   width: 150px;
   padding: 0;
-  background: white;
   border-radius: 7px;
   box-shadow: 0 4px 8px -2px rgb(16 24 40 / 16%);
 }
@@ -43,4 +44,14 @@
 
 .avatarWrapper {
   cursor: pointer;
+}
+
+@keyframes fade {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
