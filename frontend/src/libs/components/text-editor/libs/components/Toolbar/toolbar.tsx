@@ -68,7 +68,7 @@ const Toolbar: React.FC<Properties> = ({ editor }) => {
 
   return (
     <div className={styles.toolbar}>
-      <ToggleButtonsGroup>
+      <ToggleButtonsGroup className={styles.textAlignmentButtons}>
         {textAlignmentButtons.map(({ icon, key }) => {
           return (
             <ToggleButtonsGroup.Button
@@ -80,7 +80,7 @@ const Toolbar: React.FC<Properties> = ({ editor }) => {
           );
         })}
       </ToggleButtonsGroup>
-      <ToggleButtonsGroup>
+      <ToggleButtonsGroup className={styles.textStyleButtons}>
         {textStyleButtons.map(({ icon, key }) => {
           return (
             <ToggleButtonsGroup.Button
