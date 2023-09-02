@@ -3,13 +3,14 @@ import { useCallback } from 'react';
 import { type ValueOf } from 'shared/build/index.js';
 
 import {
-  HeaderLevel,
-  ListType,
-  TextAlignment,
-  TextDecoration,
-  TextStyle,
-} from '../../enums/enums.js';
-import { type ToggleButtonProperties } from '../ToggleButtonsGroup/toggle-buttons-group.js';
+  HEADER_BUTTONS,
+  LIST_BUTTONS,
+  TEXT_ALIGNMENT_BUTTONS,
+  TEXT_DECORATION_BUTTONS,
+  TEXT_STYLE_BUTTONS,
+} from '../../constants/toolbar.js';
+import { type HeaderLevel, type TextAlignment } from '../../enums/enums.js';
+import { ListType, TextDecoration, TextStyle } from '../../enums/enums.js';
 import { ToggleButtonsGroup } from '../ToggleButtonsGroup/toggle-buttons-group.js';
 import styles from './styles.module.scss';
 
@@ -74,51 +75,10 @@ const Toolbar: React.FC<Properties> = ({ editor }) => {
     [editor],
   );
 
-  const textAlignmentButtons: (Pick<ToggleButtonProperties, 'icon'> & {
-    key: ValueOf<typeof TextAlignment>;
-  })[] = [
-    { icon: 'textAlignLeft', key: TextAlignment.LEFT },
-    { icon: 'textAlignCenter', key: TextAlignment.CENTER },
-    { icon: 'textAlignRight', key: TextAlignment.RIGHT },
-    { icon: 'textAlignJustify', key: TextAlignment.JUSTIFY },
-  ];
-
-  const textStyleButtons: (Pick<ToggleButtonProperties, 'icon'> & {
-    key: ValueOf<typeof TextStyle>;
-  })[] = [
-    { icon: 'textBold', key: TextStyle.BOLD },
-    { icon: 'textItalic', key: TextStyle.ITALIC },
-  ];
-
-  const textDecorationButtons: (Pick<ToggleButtonProperties, 'icon'> & {
-    key: ValueOf<typeof TextDecoration>;
-  })[] = [
-    { icon: 'textStrikeThrough', key: TextDecoration.STRIKE_THROUGH },
-    { icon: 'textUnderline', key: TextDecoration.UNDERLINE },
-  ];
-
-  const listButtons: (Pick<ToggleButtonProperties, 'icon'> & {
-    key: ValueOf<typeof ListType>;
-  })[] = [
-    { icon: 'listNumbered', key: ListType.ORDERED },
-    { icon: 'listBulleted', key: ListType.BULLETED },
-  ];
-
-  const headerButtons: (Pick<ToggleButtonProperties, 'icon'> & {
-    key: ValueOf<typeof HeaderLevel>;
-  })[] = [
-    { icon: 'header1', key: HeaderLevel.ONE },
-    { icon: 'header2', key: HeaderLevel.TWO },
-    { icon: 'header3', key: HeaderLevel.THREE },
-    { icon: 'header4', key: HeaderLevel.FOUR },
-    { icon: 'header5', key: HeaderLevel.FIVE },
-    { icon: 'header6', key: HeaderLevel.SIX },
-  ];
-
   return (
     <div className={styles.toolbar}>
       <ToggleButtonsGroup>
-        {textAlignmentButtons.map(({ icon, key }) => {
+        {TEXT_ALIGNMENT_BUTTONS.map(({ icon, key }) => {
           return (
             <ToggleButtonsGroup.Button
               key={key}
@@ -130,7 +90,7 @@ const Toolbar: React.FC<Properties> = ({ editor }) => {
         })}
       </ToggleButtonsGroup>
       <ToggleButtonsGroup>
-        {textStyleButtons.map(({ icon, key }) => {
+        {TEXT_STYLE_BUTTONS.map(({ icon, key }) => {
           return (
             <ToggleButtonsGroup.Button
               key={key}
@@ -142,7 +102,7 @@ const Toolbar: React.FC<Properties> = ({ editor }) => {
         })}
       </ToggleButtonsGroup>
       <ToggleButtonsGroup>
-        {textDecorationButtons.map(({ icon, key }) => {
+        {TEXT_DECORATION_BUTTONS.map(({ icon, key }) => {
           return (
             <ToggleButtonsGroup.Button
               key={key}
@@ -154,7 +114,7 @@ const Toolbar: React.FC<Properties> = ({ editor }) => {
         })}
       </ToggleButtonsGroup>
       <ToggleButtonsGroup>
-        {listButtons.map(({ icon, key }) => {
+        {LIST_BUTTONS.map(({ icon, key }) => {
           return (
             <ToggleButtonsGroup.Button
               key={key}
@@ -166,7 +126,7 @@ const Toolbar: React.FC<Properties> = ({ editor }) => {
         })}
       </ToggleButtonsGroup>
       <ToggleButtonsGroup>
-        {headerButtons.map(({ icon, key }) => {
+        {HEADER_BUTTONS.map(({ icon, key }) => {
           return (
             <ToggleButtonsGroup.Button
               key={key}

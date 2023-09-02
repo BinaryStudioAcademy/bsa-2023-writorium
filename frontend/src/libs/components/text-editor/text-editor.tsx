@@ -5,12 +5,13 @@ import { EditorContent, useEditor } from '@tiptap/react';
 import { StarterKit } from '@tiptap/starter-kit';
 
 import { Toolbar } from './libs/components/components.js';
+import { TEXT_EDITOR_PLACEHOLDER_TEXT } from './libs/constants/constants.js';
 import styles from './styles.module.scss';
 
 const extensions = [
   Underline,
   Placeholder.configure({
-    placeholder: 'Write your post content …',
+    placeholder: TEXT_EDITOR_PLACEHOLDER_TEXT,
     emptyNodeClass: styles.placeholder,
   }),
   TextAlign.configure({
