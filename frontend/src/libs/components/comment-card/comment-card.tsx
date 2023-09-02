@@ -1,4 +1,5 @@
 import { Avatar, Icon } from '~/libs/components/components.js';
+import { getTimeFromCreation } from '~/libs/helpers/helpers.js';
 import { type Comment } from '~/libs/types/comment.type.js';
 import { type UserAuthResponseDto } from '~/packages/users/users.js';
 
@@ -17,14 +18,23 @@ const CommentCard: React.FC<Properties> = ({ user, comment }) => {
   return (
     <section className={styles.comment}>
       <div className={styles.header}>
-        <div className={styles.userInfo}>
-          <Avatar username={userName} avatarUrl={null} />
-          <span className={styles.userName}>{userName}</span>
-          <span className={styles.publicationTime}>{createdAt}</span>
+        <div className={styles.info}>
+          <div className={styles.userInfo}>
+            <Avatar
+              username={userName}
+              avatarUrl={null}
+              className={styles.avatar}
+            />
+            <span className={styles.userName}>{userName}</span>
+            <span className={styles.indicator}></span>
+          </div>
+          <span className={styles.publicationTime}>
+            {getTimeFromCreation(createdAt)} ago
+          </span>
         </div>
         <div className={styles.iconWrapper}>
-          <Icon iconName="share" className={styles.shareIcon} />
           <Icon iconName="link" className={styles.linkIcon} />
+          <Icon iconName="share" className={styles.shareIcon} />
         </div>
       </div>
 
