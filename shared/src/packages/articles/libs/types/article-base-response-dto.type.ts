@@ -9,7 +9,7 @@ type ArticleBaseResponseDto = Pick<
   | 'promptId'
   | 'genreId'
   | 'publishedAt'
-  | 'userDetails'
+  | 'author'
 >;
 
 export { type ArticleBaseResponseDto };

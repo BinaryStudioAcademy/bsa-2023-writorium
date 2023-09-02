@@ -24,12 +24,12 @@ const ArticlesFeed: React.FC = () => {
 
   return (
     <>
-      {articles?.every((article) => article.userDetails) &&
+      {articles?.every((article) => article.author) &&
         articles.map((article) => (
           <ArticleCard
             key={article.id}
             article={article}
-            user={article.userDetails as UserDetailsResponseDto}
+            author={article.author as UserDetailsResponseDto}
             tags={MOCKED_TAGS}
             reactions={MOCKED_REACTIONS}
           />

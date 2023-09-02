@@ -8,7 +8,7 @@ type ArticleEntityType = {
   promptId: number | null;
   genreId: number | null;
   publishedAt: string | null;
-  userDetails?: UserDetailsResponseDto;
+  author?: UserDetailsResponseDto;
 };
 
 export { type ArticleEntityType };

@@ -22,7 +22,7 @@ class ArticleModel extends AbstractModel {
 
   public static get relationMappings(): RelationMappings {
     return {
-      userDetails: {
+      author: {
         relation: Model.HasOneRelation,
         modelClass: UserDetailsModel,
         join: {

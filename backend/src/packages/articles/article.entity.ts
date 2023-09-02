@@ -14,7 +14,7 @@ class ArticleEntity implements IEntity {
   private 'promptId': number | null;
   private 'genreId': number | null;
   private 'publishedAt': string | null;
-  private 'userDetails'?: UserDetailsResponseDto;
+  private 'author'?: UserDetailsResponseDto;
 
   private constructor({
     id,
@@ -24,7 +24,7 @@ class ArticleEntity implements IEntity {
     promptId,
     genreId,
     publishedAt,
-    userDetails,
+    author,
   }: WithNullableKeys<ArticleEntityType, 'id'>) {
     this.id = id;
     this.title = title;
@@ -33,7 +33,7 @@ class ArticleEntity implements IEntity {
     this.promptId = promptId;
     this.genreId = genreId;
     this.publishedAt = publishedAt;
-    this.userDetails = userDetails;
+    this.author = author;
   }
 
   public static initialize({
@@ -64,7 +64,7 @@ class ArticleEntity implements IEntity {
     promptId,
     genreId,
     publishedAt,
-    userDetails,
+    author,
   }: ArticleEntityType): ArticleEntity {
     return new ArticleEntity({
       id,
@@ -74,9 +74,9 @@ class ArticleEntity implements IEntity {
       promptId,
       genreId,
       publishedAt,
-      userDetails: {
-        firstName: userDetails?.firstName as string,
-        lastName: userDetails?.lastName as string,
+      author: {
+        firstName: author?.firstName as string,
+        lastName: author?.lastName as string,
       },
     });
   }
@@ -121,7 +121,7 @@ class ArticleEntity implements IEntity {
       promptId: this.promptId,
       genreId: this.genreId,
       publishedAt: this.publishedAt,
-      userDetails: this.userDetails,
+      author: this.author,
     };
   }
 

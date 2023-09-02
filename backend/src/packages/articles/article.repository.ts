@@ -14,7 +14,7 @@ class ArticleRepository implements IRepository {
     const articles = await this.articleModel
       .query()
       .orderBy('publishedAt', 'desc')
-      .withGraphFetched('userDetails');
+      .withGraphFetched('author');
 
     return articles.map((article) => ArticleEntity.initializeWithUser(article));
   }

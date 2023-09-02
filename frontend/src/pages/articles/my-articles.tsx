@@ -17,7 +17,7 @@ const MyArticles: React.FC = () => {
     user: auth.user,
   }));
 
-  const userDetails = {
+  const author = {
     firstName: user?.firstName,
     lastName: user?.lastName,
   } as UserDetailsResponseDto;
@@ -37,7 +37,7 @@ const MyArticles: React.FC = () => {
           <ArticleCard
             key={article.id}
             article={article}
-            user={userDetails}
+            author={author}
             tags={MOCKED_TAGS}
             reactions={MOCKED_REACTIONS}
           />

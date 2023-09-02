@@ -11,14 +11,14 @@ import styles from './styles.module.scss';
 
 type Properties = {
   article: ArticleBaseResponseDto;
-  user: UserDetailsResponseDto;
+  author: UserDetailsResponseDto;
   tags: TagType[];
   reactions: ReactionsType;
 };
 
 const ArticleCard: React.FC<Properties> = ({
   article,
-  user,
+  author,
   tags,
   reactions,
 }) => {
@@ -32,11 +32,11 @@ const ArticleCard: React.FC<Properties> = ({
       <div className={styles.header}>
         <div className={styles.info}>
           <Avatar
-            username={getFullName(user.firstName, user.lastName)}
+            username={getFullName(author.firstName, author.lastName)}
             avatarUrl={null}
           />
           <span className={styles.publisherName}>
-            {getFullName(user.firstName, user.lastName)}
+            {getFullName(author.firstName, author.lastName)}
           </span>
           <span className={styles.publicationTime}>
             {formatShortDate(publishedAt as string)}
