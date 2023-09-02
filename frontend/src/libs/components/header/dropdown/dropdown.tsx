@@ -5,16 +5,33 @@ import { actions as authActions } from '~/slices/auth/auth.js';
 
 import styles from './styles.module.scss';
 
-const DropDown: React.FC = () => {
+type Properties = {
+  trigger: {
+    handleToggleModalOpen: () => void;
+    isOpen: boolean;
+  };
+};
+
+const DropDown: React.FC<Properties> = ({ trigger }) => {
   const dispatch = useAppDispatch();
 
   const handleSignOut = useCallback((): void => {
     void dispatch(authActions.logout());
   }, [dispatch]);
 
+  const handleLinkClick = (): void => {
+    if (trigger.isOpen) {
+      trigger.handleToggleModalOpen();
+    }
+  };
+
   return (
     <div className={styles.dropdown}>
-      <Link className={styles.profileLink} to={AppRoute.PROFILE}>
+      <Link
+        className={styles.profileLink}
+        to={AppRoute.PROFILE}
+        onClick={handleLinkClick}
+      >
         Profile
       </Link>
 

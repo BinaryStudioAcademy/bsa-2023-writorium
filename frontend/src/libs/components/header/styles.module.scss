@@ -20,15 +20,15 @@
   text-decoration: none;
 }
 
-.dropdownModal.dropdownModalStyle {
+.dropdown.dropdownModal {
   background-color: var(--light-grey-15);
 }
 
-.dropdownModal .dropdownModal.dropdownModalStyle.open {
-  animation: fade 0.3s ease-in-out both normal;
+.dropdown .dropdownModal.open {
+  animation: fade 0.3s ease-in-out;
 }
 
-.dropdownModal .dropdownModal {
+.dropdown .dropdownModal {
   position: absolute;
   top: 102px;
   right: 60px;
@@ -38,7 +38,7 @@
   box-shadow: 0 4px 8px -2px rgb(16 24 40 / 16%);
 }
 
-.dropdownModal button {
+.dropdown button {
   background-color: transparent;
 }
 
