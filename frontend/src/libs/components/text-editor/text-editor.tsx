@@ -5,6 +5,8 @@ import { type EditorOptions } from '@tiptap/react';
 import { EditorContent, useEditor } from '@tiptap/react';
 import { StarterKit } from '@tiptap/starter-kit';
 
+import { sanitizeHtml } from '~/libs/helpers/helpers.js';
+
 import { Toolbar } from './libs/components/components.js';
 import { TEXT_EDITOR_PLACEHOLDER_TEXT } from './libs/constants/constants.js';
 import styles from './styles.module.scss';
@@ -28,13 +30,13 @@ const extensions = [
 
 const TextEditor: React.FC<Properties> = ({ content, onUpdate }) => {
   const handleEditorUpdate: EditorOptions['onUpdate'] = ({ editor }): void => {
-    onUpdate?.(editor.getText());
+    onUpdate?.(editor.getHTML());
   };
 
   const editor = useEditor({
-    content,
     extensions,
     onUpdate: handleEditorUpdate,
+    content: sanitizeHtml(content ?? ''),
     editorProps: {
       attributes: { class: styles.textEditor },
     },
