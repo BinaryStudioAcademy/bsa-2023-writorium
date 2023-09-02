@@ -5,6 +5,8 @@ import { ReactComponent as Comment } from '~/assets/img/icons/comment-icon.svg';
 import { ReactComponent as CrossMark } from '~/assets/img/icons/cross-mark-icon.svg';
 import { ReactComponent as Dislike } from '~/assets/img/icons/dislike-icon.svg';
 import { ReactComponent as Favorite } from '~/assets/img/icons/favorite-icon.svg';
+import { ReactComponent as ListBulleted } from '~/assets/img/icons/format-list-bulleted-icon.svg';
+import { ReactComponent as ListNumbered } from '~/assets/img/icons/format-list-numbered-icon.svg';
 import { ReactComponent as TextAlignCenter } from '~/assets/img/icons/format-text-align-center-icon.svg';
 import { ReactComponent as TextAlignJustify } from '~/assets/img/icons/format-text-align-justify.svg';
 import { ReactComponent as TextAlignLeft } from '~/assets/img/icons/format-text-align-left-icon.svg';
@@ -55,7 +57,9 @@ type IconName =
   | 'share'
   | 'sparkles'
   | 'star'
-  | 'view';
+  | 'view'
+  | 'listNumbered'
+  | 'listBulleted';
 
 const iconNameToIcon: Record<
   IconName,
@@ -89,6 +93,8 @@ const iconNameToIcon: Record<
   star: Star,
   view: View,
   textAlignJustify: TextAlignJustify,
+  listBulleted: ListBulleted,
+  listNumbered: ListNumbered,
 };
 
 export { type IconName, iconNameToIcon };
