@@ -5,7 +5,6 @@ import { createRoot } from 'react-dom/client';
 
 import {
   App,
-  Navigate,
   ProtectedRoute,
   PublicRoute,
   RouterProvider,
@@ -80,10 +79,6 @@ createRoot(document.querySelector('#root') as HTMLElement).render(
                   {
                     path: ArticleSubRoute.MY_ARTICLES,
                     element: <MyArticles />,
-                  },
-                  {
-                    index: true,
-                    element: <Navigate to={ArticleSubRoute.FEED} />,
                   },
                 ],
               },

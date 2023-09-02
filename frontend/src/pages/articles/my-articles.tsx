@@ -37,15 +37,16 @@ const MyArticles: React.FC = () => {
 
   return (
     <>
-      {articles && articles.map((article) => (
-        <ArticleCard
-          key={article.id}
-          article={article}
-          user={userDetails}
-          tags={MOCKED_TAGS}
-          reactions={MOCKED_REACTIONS}
-        />
-      ))}
+      {articles &&
+        articles.map((article) => (
+          <ArticleCard
+            key={article.id}
+            article={article}
+            user={userDetails}
+            tags={MOCKED_TAGS}
+            reactions={MOCKED_REACTIONS}
+          />
+        ))}
     </>
   );
 };
