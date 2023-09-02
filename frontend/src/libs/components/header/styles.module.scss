@@ -1,3 +1,5 @@
+@use "src/assets/css/breakpoints.scss";
+
 .header {
   position: relative;
   display: flex;
@@ -5,7 +7,7 @@
   align-items: center;
   padding: 30px 60px;
   background: var(--light-grey);
-  border-bottom: 2px solid var(--border-line);
+  border-bottom: 2px solid var(--light-grey-15);
 }
 
 .logo {
@@ -18,4 +20,27 @@
   letter-spacing: 3px;
   text-transform: uppercase;
   text-decoration: none;
+}
+
+.dropdownModal.dropdownModalStyle {
+  background-color: var(--light-grey-15);
+}
+
+.dropdownModal .dropdownModal {
+  position: absolute;
+  top: 102px;
+  right: 60px;
+  width: 150px;
+  padding: 0;
+  background: white;
+  border-radius: 7px;
+  box-shadow: 0 4px 8px -2px rgb(16 24 40 / 16%);
+}
+
+.dropdownModal button {
+  background-color: transparent;
+}
+
+.avatarWrapper {
+  cursor: pointer;
 }
