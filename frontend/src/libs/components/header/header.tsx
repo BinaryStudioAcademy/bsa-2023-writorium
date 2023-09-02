@@ -6,7 +6,6 @@ import {
   useEffect,
   useLocation,
   useModal,
-  useRef,
   useState,
 } from '~/libs/hooks/hooks.js';
 import { type UserAuthResponseDto } from '~/packages/users/users.js';
@@ -32,8 +31,6 @@ const Header: React.FC<Properties> = ({ user }) => {
     }
   }, [location, previousLocation, isOpen, handleToggleModalOpen]);
 
-  const avatarReference = useRef<HTMLDivElement>(null);
-
   const closeDropdown = useCallback((): void => {
     if (isOpen) {
       handleToggleModalOpen();
@@ -46,18 +43,6 @@ const Header: React.FC<Properties> = ({ user }) => {
     }
   }, [handleToggleModalOpen, isOpen]);
 
-  useEffect(() => {
-    const avatarElement = avatarReference.current;
-    if (!avatarElement) {
-      return;
-    }
-    avatarElement.addEventListener('click', handleClickOnAvatar);
-
-    return () => {
-      avatarElement.removeEventListener('click', handleClickOnAvatar);
-    };
-  }, [avatarReference, handleClickOnAvatar]);
-
   return (
     <>
       {user && (
@@ -67,12 +52,15 @@ const Header: React.FC<Properties> = ({ user }) => {
               WRITORIUM
             </Link>
 
-            <div className={styles.avatarWrapper} ref={avatarReference}>
+            <button
+              className={styles.avatarButton}
+              onClick={handleClickOnAvatar}
+            >
               <Avatar
                 username={getFullName(user.firstName, user.lastName)}
                 avatarUrl={null}
               />
-            </div>
+            </button>
           </header>
 
           {isOpen && (
