@@ -11,7 +11,7 @@ import {
 } from '../../constants/toolbar.js';
 import { type HeaderLevel, type TextAlignment } from '../../enums/enums.js';
 import { ListType, TextDecoration, TextStyle } from '../../enums/enums.js';
-import { ToggleButtonsGroup } from '../ToggleButtonsGroup/toggle-buttons-group.js';
+import { ToggleButtonsGroup } from '../toggle-buttons-group/toggle-buttons-group.js';
 import styles from './styles.module.scss';
 
 type Properties = {
