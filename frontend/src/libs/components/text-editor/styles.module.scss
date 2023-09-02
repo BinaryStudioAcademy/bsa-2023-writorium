@@ -26,6 +26,19 @@
   outline: none;
 }
 
+.textEditor::-webkit-scrollbar {
+  width: 5px;
+}
+
+.textEditor::-webkit-scrollbar-thumb {
+  background: var(--light-gray-40);
+  border-radius: 2px;
+}
+
+.textEditor::-webkit-scrollbar-track {
+  background: transparent;
+}
+
 .placeholder:first-child::before {
   float: left;
   height: 0;
