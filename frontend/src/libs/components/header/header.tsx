@@ -20,6 +20,7 @@ const Header: React.FC<Properties> = ({ user }) => (
           <Avatar
             username={getFullName(user.firstName, user.lastName)}
             avatarUrl={null}
+            className={styles.avatar}
           />
         </Link>
       </header>
