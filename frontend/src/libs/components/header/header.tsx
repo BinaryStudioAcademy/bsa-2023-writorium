@@ -34,7 +34,7 @@ const Header: React.FC<Properties> = ({ user }) => {
 
   const handleClickOnAvatar = useCallback((): void => {
     setIsDropdownOpen(true);
-  }, [avatarReference]);
+  }, []);
 
   useEffect(() => {
     const avatarElement = avatarReference.current;
