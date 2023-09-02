@@ -2,7 +2,7 @@ import { type Editor } from '@tiptap/react';
 import { useCallback } from 'react';
 import { type ValueOf } from 'shared/build/index.js';
 
-import { TextAlignment, TextStyle } from '../../enums/enums.js';
+import { TextAlignment, TextDecoration, TextStyle } from '../../enums/enums.js';
 import { type ToggleButtonProperties } from '../ToggleButtonsGroup/toggle-buttons-group.js';
 import { ToggleButtonsGroup } from '../ToggleButtonsGroup/toggle-buttons-group.js';
 import styles from './styles.module.scss';
@@ -31,6 +31,18 @@ const Toolbar: React.FC<Properties> = ({ editor }) => {
     [editor],
   );
 
+  const handleTextDecorationChange = useCallback(
+    (decoration: ValueOf<typeof TextDecoration>) => () => {
+      const command = {
+        [TextDecoration.STRIKE_THROUGH]: 'toggleStrike',
+        [TextDecoration.UNDERLINE]: 'toggleUnderline',
+      } as const;
+
+      editor.chain().focus()[command[decoration]]().run();
+    },
+    [editor],
+  );
+
   const textAlignmentButtons: (Pick<ToggleButtonProperties, 'icon'> & {
     key: ValueOf<typeof TextAlignment>;
   })[] = [
@@ -45,6 +57,13 @@ const Toolbar: React.FC<Properties> = ({ editor }) => {
   })[] = [
     { icon: 'textBold', key: TextStyle.BOLD },
     { icon: 'textItalic', key: TextStyle.ITALIC },
+  ];
+
+  const textDecorationButtons: (Pick<ToggleButtonProperties, 'icon'> & {
+    key: ValueOf<typeof TextDecoration>;
+  })[] = [
+    { icon: 'textStrikeThrough', key: TextDecoration.STRIKE_THROUGH },
+    { icon: 'textUnderline', key: TextDecoration.UNDERLINE },
   ];
 
   return (
@@ -69,6 +88,18 @@ const Toolbar: React.FC<Properties> = ({ editor }) => {
               icon={icon}
               isActive={editor.isActive(key)}
               onClick={handleTextStyleChange(key)}
+            />
+          );
+        })}
+      </ToggleButtonsGroup>
+      <ToggleButtonsGroup>
+        {textDecorationButtons.map(({ icon, key }) => {
+          return (
+            <ToggleButtonsGroup.Button
+              key={key}
+              icon={icon}
+              isActive={editor.isActive(key)}
+              onClick={handleTextDecorationChange(key)}
             />
           );
         })}
