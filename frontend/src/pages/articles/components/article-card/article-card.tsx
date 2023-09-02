@@ -1,6 +1,7 @@
 import ArticlePreview from '~/assets/img/article-preview.png';
 import { Avatar, Icon, Link } from '~/libs/components/components.js';
 import { AppRoute } from '~/libs/enums/enums.js';
+import { formatShortDate, getFullName } from '~/libs/helpers/helpers.js';
 import { type ArticleBaseResponseDto } from '~/packages/articles/articles.js';
 import { type UserDetailsResponseDto } from '~/packages/users/users.js';
 
@@ -24,22 +25,22 @@ const ArticleCard: React.FC<Properties> = ({
   const { publishedAt, title, text } = article;
   const { comments, views, likes, dislikes } = reactions;
 
-  const { firstName, lastName } = user;
-  const fullName = `${firstName} ${lastName}`;
-  const publicationTime = new Date(publishedAt as string)
-    .toString()
-    .split(' ')
-    .slice(1, 3)
-    .join(' ');
   const MOCKED_READ_TIME = '7 min read';
 
   return (
     <article className={styles.article}>
       <div className={styles.header}>
         <div className={styles.info}>
-          <Avatar username={fullName} avatarUrl={null} />
-          <span className={styles.publisherName}>{fullName}</span>
-          <span className={styles.publicationTime}>{publicationTime}</span>
+          <Avatar
+            username={getFullName(user.firstName, user.lastName)}
+            avatarUrl={null}
+          />
+          <span className={styles.publisherName}>
+            {getFullName(user.firstName, user.lastName)}
+          </span>
+          <span className={styles.publicationTime}>
+            {formatShortDate(publishedAt as string)}
+          </span>
           <span className={styles.publicationTime}>{MOCKED_READ_TIME}</span>
         </div>
         <Icon iconName="favorite" className={styles.icon} />
