@@ -37,7 +37,6 @@ const AuthLayout: React.FC<Properties> = ({ children }) => {
         {renderFloatingLetters(HERO_FLOATING_LETTERS)}
         <h1 className={styles.heroTitle}>
           <img src={WritoriumLogo} alt="WRITORIUM LOGO" />
-          {/* WRITORIUM */}
         </h1>
       </div>
     </div>
