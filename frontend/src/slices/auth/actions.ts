@@ -6,12 +6,14 @@ import {
   type AuthRequestPasswordDto,
   type AuthResetPasswordDto,
 } from '~/packages/auth/auth.js';
+import { NotificationType } from '~/packages/notification/notification.js';
 import {
   type UserAuthResponseDto,
   type UserSignInRequestDto,
   type UserSignUpRequestDto,
 } from '~/packages/users/users.js';
 
+import { appActions } from '../app/app.js';
 import { name as sliceName } from './auth.slice.js';
 
 const signUp = createAsyncThunk<
@@ -74,11 +76,22 @@ const sendEmailResetPasswordLink = createAsyncThunk<
   unknown,
   AuthRequestPasswordDto,
   AsyncThunkConfig
->(`${sliceName}/email-reset-password-link`, async (payload, { extra }) => {
-  const { authApi } = extra;
+>(
+  `${sliceName}/email-reset-password-link`,
+  async (payload, { dispatch, extra }) => {
+    const { authApi } = extra;
+    const response = await authApi.sendEmailResetPasswordLink(payload);
+    void dispatch(
+      appActions.notify({
+        type: NotificationType.SUCCESS,
+        message:
+          'Email with reset password link was send to your email address',
+      }),
+    );
 
-  return await authApi.sendEmailResetPasswordLink(payload);
-});
+    return response;
+  },
+);
 
 const resetPassword = createAsyncThunk<
   UserAuthResponseDto,

@@ -2,7 +2,6 @@ import { createSlice, isAnyOf } from '@reduxjs/toolkit';
 
 import { DataStatus } from '~/libs/enums/enums.js';
 import { type ValueOf } from '~/libs/types/types.js';
-import { notification } from '~/packages/notification/notification.js';
 import { type UserAuthResponseDto as User } from '~/packages/users/users.js';
 import { actions as usersActions } from '~/slices/users/users.js';
 
@@ -35,9 +34,6 @@ const { reducer, actions, name } = createSlice({
     });
     builder.addCase(sendEmailResetPasswordLink.fulfilled, (state) => {
       state.dataStatus = DataStatus.FULFILLED;
-      notification.success(
-        'Email with reset password link was send to your email address',
-      );
     });
     builder.addCase(sendEmailResetPasswordLink.rejected, (state) => {
       state.dataStatus = DataStatus.REJECTED;
