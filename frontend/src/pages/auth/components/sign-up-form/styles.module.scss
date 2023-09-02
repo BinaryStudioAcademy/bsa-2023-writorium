@@ -1,3 +1,11 @@
+.formWrapper {
+  display: flex;
+  flex: 1 0 auto;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+}
+
 .form {
   width: 100%;
 }
@@ -26,6 +34,15 @@
 }
 
 .messageWrapper {
-  position: absolute;
-  bottom: 40px;
+  flex-shrink: 0;
+  padding: 40px 0;
+}
+
+.authFormTitle {
+  align-self: flex-start;
+  margin: 0 0 44px;
+  padding-top: 40px;
+  color: var(--light-green);
+  font-size: 24px;
+  font-family: "Libre Baskerville", sans-serif;
 }
