@@ -65,17 +65,6 @@ const ArticleForm: React.FC = () => {
     [dispatch, createdPrompt],
   );
 
-  useEffect(() => {
-    if (generatedPrompt) {
-      void dispatch(
-        promptsActions.createPrompt({
-          type: PromptType.MANUAL,
-          ...generatedPrompt,
-        }),
-      );
-    }
-  }, [dispatch, generatedPrompt]);
-
   const handleFormSubmit = useCallback(
     (event_: React.BaseSyntheticEvent<SubmitEvent>): void => {
       const button = event_.nativeEvent.submitter as HTMLButtonElement;
