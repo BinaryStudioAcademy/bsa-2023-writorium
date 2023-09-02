@@ -2,7 +2,12 @@ import { type Editor } from '@tiptap/react';
 import { useCallback } from 'react';
 import { type ValueOf } from 'shared/build/index.js';
 
-import { TextAlignment, TextDecoration, TextStyle } from '../../enums/enums.js';
+import {
+  ListType,
+  TextAlignment,
+  TextDecoration,
+  TextStyle,
+} from '../../enums/enums.js';
 import { type ToggleButtonProperties } from '../ToggleButtonsGroup/toggle-buttons-group.js';
 import { ToggleButtonsGroup } from '../ToggleButtonsGroup/toggle-buttons-group.js';
 import styles from './styles.module.scss';
@@ -13,7 +18,7 @@ type Properties = {
 
 const Toolbar: React.FC<Properties> = ({ editor }) => {
   const handleTextAlignmentChange = useCallback(
-    (alignment: string) => () => {
+    (alignment: ValueOf<typeof TextAlignment>) => () => {
       editor.chain().focus().setTextAlign(alignment).run();
     },
     [editor],
@@ -21,24 +26,42 @@ const Toolbar: React.FC<Properties> = ({ editor }) => {
 
   const handleTextStyleChange = useCallback(
     (style: ValueOf<typeof TextStyle>) => () => {
-      const command = {
+      const commandsMapper = {
         [TextStyle.BOLD]: 'toggleBold',
         [TextStyle.ITALIC]: 'toggleItalic',
       } as const;
 
-      editor.chain().focus()[command[style]]().run();
+      const command = commandsMapper[style];
+
+      editor.chain().focus()[command]().run();
     },
     [editor],
   );
 
   const handleTextDecorationChange = useCallback(
     (decoration: ValueOf<typeof TextDecoration>) => () => {
-      const command = {
+      const commandsMapper = {
         [TextDecoration.STRIKE_THROUGH]: 'toggleStrike',
         [TextDecoration.UNDERLINE]: 'toggleUnderline',
       } as const;
 
-      editor.chain().focus()[command[decoration]]().run();
+      const command = commandsMapper[decoration];
+
+      editor.chain().focus()[command]().run();
+    },
+    [editor],
+  );
+
+  const handleToggleList = useCallback(
+    (listType: ValueOf<typeof ListType>) => () => {
+      const commandsMapper = {
+        [ListType.ORDERED]: 'toggleOrderedList',
+        [ListType.BULLETED]: 'toggleBulletList',
+      } as const;
+
+      const command = commandsMapper[listType];
+
+      editor.chain().focus()[command]().run();
     },
     [editor],
   );
@@ -64,6 +87,13 @@ const Toolbar: React.FC<Properties> = ({ editor }) => {
   })[] = [
     { icon: 'textStrikeThrough', key: TextDecoration.STRIKE_THROUGH },
     { icon: 'textUnderline', key: TextDecoration.UNDERLINE },
+  ];
+
+  const listButtons: (Pick<ToggleButtonProperties, 'icon'> & {
+    key: ValueOf<typeof ListType>;
+  })[] = [
+    { icon: 'listNumbered', key: ListType.ORDERED },
+    { icon: 'listBulleted', key: ListType.BULLETED },
   ];
 
   return (
@@ -92,7 +122,7 @@ const Toolbar: React.FC<Properties> = ({ editor }) => {
           );
         })}
       </ToggleButtonsGroup>
-      <ToggleButtonsGroup>
+      <ToggleButtonsGroup className={styles.textDecorationButtons}>
         {textDecorationButtons.map(({ icon, key }) => {
           return (
             <ToggleButtonsGroup.Button
@@ -100,6 +130,18 @@ const Toolbar: React.FC<Properties> = ({ editor }) => {
               icon={icon}
               isActive={editor.isActive(key)}
               onClick={handleTextDecorationChange(key)}
+            />
+          );
+        })}
+      </ToggleButtonsGroup>
+      <ToggleButtonsGroup>
+        {listButtons.map(({ icon, key }) => {
+          return (
+            <ToggleButtonsGroup.Button
+              key={key}
+              icon={icon}
+              isActive={editor.isActive(key)}
+              onClick={handleToggleList(key)}
             />
           );
         })}

@@ -8,7 +8,6 @@ import { Toolbar } from './libs/components/components.js';
 import styles from './styles.module.scss';
 
 const extensions = [
-  StarterKit,
   Underline,
   Placeholder.configure({
     placeholder: 'Write your post content …',
@@ -17,6 +16,7 @@ const extensions = [
   TextAlign.configure({
     types: ['heading', 'paragraph'],
   }),
+  StarterKit,
 ];
 
 const TextEditor = (): React.ReactNode => {
