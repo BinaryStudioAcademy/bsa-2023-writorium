@@ -12,7 +12,6 @@ type Properties = {
   className?: string;
   activeClassName?: string;
   children: React.ReactNode;
-  onClick?: () => void;
 };
 
 const Link: React.FC<Properties> = ({
@@ -20,7 +19,6 @@ const Link: React.FC<Properties> = ({
   className,
   activeClassName,
   to,
-  onClick,
 }) => {
   const handleGetClassesByLinkState = useCallback(
     ({ isActive }: { isActive: boolean }): string => {
@@ -34,7 +32,7 @@ const Link: React.FC<Properties> = ({
   );
 
   return (
-    <NavLink to={to} className={handleGetClassesByLinkState} onClick={onClick}>
+    <NavLink to={to} className={handleGetClassesByLinkState}>
       {children}
     </NavLink>
   );
