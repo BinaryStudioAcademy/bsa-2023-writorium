@@ -11,15 +11,7 @@ import { MOCKED_REACTIONS, MOCKED_TAGS } from './libs/constants.js';
 
 const MyArticles: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { articles, user } = useAppSelector(({ articles, auth }) => ({
-    articles: articles.articles,
-    user: auth.user,
-  }));
-
-  const author = {
-    firstName: user?.firstName,
-    lastName: user?.lastName,
-  } as UserDetailsResponseDto;
+  const { articles } = useAppSelector(({ articles }) => articles);
 
   useEffect(() => {
     void dispatch(articlesActions.fetchOwn());
@@ -27,12 +19,12 @@ const MyArticles: React.FC = () => {
 
   return (
     <>
-      {articles &&
+      {articles.length > 0 &&
         articles.map((article) => (
           <ArticleCard
             key={article.id}
             article={article}
-            author={author}
+            author={article.author as UserDetailsResponseDto}
             tags={MOCKED_TAGS}
             reactions={MOCKED_REACTIONS}
           />

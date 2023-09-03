@@ -19,7 +19,7 @@ const ArticlesFeed: React.FC = () => {
 
   return (
     <>
-      {articles?.every((article) => article.author) &&
+      {articles.length > 0 &&
         articles.map((article) => (
           <ArticleCard
             key={article.id}
