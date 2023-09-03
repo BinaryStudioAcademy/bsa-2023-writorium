@@ -71,7 +71,8 @@
 }
 
 .heroTitle {
-  width: 615px;
+  width: 100%;
+  max-width: 615px;
   height: 91px;
   color: var(--light-grey);
 }

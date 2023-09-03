@@ -35,7 +35,7 @@ const AuthLayout: React.FC<Properties> = ({ children }) => {
       </div>
       <div className={styles.hero}>
         {renderFloatingLetters(HERO_FLOATING_LETTERS)}
-        <Icon iconName={'writoriumLogo'} className={styles.heroTitle} />
+        <Icon iconName="writoriumLogo" className={styles.heroTitle} />
       </div>
     </div>
   );
