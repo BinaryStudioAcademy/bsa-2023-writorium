@@ -1,6 +1,6 @@
 import { type FC } from 'react';
 
-import { ArticleForm, Layout } from '~/libs/components/components.js';
+import { Layout } from '~/libs/components/components.js';
 import { useParams } from '~/libs/hooks/hooks.js';
 import { type TagType } from '~/libs/types/types.js';
 
@@ -35,7 +35,6 @@ const Article: FC = () => {
 
   return (
     <Layout>
-      <ArticleForm />
       <div className={styles.container}>
         <ArticleView article={MOCKED_ARTICLE} />
         {id && <Author />}
