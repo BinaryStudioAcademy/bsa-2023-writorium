@@ -1,6 +1,7 @@
 import { type Editor } from '@tiptap/react';
-import { useCallback } from 'react';
 import { type ValueOf } from 'shared/build/index.js';
+
+import { useCallback } from '~/libs/hooks/hooks.js';
 
 import {
   HEADER_BUTTONS,

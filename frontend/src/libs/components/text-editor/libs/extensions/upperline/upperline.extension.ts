@@ -40,8 +40,17 @@ const Upperline = Mark.create<UpperlineOptions>({
 
   addOptions() {
     return {
-      HTMLAttributes: {
-        style: 'text-decoration: overline;',
+      HTMLAttributes: {},
+    };
+  },
+
+  addAttributes() {
+    return {
+      style: {
+        default: null,
+        renderHTML: (): { style: string } => ({
+          style: 'text-decoration: overline',
+        }),
       },
     };
   },
@@ -50,7 +59,13 @@ const Upperline = Mark.create<UpperlineOptions>({
     return [
       {
         tag: 'span',
-        style: 'text-decoration=overline',
+        getAttrs: (node): false | null => {
+          return (
+            node instanceof HTMLElement &&
+            node.style.textDecoration === 'overline' &&
+            null
+          );
+        },
       },
     ];
   },
@@ -66,8 +81,8 @@ const Upperline = Mark.create<UpperlineOptions>({
   addCommands() {
     return {
       setUpperline: (): typeof setUpperline => setUpperline,
-      toggleUpperline: (): typeof toggleUpperline => toggleUpperline,
       unsetUpperline: (): typeof unsetUpperline => unsetUpperline,
+      toggleUpperline: (): typeof toggleUpperline => toggleUpperline,
     };
   },
 });
