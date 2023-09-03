@@ -1,4 +1,4 @@
-import { Icon } from '~/libs/components/components.js';
+import { IconButton } from '~/libs/components/components.js';
 import { type IconName } from '~/libs/components/icon/common.js';
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
 
@@ -16,13 +16,11 @@ const ToggleButton: React.FC<Properties> = ({
   isActive = false,
 }): React.ReactNode => {
   return (
-    <button
-      type="button"
+    <IconButton
+      iconName={icon}
       onClick={onClick}
       className={getValidClassNames(styles.button, isActive && styles.active)}
-    >
-      <Icon iconName={icon} />
-    </button>
+    />
   );
 };
 
