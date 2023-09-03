@@ -1,4 +1,4 @@
-import { type ValueOf } from 'shared/build';
+import { type ValueOf } from '~/libs/types/types.js';
 
 import {
   HeaderLevel,
