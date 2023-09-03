@@ -1,6 +1,3 @@
-import { type ControllerRenderProps } from 'react-hook-form';
-import { Controller } from 'react-hook-form';
-
 import { ButtonType } from '~/libs/enums/enums.js';
 import { useAppDispatch, useAppForm, useCallback } from '~/libs/hooks/hooks.js';
 import { type ValueOf } from '~/libs/types/types.js';
@@ -14,11 +11,6 @@ import { Button, Input, TextEditor } from '../components.js';
 import { DEFAULT_ARTICLE_FORM_PAYLOAD } from './libs/constants.js';
 import { ArticleSubmitType } from './libs/enums/enums.js';
 import styles from './styles.module.scss';
-
-type TextEditorControlRenderProperties = ControllerRenderProps<
-  ArticleRequestDto,
-  'text'
->;
 
 // TODO: Should be moved out from common components.
 const ArticleForm: React.FC = () => {
@@ -55,13 +47,6 @@ const ArticleForm: React.FC = () => {
     [handleSubmit, handleArticleSubmit],
   );
 
-  const renderTextEditorControl = useCallback(
-    ({ field }: { field: TextEditorControlRenderProperties }) => {
-      return <TextEditor content={field.value} onUpdate={field.onChange} />;
-    },
-    [],
-  );
-
   const handleCancel = useCallback(() => {
     handleReset(DEFAULT_ARTICLE_FORM_PAYLOAD);
   }, [handleReset]);
@@ -82,11 +67,7 @@ const ArticleForm: React.FC = () => {
           errors={errors}
           className={styles.titleInput}
         />
-        <Controller
-          name="text"
-          control={control}
-          render={renderTextEditorControl}
-        />
+        <TextEditor control={control} name="text" errors={errors} />
         <div className={styles.buttonWrapper}>
           <Button
             type={ButtonType.RESET}
