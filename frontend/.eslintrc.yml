@@ -19,7 +19,10 @@ extends:
 rules:
   react/prop-types:
     - off
-  react/jsx-no-bind: ['error', { ignoreRefs: true, allowArrowFunctions: true }]
+  react/jsx-no-bind:
+    - error
+    - ignoreRefs: true
+      allowArrowFunctions: true
 
 overrides:
   - files:
