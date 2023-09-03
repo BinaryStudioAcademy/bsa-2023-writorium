@@ -1,7 +1,11 @@
 import { type ChangeEvent, type FC } from 'react';
 
-import { Avatar, ErrorMessage, Icon } from '~/libs/components/components.js';
-import { IconButton } from '~/libs/components/icon-button/icon-button.js';
+import {
+  Avatar,
+  ErrorMessage,
+  Icon,
+  IconButton,
+} from '~/libs/components/components.js';
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
 import {
   useAppDispatch,

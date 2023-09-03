@@ -5,6 +5,7 @@ export { Button } from './button/button.js';
 export { ErrorMessage } from './error-message/error-message.js';
 export { Header } from './header/header.js';
 export { Icon } from './icon/icon.js';
+export { IconButton } from './icon-button/icon-button.js';
 export { Input } from './input/input.js';
 export { Layout } from './layout/layout.js';
 export { Link } from './link/link.js';

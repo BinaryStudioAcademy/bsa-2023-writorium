@@ -4,7 +4,7 @@ import {
   AbstractModel,
   DatabaseTableName,
 } from '~/libs/packages/database/database.js';
-import { composeDatabaseRelationPath } from '~/libs/packages/database/libs/helpers/compose-database-relation-path/compose-database-relation-path.helper.js';
+import { composeDatabaseRelationPath } from '~/libs/packages/database/libs/helpers/helpers.js';
 import { UserDetailsModel } from '~/packages/users/user-details.model.js';
 
 class FileModel extends AbstractModel {

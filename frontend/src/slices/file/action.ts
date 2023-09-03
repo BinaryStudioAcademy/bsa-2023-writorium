@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { type FileUploadResponseDto } from 'shared/build/index.js';
 
+import { type FileUploadResponseDto } from '~/libs/packages/file/file-api.js';
 import { type AsyncThunkConfig } from '~/libs/types/async-thunk-config.type.js';
 import { name as sliceName } from '~/slices/articles/articles.slice.js';
 
