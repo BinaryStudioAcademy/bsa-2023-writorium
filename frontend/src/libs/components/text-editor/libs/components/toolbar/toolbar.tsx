@@ -9,7 +9,7 @@ import {
   TEXT_ALIGNMENT_BUTTONS,
   TEXT_DECORATION_BUTTONS,
   TEXT_STYLE_BUTTONS,
-} from '../../constants/toolbar.js';
+} from '../../constants/constants.js';
 import { type HeaderLevel, type TextAlignment } from '../../enums/enums.js';
 import { ListType, TextDecoration, TextStyle } from '../../enums/enums.js';
 import { ToggleButtonsGroup } from '../toggle-buttons-group/toggle-buttons-group.js';
