@@ -4,7 +4,7 @@ import { getFullName } from '~/libs/helpers/helpers.js';
 import { useCallback, useModal } from '~/libs/hooks/hooks.js';
 import { type UserAuthResponseDto } from '~/packages/users/users.js';
 
-import { DropDown } from './dropdown/dropdown.js';
+import { Dropdown } from './dropdown/dropdown.js';
 import styles from './styles.module.scss';
 
 type Properties = {
@@ -14,7 +14,7 @@ type Properties = {
 const Header: React.FC<Properties> = ({ user }) => {
   const { handleToggleModalOpen, isOpen } = useModal();
 
-  const handleClickOnAvatar = useCallback((): void => {
+  const handleAvatarClick = useCallback((): void => {
     if (!isOpen) {
       handleToggleModalOpen();
     }
@@ -23,16 +23,13 @@ const Header: React.FC<Properties> = ({ user }) => {
   return (
     <>
       {user && (
-        <div className={styles.outerheader}>
+        <div>
           <header className={styles.header}>
             <Link to={AppRoute.ROOT} className={styles.logo}>
               WRITORIUM
             </Link>
 
-            <button
-              className={styles.avatarButton}
-              onClick={handleClickOnAvatar}
-            >
+            <button className={styles.avatarButton} onClick={handleAvatarClick}>
               <Avatar
                 username={getFullName(user.firstName, user.lastName)}
                 avatarUrl={null}
@@ -42,7 +39,7 @@ const Header: React.FC<Properties> = ({ user }) => {
 
           <Popover
             trigger={{ handleToggleModalOpen, isOpen }}
-            content={<DropDown trigger={{ handleToggleModalOpen, isOpen }} />}
+            content={<Dropdown trigger={{ handleToggleModalOpen, isOpen }} />}
             className={`${styles.dropdown} ${styles.dropdownModal} ${
               isOpen ? styles.open : ''
             }`}

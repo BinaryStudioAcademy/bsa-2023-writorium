@@ -12,10 +12,10 @@ type Properties = {
   };
 };
 
-const DropDown: React.FC<Properties> = ({ trigger }) => {
+const Dropdown: React.FC<Properties> = ({ trigger }) => {
   const dispatch = useAppDispatch();
 
-  const handleSignOut = useCallback((): void => {
+  const handleLogout = useCallback((): void => {
     void dispatch(authActions.logout());
   }, [dispatch]);
 
@@ -40,10 +40,10 @@ const DropDown: React.FC<Properties> = ({ trigger }) => {
         name="Logout"
         label="Logout"
         className={styles.logoutBtn}
-        onClick={handleSignOut}
+        onClick={handleLogout}
       />
     </div>
   );
 };
 
-export { DropDown };
+export { Dropdown };
