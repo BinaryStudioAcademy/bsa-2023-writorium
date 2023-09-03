@@ -1,11 +1,10 @@
-import { Layout } from '~/libs/components/components.js';
+import { Layout, Navigate } from '~/libs/components/components.js';
 import { Loader } from '~/libs/components/loader/loader.js';
 import { AppRoute, DataStatus } from '~/libs/enums/enums.js';
 import {
   useAppDispatch,
   useAppSelector,
   useEffect,
-  useNavigate,
   useParams,
 } from '~/libs/hooks/hooks.js';
 import { type ArticleType, type TagType } from '~/libs/types/types.js';
@@ -17,7 +16,6 @@ import styles from './styles.module.scss';
 
 const Article: React.FC = () => {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
   const { id } = useParams();
 
   useEffect(() => {
@@ -34,8 +32,7 @@ const Article: React.FC = () => {
   );
 
   if (!article) {
-    navigate(AppRoute.ARTICLES);
-    return null;
+    return <Navigate to={AppRoute.ARTICLES} />;
   }
 
   const { text, title } = article;
