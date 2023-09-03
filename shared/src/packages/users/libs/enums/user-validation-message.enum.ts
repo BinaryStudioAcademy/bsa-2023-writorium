@@ -12,8 +12,10 @@ const UserValidationMessage = {
     'The Password field accepts lowercase latin letters, uppercase latin letters, digits, special characters',
   FIRST_NAME_REQUIRE: 'The first name is required',
   LAST_NAME_REQUIRE: 'The last name is required',
-  LAST_NAME_WRONG: 'Please, enter a valid last name',
-  FIRST_NAME_WRONG: 'Please, enter a valid first name',
+  LAST_NAME_WRONG:
+    'The Last Name field accepts lowercase latin letters, uppercase latin letters, hyphen and space',
+  FIRST_NAME_WRONG:
+    'The First Name field accepts lowercase latin letters, uppercase latin letters, hyphen and space',
 } as const;
 
 export { UserValidationMessage };
