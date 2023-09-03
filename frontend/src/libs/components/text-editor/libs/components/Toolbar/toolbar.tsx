@@ -20,14 +20,14 @@ type Properties = {
 
 const Toolbar: React.FC<Properties> = ({ editor }) => {
   const handleTextAlignmentChange = useCallback(
-    (alignment: ValueOf<typeof TextAlignment>) => () => {
+    (alignment: ValueOf<typeof TextAlignment>) => {
       editor.chain().focus().setTextAlign(alignment).run();
     },
     [editor],
   );
 
   const handleTextStyleChange = useCallback(
-    (style: ValueOf<typeof TextStyle>) => () => {
+    (style: ValueOf<typeof TextStyle>) => {
       const commandsMapper = {
         [TextStyle.BOLD]: 'toggleBold',
         [TextStyle.ITALIC]: 'toggleItalic',
@@ -41,7 +41,7 @@ const Toolbar: React.FC<Properties> = ({ editor }) => {
   );
 
   const handleTextDecorationChange = useCallback(
-    (decoration: ValueOf<typeof TextDecoration>) => () => {
+    (decoration: ValueOf<typeof TextDecoration>) => {
       const commandsMapper = {
         [TextDecoration.STRIKE_THROUGH]: 'toggleStrike',
         [TextDecoration.UNDERLINE]: 'toggleUnderline',
@@ -55,7 +55,7 @@ const Toolbar: React.FC<Properties> = ({ editor }) => {
   );
 
   const handleToggleList = useCallback(
-    (listType: ValueOf<typeof ListType>) => () => {
+    (listType: ValueOf<typeof ListType>) => {
       const commandsMapper = {
         [ListType.ORDERED]: 'toggleOrderedList',
         [ListType.BULLETED]: 'toggleBulletList',
@@ -69,7 +69,7 @@ const Toolbar: React.FC<Properties> = ({ editor }) => {
   );
 
   const handleToggleHeader = useCallback(
-    (level: ValueOf<typeof HeaderLevel>) => () => {
+    (level: ValueOf<typeof HeaderLevel>) => {
       editor.chain().focus().toggleHeading({ level }).run();
     },
     [editor],
@@ -77,66 +77,33 @@ const Toolbar: React.FC<Properties> = ({ editor }) => {
 
   return (
     <div className={styles.toolbar}>
-      <ToggleButtonsGroup>
-        {TEXT_ALIGNMENT_BUTTONS.map(({ icon, key }) => {
-          return (
-            <ToggleButtonsGroup.Button
-              key={key}
-              icon={icon}
-              isActive={editor.isActive({ textAlign: key })}
-              onClick={handleTextAlignmentChange(key)}
-            />
-          );
-        })}
-      </ToggleButtonsGroup>
-      <ToggleButtonsGroup>
-        {TEXT_STYLE_BUTTONS.map(({ icon, key }) => {
-          return (
-            <ToggleButtonsGroup.Button
-              key={key}
-              icon={icon}
-              isActive={editor.isActive(key)}
-              onClick={handleTextStyleChange(key)}
-            />
-          );
-        })}
-      </ToggleButtonsGroup>
-      <ToggleButtonsGroup>
-        {TEXT_DECORATION_BUTTONS.map(({ icon, key }) => {
-          return (
-            <ToggleButtonsGroup.Button
-              key={key}
-              icon={icon}
-              isActive={editor.isActive(key)}
-              onClick={handleTextDecorationChange(key)}
-            />
-          );
-        })}
-      </ToggleButtonsGroup>
-      <ToggleButtonsGroup>
-        {LIST_BUTTONS.map(({ icon, key }) => {
-          return (
-            <ToggleButtonsGroup.Button
-              key={key}
-              icon={icon}
-              isActive={editor.isActive(key)}
-              onClick={handleToggleList(key)}
-            />
-          );
-        })}
-      </ToggleButtonsGroup>
-      <ToggleButtonsGroup>
-        {HEADER_BUTTONS.map(({ icon, key }) => {
-          return (
-            <ToggleButtonsGroup.Button
-              key={key}
-              icon={icon}
-              isActive={editor.isActive('heading', { level: key })}
-              onClick={handleToggleHeader(key)}
-            />
-          );
-        })}
-      </ToggleButtonsGroup>
+      <ToggleButtonsGroup
+        buttons={TEXT_ALIGNMENT_BUTTONS}
+        onButtonClick={handleTextAlignmentChange}
+        isButtonActive={(key): boolean => editor.isActive({ textAlign: key })}
+      />
+      <ToggleButtonsGroup
+        buttons={TEXT_STYLE_BUTTONS}
+        onButtonClick={handleTextStyleChange}
+        isButtonActive={(key): boolean => editor.isActive(key)}
+      />
+      <ToggleButtonsGroup
+        buttons={TEXT_DECORATION_BUTTONS}
+        onButtonClick={handleTextDecorationChange}
+        isButtonActive={(key): boolean => editor.isActive(key)}
+      />
+      <ToggleButtonsGroup
+        buttons={LIST_BUTTONS}
+        onButtonClick={handleToggleList}
+        isButtonActive={(key): boolean => editor.isActive(key)}
+      />
+      <ToggleButtonsGroup
+        buttons={HEADER_BUTTONS}
+        onButtonClick={handleToggleHeader}
+        isButtonActive={(key): boolean =>
+          editor.isActive('heading', { level: key })
+        }
+      />
     </div>
   );
 };

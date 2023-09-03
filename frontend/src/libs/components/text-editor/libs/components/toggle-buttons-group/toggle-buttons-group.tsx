@@ -1,25 +1,48 @@
+import { useCallback } from 'react';
+
+import { IconButton } from '~/libs/components/components.js';
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
 
-import { ToggleButton } from './libs/components/toggle-button/toggle-button.js';
+import { type ToolbarButtonProperties } from '../../types/types.js';
 import styles from './styles.module.scss';
 
-type Properties = {
-  children: React.ReactNode;
+type Properties<T extends string | number> = {
   className?: string;
+  buttons: ToolbarButtonProperties<T>[];
+  onButtonClick: (key: T) => void;
+  isButtonActive: (key: T) => boolean;
 };
 
-const ToggleButtonsGroup = ({
-  children,
+const ToggleButtonsGroup = <T extends string | number>({
+  buttons = [],
   className,
-}: Properties): React.ReactNode => {
+  isButtonActive,
+  onButtonClick,
+}: Properties<T>): React.ReactNode => {
+  const handleButtonClick = useCallback(
+    (key: T) => () => {
+      onButtonClick(key);
+    },
+    [onButtonClick],
+  );
+
   return (
     <div className={getValidClassNames(styles.buttonsGroup, className)}>
-      {children}
+      {buttons.map(({ iconName, key }) => {
+        return (
+          <IconButton
+            key={key}
+            iconName={iconName}
+            className={getValidClassNames(
+              styles.button,
+              isButtonActive(key) && styles.buttonActive,
+            )}
+            onClick={handleButtonClick(key)}
+          />
+        );
+      })}
     </div>
   );
 };
 
-ToggleButtonsGroup.Button = ToggleButton;
-
 export { ToggleButtonsGroup };
-export { type ToggleButtonProperties } from './libs/components/toggle-button/toggle-button.js';
