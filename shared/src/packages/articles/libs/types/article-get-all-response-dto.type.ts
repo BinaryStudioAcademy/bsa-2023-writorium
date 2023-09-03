@@ -1,7 +1,7 @@
-import { type ArticleBaseResponseDto } from './article-base-response-dto.type.js';
+import { type ArticleWithAuthorType } from './article-with-author.type.js';
 
 type ArticleGetAllResponseDto = {
-  items: ArticleBaseResponseDto[];
+  items: ArticleWithAuthorType[];
 };
 
 export { type ArticleGetAllResponseDto };

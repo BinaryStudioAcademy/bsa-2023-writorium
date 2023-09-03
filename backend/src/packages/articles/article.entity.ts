@@ -3,6 +3,7 @@ import { type WithNullableKeys } from '~/libs/types/types.js';
 
 import {
   type ArticleEntityType,
+  type ArticleWithAuthorType,
   type UserDetailsResponseDto,
 } from './libs/types/types.js';
 
@@ -25,7 +26,7 @@ class ArticleEntity implements IEntity {
     genreId,
     publishedAt,
     author,
-  }: WithNullableKeys<ArticleEntityType, 'id'>) {
+  }: WithNullableKeys<ArticleWithAuthorType, 'id'>) {
     this.id = id;
     this.title = title;
     this.text = text;
@@ -56,7 +57,7 @@ class ArticleEntity implements IEntity {
     });
   }
 
-  public static initializeWithUser({
+  public static initializeWithAuthor({
     id,
     title,
     text,
@@ -65,7 +66,7 @@ class ArticleEntity implements IEntity {
     genreId,
     publishedAt,
     author,
-  }: ArticleEntityType): ArticleEntity {
+  }: ArticleWithAuthorType): ArticleEntity {
     return new ArticleEntity({
       id,
       title,
@@ -112,7 +113,7 @@ class ArticleEntity implements IEntity {
     };
   }
 
-  public toObjectWithUser(): ArticleEntityType {
+  public toObjectWithAuthor(): ArticleWithAuthorType {
     return {
       id: this.id as number,
       title: this.title,

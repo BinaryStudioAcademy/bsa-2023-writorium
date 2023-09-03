@@ -2,14 +2,7 @@ import { type ArticleEntityType } from '~/packages/articles/libs/types/article-e
 
 type ArticleBaseResponseDto = Pick<
   ArticleEntityType,
-  | 'id'
-  | 'title'
-  | 'text'
-  | 'userId'
-  | 'promptId'
-  | 'genreId'
-  | 'publishedAt'
-  | 'author'
+  'id' | 'title' | 'text' | 'userId' | 'promptId' | 'genreId' | 'publishedAt'
 >;
 
 export { type ArticleBaseResponseDto };
