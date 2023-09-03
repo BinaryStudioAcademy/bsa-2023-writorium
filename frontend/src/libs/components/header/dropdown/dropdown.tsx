@@ -1,6 +1,10 @@
-import { Button, Link } from '~/libs/components/components.js';
+import { Button } from '~/libs/components/components.js';
 import { AppRoute } from '~/libs/enums/enums.js';
-import { useAppDispatch, useCallback } from '~/libs/hooks/hooks.js';
+import {
+  useAppDispatch,
+  useCallback,
+  useNavigate,
+} from '~/libs/hooks/hooks.js';
 import { actions as authActions } from '~/slices/auth/auth.js';
 
 import styles from './styles.module.scss';
@@ -15,25 +19,28 @@ type Properties = {
 const Dropdown: React.FC<Properties> = ({ trigger }) => {
   const dispatch = useAppDispatch();
 
+  const navigate = useNavigate();
+
   const handleLogout = useCallback((): void => {
     void dispatch(authActions.logout());
   }, [dispatch]);
 
-  const handleLinkClick = (): void => {
+  const handleProfileClick = (): void => {
     if (trigger.isOpen) {
       trigger.handleToggleModalOpen();
     }
+    navigate(AppRoute.PROFILE);
   };
 
   return (
     <div className={styles.dropdown}>
-      <Link
+      <Button
+        type="button"
+        name="Profile"
+        label="Profile"
+        onClick={handleProfileClick}
         className={styles.profileLink}
-        to={AppRoute.PROFILE}
-        onClick={handleLinkClick}
-      >
-        Profile
-      </Link>
+      />
 
       <Button
         type="button"
