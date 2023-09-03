@@ -1,9 +1,5 @@
-import { Placeholder } from '@tiptap/extension-placeholder';
-import { TextAlign } from '@tiptap/extension-text-align';
-import { Underline } from '@tiptap/extension-underline';
 import { type EditorOptions } from '@tiptap/react';
 import { EditorContent, useEditor } from '@tiptap/react';
-import { StarterKit } from '@tiptap/starter-kit';
 import {
   type Control,
   type FieldErrors,
@@ -17,6 +13,13 @@ import { useEffect, useFormController } from '~/libs/hooks/hooks.js';
 import { ErrorMessage } from '../components.js';
 import { Toolbar } from './libs/components/components.js';
 import { TEXT_EDITOR_PLACEHOLDER_TEXT } from './libs/constants/constants.js';
+import {
+  Placeholder,
+  StarterKit,
+  TextAlign,
+  Underline,
+  Upperline,
+} from './libs/extensions/extenstions.js';
 import styles from './styles.module.scss';
 
 type Properties<T extends FieldValues> = {
@@ -27,6 +30,8 @@ type Properties<T extends FieldValues> = {
 
 const extensions = [
   Underline,
+  Upperline,
+  StarterKit,
   Placeholder.configure({
     placeholder: TEXT_EDITOR_PLACEHOLDER_TEXT,
     emptyNodeClass: styles.placeholder,
@@ -34,7 +39,6 @@ const extensions = [
   TextAlign.configure({
     types: ['heading', 'paragraph'],
   }),
-  StarterKit,
 ];
 
 const TextEditor = <T extends FieldValues>({

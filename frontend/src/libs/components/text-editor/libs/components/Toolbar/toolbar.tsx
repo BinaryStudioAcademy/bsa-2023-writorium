@@ -45,6 +45,7 @@ const Toolbar: React.FC<Properties> = ({ editor }) => {
       const commandsMapper = {
         [TextDecoration.STRIKE_THROUGH]: 'toggleStrike',
         [TextDecoration.UNDERLINE]: 'toggleUnderline',
+        [TextDecoration.UPPERLINE]: 'toggleUpperline',
       } as const;
 
       const command = commandsMapper[decoration];

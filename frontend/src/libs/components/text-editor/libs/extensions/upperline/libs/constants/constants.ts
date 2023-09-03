@@ -1,0 +1,3 @@
+const UPPERLINE_EXTENTION_NAME = 'upperline';
+
+export { UPPERLINE_EXTENTION_NAME };

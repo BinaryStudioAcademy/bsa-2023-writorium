@@ -29,6 +29,7 @@ const TEXT_DECORATION_BUTTONS: ToolbarButtonProperties<
 >[] = [
   { iconName: 'textStrikeThrough', key: TextDecoration.STRIKE_THROUGH },
   { iconName: 'textUnderline', key: TextDecoration.UNDERLINE },
+  { iconName: 'textUpperline', key: TextDecoration.UPPERLINE },
 ];
 
 const LIST_BUTTONS: ToolbarButtonProperties<ValueOf<typeof ListType>>[] = [
