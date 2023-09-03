@@ -83,13 +83,13 @@
     transform 0.3s ease-in;
 }
 
-.iconButtonRemoveActive {
-  visibility: visible;
-  opacity: 1;
-}
-
 .iconButtonRemove:hover {
   transform: scale(1.1);
+}
+
+.imageGroupInner:hover .iconButtonRemove {
+  visibility: visible;
+  opacity: 1;
 }
 
 .iconRemove {
