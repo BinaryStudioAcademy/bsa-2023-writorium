@@ -3,6 +3,7 @@ import { type IRepository } from '~/libs/interfaces/repository.interface.js';
 import { ArticleEntity } from './article.entity.js';
 import { type ArticleModel } from './article.model.js';
 import { SortingOrder } from './libs/enums/enums.js';
+import { getWhereUserIdQuery } from './libs/helpers/helpers.js';
 
 class ArticleRepository implements IRepository {
   private articleModel: typeof ArticleModel;
@@ -13,23 +14,20 @@ class ArticleRepository implements IRepository {
     this.articleModel = articleModel;
   }
 
-  public async findAll(): Promise<ArticleEntity[]> {
+  public async findAll({
+    userId,
+  }: {
+    userId?: number;
+  }): Promise<ArticleEntity[]> {
     const articles = await this.articleModel
       .query()
-      .orderBy('publishedAt', SortingOrder.DESCENDING)
+      .where(getWhereUserIdQuery(userId))
+      .orderBy('articles.publishedAt', SortingOrder.DESCENDING)
       .withGraphJoined(this.defaultRelationExpression);
 
-    return articles.map((article) => ArticleEntity.initializeWithUser(article));
-  }
-
-  public async findOwn(id: number): Promise<ArticleEntity[]> {
-    const articles = await this.articleModel
-      .query()
-      .where('userId', id)
-      .orderBy('publishedAt', SortingOrder.DESCENDING)
-      .execute();
-
-    return articles.map((article) => ArticleEntity.initialize(article));
+    return articles.map((article) =>
+      ArticleEntity.initializeWithAuthor(article),
+    );
   }
 
   public async find(id: number): Promise<ArticleEntity | null> {
