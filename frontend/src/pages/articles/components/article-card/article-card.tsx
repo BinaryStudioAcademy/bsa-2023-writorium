@@ -2,7 +2,7 @@ import ArticlePreview from '~/assets/img/article-preview.png';
 import { Avatar, Icon, Link } from '~/libs/components/components.js';
 import { AppRoute } from '~/libs/enums/enums.js';
 import { formatShortDate, getFullName } from '~/libs/helpers/helpers.js';
-import { type ArticleBaseResponseDto } from '~/packages/articles/articles.js';
+import { type ArticleWithAuthorType } from '~/packages/articles/articles.js';
 import { type UserDetailsResponseDto } from '~/packages/users/users.js';
 
 import { type ReactionsType, type TagType } from '../../libs/types/types.js';
@@ -10,7 +10,7 @@ import { Tags } from '../components.js';
 import styles from './styles.module.scss';
 
 type Properties = {
-  article: ArticleBaseResponseDto;
+  article: ArticleWithAuthorType;
   author: UserDetailsResponseDto;
   tags: TagType[];
   reactions: ReactionsType;
