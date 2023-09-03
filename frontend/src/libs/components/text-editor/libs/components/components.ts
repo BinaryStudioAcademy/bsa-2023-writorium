@@ -1,1 +1,1 @@
-export { Toolbar } from './tool-bar/toolbar.js';
+export { Toolbar } from './toolbar/toolbar.js';
