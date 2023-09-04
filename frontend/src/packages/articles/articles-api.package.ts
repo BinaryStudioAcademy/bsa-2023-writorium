@@ -8,6 +8,7 @@ import {
   type ArticleBaseResponseDto,
   type ArticleGetAllResponseDto,
   type ArticleRequestDto,
+  type ArticleWithAuthorType,
 } from './libs/types/types.js';
 
 type Constructor = {
@@ -55,7 +56,7 @@ class ArticleApi extends HttpApi {
     return await response.json<ArticleBaseResponseDto>();
   }
 
-  public async getArticle(id: number): Promise<ArticleBaseResponseDto> {
+  public async getArticle(id: number): Promise<ArticleWithAuthorType> {
     const response = await this.load(
       this.getFullEndpoint(ArticlesApiPath.$ID, { id: String(id) }),
       {
@@ -64,7 +65,8 @@ class ArticleApi extends HttpApi {
         hasAuth: true,
       },
     );
-    return await response.json<ArticleBaseResponseDto>();
+
+    return await response.json<ArticleWithAuthorType>();
   }
 }
 

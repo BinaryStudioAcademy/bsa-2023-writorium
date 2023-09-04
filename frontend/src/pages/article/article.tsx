@@ -31,11 +31,13 @@ const Article: React.FC = () => {
     dataStatus === DataStatus.FULFILLED || dataStatus == DataStatus.REJECTED
   );
 
-  if (!article) {
+  if (!article && !isLoading) {
     return <Navigate to={AppRoute.ARTICLES} />;
   }
 
-  const { text, title } = article;
+  if (dataStatus === DataStatus.REJECTED) {
+    return null;
+  }
 
   const MOCKED_TAGS: TagType[] = [
     { id: 1, name: 'IT' },
@@ -45,18 +47,17 @@ const Article: React.FC = () => {
     { id: 5, name: 'Tech' },
   ];
 
-  if (dataStatus === DataStatus.REJECTED) {
-    return null;
-  }
+  const { text, title, author } = article ?? {};
+  const { firstName, lastName } = author ?? {};
 
   return (
     <Loader isLoading={isLoading}>
       <Layout>
         <div className={styles.container}>
           <ArticleView
-            article={{ title, text, tags: MOCKED_TAGS } as ArticleType}
+            article={{ text, title, tags: MOCKED_TAGS } as ArticleType}
           />
-          <AuthorDetails name={'FirstName LastName'} />
+          <AuthorDetails name={`${firstName} ${lastName}`} />
         </div>
       </Layout>
     </Loader>
