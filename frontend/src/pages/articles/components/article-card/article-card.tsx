@@ -1,52 +1,52 @@
 import ArticlePreview from '~/assets/img/article-preview.png';
 import { Avatar, Icon, Link } from '~/libs/components/components.js';
-import { AppRoute, DatePattern } from '~/libs/enums/enums.js';
-import { formatDate } from '~/libs/helpers/helpers.js';
-import { type UserAuthResponseDto } from '~/packages/users/users.js';
-import { type ArticleType } from '~/pages/articles/libs/types/types.js';
+import { AppRoute } from '~/libs/enums/enums.js';
+import { formatShortDate, getFullName } from '~/libs/helpers/helpers.js';
+import { type ArticleWithAuthorType } from '~/packages/articles/articles.js';
+import { type UserDetailsResponseDto } from '~/packages/users/users.js';
 
+import { type ReactionsType, type TagType } from '../../libs/types/types.js';
 import { Tags } from '../components.js';
 import styles from './styles.module.scss';
 
 type Properties = {
-  article: ArticleType;
-  user: UserAuthResponseDto;
+  article: ArticleWithAuthorType;
+  author: UserDetailsResponseDto;
+  tags: TagType[];
+  reactions: ReactionsType;
 };
 
-const ArticleCard: React.FC<Properties> = ({ article, user }) => {
-  const {
-    publishedAt,
-    timeSincePublication,
-    title,
-    text,
-    comments,
-    views,
-    likes,
-    dislikes,
-    tags,
-  } = article;
+const ArticleCard: React.FC<Properties> = ({
+  article,
+  author,
+  tags,
+  reactions,
+}) => {
+  const { publishedAt, title, text } = article;
+  const { comments, views, likes, dislikes } = reactions;
 
-  const { firstName, lastName } = user;
-  const fullName = `${firstName} ${lastName}`;
+  const MOCKED_READ_TIME = '7 min read';
 
   return (
     <article className={styles.article}>
       <div className={styles.header}>
         <div className={styles.info}>
-          <Avatar username={fullName} avatarUrl={null} />
-          <span className={styles.publisherName}>{fullName}</span>
-          <span className={styles.publicationTime}>
-            {formatDate({
-              isoString: publishedAt,
-              pattern: `${DatePattern.MONTH_DAY} ${DatePattern.MONTH_NAME}`,
-            })}
+          <Avatar
+            username={getFullName(author.firstName, author.lastName)}
+            avatarUrl={null}
+          />
+          <span className={styles.publisherName}>
+            {getFullName(author.firstName, author.lastName)}
           </span>
-          <span className={styles.publicationTime}>{timeSincePublication}</span>
+          <span className={styles.publicationTime}>
+            {formatShortDate(publishedAt as string)}
+          </span>
+          <span className={styles.publicationTime}>{MOCKED_READ_TIME}</span>
         </div>
         <Icon iconName="favorite" className={styles.icon} />
       </div>
       <div className={styles.body}>
-        <div>
+        <div className={styles.articleInfo}>
           <h4 className={styles.title}>{title}</h4>
           <p className={styles.text}>{text}</p>
           <Tags tags={tags} />
