@@ -43,7 +43,7 @@ const Header: React.FC<Properties> = ({ user }) => {
             className={getValidClassNames(
               styles.dropdown,
               styles.dropdownModal,
-              isOpen ? styles.open : '',
+              isOpen && styles.open,
             )}
           />
         </div>
