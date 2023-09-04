@@ -1,8 +1,10 @@
+export { RESET_PASSWORD_ROUTE } from './libs/constants/constants.js';
 export {
   ApiPath,
   AppEnvironment,
   ContentType,
   ServerErrorType,
+  SortingOrder,
 } from './libs/enums/enums.js';
 export { ApplicationError, HttpError } from './libs/exceptions/exceptions.js';
 export { configureString, safeJSONParse } from './libs/helpers/helpers.js';
@@ -14,6 +16,7 @@ export {
   type HttpOptions,
   type IHttp,
 } from './libs/packages/http/http.js';
+export { type SendEmailResponse } from './libs/packages/mailer/mailer.js';
 export { type IStorage } from './libs/packages/storage/storage.js';
 export {
   type ServerCommonErrorResponse,
@@ -36,12 +39,20 @@ export {
   type ArticleCreateDto,
   articleCreateValidationSchema,
   type ArticleEntityType,
+  type ArticleGetAllResponseDto,
   type ArticleRequestDto,
   ArticlesApiPath,
   type ArticleUpdateRequestDto,
   articleUpdateValidationSchema,
+  type ArticleWithAuthorType,
 } from './packages/articles/articles.js';
-export { AuthApiPath } from './packages/auth/auth.js';
+export {
+  AuthApiPath,
+  type AuthRequestPasswordDto,
+  type AuthResetPasswordDto,
+  requestPasswordValidationSchema,
+  resetPasswordValidationSchema,
+} from './packages/auth/auth.js';
 export {
   FilesApiPath,
   FileType,
@@ -63,6 +74,8 @@ export {
 } from './packages/prompts/prompts.js';
 export {
   type UserAuthResponseDto,
+  type UserDetailsDto,
+  type UserDetailsResponseDto,
   type UserGetAllItemResponseDto,
   type UserGetAllResponseDto,
   UsersApiPath,
