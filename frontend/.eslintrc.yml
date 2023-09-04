@@ -22,8 +22,8 @@ rules:
   react/jsx-no-bind:
     - error
     - ignoreRefs: true
-  '@typescript-eslint/no-non-null-assertion': off
-  unicorn/explicit-length-check: off
+  '@typescript-eslint/no-non-null-assertion':
+    - off
 
 overrides:
   - files:
