@@ -32,7 +32,7 @@ const Link: React.FC<Properties> = ({
   );
 
   return (
-    <NavLink to={to} className={handleGetClassesByLinkState}>
+    <NavLink to={to} className={handleGetClassesByLinkState} end>
       {children}
     </NavLink>
   );

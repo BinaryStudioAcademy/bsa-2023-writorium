@@ -77,6 +77,8 @@ rules:
     - count: 1
   import/no-default-export:
     - error
+  unicorn/explicit-length-check:
+    - off
   '@typescript-eslint/consistent-type-definitions':
     - off
   '@typescript-eslint/non-nullable-type-assertion-style':
