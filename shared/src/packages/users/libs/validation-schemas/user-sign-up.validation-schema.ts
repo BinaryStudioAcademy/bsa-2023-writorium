@@ -3,6 +3,21 @@ import joi from 'joi';
 import { UserValidationMessage, UserValidationRule } from '../enums/enums.js';
 import { type UserSignUpRequestDto } from '../types/types.js';
 
+const customPasswordCharactersValidator = (
+  value: string,
+  helpers: joi.CustomHelpers<string>,
+): string | joi.ErrorReport => {
+  const isValid = UserValidationRule.PASSWORD_CHARACTERS_PATTERN.test(value);
+
+  if (!isValid) {
+    return helpers.message({
+      'custom': UserValidationMessage.PASSWORD_WRONG_CHARACTERS,
+    });
+  }
+
+  return value;
+};
+
 const userSignUp = joi.object<UserSignUpRequestDto, true>({
   email: joi
     .string()
@@ -24,13 +39,14 @@ const userSignUp = joi.object<UserSignUpRequestDto, true>({
     .trim()
     .min(UserValidationRule.PASSWORD_MIN_LENGTH)
     .max(UserValidationRule.PASSWORD_MAX_LENGTH)
-    .regex(UserValidationRule.PASSWORD_PATTERN)
+    .custom(customPasswordCharactersValidator, 'custom characters validation')
+    .regex(UserValidationRule.PASSWORD_CONTENT_PATTERN)
     .required()
     .messages({
       'string.min': UserValidationMessage.PASSWORD_MIN_LENGTH,
       'string.max': UserValidationMessage.PASSWORD_MAX_LENGTH,
       'string.empty': UserValidationMessage.PASSWORD_REQUIRE,
-      'string.pattern.base': UserValidationMessage.PASSWORD_WRONG,
+      'string.pattern.base': UserValidationMessage.PASSWORD_CONTENT_REQUIRE,
     }),
   firstName: joi
     .string()
