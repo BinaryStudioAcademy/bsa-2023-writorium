@@ -1,6 +1,8 @@
 import { type FC } from 'react';
 
 import { Avatar, Icon } from '~/libs/components/components.js';
+import { DatePattern } from '~/libs/enums/enums.js';
+import { formatDate } from '~/libs/helpers/helpers.js';
 
 import styles from './styles.module.scss';
 
@@ -17,7 +19,7 @@ const Author: FC<Properties> = ({
   name = 'Charlie Culhane',
   followers = 10,
   rating = 700,
-  publishedAt = '2023-04-22',
+  publishedAt = '2023-09-04T12:53:07.144Z',
   readingTime = '7 min',
   genre = 'Fiction',
 }) => {
@@ -48,7 +50,12 @@ const Author: FC<Properties> = ({
           <Icon iconName="notes" />
           <ul className={styles.articleInfoList}>
             <li className={styles.articleInfoItem}>
-              <span>{publishedAt}</span>
+              <span>
+                {formatDate({
+                  isoString: publishedAt,
+                  pattern: `${DatePattern.MONTH_DAY} ${DatePattern.MONTH_NAME}`,
+                })}
+              </span>
             </li>
             <li className={styles.articleInfoItem}>
               <span className={styles.articleTimeValue}>{readingTime}</span>

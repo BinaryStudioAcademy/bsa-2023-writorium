@@ -24,7 +24,7 @@ const MOCKED_TAGS: TagType[] = [
 
 const MOCKED_ARTICLE: ArticleType = {
   id: 1,
-  publishedAt: 'May 28',
+  publishedAt: '2023-09-04T12:53:07.144Z',
   timeSincePublication: '7 min read',
   title: 'Modern Full-Stack Developer Tech Stack 2021',
   text: MOCKED_TEXT,

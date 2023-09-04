@@ -1,6 +1,7 @@
 import ArticlePreview from '~/assets/img/article-preview.png';
 import { Avatar, Icon, Link } from '~/libs/components/components.js';
-import { AppRoute } from '~/libs/enums/enums.js';
+import { AppRoute, DatePattern } from '~/libs/enums/enums.js';
+import { formatDate } from '~/libs/helpers/helpers.js';
 import { type UserAuthResponseDto } from '~/packages/users/users.js';
 import { type ArticleType } from '~/pages/articles/libs/types/types.js';
 
@@ -34,7 +35,12 @@ const ArticleCard: React.FC<Properties> = ({ article, user }) => {
         <div className={styles.info}>
           <Avatar username={fullName} avatarUrl={null} />
           <span className={styles.publisherName}>{fullName}</span>
-          <span className={styles.publicationTime}>{publishedAt}</span>
+          <span className={styles.publicationTime}>
+            {formatDate({
+              isoString: publishedAt,
+              pattern: `${DatePattern.MONTH_DAY} ${DatePattern.MONTH_NAME}`,
+            })}
+          </span>
           <span className={styles.publicationTime}>{timeSincePublication}</span>
         </div>
         <Icon iconName="favorite" className={styles.icon} />
