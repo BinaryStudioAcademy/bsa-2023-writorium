@@ -3,7 +3,6 @@ import {
   useAppSelector,
   useEffect,
 } from '~/libs/hooks/hooks.js';
-import { type UserDetailsResponseDto } from '~/packages/users/users.js';
 import { actions as articlesActions } from '~/slices/articles/articles.js';
 
 import { ArticleCard } from './components/components.js';
@@ -24,7 +23,7 @@ const MyArticles: React.FC = () => {
           <ArticleCard
             key={article.id}
             article={article}
-            author={article.author as UserDetailsResponseDto}
+            author={article.author}
             tags={MOCKED_TAGS}
             reactions={MOCKED_REACTIONS}
           />
