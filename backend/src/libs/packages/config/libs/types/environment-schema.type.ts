@@ -26,6 +26,10 @@ type EnvironmentSchema = {
   OPEN_AI: {
     API_KEY: string;
   };
+  GOOGLE_AUTH: {
+    CLIENT_ID: string;
+    CLIENT_SECRET: string;
+  };
 };
 
 export { type EnvironmentSchema };
