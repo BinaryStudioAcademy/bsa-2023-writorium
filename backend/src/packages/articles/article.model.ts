@@ -7,7 +7,7 @@ import {
 import { composeDatabaseRelationPath } from '~/libs/packages/database/libs/helpers/helpers.js';
 
 import { ArticleReactionModel } from '../article-reactions/article-reaction.model.js';
-import { UserModel } from '../users/user.model.js';
+import { UserDetailsModel } from '../users/user-details.model.js';
 
 class ArticleModel extends AbstractModel {
   public 'title': string;
@@ -37,17 +37,17 @@ class ArticleModel extends AbstractModel {
           ),
         },
       },
-      user: {
+      author: {
         relation: Model.HasOneRelation,
-        modelClass: UserModel,
+        modelClass: UserDetailsModel,
         join: {
           from: composeDatabaseRelationPath<ArticleModel>(
             DatabaseTableName.ARTICLES,
             'userId',
           ),
-          to: composeDatabaseRelationPath<UserModel>(
-            DatabaseTableName.USERS,
-            'id',
+          to: composeDatabaseRelationPath<UserDetailsModel>(
+            DatabaseTableName.USER_DETAILS,
+            'userId',
           ),
         },
       },

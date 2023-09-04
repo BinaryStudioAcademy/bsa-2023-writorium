@@ -52,9 +52,14 @@
 
 .body {
   display: flex;
-  gap: 40px;
+  justify-content: space-between;
   margin-bottom: 23px;
   padding-right: 19px;
+}
+
+.body .articleInfo {
+  display: flex;
+  flex-direction: column;
 }
 
 .body .title {
@@ -68,7 +73,7 @@
 }
 
 .body .text {
-  margin: 15px 0 25px;
+  margin: 15px 0 auto;
   color: var(--dark-gray);
   font-weight: 400;
   font-size: 14px;
