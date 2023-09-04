@@ -11,6 +11,7 @@ import { getDetectArticleGenreCompletionConfig } from './libs/helpers/helpers.js
 import {
   type ArticleBaseResponseDto,
   type ArticleCreateDto,
+  type ArticleGetAllResponseDto,
   type ArticleUpdateRequestDto,
   type DetectedArticleGenre,
 } from './libs/types/types.js';
@@ -71,6 +72,28 @@ class ArticleService implements IService {
     return newGenreEntity.toObject().id;
   }
 
+  public async findAll(): Promise<ArticleGetAllResponseDto> {
+    const articles = await this.articleRepository.findAll({});
+
+    return { items: articles.map((article) => article.toObjectWithAuthor()) };
+  }
+
+  public async findOwn(userId: number): Promise<ArticleGetAllResponseDto> {
+    const articles = await this.articleRepository.findAll({ userId });
+
+    return { items: articles.map((article) => article.toObjectWithAuthor()) };
+  }
+
+  public async find(id: number): Promise<ArticleBaseResponseDto | null> {
+    const article = await this.articleRepository.find(id);
+
+    if (!article) {
+      return null;
+    }
+
+    return article.toObject();
+  }
+
   public async create(
     payload: ArticleCreateDto,
   ): Promise<ArticleBaseResponseDto> {
@@ -86,20 +109,6 @@ class ArticleService implements IService {
         publishedAt: payload?.publishedAt ?? null,
       }),
     );
-
-    return article.toObject();
-  }
-
-  public findAll(): Promise<{ items: unknown[] }> {
-    return Promise.resolve({ items: [] });
-  }
-
-  public async find(id: number): Promise<ArticleBaseResponseDto | null> {
-    const article = await this.articleRepository.find(id);
-
-    if (!article) {
-      return null;
-    }
 
     return article.toObject();
   }

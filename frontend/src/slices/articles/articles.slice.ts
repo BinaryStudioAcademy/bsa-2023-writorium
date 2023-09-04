@@ -2,13 +2,13 @@ import { createSlice, isAnyOf } from '@reduxjs/toolkit';
 
 import { DataStatus } from '~/libs/enums/enums.js';
 import { type ValueOf } from '~/libs/types/types.js';
-import { type ArticleBaseResponseDto } from '~/packages/articles/articles.js';
+import { type ArticleWithAuthorType } from '~/packages/articles/articles.js';
 
-import { createArticle, getArticle } from './actions.js';
+import { createArticle, fetchAll, fetchOwn, getArticle } from './actions.js';
 
 type State = {
-  article: ArticleBaseResponseDto | null;
-  articles: ArticleBaseResponseDto[];
+  article: ArticleWithAuthorType | null;
+  articles: ArticleWithAuthorType[];
   dataStatus: ValueOf<typeof DataStatus>;
 };
 
@@ -32,13 +32,30 @@ const { reducer, actions, name } = createSlice({
       state.article = action.payload;
     });
     builder.addMatcher(
-      isAnyOf(createArticle.pending, getArticle.pending),
+      isAnyOf(fetchAll.fulfilled, fetchOwn.fulfilled),
+      (state, action) => {
+        state.dataStatus = DataStatus.FULFILLED;
+        state.articles = action.payload.items;
+      },
+    );
+    builder.addMatcher(
+      isAnyOf(
+        fetchAll.pending,
+        fetchOwn.pending,
+        createArticle.pending,
+        getArticle.pending,
+      ),
       (state) => {
         state.dataStatus = DataStatus.PENDING;
       },
     );
     builder.addMatcher(
-      isAnyOf(createArticle.rejected, getArticle.rejected),
+      isAnyOf(
+        fetchAll.rejected,
+        fetchOwn.rejected,
+        createArticle.rejected,
+        getArticle.rejected,
+      ),
       (state) => {
         state.dataStatus = DataStatus.REJECTED;
       },
