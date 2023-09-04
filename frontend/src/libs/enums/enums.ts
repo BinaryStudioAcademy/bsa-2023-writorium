@@ -7,5 +7,6 @@ export {
   ApiPath,
   AppEnvironment,
   ContentType,
+  DatePattern,
   ServerErrorType,
 } from 'shared/build/index.js';
