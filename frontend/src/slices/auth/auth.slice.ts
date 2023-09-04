@@ -5,7 +5,14 @@ import { type ValueOf } from '~/libs/types/types.js';
 import { type UserAuthResponseDto as User } from '~/packages/users/users.js';
 import { actions as usersActions } from '~/slices/users/users.js';
 
-import { getCurrentUser, logout, signIn, signUp } from './actions.js';
+import {
+  getCurrentUser,
+  logout,
+  resetPassword,
+  sendEmailResetPasswordLink,
+  signIn,
+  signUp,
+} from './actions.js';
 
 type State = {
   dataStatus: ValueOf<typeof DataStatus>;
@@ -25,15 +32,31 @@ const { reducer, actions, name } = createSlice({
     builder.addCase(usersActions.updateUser.fulfilled, (state, action) => {
       state.user = action.payload;
     });
-    builder.addMatcher(isAnyOf(signUp.pending, signIn.pending), (state) => {
-      state.dataStatus = DataStatus.PENDING;
+    builder.addCase(sendEmailResetPasswordLink.fulfilled, (state) => {
+      state.dataStatus = DataStatus.FULFILLED;
     });
+    builder.addCase(sendEmailResetPasswordLink.rejected, (state) => {
+      state.dataStatus = DataStatus.REJECTED;
+    });
+    builder.addMatcher(
+      isAnyOf(
+        signUp.pending,
+        signIn.pending,
+        sendEmailResetPasswordLink.pending,
+        resetPassword.pending,
+      ),
+      (state) => {
+        state.dataStatus = DataStatus.PENDING;
+      },
+    );
+
     builder.addMatcher(
       isAnyOf(
         signIn.rejected,
         signUp.rejected,
         getCurrentUser.rejected,
         logout.rejected,
+        resetPassword.rejected,
       ),
       (state) => {
         state.dataStatus = DataStatus.REJECTED;
@@ -46,6 +69,7 @@ const { reducer, actions, name } = createSlice({
         signUp.fulfilled,
         signIn.fulfilled,
         getCurrentUser.fulfilled,
+        resetPassword.fulfilled,
       ),
       (state, action) => {
         state.dataStatus = DataStatus.FULFILLED;
