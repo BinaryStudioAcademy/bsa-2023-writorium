@@ -1,3 +1,4 @@
+export { RESET_PASSWORD_ROUTE } from './libs/constants/constants.js';
 export {
   ApiPath,
   AppEnvironment,
@@ -15,6 +16,7 @@ export {
   type HttpOptions,
   type IHttp,
 } from './libs/packages/http/http.js';
+export { type SendEmailResponse } from './libs/packages/mailer/mailer.js';
 export { type IStorage } from './libs/packages/storage/storage.js';
 export {
   type ServerCommonErrorResponse,
@@ -44,7 +46,13 @@ export {
   articleUpdateValidationSchema,
   type ArticleWithAuthorType,
 } from './packages/articles/articles.js';
-export { AuthApiPath } from './packages/auth/auth.js';
+export {
+  AuthApiPath,
+  type AuthRequestPasswordDto,
+  type AuthResetPasswordDto,
+  requestPasswordValidationSchema,
+  resetPasswordValidationSchema,
+} from './packages/auth/auth.js';
 export { FilesApiPath } from './packages/files/files.js';
 export {
   type GenreEntityType,
