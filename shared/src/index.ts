@@ -53,6 +53,19 @@ export {
   requestPasswordValidationSchema,
   resetPasswordValidationSchema,
 } from './packages/auth/auth.js';
+export {
+  type CommentBaseRequestDto,
+  type CommentBaseResponseDto,
+  type CommentCreateDto,
+  commentCreateValidationSchema,
+  type CommentEntityType,
+  type CommentGetAllRequestDto,
+  type CommentGetAllResponseDto,
+  CommentsApiPath,
+  type CommentUpdateDto,
+  type CommentUpdateRequestDto,
+  commentUpdateValidationSchema,
+} from './packages/comments/comments.js';
 export { FilesApiPath } from './packages/files/files.js';
 export {
   type GenreEntityType,
