@@ -23,6 +23,7 @@ rules:
     - error
     - ignoreRefs: true
   '@typescript-eslint/no-non-null-assertion': off
+  unicorn/explicit-length-check: off
 
 overrides:
   - files:

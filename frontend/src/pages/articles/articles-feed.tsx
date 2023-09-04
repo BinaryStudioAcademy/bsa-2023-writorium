@@ -18,7 +18,7 @@ const ArticlesFeed: React.FC = () => {
 
   return (
     <>
-      {articles.length > 0 &&
+      {Boolean(articles.length) &&
         articles.map((article) => (
           <ArticleCard
             key={article.id}
