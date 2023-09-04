@@ -9,6 +9,7 @@ import { type ILogger } from '~/libs/packages/logger/logger.js';
 
 import { PromptsApiPath } from './libs/enums/enums.js';
 import { type PromptRequestDto } from './libs/types/types.js';
+import { promptCreateValidationSchema } from './libs/validation-schemas/validation-schemas.js';
 import { type PromptService } from './prompt.service.js';
 
 /**
@@ -71,6 +72,9 @@ class PromptsController extends Controller {
     this.addRoute({
       path: PromptsApiPath.ROOT,
       method: 'POST',
+      validation: {
+        body: promptCreateValidationSchema,
+      },
       handler: (options) =>
         this.create(
           options as ApiHandlerOptions<{

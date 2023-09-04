@@ -32,7 +32,7 @@ const up = (knex: Knex): Promise<void> => {
     table.text(ColumnName.SITUATION).nullable();
     table.text(ColumnName.PROP).nullable();
     table
-      .enu(ColumnName.TYPE, [PromptType.DAILY, PromptType.MANUAL])
+      .enum(ColumnName.TYPE, [PromptType.DAILY, PromptType.MANUAL])
       .notNullable();
     table
       .integer(ColumnName.GENRE_ID)

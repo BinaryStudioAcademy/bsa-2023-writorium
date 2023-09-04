@@ -5,7 +5,6 @@ import {
   useAppForm,
   useAppSelector,
   useCallback,
-  useEffect,
 } from '~/libs/hooks/hooks.js';
 import { type ValueOf } from '~/libs/types/types.js';
 import {
@@ -14,16 +13,14 @@ import {
 } from '~/packages/articles/articles.js';
 import { PromptType } from '~/packages/prompts/prompts.js';
 import { actions as articlesActions } from '~/slices/articles/articles.js';
-import { actions as promptsActions } from '~/slices/prompts/prompts.js';
 
 import { DEFAULT_ARTICLE_FORM_PAYLOAD } from './libs/constants/constants.js';
 import { ArticleSubmitType } from './libs/enums/enums.js';
 import styles from './styles.module.scss';
 
 const ArticleForm: React.FC = () => {
-  const { createdPrompt, generatedPrompt } = useAppSelector(({ prompts }) => ({
+  const { generatedPrompt } = useAppSelector(({ prompts }) => ({
     generatedPrompt: prompts.generatedPrompt,
-    createdPrompt: prompts.createdPrompt,
   }));
   const dispatch = useAppDispatch();
   const { control, errors, handleSubmit, handleReset, isDirty, isSubmitting } =
@@ -31,17 +28,6 @@ const ArticleForm: React.FC = () => {
       defaultValues: DEFAULT_ARTICLE_FORM_PAYLOAD,
       validationSchema: articleCreateValidationSchema,
     });
-
-  useEffect(() => {
-    if (generatedPrompt) {
-      void dispatch(
-        promptsActions.createPrompt({
-          type: PromptType.MANUAL,
-          ...generatedPrompt,
-        }),
-      );
-    }
-  }, [dispatch, generatedPrompt]);
 
   const handleArticleSubmit = useCallback(
     (articleSubmitType: ValueOf<typeof ArticleSubmitType>) =>
@@ -54,15 +40,24 @@ const ArticleForm: React.FC = () => {
               : null,
         };
 
-        if (createdPrompt) {
-          const { genreId, id: promptId } = createdPrompt;
-          updatedPayload.genreId = genreId;
-          updatedPayload.promptId = promptId;
-        }
-
-        void dispatch(articlesActions.createArticle(updatedPayload));
+        generatedPrompt
+          ? void dispatch(
+              articlesActions.createArticle({
+                articlePayload: updatedPayload,
+                generatedPrompt: {
+                  type: PromptType.MANUAL,
+                  ...generatedPrompt,
+                },
+              }),
+            )
+          : void dispatch(
+              articlesActions.createArticle({
+                articlePayload: updatedPayload,
+                generatedPrompt: null,
+              }),
+            );
       },
-    [dispatch, createdPrompt],
+    [dispatch, generatedPrompt],
   );
 
   const handleFormSubmit = useCallback(
