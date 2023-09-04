@@ -15,7 +15,7 @@ type FormatDateParameters = {
 const formatDate = ({
   isoString,
   pattern,
-  options = undefined,
+  options,
 }: FormatDateParameters): string => {
   return format(new Date(isoString), pattern, options);
 };
