@@ -11,7 +11,7 @@ import styles from './styles.module.scss';
 
 type Properties = {
   article: ArticleWithAuthorType;
-  author?: UserDetailsResponseDto;
+  author: UserDetailsResponseDto;
   tags: TagType[];
   reactions: ReactionsType;
 };
@@ -32,17 +32,11 @@ const ArticleCard: React.FC<Properties> = ({
       <div className={styles.header}>
         <div className={styles.info}>
           <Avatar
-            username={getFullName(
-              author?.firstName as string,
-              author?.lastName as string,
-            )}
+            username={getFullName(author.firstName, author.lastName)}
             avatarUrl={null}
           />
           <span className={styles.publisherName}>
-            {getFullName(
-              author?.firstName as string,
-              author?.lastName as string,
-            )}
+            {getFullName(author.firstName, author.lastName)}
           </span>
           <span className={styles.publicationTime}>
             {formatShortDate(publishedAt as string)}
