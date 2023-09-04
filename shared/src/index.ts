@@ -60,6 +60,19 @@ export {
   MAX_FILE_SIZE_MB,
   SUPPORTED_FILE_TYPES,
 } from './packages/files/files.js';
+{
+  type CommentBaseRequestDto,
+  type CommentBaseResponseDto,
+  type CommentCreateDto,
+  commentCreateValidationSchema,
+  type CommentEntityType,
+  type CommentGetAllRequestDto,
+  type CommentGetAllResponseDto,
+  CommentsApiPath,
+  type CommentUpdateDto,
+  type CommentUpdateRequestDto,
+  commentUpdateValidationSchema,
+} from './packages/comments/comments.js';
 export {
   type GenreEntityType,
   type GenreGetAllItemResponseDto,
