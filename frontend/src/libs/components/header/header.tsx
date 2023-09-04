@@ -1,6 +1,6 @@
 import { Avatar, Link, Popover } from '~/libs/components/components.js';
 import { AppRoute } from '~/libs/enums/enums.js';
-import { getFullName } from '~/libs/helpers/helpers.js';
+import { getFullName, getValidClassNames } from '~/libs/helpers/helpers.js';
 import { useCallback, useModal } from '~/libs/hooks/hooks.js';
 import { type UserAuthResponseDto } from '~/packages/users/users.js';
 
@@ -40,9 +40,11 @@ const Header: React.FC<Properties> = ({ user }) => {
           <Popover
             trigger={{ handleToggleModalOpen, isOpen }}
             content={<Dropdown trigger={{ handleToggleModalOpen, isOpen }} />}
-            className={`${styles.dropdown} ${styles.dropdownModal} ${
-              isOpen ? styles.open : ''
-            }`}
+            className={getValidClassNames(
+              styles.dropdown,
+              styles.dropdownModal,
+              isOpen ? styles.open : '',
+            )}
           />
         </div>
       )}
