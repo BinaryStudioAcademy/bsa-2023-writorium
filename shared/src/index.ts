@@ -3,6 +3,7 @@ export {
   AppEnvironment,
   ContentType,
   ServerErrorType,
+  SortingOrder,
 } from './libs/enums/enums.js';
 export { ApplicationError, HttpError } from './libs/exceptions/exceptions.js';
 export { configureString, safeJSONParse } from './libs/helpers/helpers.js';
@@ -36,10 +37,12 @@ export {
   type ArticleCreateDto,
   articleCreateValidationSchema,
   type ArticleEntityType,
+  type ArticleGetAllResponseDto,
   type ArticleRequestDto,
   ArticlesApiPath,
   type ArticleUpdateRequestDto,
   articleUpdateValidationSchema,
+  type ArticleWithAuthorType,
 } from './packages/articles/articles.js';
 export { AuthApiPath } from './packages/auth/auth.js';
 export { FilesApiPath } from './packages/files/files.js';
@@ -57,6 +60,8 @@ export {
 } from './packages/prompts/prompts.js';
 export {
   type UserAuthResponseDto,
+  type UserDetailsDto,
+  type UserDetailsResponseDto,
   type UserGetAllItemResponseDto,
   type UserGetAllResponseDto,
   UsersApiPath,
