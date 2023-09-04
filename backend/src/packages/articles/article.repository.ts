@@ -2,16 +2,32 @@ import { type IRepository } from '~/libs/interfaces/repository.interface.js';
 
 import { ArticleEntity } from './article.entity.js';
 import { type ArticleModel } from './article.model.js';
+import { SortingOrder } from './libs/enums/enums.js';
+import { getWhereUserIdQuery } from './libs/helpers/helpers.js';
 
 class ArticleRepository implements IRepository {
   private articleModel: typeof ArticleModel;
+
+  private defaultRelationExpression = 'author';
 
   public constructor(articleModel: typeof ArticleModel) {
     this.articleModel = articleModel;
   }
 
-  public findAll(): Promise<unknown[]> {
-    return Promise.resolve([]);
+  public async findAll({
+    userId,
+  }: {
+    userId?: number;
+  }): Promise<ArticleEntity[]> {
+    const articles = await this.articleModel
+      .query()
+      .where(getWhereUserIdQuery(userId))
+      .orderBy('articles.publishedAt', SortingOrder.DESCENDING)
+      .withGraphJoined(this.defaultRelationExpression);
+
+    return articles.map((article) =>
+      ArticleEntity.initializeWithAuthor(article),
+    );
   }
 
   public async find(id: number): Promise<ArticleEntity | null> {
