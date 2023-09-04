@@ -23,6 +23,8 @@ rules:
     - error
     - ignoreRefs: true
       allowArrowFunctions: true
+  '@typescript-eslint/no-non-null-assertion':
+    - off
 
 overrides:
   - files:
