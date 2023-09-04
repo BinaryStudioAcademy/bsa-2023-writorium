@@ -11,6 +11,7 @@ import {
   resetPassword,
   sendEmailResetPasswordLink,
   signIn,
+  signInWithFacebook,
   signUp,
 } from './actions.js';
 
@@ -44,6 +45,7 @@ const { reducer, actions, name } = createSlice({
         signIn.pending,
         sendEmailResetPasswordLink.pending,
         resetPassword.pending,
+        signInWithFacebook.pending,
       ),
       (state) => {
         state.dataStatus = DataStatus.PENDING;
@@ -57,6 +59,7 @@ const { reducer, actions, name } = createSlice({
         getCurrentUser.rejected,
         logout.rejected,
         resetPassword.rejected,
+        signInWithFacebook.rejected,
       ),
       (state) => {
         state.dataStatus = DataStatus.REJECTED;
@@ -70,6 +73,7 @@ const { reducer, actions, name } = createSlice({
         signIn.fulfilled,
         getCurrentUser.fulfilled,
         resetPassword.fulfilled,
+        signInWithFacebook.fulfilled,
       ),
       (state, action) => {
         state.dataStatus = DataStatus.FULFILLED;

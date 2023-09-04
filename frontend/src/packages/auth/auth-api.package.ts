@@ -1,3 +1,5 @@
+import { type ReactFacebookLoginInfo } from 'react-facebook-login';
+
 import { ApiPath, ContentType } from '~/libs/enums/enums.js';
 import { HttpApi } from '~/libs/packages/api/api.js';
 import { type IHttp } from '~/libs/packages/http/http.js';
@@ -49,6 +51,22 @@ class AuthApi extends HttpApi {
   ): Promise<UserSignInResponseDto> {
     const response = await this.load(
       this.getFullEndpoint(AuthApiPath.SIGN_IN, {}),
+      {
+        method: 'POST',
+        contentType: ContentType.JSON,
+        payload: JSON.stringify(payload),
+        hasAuth: false,
+      },
+    );
+
+    return await response.json<UserSignInResponseDto>();
+  }
+
+  public async signInWithFacebook(
+    payload: ReactFacebookLoginInfo,
+  ): Promise<UserSignInResponseDto> {
+    const response = await this.load(
+      this.getFullEndpoint(AuthApiPath.SIGN_IN_FACEBOOK, {}),
       {
         method: 'POST',
         contentType: ContentType.JSON,

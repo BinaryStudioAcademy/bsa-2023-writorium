@@ -1,12 +1,16 @@
+import { type ReactFacebookLoginInfo } from 'react-facebook-login';
+
 import { Input, Link } from '~/libs/components/components.js';
 import { AppRoute } from '~/libs/enums/app-route.enum';
-import { useAppForm, useCallback } from '~/libs/hooks/hooks.js';
+import { useAppDispatch, useAppForm, useCallback } from '~/libs/hooks/hooks.js';
 import {
   type UserSignInRequestDto,
   userSignInValidationSchema,
 } from '~/packages/users/users.js';
+import { actions as authActions } from '~/slices/auth/auth.js';
 
 import { AuthSubmitButton } from '../auth-submit-button/auth-submit-button.js';
+import { FacebookLoginButton } from '../facebook-login-button/facebook-login-button.js';
 import { PasswordInput } from '../password-input/password-input.js';
 import { DEFAULT_LOGIN_PAYLOAD } from './libs/constants/constants.js';
 import styles from './styles.module.scss';
@@ -16,10 +20,18 @@ type Properties = {
 };
 
 const SignInForm: React.FC<Properties> = ({ onSubmit }) => {
+  const dispatch = useAppDispatch();
   const { control, errors, handleSubmit } = useAppForm({
     defaultValues: DEFAULT_LOGIN_PAYLOAD,
     validationSchema: userSignInValidationSchema,
   });
+
+  const handleFacebookLogin = useCallback(
+    (response: ReactFacebookLoginInfo): void => {
+      void dispatch(authActions.signInWithFacebook(response));
+    },
+    [dispatch],
+  );
 
   const handleFormSubmit = useCallback(
     (event_: React.BaseSyntheticEvent): void => {
@@ -32,6 +44,8 @@ const SignInForm: React.FC<Properties> = ({ onSubmit }) => {
     <>
       <div className={styles.formWrapper}>
         <h2 className={styles.authFormTitle}>Hello!</h2>
+        <FacebookLoginButton onLogin={handleFacebookLogin} />
+
         <form
           className={styles.form}
           name="loginForm"
