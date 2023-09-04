@@ -1,7 +1,6 @@
-import { useCallback } from 'react';
-
 import { IconButton } from '~/libs/components/components.js';
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
+import { useCallback } from '~/libs/hooks/hooks.js';
 
 import { type ToolbarButtonProperties } from '../../types/types.js';
 import styles from './styles.module.scss';

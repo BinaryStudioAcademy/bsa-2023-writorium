@@ -1,3 +1,3 @@
-const UPPERLINE_EXTENTION_NAME = 'upperline';
+const UPPERLINE_EXTENSION_NAME = 'upperline';
 
-export { UPPERLINE_EXTENTION_NAME };
+export { UPPERLINE_EXTENSION_NAME };
