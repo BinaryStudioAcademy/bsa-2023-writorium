@@ -7,18 +7,9 @@ import { type UpperlineOptions } from './libs/types/types.js';
 declare module '@tiptap/core' {
   interface Commands<ReturnType> {
     upperline: {
-      /**
-       * Set an upperline mark
-       */
       setUpperline: () => ReturnType;
-      /**
-       * Toggle an upperline mark
-       */
-      toggleUpperline: () => ReturnType;
-      /**
-       * Unset an upperline mark
-       */
       unsetUpperline: () => ReturnType;
+      toggleUpperline: () => ReturnType;
     };
   }
 }
