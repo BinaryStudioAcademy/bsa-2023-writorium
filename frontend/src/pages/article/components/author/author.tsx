@@ -53,7 +53,7 @@ const Author: FC<Properties> = ({
               <span>
                 {formatDate({
                   isoString: publishedAt,
-                  pattern: `${DatePattern.MONTH_DAY} ${DatePattern.MONTH_NAME}`,
+                  pattern: `${DatePattern.MONTH_DAY} ${DatePattern.SHORT_MONTH_NAME}`,
                 })}
               </span>
             </li>
