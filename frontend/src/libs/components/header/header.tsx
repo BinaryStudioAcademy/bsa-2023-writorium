@@ -29,12 +29,21 @@ const Header: React.FC<Properties> = ({ user }) => {
               WRITORIUM
             </Link>
 
-            <button className={styles.avatarButton} onClick={handleAvatarClick}>
-              <Avatar
-                username={getFullName(user.firstName, user.lastName)}
-                avatarUrl={null}
-              />
-            </button>
+            <div className={styles.rightSide}>
+              <Link to={AppRoute.CREATE_ARTICLE} className={styles.writeLink}>
+                Write
+              </Link>
+
+              <button
+                className={styles.avatarButton}
+                onClick={handleAvatarClick}
+              >
+                <Avatar
+                  username={getFullName(user.firstName, user.lastName)}
+                  avatarUrl={null}
+                />
+              </button>
+            </div>
           </header>
 
           <Popover

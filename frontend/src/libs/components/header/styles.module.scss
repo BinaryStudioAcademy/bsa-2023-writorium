@@ -20,6 +20,23 @@
   text-decoration: none;
 }
 
+.rightSide {
+  display: inline-flex;
+  align-items: center;
+}
+
+.writeLink {
+  margin-right: 35px;
+  padding: 12px 26px;
+  color: var(--white);
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 19px;
+  background-color: var(--dark-green);
+  border-radius: 5px;
+  cursor: pointer;
+}
+
 .dropdown.dropdownModal {
   background-color: var(--light-grey-15);
 }
