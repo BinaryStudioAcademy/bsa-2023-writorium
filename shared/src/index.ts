@@ -54,13 +54,6 @@ export {
   resetPasswordValidationSchema,
 } from './packages/auth/auth.js';
 export {
-  FilesApiPath,
-  FileType,
-  type FileUploadResponseDto,
-  MAX_FILE_SIZE_MB,
-  SUPPORTED_FILE_TYPES,
-} from './packages/files/files.js';
-{
   type CommentBaseRequestDto,
   type CommentBaseResponseDto,
   type CommentCreateDto,
@@ -73,6 +66,13 @@ export {
   type CommentUpdateRequestDto,
   commentUpdateValidationSchema,
 } from './packages/comments/comments.js';
+export {
+  FilesApiPath,
+  FileType,
+  type FileUploadResponseDto,
+  MAX_FILE_SIZE_MB,
+  SUPPORTED_FILE_TYPES,
+} from './packages/files/files.js';
 export {
   type GenreEntityType,
   type GenreGetAllItemResponseDto,
