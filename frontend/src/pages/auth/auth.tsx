@@ -1,3 +1,4 @@
+import { useGoogleLogin } from '@react-oauth/google';
 import { matchPath } from 'react-router-dom';
 
 import { AppRoute } from '~/libs/enums/enums.js';
@@ -54,6 +55,15 @@ const Auth: React.FC = () => {
     [dispatch],
   );
 
+  const login = useGoogleLogin({
+    onSuccess: ({ code }) => {
+      void dispatch(authActions.loginWithGoogle({ code }));
+    },
+
+    flow: 'auth-code',
+  });
+  const handleGoogleLogin = useCallback(() => login(), [login]);
+
   const getScreen = (screen: string): React.ReactNode => {
     if (matchPath({ path: AppRoute.RESET_PASSWORD }, pathname)) {
       return <ResetPasswordForm onSubmit={handleResetPasswordSubmit} />;
@@ -61,7 +71,12 @@ const Auth: React.FC = () => {
 
     switch (screen) {
       case AppRoute.SIGN_IN: {
-        return <SignInForm onSubmit={handleSignInSubmit} />;
+        return (
+          <SignInForm
+            onSubmit={handleSignInSubmit}
+            onGoogleLogin={handleGoogleLogin}
+          />
+        );
       }
       case AppRoute.SIGN_UP: {
         return <SignUpForm onSubmit={handleSignUpSubmit} />;
