@@ -13,7 +13,7 @@ const Header: React.FC<Properties> = ({ user }) => (
   <>
     {user && (
       <header className={styles.header}>
-        <Link to={AppRoute.ROOT} className={styles.logo}>
+        <Link to={AppRoute.ARTICLES} className={styles.logo}>
           WRITORIUM
         </Link>
         <Link to={AppRoute.PROFILE}>

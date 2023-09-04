@@ -3,8 +3,10 @@ export {
   type ArticleBaseResponseDto,
   type ArticleCreateDto,
   type ArticleEntityType,
+  type ArticleGetAllResponseDto,
   type ArticleRequestDto,
   type ArticleUpdateRequestDto,
+  type ArticleWithAuthorType,
 } from './libs/types/types.js';
 export {
   articleCreate as articleCreateValidationSchema,

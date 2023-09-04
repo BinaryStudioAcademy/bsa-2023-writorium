@@ -1,7 +1,11 @@
 import { type IEntity } from '~/libs/interfaces/interfaces.js';
 import { type WithNullableKeys } from '~/libs/types/types.js';
 
-import { type ArticleEntityType } from './libs/types/types.js';
+import {
+  type ArticleEntityType,
+  type ArticleWithAuthorType,
+  type UserDetailsResponseDto,
+} from './libs/types/types.js';
 
 class ArticleEntity implements IEntity {
   private 'id': number | null;
@@ -11,6 +15,7 @@ class ArticleEntity implements IEntity {
   private 'promptId': number | null;
   private 'genreId': number | null;
   private 'publishedAt': string | null;
+  private 'author'?: UserDetailsResponseDto;
 
   private constructor({
     id,
@@ -20,7 +25,8 @@ class ArticleEntity implements IEntity {
     promptId,
     genreId,
     publishedAt,
-  }: WithNullableKeys<ArticleEntityType, 'id'>) {
+    author,
+  }: WithNullableKeys<ArticleWithAuthorType, 'id'>) {
     this.id = id;
     this.title = title;
     this.text = text;
@@ -28,6 +34,7 @@ class ArticleEntity implements IEntity {
     this.promptId = promptId;
     this.genreId = genreId;
     this.publishedAt = publishedAt;
+    this.author = author;
   }
 
   public static initialize({
@@ -47,6 +54,31 @@ class ArticleEntity implements IEntity {
       promptId,
       genreId,
       publishedAt,
+    });
+  }
+
+  public static initializeWithAuthor({
+    id,
+    title,
+    text,
+    userId,
+    promptId,
+    genreId,
+    publishedAt,
+    author,
+  }: ArticleWithAuthorType): ArticleEntity {
+    return new ArticleEntity({
+      id,
+      title,
+      text,
+      userId,
+      promptId,
+      genreId,
+      publishedAt,
+      author: {
+        firstName: author?.firstName as string,
+        lastName: author?.lastName as string,
+      },
     });
   }
 
@@ -78,6 +110,19 @@ class ArticleEntity implements IEntity {
       promptId: this.promptId,
       genreId: this.genreId,
       publishedAt: this.publishedAt,
+    };
+  }
+
+  public toObjectWithAuthor(): ArticleWithAuthorType {
+    return {
+      id: this.id as number,
+      title: this.title,
+      text: this.text,
+      userId: this.userId,
+      promptId: this.promptId,
+      genreId: this.genreId,
+      publishedAt: this.publishedAt,
+      author: this.author,
     };
   }
 
