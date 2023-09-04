@@ -1,6 +1,6 @@
 const DatePattern = {
   MONTH_DAY: 'd',
-  MONTH_NAME: 'LLLL',
+  SHORT_MONTH_NAME: 'LLL',
 } as const;
 
 export { DatePattern };
