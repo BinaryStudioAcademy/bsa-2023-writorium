@@ -5,7 +5,16 @@ import { ReactComponent as Comment } from '~/assets/img/icons/comment-icon.svg';
 import { ReactComponent as CrossMark } from '~/assets/img/icons/cross-mark-icon.svg';
 import { ReactComponent as Dislike } from '~/assets/img/icons/dislike-icon.svg';
 import { ReactComponent as Favorite } from '~/assets/img/icons/favorite-icon.svg';
+import { ReactComponent as Header1 } from '~/assets/img/icons/format-header-1-icon.svg';
+import { ReactComponent as Header2 } from '~/assets/img/icons/format-header-2-icon.svg';
+import { ReactComponent as Header3 } from '~/assets/img/icons/format-header-3-icon.svg';
+import { ReactComponent as Header4 } from '~/assets/img/icons/format-header-4-icon.svg';
+import { ReactComponent as Header5 } from '~/assets/img/icons/format-header-5-icon.svg';
+import { ReactComponent as Header6 } from '~/assets/img/icons/format-header-6-icon.svg';
+import { ReactComponent as ListBulleted } from '~/assets/img/icons/format-list-bulleted-icon.svg';
+import { ReactComponent as ListNumbered } from '~/assets/img/icons/format-list-numbered-icon.svg';
 import { ReactComponent as TextAlignCenter } from '~/assets/img/icons/format-text-align-center-icon.svg';
+import { ReactComponent as TextAlignJustify } from '~/assets/img/icons/format-text-align-justify.svg';
 import { ReactComponent as TextAlignLeft } from '~/assets/img/icons/format-text-align-left-icon.svg';
 import { ReactComponent as TextAlignRight } from '~/assets/img/icons/format-text-align-right-icon.svg';
 import { ReactComponent as TextBold } from '~/assets/img/icons/format-text-bold-icon.svg';
@@ -38,6 +47,7 @@ type IconName =
   | 'textAlignLeft'
   | 'textAlignCenter'
   | 'textAlignRight'
+  | 'textAlignJustify'
   | 'textBold'
   | 'textItalic'
   | 'textStrikeThrough'
@@ -53,7 +63,15 @@ type IconName =
   | 'share'
   | 'sparkles'
   | 'star'
-  | 'view';
+  | 'view'
+  | 'listNumbered'
+  | 'listBulleted'
+  | 'header1'
+  | 'header2'
+  | 'header3'
+  | 'header4'
+  | 'header5'
+  | 'header6';
 
 const iconNameToIcon: Record<
   IconName,
@@ -86,6 +104,15 @@ const iconNameToIcon: Record<
   sparkles: Sparkles,
   star: Star,
   view: View,
+  textAlignJustify: TextAlignJustify,
+  listBulleted: ListBulleted,
+  listNumbered: ListNumbered,
+  header1: Header1,
+  header2: Header2,
+  header3: Header3,
+  header4: Header4,
+  header5: Header5,
+  header6: Header6,
 };
 
 export { type IconName, iconNameToIcon };
