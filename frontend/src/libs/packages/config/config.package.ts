@@ -21,6 +21,9 @@ class Config implements IConfig {
       API: {
         ORIGIN_URL: import.meta.env.VITE_APP_API_ORIGIN_URL as string,
       },
+      FACEBOOK: {
+        APP_ID: import.meta.env.VITE_APP_ID as string,
+      },
     };
   }
 }

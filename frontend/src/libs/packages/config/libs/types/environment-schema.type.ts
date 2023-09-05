@@ -8,6 +8,9 @@ type EnvironmentSchema = {
   API: {
     ORIGIN_URL: string;
   };
+  FACEBOOK: {
+    APP_ID: string;
+  };
 };
 
 export { type EnvironmentSchema };
