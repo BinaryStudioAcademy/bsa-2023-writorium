@@ -1,13 +1,8 @@
-type Constructor = {
-  message?: string;
-  cause?: unknown;
-};
+import { HttpCode, HttpError } from '~/libs/packages/http/http.js';
 
-class UserNotFoundError extends Error {
-  public constructor({ message = 'User Not Found', cause }: Constructor = {}) {
-    super(message, {
-      cause,
-    });
+class UserNotFoundError extends HttpError {
+  public constructor() {
+    super({ message: 'User Not Found', status: HttpCode.NOT_FOUND });
   }
 }
 
