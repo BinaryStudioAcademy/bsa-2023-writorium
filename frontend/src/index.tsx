@@ -12,7 +12,7 @@ import {
 } from '~/libs/components/components.js';
 import { AppRoute, ArticleSubRoute } from '~/libs/enums/enums.js';
 import { store } from '~/libs/packages/store/store.js';
-import { Article } from '~/pages/article/article.js';
+import { ArticlePage, CreateArticlePage } from '~/pages/article/article.js';
 import { Auth } from '~/pages/auth/auth.js';
 import { Landing } from '~/pages/landing/landing.js';
 import { Profile } from '~/pages/profile/profile.js';
@@ -86,7 +86,15 @@ createRoot(document.querySelector('#root') as HTMLElement).render(
                 path: AppRoute.ARTICLE,
                 element: (
                   <ProtectedRoute>
-                    <Article />
+                    <ArticlePage />
+                  </ProtectedRoute>
+                ),
+              },
+              {
+                path: AppRoute.CREATE_ARTICLE,
+                element: (
+                  <ProtectedRoute>
+                    <CreateArticlePage />
                   </ProtectedRoute>
                 ),
               },

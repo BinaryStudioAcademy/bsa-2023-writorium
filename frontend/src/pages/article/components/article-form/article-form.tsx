@@ -1,19 +1,27 @@
+import { Button, Input, TextEditor } from '~/libs/components/components.js';
 import { ButtonType } from '~/libs/enums/enums.js';
-import { useAppDispatch, useAppForm, useCallback } from '~/libs/hooks/hooks.js';
+import {
+  useAppDispatch,
+  useAppForm,
+  useAppSelector,
+  useCallback,
+} from '~/libs/hooks/hooks.js';
 import { type ValueOf } from '~/libs/types/types.js';
 import {
   articleCreateValidationSchema,
   type ArticleRequestDto,
 } from '~/packages/articles/articles.js';
+import { getGeneratedPromptPayload } from '~/packages/prompts/prompts.js';
 import { actions as articlesActions } from '~/slices/articles/articles.js';
 
-import { Button, Input, TextEditor } from '../components.js';
-import { DEFAULT_ARTICLE_FORM_PAYLOAD } from './libs/constants.js';
+import { DEFAULT_ARTICLE_FORM_PAYLOAD } from './libs/constants/constants.js';
 import { ArticleSubmitType } from './libs/enums/enums.js';
 import styles from './styles.module.scss';
 
-// TODO: Should be moved out from common components.
 const ArticleForm: React.FC = () => {
+  const { generatedPrompt } = useAppSelector(({ prompts }) => ({
+    generatedPrompt: prompts.generatedPrompt,
+  }));
   const dispatch = useAppDispatch();
   const { control, errors, handleSubmit, handleReset, isDirty, isSubmitting } =
     useAppForm<ArticleRequestDto>({
@@ -32,9 +40,14 @@ const ArticleForm: React.FC = () => {
               : null,
         };
 
-        void dispatch(articlesActions.createArticle(updatedPayload));
+        void dispatch(
+          articlesActions.createArticle({
+            articlePayload: updatedPayload,
+            generatedPrompt: getGeneratedPromptPayload(generatedPrompt),
+          }),
+        );
       },
-    [dispatch],
+    [dispatch, generatedPrompt],
   );
 
   const handleFormSubmit = useCallback(
@@ -67,7 +80,9 @@ const ArticleForm: React.FC = () => {
           errors={errors}
           className={styles.titleInput}
         />
+
         <TextEditor control={control} name="text" errors={errors} />
+
         <div className={styles.buttonWrapper}>
           <Button
             type={ButtonType.RESET}
