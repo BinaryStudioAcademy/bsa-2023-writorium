@@ -13,8 +13,8 @@ class GoogleAuthClient {
     this.config = config;
     const { GOOGLE_AUTH } = this.config.ENV;
     this.authClient = new OAuth2Client(
-      GOOGLE_AUTH.CLIENT_ID,
-      GOOGLE_AUTH.CLIENT_SECRET,
+      GOOGLE_AUTH.GOOGLE_CLIENT_ID,
+      GOOGLE_AUTH.GOOGLE_CLIENT_SECRET,
       'postmessage',
     );
   }
@@ -36,7 +36,7 @@ class GoogleAuthClient {
     const { GOOGLE_AUTH } = this.config.ENV;
     return await this.authClient.verifyIdToken({
       idToken: token,
-      audience: GOOGLE_AUTH.CLIENT_ID,
+      audience: GOOGLE_AUTH.GOOGLE_CLIENT_ID,
     });
   }
 

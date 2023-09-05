@@ -141,16 +141,16 @@ class Config implements IConfig {
         },
       },
       GOOGLE_AUTH: {
-        CLIENT_ID: {
+        GOOGLE_CLIENT_ID: {
           doc: 'Google Auth api client id',
           format: String,
-          env: 'CLIENT_ID',
+          env: 'GOOGLE_CLIENT_ID',
           default: null,
         },
-        CLIENT_SECRET: {
+        GOOGLE_CLIENT_SECRET: {
           doc: 'Google Auth api client secret',
           format: String,
-          env: 'CLIENT_SECRET',
+          env: 'GOOGLE_CLIENT_SECRET',
           default: null,
         },
       },

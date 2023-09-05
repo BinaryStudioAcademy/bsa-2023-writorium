@@ -27,8 +27,8 @@ type EnvironmentSchema = {
     API_KEY: string;
   };
   GOOGLE_AUTH: {
-    CLIENT_ID: string;
-    CLIENT_SECRET: string;
+    GOOGLE_CLIENT_ID: string;
+    GOOGLE_CLIENT_SECRET: string;
   };
 };
 
