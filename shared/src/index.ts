@@ -53,8 +53,10 @@ export {
 } from './packages/articles/articles.js';
 export {
   AuthApiPath,
+  type AuthLoginWithGoogleDto,
   type AuthRequestPasswordDto,
   type AuthResetPasswordDto,
+  loginWithGoogleValidationSchema,
   requestPasswordValidationSchema,
   resetPasswordValidationSchema,
 } from './packages/auth/auth.js';
