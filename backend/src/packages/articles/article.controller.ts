@@ -103,13 +103,21 @@ class ArticleController extends Controller {
     this.addRoute({
       path: ArticlesApiPath.SHARE,
       method: 'GET',
-      // validation: {
-      //   body: articleUpdateValidationSchema,
-      // },
       handler: (options) =>
         this.share(
           options as ApiHandlerOptions<{
             params: { id: number };
+          }>,
+        ),
+    });
+
+    this.addRoute({
+      path: ArticlesApiPath.TOKEN,
+      method: 'POST',
+      handler: (options) =>
+        this.encryptShared(
+          options as ApiHandlerOptions<{
+            body: { token: string };
           }>,
         ),
     });
@@ -215,12 +223,41 @@ class ArticleController extends Controller {
     }>,
   ): Promise<ApiHandlerResponse> {
     const token = await articleToken.create({
-      userId: options.params.id.toString(),
+      articleId: options.params.id,
     });
 
     return {
       status: HttpCode.OK,
       payload: { articleToken: token },
+    };
+  }
+
+  /**
+   * @swagger
+   * /articles/shared
+   *    get:
+   *      summary: Get article encoded from query
+   *      description: Get an existing article with id encoded from query
+   *      requestBody:
+   *        required: true
+   *      responses:
+   *        200:
+   *          description: Successful operation
+   *          content:
+   *            application/json:
+   *              schema:
+   *                $ref: '#/components/schemas/Article'
+   */
+  private async encryptShared(
+    options: ApiHandlerOptions<{
+      body: { token: string };
+    }>,
+  ): Promise<ApiHandlerResponse> {
+    const encoded = await articleToken.verifyToken(options.body.token);
+
+    return {
+      status: HttpCode.OK,
+      payload: await this.articleService.find(Number(encoded.articleId)),
     };
   }
 }

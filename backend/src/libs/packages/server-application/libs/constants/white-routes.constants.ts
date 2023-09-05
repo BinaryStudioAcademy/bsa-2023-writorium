@@ -27,6 +27,10 @@ const STRING_WHITE_ROUTES: readonly WhiteRoute<string>[] = [
     routerPath: '/v1/documentation/json',
     methods: ['GET'],
   },
+  {
+    routerPath: '/v1/articles/shared',
+    methods: ['POST'],
+  },
 ];
 
 const WHITE_ROUTES: readonly WhiteRoute[] = STRING_WHITE_ROUTES.map(
