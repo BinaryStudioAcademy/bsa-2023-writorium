@@ -5,4 +5,4 @@ export { useModal } from './use-modal/use-modal.hook.js';
 export { useMousePosition } from './use-mouse-position/use-mouse-position.hook.js';
 export { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 export { useController as useFormController } from 'react-hook-form';
-export { useLocation, useParams } from 'react-router-dom';
+export { useLocation, useNavigate, useParams } from 'react-router-dom';
