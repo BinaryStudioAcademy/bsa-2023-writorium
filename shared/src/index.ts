@@ -74,7 +74,13 @@ export {
   type CommentUpdateRequestDto,
   commentUpdateValidationSchema,
 } from './packages/comments/comments.js';
-export { FilesApiPath } from './packages/files/files.js';
+export {
+  FilesApiPath,
+  FileType,
+  type FileUploadResponseDto,
+  MAX_FILE_SIZE_MB,
+  SUPPORTED_FILE_TYPES,
+} from './packages/files/files.js';
 export {
   type GenreEntityType,
   type GenreGetAllItemResponseDto,
@@ -102,4 +108,5 @@ export {
   userSignUpValidationSchema,
   type UserUpdateRequestDto,
   userUpdateValidationSchema,
+  userUpdateWithAvatarIdValidationSchema,
 } from './packages/users/users.js';
