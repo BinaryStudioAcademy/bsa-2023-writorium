@@ -1,5 +1,6 @@
 import { type ButtonProperties } from '~/libs/components/button/button.js';
 import { Button } from '~/libs/components/components.js';
+import { ButtonType } from '~/libs/enums/enums.js';
 
 import styles from './styles.module.scss';
 
@@ -16,7 +17,7 @@ const AuthSignInButton: React.FC<Properties> = ({
       disabled={disabled}
       onClick={onClick}
       className={styles.authSignInButton}
-      type="submit"
+      type={ButtonType.BUTTON}
     />
   );
 };
