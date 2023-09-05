@@ -7,6 +7,7 @@ import { actions as usersActions } from '~/slices/users/users.js';
 
 import {
   getCurrentUser,
+  loginWithGoogle,
   logout,
   resetPassword,
   sendEmailResetPasswordLink,
@@ -44,6 +45,7 @@ const { reducer, actions, name } = createSlice({
         signIn.pending,
         sendEmailResetPasswordLink.pending,
         resetPassword.pending,
+        loginWithGoogle.pending,
       ),
       (state) => {
         state.dataStatus = DataStatus.PENDING;
@@ -57,6 +59,7 @@ const { reducer, actions, name } = createSlice({
         getCurrentUser.rejected,
         logout.rejected,
         resetPassword.rejected,
+        loginWithGoogle.rejected,
       ),
       (state) => {
         state.dataStatus = DataStatus.REJECTED;
@@ -70,6 +73,7 @@ const { reducer, actions, name } = createSlice({
         signIn.fulfilled,
         getCurrentUser.fulfilled,
         resetPassword.fulfilled,
+        loginWithGoogle.fulfilled,
       ),
       (state, action) => {
         state.dataStatus = DataStatus.FULFILLED;
