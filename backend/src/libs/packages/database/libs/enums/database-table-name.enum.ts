@@ -7,6 +7,7 @@ const DatabaseTableName = {
   COMMENTS: 'comments',
   ACHIEVEMENTS: 'achievements',
   GENRES: 'genres',
+  PROMPTS: 'prompts',
 } as const;
 
 export { DatabaseTableName };

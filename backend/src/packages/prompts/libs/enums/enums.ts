@@ -1,1 +1,1 @@
-export { PromptsApiPath } from 'shared/build/index.js';
+export { PromptsApiPath, PromptType } from 'shared/build/index.js';
