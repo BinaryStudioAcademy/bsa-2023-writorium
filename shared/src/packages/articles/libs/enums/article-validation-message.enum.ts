@@ -3,7 +3,7 @@ import { ArticleValidationRule } from '~/packages/articles/libs/enums/article-va
 const ArticleValidationMessage = {
   ARTICLE_TITLE_REQUIRE: 'Title is required',
   ARTICLE_TITLE_MIN_LENGTH: `Title must contain at least ${ArticleValidationRule.ARTICLE_TITLE_MIN_LENGTH} characters`,
-  ARTICLE_TITLE_MAX_LENGTH: `Title should contain no more than ${ArticleValidationRule.ARTICLE_TITLE_MAX_LENGTH} characters`,
+  ARTICLE_TITLE_MAX_LENGTH: `Title should contain less than ${ArticleValidationRule.ARTICLE_TITLE_MAX_LENGTH} characters`,
   ARTICLE_TEXT_REQUIRE: 'Text is required',
   ARTICLE_TEXT_MIN_LENGTH: `Text must contain at least ${ArticleValidationRule.ARTICLE_TEXT_MIN_LENGTH} characters`,
   ARTICLE_GENRE_ID_REQUIRE: 'Genre id is required',
