@@ -88,7 +88,11 @@ createRoot(document.querySelector('#root') as HTMLElement).render(
                 },
                 {
                   path: AppRoute.ARTICLE,
-                  element: <Article />,
+                  element: (
+                    <ProtectedRoute>
+                      <Article />
+                    </ProtectedRoute>
+                  ),
                 },
                 {
                   path: AppRoute.FORGOT_PASSWORD,
