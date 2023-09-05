@@ -1,12 +1,11 @@
 import { Input, Link, Notification } from '~/libs/components/components.js';
 import { AppRoute } from '~/libs/enums/app-route.enum';
-import { useAppDispatch, useAppForm, useCallback } from '~/libs/hooks/hooks.js';
+import { useAppForm, useCallback } from '~/libs/hooks/hooks.js';
 import { type UserSignInWithFacebookResponseDto } from '~/packages/auth/auth.js';
 import {
   type UserSignInRequestDto,
   userSignInValidationSchema,
 } from '~/packages/users/users.js';
-import { actions as authActions } from '~/slices/auth/auth.js';
 
 import { AuthSubmitButton } from '../auth-submit-button/auth-submit-button.js';
 import { AuthSignInButton } from '../components.js';
@@ -18,21 +17,18 @@ import styles from './styles.module.scss';
 type Properties = {
   onSubmit: (payload: UserSignInRequestDto) => void;
   onGoogleLogin: () => void;
+  onFacebookLogin: (payload: UserSignInWithFacebookResponseDto) => void;
 };
 
-const SignInForm: React.FC<Properties> = ({ onSubmit, onGoogleLogin }) => {
-  const dispatch = useAppDispatch();
+const SignInForm: React.FC<Properties> = ({
+  onSubmit,
+  onGoogleLogin,
+  onFacebookLogin,
+}) => {
   const { control, errors, handleSubmit } = useAppForm({
     defaultValues: DEFAULT_LOGIN_PAYLOAD,
     validationSchema: userSignInValidationSchema,
   });
-
-  const handleFacebookLogin = useCallback(
-    (response: UserSignInWithFacebookResponseDto): void => {
-      void dispatch(authActions.signInWithFacebook(response));
-    },
-    [dispatch],
-  );
 
   const handleFormSubmit = useCallback(
     (event_: React.BaseSyntheticEvent): void => {
@@ -50,7 +46,7 @@ const SignInForm: React.FC<Properties> = ({ onSubmit, onGoogleLogin }) => {
           onClick={onGoogleLogin}
           label="Sign in with Google"
         ></AuthSignInButton>
-        <FacebookLoginButton onLogin={handleFacebookLogin} />
+        <FacebookLoginButton onLogin={onFacebookLogin} />
         <span className={styles.or}>or</span>
         <form
           className={styles.form}
