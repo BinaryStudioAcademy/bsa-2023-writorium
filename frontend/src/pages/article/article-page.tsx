@@ -34,7 +34,7 @@ const ArticlePage: FC = () => {
 
   return (
     <Layout>
-      <div className={styles.wrapper}>
+      <div className={styles.articlePageWrapper}>
         <ArticleView article={MOCKED_ARTICLE} />
         {id && <Author />}
       </div>

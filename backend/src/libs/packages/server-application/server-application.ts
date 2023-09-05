@@ -4,6 +4,7 @@ import { logger } from '~/libs/packages/logger/logger.js';
 import { achievementController } from '~/packages/achievements/achievements.js';
 import { articleController } from '~/packages/articles/articles.js';
 import { authController } from '~/packages/auth/auth.js';
+import { commentController } from '~/packages/comments/comments.js';
 import { fileController } from '~/packages/files/files.js';
 import { genreController } from '~/packages/genres/genre.js';
 import { promptController } from '~/packages/prompts/prompts.js';
@@ -20,6 +21,7 @@ const apiV1 = new ServerAppApi(
   ...genreController.routes,
   ...fileController.routes,
   ...articleController.routes,
+  ...commentController.routes,
   ...promptController.routes,
   ...achievementController.routes,
 );

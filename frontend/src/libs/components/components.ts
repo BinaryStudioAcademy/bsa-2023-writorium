@@ -16,6 +16,6 @@ export { ProtectedRoute } from './protected-route/protected-route.js';
 export { PublicRoute } from './public-route/public-route.js';
 export { RouterProvider } from './router-provider/router-provider.js';
 export { Tag } from './tag/tag.js';
-export { Textarea } from './textarea/textarea.js';
+export { TextEditor } from './text-editor/text-editor.js';
 export { Provider as StoreProvider } from 'react-redux';
 export { Navigate, Outlet as RouterOutlet } from 'react-router-dom';

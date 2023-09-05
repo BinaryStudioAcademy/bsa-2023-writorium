@@ -1,4 +1,4 @@
-import { Button, Input, Textarea } from '~/libs/components/components.js';
+import { Button, Input, TextEditor } from '~/libs/components/components.js';
 import { ButtonType } from '~/libs/enums/enums.js';
 import {
   useAppDispatch,
@@ -81,13 +81,8 @@ const ArticleForm: React.FC = () => {
           className={styles.titleInput}
         />
 
-        <Textarea
-          name="text"
-          placeholder="Write your post content"
-          control={control}
-          errors={errors}
-          className={styles.postContentTextarea}
-        />
+        <TextEditor control={control} name="text" errors={errors} />
+
         <div className={styles.buttonWrapper}>
           <Button
             type={ButtonType.RESET}
