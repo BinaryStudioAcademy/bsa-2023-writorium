@@ -1,4 +1,4 @@
-import { Input, Link, Notification } from '~/libs/components/components.js';
+import { Input, Link } from '~/libs/components/components.js';
 import { AppRoute } from '~/libs/enums/app-route.enum';
 import { useAppForm, useCallback, useParams } from '~/libs/hooks/hooks.js';
 import { type AuthResetPasswordDto } from '~/packages/auth/auth.js';
@@ -32,7 +32,6 @@ const ResetPasswordForm: React.FC<Properties> = ({ onSubmit }) => {
 
   return (
     <>
-      <Notification />
       <div className={styles.formWrapper}>
         <h2 className={styles.authFormTitle}>Reset your password</h2>
         <form
