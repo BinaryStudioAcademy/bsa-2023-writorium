@@ -62,7 +62,7 @@ const Landing: FC = () => {
       />
       <img
         ref={lettersElementReference}
-        className={styles.parallaxImg}
+        className={`${styles.parallaxImg} ${styles.bgLetters}`}
         src={backgroundLetters}
         alt="letters"
       />
