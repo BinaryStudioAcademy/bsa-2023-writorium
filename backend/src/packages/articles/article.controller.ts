@@ -6,6 +6,7 @@ import {
 } from '~/libs/packages/controller/controller.js';
 import { HttpCode } from '~/libs/packages/http/http.js';
 import { type ILogger } from '~/libs/packages/logger/logger.js';
+import { token as articleToken } from '~/libs/packages/token/token.js';
 import { type ArticleService } from '~/packages/articles/article.service.js';
 import { type UserAuthResponseDto } from '~/packages/users/users.js';
 
@@ -98,6 +99,20 @@ class ArticleController extends Controller {
           }>,
         ),
     });
+
+    this.addRoute({
+      path: ArticlesApiPath.SHARE,
+      method: 'GET',
+      // validation: {
+      //   body: articleUpdateValidationSchema,
+      // },
+      handler: (options) =>
+        this.share(
+          options as ApiHandlerOptions<{
+            params: { id: number };
+          }>,
+        ),
+    });
   }
 
   /**
@@ -173,6 +188,39 @@ class ArticleController extends Controller {
         options.params.id,
         options.body,
       ),
+    };
+  }
+
+  /**
+   * @swagger
+   * /articles/:id:
+   *    get:
+   *      summary: Get articles token for sharing
+   *      description: Get an existing articles token with id encoded
+   *      security:
+   *        - bearerAuth: []
+   *      requestBody:
+   *        required: false
+   *      responses:
+   *        200:
+   *          description: Successful operation
+   *          content:
+   *            application/json:
+   *              schema:
+   *                $ref: '#/components/schemas/Article'
+   */
+  private async share(
+    options: ApiHandlerOptions<{
+      params: { id: number };
+    }>,
+  ): Promise<ApiHandlerResponse> {
+    const token = await articleToken.create({
+      userId: options.params.id.toString(),
+    });
+
+    return {
+      status: HttpCode.OK,
+      payload: { articleToken: token },
     };
   }
 }
