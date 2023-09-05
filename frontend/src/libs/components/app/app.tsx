@@ -1,5 +1,5 @@
 import { Header, RouterOutlet } from '~/libs/components/components.js';
-import { DataStatus } from '~/libs/enums/data-status.enum.js';
+import { DataStatus } from '~/libs/enums/enums.js';
 import {
   useAppDispatch,
   useAppSelector,
