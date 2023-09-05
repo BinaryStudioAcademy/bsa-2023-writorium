@@ -1,6 +1,4 @@
-import snakeCase from 'lodash.snakecase';
-
-import { safeJSONParse } from '~/libs/helpers/helpers.js';
+import { convertToSnakeCase, safeJSONParse } from '~/libs/helpers/helpers.js';
 import { type IService } from '~/libs/interfaces/interfaces.js';
 import { FailedToGeneratePromptError } from '~/libs/packages/exceptions/exceptions.js';
 import { type OpenAIService } from '~/libs/packages/openai/openai.package.js';
@@ -51,7 +49,7 @@ class PromptService implements IService {
   }
 
   private async getGenreIdForPrompt(genre: string): Promise<number | null> {
-    const genreKey = snakeCase(genre);
+    const genreKey = convertToSnakeCase(genre);
 
     const existingGenre = await this.genreRepository.findByKey(genreKey);
 

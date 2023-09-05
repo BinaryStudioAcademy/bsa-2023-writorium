@@ -11,7 +11,7 @@ import {
   articleCreateValidationSchema,
   type ArticleRequestDto,
 } from '~/packages/articles/articles.js';
-import { PromptType } from '~/packages/prompts/prompts.js';
+import { getGeneratedPromptPayload } from '~/packages/prompts/prompts.js';
 import { actions as articlesActions } from '~/slices/articles/articles.js';
 
 import { DEFAULT_ARTICLE_FORM_PAYLOAD } from './libs/constants/constants.js';
@@ -40,22 +40,12 @@ const ArticleForm: React.FC = () => {
               : null,
         };
 
-        generatedPrompt
-          ? void dispatch(
-              articlesActions.createArticle({
-                articlePayload: updatedPayload,
-                generatedPrompt: {
-                  type: PromptType.MANUAL,
-                  ...generatedPrompt,
-                },
-              }),
-            )
-          : void dispatch(
-              articlesActions.createArticle({
-                articlePayload: updatedPayload,
-                generatedPrompt: null,
-              }),
-            );
+        void dispatch(
+          articlesActions.createArticle({
+            articlePayload: updatedPayload,
+            generatedPrompt: getGeneratedPromptPayload(generatedPrompt),
+          }),
+        );
       },
     [dispatch, generatedPrompt],
   );

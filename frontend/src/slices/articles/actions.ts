@@ -45,8 +45,11 @@ const createArticle = createAsyncThunk<
     if (generatedPrompt) {
       const { id: promptId, genreId } = await promptApi.create(generatedPrompt);
 
-      articlePayload.genreId = genreId;
-      articlePayload.promptId = promptId;
+      return await articleApi.create({
+        ...articlePayload,
+        genreId,
+        promptId,
+      });
     }
 
     return await articleApi.create(articlePayload);
