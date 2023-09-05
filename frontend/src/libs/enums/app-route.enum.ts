@@ -7,6 +7,7 @@ const AppRoute = {
   PROFILE: '/profile',
   ARTICLES: '/articles',
   ARTICLE: '/articles/:id',
+  CREATE_ARTICLE: '/articles/create',
   FORGOT_PASSWORD: '/forgot-password',
   RESET_PASSWORD: RESET_PASSWORD_ROUTE.WITH_PARAM,
 } as const;
