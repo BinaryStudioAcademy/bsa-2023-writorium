@@ -1,6 +1,8 @@
 import { config } from '~/libs/packages/config/config.js';
 import { database } from '~/libs/packages/database/database.js';
 import { logger } from '~/libs/packages/logger/logger.js';
+import { achievementController } from '~/packages/achievements/achievements.js';
+import { articleReactionController } from '~/packages/article-reactions/article-reactions.js';
 import { articleController } from '~/packages/articles/articles.js';
 import { authController } from '~/packages/auth/auth.js';
 import { commentController } from '~/packages/comments/comments.js';
@@ -20,8 +22,10 @@ const apiV1 = new ServerAppApi(
   ...genreController.routes,
   ...fileController.routes,
   ...articleController.routes,
+  ...articleReactionController.routes,
   ...commentController.routes,
   ...promptController.routes,
+  ...achievementController.routes,
 );
 const serverApp = new ServerApp({
   config,

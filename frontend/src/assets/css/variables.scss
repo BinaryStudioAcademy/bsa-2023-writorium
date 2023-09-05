@@ -1,10 +1,10 @@
 :root {
   --white: #ffffff;
-  --white-smoke: #f8f8f8;
   --white-90: rgba(255 255 255 / 90%);
   --dark-green: #2e453b;
   --dark-green-80: rgb(46 69 59 / 80%);
   --dark-blue: #14253f;
+  --dark-blue-40: rgb(20 37 63 / 40%);
   --light-green: #44996b;
   --light-grey: #ebece7;
   --dark-grey: #353535;
@@ -17,10 +17,15 @@
   --dark-gray: #353535;
   --dark-gray-40: rgba(53 53 53 / 40%);
   --dark-gray-50: rgba(53 53 53 / 50%);
+  --dark-gray-80: rgba(53 53 53 / 80%);
   --medium-brightness-gray: #919191;
   --light-grey-text: #b6b6b6;
   --light-grey-border: #dbdbdb;
   --red: #df1c3d;
+  --light-red: #d88184;
+  --overlay-alpha-50: rgb(0 0 0 / 50%);
+  --light-gray-40: rgb(174 174 174 / 40%);
+  --white-50: rgb(255 255 255 / 50%);
 
   /* z-index */
   --z-index-level-one: 100;

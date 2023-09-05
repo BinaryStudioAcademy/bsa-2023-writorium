@@ -2,17 +2,17 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import { DataStatus } from '~/libs/enums/enums.js';
 import { type ValueOf } from '~/libs/types/types.js';
-import { type GenerateArticlePromptResponseDto as Prompt } from '~/packages/prompts/prompts.js';
+import { type GenerateArticlePromptResponseDto as GeneratedPrompt } from '~/packages/prompts/prompts.js';
 
 import { generatePrompt } from './actions.js';
 
 type State = {
-  prompt: Prompt | null;
+  generatedPrompt: GeneratedPrompt | null;
   dataStatus: ValueOf<typeof DataStatus>;
 };
 
 const initialState: State = {
-  prompt: null,
+  generatedPrompt: null,
   dataStatus: DataStatus.IDLE,
 };
 
@@ -25,7 +25,7 @@ const { reducer, actions, name } = createSlice({
       state.dataStatus = DataStatus.PENDING;
     });
     builder.addCase(generatePrompt.fulfilled, (state, action) => {
-      state.prompt = action.payload;
+      state.generatedPrompt = action.payload;
       state.dataStatus = DataStatus.FULFILLED;
     });
     builder.addCase(generatePrompt.rejected, (state) => {

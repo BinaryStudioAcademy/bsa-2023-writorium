@@ -1,1 +1,1 @@
-export { FileType } from './file-type.enum.js';
+export { FileType } from 'shared/build/index.js';
