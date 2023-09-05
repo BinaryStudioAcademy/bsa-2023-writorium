@@ -1,5 +1,5 @@
 import { ContentType, ServerErrorType } from '~/libs/enums/enums.js';
-import { configureString } from '~/libs/helpers/helpers.js';
+import { configureString, stringifyQuery } from '~/libs/helpers/helpers.js';
 import {
   type HttpCode,
   HttpError,
@@ -38,15 +38,23 @@ class HttpApi implements IHttpApi {
     this.storage = storage;
   }
 
+  private getUrl(path: string, query?: Record<string, unknown>): string {
+    if (query) {
+      return `${path}?${stringifyQuery(query)}`;
+    }
+
+    return path;
+  }
+
   public async load(
     path: string,
     options: HttpApiOptions,
   ): Promise<HttpApiResponse> {
-    const { method, contentType, payload = null, hasAuth } = options;
+    const { method, contentType, payload = null, hasAuth, query } = options;
 
     const headers = await this.getHeaders(contentType, hasAuth);
 
-    const response = await this.http.load(path, {
+    const response = await this.http.load(this.getUrl(path, query), {
       method,
       headers,
       payload,
