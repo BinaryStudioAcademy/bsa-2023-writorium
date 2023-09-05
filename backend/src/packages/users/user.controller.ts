@@ -13,7 +13,7 @@ import {
   type UserAuthResponseDto,
   type UserUpdateRequestDto,
 } from './libs/types/types.js';
-import { userUpdateValidationSchema } from './libs/validation-schemas/validation-schemas.js';
+import { userUpdateWithAvatarIdValidationSchema } from './libs/validation-schemas/validation-schemas.js';
 
 /**
  * @swagger
@@ -33,6 +33,12 @@ import { userUpdateValidationSchema } from './libs/validation-schemas/validation
  *            $ref: '#/components/schemas/NamePattern'
  *          lastName:
  *            $ref: '#/components/schemas/NamePattern'
+ *          avatarUrl:
+ *            type: string
+ *            nullable: true
+ *          avatarId:
+ *            type: number
+ *            nullable: true
  *          createdAt:
  *            type: string
  *            format: date-time
@@ -53,6 +59,12 @@ import { userUpdateValidationSchema } from './libs/validation-schemas/validation
  *           $ref: '#/components/schemas/NamePattern'
  *         lastName:
  *           $ref: '#/components/schemas/NamePattern'
+ *         avatarUrl:
+ *            type: string
+ *            nullable: true
+ *         avatarId:
+ *            type: number
+ *            nullable: true
  *      UserUpdateRequest:
  *        type: object
  *        properties:
@@ -62,6 +74,9 @@ import { userUpdateValidationSchema } from './libs/validation-schemas/validation
  *           $ref: '#/components/schemas/NamePattern'
  *         lastName:
  *           $ref: '#/components/schemas/NamePattern'
+ *         avatarId:
+ *            type: number
+ *            nullable: true
  *      UserSignUpRequest:
  *        type: object
  *        properties:
@@ -116,7 +131,9 @@ class UserController extends Controller {
     this.addRoute({
       path: UsersApiPath.ROOT,
       method: 'PUT',
-      validation: { body: userUpdateValidationSchema },
+      validation: {
+        body: userUpdateWithAvatarIdValidationSchema,
+      },
       handler: (options) =>
         this.update(
           options as ApiHandlerOptions<{

@@ -1,7 +1,11 @@
-import { type ContentType, ServerErrorType } from '~/libs/enums/enums.js';
+import { ContentType, ServerErrorType } from '~/libs/enums/enums.js';
 import { configureString } from '~/libs/helpers/helpers.js';
-import { type HttpCode, type IHttp } from '~/libs/packages/http/http.js';
-import { HttpError, HttpHeader } from '~/libs/packages/http/http.js';
+import {
+  type HttpCode,
+  HttpError,
+  HttpHeader,
+  type IHttp,
+} from '~/libs/packages/http/http.js';
 import { type IStorage, StorageKey } from '~/libs/packages/storage/storage.js';
 import { type ServerErrorResponse, type ValueOf } from '~/libs/types/types.js';
 
@@ -72,7 +76,9 @@ class HttpApi implements IHttpApi {
   ): Promise<Headers> {
     const headers = new Headers();
 
-    headers.append(HttpHeader.CONTENT_TYPE, contentType);
+    if (contentType !== ContentType.FORM_DATA) {
+      headers.append(HttpHeader.CONTENT_TYPE, contentType);
+    }
 
     if (hasAuth) {
       const token = await this.storage.get<string>(StorageKey.TOKEN);

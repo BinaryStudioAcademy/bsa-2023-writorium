@@ -7,7 +7,7 @@ import {
 } from '~/packages/articles/articles.js';
 import { actions as articlesActions } from '~/slices/articles/articles.js';
 
-import { Button, Input, Textarea } from '../components.js';
+import { Button, Input, TextEditor } from '../components.js';
 import { DEFAULT_ARTICLE_FORM_PAYLOAD } from './libs/constants.js';
 import { ArticleSubmitType } from './libs/enums/enums.js';
 import styles from './styles.module.scss';
@@ -67,14 +67,7 @@ const ArticleForm: React.FC = () => {
           errors={errors}
           className={styles.titleInput}
         />
-
-        <Textarea
-          name="text"
-          placeholder="Write your post content"
-          control={control}
-          errors={errors}
-          className={styles.postContentTextarea}
-        />
+        <TextEditor control={control} name="text" errors={errors} />
         <div className={styles.buttonWrapper}>
           <Button
             type={ButtonType.RESET}
