@@ -38,6 +38,12 @@
   font-family: Lato, sans-serif;
 }
 
+.forgotPasswordLink {
+  color: var(--light-green);
+  font-size: 12px;
+  font-family: Lato, sans-serif;
+}
+
 .authFormTitle {
   align-self: flex-start;
   margin: 0 0 44px;
@@ -45,4 +51,13 @@
   color: var(--light-green);
   font-size: 24px;
   font-family: "Libre Baskerville", sans-serif;
+}
+
+.or {
+  align-self: center;
+  margin-top: 20px;
+  color: #b6b6b6;
+  font-weight: 500;
+  font-size: 18px;
+  font-family: Raleway, sans-serif;
 }

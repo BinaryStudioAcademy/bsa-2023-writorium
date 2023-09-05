@@ -4,7 +4,7 @@ import backgroundLetters from '~/assets/img/background-leters.png';
 import backgroundTypewriter from '~/assets/img/background-typewriter.jpg';
 import { Link } from '~/libs/components/components.js';
 import { AppRoute } from '~/libs/enums/enums.js';
-import { getAxisOffset } from '~/libs/helpers/helpers.js';
+import { getAxisOffset, getValidClassNames } from '~/libs/helpers/helpers.js';
 import {
   useCallback,
   useMemo,
@@ -56,13 +56,13 @@ const Landing: FC = () => {
       </Link>
       <img
         ref={typewriterElementReference}
-        className={`${styles.parallaxImg} ${styles.typewriterImg}`}
+        className={getValidClassNames(styles.parallaxImg, styles.typewriterImg)}
         src={backgroundTypewriter}
         alt="typewriter"
       />
       <img
         ref={lettersElementReference}
-        className={styles.parallaxImg}
+        className={getValidClassNames(styles.parallaxImg, styles.bgLetters)}
         src={backgroundLetters}
         alt="letters"
       />

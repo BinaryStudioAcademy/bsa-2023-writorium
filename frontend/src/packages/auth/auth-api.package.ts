@@ -1,6 +1,7 @@
 import { ApiPath, ContentType } from '~/libs/enums/enums.js';
 import { HttpApi } from '~/libs/packages/api/api.js';
 import { type IHttp } from '~/libs/packages/http/http.js';
+import { type SendEmailResponse } from '~/libs/packages/mailer/mailer.js';
 import { type IStorage } from '~/libs/packages/storage/storage.js';
 import {
   type UserAuthResponseDto,
@@ -11,6 +12,11 @@ import {
 } from '~/packages/users/users.js';
 
 import { AuthApiPath } from './libs/enums/enums.js';
+import {
+  type AuthLoginWithGoogleDto,
+  type AuthRequestPasswordDto,
+  type AuthResetPasswordDto,
+} from './libs/types/types.js';
 
 type Constructor = {
   baseUrl: string;
@@ -66,6 +72,54 @@ class AuthApi extends HttpApi {
     );
 
     return await response.json<UserAuthResponseDto>();
+  }
+
+  public async sendEmailResetPasswordLink(
+    payload: AuthRequestPasswordDto,
+  ): Promise<SendEmailResponse> {
+    const response = await this.load(
+      this.getFullEndpoint(AuthApiPath.FORGOTTEN_PASSWORD, {}),
+      {
+        method: 'POST',
+        contentType: ContentType.JSON,
+        payload: JSON.stringify(payload),
+        hasAuth: false,
+      },
+    );
+
+    return await response.json<SendEmailResponse>();
+  }
+
+  public async resetPassword(
+    payload: AuthResetPasswordDto,
+  ): Promise<UserSignInResponseDto> {
+    const response = await this.load(
+      this.getFullEndpoint(AuthApiPath.RESET_PASSWORD, {}),
+      {
+        method: 'POST',
+        contentType: ContentType.JSON,
+        payload: JSON.stringify(payload),
+        hasAuth: false,
+      },
+    );
+
+    return await response.json<UserSignInResponseDto>();
+  }
+
+  public async loginWithGoogle(
+    payload: AuthLoginWithGoogleDto,
+  ): Promise<UserSignInResponseDto> {
+    const response = await this.load(
+      this.getFullEndpoint(AuthApiPath.GOOGLE, {}),
+      {
+        method: 'POST',
+        contentType: ContentType.JSON,
+        payload: JSON.stringify(payload),
+        hasAuth: false,
+      },
+    );
+
+    return await response.json<UserSignInResponseDto>();
   }
 }
 

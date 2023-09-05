@@ -3,11 +3,18 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { StorageKey } from '~/libs/packages/storage/storage.js';
 import { type AsyncThunkConfig } from '~/libs/types/types.js';
 import {
+  type AuthLoginWithGoogleDto,
+  type AuthRequestPasswordDto,
+  type AuthResetPasswordDto,
+} from '~/packages/auth/auth.js';
+import { NotificationType } from '~/packages/notification/notification.js';
+import {
   type UserAuthResponseDto,
   type UserSignInRequestDto,
   type UserSignUpRequestDto,
 } from '~/packages/users/users.js';
 
+import { appActions } from '../app/app.js';
 import { name as sliceName } from './auth.slice.js';
 
 const signUp = createAsyncThunk<
@@ -43,14 +50,11 @@ const getCurrentUser = createAsyncThunk<
   AsyncThunkConfig
 >(`${sliceName}/getCurrentUser`, async (_loginPayload, { extra }) => {
   const { authApi, storage } = extra;
-
   const token = await storage.get(StorageKey.TOKEN);
   const hasToken = Boolean(token);
-
   if (!hasToken) {
     return null;
   }
-
   try {
     return await authApi.getCurrentUser();
   } catch {
@@ -69,4 +73,61 @@ const logout = createAsyncThunk<null, undefined, AsyncThunkConfig>(
   },
 );
 
-export { getCurrentUser, logout, signIn, signUp };
+const sendEmailResetPasswordLink = createAsyncThunk<
+  unknown,
+  AuthRequestPasswordDto,
+  AsyncThunkConfig
+>(
+  `${sliceName}/email-reset-password-link`,
+  async (payload, { dispatch, extra }) => {
+    const { authApi } = extra;
+    const response = await authApi.sendEmailResetPasswordLink(payload);
+    void dispatch(
+      appActions.notify({
+        type: NotificationType.SUCCESS,
+        message:
+          'Email with reset password link was send to your email address',
+      }),
+    );
+
+    return response;
+  },
+);
+
+const resetPassword = createAsyncThunk<
+  UserAuthResponseDto,
+  AuthResetPasswordDto,
+  AsyncThunkConfig
+>(`${sliceName}/reset-password`, async (payload, { extra }) => {
+  const { authApi, storage } = extra;
+
+  const { token, user } = await authApi.resetPassword(payload);
+
+  await storage.set(StorageKey.TOKEN, token);
+
+  return user;
+});
+
+const loginWithGoogle = createAsyncThunk<
+  UserAuthResponseDto,
+  AuthLoginWithGoogleDto,
+  AsyncThunkConfig
+>(`${sliceName}/login-with-google`, async (payload, { extra }) => {
+  const { authApi, storage } = extra;
+
+  const { token, user } = await authApi.loginWithGoogle(payload);
+
+  await storage.set(StorageKey.TOKEN, token);
+
+  return user;
+});
+
+export {
+  getCurrentUser,
+  loginWithGoogle,
+  logout,
+  resetPassword,
+  sendEmailResetPasswordLink,
+  signIn,
+  signUp,
+};

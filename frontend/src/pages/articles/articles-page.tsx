@@ -1,5 +1,5 @@
 import { Layout, Link, RouterOutlet } from '~/libs/components/components.js';
-import { ArticleSubRoute } from '~/libs/enums/enums.js';
+import { AppRoute, ArticleSubRoute } from '~/libs/enums/enums.js';
 
 import styles from './styles.module.scss';
 
@@ -9,7 +9,7 @@ const ArticlesPage: React.FC = () => {
       <div className={styles.wrapper}>
         <div className={styles.tabsWrapper}>
           <Link
-            to={ArticleSubRoute.FEED}
+            to={AppRoute.ARTICLES}
             className={styles.tab}
             activeClassName={styles.activeTab}
           >

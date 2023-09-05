@@ -1,3 +1,5 @@
+@use "src/assets/css/breakpoints.scss";
+
 .authLayout {
   display: flex;
   align-items: center;
@@ -63,6 +65,7 @@
     ),
     url("@assets/img/hero-background-typewriter.png");
   background-repeat: no-repeat;
+  background-position: center right;
   background-size: cover;
 }
 
@@ -71,9 +74,24 @@
 }
 
 .heroTitle {
+  padding: 0 15px;
   color: var(--light-grey);
   font-weight: 700;
   font-size: 70px;
   font-family: "Libre Baskerville", sans-serif;
   letter-spacing: 15px;
+}
+
+@media only screen and (max-width: breakpoints.$medium) {
+  .authLayout {
+    display: block;
+  }
+
+  .hero {
+    display: none;
+  }
+
+  .formWrapperInner {
+    padding: 0 15px;
+  }
 }
