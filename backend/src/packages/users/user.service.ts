@@ -4,10 +4,10 @@ import { type IService } from '~/libs/interfaces/interfaces.js';
 import { type IConfig } from '~/libs/packages/config/config.js';
 import { type IEncrypt } from '~/libs/packages/encrypt/encrypt.js';
 import { UserNotFoundError } from '~/libs/packages/exceptions/exceptions.js';
+import { type AuthResetPasswordDto } from '~/packages/auth/libs/types/types.js';
 import { UserEntity } from '~/packages/users/user.entity.js';
 import { type UserRepository } from '~/packages/users/user.repository.js';
 
-import { type AuthResetPasswordDto } from '../auth/libs/types/types.js';
 import {
   type UserAuthResponseDto,
   type UserGetAllResponseDto,
@@ -112,6 +112,8 @@ class UserService implements IService {
         email: payload.email,
         passwordHash: null,
         passwordSalt: null,
+        avatarId: payload.avatarId,
+        avatarUrl: null,
       }),
     );
 
@@ -143,6 +145,8 @@ class UserService implements IService {
         email: user.email,
         passwordHash,
         passwordSalt,
+        avatarId: null,
+        avatarUrl: null,
       }),
     );
     return updatedUser.toObject();
