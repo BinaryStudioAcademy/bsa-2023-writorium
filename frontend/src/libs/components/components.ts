@@ -1,5 +1,4 @@
 export { App } from './app/app.js';
-export { ArticleForm } from './article-form/article-form.js';
 export { Avatar } from './avatar/avatar.js';
 export { Button } from './button/button.js';
 export { ErrorMessage } from './error-message/error-message.js';

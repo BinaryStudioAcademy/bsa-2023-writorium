@@ -1,6 +1,7 @@
 import { config } from '~/libs/packages/config/config.js';
 import { database } from '~/libs/packages/database/database.js';
 import { logger } from '~/libs/packages/logger/logger.js';
+import { achievementController } from '~/packages/achievements/achievements.js';
 import { articleController } from '~/packages/articles/articles.js';
 import { authController } from '~/packages/auth/auth.js';
 import { commentController } from '~/packages/comments/comments.js';
@@ -22,6 +23,7 @@ const apiV1 = new ServerAppApi(
   ...articleController.routes,
   ...commentController.routes,
   ...promptController.routes,
+  ...achievementController.routes,
 );
 const serverApp = new ServerApp({
   config,

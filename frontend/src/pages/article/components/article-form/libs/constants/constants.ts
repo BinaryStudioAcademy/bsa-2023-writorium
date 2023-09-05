@@ -3,7 +3,7 @@ import { type ArticleRequestDto } from '~/packages/articles/articles.js';
 const DEFAULT_ARTICLE_FORM_PAYLOAD: ArticleRequestDto = {
   title: '',
   text: '',
-  genreId: 1,
+  genreId: null,
   publishedAt: null,
   promptId: null,
 };
