@@ -1,8 +1,8 @@
 import { type FC } from 'react';
 
 import { Avatar, Icon } from '~/libs/components/components.js';
-import { DatePattern } from '~/libs/enums/enums.js';
-import { formatDate } from '~/libs/helpers/helpers.js';
+import { DateFormat } from '~/libs/enums/enums.js';
+import { getFormattedDate } from '~/libs/helpers/helpers.js';
 
 import styles from './styles.module.scss';
 
@@ -51,10 +51,7 @@ const Author: FC<Properties> = ({
           <ul className={styles.articleInfoList}>
             <li className={styles.articleInfoItem}>
               <span>
-                {formatDate({
-                  isoString: publishedAt,
-                  pattern: `${DatePattern.MONTH_DAY} ${DatePattern.SHORT_MONTH_NAME}`,
-                })}
+                {getFormattedDate(publishedAt, DateFormat.DAY_SHORT_MONTH)}
               </span>
             </li>
             <li className={styles.articleInfoItem}>

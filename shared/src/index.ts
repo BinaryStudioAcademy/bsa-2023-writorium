@@ -3,14 +3,14 @@ export {
   ApiPath,
   AppEnvironment,
   ContentType,
-  DatePattern,
+  DateFormat,
   ServerErrorType,
   SortingOrder,
 } from './libs/enums/enums.js';
 export { ApplicationError, HttpError } from './libs/exceptions/exceptions.js';
 export {
   configureString,
-  formatDate,
+  getFormattedDate,
   safeJSONParse,
 } from './libs/helpers/helpers.js';
 export { type IConfig } from './libs/packages/config/config.js';

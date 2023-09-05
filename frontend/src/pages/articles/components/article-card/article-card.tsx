@@ -1,7 +1,7 @@
 import ArticlePreview from '~/assets/img/article-preview.png';
 import { Avatar, Icon, Link } from '~/libs/components/components.js';
-import { AppRoute, DatePattern } from '~/libs/enums/enums.js';
-import { formatDate, getFullName } from '~/libs/helpers/helpers.js';
+import { AppRoute, DateFormat } from '~/libs/enums/enums.js';
+import { getFormattedDate, getFullName } from '~/libs/helpers/helpers.js';
 import { type ArticleWithAuthorType } from '~/packages/articles/articles.js';
 import { type UserDetailsResponseDto } from '~/packages/users/users.js';
 
@@ -40,10 +40,7 @@ const ArticleCard: React.FC<Properties> = ({
           </span>
           {publishedAt && (
             <span className={styles.publicationTime}>
-              {formatDate({
-                isoString: publishedAt,
-                pattern: `${DatePattern.MONTH_DAY} ${DatePattern.SHORT_MONTH_NAME}`,
-              })}
+              {getFormattedDate(publishedAt, DateFormat.DAY_SHORT_MONTH)}
             </span>
           )}
           <span className={styles.publicationTime}>{MOCKED_READ_TIME}</span>
