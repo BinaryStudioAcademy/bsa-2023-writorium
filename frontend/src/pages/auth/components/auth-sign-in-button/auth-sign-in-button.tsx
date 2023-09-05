@@ -5,9 +5,19 @@ import styles from './styles.module.scss';
 
 type Properties = Pick<ButtonProperties, 'label' | 'disabled' | 'onClick'>;
 
-const AuthSignInButton: React.FC<Properties> = (properties) => {
+const AuthSignInButton: React.FC<Properties> = ({
+  label,
+  disabled,
+  onClick,
+}) => {
   return (
-    <Button {...properties} className={styles.authSignInButton} type="submit" />
+    <Button
+      label={label}
+      disabled={disabled}
+      onClick={onClick}
+      className={styles.authSignInButton}
+      type="submit"
+    />
   );
 };
 
