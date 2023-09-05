@@ -1,6 +1,11 @@
-class FailedToGeneratePromptError extends Error {
+import { HttpCode, HttpError } from '~/libs/packages/http/http.js';
+
+class FailedToGeneratePromptError extends HttpError {
   public constructor() {
-    super('Failed to generate prompt');
+    super({
+      message: 'Failed to generate prompt',
+      status: HttpCode.INTERNAL_SERVER_ERROR,
+    });
   }
 }
 

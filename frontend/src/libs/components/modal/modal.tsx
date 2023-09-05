@@ -1,4 +1,5 @@
 import { Icon, Portal } from '~/libs/components/components.js';
+import { getValidClassNames } from '~/libs/helpers/helpers.js';
 import { useCallback, useEffect, useRef } from '~/libs/hooks/hooks.js';
 
 import styles from './styles.module.scss';
@@ -7,9 +8,15 @@ type Properties = {
   children: React.ReactNode;
   onClose: () => void;
   isOpen: boolean;
+  className?: string;
 };
 
-const Modal: React.FC<Properties> = ({ isOpen, onClose, children }) => {
+const Modal: React.FC<Properties> = ({
+  isOpen,
+  onClose,
+  children,
+  className,
+}) => {
   const overlayReference = useRef<HTMLDivElement>(null);
 
   const handleClickOnOverlay = useCallback(
@@ -40,8 +47,15 @@ const Modal: React.FC<Properties> = ({ isOpen, onClose, children }) => {
 
   return (
     <Portal>
-      <div className={styles.modal} ref={overlayReference}>
-        <div className={styles.content} role="button" tabIndex={0}>
+      <div
+        className={getValidClassNames(styles.modal, className)}
+        ref={overlayReference}
+      >
+        <div
+          className={getValidClassNames(styles.content, className)}
+          role="button"
+          tabIndex={0}
+        >
           <button className={styles.closeBtn} onClick={onClose}>
             <Icon iconName="crossMark" />
           </button>

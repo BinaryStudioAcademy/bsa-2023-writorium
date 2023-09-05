@@ -10,7 +10,7 @@ type Properties = {
 
 const PublicRoute: React.FC<Properties> = ({
   children,
-  redirectPath = AppRoute.PROFILE,
+  redirectPath = AppRoute.ARTICLES,
 }) => {
   const { user } = useAppSelector(({ auth }) => ({
     user: auth.user,
@@ -22,7 +22,7 @@ const PublicRoute: React.FC<Properties> = ({
     return <Navigate to={redirectPath} replace />;
   }
 
-  return <>{children}</>;
+  return children;
 };
 
 export { PublicRoute };

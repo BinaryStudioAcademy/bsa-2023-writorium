@@ -1,7 +1,6 @@
 import ArticleBanner from '~/assets/img/article-banner.jpg';
-import { IconButton } from '~/libs/components/icon-button/icon-button.jsx';
-import { Tag } from '~/libs/components/tag/tag.jsx';
-import { useAppDispatch, useCallback,useParams } from '~/libs/hooks/hooks.js';
+import { IconButton, Tag } from '~/libs/components/components.js';
+import { useAppDispatch, useCallback, useParams } from '~/libs/hooks/hooks.js';
 import { type ArticleType } from '~/libs/types/types.js';
 import { actions as articlesActions } from '~/slices/articles/articles.js';
 

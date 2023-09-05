@@ -1,12 +1,35 @@
-import { ArticleCard } from './components/components.js';
-import { MOCKED_ARTICLES, MOCKED_USER } from './libs/constants.js';
+import {
+  useAppDispatch,
+  useAppSelector,
+  useEffect,
+} from '~/libs/hooks/hooks.js';
+import { actions as articlesActions } from '~/slices/articles/articles.js';
 
-const ArticlesFeed: React.FC = () => (
-  <>
-    {MOCKED_ARTICLES.map((article) => (
-      <ArticleCard key={article.id} article={article} user={MOCKED_USER} />
-    ))}
-  </>
-);
+import { ArticleCard } from './components/components.js';
+import { MOCKED_REACTIONS, MOCKED_TAGS } from './libs/constants.js';
+
+const ArticlesFeed: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const { articles } = useAppSelector(({ articles }) => articles);
+
+  useEffect(() => {
+    void dispatch(articlesActions.fetchAll());
+  }, [dispatch]);
+
+  return (
+    <>
+      {Boolean(articles.length) &&
+        articles.map((article) => (
+          <ArticleCard
+            key={article.id}
+            article={article}
+            author={article.author!}
+            tags={MOCKED_TAGS}
+            reactions={MOCKED_REACTIONS}
+          />
+        ))}
+    </>
+  );
+};
 
 export { ArticlesFeed };

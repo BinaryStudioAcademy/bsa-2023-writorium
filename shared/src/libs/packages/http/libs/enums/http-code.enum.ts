@@ -7,6 +7,8 @@ const HttpCode = {
   UNSUPPORTED_MEDIA_TYPE: 415,
   BAD_REQUEST: 400,
   UNAUTHORIZED: 401,
+  NOT_FOUND: 404,
+  FORBIDDEN: 403,
 } as const;
 
 export { HttpCode };

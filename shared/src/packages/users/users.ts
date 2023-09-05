@@ -5,6 +5,8 @@ export {
 } from './libs/enums/enums.js';
 export {
   type UserAuthResponseDto,
+  type UserDetailsDto,
+  type UserDetailsResponseDto,
   type UserGetAllItemResponseDto,
   type UserGetAllResponseDto,
   type UserSignInRequestDto,
@@ -17,4 +19,5 @@ export {
   userSignIn as userSignInValidationSchema,
   userSignUp as userSignUpValidationSchema,
   userUpdate as userUpdateValidationSchema,
+  userUpdateWithAvatar as userUpdateWithAvatarIdValidationSchema,
 } from './libs/validation-schemas/validation-schemas.js';

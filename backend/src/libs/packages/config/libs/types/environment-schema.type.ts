@@ -18,12 +18,17 @@ type EnvironmentSchema = {
     AWS_ACCESS_KEY: string;
     AWS_BUCKET_NAME: string;
     AWS_SECRET_ACCESS_KEY: string;
+    AWS_SES_EMAIL: string;
   };
   JWT: {
     SECRET_KEY: string;
   };
   OPEN_AI: {
     API_KEY: string;
+  };
+  GOOGLE_AUTH: {
+    CLIENT_ID: string;
+    CLIENT_SECRET: string;
   };
 };
 

@@ -11,6 +11,7 @@ import { getDetectArticleGenreCompletionConfig } from './libs/helpers/helpers.js
 import {
   type ArticleBaseResponseDto,
   type ArticleCreateDto,
+  type ArticleGetAllResponseDto,
   type ArticleUpdateRequestDto,
   type DetectedArticleGenre,
 } from './libs/types/types.js';
@@ -71,8 +72,27 @@ class ArticleService implements IService {
     return newGenreEntity.toObject().id;
   }
 
-  public findAll(): Promise<{ items: unknown[] }> {
-    return Promise.resolve({ items: [] });
+  private async getGenreIdToSet({
+    genreId,
+    text,
+  }: ArticleCreateDto): Promise<number | null> {
+    if (genreId) {
+      return genreId;
+    }
+
+    return await this.getGenreIdForArticle(text);
+  }
+
+  public async findAll(): Promise<ArticleGetAllResponseDto> {
+    const articles = await this.articleRepository.findAll({});
+
+    return { items: articles.map((article) => article.toObjectWithAuthor()) };
+  }
+
+  public async findOwn(userId: number): Promise<ArticleGetAllResponseDto> {
+    const articles = await this.articleRepository.findAll({ userId });
+
+    return { items: articles.map((article) => article.toObjectWithAuthor()) };
   }
 
   public async find(id: number): Promise<ArticleBaseResponseDto | null> {
@@ -88,7 +108,7 @@ class ArticleService implements IService {
   public async create(
     payload: ArticleCreateDto,
   ): Promise<ArticleBaseResponseDto> {
-    const genreId = await this.getGenreIdForArticle(payload.text);
+    const genreId = await this.getGenreIdToSet(payload);
 
     const article = await this.articleRepository.create(
       ArticleEntity.initializeNew({

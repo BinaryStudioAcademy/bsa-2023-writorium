@@ -1,7 +1,7 @@
 import convict, { type Config as TConfig } from 'convict';
 import { config } from 'dotenv';
 
-import { AppEnvironment } from '~/libs/enums/enums.js';
+import { AppEnvironment, TokenExpirationTime } from '~/libs/enums/enums.js';
 import { type ILogger } from '~/libs/packages/logger/logger.js';
 
 import {
@@ -117,6 +117,12 @@ class Config implements IConfig {
           env: 'AWS_BUCKET_NAME',
           default: null,
         },
+        AWS_SES_EMAIL: {
+          doc: 'AWS SES email',
+          format: String,
+          env: 'AWS_SES_EMAIL',
+          default: null,
+        },
       },
       JWT: {
         SECRET_KEY: {
@@ -134,13 +140,27 @@ class Config implements IConfig {
           default: null,
         },
       },
+      GOOGLE_AUTH: {
+        CLIENT_ID: {
+          doc: 'Google Auth api client id',
+          format: String,
+          env: 'GOOGLE_CLIENT_ID',
+          default: null,
+        },
+        CLIENT_SECRET: {
+          doc: 'Google Auth api client secret',
+          format: String,
+          env: 'GOOGLE_CLIENT_SECRET',
+          default: null,
+        },
+      },
     });
   }
 
   private get authConfig(): IAuthConfig {
     return {
       ALGORITHM: 'HS256',
-      EXPIRES_IN: '24h',
+      EXPIRES_IN: TokenExpirationTime.ONE_DAY,
     };
   }
 }

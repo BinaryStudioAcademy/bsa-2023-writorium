@@ -6,7 +6,7 @@ import {
 } from '~/packages/users/libs/enums/enums.js';
 import { type UserUpdateRequestDto } from '~/packages/users/libs/types/types.js';
 
-const userUpdate = joi.object<UserUpdateRequestDto, true>({
+const userUpdate = joi.object<Omit<UserUpdateRequestDto, 'avatarId'>, true>({
   firstName: joi
     .string()
     .trim()

@@ -3,6 +3,8 @@ import { ApplicationError } from '~/libs/exceptions/exceptions.js';
 import { type IService } from '~/libs/interfaces/interfaces.js';
 import { type IConfig } from '~/libs/packages/config/config.js';
 import { type IEncrypt } from '~/libs/packages/encrypt/encrypt.js';
+import { UserNotFoundError } from '~/libs/packages/exceptions/exceptions.js';
+import { type AuthResetPasswordDto } from '~/packages/auth/libs/types/types.js';
 import { UserEntity } from '~/packages/users/user.entity.js';
 import { type UserRepository } from '~/packages/users/user.repository.js';
 
@@ -110,9 +112,43 @@ class UserService implements IService {
         email: payload.email,
         passwordHash: null,
         passwordSalt: null,
+        avatarId: payload.avatarId,
+        avatarUrl: null,
       }),
     );
 
+    return updatedUser.toObject();
+  }
+  public async updatePassword(
+    id: number,
+    privateDataToSet: AuthResetPasswordDto,
+  ): Promise<UserAuthResponseDto> {
+    const user = await this.find(id);
+    if (!user) {
+      throw new UserNotFoundError();
+    }
+
+    const passwordSalt = await this.encrypt.generateSalt(
+      this.config.ENCRYPTION.USER_PASSWORD_SALT_ROUNDS,
+    );
+
+    const passwordHash = await this.encrypt.encrypt(
+      privateDataToSet.password,
+      passwordSalt,
+    );
+
+    const updatedUser = await this.userRepository.updatePassword(
+      UserEntity.initialize({
+        id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        passwordHash,
+        passwordSalt,
+        avatarId: null,
+        avatarUrl: null,
+      }),
+    );
     return updatedUser.toObject();
   }
 
