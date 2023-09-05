@@ -72,6 +72,17 @@ class ArticleService implements IService {
     return newGenreEntity.toObject().id;
   }
 
+  private async getGenreIdToSet({
+    genreId,
+    text,
+  }: ArticleCreateDto): Promise<number | null> {
+    if (genreId) {
+      return genreId;
+    }
+
+    return await this.getGenreIdForArticle(text);
+  }
+
   public async findAll(): Promise<ArticleGetAllResponseDto> {
     const articles = await this.articleRepository.findAll({});
 
@@ -97,7 +108,7 @@ class ArticleService implements IService {
   public async create(
     payload: ArticleCreateDto,
   ): Promise<ArticleBaseResponseDto> {
-    const genreId = await this.getGenreIdForArticle(payload.text);
+    const genreId = await this.getGenreIdToSet(payload);
 
     const article = await this.articleRepository.create(
       ArticleEntity.initializeNew({
