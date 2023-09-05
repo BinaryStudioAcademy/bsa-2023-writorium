@@ -85,7 +85,7 @@ class AuthService {
     if (!isValidFacebookAccessToken) {
       throw new HttpError({
         message: 'Invalid token',
-        status: HttpCode.BAD_REQUEST,
+        status: HttpCode.UNAUTHORIZED,
       });
     }
 

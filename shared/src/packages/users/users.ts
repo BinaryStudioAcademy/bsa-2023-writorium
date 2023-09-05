@@ -18,7 +18,6 @@ export {
 } from './libs/types/types.js';
 export {
   userSignIn as userSignInValidationSchema,
-  userSignInWithFacebook as userSignInWithFacebookValidationSchema,
   userSignUp as userSignUpValidationSchema,
   userUpdate as userUpdateValidationSchema,
   userUpdateWithAvatar as userUpdateWithAvatarIdValidationSchema,
