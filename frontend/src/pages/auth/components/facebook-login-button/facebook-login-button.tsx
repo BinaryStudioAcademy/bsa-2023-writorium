@@ -2,6 +2,9 @@ import { type ReactFacebookLoginInfo } from 'react-facebook-login';
 import FacebookLogin from 'react-facebook-login';
 
 import { useCallback } from '~/libs/hooks/hooks.js';
+import { config } from '~/libs/packages/config/config.js';
+
+import styles from './styles.module.scss';
 
 type FacebookLoginButtonProperties = {
   onLogin: (response: ReactFacebookLoginInfo) => void;
@@ -23,12 +26,12 @@ const FacebookLoginButton: React.FC<FacebookLoginButtonProperties> = ({
 
   return (
     <FacebookLogin
-      appId="1342855219997182"
+      appId={config.ENV.FACEBOOK.APP_ID}
       autoLoad={false}
       fields="name,email,picture"
       callback={responseFacebook}
-      icon="fa-facebook"
-      textButton="Login with Facebook"
+      textButton="Sign in with Facebook"
+      cssClass={styles.facebookLoginButton}
     />
   );
 };

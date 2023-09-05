@@ -45,7 +45,7 @@ const SignInForm: React.FC<Properties> = ({ onSubmit }) => {
       <div className={styles.formWrapper}>
         <h2 className={styles.authFormTitle}>Hello!</h2>
         <FacebookLoginButton onLogin={handleFacebookLogin} />
-
+        <hr className={styles.hrLine} />
         <form
           className={styles.form}
           name="loginForm"
