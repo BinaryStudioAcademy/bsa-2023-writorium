@@ -1,1 +1,5 @@
-export { PromptCategory, PromptsApiPath } from 'shared/build/index.js';
+export {
+  PromptCategory,
+  PromptsApiPath,
+  PromptType,
+} from 'shared/build/index.js';

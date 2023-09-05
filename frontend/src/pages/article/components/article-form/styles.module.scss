@@ -1,22 +1,13 @@
 .formContainer {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-}
-
-.titleInput,
-.postContentTextarea {
-  max-width: 830px;
-  line-height: 17px;
+  gap: 10px;
 }
 
 .titleInput {
+  max-width: 830px;
   height: 85px;
-}
-
-.postContentTextarea {
-  height: 360px;
-  padding: 60px 20px;
+  line-height: 17px;
 }
 
 .buttonWrapper {
