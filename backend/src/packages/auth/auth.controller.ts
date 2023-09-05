@@ -96,7 +96,7 @@ class AuthController extends Controller {
         body: loginWithGoogleValidationSchema,
       },
       handler: (options) =>
-        this.LoginWithGoogle(
+        this.loginWithGoogle(
           options as ApiHandlerOptions<{
             body: AuthLoginWithGoogleDto;
           }>,
@@ -224,7 +224,7 @@ class AuthController extends Controller {
     };
   }
 
-  private async LoginWithGoogle(
+  private async loginWithGoogle(
     options: ApiHandlerOptions<{
       body: AuthLoginWithGoogleDto;
     }>,
