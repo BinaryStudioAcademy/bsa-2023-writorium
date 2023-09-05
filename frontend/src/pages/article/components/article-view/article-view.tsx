@@ -1,6 +1,5 @@
 import ArticleBanner from '~/assets/img/article-banner.jpg';
-import { IconButton } from '~/libs/components/icon-button/icon-button.jsx';
-import { Tag } from '~/libs/components/tag/tag.jsx';
+import { IconButton, Tag } from '~/libs/components/components.js';
 import { type ArticleType } from '~/libs/types/types.js';
 
 import styles from './styles.module.scss';
