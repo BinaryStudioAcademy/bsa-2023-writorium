@@ -18,4 +18,14 @@ const createArticle = createAsyncThunk<
   return articleApi.create(articlePayload);
 });
 
-export { createArticle };
+const shareArticle = createAsyncThunk<
+  { token: string },
+  { id: string },
+  AsyncThunkConfig
+>(`${sliceName}/share`, (articlePayload, { extra }) => {
+  const { articleApi } = extra;
+
+  return articleApi.share(articlePayload.id);
+});
+
+export { createArticle, shareArticle };

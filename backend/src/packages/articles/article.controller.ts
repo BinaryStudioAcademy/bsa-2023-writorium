@@ -228,7 +228,7 @@ class ArticleController extends Controller {
 
     return {
       status: HttpCode.OK,
-      payload: { articleToken: token },
+      payload: { token: token },
     };
   }
 

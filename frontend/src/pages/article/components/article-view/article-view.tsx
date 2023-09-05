@@ -1,7 +1,9 @@
 import ArticleBanner from '~/assets/img/article-banner.jpg';
 import { IconButton } from '~/libs/components/icon-button/icon-button.jsx';
 import { Tag } from '~/libs/components/tag/tag.jsx';
+import { useAppDispatch, useCallback,useParams } from '~/libs/hooks/hooks.js';
 import { type ArticleType } from '~/libs/types/types.js';
+import { actions as articlesActions } from '~/slices/articles/articles.js';
 
 import styles from './styles.module.scss';
 
@@ -9,14 +11,21 @@ type Properties = {
   article: ArticleType;
 };
 
-const onButtonClick = (): void => {
-  /**
-   * @todo implement handle logic for buttons clicked events(favorite, comment, share)
-   */
-};
-
 const ArticleView: React.FC<Properties> = ({ article }) => {
   const { title, text, tags } = article;
+
+  const { id } = useParams();
+
+  const dispatch = useAppDispatch();
+
+  const onButtonClick = useCallback((): void => {
+    /**
+     * @todo implement handle logic for buttons clicked events(favorite, comment, share)
+     */
+    if (id) {
+      void dispatch(articlesActions.shareArticle({ id }));
+    }
+  }, [dispatch, id]);
 
   return (
     <div className={styles.body}>

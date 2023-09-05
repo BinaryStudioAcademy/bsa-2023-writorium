@@ -1,9 +1,10 @@
-import { createArticle } from './actions.js';
+import { createArticle, shareArticle } from './actions.js';
 import { actions } from './articles.slice.js';
 
 const allActions = {
   ...actions,
   createArticle,
+  shareArticle,
 };
 
 export { allActions as actions };
