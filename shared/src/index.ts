@@ -24,6 +24,7 @@ export {
 export { type SendEmailResponse } from './libs/packages/mailer/mailer.js';
 export { type IStorage } from './libs/packages/storage/storage.js';
 export {
+  type PaginationParameters,
   type ServerCommonErrorResponse,
   type ServerErrorDetail,
   type ServerErrorResponse,
