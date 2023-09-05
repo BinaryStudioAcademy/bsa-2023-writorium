@@ -11,12 +11,14 @@ export {
   type UserGetAllResponseDto,
   type UserSignInRequestDto,
   type UserSignInResponseDto,
+  type UserSignInWithFacebookResponseDto,
   type UserSignUpRequestDto,
   type UserSignUpResponseDto,
   type UserUpdateRequestDto,
 } from './libs/types/types.js';
 export {
   userSignIn as userSignInValidationSchema,
+  userSignInWithFacebook as userSignInWithFacebookValidationSchema,
   userSignUp as userSignUpValidationSchema,
   userUpdate as userUpdateValidationSchema,
 } from './libs/validation-schemas/validation-schemas.js';

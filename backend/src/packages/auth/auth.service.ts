@@ -5,6 +5,7 @@ import {
   InvalidCredentialsError,
   UserNotFoundError,
 } from '~/libs/packages/exceptions/exceptions.js';
+import { facebookAuth } from '~/libs/packages/facebook-auth/facebook-auth.js';
 import { HttpCode, HttpError } from '~/libs/packages/http/http.js';
 import {
   type Mailer,
@@ -23,6 +24,7 @@ import { type UserPrivateData } from '../users/libs/types/types.js';
 import {
   type AuthRequestPasswordDto,
   type AuthResetPasswordDto,
+  type UserSignInWithFacebookResponseDto,
 } from './libs/types/types.js';
 
 class AuthService {
@@ -47,6 +49,7 @@ class AuthService {
     const { email, password } = userSignInDto;
 
     const user = await this.userService.findByEmail(email);
+
     if (!user) {
       throw new UserNotFoundError();
     }
@@ -63,6 +66,37 @@ class AuthService {
 
     if (!hasSamePassword) {
       throw new InvalidCredentialsError();
+    }
+
+    const token = await accessToken.create<{ userId: number }>({
+      userId: user.id,
+    });
+
+    return { user, token };
+  }
+  public async signInWithFacebook(
+    userSignInDto: UserSignInWithFacebookResponseDto,
+  ): Promise<UserSignInResponseDto> {
+    const isValidFacebookAccessToken =
+      await facebookAuth.verifyFacebookAccessToken(userSignInDto.accessToken);
+
+    if (!isValidFacebookAccessToken) {
+      throw new HttpError({
+        message: 'Invalid token',
+        status: HttpCode.BAD_REQUEST,
+      });
+    }
+
+    const { email } = userSignInDto;
+
+    if (!email) {
+      throw new InvalidCredentialsError();
+    }
+
+    const user = await this.userService.findByEmail(email);
+
+    if (!user) {
+      throw new UserNotFoundError();
     }
 
     const token = await accessToken.create<{ userId: number }>({

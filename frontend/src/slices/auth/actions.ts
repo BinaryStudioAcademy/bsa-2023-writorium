@@ -1,11 +1,11 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { type ReactFacebookLoginInfo } from 'react-facebook-login';
 
 import { StorageKey } from '~/libs/packages/storage/storage.js';
 import { type AsyncThunkConfig } from '~/libs/types/types.js';
 import {
   type AuthRequestPasswordDto,
   type AuthResetPasswordDto,
+  type UserSignInWithFacebookResponseDto,
 } from '~/packages/auth/auth.js';
 import { NotificationType } from '~/packages/notification/notification.js';
 import {
@@ -46,7 +46,7 @@ const signIn = createAsyncThunk<
 
 const signInWithFacebook = createAsyncThunk<
   UserAuthResponseDto,
-  ReactFacebookLoginInfo,
+  UserSignInWithFacebookResponseDto,
   AsyncThunkConfig
 >(`${sliceName}/sign-in`, async (loginPayload, { extra }) => {
   const { authApi, storage } = extra;

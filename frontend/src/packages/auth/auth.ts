@@ -14,6 +14,7 @@ export { authApi };
 export {
   type AuthRequestPasswordDto,
   type AuthResetPasswordDto,
+  type UserSignInWithFacebookResponseDto,
 } from './libs/types/types.js';
 export {
   requestPasswordValidationSchema,

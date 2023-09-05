@@ -1,20 +1,20 @@
-import { type ReactFacebookLoginInfo } from 'react-facebook-login';
 import FacebookLogin from 'react-facebook-login';
 
 import { useCallback } from '~/libs/hooks/hooks.js';
 import { config } from '~/libs/packages/config/config.js';
+import { type UserSignInWithFacebookResponseDto } from '~/packages/auth/auth.js';
 
 import styles from './styles.module.scss';
 
 type FacebookLoginButtonProperties = {
-  onLogin: (response: ReactFacebookLoginInfo) => void;
+  onLogin: (response: UserSignInWithFacebookResponseDto) => void;
 };
 
 const FacebookLoginButton: React.FC<FacebookLoginButtonProperties> = ({
   onLogin,
 }) => {
   const responseFacebook = useCallback(
-    (response: ReactFacebookLoginInfo): void => {
+    (response: UserSignInWithFacebookResponseDto): void => {
       if (response.accessToken) {
         onLogin(response);
       } else {

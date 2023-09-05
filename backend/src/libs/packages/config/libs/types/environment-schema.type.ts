@@ -26,6 +26,10 @@ type EnvironmentSchema = {
   OPEN_AI: {
     API_KEY: string;
   };
+  FACEBOOK_AUTH: {
+    APP_ID: string;
+    APP_SECRET: string;
+  };
 };
 
 export { type EnvironmentSchema };

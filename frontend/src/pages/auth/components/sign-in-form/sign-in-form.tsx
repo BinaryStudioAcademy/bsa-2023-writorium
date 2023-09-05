@@ -1,8 +1,7 @@
-import { type ReactFacebookLoginInfo } from 'react-facebook-login';
-
 import { Input, Link } from '~/libs/components/components.js';
 import { AppRoute } from '~/libs/enums/app-route.enum';
 import { useAppDispatch, useAppForm, useCallback } from '~/libs/hooks/hooks.js';
+import { type UserSignInWithFacebookResponseDto } from '~/packages/auth/auth.js';
 import {
   type UserSignInRequestDto,
   userSignInValidationSchema,
@@ -27,7 +26,7 @@ const SignInForm: React.FC<Properties> = ({ onSubmit }) => {
   });
 
   const handleFacebookLogin = useCallback(
-    (response: ReactFacebookLoginInfo): void => {
+    (response: UserSignInWithFacebookResponseDto): void => {
       void dispatch(authActions.signInWithFacebook(response));
     },
     [dispatch],
