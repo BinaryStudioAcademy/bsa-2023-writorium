@@ -16,11 +16,13 @@ import {
 import { type AuthService } from './auth.service.js';
 import { AuthApiPath } from './libs/enums/enums.js';
 import {
+  type AuthLoginWithGoogleDto,
   type AuthRequestPasswordDto,
   type AuthResetPasswordDto,
   type UserSignInWithFacebookResponseDto,
 } from './libs/types/types.js';
 import {
+  loginWithGoogleValidationSchema,
   requestPasswordValidationSchema,
   resetPasswordValidationSchema,
 } from './libs/validation-schemas/validation-schemas.js';
@@ -97,6 +99,20 @@ class AuthController extends Controller {
       validation: {
         body: resetPasswordValidationSchema,
       },
+    });
+
+    this.addRoute({
+      path: AuthApiPath.GOOGLE,
+      method: 'POST',
+      validation: {
+        body: loginWithGoogleValidationSchema,
+      },
+      handler: (options) =>
+        this.loginWithGoogle(
+          options as ApiHandlerOptions<{
+            body: AuthLoginWithGoogleDto;
+          }>,
+        ),
     });
   }
 
@@ -228,6 +244,17 @@ class AuthController extends Controller {
     return {
       status: HttpCode.OK,
       payload: await this.authService.resetPassword(options.body),
+    };
+  }
+
+  private async loginWithGoogle(
+    options: ApiHandlerOptions<{
+      body: AuthLoginWithGoogleDto;
+    }>,
+  ): Promise<ApiHandlerResponse> {
+    return {
+      status: HttpCode.CREATED,
+      payload: await this.authService.loginWithGoogle(options.body),
     };
   }
 }

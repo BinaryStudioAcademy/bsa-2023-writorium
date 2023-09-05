@@ -21,4 +21,5 @@ export {
   userSignInWithFacebook as userSignInWithFacebookValidationSchema,
   userSignUp as userSignUpValidationSchema,
   userUpdate as userUpdateValidationSchema,
+  userUpdateWithAvatar as userUpdateWithAvatarIdValidationSchema,
 } from './libs/validation-schemas/validation-schemas.js';

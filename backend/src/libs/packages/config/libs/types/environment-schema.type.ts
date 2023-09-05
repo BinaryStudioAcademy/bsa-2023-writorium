@@ -30,6 +30,10 @@ type EnvironmentSchema = {
     APP_ID: string;
     APP_SECRET: string;
   };
+  GOOGLE_AUTH: {
+    CLIENT_ID: string;
+    CLIENT_SECRET: string;
+  };
 };
 
 export { type EnvironmentSchema };

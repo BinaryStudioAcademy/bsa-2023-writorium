@@ -8,6 +8,11 @@
   border-radius: 50%;
 }
 
+.image {
+  display: block;
+  object-fit: cover;
+}
+
 .defaultAvatar {
   background-color: var(--light-green);
 }

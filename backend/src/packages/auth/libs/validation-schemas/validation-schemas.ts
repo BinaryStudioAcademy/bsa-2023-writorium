@@ -1,4 +1,5 @@
 export {
+  loginWithGoogleValidationSchema,
   requestPasswordValidationSchema,
   resetPasswordValidationSchema,
   userSignInWithFacebookValidationSchema,

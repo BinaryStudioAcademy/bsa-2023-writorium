@@ -6,6 +6,7 @@ const AuthApiPath = {
   CURRENT: '/current',
   FORGOTTEN_PASSWORD: '/send-forgotten-password',
   RESET_PASSWORD: '/reset-password',
+  GOOGLE: '/google',
 } as const;
 
 export { AuthApiPath };

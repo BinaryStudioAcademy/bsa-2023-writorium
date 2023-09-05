@@ -13,6 +13,7 @@ import {
 
 import { AuthApiPath } from './libs/enums/enums.js';
 import {
+  type AuthLoginWithGoogleDto,
   type AuthRequestPasswordDto,
   type AuthResetPasswordDto,
   type UserSignInWithFacebookResponseDto,
@@ -111,6 +112,22 @@ class AuthApi extends HttpApi {
   ): Promise<UserSignInResponseDto> {
     const response = await this.load(
       this.getFullEndpoint(AuthApiPath.RESET_PASSWORD, {}),
+      {
+        method: 'POST',
+        contentType: ContentType.JSON,
+        payload: JSON.stringify(payload),
+        hasAuth: false,
+      },
+    );
+
+    return await response.json<UserSignInResponseDto>();
+  }
+
+  public async loginWithGoogle(
+    payload: AuthLoginWithGoogleDto,
+  ): Promise<UserSignInResponseDto> {
+    const response = await this.load(
+      this.getFullEndpoint(AuthApiPath.GOOGLE, {}),
       {
         method: 'POST',
         contentType: ContentType.JSON,

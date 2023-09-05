@@ -6,6 +6,7 @@ import {
   UserNotFoundError,
 } from '~/libs/packages/exceptions/exceptions.js';
 import { facebookAuth } from '~/libs/packages/facebook-auth/facebook-auth.js';
+import { googleAuthClient } from '~/libs/packages/google-auth-client/google-auth-client.js';
 import { HttpCode, HttpError } from '~/libs/packages/http/http.js';
 import {
   type Mailer,
@@ -22,6 +23,7 @@ import { type UserService } from '~/packages/users/user.service.js';
 
 import { type UserPrivateData } from '../users/libs/types/types.js';
 import {
+  type AuthLoginWithGoogleDto,
   type AuthRequestPasswordDto,
   type AuthResetPasswordDto,
   type UserSignInWithFacebookResponseDto,
@@ -158,6 +160,36 @@ class AuthService {
       userId,
       authResetPasswordDto,
     );
+    const token = await accessToken.create<{ userId: number }>({
+      userId: user.id,
+    });
+
+    return { user, token };
+  }
+  public async loginWithGoogle(
+    authLoginWithGoogleDto: AuthLoginWithGoogleDto,
+  ): Promise<UserSignInResponseDto> {
+    const userInfo = await googleAuthClient.getUserInfo(
+      authLoginWithGoogleDto.code,
+    );
+
+    if (!userInfo) {
+      throw new HttpError({
+        message: 'Invalid code',
+        status: HttpCode.BAD_REQUEST,
+      });
+    }
+    if (!userInfo.email) {
+      throw new HttpError({
+        message: 'Invalid user info format: no email',
+        status: HttpCode.BAD_REQUEST,
+      });
+    }
+
+    const user = await this.userService.findByEmail(userInfo.email);
+    if (!user) {
+      throw new UserNotFoundError();
+    }
     const token = await accessToken.create<{ userId: number }>({
       userId: user.id,
     });

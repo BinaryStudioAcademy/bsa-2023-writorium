@@ -22,7 +22,7 @@ const ProtectedRoute: React.FC<Properties> = ({
     return <Navigate to={redirectPath} replace />;
   }
 
-  return <>{children}</>;
+  return children;
 };
 
 export { ProtectedRoute };

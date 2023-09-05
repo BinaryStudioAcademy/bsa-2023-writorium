@@ -1,5 +1,6 @@
 import {
   getCurrentUser,
+  loginWithGoogle,
   logout,
   resetPassword,
   sendEmailResetPasswordLink,
@@ -18,6 +19,7 @@ const allActions = {
   sendEmailResetPasswordLink,
   resetPassword,
   signInWithFacebook,
+  loginWithGoogle,
 };
 
 export { allActions as actions };
