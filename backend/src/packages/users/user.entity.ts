@@ -13,6 +13,10 @@ class UserEntity implements IEntity {
 
   private 'lastName': string;
 
+  private 'avatarId': number | null;
+
+  private 'avatarUrl': string | null;
+
   private constructor({
     id,
     email,
@@ -20,6 +24,8 @@ class UserEntity implements IEntity {
     passwordSalt,
     lastName,
     firstName,
+    avatarId,
+    avatarUrl,
   }: {
     id: number | null;
     email: string;
@@ -27,6 +33,8 @@ class UserEntity implements IEntity {
     passwordSalt: string | null;
     lastName: string;
     firstName: string;
+    avatarId: number | null;
+    avatarUrl: string | null;
   }) {
     this.id = id;
     this.email = email;
@@ -34,6 +42,8 @@ class UserEntity implements IEntity {
     this.passwordSalt = passwordSalt;
     this.firstName = firstName;
     this.lastName = lastName;
+    this.avatarId = avatarId;
+    this.avatarUrl = avatarUrl;
   }
 
   public static initialize({
@@ -43,6 +53,8 @@ class UserEntity implements IEntity {
     passwordSalt,
     firstName,
     lastName,
+    avatarId,
+    avatarUrl,
   }: {
     id: number;
     email: string;
@@ -50,6 +62,8 @@ class UserEntity implements IEntity {
     passwordSalt: string | null;
     lastName: string;
     firstName: string;
+    avatarId: number | null;
+    avatarUrl: string | null;
   }): UserEntity {
     return new UserEntity({
       id,
@@ -58,6 +72,8 @@ class UserEntity implements IEntity {
       passwordSalt,
       lastName,
       firstName,
+      avatarId,
+      avatarUrl,
     });
   }
 
@@ -81,6 +97,8 @@ class UserEntity implements IEntity {
       passwordSalt,
       firstName,
       lastName,
+      avatarId: null,
+      avatarUrl: null,
     });
   }
 
@@ -89,12 +107,32 @@ class UserEntity implements IEntity {
     email: string;
     firstName: string;
     lastName: string;
+    avatarUrl: string | null;
+    avatarId: number | null;
   } {
     return {
       id: this.id as number,
       email: this.email,
       firstName: this.firstName,
       lastName: this.lastName,
+      avatarUrl: this.avatarUrl,
+      avatarId: this.avatarId,
+    };
+  }
+
+  public toUpdateObject(): {
+    id: number;
+    email: string;
+    firstName: string;
+    lastName: string;
+    avatarId: number | null;
+  } {
+    return {
+      id: this.id as number,
+      email: this.email,
+      firstName: this.firstName,
+      lastName: this.lastName,
+      avatarId: this.avatarId,
     };
   }
 

@@ -23,7 +23,13 @@ const Avatar: React.FC<Properties> = ({ avatarUrl, username, className }) => {
     );
   }
 
-  return <img src={avatarUrl} alt="avatar" className={styles.avatar} />;
+  return (
+    <img
+      src={avatarUrl}
+      alt="avatar"
+      className={getValidClassNames(styles.avatar, styles.image, className)}
+    />
+  );
 };
 
 export { Avatar };
