@@ -55,14 +55,13 @@ const Auth: React.FC = () => {
     [dispatch],
   );
 
-  const login = useGoogleLogin({
+  const handleGoogleLogin = useGoogleLogin({
     onSuccess: ({ code }) => {
       void dispatch(authActions.loginWithGoogle({ code }));
     },
 
     flow: 'auth-code',
   });
-  const handleGoogleLogin = useCallback(() => login(), [login]);
 
   const getScreen = (screen: string): React.ReactNode => {
     if (matchPath({ path: AppRoute.RESET_PASSWORD }, pathname)) {
