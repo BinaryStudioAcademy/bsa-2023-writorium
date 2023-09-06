@@ -5,7 +5,7 @@
   align-items: center;
   padding: 30px 60px;
   background: var(--light-grey);
-  border-bottom: 2px solid rgba(151 151 151 / 15%);
+  border-bottom: 2px solid var(--light-grey-15);
 }
 
 .logo {
@@ -35,4 +35,40 @@
   background-color: var(--dark-green);
   border-radius: 5px;
   cursor: pointer;
+}
+
+.dropdown.dropdownModal {
+  background-color: var(--light-grey-15);
+}
+
+.dropdown .dropdownModal.open {
+  animation: fade 0.3s ease-in-out;
+}
+
+.dropdown .dropdownModal {
+  position: absolute;
+  top: 102px;
+  right: 60px;
+  width: 150px;
+  padding: 0;
+  border-radius: 7px;
+  box-shadow: 0 4px 8px -2px rgb(16 24 40 / 16%);
+}
+
+.dropdown button {
+  background-color: transparent;
+}
+
+.avatarButton {
+  border: none;
+}
+
+@keyframes fade {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
