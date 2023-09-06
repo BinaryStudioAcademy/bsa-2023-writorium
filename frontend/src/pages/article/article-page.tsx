@@ -1,30 +1,14 @@
 import { type FC } from 'react';
 
 import { Layout } from '~/libs/components/components.js';
-import { getUrlLastSegment } from '~/libs/helpers/helpers.js';
-import {
-  useAppDispatch,
-  useEffect,
-  useLocation,
-  useParams,
-} from '~/libs/hooks/hooks.js';
+import { useParams } from '~/libs/hooks/hooks.js';
 import { type TagType } from '~/libs/types/types.js';
-import { actions as articlesActions } from '~/slices/articles/articles.js';
 
 import { ArticleView, Author } from './components/components.js';
 import styles from './styles.module.scss';
 
 const ArticlePage: FC = () => {
-  const dispatch = useAppDispatch();
-  const location = useLocation();
   const { id } = useParams();
-
-  useEffect(() => {
-    if (location.pathname.includes('shared')) {
-      const token = getUrlLastSegment(location.pathname);
-      void dispatch(articlesActions.fetchSharedArticle({ token }));
-    }
-  }, [dispatch, location.pathname]);
 
   const MOCKED_TEXT = `Envision this: there is a technology currently undergoing testing that, when released to the public, will become a long-awaited revolution in energy. This new technology promises to be safer and more efficient than anything we have on the market now. It  will affect that which we consider mundane — power tools, toys, laptops, smartphones —
   and that which we consider exceptional — medical devices, spacecraft, and the innovative new vehicle designs needed to wean us off of fossil fuels. We have known about this  technology for centuries, yet until now we have only been able to take small steps towards its creation. Billions of dollars are pouring into research and billions more will be made once the
