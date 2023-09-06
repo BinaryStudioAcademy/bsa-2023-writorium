@@ -4,6 +4,7 @@ import { ArticleEntity } from './article.entity.js';
 import { type ArticleModel } from './article.model.js';
 import { SortingOrder } from './libs/enums/enums.js';
 import { getWhereUserIdQuery } from './libs/helpers/helpers.js';
+import { type UserActivityResponseDto } from './libs/types/types.js';
 
 class ArticleRepository implements IRepository {
   private articleModel: typeof ArticleModel;
@@ -58,6 +59,28 @@ class ArticleRepository implements IRepository {
       .execute();
 
     return ArticleEntity.initialize(article);
+  }
+
+  public async getUserActivity({
+    userId,
+    activityFrom,
+    activityTo,
+  }: {
+    userId: number;
+    activityFrom: string;
+    activityTo: string;
+  }): Promise<UserActivityResponseDto> {
+    const userActivity = (await this.articleModel
+      .query()
+      .select(
+        this.articleModel.raw('date(created_at), date(updated_at) as date'),
+        this.articleModel.raw('count(*)'),
+      )
+      .where({ userId })
+      .whereBetween('createdAt', [activityFrom, activityTo])
+      .groupByRaw('date(created_at), date(updated_at)')) as unknown;
+
+    return userActivity as UserActivityResponseDto;
   }
 
   public async update(entity: ArticleEntity): Promise<ArticleEntity> {
