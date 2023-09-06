@@ -17,5 +17,7 @@ export { PublicRoute } from './public-route/public-route.js';
 export { RouterProvider } from './router-provider/router-provider.js';
 export { Tag } from './tag/tag.js';
 export { Textarea } from './textarea/textarea.js';
+export { Tooltip } from './tooltip/tooltip.js';
 export { Provider as StoreProvider } from 'react-redux';
 export { Navigate, Outlet as RouterOutlet } from 'react-router-dom';
+export { Tooltip as ReactTooltip } from 'react-tooltip';

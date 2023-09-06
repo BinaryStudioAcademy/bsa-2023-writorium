@@ -9,6 +9,7 @@ import {
   PublicRoute,
   RouterProvider,
   StoreProvider,
+  Tooltip,
 } from '~/libs/components/components.js';
 import { AppRoute, ArticleSubRoute } from '~/libs/enums/enums.js';
 import { store } from '~/libs/packages/store/store.js';
@@ -107,5 +108,6 @@ createRoot(document.querySelector('#root') as HTMLElement).render(
         ]}
       />
     </StoreProvider>
+    <Tooltip />
   </StrictMode>,
 );
