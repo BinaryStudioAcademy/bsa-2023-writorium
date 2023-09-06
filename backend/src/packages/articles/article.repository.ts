@@ -8,7 +8,7 @@ import { getWhereUserIdQuery } from './libs/helpers/helpers.js';
 class ArticleRepository implements IRepository {
   private articleModel: typeof ArticleModel;
 
-  private defaultRelationExpression = 'author';
+  private defaultRelationExpression = '[author,prompt,genre]';
 
   public constructor(articleModel: typeof ArticleModel) {
     this.articleModel = articleModel;
@@ -26,7 +26,10 @@ class ArticleRepository implements IRepository {
       .withGraphJoined(this.defaultRelationExpression);
 
     return articles.map((article) =>
-      ArticleEntity.initializeWithAuthor(article),
+      ArticleEntity.initializeWithAuthor({
+        ...article,
+        genre: article.genre.name,
+      }),
     );
   }
 

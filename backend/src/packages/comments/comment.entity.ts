@@ -10,7 +10,7 @@ class CommentEntity implements IEntity {
   private 'text': string;
   private 'userId': number;
   private 'articleId': number;
-  private 'createdAt': string | undefined;
+  private 'createdAt': string;
 
   private constructor({
     id,
