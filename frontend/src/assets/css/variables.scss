@@ -21,13 +21,19 @@
   --light-grey-text: #b6b6b6;
   --light-grey-border: #dbdbdb;
   --red: #df1c3d;
+  --light-gray-40: rgb(174 174 174 / 40%);
+  --shadow-color: rgba(53 53 53 / 20%);
+  --picasso: #ffec99;
+  --madang: #b2f2bb;
 
   /* z-index */
   --z-index-level-one: 100;
+  --z-index-tooltip: 1000;
+  --achievement-columns: 3;
 }
 
 input {
   --input-bg: #f8f8f8;
-  --input-shadow-color: rgba(53 53 53 / 20%);
+  --input-shadow-color: var(--shadow-color);
   --input-text: rgb(40 40 40 / 50%);
 }
