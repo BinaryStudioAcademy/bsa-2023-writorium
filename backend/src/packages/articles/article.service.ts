@@ -88,8 +88,12 @@ class ArticleService implements IService {
     filters: ArticlesFilters,
   ): Promise<ArticleGetAllResponseDto> {
     const articles = await this.articleRepository.findAll(filters);
+    const articlesTotal = await this.articleRepository.getArticlesTotal();
 
-    return { items: articles.map((article) => article.toObjectWithAuthor()) };
+    return {
+      total: articlesTotal,
+      items: articles.map((article) => article.toObjectWithAuthor()),
+    };
   }
 
   public async findOwn(
@@ -100,8 +104,14 @@ class ArticleService implements IService {
       userId,
       ...filters,
     });
+    const articlesTotal = await this.articleRepository.getArticlesTotal({
+      userId,
+    });
 
-    return { items: articles.map((article) => article.toObjectWithAuthor()) };
+    return {
+      total: articlesTotal,
+      items: articles.map((article) => article.toObjectWithAuthor()),
+    };
   }
 
   public async find(id: number): Promise<ArticleBaseResponseDto | null> {

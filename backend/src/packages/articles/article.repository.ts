@@ -15,6 +15,15 @@ class ArticleRepository implements IRepository {
     this.articleModel = articleModel;
   }
 
+  public getArticlesTotal({
+    userId,
+  }: { userId?: number } = {}): Promise<number> {
+    return this.articleModel
+      .query()
+      .where(getWhereUserIdQuery(userId))
+      .resultSize();
+  }
+
   public async findAll({
     userId,
     take = 10,

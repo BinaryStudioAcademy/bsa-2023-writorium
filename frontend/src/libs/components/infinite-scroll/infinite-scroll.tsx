@@ -17,7 +17,7 @@ const InfiniteScroll: React.FC<Properties> = ({
     <ReactInfiniteScroll
       next={fetchData}
       hasMore={hasMore}
-      loader={'Loading'}
+      loader="Loading..."
       dataLength={dataLength}
     >
       {children}
