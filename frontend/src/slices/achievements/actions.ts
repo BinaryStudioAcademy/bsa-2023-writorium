@@ -5,14 +5,14 @@ import { type AchievementGetAllResponseDto } from '~/packages/achievements/achie
 
 import { name as sliceName } from './achievements.slice.js';
 
-const getAll = createAsyncThunk<
+const fetchAll = createAsyncThunk<
   AchievementGetAllResponseDto,
   undefined,
   AsyncThunkConfig
 >(`${sliceName}/get-all`, (_, { extra }) => {
   const { achievementsApi } = extra;
 
-  return achievementsApi.getAll();
+  return achievementsApi.fetchAll();
 });
 
-export { getAll };
+export { fetchAll };

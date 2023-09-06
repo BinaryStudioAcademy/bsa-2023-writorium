@@ -1,10 +1,10 @@
 // eslint-disable-next-line simple-import-sort/imports
-import { getAll } from './actions.js';
+import { fetchAll } from './actions.js';
 import { actions } from './achievements.slice.js';
 
 const allActions = {
   ...actions,
-  getAll,
+  fetchAll,
 };
 
 export { allActions as actions };

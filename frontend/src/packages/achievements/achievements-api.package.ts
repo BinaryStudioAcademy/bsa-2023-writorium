@@ -17,7 +17,7 @@ class AchievementsApi extends HttpApi {
     super({ path: ApiPath.ACHIEVEMENTS, baseUrl, http, storage });
   }
 
-  public async getAll(): Promise<AchievementGetAllResponseDto> {
+  public async fetchAll(): Promise<AchievementGetAllResponseDto> {
     const response = await this.load(
       this.getFullEndpoint(AchievementsApiPath.ROOT, {}),
       { method: 'GET', contentType: ContentType.JSON, hasAuth: true },
