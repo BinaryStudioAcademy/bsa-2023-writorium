@@ -19,6 +19,7 @@ class ArticleModel extends AbstractModel {
   public 'genreId': number | null;
   public 'publishedAt': string | null;
   public 'genre': GenreModel;
+  public 'prompt': PromptModel;
 
   public static override get tableName(): string {
     return DatabaseTableName.ARTICLES;

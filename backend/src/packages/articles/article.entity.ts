@@ -87,14 +87,7 @@ class ArticleEntity implements IEntity {
         firstName: author?.firstName as string,
         lastName: author?.lastName as string,
       },
-      prompt: prompt
-        ? {
-            character: prompt.character,
-            setting: prompt.setting,
-            situation: prompt.situation,
-            prop: prompt.prop,
-          }
-        : undefined,
+      prompt,
       genre,
     });
   }

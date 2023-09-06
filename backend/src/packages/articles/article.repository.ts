@@ -29,6 +29,12 @@ class ArticleRepository implements IRepository {
       ArticleEntity.initializeWithAuthor({
         ...article,
         genre: article.genre.name,
+        prompt: {
+          character: article.prompt.character,
+          setting: article.prompt.setting,
+          situation: article.prompt.situation,
+          prop: article.prompt.prop,
+        },
       }),
     );
   }
