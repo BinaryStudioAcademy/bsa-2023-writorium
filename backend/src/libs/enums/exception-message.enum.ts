@@ -7,10 +7,10 @@ const ExceptionMessage = {
   INVALID_USER_INFO_NO_EMAIL: 'Invalid user info format: no email',
   FAILED_TO_GENERATE_PROMPT: 'Failed to generate prompt',
   UNKNOWN_ERROR: 'Unknown error',
-  UNABLE_TO_DECODE_USER_INFO: 'Unable to decode user info!',
-  UNSPECIFIED_REQUEST_ORIGIN: 'Unspecified request origin!',
+  UNABLE_TO_DECODE_USER_INFO: 'Unable to decode user info',
+  UNSPECIFIED_REQUEST_ORIGIN: 'Unspecified request origin',
   DO_NOT_HAVE_AUTHORIZATION:
-    'You do not have the necessary authorization to access this resource. Please log in.',
+    'You do not have the necessary authorization to access this resource. Please log in',
   AUTHORIZATION_HEADER:
     'Authorization header should be in format: Bearer <token>',
   FAILED_TO_SEND_EMAIL: 'Failed to send email',
