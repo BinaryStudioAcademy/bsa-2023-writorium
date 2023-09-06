@@ -2,7 +2,7 @@ import { type Knex } from 'knex';
 
 async function up(knex: Knex): Promise<void> {
   return await knex.raw(
-    'CREATE UNIQUE INDEX users_lowercase_email ON users (lower(email));',
+    'CREATE UNIQUE INDEX users_lowercase_email ON users (lower(email));'
   );
 }
 
