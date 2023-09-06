@@ -36,7 +36,7 @@ class UserRepository implements IRepository {
   public async findByEmail(email: string): Promise<UserEntity | null> {
     const user = await this.userModel
       .query()
-      .where({ email })
+      .whereRaw('LOWER(email)=?', [email.toLowerCase()])
       .first()
       .withGraphJoined(this.defaultRelationExpression);
 
