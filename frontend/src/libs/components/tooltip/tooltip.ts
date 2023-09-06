@@ -1,2 +1,2 @@
 export { BlockWithTooltip } from './block-with-tooltip.js';
-export { Tooltip } from './tooltip-wrapper.js';
+export { TooltipWrapper as Tooltip } from './tooltip-wrapper.js';

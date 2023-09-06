@@ -6,9 +6,9 @@ import {
   type ReactNode,
 } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { type ValueOf } from 'shared/build/index.js';
 
 import { DataTooltipId } from '~/libs/enums/enums.js';
+import { type ValueOf } from '~/libs/types/types.js';
 
 type ElementWithTooltipProperties = {
   className?: string;

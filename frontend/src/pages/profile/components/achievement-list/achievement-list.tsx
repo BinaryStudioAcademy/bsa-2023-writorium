@@ -1,6 +1,6 @@
 import { type FC } from 'react';
 
-import { BlockWithTooltip } from '~/libs/components/tooltip/block-with-tooltip.js';
+import { BlockWithTooltip } from '~/libs/components/components.js';
 import { DataTooltipId } from '~/libs/enums/enums.js';
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
 import {
