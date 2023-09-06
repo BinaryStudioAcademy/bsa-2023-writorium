@@ -1,33 +1,54 @@
 import { type FC } from 'react';
 
+import { BlockWithTooltip } from '~/libs/components/tooltip/block-with-tooltip.js';
+import { DataTooltipId } from '~/libs/enums/enums.js';
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
-import { Achievement } from '~/pages/profile/components/components.js';
+import {
+  Achievement,
+  AchievementTooltipContent,
+} from '~/pages/profile/components/components.js';
 import { type UserAchievement } from '~/pages/profile/libs/types/types.js';
 
 import styles from './styles.module.scss';
 
 type Properties = {
   achievements: UserAchievement[];
-  showTooltip?: boolean;
+  shouldShowTooltip?: boolean;
   className?: string;
   classNameAchievement?: string;
 };
 
 const AchievementList: FC<Properties> = ({
   achievements,
-  showTooltip = false,
   className,
   classNameAchievement,
+  shouldShowTooltip = false,
 }) => {
   return (
     <ul className={getValidClassNames(className, styles.achievementList)}>
       {achievements.map((achievement) => (
         <li key={achievement.id}>
-          <Achievement
-            achievement={achievement}
-            showTooltip={showTooltip}
-            className={classNameAchievement}
-          />
+          {shouldShowTooltip ? (
+            <BlockWithTooltip
+              tooltipContent={
+                <AchievementTooltipContent
+                  description={achievement.description}
+                  progress={achievement.progress}
+                />
+              }
+              tooltipId={DataTooltipId.ACHIEVEMENT_TOOLTIP}
+            >
+              <Achievement
+                achievement={achievement}
+                className={classNameAchievement}
+              />
+            </BlockWithTooltip>
+          ) : (
+            <Achievement
+              achievement={achievement}
+              className={classNameAchievement}
+            />
+          )}
         </li>
       ))}
     </ul>

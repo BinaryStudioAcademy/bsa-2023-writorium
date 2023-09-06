@@ -51,3 +51,10 @@
 .achievementListModal::-webkit-scrollbar-track {
   background: transparent;
 }
+
+.achievementBlock .achievementTooltip {
+  max-width: 150px;
+  color: var(--pale-gray);
+  background-color: var(--light-green);
+  border-radius: 7px;
+}

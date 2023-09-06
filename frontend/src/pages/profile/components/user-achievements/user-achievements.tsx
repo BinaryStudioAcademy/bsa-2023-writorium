@@ -1,6 +1,7 @@
 import { type FC } from 'react';
 
-import { Button, Modal } from '~/libs/components/components.js';
+import { Button, Modal, Tooltip } from '~/libs/components/components.js';
+import { DataTooltipId } from '~/libs/enums/enums.js';
 import {
   getShuffledArray,
   getValidClassNames,
@@ -20,7 +21,7 @@ import { getRandomNumber } from '~/pages/profile/libs/helpers/helpers.js';
 import { type UserAchievement } from '~/pages/profile/libs/types/user-achievement.js';
 import { actions as achievementsActions } from '~/slices/achievements/achievements.js';
 
-import { AchievementList, AchievementTooltip } from '../components.js';
+import { AchievementList } from '../components.js';
 import styles from './styles.module.scss';
 
 type Properties = {
@@ -54,7 +55,7 @@ const UserAchievements: FC<Properties> = ({ className }) => {
   }, [achievements, mockUserAchievements]);
 
   useEffect(() => {
-    void dispatch(achievementsActions.getAll());
+    void dispatch(achievementsActions.fetchAll());
   }, [dispatch]);
 
   return (
@@ -73,14 +74,17 @@ const UserAchievements: FC<Properties> = ({ className }) => {
         <div>
           <h3 className={styles.title}>Achievements</h3>
           <AchievementList
-            showTooltip={true}
+            shouldShowTooltip={true}
             achievements={achievementsList}
             className={styles.achievementListModal}
             classNameAchievement={styles.achievementItem}
           />
         </div>
       </Modal>
-      <AchievementTooltip />
+      <Tooltip
+        id={DataTooltipId.ACHIEVEMENT_TOOLTIP}
+        className={styles.achievementTooltip}
+      />
     </div>
   );
 };
