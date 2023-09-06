@@ -8,7 +8,7 @@ type Properties = {
 const Tags: React.FC<Properties> = ({ tags }) => (
   <ul className={styles.tags}>
     {tags.map((tag) => (
-      <li key={tag.id} className={styles.container}>
+      <li key={crypto.randomUUID()} className={styles.container}>
         <div className={styles.category}>
           <span className={styles.categoryText}>{tag.category}</span>
         </div>
