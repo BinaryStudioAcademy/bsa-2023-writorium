@@ -1,21 +1,35 @@
 import { Avatar, Button, Layout } from '~/libs/components/components.js';
-import { useAppSelector, useCallback, useState } from '~/libs/hooks/hooks.js';
+import {
+  useAppDispatch,
+  useAppSelector,
+  useCallback,
+  useEffect,
+  useState,
+} from '~/libs/hooks/hooks.js';
 import { type UserAuthResponseDto } from '~/packages/users/users.js';
+import { actions as usersActions } from '~/slices/users/users.js';
 
-import { ProfileEditForm } from './components/components.js';
+import { ProfileEditForm, UserActivity } from './components/components.js';
 import styles from './styles.module.scss';
 
 const Profile: React.FC = () => {
-  const [isEditingProfile, setIsEditingProfile] = useState(false);
-  const { user } = useAppSelector(({ auth }) => ({
+  const dispatch = useAppDispatch();
+  const { user, userActivity } = useAppSelector(({ auth, users }) => ({
     user: auth.user as UserAuthResponseDto,
+    userActivity: users.userActivity,
   }));
+  const [isEditingProfile, setIsEditingProfile] = useState(false);
+
   const userName = `${user.firstName} ${user.lastName}`;
 
   const handleEditMode = useCallback(
     (value = true) => setIsEditingProfile(value),
     [],
   );
+
+  useEffect(() => {
+    void dispatch(usersActions.getUserActivity());
+  }, [dispatch]);
 
   return (
     <Layout>
@@ -42,6 +56,7 @@ const Profile: React.FC = () => {
             </>
           )}
         </div>
+        <UserActivity userActivity={userActivity} />
       </div>
     </Layout>
   );
