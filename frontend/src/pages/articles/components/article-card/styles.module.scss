@@ -87,14 +87,12 @@
   max-width: 585px;
   height: var(--height);
   margin: 14px 0 23px;
-  overflow: hidden;
   color: var(--dark-gray);
   font-weight: 400;
   font-size: 14px;
   font-family: Lato, sans-serif;
   font-style: normal;
   line-height: calc(var(--height) / var(--max-lines));
-  text-overflow: ellipsis;
   overflow-wrap: break-word;
 }
 
