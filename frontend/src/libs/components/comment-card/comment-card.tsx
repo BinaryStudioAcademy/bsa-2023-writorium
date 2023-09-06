@@ -1,5 +1,8 @@
 import { Avatar, Icon } from '~/libs/components/components.js';
-import { getFullName, getTimeFromCreation } from '~/libs/helpers/helpers.js';
+import {
+  getDateDifferenceWithUnit,
+  getFullName,
+} from '~/libs/helpers/helpers.js';
 import { type CommentBaseResponseDto } from '~/packages/comments/comments.js';
 import { type UserAuthResponseDto } from '~/packages/users/users.js';
 
@@ -15,6 +18,9 @@ const CommentCard: React.FC<Properties> = ({ user, comment }) => {
   const { text, createdAt } = comment;
   const userName = getFullName(firstName, lastName);
 
+  const { diff, unit } = getDateDifferenceWithUnit(createdAt);
+  const publicationTime = `${diff} ${unit}`;
+
   return (
     <section className={styles.comment}>
       <div className={styles.header}>
@@ -28,9 +34,7 @@ const CommentCard: React.FC<Properties> = ({ user, comment }) => {
             <span className={styles.userName}>{userName}</span>
             <span className={styles.indicator}></span>
           </div>
-          <span className={styles.publicationTime}>
-            {getTimeFromCreation(createdAt)} ago
-          </span>
+          <span className={styles.publicationTime}>{publicationTime} ago</span>
         </div>
         <div className={styles.iconWrapper}>
           <Icon iconName="link" className={styles.linkIcon} />

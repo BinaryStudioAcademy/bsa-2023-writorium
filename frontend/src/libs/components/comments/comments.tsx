@@ -18,7 +18,7 @@ const MOCKED_COMMENT = {
   lobortis sit sit vulputate. Commodo dictumst neque in ultricies eros sed iaculis eget. Netus
   fames vulputate vitae nunc, orci ut. Vitae, neque, pharetra imperdiet nunc, commodo at.
   Ultrices nibh sit a justo ac.`,
-  createdAt: '2023-09-02T12:51:23.543Z',
+  createdAt: '2023-09-04T07:51:23.543Z',
 };
 
 const Comments: React.FC = () => (
