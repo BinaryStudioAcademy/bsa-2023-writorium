@@ -3,6 +3,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { StorageKey } from '~/libs/packages/storage/storage.js';
 import { type AsyncThunkConfig } from '~/libs/types/types.js';
 import {
+  type AuthLoginWithGoogleDto,
   type AuthRequestPasswordDto,
   type AuthResetPasswordDto,
 } from '~/packages/auth/auth.js';
@@ -107,8 +108,23 @@ const resetPassword = createAsyncThunk<
   return user;
 });
 
+const loginWithGoogle = createAsyncThunk<
+  UserAuthResponseDto,
+  AuthLoginWithGoogleDto,
+  AsyncThunkConfig
+>(`${sliceName}/login-with-google`, async (payload, { extra }) => {
+  const { authApi, storage } = extra;
+
+  const { token, user } = await authApi.loginWithGoogle(payload);
+
+  await storage.set(StorageKey.TOKEN, token);
+
+  return user;
+});
+
 export {
   getCurrentUser,
+  loginWithGoogle,
   logout,
   resetPassword,
   sendEmailResetPasswordLink,

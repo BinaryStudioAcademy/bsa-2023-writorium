@@ -1,4 +1,8 @@
-import { Header, RouterOutlet } from '~/libs/components/components.js';
+import {
+  Header,
+  Notification,
+  RouterOutlet,
+} from '~/libs/components/components.js';
 import { DataStatus } from '~/libs/enums/enums.js';
 import {
   useAppDispatch,
@@ -29,14 +33,15 @@ const App: React.FC = () => {
   }, [hasUser, dispatch]);
 
   return (
-    <Loader isLoading={isLoading}>
-      <>
+    <>
+      <Loader isLoading={isLoading}>
         <Header user={user} />
         <div className={styles.container}>
           <RouterOutlet />
         </div>
-      </>
-    </Loader>
+      </Loader>
+      <Notification />
+    </>
   );
 };
 

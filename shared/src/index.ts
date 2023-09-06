@@ -42,6 +42,14 @@ export {
   AchievementsApiPath,
 } from './packages/achievements/achievements.js';
 export {
+  type ArticleReactionCreateDto,
+  type ArticleReactionCreateResponseDto,
+  type ArticleReactionEntityType,
+  type ArticleReactionRequestDto,
+  type ArticleReactionResponseDto,
+  articleReactionValidationSchema,
+} from './packages/article-reactions/article-reactions.js';
+export {
   type ArticleBaseResponseDto,
   type ArticleCreateDto,
   articleCreateValidationSchema,
@@ -55,8 +63,10 @@ export {
 } from './packages/articles/articles.js';
 export {
   AuthApiPath,
+  type AuthLoginWithGoogleDto,
   type AuthRequestPasswordDto,
   type AuthResetPasswordDto,
+  loginWithGoogleValidationSchema,
   requestPasswordValidationSchema,
   resetPasswordValidationSchema,
 } from './packages/auth/auth.js';
