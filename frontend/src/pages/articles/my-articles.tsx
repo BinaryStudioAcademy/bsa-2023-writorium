@@ -1,7 +1,10 @@
+import { InfiniteScroll } from '~/libs/components/components.js';
 import {
   useAppDispatch,
   useAppSelector,
+  useCallback,
   useEffect,
+  usePagination,
 } from '~/libs/hooks/hooks.js';
 import { actions as articlesActions } from '~/slices/articles/articles.js';
 
@@ -12,9 +15,24 @@ const MyArticles: React.FC = () => {
   const dispatch = useAppDispatch();
   const { articles } = useAppSelector(({ articles }) => articles);
 
+  const { hasMore, load } = usePagination();
+
+  const handleLoadArticles = useCallback(() => {
+    void load(async (skip: number, take: number) => {
+      const data = await dispatch(
+        articlesActions.fetchOwn({
+          take,
+          skip,
+        }),
+      ).unwrap();
+
+      return data.items.length > 0;
+    });
+  }, [dispatch, load]);
+
   useEffect(() => {
-    void dispatch(articlesActions.fetchOwn());
-  }, [dispatch]);
+    handleLoadArticles();
+  }, [handleLoadArticles]);
 
   useEffect(
     () => () => {
@@ -24,7 +42,11 @@ const MyArticles: React.FC = () => {
   );
 
   return (
-    <>
+    <InfiniteScroll
+      hasMore={hasMore}
+      dataLength={articles.length}
+      fetchData={handleLoadArticles}
+    >
       {Boolean(articles.length) &&
         articles.map((article) => (
           <ArticleCard
@@ -35,7 +57,7 @@ const MyArticles: React.FC = () => {
             reactions={MOCKED_REACTIONS}
           />
         ))}
-    </>
+    </InfiniteScroll>
   );
 };
 

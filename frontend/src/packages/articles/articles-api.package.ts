@@ -38,10 +38,17 @@ class ArticleApi extends HttpApi {
     return await response.json<ArticleGetAllResponseDto>();
   }
 
-  public async getOwn(): Promise<ArticleGetAllResponseDto> {
+  public async getOwn(
+    filters: ArticlesFilters,
+  ): Promise<ArticleGetAllResponseDto> {
     const response = await this.load(
       this.getFullEndpoint(ArticlesApiPath.OWN, {}),
-      { method: 'GET', contentType: ContentType.JSON, hasAuth: true },
+      {
+        method: 'GET',
+        contentType: ContentType.JSON,
+        hasAuth: true,
+        query: filters,
+      },
     );
 
     return await response.json<ArticleGetAllResponseDto>();

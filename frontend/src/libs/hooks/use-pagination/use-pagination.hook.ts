@@ -26,7 +26,7 @@ const usePagination = ({
       setHasMore(hasMore);
 
       if (hasMore) {
-        paginationParameters.current.skip += take;
+        paginationParameters.current.skip = skip + take;
       }
     },
     [],

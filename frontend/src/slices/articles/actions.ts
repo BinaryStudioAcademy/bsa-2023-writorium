@@ -23,12 +23,12 @@ const fetchAll = createAsyncThunk<
 
 const fetchOwn = createAsyncThunk<
   ArticleGetAllResponseDto,
-  undefined,
+  ArticlesFilters,
   AsyncThunkConfig
->(`${sliceName}/get-own`, (_, { extra }) => {
+>(`${sliceName}/get-own`, (filters, { extra }) => {
   const { articleApi } = extra;
 
-  return articleApi.getOwn();
+  return articleApi.getOwn(filters);
 });
 
 const createArticle = createAsyncThunk<

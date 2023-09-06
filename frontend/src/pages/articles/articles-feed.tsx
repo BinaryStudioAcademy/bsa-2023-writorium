@@ -30,7 +30,7 @@ const ArticlesFeed: React.FC = () => {
   }, [dispatch, load]);
 
   useEffect(() => {
-    void handleLoadArticles();
+    handleLoadArticles();
   }, [handleLoadArticles]);
 
   useEffect(
@@ -40,15 +40,11 @@ const ArticlesFeed: React.FC = () => {
     [dispatch],
   );
 
-  const handleLoadMoreArticles = (): void => {
-    void handleLoadArticles();
-  };
-
   return (
     <InfiniteScroll
       hasMore={hasMore}
       dataLength={articles.length}
-      fetchData={handleLoadMoreArticles}
+      fetchData={handleLoadArticles}
     >
       {Boolean(articles.length) &&
         articles.map((article) => (
