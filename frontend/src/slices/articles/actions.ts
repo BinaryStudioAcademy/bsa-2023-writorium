@@ -6,6 +6,7 @@ import {
   type ArticleGetAllResponseDto,
   type ArticleRequestDto,
 } from '~/packages/articles/articles.js';
+import { type PromptRequestDto } from '~/packages/prompts/prompts.js';
 
 import { name as sliceName } from './articles.slice.js';
 
@@ -31,13 +32,29 @@ const fetchOwn = createAsyncThunk<
 
 const createArticle = createAsyncThunk<
   ArticleBaseResponseDto,
-  ArticleRequestDto,
+  {
+    articlePayload: ArticleRequestDto;
+    generatedPrompt: PromptRequestDto | null;
+  },
   AsyncThunkConfig
->(`${sliceName}/create`, async (articlePayload, { extra }) => {
-  const { articleApi } = extra;
+>(
+  `${sliceName}/create`,
+  async ({ articlePayload, generatedPrompt }, { extra }) => {
+    const { articleApi, promptApi } = extra;
 
-  return await articleApi.create(articlePayload);
-});
+    if (generatedPrompt) {
+      const { id: promptId, genreId } = await promptApi.create(generatedPrompt);
+
+      return await articleApi.create({
+        ...articlePayload,
+        genreId,
+        promptId,
+      });
+    }
+
+    return await articleApi.create(articlePayload);
+  },
+);
 
 const getArticle = createAsyncThunk<
   ArticleBaseResponseDto,
