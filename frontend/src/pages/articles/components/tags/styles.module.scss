@@ -9,12 +9,11 @@
 .container {
   min-width: 0;
   padding: 0 4px 4px;
-  background: var(--light-grey);
 }
 
 .prompt {
   min-width: 0;
-  padding: 21px 5px 0;
+  padding: 16px 5px 0;
   text-align: center;
   background-color: var(--light-grey);
   border-radius: 5px;
@@ -28,7 +27,7 @@
   padding: 0 5px;
   background-color: var(--light-green);
   border-radius: 5px;
-  transform: translateY(15px);
+  transform: translateY(10px);
 }
 
 .categoryText {
