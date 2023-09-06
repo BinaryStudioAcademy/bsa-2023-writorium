@@ -25,7 +25,7 @@ const ArticlesFeed: React.FC = () => {
         }),
       ).unwrap();
 
-      return data.items.length > 0;
+      return data.hasMore;
     });
   }, [dispatch, load]);
 

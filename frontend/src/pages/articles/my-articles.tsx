@@ -14,7 +14,6 @@ import { MOCKED_REACTIONS, MOCKED_TAGS } from './libs/constants.js';
 const MyArticles: React.FC = () => {
   const dispatch = useAppDispatch();
   const { articles } = useAppSelector(({ articles }) => articles);
-
   const { hasMore, load } = usePagination();
 
   const handleLoadArticles = useCallback(() => {
@@ -26,13 +25,9 @@ const MyArticles: React.FC = () => {
         }),
       ).unwrap();
 
-      return data.items.length > 0;
+      return data.hasMore;
     });
   }, [dispatch, load]);
-
-  useEffect(() => {
-    handleLoadArticles();
-  }, [handleLoadArticles]);
 
   useEffect(
     () => () => {
@@ -40,6 +35,10 @@ const MyArticles: React.FC = () => {
     },
     [dispatch],
   );
+
+  useEffect(() => {
+    handleLoadArticles();
+  }, [handleLoadArticles]);
 
   return (
     <InfiniteScroll
