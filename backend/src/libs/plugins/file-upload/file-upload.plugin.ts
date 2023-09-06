@@ -2,8 +2,9 @@ import { type MultipartFile } from '@fastify/multipart';
 import { type FastifyRequest } from 'fastify';
 import fp from 'fastify-plugin';
 
+import { ExceptionMessage } from '~/libs/enums/enums.js';
 import {
-  FileNotProvidedError,
+  BadRequestError,
   FileSizeLimitExceededError,
   UnsupportedFileTypeError,
 } from '~/libs/packages/exceptions/exceptions.js';
@@ -34,7 +35,7 @@ const fileUploadPlugin = fp(
         const data = request.body.file;
 
         if (!data || !data.fieldname || !data.filename) {
-          throw new FileNotProvidedError();
+          throw new BadRequestError(ExceptionMessage.FILE_NOT_PROVIDED);
         }
 
         if (
