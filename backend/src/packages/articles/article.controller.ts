@@ -324,7 +324,9 @@ class ArticleController extends Controller {
 
     return {
       status: HttpCode.OK,
-      payload: await this.articleService.find(Number(encoded.articleId)),
+      payload: await this.articleService.findArticleWithAuthor(
+        Number(encoded.articleId),
+      ),
     };
   }
 }

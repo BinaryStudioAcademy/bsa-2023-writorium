@@ -40,6 +40,24 @@ class ArticleRepository implements IRepository {
     return ArticleEntity.initialize(article);
   }
 
+  public async findArticleWithAuthor({
+    id,
+  }: {
+    userId?: number;
+    id: number;
+  }): Promise<ArticleEntity | null> {
+    const article = await this.articleModel
+      .query()
+      .findById(id)
+      .withGraphJoined(this.defaultRelationExpression);
+
+    if (!article) {
+      return null;
+    }
+
+    return ArticleEntity.initializeWithAuthor(article);
+  }
+
   public async create(entity: ArticleEntity): Promise<ArticleEntity> {
     const { title, text, promptId, genreId, userId, publishedAt } =
       entity.toNewObject();
