@@ -1,5 +1,6 @@
 import ArticlePreview from '~/assets/img/article-preview.png';
 import { Avatar, Icon, Link } from '~/libs/components/components.js';
+import { ShareOnFacebookButton } from '~/libs/components/share-on-facebook-icon/share-on-facebook-icon.js';
 import { AppRoute, DateFormat } from '~/libs/enums/enums.js';
 import { getFormattedDate, getFullName } from '~/libs/helpers/helpers.js';
 import { type ArticleWithAuthorType } from '~/packages/articles/articles.js';
@@ -24,6 +25,7 @@ const ArticleCard: React.FC<Properties> = ({
 }) => {
   const { publishedAt, title, text } = article;
   const { comments, views, likes, dislikes } = reactions;
+  const articleUrl = window.location.href;
 
   const MOCKED_READ_TIME = '7 min read';
 
@@ -79,6 +81,13 @@ const ArticleCard: React.FC<Properties> = ({
           </li>
         </ul>
         <Icon iconName="share" className={styles.icon} />
+        <ShareOnFacebookButton
+          title={title}
+          size="18"
+          articleUrl={articleUrl}
+          bgColor="rgba(255 255 255 / 0)"
+          iconColor="#44996B"
+        />
         <Link to={AppRoute.ROOT} className={styles.readMore}>
           Read more
         </Link>
