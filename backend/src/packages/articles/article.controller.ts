@@ -148,15 +148,31 @@ class ArticleController extends Controller {
    * /articles:
    *    get:
    *      description: Returns an array of articles
+   *      parameters:
+   *        - in: query
+   *          name: skip
+   *          schema:
+   *            type: integer
+   *        - in: query
+   *          name: take
+   *          schema:
+   *            type: integer
    *      responses:
    *        200:
    *          description: Successful operation
    *          content:
    *            application/json:
    *              schema:
-   *                type: array
-   *                items:
-   *                  $ref: '#/components/schemas/Article'
+   *                type: object
+   *                properties:
+   *                  hasMore:
+   *                    type: boolean
+   *                  total:
+   *                    type: integer
+   *                  items:
+   *                    type: array
+   *                    items:
+   *                      $ref: '#/components/schemas/Article'
    */
 
   private async findAll(
@@ -173,15 +189,31 @@ class ArticleController extends Controller {
    * /articles/:id:
    *    get:
    *      description: Returns an array of user's articles
+   *      parameters:
+   *        - in: query
+   *          name: skip
+   *          schema:
+   *            type: integer
+   *        - in: query
+   *          name: take
+   *          schema:
+   *            type: integer
    *      responses:
    *        200:
    *          description: Successful operation
    *          content:
    *            application/json:
    *              schema:
-   *                type: array
-   *                items:
-   *                  $ref: '#/components/schemas/Article'
+   *                type: object
+   *                properties:
+   *                  hasMore:
+   *                    type: boolean
+   *                  total:
+   *                    type: integer
+   *                  items:
+   *                    type: array
+   *                    items:
+   *                      $ref: '#/components/schemas/Article'
    */
 
   private async findOwn(
