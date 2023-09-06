@@ -4,5 +4,6 @@ export {
   ApiPath,
   AppEnvironment,
   AuthApiPath,
+  DateFormat,
   ServerErrorType,
 } from 'shared/build/index.js';
