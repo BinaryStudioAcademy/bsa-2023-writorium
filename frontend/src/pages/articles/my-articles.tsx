@@ -25,20 +25,17 @@ const MyArticles: React.FC = () => {
         }),
       ).unwrap();
 
-      return data.hasMore;
+      return skip + data.items.length < data.total;
     });
   }, [dispatch, load]);
 
-  useEffect(
-    () => () => {
-      dispatch(articlesActions.resetArticles());
-    },
-    [dispatch],
-  );
-
   useEffect(() => {
     handleLoadArticles();
-  }, [handleLoadArticles]);
+
+    return () => {
+      dispatch(articlesActions.resetArticles());
+    };
+  }, [dispatch, handleLoadArticles]);
 
   return (
     <InfiniteScroll

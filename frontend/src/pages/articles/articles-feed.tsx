@@ -25,20 +25,17 @@ const ArticlesFeed: React.FC = () => {
         }),
       ).unwrap();
 
-      return data.hasMore;
+      return skip + data.items.length < data.total;
     });
   }, [dispatch, load]);
 
   useEffect(() => {
     handleLoadArticles();
-  }, [handleLoadArticles]);
 
-  useEffect(
-    () => () => {
+    return () => {
       dispatch(articlesActions.resetArticles());
-    },
-    [dispatch],
-  );
+    };
+  }, [dispatch, handleLoadArticles]);
 
   return (
     <InfiniteScroll
