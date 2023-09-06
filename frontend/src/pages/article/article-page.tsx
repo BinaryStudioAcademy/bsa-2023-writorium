@@ -1,6 +1,7 @@
 import { Layout, Navigate } from '~/libs/components/components.js';
 import { Loader } from '~/libs/components/loader/loader.js';
 import { AppRoute, DataStatus } from '~/libs/enums/enums.js';
+import { getFullName } from '~/libs/helpers/helpers.js';
 import {
   useAppDispatch,
   useAppSelector,
@@ -48,7 +49,6 @@ const ArticlePage: React.FC = () => {
   ];
 
   const { text, title, author } = article ?? {};
-  const { firstName, lastName } = author ?? {};
 
   return (
     <Loader isLoading={isLoading}>
@@ -57,7 +57,11 @@ const ArticlePage: React.FC = () => {
           <ArticleView
             article={{ text, title, tags: MOCKED_TAGS } as ArticleType}
           />
-          <AuthorDetails name={`${firstName} ${lastName}`} />
+          {author && (
+            <AuthorDetails
+              name={getFullName(author.firstName, author.lastName)}
+            />
+          )}
         </div>
       </Layout>
     </Loader>
