@@ -77,8 +77,17 @@ class AuthService {
   public async signUp(
     userRequestDto: UserSignUpRequestDto,
   ): Promise<UserSignUpResponseDto> {
-    const user = await this.userService.create(userRequestDto);
+    const existingUser = await this.userService.findByEmail(
+      userRequestDto.email,
+    );
+    if (existingUser) {
+      throw new HttpError({
+        message: 'Email already in use!',
+        status: HttpCode.BAD_REQUEST,
+      });
+    }
 
+    const user = await this.userService.create(userRequestDto);
     const token = await accessToken.create<{ userId: number }>({
       userId: user.id,
     });
