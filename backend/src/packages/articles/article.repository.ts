@@ -1,3 +1,7 @@
+import {
+  DEFAULT_PAGINATION_SKIP,
+  DEFAULT_PAGINATION_TAKE,
+} from '~/libs/constants/constants.js';
 import { type IRepository } from '~/libs/interfaces/repository.interface.js';
 
 import { ArticleEntity } from './article.entity.js';
@@ -26,8 +30,8 @@ class ArticleRepository implements IRepository {
 
   public async findAll({
     userId,
-    take = 10,
-    skip = 0,
+    take = DEFAULT_PAGINATION_TAKE,
+    skip = DEFAULT_PAGINATION_SKIP,
   }: {
     userId?: number;
   } & ArticlesFilters): Promise<ArticleEntity[]> {

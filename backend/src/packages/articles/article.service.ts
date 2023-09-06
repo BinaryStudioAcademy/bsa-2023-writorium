@@ -85,10 +85,14 @@ class ArticleService implements IService {
   }
 
   private getHasMore(
-    skip: number,
     currentItemsCount: number,
     totalItemsCount: number,
+    skip?: number,
   ): boolean {
+    if (!skip && skip !== 0) {
+      return false;
+    }
+
     return skip + currentItemsCount < totalItemsCount;
   }
 
@@ -98,9 +102,9 @@ class ArticleService implements IService {
     const articles = await this.articleRepository.findAll(filters);
     const articlesTotal = await this.articleRepository.getArticlesTotal();
     const hasMore = this.getHasMore(
-      Number.parseInt(filters.skip?.toString() ?? ''),
       articles.length,
       articlesTotal,
+      filters.skip,
     );
 
     return {
@@ -122,9 +126,9 @@ class ArticleService implements IService {
       userId,
     });
     const hasMore = this.getHasMore(
-      Number.parseInt(filters.skip?.toString() ?? ''),
       articles.length,
       articlesTotal,
+      filters.skip,
     );
 
     return {

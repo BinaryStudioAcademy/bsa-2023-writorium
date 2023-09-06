@@ -1,3 +1,7 @@
+import {
+  DEFAULT_PAGINATION_SKIP,
+  DEFAULT_PAGINATION_TAKE,
+} from '~/libs/constants/constants.js';
 import { ApiPath } from '~/libs/enums/enums.js';
 import {
   type ApiHandlerOptions,
@@ -74,22 +78,38 @@ class ArticleController extends Controller {
       path: ArticlesApiPath.ROOT,
       method: 'GET',
       handler: (options) => {
-        return this.findAll(
-          options as ApiHandlerOptions<{ query: ArticlesFilters }>,
-        );
+        const { skip, take } = options.query as {
+          [key in keyof ArticlesFilters]?: string;
+        };
+
+        return this.findAll({
+          query: {
+            skip: Number.parseInt(skip ?? '') || DEFAULT_PAGINATION_SKIP,
+            take: Number.parseInt(take ?? '') || DEFAULT_PAGINATION_TAKE,
+          },
+        } as ApiHandlerOptions<{ query: ArticlesFilters }>);
       },
     });
 
     this.addRoute({
       path: ArticlesApiPath.OWN,
       method: 'GET',
-      handler: (options) =>
-        this.findOwn(
-          options as ApiHandlerOptions<{
-            user: UserAuthResponseDto;
-            query: ArticlesFilters;
-          }>,
-        ),
+      handler: (options) => {
+        const { skip, take } = options.query as {
+          [key in keyof ArticlesFilters]?: string;
+        };
+
+        return this.findOwn({
+          user: options.user,
+          query: {
+            skip: Number.parseInt(skip ?? '') || DEFAULT_PAGINATION_SKIP,
+            take: Number.parseInt(take ?? '') || DEFAULT_PAGINATION_TAKE,
+          },
+        } as ApiHandlerOptions<{
+          user: UserAuthResponseDto;
+          query: ArticlesFilters;
+        }>);
+      },
     });
 
     this.addRoute({
