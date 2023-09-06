@@ -12,6 +12,7 @@ import { type UserAuthResponseDto } from '~/packages/users/users.js';
 import { ArticlesApiPath } from './libs/enums/enums.js';
 import {
   type ArticleRequestDto,
+  type ArticlesFilters,
   type ArticleUpdateRequestDto,
 } from './libs/types/types.js';
 import {
@@ -72,7 +73,9 @@ class ArticleController extends Controller {
     this.addRoute({
       path: ArticlesApiPath.ROOT,
       method: 'GET',
-      handler: () => this.findAll(),
+      handler: (options) => {
+        return this.findAll(options.query as ArticlesFilters);
+      },
     });
 
     this.addRoute({
@@ -133,10 +136,10 @@ class ArticleController extends Controller {
    *                  $ref: '#/components/schemas/Article'
    */
 
-  private async findAll(): Promise<ApiHandlerResponse> {
+  private async findAll(filters: ArticlesFilters): Promise<ApiHandlerResponse> {
     return {
       status: HttpCode.OK,
-      payload: await this.articleService.findAll(),
+      payload: await this.articleService.findAll(filters),
     };
   }
 

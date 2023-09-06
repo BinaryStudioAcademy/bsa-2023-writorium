@@ -12,6 +12,7 @@ import {
   type ArticleBaseResponseDto,
   type ArticleCreateDto,
   type ArticleGetAllResponseDto,
+  type ArticlesFilters,
   type ArticleUpdateRequestDto,
   type DetectedArticleGenre,
 } from './libs/types/types.js';
@@ -83,14 +84,20 @@ class ArticleService implements IService {
     return await this.getGenreIdForArticle(text);
   }
 
-  public async findAll(): Promise<ArticleGetAllResponseDto> {
-    const articles = await this.articleRepository.findAll({});
+  public async findAll(
+    filters: ArticlesFilters,
+  ): Promise<ArticleGetAllResponseDto> {
+    const articles = await this.articleRepository.findAll(filters);
 
     return { items: articles.map((article) => article.toObjectWithAuthor()) };
   }
 
   public async findOwn(userId: number): Promise<ArticleGetAllResponseDto> {
-    const articles = await this.articleRepository.findAll({ userId });
+    const articles = await this.articleRepository.findAll({
+      userId,
+      skip: 0,
+      take: 10,
+    });
 
     return { items: articles.map((article) => article.toObjectWithAuthor()) };
   }

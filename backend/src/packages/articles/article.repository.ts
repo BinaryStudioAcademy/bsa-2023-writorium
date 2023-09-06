@@ -4,6 +4,7 @@ import { ArticleEntity } from './article.entity.js';
 import { type ArticleModel } from './article.model.js';
 import { SortingOrder } from './libs/enums/enums.js';
 import { getWhereUserIdQuery } from './libs/helpers/helpers.js';
+import { type ArticlesFilters } from './libs/types/types.js';
 
 class ArticleRepository implements IRepository {
   private articleModel: typeof ArticleModel;
@@ -16,13 +17,17 @@ class ArticleRepository implements IRepository {
 
   public async findAll({
     userId,
+    take = 10,
+    skip = 0,
   }: {
     userId?: number;
-  }): Promise<ArticleEntity[]> {
+  } & ArticlesFilters): Promise<ArticleEntity[]> {
     const articles = await this.articleModel
       .query()
       .where(getWhereUserIdQuery(userId))
-      .orderBy('articles.publishedAt', SortingOrder.DESCENDING)
+      .orderBy('articles.id', SortingOrder.DESCENDING)
+      .offset(skip)
+      .limit(take)
       .withGraphJoined(this.defaultRelationExpression);
 
     return articles.map((article) =>

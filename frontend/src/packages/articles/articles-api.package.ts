@@ -8,6 +8,7 @@ import {
   type ArticleBaseResponseDto,
   type ArticleGetAllResponseDto,
   type ArticleRequestDto,
+  type ArticlesFilters,
 } from './libs/types/types.js';
 
 type Constructor = {
@@ -21,10 +22,17 @@ class ArticleApi extends HttpApi {
     super({ path: ApiPath.ARTICLES, baseUrl, http, storage });
   }
 
-  public async getAll(): Promise<ArticleGetAllResponseDto> {
+  public async getAll(
+    filters: ArticlesFilters,
+  ): Promise<ArticleGetAllResponseDto> {
     const response = await this.load(
       this.getFullEndpoint(ArticlesApiPath.ROOT, {}),
-      { method: 'GET', contentType: ContentType.JSON, hasAuth: true },
+      {
+        method: 'GET',
+        contentType: ContentType.JSON,
+        hasAuth: true,
+        query: filters,
+      },
     );
 
     return await response.json<ArticleGetAllResponseDto>();

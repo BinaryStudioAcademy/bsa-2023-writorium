@@ -56,6 +56,7 @@ export {
   type ArticleGetAllResponseDto,
   type ArticleRequestDto,
   ArticlesApiPath,
+  type ArticlesFilters,
   type ArticleUpdateRequestDto,
   articleUpdateValidationSchema,
   type ArticleWithAuthorType,

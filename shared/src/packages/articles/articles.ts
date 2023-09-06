@@ -5,6 +5,7 @@ export {
   type ArticleEntityType,
   type ArticleGetAllResponseDto,
   type ArticleRequestDto,
+  type ArticlesFilters,
   type ArticleUpdateRequestDto,
   type ArticleWithAuthorType,
 } from './libs/types/types.js';
