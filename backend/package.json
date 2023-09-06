@@ -16,7 +16,7 @@
     "migrate:dev:down": "node --loader ts-paths-esm-loader ../node_modules/knex/bin/cli.js migrate:down",
     "migrate:dev:rollback": "node --loader ts-paths-esm-loader ../node_modules/knex/bin/cli.js migrate:rollback --all",
     "build": "tsc && tsc-alias && npm run build:copy",
-    "build:copy": "cp -r package.json build",
+    "build:copy": "cp -r package.json build && cp --parents `find -name \\*.pug*` build",
     "prestart": "npm run migrate",
     "migrate": "knex migrate:latest",
     "start": "node ./src/index.js"
