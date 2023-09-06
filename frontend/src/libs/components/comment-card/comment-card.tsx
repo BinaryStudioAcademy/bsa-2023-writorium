@@ -1,19 +1,19 @@
 import { Avatar, Icon } from '~/libs/components/components.js';
-import { getTimeFromCreation } from '~/libs/helpers/helpers.js';
-import { type Comment } from '~/libs/types/comment.type.js';
+import { getFullName, getTimeFromCreation } from '~/libs/helpers/helpers.js';
+import { type CommentBaseResponseDto } from '~/packages/comments/comments.js';
 import { type UserAuthResponseDto } from '~/packages/users/users.js';
 
 import styles from './styles.module.scss';
 
 type Properties = {
   user: UserAuthResponseDto;
-  comment: Comment;
+  comment: CommentBaseResponseDto;
 };
 
 const CommentCard: React.FC<Properties> = ({ user, comment }) => {
   const { firstName, lastName } = user;
   const { text, createdAt } = comment;
-  const userName = `${firstName} ${lastName}`;
+  const userName = getFullName(firstName, lastName);
 
   return (
     <section className={styles.comment}>

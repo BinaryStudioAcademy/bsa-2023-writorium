@@ -1,5 +1,6 @@
-import { ApplicationError, HttpError } from '~/libs/exceptions/exceptions.js';
+import { HttpError } from '~/libs/exceptions/exceptions.js';
 import { type IService } from '~/libs/interfaces/service.interface.js';
+import { HttpCode } from '~/libs/packages/http/http.js';
 
 import { CommentEntity } from './comment.entity.js';
 import { type CommentRepository } from './comment.repository.js';
@@ -62,14 +63,15 @@ class CommentService implements IService {
     const comment = await this.find(id);
 
     if (!comment) {
-      throw new ApplicationError({
+      throw new HttpError({
+        status: HttpCode.NOT_FOUND,
         message: `Comment with id ${id} not found`,
       });
     }
 
     if (comment.userId !== payload.userId) {
       throw new HttpError({
-        status: 403,
+        status: HttpCode.FORBIDDEN,
         message: `User with id "${payload.userId}" has no rights to update this comment`,
       });
     }

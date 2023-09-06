@@ -6,6 +6,8 @@ const MOCKED_USER = {
   email: 'jackson@gmail.com',
   firstName: 'Jackson',
   lastName: 'Botosh',
+  avatarUrl: null,
+  avatarId: null,
 };
 
 const MOCKED_COMMENT = {
