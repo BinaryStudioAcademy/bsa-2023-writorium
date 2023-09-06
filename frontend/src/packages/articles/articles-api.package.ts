@@ -83,7 +83,7 @@ class ArticleApi extends HttpApi {
         method: 'POST',
         contentType: ContentType.JSON,
         payload: JSON.stringify(payload),
-        hasAuth: true,
+        hasAuth: false,
       },
     );
 

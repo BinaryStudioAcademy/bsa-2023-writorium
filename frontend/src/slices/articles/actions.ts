@@ -66,4 +66,14 @@ const shareArticle = createAsyncThunk<
   return articleApi.share(articlePayload.id);
 });
 
-export { createArticle, fetchAll, fetchOwn,shareArticle };
+const fetchSharedArticle = createAsyncThunk<
+  ArticleRequestDto,
+  { token: string },
+  AsyncThunkConfig
+>(`${sliceName}/share`, (articlePayload, { extra }) => {
+  const { articleApi } = extra;
+
+  return articleApi.getByToken(articlePayload);
+});
+
+export { createArticle, fetchAll, fetchOwn, fetchSharedArticle, shareArticle };

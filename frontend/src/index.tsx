@@ -95,6 +95,14 @@ createRoot(document.querySelector('#root') as HTMLElement).render(
                   ),
                 },
                 {
+                  path: AppRoute.SHARED,
+                  element: (
+                    <PublicRoute>
+                      <ArticlePage />
+                    </PublicRoute>
+                  ),
+                },
+                {
                   path: AppRoute.CREATE_ARTICLE,
                   element: (
                     <ProtectedRoute>
