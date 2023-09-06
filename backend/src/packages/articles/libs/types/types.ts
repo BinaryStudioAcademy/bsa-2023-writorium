@@ -7,5 +7,6 @@ export {
   type ArticleRequestDto,
   type ArticleUpdateRequestDto,
   type ArticleWithAuthorType,
+  type UserActivityResponseDto,
   type UserDetailsResponseDto,
 } from 'shared/build/index.js';

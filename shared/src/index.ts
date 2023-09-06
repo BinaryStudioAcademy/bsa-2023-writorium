@@ -10,8 +10,10 @@ export {
 export { ApplicationError, HttpError } from './libs/exceptions/exceptions.js';
 export {
   configureString,
+  differenceInDays,
   getFormattedDate,
   safeJSONParse,
+  subMonths,
 } from './libs/helpers/helpers.js';
 export { type IConfig } from './libs/packages/config/config.js';
 export {
@@ -95,6 +97,7 @@ export {
   PromptType,
 } from './packages/prompts/prompts.js';
 export {
+  type UserActivityResponseDto,
   type UserAuthResponseDto,
   type UserDetailsDto,
   type UserDetailsResponseDto,
