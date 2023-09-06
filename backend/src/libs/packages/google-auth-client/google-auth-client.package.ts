@@ -1,8 +1,13 @@
 import { type LoginTicket, type TokenPayload } from 'google-auth-library';
 import { OAuth2Client } from 'google-auth-library';
 
+import { ExceptionMessage } from '~/libs/enums/enums.js';
+
 import { type IConfig } from '../config/config.js';
-import { HttpCode, HttpError } from '../http/http.js';
+import {
+  BadRequestError,
+  InternalServerError,
+} from '../exceptions/exceptions.js';
 import { type GetTokenResponse } from './libs/types/types.js';
 
 class GoogleAuthClient {
@@ -24,11 +29,8 @@ class GoogleAuthClient {
       return tokens;
     } catch (error) {
       const errorMessage =
-        error instanceof Error ? error.message : 'Unknown error';
-      throw new HttpError({
-        message: errorMessage,
-        status: HttpCode.INTERNAL_SERVER_ERROR,
-      });
+        error instanceof Error ? error.message : ExceptionMessage.UNKNOWN_ERROR;
+      throw new InternalServerError(errorMessage);
     }
   }
 
@@ -43,10 +45,7 @@ class GoogleAuthClient {
   public async getUserInfo(code: string): Promise<TokenPayload | undefined> {
     const tokens = await this.getTokens(code);
     if (!tokens || !tokens.id_token) {
-      throw new HttpError({
-        message: 'Unable to decode user info!',
-        status: HttpCode.BAD_REQUEST,
-      });
+      throw new BadRequestError(ExceptionMessage.UNABLE_TO_DECODE_USER_INFO);
     }
     const ticket = await this.verify(tokens.id_token);
 
