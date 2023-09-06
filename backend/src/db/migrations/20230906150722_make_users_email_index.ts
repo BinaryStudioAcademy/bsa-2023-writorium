@@ -7,7 +7,10 @@ async function up(knex: Knex): Promise<void> {
 }
 
 async function down(knex: Knex): Promise<void> {
-  return await knex.raw('DROP index IF EXISTS users_lowercase_email');
+  return await knex.raw(
+    'DROP index IF EXISTS users_lowercase_email;',
+    'DROP index IF EXISTS users_email_unique;',
+  );
 }
 
 export { down, up };
