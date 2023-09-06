@@ -1,5 +1,4 @@
-import { type TagType } from '~/pages/articles/libs/types/types.js';
-
+import { type TagType } from '../../libs/types/types.js';
 import styles from './styles.module.scss';
 
 type Properties = {
@@ -9,8 +8,13 @@ type Properties = {
 const Tags: React.FC<Properties> = ({ tags }) => (
   <ul className={styles.tags}>
     {tags.map((tag) => (
-      <li className={styles.tag} key={tag.id}>
-        {tag.name}
+      <li key={tag.id} className={styles.container}>
+        <div className={styles.category}>
+          <span className={styles.categoryText}>{tag.category}</span>
+        </div>
+        <div className={styles.prompt}>
+          <p className={styles.promptText}>{tag.text}</p>
+        </div>
       </li>
     ))}
   </ul>
