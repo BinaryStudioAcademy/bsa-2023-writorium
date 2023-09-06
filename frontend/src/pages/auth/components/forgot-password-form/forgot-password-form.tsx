@@ -1,4 +1,4 @@
-import { Input, Link, Notification } from '~/libs/components/components.js';
+import { Input, Link } from '~/libs/components/components.js';
 import { AppRoute } from '~/libs/enums/app-route.enum';
 import { useAppForm, useCallback } from '~/libs/hooks/hooks.js';
 import {
@@ -28,7 +28,6 @@ const ForgotPasswordForm: React.FC<Properties> = ({ onSubmit }) => {
 
   return (
     <>
-      <Notification />
       <div className={styles.formWrapper}>
         <h2 className={styles.authFormTitle}>Forgot password ?</h2>
         <form

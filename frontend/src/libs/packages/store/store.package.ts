@@ -7,6 +7,7 @@ import {
 
 import { AppEnvironment } from '~/libs/enums/enums.js';
 import { type IConfig } from '~/libs/packages/config/config.js';
+import { fileApi } from '~/libs/packages/file/file-api.js';
 import { storage } from '~/libs/packages/storage/storage.js';
 import { achievementsApi } from '~/packages/achievements/achievements.js';
 import { articleApi } from '~/packages/articles/articles.js';
@@ -37,6 +38,7 @@ type ExtraArguments = {
   promptApi: typeof promptApi;
   notification: typeof notification;
   storage: typeof storage;
+  fileApi: typeof fileApi;
   achievementsApi: typeof achievementsApi;
 };
 
@@ -82,6 +84,7 @@ class Store {
       promptApi,
       notification,
       storage,
+      fileApi,
       achievementsApi,
     };
   }

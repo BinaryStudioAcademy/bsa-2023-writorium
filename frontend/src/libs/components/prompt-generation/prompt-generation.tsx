@@ -13,8 +13,8 @@ import { PromptCard } from './libs/components/components.js';
 import styles from './styles.module.scss';
 
 const PromptGeneration: React.FC = () => {
-  const { prompt, dataStatus } = useAppSelector(({ prompts }) => ({
-    prompt: prompts.prompt,
+  const { generatedPrompt, dataStatus } = useAppSelector(({ prompts }) => ({
+    generatedPrompt: prompts.generatedPrompt,
     dataStatus: prompts.dataStatus,
   }));
 
@@ -34,7 +34,7 @@ const PromptGeneration: React.FC = () => {
           <PromptCard
             key={category}
             category={category}
-            text={prompt?.[category] ?? ''}
+            text={generatedPrompt?.[category] ?? ''}
           />
         ))}
         <Button
