@@ -2,15 +2,15 @@ import {
   DEFAULT_PAGINATION_SKIP,
   DEFAULT_PAGINATION_TAKE,
 } from '~/libs/constants/constants.js';
-import { type IRepository } from '~/libs/interfaces/repository.interface.js';
 
 import { ArticleEntity } from './article.entity.js';
 import { type ArticleModel } from './article.model.js';
 import { SortingOrder } from './libs/enums/enums.js';
 import { getWhereUserIdQuery } from './libs/helpers/helpers.js';
+import { type IArticleRepository } from './libs/interfaces/interfaces.js';
 import { type ArticlesFilters } from './libs/types/types.js';
 
-class ArticleRepository implements IRepository {
+class ArticleRepository implements IArticleRepository {
   private articleModel: typeof ArticleModel;
 
   private defaultRelationExpression = 'author';
@@ -19,33 +19,26 @@ class ArticleRepository implements IRepository {
     this.articleModel = articleModel;
   }
 
-  public getArticlesTotal({
-    userId,
-  }: { userId?: number } = {}): Promise<number> {
-    return this.articleModel
-      .query()
-      .where(getWhereUserIdQuery(userId))
-      .resultSize();
-  }
-
   public async findAll({
     userId,
     take = DEFAULT_PAGINATION_TAKE,
     skip = DEFAULT_PAGINATION_SKIP,
   }: {
     userId?: number;
-  } & ArticlesFilters): Promise<ArticleEntity[]> {
+  } & ArticlesFilters): Promise<{ items: ArticleEntity[]; total: number }> {
     const articles = await this.articleModel
       .query()
       .where(getWhereUserIdQuery(userId))
       .orderBy('articles.publishedAt', SortingOrder.DESCENDING)
-      .offset(skip)
-      .limit(take)
+      .page(skip / take, take)
       .withGraphJoined(this.defaultRelationExpression);
 
-    return articles.map((article) =>
-      ArticleEntity.initializeWithAuthor(article),
-    );
+    return {
+      total: articles.total,
+      items: articles.results.map((article) =>
+        ArticleEntity.initializeWithAuthor(article),
+      ),
+    };
   }
 
   public async find(id: number): Promise<ArticleEntity | null> {

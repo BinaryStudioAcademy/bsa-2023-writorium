@@ -99,18 +99,13 @@ class ArticleService implements IService {
   public async findAll(
     filters: ArticlesFilters,
   ): Promise<ArticleGetAllResponseDto> {
-    const articles = await this.articleRepository.findAll(filters);
-    const articlesTotal = await this.articleRepository.getArticlesTotal();
-    const hasMore = this.getHasMore(
-      articles.length,
-      articlesTotal,
-      filters.skip,
-    );
+    const { items, total } = await this.articleRepository.findAll(filters);
+    const hasMore = this.getHasMore(items.length, total, filters.skip);
 
     return {
+      total,
       hasMore,
-      total: articlesTotal,
-      items: articles.map((article) => article.toObjectWithAuthor()),
+      items: items.map((article) => article.toObjectWithAuthor()),
     };
   }
 
@@ -118,23 +113,16 @@ class ArticleService implements IService {
     userId: number,
     filters: ArticlesFilters,
   ): Promise<ArticleGetAllResponseDto> {
-    const articles = await this.articleRepository.findAll({
+    const { items, total } = await this.articleRepository.findAll({
       userId,
       ...filters,
     });
-    const articlesTotal = await this.articleRepository.getArticlesTotal({
-      userId,
-    });
-    const hasMore = this.getHasMore(
-      articles.length,
-      articlesTotal,
-      filters.skip,
-    );
+    const hasMore = this.getHasMore(items.length, total, filters.skip);
 
     return {
+      total,
       hasMore,
-      total: articlesTotal,
-      items: articles.map((article) => article.toObjectWithAuthor()),
+      items: items.map((article) => article.toObjectWithAuthor()),
     };
   }
 
