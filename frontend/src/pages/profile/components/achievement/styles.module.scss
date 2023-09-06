@@ -1,0 +1,22 @@
+.achievementItem {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+  border: 2px solid var(--light-green);
+  border-radius: 50%;
+  aspect-ratio: 1 / 1;
+}
+
+.done {
+  background-color: var(--madang);
+}
+
+.inProgress {
+  background-color: var(--picasso);
+}
+
+.notStarted {
+  background-color: var(--gray);
+}
