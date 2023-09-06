@@ -16,6 +16,13 @@ const MyArticles: React.FC = () => {
     void dispatch(articlesActions.fetchOwn());
   }, [dispatch]);
 
+  useEffect(
+    () => () => {
+      dispatch(articlesActions.resetArticles());
+    },
+    [dispatch],
+  );
+
   return (
     <>
       {Boolean(articles.length) &&

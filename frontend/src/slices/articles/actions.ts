@@ -1,4 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { type ArticlesFilters } from 'shared/build/index.js';
 
 import { type AsyncThunkConfig } from '~/libs/types/types.js';
 import {
@@ -12,12 +13,12 @@ import { name as sliceName } from './articles.slice.js';
 
 const fetchAll = createAsyncThunk<
   ArticleGetAllResponseDto,
-  undefined,
+  ArticlesFilters,
   AsyncThunkConfig
->(`${sliceName}/get-all`, (_, { extra }) => {
+>(`${sliceName}/get-all`, (filters, { extra }) => {
   const { articleApi } = extra;
 
-  return articleApi.getAll();
+  return articleApi.getAll(filters);
 });
 
 const fetchOwn = createAsyncThunk<
