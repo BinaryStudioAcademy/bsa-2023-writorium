@@ -1,6 +1,9 @@
+import { type PromptCategory } from 'shared/build/packages/prompts/prompts.js';
+
+import { type ValueOf } from '~/libs/types/types.js';
+
 type TagType = {
-  id: string;
-  category: string;
+  category: ValueOf<typeof PromptCategory>;
   text: string;
 };
 
