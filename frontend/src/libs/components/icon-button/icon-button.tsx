@@ -7,7 +7,7 @@ import styles from './styles.module.scss';
 
 type Properties = {
   iconName: IconName;
-  onClick?: () => void;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
   label?: string;
   className?: string;
   iconClassName?: string;
@@ -24,6 +24,7 @@ const IconButton: React.FC<Properties> = ({
     className={getValidClassNames(styles.iconButton, className)}
     type={ButtonType.BUTTON}
     onClick={onClick}
+    name={iconName}
   >
     <Icon iconName={iconName} className={iconClassName} />
     {label}
