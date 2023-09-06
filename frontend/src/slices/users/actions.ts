@@ -2,6 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { type AsyncThunkConfig } from '~/libs/types/types.js';
 import {
+  type UserActivityResponseDto,
   type UserAuthResponseDto,
   type UserGetAllResponseDto,
   type UserUpdateRequestDto,
@@ -19,6 +20,16 @@ const loadAll = createAsyncThunk<
   return userApi.getAll();
 });
 
+const getUserActivity = createAsyncThunk<
+  UserActivityResponseDto,
+  undefined,
+  AsyncThunkConfig
+>(`${sliceName}/get-user-activity`, (_, { extra }) => {
+  const { userApi } = extra;
+
+  return userApi.getUserActivity();
+});
+
 const updateUser = createAsyncThunk<
   UserAuthResponseDto,
   UserUpdateRequestDto,
@@ -29,4 +40,4 @@ const updateUser = createAsyncThunk<
   return await userApi.updateUser(updateUserPayload);
 });
 
-export { loadAll, updateUser };
+export { getUserActivity, loadAll, updateUser };
