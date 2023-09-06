@@ -2,9 +2,9 @@ import ArticlePreview from '~/assets/img/article-preview.png';
 import { Avatar, Icon, Link } from '~/libs/components/components.js';
 import { AppRoute, DateFormat } from '~/libs/enums/enums.js';
 import {
-  getDangerousHtmlObject,
   getFormattedDate,
   getFullName,
+  sanitizeHtml,
 } from '~/libs/helpers/helpers.js';
 import { type ArticleWithAuthorType } from '~/packages/articles/articles.js';
 import { type UserDetailsResponseDto } from '~/packages/users/users.js';
@@ -54,10 +54,10 @@ const ArticleCard: React.FC<Properties> = ({
       <div className={styles.body}>
         <div className={styles.articleInfo}>
           <h4 className={styles.title}>{title}</h4>
-          <p
+          <article
             className={styles.text}
-            dangerouslySetInnerHTML={getDangerousHtmlObject(text)}
-          ></p>
+            dangerouslySetInnerHTML={{ __html: sanitizeHtml(text) }}
+          ></article>
           <Tags tags={tags} />
         </div>
         <img
