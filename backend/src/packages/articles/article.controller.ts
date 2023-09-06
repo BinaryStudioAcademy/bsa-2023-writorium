@@ -165,8 +165,6 @@ class ArticleController extends Controller {
    *              schema:
    *                type: object
    *                properties:
-   *                  hasMore:
-   *                    type: boolean
    *                  total:
    *                    type: integer
    *                  items:
@@ -206,8 +204,6 @@ class ArticleController extends Controller {
    *              schema:
    *                type: object
    *                properties:
-   *                  hasMore:
-   *                    type: boolean
    *                  total:
    *                    type: integer
    *                  items:

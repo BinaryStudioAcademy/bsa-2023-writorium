@@ -84,27 +84,13 @@ class ArticleService implements IService {
     return await this.getGenreIdForArticle(text);
   }
 
-  private getHasMore(
-    currentItemsCount: number,
-    totalItemsCount: number,
-    skip?: number,
-  ): boolean {
-    if (!skip && skip !== 0) {
-      return false;
-    }
-
-    return skip + currentItemsCount < totalItemsCount;
-  }
-
   public async findAll(
     filters: ArticlesFilters,
   ): Promise<ArticleGetAllResponseDto> {
     const { items, total } = await this.articleRepository.findAll(filters);
-    const hasMore = this.getHasMore(items.length, total, filters.skip);
 
     return {
       total,
-      hasMore,
       items: items.map((article) => article.toObjectWithAuthor()),
     };
   }
@@ -117,11 +103,9 @@ class ArticleService implements IService {
       userId,
       ...filters,
     });
-    const hasMore = this.getHasMore(items.length, total, filters.skip);
 
     return {
       total,
-      hasMore,
       items: items.map((article) => article.toObjectWithAuthor()),
     };
   }
