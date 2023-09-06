@@ -4,4 +4,8 @@ export { getFullName } from './get-full-name/get-full-name.helper.js';
 export { getValidClassNames } from './get-valid-class-names/get-valid-class-names.helper.js';
 export { sanitizeHtml } from './sanitize-html/sanitize-html.helper.js';
 export { stringifyQuery } from './stringify-query/stringify-query.helper.js';
-export { configureString, getFormattedDate } from 'shared/build/index.js';
+export {
+  configureString,
+  constructUrl,
+  getFormattedDate,
+} from 'shared/build/index.js';

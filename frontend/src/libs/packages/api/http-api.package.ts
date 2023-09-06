@@ -1,5 +1,5 @@
 import { ContentType, ServerErrorType } from '~/libs/enums/enums.js';
-import { configureString, stringifyQuery } from '~/libs/helpers/helpers.js';
+import { configureString, constructUrl } from '~/libs/helpers/helpers.js';
 import {
   type HttpCode,
   HttpError,
@@ -39,11 +39,7 @@ class HttpApi implements IHttpApi {
   }
 
   private getUrl(path: string, query?: Record<string, unknown>): string {
-    if (query) {
-      return `${path}?${stringifyQuery(query)}`;
-    }
-
-    return path;
+    return constructUrl({ path, queryParams: query });
   }
 
   public async load(

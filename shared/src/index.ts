@@ -14,6 +14,7 @@ export {
 export { ApplicationError, HttpError } from './libs/exceptions/exceptions.js';
 export {
   configureString,
+  constructUrl,
   getFormattedDate,
   safeJSONParse,
 } from './libs/helpers/helpers.js';
