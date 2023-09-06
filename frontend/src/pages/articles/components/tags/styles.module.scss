@@ -16,15 +16,16 @@
   min-width: 0;
   padding: 21px 5px 0;
   text-align: center;
-  background-color: var(--white);
+  background-color: var(--light-grey);
   border-radius: 5px;
 }
 
 .category {
+  display: flex;
+  justify-content: center;
   width: fit-content;
   margin: 0 auto;
   padding: 0 5px;
-  text-align: center;
   background-color: var(--light-green);
   border-radius: 5px;
   transform: translateY(15px);
