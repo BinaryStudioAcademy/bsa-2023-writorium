@@ -1,6 +1,7 @@
 type TagType = {
-  id: number;
-  name: string;
+  id: string;
+  category: string;
+  text: string;
 };
 
 export { type TagType };
