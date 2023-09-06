@@ -15,7 +15,7 @@ type Properties = {
   className?: string;
 };
 
-const Tooltip: FC<Properties> = ({ id, shouldHideArrow, className }) => {
+const TooltipWrapper: FC<Properties> = ({ id, shouldHideArrow, className }) => {
   return (
     <ReactTooltip
       id={id}
@@ -25,4 +25,4 @@ const Tooltip: FC<Properties> = ({ id, shouldHideArrow, className }) => {
   );
 };
 
-export { Tooltip };
+export { TooltipWrapper };
