@@ -4,15 +4,22 @@ import { DataStatus } from '~/libs/enums/enums.js';
 import { type ValueOf } from '~/libs/types/types.js';
 import { type ArticleWithAuthorType } from '~/packages/articles/articles.js';
 
-import { createArticle, fetchAll, fetchOwn } from './actions.js';
+import {
+  createArticle,
+  fetchAll,
+  fetchOwn,
+  fetchSharedArticle,
+} from './actions.js';
 
 type State = {
   articles: ArticleWithAuthorType[];
+  sharedArticle: ArticleWithAuthorType[] | null;
   dataStatus: ValueOf<typeof DataStatus>;
 };
 
 const initialState: State = {
   articles: [],
+  sharedArticle: null,
   dataStatus: DataStatus.IDLE,
 };
 
@@ -23,6 +30,10 @@ const { reducer, actions, name } = createSlice({
   extraReducers(builder) {
     builder.addCase(createArticle.fulfilled, (state, action) => {
       state.articles = [...state.articles, action.payload];
+      state.dataStatus = DataStatus.FULFILLED;
+    });
+    builder.addCase(fetchSharedArticle.fulfilled, (state, action) => {
+      state.sharedArticle = [action.payload];
       state.dataStatus = DataStatus.FULFILLED;
     });
     builder.addMatcher(

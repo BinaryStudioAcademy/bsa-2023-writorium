@@ -5,6 +5,7 @@ import {
   type ArticleBaseResponseDto,
   type ArticleGetAllResponseDto,
   type ArticleRequestDto,
+  type ArticleWithAuthorType,
 } from '~/packages/articles/articles.js';
 import { type PromptRequestDto } from '~/packages/prompts/prompts.js';
 
@@ -67,7 +68,7 @@ const shareArticle = createAsyncThunk<
 });
 
 const fetchSharedArticle = createAsyncThunk<
-  ArticleRequestDto,
+  ArticleWithAuthorType,
   { token: string },
   AsyncThunkConfig
 >(`${sliceName}/share`, (articlePayload, { extra }) => {

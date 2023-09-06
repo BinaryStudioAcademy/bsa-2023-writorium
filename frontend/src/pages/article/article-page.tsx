@@ -32,11 +32,16 @@ const ArticlePage: FC = () => {
     tags: MOCKED_TAGS,
   };
 
+  const MOCKED_AUTHOR = {
+    firstName: 'Mark',
+    lastName: 'Twen',
+  };
+
   return (
     <Layout>
       <div className={styles.articlePageWrapper}>
-        <ArticleView article={MOCKED_ARTICLE} />
-        {id && <Author />}
+        <ArticleView article={MOCKED_ARTICLE} isShared={false} />
+        {id && <Author author={MOCKED_AUTHOR} />}
       </div>
     </Layout>
   );

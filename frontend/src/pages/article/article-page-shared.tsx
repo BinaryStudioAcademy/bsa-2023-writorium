@@ -47,9 +47,10 @@ const ArticlePageShared: FC = () => {
               text: article?.text,
               tags: MOCKED_TAGS,
             }}
+            isShared={true}
           />
         )}
-        <Author />
+        {article?.author && <Author author={article.author} />}
       </div>
     </Layout>
   );

@@ -7,7 +7,10 @@ import { getFormattedDate } from '~/libs/helpers/helpers.js';
 import styles from './styles.module.scss';
 
 type Properties = {
-  name?: string;
+  author: {
+    firstName: string;
+    lastName: string;
+  };
   followers?: number;
   rating?: number;
   publishedAt?: string;
@@ -16,21 +19,22 @@ type Properties = {
 };
 
 const Author: FC<Properties> = ({
-  name = 'Charlie Culhane',
+  author,
   followers = 10,
   rating = 700,
   publishedAt = '2023-09-04T12:53:07.144Z',
   readingTime = '7 min',
   genre = 'Fiction',
 }) => {
+  const authorFullName = author.firstName + ' ' + author.lastName;
   return (
     <div className={styles.container}>
       <div className={styles.authorWrapper}>
         <div className={styles.avatarWrapper}>
-          <Avatar username={name} avatarUrl={null} />
+          <Avatar username={authorFullName} avatarUrl={null} />
         </div>
         <div>
-          <h2 className={styles.authorName}>{name}</h2>
+          <h2 className={styles.authorName}>{authorFullName}</h2>
           <ul className={styles.authorInfoWrapper}>
             <li className={styles.authorInfo}>
               <Icon iconName="renew" />
