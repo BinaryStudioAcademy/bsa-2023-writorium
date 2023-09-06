@@ -10,6 +10,7 @@ import { UserEntity } from '~/packages/users/user.entity.js';
 import { type UserRepository } from '~/packages/users/user.repository.js';
 
 import {
+  type UserActivityResponseDto,
   type UserAuthResponseDto,
   type UserGetAllResponseDto,
   type UserPrivateData,
@@ -77,6 +78,12 @@ class UserService implements IService {
     }
 
     return user.privateData;
+  }
+
+  public async getUserActivity(
+    userId: number,
+  ): Promise<UserActivityResponseDto> {
+    return await this.articleService.getUserActivity(userId);
   }
 
   public async create(
