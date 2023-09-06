@@ -2,8 +2,10 @@ import ArticlePreview from '~/assets/img/article-preview.png';
 import { Avatar, Icon, Link } from '~/libs/components/components.js';
 import { AppRoute, DateFormat } from '~/libs/enums/enums.js';
 import { getFormattedDate, getFullName } from '~/libs/helpers/helpers.js';
+import { useAppDispatch, useCallback } from '~/libs/hooks/hooks.js';
 import { type ArticleWithAuthorType } from '~/packages/articles/articles.js';
 import { type UserDetailsResponseDto } from '~/packages/users/users.js';
+import { actions as articlesActions } from '~/slices/articles/articles.js';
 
 import { type ReactionsType, type TagType } from '../../libs/types/types.js';
 import { Tags } from '../components.js';
@@ -22,10 +24,16 @@ const ArticleCard: React.FC<Properties> = ({
   tags,
   reactions,
 }) => {
-  const { publishedAt, title, text } = article;
+  const dispatch = useAppDispatch();
+  const { publishedAt, title, text, id } = article;
   const { comments, views, likes, dislikes } = reactions;
 
   const MOCKED_READ_TIME = '7 min read';
+
+  const onSharedButtonClick: React.MouseEventHandler<HTMLButtonElement> =
+    useCallback((): void => {
+      void dispatch(articlesActions.shareArticle({ id: id.toString() }));
+    }, [dispatch, id]);
 
   return (
     <article className={styles.article}>
@@ -78,7 +86,9 @@ const ArticleCard: React.FC<Properties> = ({
             <span className={styles.reactionCount}>{dislikes}</span>
           </li>
         </ul>
-        <Icon iconName="share" className={styles.icon} />
+        <button className={styles.iconWrapper} onClick={onSharedButtonClick}>
+          <Icon iconName="share" className={styles.icon} />
+        </button>
         <Link to={AppRoute.ROOT} className={styles.readMore}>
           Read more
         </Link>
