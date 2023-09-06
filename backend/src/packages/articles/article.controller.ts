@@ -74,7 +74,9 @@ class ArticleController extends Controller {
       path: ArticlesApiPath.ROOT,
       method: 'GET',
       handler: (options) => {
-        return this.findAll(options.query as ArticlesFilters);
+        return this.findAll(
+          options as ApiHandlerOptions<{ query: ArticlesFilters }>,
+        );
       },
     });
 
@@ -85,6 +87,7 @@ class ArticleController extends Controller {
         this.findOwn(
           options as ApiHandlerOptions<{
             user: UserAuthResponseDto;
+            query: ArticlesFilters;
           }>,
         ),
     });
@@ -136,10 +139,12 @@ class ArticleController extends Controller {
    *                  $ref: '#/components/schemas/Article'
    */
 
-  private async findAll(filters: ArticlesFilters): Promise<ApiHandlerResponse> {
+  private async findAll(
+    options: ApiHandlerOptions<{ query: ArticlesFilters }>,
+  ): Promise<ApiHandlerResponse> {
     return {
       status: HttpCode.OK,
-      payload: await this.articleService.findAll(filters),
+      payload: await this.articleService.findAll(options.query),
     };
   }
 
@@ -162,11 +167,15 @@ class ArticleController extends Controller {
   private async findOwn(
     options: ApiHandlerOptions<{
       user: UserAuthResponseDto;
+      query: ArticlesFilters;
     }>,
   ): Promise<ApiHandlerResponse> {
     return {
       status: HttpCode.OK,
-      payload: await this.articleService.findOwn(options.user.id),
+      payload: await this.articleService.findOwn(
+        options.user.id,
+        options.query,
+      ),
     };
   }
 

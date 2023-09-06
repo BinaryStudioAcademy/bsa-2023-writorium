@@ -25,6 +25,7 @@ class ArticleRepository implements IRepository {
     const articles = await this.articleModel
       .query()
       .where(getWhereUserIdQuery(userId))
+      // @todo: should sort by createdAt (add column)
       .orderBy('articles.id', SortingOrder.DESCENDING)
       .offset(skip)
       .limit(take)
