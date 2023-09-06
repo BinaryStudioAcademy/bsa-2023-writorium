@@ -4,17 +4,20 @@ import { type TagType } from '../types/types.js';
 
 const getArticleTags = (article: ArticleWithAuthorType): TagType[] => {
   const result: TagType[] = [];
-  if (article.genre) {
+  const { prompt, genre } = article;
+
+  if (genre) {
     result.push({
-      id: crypto.randomUUID(),
       category: 'genre',
-      text: article.genre,
+      text: genre,
     });
   }
-  if (article.prompt) {
-    for (const [key, value] of Object.entries(article.prompt)) {
+  if (prompt) {
+    let keys: keyof typeof prompt;
+    for (keys in prompt) {
+      const value = prompt[keys];
       if (value) {
-        result.push({ id: crypto.randomUUID(), category: key, text: value });
+        result.push({ category: keys, text: value });
       }
     }
   }
