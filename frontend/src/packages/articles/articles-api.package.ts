@@ -1,4 +1,5 @@
 import { ApiPath, ContentType } from '~/libs/enums/enums.js';
+import { writeTextInClipboard } from '~/libs/helpers/helpers.js';
 import { HttpApi } from '~/libs/packages/api/api.js';
 import { type IHttp } from '~/libs/packages/http/http.js';
 import { type IStorage } from '~/libs/packages/storage/storage.js';
@@ -65,7 +66,12 @@ class ArticleApi extends HttpApi {
       },
     );
 
-    return await response.json<{ token: string }>();
+    const { token } = await response.json<{ token: string }>();
+    const sharedLink = this.getFullEndpoint(ArticlesApiPath.SHARED, { token });
+
+    await writeTextInClipboard(sharedLink);
+
+    return { token };
   }
 
   public async getByToken(payload: {
