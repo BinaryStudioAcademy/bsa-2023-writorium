@@ -75,7 +75,7 @@ const UserAchievements: FC<Properties> = ({ className }) => {
         <div>
           <h3 className={styles.title}>Achievements</h3>
           <AchievementList
-            shouldShowTooltip={true}
+            hasToShowTooltip={true}
             achievements={achievementsList}
             className={styles.achievementListModal}
             classNameAchievement={styles.achievementItem}

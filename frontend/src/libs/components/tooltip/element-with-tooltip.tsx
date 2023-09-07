@@ -15,6 +15,7 @@ type ElementWithTooltipProperties = {
   elementType: keyof ReactHTML;
   placement?: ValueOf<typeof TooltipPosition>;
   tooltipId?: ValueOf<typeof DataTooltipId>;
+  hasToShowTooltip?: boolean;
   tooltipContent: string | ReactElement;
   children?: ReactNode;
 };
@@ -25,6 +26,7 @@ const ElementWithTooltip: FC<ElementWithTooltipProperties> = ({
   elementType,
   placement = TooltipPosition.TOP,
   tooltipId = DataTooltipId.MAIN_TOOLTIP,
+  hasToShowTooltip = true,
   tooltipContent,
 }) => {
   const isStringContent = typeof tooltipContent === 'string';
@@ -34,14 +36,19 @@ const ElementWithTooltip: FC<ElementWithTooltipProperties> = ({
   const adaptedTooltipContent = isStringContent
     ? tooltipContent
     : renderToStaticMarkup(tooltipContent);
+  const tooltipAttributes = hasToShowTooltip
+    ? {
+        'data-tooltip-id': tooltipId,
+        'data-tooltip-place': placement,
+        [contentDataAttribute]: adaptedTooltipContent,
+      }
+    : {};
 
   return createElement(
     elementType,
     {
-      'data-tooltip-id': tooltipId,
-      'data-tooltip-place': placement,
+      ...tooltipAttributes,
       className,
-      [contentDataAttribute]: adaptedTooltipContent,
     },
     children,
   );

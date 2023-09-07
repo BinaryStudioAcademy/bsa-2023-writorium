@@ -13,7 +13,7 @@ import styles from './styles.module.scss';
 
 type Properties = {
   achievements: UserAchievement[];
-  shouldShowTooltip?: boolean;
+  hasToShowTooltip?: boolean;
   className?: string;
   classNameAchievement?: string;
 };
@@ -22,33 +22,27 @@ const AchievementList: FC<Properties> = ({
   achievements,
   className,
   classNameAchievement,
-  shouldShowTooltip = false,
+  hasToShowTooltip = false,
 }) => {
   return (
     <ul className={getValidClassNames(className, styles.achievementList)}>
       {achievements.map((achievement) => (
         <li key={achievement.id}>
-          {shouldShowTooltip ? (
-            <BlockWithTooltip
-              tooltipContent={
-                <AchievementTooltipContent
-                  description={achievement.description}
-                  progress={achievement.progress}
-                />
-              }
-              tooltipId={DataTooltipId.ACHIEVEMENT_TOOLTIP}
-            >
-              <Achievement
-                achievement={achievement}
-                className={classNameAchievement}
+          <BlockWithTooltip
+            tooltipContent={
+              <AchievementTooltipContent
+                description={achievement.description}
+                progress={achievement.progress}
               />
-            </BlockWithTooltip>
-          ) : (
+            }
+            tooltipId={DataTooltipId.ACHIEVEMENT_TOOLTIP}
+            hasToShowTooltip={hasToShowTooltip}
+          >
             <Achievement
               achievement={achievement}
               className={classNameAchievement}
             />
-          )}
+          </BlockWithTooltip>
         </li>
       ))}
     </ul>
