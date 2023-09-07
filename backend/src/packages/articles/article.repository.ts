@@ -93,7 +93,7 @@ class ArticleRepository implements IRepository {
     const article = await this.articleModel
       .query()
       .patchAndFetchById(id, payload)
-      .withGraphJoined(this.defaultRelationExpression);
+      .withGraphFetched(this.defaultRelationExpression);
 
     return ArticleEntity.initializeWithAuthor({
       ...article,
