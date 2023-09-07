@@ -1,8 +1,13 @@
+import {
+  type ReactFacebookFailureResponse,
+  type ReactFacebookLoginInfo,
+} from 'react-facebook-login';
 import FacebookLogin from 'react-facebook-login';
 
 import { useCallback } from '~/libs/hooks/hooks.js';
 import { config } from '~/libs/packages/config/config.js';
 import { type UserSignInWithFacebookResponseDto } from '~/packages/auth/auth.js';
+import { notification } from '~/packages/notification/notification.js';
 
 import styles from './styles.module.scss';
 
@@ -14,11 +19,16 @@ const FacebookLoginButton: React.FC<FacebookLoginButtonProperties> = ({
   onLogin,
 }) => {
   const responseFacebook = useCallback(
-    (response: UserSignInWithFacebookResponseDto): void => {
-      if (response.accessToken) {
-        onLogin(response);
+    (response: ReactFacebookLoginInfo | ReactFacebookFailureResponse): void => {
+      if ('accessToken' in response) {
+        const { accessToken, email, name } = response;
+        onLogin({
+          accessToken,
+          email,
+          name,
+        });
       } else {
-        new Error('Facebook login failed.');
+        notification.error('Facebook sign in failed');
       }
     },
     [onLogin],

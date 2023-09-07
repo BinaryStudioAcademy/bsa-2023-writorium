@@ -9,7 +9,6 @@ import {
 } from '~/libs/packages/exceptions/exceptions.js';
 import { facebookAuth } from '~/libs/packages/facebook-auth/facebook-auth.js';
 import { googleAuthClient } from '~/libs/packages/google-auth-client/google-auth-client.js';
-import { HttpCode, HttpError } from '~/libs/packages/http/http.js';
 import {
   type Mailer,
   type SendEmailResponse,
@@ -85,10 +84,7 @@ class AuthService {
       await facebookAuth.verifyFacebookAccessToken(userSignInDto.accessToken);
 
     if (!isValidFacebookAccessToken) {
-      throw new HttpError({
-        message: 'Invalid token',
-        status: HttpCode.UNAUTHORIZED,
-      });
+      throw new UnauthorizedError(ExceptionMessage.INVALID_TOKEN);
     }
 
     const { email } = userSignInDto;

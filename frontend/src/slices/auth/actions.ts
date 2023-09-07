@@ -49,7 +49,7 @@ const signInWithFacebook = createAsyncThunk<
   UserAuthResponseDto,
   UserSignInWithFacebookResponseDto,
   AsyncThunkConfig
->(`${sliceName}/sign-in`, async (loginPayload, { extra }) => {
+>(`${sliceName}/facebook-sign-in`, async (loginPayload, { extra }) => {
   const { authApi, storage } = extra;
   const { user, token } = await authApi.signInWithFacebook(loginPayload);
 
