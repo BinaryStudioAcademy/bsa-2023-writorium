@@ -83,10 +83,8 @@ const ArticleCard: React.FC<Properties> = ({
         <Icon iconName="share" className={styles.icon} />
         <ShareOnFacebookButton
           title={title}
-          size="18"
           articleUrl={articleUrl}
-          bgColor="rgba(255 255 255 / 0)"
-          iconColor="#44996B"
+          iconStyle={styles.facebookIconButton}
         />
         <Link to={AppRoute.ROOT} className={styles.readMore}>
           Read more

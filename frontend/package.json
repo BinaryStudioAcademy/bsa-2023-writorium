@@ -17,6 +17,8 @@
   },
   "dependencies": {
     "@hookform/resolvers": "3.2.0",
+    "@mui/icons-material": "5.14.8",
+    "@mui/material": "5.14.8",
     "@react-oauth/google": "0.11.1",
     "@reduxjs/toolkit": "1.9.5",
     "@tiptap/extension-placeholder": "2.1.7",

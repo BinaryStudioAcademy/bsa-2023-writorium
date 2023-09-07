@@ -66,7 +66,7 @@ class AuthApi extends HttpApi {
     payload: UserSignInWithFacebookResponseDto,
   ): Promise<UserSignInResponseDto> {
     const response = await this.load(
-      this.getFullEndpoint(AuthApiPath.SIGN_IN_FACEBOOK, {}),
+      this.getFullEndpoint(AuthApiPath.FACEBOOK, {}),
       {
         method: 'POST',
         contentType: ContentType.JSON,

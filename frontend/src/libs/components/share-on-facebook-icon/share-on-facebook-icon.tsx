@@ -1,21 +1,19 @@
-import { FacebookIcon, FacebookShareButton } from 'react-share';
+import { FacebookShareButton } from 'react-share';
+
+import { Icon } from '~/libs/components/components.js';
 
 import styles from './styles.module.scss';
 
 type Properties = {
   title: string;
   articleUrl: string;
-  bgColor: string;
-  size: string;
-  iconColor: string;
+  iconStyle: string;
 };
 
 const ShareOnFacebookButton: React.FC<Properties> = ({
   title,
-  size,
   articleUrl,
-  bgColor,
-  iconColor,
+  iconStyle,
 }) => {
   return (
     <FacebookShareButton
@@ -23,12 +21,7 @@ const ShareOnFacebookButton: React.FC<Properties> = ({
       url={articleUrl}
       className={styles.button}
     >
-      <FacebookIcon
-        size={size}
-        round={true}
-        bgStyle={{ fill: bgColor }}
-        iconFillColor={iconColor}
-      ></FacebookIcon>
+      <Icon iconName="facebook" className={iconStyle} />
     </FacebookShareButton>
   );
 };

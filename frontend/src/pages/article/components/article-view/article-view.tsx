@@ -48,10 +48,8 @@ const ArticleView: React.FC<Properties> = ({ article }) => {
           />
           <ShareOnFacebookButton
             title={title}
-            size="54"
             articleUrl={articleUrl}
-            bgColor="rgba(255 255 255 / 90%)"
-            iconColor="#44996B"
+            iconStyle={styles.facebookIconButton}
           />
         </div>
       </div>
