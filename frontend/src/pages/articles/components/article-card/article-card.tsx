@@ -28,9 +28,11 @@ const ArticleCard: React.FC<Properties> = ({
   tags,
   reactions,
 }) => {
-  const { publishedAt, title, text } = article;
+  const { publishedAt, title, text, id } = article;
   const { comments, views, likes, dislikes } = reactions;
   const articleUrl = window.location.href;
+
+  const articleRouteById = AppRoute.ARTICLE.replace(':id', String(id));
 
   const MOCKED_READ_TIME = '7 min read';
 
@@ -94,7 +96,10 @@ const ArticleCard: React.FC<Properties> = ({
           articleUrl={articleUrl}
           iconStyle={styles.facebookIconButton}
         />
-        <Link to={AppRoute.ARTICLE} className={styles.readMore}>
+        <Link
+          to={articleRouteById as typeof AppRoute.ARTICLE}
+          className={styles.readMore}
+        >
           Read more
         </Link>
       </div>
