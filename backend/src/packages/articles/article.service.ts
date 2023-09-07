@@ -5,6 +5,7 @@ import { type OpenAIService } from '~/libs/packages/openai/openai.package.js';
 
 import { GenreEntity } from '../genres/genre.entity.js';
 import { type GenreRepository } from '../genres/genre.repository.js';
+import { type UserAuthResponseDto } from '../users/users.js';
 import { ArticleEntity } from './article.entity.js';
 import { type ArticleRepository } from './article.repository.js';
 import { getDetectArticleGenreCompletionConfig } from './libs/helpers/helpers.js';
@@ -126,13 +127,22 @@ class ArticleService implements IService {
 
   public async update(
     id: number,
-    payload: ArticleUpdateRequestDto,
+    {
+      payload,
+      user,
+    }: { payload: ArticleUpdateRequestDto; user: UserAuthResponseDto },
   ): Promise<ArticleBaseResponseDto> {
     const article = await this.find(id);
 
     if (!article) {
       throw new ApplicationError({
         message: `Article with id ${id} not found`,
+      });
+    }
+
+    if (article.userId !== user.id) {
+      throw new ApplicationError({
+        message: 'Article can only be edited by author!',
       });
     }
 
@@ -143,7 +153,7 @@ class ArticleService implements IService {
       }),
     );
 
-    return updatedArticle.toObject();
+    return updatedArticle.toObjectWithAuthor();
   }
 
   public delete(): Promise<boolean> {
