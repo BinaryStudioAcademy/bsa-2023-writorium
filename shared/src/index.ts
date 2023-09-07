@@ -56,6 +56,7 @@ export {
   type ArticleRequestDto,
   ArticlesApiPath,
   type ArticleUpdateRequestDto,
+  type ArticleUpdateRequestPayload,
   articleUpdateValidationSchema,
   type ArticleWithAuthorType,
 } from './packages/articles/articles.js';
