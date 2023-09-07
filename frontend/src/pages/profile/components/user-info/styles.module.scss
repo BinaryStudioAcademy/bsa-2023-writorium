@@ -1,0 +1,31 @@
+.userInfoBlock {
+  display: flex;
+  grid-area: info;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  max-width: 270px;
+  min-height: 356px;
+  padding: 20px 30px 30px;
+  text-align: center;
+}
+
+.avatar {
+  width: 80%;
+  aspect-ratio: 1 / 1;
+  height: auto;
+}
+
+.userInfo {
+  font-size: 18px;
+}
+
+.editProfileBtn {
+  width: 100%;
+  height: 45px;
+  color: var(--white);
+  background-color: var(--dark-green);
+  border: none;
+}

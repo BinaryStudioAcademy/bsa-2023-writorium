@@ -10,13 +10,18 @@ import {
   PublicRoute,
   RouterProvider,
   StoreProvider,
+  Tooltip,
 } from '~/libs/components/components.js';
-import { AppRoute, ArticleSubRoute } from '~/libs/enums/enums.js';
+import {
+  AppRoute,
+  ArticleSubRoute,
+  DataTooltipId,
+} from '~/libs/enums/enums.js';
 import { store } from '~/libs/packages/store/store.js';
 import { ArticlePage, CreateArticlePage } from '~/pages/article/article.js';
 import { Auth } from '~/pages/auth/auth.js';
 import { Landing } from '~/pages/landing/landing.js';
-import { Profile } from '~/pages/profile/profile.js';
+import { ProfilePage } from '~/pages/profile/profile-page.js';
 
 import {
   ArticlesFeed,
@@ -64,7 +69,7 @@ createRoot(document.querySelector('#root') as HTMLElement).render(
                   path: AppRoute.PROFILE,
                   element: (
                     <ProtectedRoute>
-                      <Profile />
+                      <ProfilePage />
                     </ProtectedRoute>
                   ),
                 },
@@ -124,5 +129,6 @@ createRoot(document.querySelector('#root') as HTMLElement).render(
         />
       </StoreProvider>
     </GoogleOAuthProvider>
+    <Tooltip id={DataTooltipId.MAIN_TOOLTIP} />
   </StrictMode>,
 );
