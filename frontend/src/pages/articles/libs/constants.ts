@@ -1,12 +1,4 @@
-import { type ReactionsType, type TagType } from './types/types.js';
-
-const MOCKED_TAGS: TagType[] = [
-  { id: 1, name: 'IT' },
-  { id: 2, name: 'CODE' },
-  { id: 3, name: 'Humor' },
-  { id: 4, name: 'Work' },
-  { id: 5, name: 'Tech' },
-];
+import { type ReactionsType } from './types/types.js';
 
 const MOCKED_REACTIONS: ReactionsType = {
   comments: '540',
@@ -15,4 +7,4 @@ const MOCKED_REACTIONS: ReactionsType = {
   dislikes: '18K',
 };
 
-export { MOCKED_REACTIONS, MOCKED_TAGS };
+export { MOCKED_REACTIONS };
