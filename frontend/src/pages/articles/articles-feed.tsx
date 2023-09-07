@@ -14,10 +14,10 @@ import { MOCKED_REACTIONS, MOCKED_TAGS } from './libs/constants.js';
 const ArticlesFeed: React.FC = () => {
   const dispatch = useAppDispatch();
   const { articles } = useAppSelector(({ articles }) => articles);
-  const { hasMore, load } = usePagination();
+  const { hasMore, loadMore } = usePagination();
 
   const handleLoadArticles = useCallback(() => {
-    void load(async (skip: number, take: number) => {
+    void loadMore(async (skip: number, take: number) => {
       const data = await dispatch(
         articlesActions.fetchAll({
           take,
@@ -25,9 +25,9 @@ const ArticlesFeed: React.FC = () => {
         }),
       ).unwrap();
 
-      return data.items.length > 0;
+      return Boolean(data.items.length);
     });
-  }, [dispatch, load]);
+  }, [dispatch, loadMore]);
 
   useEffect(() => {
     handleLoadArticles();

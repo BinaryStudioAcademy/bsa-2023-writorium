@@ -1,6 +1,6 @@
 type UsePaginationReturn = {
   hasMore: boolean;
-  load: (
+  loadMore: (
     callback: (skip: number, take: number) => Promise<boolean>,
   ) => Promise<void>;
 };

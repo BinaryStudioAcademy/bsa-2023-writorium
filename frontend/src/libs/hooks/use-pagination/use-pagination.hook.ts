@@ -16,7 +16,7 @@ const usePagination = ({
   const [hasMore, setHasMore] = useState(false);
   const paginationParameters = useRef({ skip: defaultSkip, take: defaultTake });
 
-  const load = useCallback(
+  const loadMore = useCallback(
     async (
       callback: (skip: number, take: number) => Promise<boolean>,
     ): Promise<void> => {
@@ -32,7 +32,7 @@ const usePagination = ({
     [],
   );
 
-  return { hasMore, load };
+  return { hasMore, loadMore };
 };
 
 export { usePagination };
