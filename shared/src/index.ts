@@ -1,4 +1,7 @@
-export { RESET_PASSWORD_ROUTE } from './libs/constants/constants.js';
+export {
+  INDEX_INCREMENT,
+  RESET_PASSWORD_ROUTE,
+} from './libs/constants/constants.js';
 export {
   ApiPath,
   AppEnvironment,
