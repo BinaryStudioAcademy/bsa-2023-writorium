@@ -1,10 +1,11 @@
-import { Input, Link } from '~/libs/components/components.js';
+import { Link } from '~/libs/components/components.js';
 import { AppRoute } from '~/libs/enums/app-route.enum';
 import { useAppForm, useCallback, useParams } from '~/libs/hooks/hooks.js';
 import { type AuthResetPasswordDto } from '~/packages/auth/auth.js';
 import { resetPasswordValidationSchema } from '~/packages/auth/auth.js';
 
 import { AuthSubmitButton } from '../auth-submit-button/auth-submit-button.js';
+import { PasswordInput } from '../password-input/password-input.js';
 import { DEFAULT_PAYLOAD } from './libs/constants/constants.js';
 import styles from './styles.module.scss';
 
@@ -40,7 +41,7 @@ const ResetPasswordForm: React.FC<Properties> = ({ onSubmit }) => {
           onSubmit={handleFormSubmit}
         >
           <fieldset className={styles.fieldset}>
-            <Input
+            <PasswordInput
               name="password"
               type="password"
               placeholder="Enter new password"
@@ -48,7 +49,7 @@ const ResetPasswordForm: React.FC<Properties> = ({ onSubmit }) => {
               control={control}
               errors={errors}
             />
-            <Input
+            <PasswordInput
               name="confirmPassword"
               type="password"
               placeholder="Confirm new password"
