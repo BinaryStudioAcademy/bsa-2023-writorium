@@ -67,7 +67,7 @@ class ArticleRepository implements IRepository {
       .query()
       .patchAndFetchById(id, payload);
 
-    return ArticleEntity.initialize(article);
+    return ArticleEntity.initializeWithAuthor(article);
   }
 
   public delete(): Promise<boolean> {
