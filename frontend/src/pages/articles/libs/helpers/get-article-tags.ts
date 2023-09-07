@@ -12,16 +12,17 @@ const getArticleTags = (article: ArticleWithAuthorType): TagType[] => {
       text: genre,
     });
   }
-  if (prompt) {
-    let keys: keyof typeof prompt;
-    for (keys in prompt) {
-      const value = prompt[keys];
-      if (value) {
-        result.push({ category: keys, text: value });
-      }
+  // eslint-disable-next-line unicorn/no-array-reduce
+  return Object.entries(prompt ?? {}).reduce((resultingTags, [key, value]) => {
+    if (value) {
+      // eslint-disable-next-line unicorn/prefer-spread
+      return resultingTags.concat({
+        category: key as TagType['category'],
+        text: value,
+      });
     }
-  }
-  return result;
+    return resultingTags;
+  }, result);
 };
 
 export { getArticleTags };
