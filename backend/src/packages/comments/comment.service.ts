@@ -63,8 +63,7 @@ class CommentService implements IService {
     const comment = await this.find(id);
 
     if (!comment) {
-      throw new HttpError({
-        status: HttpCode.NOT_FOUND,
+      throw new ApplicationError({
         message: `Comment with id ${id} not found`,
       });
     }

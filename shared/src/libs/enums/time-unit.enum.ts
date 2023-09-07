@@ -1,8 +1,8 @@
 const TimeUnit = {
   DAY: 'day',
   HOUR: 'hour',
-  MINUTE: 'min',
-  SECOND: 'sec',
+  MINUTE: 'minute',
+  SECOND: 'second',
 } as const;
 
 export { TimeUnit };
