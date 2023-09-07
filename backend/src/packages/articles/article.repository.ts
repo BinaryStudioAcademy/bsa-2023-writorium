@@ -19,15 +19,15 @@ class ArticleRepository implements IRepository {
 
   public async findAll({
     userId,
-    hasToPublishedOnly,
+    hasPublishedOnly,
   }: {
     userId?: number;
-    hasToPublishedOnly?: boolean;
+    hasPublishedOnly?: boolean;
   }): Promise<ArticleEntity[]> {
     const articles = await this.articleModel
       .query()
       .where(getWhereUserIdQuery(userId))
-      .where(getWherePublishedOnlyQuery(hasToPublishedOnly))
+      .where(getWherePublishedOnlyQuery(hasPublishedOnly))
       .orderBy('articles.publishedAt', SortingOrder.DESCENDING)
       .withGraphJoined(this.defaultRelationExpression);
 

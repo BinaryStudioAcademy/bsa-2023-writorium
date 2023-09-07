@@ -86,7 +86,7 @@ class ArticleService implements IService {
 
   public async findAll(): Promise<ArticleGetAllResponseDto> {
     const articles = await this.articleRepository.findAll({
-      hasToPublishedOnly: true,
+      hasPublishedOnly: true,
     });
 
     return { items: articles.map((article) => article.toObjectWithAuthor()) };

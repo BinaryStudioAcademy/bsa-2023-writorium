@@ -2,9 +2,9 @@ import { type QueryBuilder } from 'objection';
 
 import { type ArticleModel } from '../../article.model.js';
 
-const getWherePublishedOnlyQuery = (hasToPublishedOnly?: boolean) => {
+const getWherePublishedOnlyQuery = (hasPublishedOnly?: boolean) => {
   return (builder: QueryBuilder<ArticleModel, ArticleModel[]>): void => {
-    if (hasToPublishedOnly) {
+    if (hasPublishedOnly) {
       void builder.whereNotNull('publishedAt');
     }
   };
