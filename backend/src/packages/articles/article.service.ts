@@ -6,6 +6,7 @@ import { GenreEntity } from '../genres/genre.entity.js';
 import { type GenreRepository } from '../genres/genre.repository.js';
 import { ArticleEntity } from './article.entity.js';
 import { type ArticleRepository } from './article.repository.js';
+import { INDEX_INCREMENT } from './libs/constants/constants.js';
 import { DateFormat } from './libs/enums/enums.js';
 import {
   getDetectArticleGenreCompletionConfig,
@@ -123,7 +124,6 @@ class ArticleService implements IService {
       MONTHS_TO_SUBTRACT_COUNT,
     );
     const daysInHalfYear = getDifferenceBetweenDates(currentDate, sixMonthAgo);
-    const halfYearActivity: UserActivityResponseDto[] = [];
 
     const userActivity = await this.articleRepository.getUserActivity({
       userId,
@@ -131,7 +131,9 @@ class ArticleService implements IService {
       activityTo: currentDate.toISOString(),
     });
 
-    for (let index = 0; index <= daysInHalfYear; index++) {
+    const halfYearActivity: UserActivityResponseDto[] = Array.from({
+      length: daysInHalfYear + INDEX_INCREMENT,
+    }).map((_, index) => {
       const incrementedDate = sixMonthAgo.getDate() + index;
       const dateForStatistic = new Date(
         sixMonthAgo.getFullYear(),
@@ -148,18 +150,18 @@ class ArticleService implements IService {
 
       if (activeDayIndex >= ZERO_ACTIVITY_COUNT) {
         const dayActivity = userActivity[activeDayIndex];
-        halfYearActivity.push({
+
+        return {
           date: dayActivity.date,
           count: Number(dayActivity.count),
-        });
-        continue;
+        };
       }
 
-      halfYearActivity.push({
+      return {
         date: dateForStatistic,
         count: ZERO_ACTIVITY_COUNT,
-      });
-    }
+      };
+    });
 
     return halfYearActivity;
   }
