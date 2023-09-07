@@ -35,6 +35,7 @@ import { ReactComponent as Share } from '~/assets/img/icons/share-icon.svg';
 import { ReactComponent as Sparkles } from '~/assets/img/icons/sparkles-icon.svg';
 import { ReactComponent as Star } from '~/assets/img/icons/star-icon.svg';
 import { ReactComponent as View } from '~/assets/img/icons/view-icon.svg';
+import { ReactComponent as WritoriumLogo } from '~/assets/img/icons/writorium-logo-icon.svg';
 
 type IconName =
   | 'arrowDown'
@@ -64,8 +65,9 @@ type IconName =
   | 'share'
   | 'sparkles'
   | 'star'
-  | 'edit'
   | 'view'
+  | 'writoriumLogo'
+  | 'edit'
   | 'listNumbered'
   | 'listBulleted'
   | 'header1'
@@ -106,6 +108,7 @@ const iconNameToIcon: Record<
   sparkles: Sparkles,
   star: Star,
   view: View,
+  writoriumLogo: WritoriumLogo,
   edit: Edit,
   textAlignJustify: TextAlignJustify,
   listBulleted: ListBulleted,
