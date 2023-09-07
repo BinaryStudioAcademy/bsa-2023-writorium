@@ -1,7 +1,12 @@
 import ArticlePreview from '~/assets/img/article-preview.png';
 import { Avatar, Icon, Link } from '~/libs/components/components.js';
 import { AppRoute, DateFormat } from '~/libs/enums/enums.js';
-import { getFormattedDate, getFullName } from '~/libs/helpers/helpers.js';
+import {
+  getFormattedDate,
+  getFullName,
+  getValidClassNames,
+  sanitizeHtml,
+} from '~/libs/helpers/helpers.js';
 import { type ArticleWithAuthorType } from '~/packages/articles/articles.js';
 import { type UserDetailsResponseDto } from '~/packages/users/users.js';
 
@@ -52,7 +57,10 @@ const ArticleCard: React.FC<Properties> = ({
       <div className={styles.body}>
         <div className={styles.articleInfo}>
           <h4 className={styles.title}>{title}</h4>
-          <p className={styles.text}>{text}</p>
+          <article
+            className={getValidClassNames(styles.text, 'text-overflow')}
+            dangerouslySetInnerHTML={{ __html: sanitizeHtml(text) }}
+          ></article>
           <Tags tags={tags} />
         </div>
         <img
