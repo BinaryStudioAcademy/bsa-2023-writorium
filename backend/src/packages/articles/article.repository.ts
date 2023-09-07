@@ -42,7 +42,7 @@ class ArticleRepository implements IRepository {
               situation: article.prompt.situation,
               prop: article.prompt.prop,
             }
-          : undefined,
+          : null,
       }),
     );
   }
@@ -67,7 +67,7 @@ class ArticleRepository implements IRepository {
             situation: article.prompt.situation,
             prop: article.prompt.prop,
           }
-        : undefined,
+        : null,
     });
   }
 
