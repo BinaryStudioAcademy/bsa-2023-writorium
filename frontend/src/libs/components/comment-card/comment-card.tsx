@@ -2,6 +2,7 @@ import { Avatar, Icon } from '~/libs/components/components.js';
 import {
   getDateDifferenceWithUnit,
   getFullName,
+  getPublicationTime,
 } from '~/libs/helpers/helpers.js';
 import { type CommentBaseResponseDto } from '~/packages/comments/comments.js';
 import { type UserAuthResponseDto } from '~/packages/users/users.js';
@@ -19,7 +20,7 @@ const CommentCard: React.FC<Properties> = ({ user, comment }) => {
   const userName = getFullName(firstName, lastName);
 
   const { diff, unit } = getDateDifferenceWithUnit(createdAt);
-  const publicationTime = `${diff} ${unit}`;
+  const publicationTime = getPublicationTime(diff, unit);
 
   return (
     <section className={styles.comment}>
