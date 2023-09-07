@@ -1,10 +1,11 @@
-import { ApiPath } from '~/libs/enums/enums.js';
+import { ApiPath, ExceptionMessage } from '~/libs/enums/enums.js';
 import {
   type ApiHandlerOptions,
   type ApiHandlerResponse,
   Controller,
 } from '~/libs/packages/controller/controller.js';
-import { HttpCode, HttpError } from '~/libs/packages/http/http.js';
+import { BadRequestError } from '~/libs/packages/exceptions/exceptions.js';
+import { HttpCode } from '~/libs/packages/http/http.js';
 import { type ILogger } from '~/libs/packages/logger/logger.js';
 import {
   type UserSignInRequestDto,
@@ -201,10 +202,7 @@ class AuthController extends Controller {
     const { origin, body } = options;
 
     if (!origin) {
-      throw new HttpError({
-        message: 'Unspecified request origin!',
-        status: HttpCode.BAD_REQUEST,
-      });
+      throw new BadRequestError(ExceptionMessage.UNSPECIFIED_REQUEST_ORIGIN);
     }
     const url = origin as string;
     return {

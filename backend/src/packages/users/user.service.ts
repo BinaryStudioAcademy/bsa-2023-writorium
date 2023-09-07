@@ -1,9 +1,11 @@
 import { ExceptionMessage } from '~/libs/enums/enums.js';
-import { ApplicationError } from '~/libs/exceptions/exceptions.js';
 import { type IService } from '~/libs/interfaces/interfaces.js';
 import { type IConfig } from '~/libs/packages/config/config.js';
 import { type IEncrypt } from '~/libs/packages/encrypt/encrypt.js';
-import { UserNotFoundError } from '~/libs/packages/exceptions/exceptions.js';
+import {
+  ForbiddenError,
+  NotFoundError,
+} from '~/libs/packages/exceptions/exceptions.js';
 import { type ArticleService } from '~/packages/articles/article.service.js';
 import { type AuthResetPasswordDto } from '~/packages/auth/libs/types/types.js';
 import { UserEntity } from '~/packages/users/user.entity.js';
@@ -118,9 +120,7 @@ class UserService implements IService {
     const user = await this.findByEmail(payload.email);
 
     if (user && user.id !== id) {
-      throw new ApplicationError({
-        message: ExceptionMessage.EMAIL_IS_ALREADY_USED,
-      });
+      throw new ForbiddenError(ExceptionMessage.EMAIL_IS_ALREADY_USED);
     }
 
     const updatedUser = await this.userRepository.update(
@@ -144,7 +144,7 @@ class UserService implements IService {
   ): Promise<UserAuthResponseDto> {
     const user = await this.find(id);
     if (!user) {
-      throw new UserNotFoundError();
+      throw new NotFoundError(ExceptionMessage.USER_NOT_FOUND);
     }
 
     const passwordSalt = await this.encrypt.generateSalt(

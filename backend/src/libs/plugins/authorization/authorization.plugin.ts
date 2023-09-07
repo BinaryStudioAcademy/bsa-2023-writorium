@@ -1,11 +1,9 @@
 import { type FastifyInstance, type FastifyRequest } from 'fastify';
 import fp from 'fastify-plugin';
 
-import {
-  HttpCode,
-  HttpError,
-  type HttpMethod,
-} from '~/libs/packages/http/http.js';
+import { ExceptionMessage } from '~/libs/enums/enums.js';
+import { UnauthorizedError } from '~/libs/packages/exceptions/exceptions.js';
+import { type HttpMethod } from '~/libs/packages/http/http.js';
 import { type WhiteRoute } from '~/libs/packages/server-application/server-application.js';
 import { type IToken } from '~/libs/packages/token/token.js';
 import { type UserService } from '~/packages/users/users.js';
@@ -51,10 +49,7 @@ const authorization = fp(
       const [, requestToken] = headers.authorization?.split(' ') ?? [];
 
       if (!requestToken) {
-        throw new HttpError({
-          message: 'Authorization header should be in format: Bearer <token>',
-          status: HttpCode.UNAUTHORIZED,
-        });
+        throw new UnauthorizedError(ExceptionMessage.AUTHORIZATION_HEADER);
       }
 
       const { userId } = await token.verifyToken<{ userId?: number }>(
@@ -62,20 +57,13 @@ const authorization = fp(
       );
 
       if (!userId) {
-        throw new HttpError({
-          message: 'Invalid token',
-          status: HttpCode.UNAUTHORIZED,
-        });
+        throw new UnauthorizedError(ExceptionMessage.INVALID_TOKEN);
       }
 
       const authorizedUser = await userService.find(userId);
 
       if (!authorizedUser) {
-        throw new HttpError({
-          status: HttpCode.UNAUTHORIZED,
-          message:
-            'You do not have the necessary authorization to access this resource. Please log in.',
-        });
+        throw new UnauthorizedError(ExceptionMessage.DO_NOT_HAVE_AUTHORIZATION);
       }
 
       request.user = authorizedUser;
