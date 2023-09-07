@@ -1,5 +1,4 @@
 import { ApplicationError } from '~/libs/exceptions/exceptions.js';
-import { differenceInDays, safeJSONParse } from '~/libs/helpers/helpers.js';
 import { type IService } from '~/libs/interfaces/service.interface.js';
 import { type OpenAIService } from '~/libs/packages/openai/openai.package.js';
 
@@ -10,8 +9,10 @@ import { type ArticleRepository } from './article.repository.js';
 import { DateFormat } from './libs/enums/enums.js';
 import {
   getDetectArticleGenreCompletionConfig,
+  getDifferenceBetweenDates,
   getFormattedDate,
-  subMonths,
+  safeJSONParse,
+  subtractMonthsFromDate,
 } from './libs/helpers/helpers.js';
 import {
   type ArticleBaseResponseDto,
@@ -115,8 +116,8 @@ class ArticleService implements IService {
     userId: number,
   ): Promise<UserActivityResponseDto[]> {
     const currentDate = new Date();
-    const sixMonthAgo = subMonths(currentDate, 6);
-    const daysInHalfYear = differenceInDays(currentDate, sixMonthAgo);
+    const sixMonthAgo = subtractMonthsFromDate(currentDate, 6);
+    const daysInHalfYear = getDifferenceBetweenDates(currentDate, sixMonthAgo);
     const halfYearActivity: UserActivityResponseDto[] = [];
 
     const userActivity = await this.articleRepository.getUserActivity({

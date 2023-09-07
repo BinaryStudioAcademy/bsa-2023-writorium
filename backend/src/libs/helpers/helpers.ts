@@ -1,7 +1,7 @@
 export { convertToSnakeCase } from './convert-to-snake-case/convert-to-snake-case.helper.js';
 export {
-  differenceInDays,
+  getDifferenceBetweenDates,
   getFormattedDate,
   safeJSONParse,
-  subMonths,
+  subtractMonthsFromDate,
 } from 'shared/build/index.js';

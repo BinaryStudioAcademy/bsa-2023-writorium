@@ -10,10 +10,10 @@ export {
 export { ApplicationError, HttpError } from './libs/exceptions/exceptions.js';
 export {
   configureString,
-  differenceInDays,
+  getDifferenceBetweenDates,
   getFormattedDate,
   safeJSONParse,
-  subMonths,
+  subtractMonthsFromDate,
 } from './libs/helpers/helpers.js';
 export { type IConfig } from './libs/packages/config/config.js';
 export {

@@ -1,7 +1,8 @@
 export { getDetectArticleGenreCompletionConfig } from './get-detect-article-genre-completion-config.helper.js';
 export { getWhereUserIdQuery } from './get-where-user-id-query.helper.js';
 export {
-  differenceInDays,
+  getDifferenceBetweenDates,
   getFormattedDate,
-  subMonths,
+  safeJSONParse,
+  subtractMonthsFromDate,
 } from '~/libs/helpers/helpers.js';
