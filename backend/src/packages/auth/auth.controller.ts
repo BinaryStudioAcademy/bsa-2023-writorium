@@ -51,7 +51,7 @@ class AuthController extends Controller {
     });
 
     this.addRoute({
-      path: AuthApiPath.SIGN_IN_FACEBOOK,
+      path: AuthApiPath.FACEBOOK,
       method: 'POST',
       handler: (options) =>
         this.signInWithFacebook(

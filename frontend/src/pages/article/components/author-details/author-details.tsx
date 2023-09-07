@@ -15,7 +15,7 @@ type Properties = {
   genre?: string;
 };
 
-const Author: FC<Properties> = ({
+const AuthorDetails: FC<Properties> = ({
   name = 'Charlie Culhane',
   followers = 10,
   rating = 700,
@@ -68,4 +68,4 @@ const Author: FC<Properties> = ({
   );
 };
 
-export { Author };
+export { AuthorDetails };
