@@ -1,22 +1,44 @@
-import { type FC } from 'react';
+import { Layout, Navigate } from '~/libs/components/components.js';
+import { Loader } from '~/libs/components/loader/loader.js';
+import { AppRoute, DataStatus } from '~/libs/enums/enums.js';
+import { getFullName } from '~/libs/helpers/helpers.js';
+import {
+  useAppDispatch,
+  useAppSelector,
+  useEffect,
+  useParams,
+} from '~/libs/hooks/hooks.js';
+import { type ArticleType, type TagType } from '~/libs/types/types.js';
+import { actions } from '~/slices/articles/articles.js';
 
-import { Layout } from '~/libs/components/components.js';
-import { useParams } from '~/libs/hooks/hooks.js';
-import { type TagType } from '~/libs/types/types.js';
-
-import { ArticleView, Author } from './components/components.js';
+import { ArticleView, AuthorDetails } from './components/components.js';
 import styles from './styles.module.scss';
 
-const ArticlePage: FC = () => {
+const ArticlePage: React.FC = () => {
+  const dispatch = useAppDispatch();
+
   const { id } = useParams();
 
-  const MOCKED_TEXT = `Envision this: there is a technology currently undergoing testing that, when released to the public, will become a long-awaited revolution in energy. This new technology promises to be safer and more efficient than anything we have on the market now. It  will affect that which we consider mundane — power tools, toys, laptops, smartphones —
-  and that which we consider exceptional — medical devices, spacecraft, and the innovative new vehicle designs needed to wean us off of fossil fuels. We have known about this  technology for centuries, yet until now we have only been able to take small steps towards its creation. Billions of dollars are pouring into research and billions more will be made once the
-  technology has been perfected and released.
+  useEffect(() => {
+    void dispatch(actions.getArticle(Number(id)));
+  }, [dispatch, id]);
 
-  This description may sound a lot like that of fusion power. Yet it’s actually referring to the upcoming innovations in the realm of battery technology — specifically that of solid-state batteries. And while both fusion power and solid-state batteries have been labeled technologies of the future but never of today, advancements and investments in solid-state
-  materials have increased tremendously over the years. Today not only are there many major companies and credible researchers involved, it seems we may finally start seeing these batteries released in just the next few years.
-  What can we expect once this elusive, transformative technology is finally ready for mass production?`;
+  const { article, dataStatus } = useAppSelector(({ articles }) => ({
+    article: articles.article,
+    dataStatus: articles.dataStatus,
+  }));
+
+  const isLoading = !(
+    dataStatus === DataStatus.FULFILLED || dataStatus == DataStatus.REJECTED
+  );
+
+  if (!article && !isLoading) {
+    return <Navigate to={AppRoute.ARTICLES} />;
+  }
+
+  if (dataStatus === DataStatus.REJECTED) {
+    return null;
+  }
 
   const MOCKED_TAGS: TagType[] = [
     { id: 1, name: 'IT' },
@@ -26,19 +48,23 @@ const ArticlePage: FC = () => {
     { id: 5, name: 'Tech' },
   ];
 
-  const MOCKED_ARTICLE = {
-    title: 'Modern Full-Stack Developer Tech Stack 2021',
-    text: MOCKED_TEXT,
-    tags: MOCKED_TAGS,
-  };
+  const { text, title, author } = article ?? {};
 
   return (
-    <Layout>
-      <div className={styles.articlePageWrapper}>
-        <ArticleView article={MOCKED_ARTICLE} />
-        {id && <Author />}
-      </div>
-    </Layout>
+    <Loader isLoading={isLoading}>
+      <Layout>
+        <div className={styles.articlePageWrapper}>
+          <ArticleView
+            article={{ text, title, tags: MOCKED_TAGS } as ArticleType}
+          />
+          {author && (
+            <AuthorDetails
+              name={getFullName(author.firstName, author.lastName)}
+            />
+          )}
+        </div>
+      </Layout>
+    </Loader>
   );
 };
 

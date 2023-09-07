@@ -13,6 +13,7 @@ import {
   type ArticleCreateDto,
   type ArticleGetAllResponseDto,
   type ArticleUpdateRequestDto,
+  type ArticleWithAuthorType,
   type DetectedArticleGenre,
 } from './libs/types/types.js';
 
@@ -95,14 +96,14 @@ class ArticleService implements IService {
     return { items: articles.map((article) => article.toObjectWithAuthor()) };
   }
 
-  public async find(id: number): Promise<ArticleBaseResponseDto | null> {
+  public async find(id: number): Promise<ArticleWithAuthorType | null> {
     const article = await this.articleRepository.find(id);
 
     if (!article) {
       return null;
     }
 
-    return article.toObject();
+    return article.toObjectWithAuthor();
   }
 
   public async create(
