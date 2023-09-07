@@ -4,6 +4,11 @@
   padding: 0;
 }
 
+html {
+  scrollbar-color: var(--light-gray-40) transparent;
+  scrollbar-width: auto;
+}
+
 body {
   display: flex;
   flex-direction: column;
@@ -46,4 +51,17 @@ a {
 
 button {
   cursor: pointer;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--light-gray-40);
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
 }
