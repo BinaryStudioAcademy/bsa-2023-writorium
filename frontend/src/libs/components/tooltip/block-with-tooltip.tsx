@@ -7,12 +7,10 @@ import {
 
 type Properties = Omit<ElementWithTooltipProperties, 'elementType'>;
 
-const BlockWithTooltip: FC<Properties> = ({ children, ...restProperties }) => {
-  return (
-    <ElementWithTooltip {...restProperties} elementType="div">
-      {children}
-    </ElementWithTooltip>
-  );
-};
+const BlockWithTooltip: FC<Properties> = ({ children, ...restProperties }) => (
+  <ElementWithTooltip {...restProperties} elementType="div">
+    {children}
+  </ElementWithTooltip>
+);
 
 export { BlockWithTooltip };

@@ -10,13 +10,11 @@ type Properties = {
 const AchievementTooltipContent: FC<Properties> = ({
   description,
   progress = PROGRESS_MIN,
-}) => {
-  return (
-    <>
-      <p>{description}</p>
-      <p>Progress: {progress}%</p>
-    </>
-  );
-};
+}) => (
+  <>
+    <p>{description}</p>
+    <p>Progress: {progress}%</p>
+  </>
+);
 
 export { AchievementTooltipContent };

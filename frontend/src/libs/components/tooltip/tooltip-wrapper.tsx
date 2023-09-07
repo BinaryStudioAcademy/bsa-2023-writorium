@@ -15,14 +15,12 @@ type Properties = {
   className?: string;
 };
 
-const TooltipWrapper: FC<Properties> = ({ id, shouldHideArrow, className }) => {
-  return (
-    <ReactTooltip
-      id={id}
-      noArrow={shouldHideArrow}
-      className={getValidClassNames(className, styles.tooltip)}
-    />
-  );
-};
+const TooltipWrapper: FC<Properties> = ({ id, shouldHideArrow, className }) => (
+  <ReactTooltip
+    id={id}
+    noArrow={shouldHideArrow}
+    className={getValidClassNames(className, styles.tooltip)}
+  />
+);
 
 export { TooltipWrapper };
