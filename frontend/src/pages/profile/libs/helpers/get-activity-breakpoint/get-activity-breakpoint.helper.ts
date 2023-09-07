@@ -1,30 +1,31 @@
-import { ACTIVITY_BREAKPOINTS } from '../../constants/constants.js';
+import {
+  ACTIVITY_BREAKPOINTS,
+  ACTIVITY_THRESHOLDS,
+} from '../../constants/constants.js';
 
 const getActivityBreakpoint = (activityCount: number): string => {
-  let activityBreakpoint = '';
   const { breakpoint1, breakpoint2, breakpoint3, breakpoint4 } =
     ACTIVITY_BREAKPOINTS;
+  const { threshold1, threshold2, threshold3 } = ACTIVITY_THRESHOLDS;
+  const DEFAULT_RESULT = '';
 
   switch (true) {
-    case activityCount === 0: {
-      activityBreakpoint = breakpoint1;
-      break;
+    case activityCount === threshold1: {
+      return breakpoint1;
     }
-    case activityCount === 1: {
-      activityBreakpoint = breakpoint2;
-      break;
+    case activityCount === threshold2: {
+      return breakpoint2;
     }
-    case activityCount > 1 && activityCount < 5: {
-      activityBreakpoint = breakpoint3;
-      break;
+    case activityCount > threshold2 && activityCount < threshold3: {
+      return breakpoint3;
     }
-    case activityCount >= 5: {
-      activityBreakpoint = breakpoint4;
-      break;
+    case activityCount >= threshold3: {
+      return breakpoint4;
+    }
+    default: {
+      return DEFAULT_RESULT;
     }
   }
-
-  return activityBreakpoint;
 };
 
 export { getActivityBreakpoint };
