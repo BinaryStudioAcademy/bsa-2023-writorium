@@ -7,4 +7,5 @@ export {
   configureString,
   constructUrl,
   getFormattedDate,
+  getShuffledArray,
 } from 'shared/build/index.js';

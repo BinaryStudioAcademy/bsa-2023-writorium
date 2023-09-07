@@ -16,6 +16,7 @@ export {
   configureString,
   constructUrl,
   getFormattedDate,
+  getShuffledArray,
   safeJSONParse,
 } from './libs/helpers/helpers.js';
 export { type IConfig } from './libs/packages/config/config.js';
