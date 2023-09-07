@@ -9,11 +9,13 @@ import { AppEnvironment } from '~/libs/enums/enums.js';
 import { type IConfig } from '~/libs/packages/config/config.js';
 import { fileApi } from '~/libs/packages/file/file-api.js';
 import { storage } from '~/libs/packages/storage/storage.js';
+import { achievementsApi } from '~/packages/achievements/achievements.js';
 import { articleApi } from '~/packages/articles/articles.js';
 import { authApi } from '~/packages/auth/auth.js';
 import { notification } from '~/packages/notification/notification.js';
 import { promptApi } from '~/packages/prompts/prompts.js';
 import { userApi } from '~/packages/users/users.js';
+import { reducer as achievementsReducer } from '~/slices/achievements/achievements.js';
 import { reducer as articlesReducer } from '~/slices/articles/articles.js';
 import { reducer as authReducer } from '~/slices/auth/auth.js';
 import { reducer as promptsReducer } from '~/slices/prompts/prompts.js';
@@ -26,6 +28,7 @@ type RootReducer = {
   users: ReturnType<typeof usersReducer>;
   articles: ReturnType<typeof articlesReducer>;
   prompts: ReturnType<typeof promptsReducer>;
+  achievements: ReturnType<typeof achievementsReducer>;
 };
 
 type ExtraArguments = {
@@ -36,6 +39,7 @@ type ExtraArguments = {
   notification: typeof notification;
   storage: typeof storage;
   fileApi: typeof fileApi;
+  achievementsApi: typeof achievementsApi;
 };
 
 class Store {
@@ -60,6 +64,7 @@ class Store {
         users: usersReducer,
         articles: articlesReducer,
         prompts: promptsReducer,
+        achievements: achievementsReducer,
       },
       middleware: (getDefaultMiddleware) => {
         return getDefaultMiddleware({
@@ -80,6 +85,7 @@ class Store {
       notification,
       storage,
       fileApi,
+      achievementsApi,
     };
   }
 }
