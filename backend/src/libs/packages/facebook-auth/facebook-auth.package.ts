@@ -12,18 +12,20 @@ type FacebookTokenValidationResponse = {
 class FacebookAuth implements IFacebookAuth {
   private appSecret: string;
   private appId: string;
+  private baseUrl: string;
 
   public constructor(config: IConfig) {
     this.appSecret = config.ENV.FACEBOOK_AUTH.APP_SECRET;
     this.appId = config.ENV.FACEBOOK_AUTH.APP_ID;
+    this.baseUrl = 'https://graph.facebook.com';
   }
 
   public async verifyFacebookAccessToken(
     accessToken: string,
   ): Promise<boolean> {
     try {
-      const validationUrl = `https://graph.facebook.com/debug_token?input_token=${accessToken}&access_token=${this.appId}|${this.appSecret}`;
-
+      const url = `/debug_token?input_token=${accessToken}&access_token=${this.appId}|${this.appSecret}`;
+      const validationUrl = new URL(url, this.baseUrl);
       const response = await fetch(validationUrl);
       const responseData =
         (await response.json()) as FacebookTokenValidationResponse;
