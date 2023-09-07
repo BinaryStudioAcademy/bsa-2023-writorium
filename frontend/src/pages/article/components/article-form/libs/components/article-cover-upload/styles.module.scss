@@ -24,7 +24,6 @@
 .chooseImageButton {
   margin-left: 5px;
   color: var(--light-green);
-  cursor: pointer;
 }
 
 .imageIcon {
@@ -37,6 +36,8 @@
   left: 0;
   width: 100%;
   height: 100%;
+  cursor: pointer;
+  opacity: 0;
 }
 
 .header {
@@ -46,7 +47,10 @@
 }
 
 .removeButton {
-  color: var(--light-green);
+  color: var(--red);
+  font-weight: 600;
+  font-size: 14px;
+  background-color: transparent;
   cursor: pointer;
 }
 

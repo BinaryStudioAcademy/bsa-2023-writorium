@@ -73,7 +73,7 @@ const ArticleForm: React.FC = () => {
         onReset={handleCancel}
         className={styles.formContainer}
       >
-        <ArticleCoverUpload />
+        <ArticleCoverUpload name="coverId" control={control} errors={errors} />
         <Input
           type="text"
           placeholder="Enter the title of the article"
