@@ -1,4 +1,4 @@
-import { Avatar, Link, Popover } from '~/libs/components/components.js';
+import { Avatar, Icon, Link, Popover } from '~/libs/components/components.js';
 import { AppRoute } from '~/libs/enums/enums.js';
 import { getFullName, getValidClassNames } from '~/libs/helpers/helpers.js';
 import { useCallback, useModal } from '~/libs/hooks/hooks.js';
@@ -25,8 +25,8 @@ const Header: React.FC<Properties> = ({ user }) => {
       {user && (
         <div>
           <header className={styles.header}>
-            <Link to={AppRoute.ARTICLES} className={styles.logo}>
-              WRITORIUM
+            <Link to={AppRoute.ARTICLES}>
+              <Icon iconName="writoriumLogo" className={styles.logo} />
             </Link>
 
             <div className={styles.rightSide}>

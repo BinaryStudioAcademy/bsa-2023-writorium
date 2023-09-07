@@ -4,14 +4,16 @@ import { DataStatus } from '~/libs/enums/enums.js';
 import { type ValueOf } from '~/libs/types/types.js';
 import { type ArticleWithAuthorType } from '~/packages/articles/articles.js';
 
-import { createArticle, fetchAll, fetchOwn } from './actions.js';
+import { createArticle, fetchAll, fetchOwn, getArticle } from './actions.js';
 
 type State = {
+  article: ArticleWithAuthorType | null;
   articles: ArticleWithAuthorType[];
   dataStatus: ValueOf<typeof DataStatus>;
 };
 
 const initialState: State = {
+  article: null,
   articles: [],
   dataStatus: DataStatus.IDLE,
 };
@@ -30,6 +32,10 @@ const { reducer, actions, name } = createSlice({
       state.articles = [...state.articles, action.payload];
       state.dataStatus = DataStatus.FULFILLED;
     });
+    builder.addCase(getArticle.fulfilled, (state, action) => {
+      state.dataStatus = DataStatus.FULFILLED;
+      state.article = action.payload;
+    });
     builder.addMatcher(
       isAnyOf(fetchAll.fulfilled, fetchOwn.fulfilled),
       (state, action) => {
@@ -38,13 +44,23 @@ const { reducer, actions, name } = createSlice({
       },
     );
     builder.addMatcher(
-      isAnyOf(fetchAll.pending, fetchOwn.pending, createArticle.pending),
+      isAnyOf(
+        fetchAll.pending,
+        fetchOwn.pending,
+        createArticle.pending,
+        getArticle.pending,
+      ),
       (state) => {
         state.dataStatus = DataStatus.PENDING;
       },
     );
     builder.addMatcher(
-      isAnyOf(fetchAll.rejected, fetchOwn.rejected, createArticle.rejected),
+      isAnyOf(
+        fetchAll.rejected,
+        fetchOwn.rejected,
+        createArticle.rejected,
+        getArticle.rejected,
+      ),
       (state) => {
         state.dataStatus = DataStatus.REJECTED;
       },

@@ -57,4 +57,14 @@ const createArticle = createAsyncThunk<
   },
 );
 
-export { createArticle, fetchAll, fetchOwn };
+const getArticle = createAsyncThunk<
+  ArticleBaseResponseDto,
+  number,
+  AsyncThunkConfig
+>(`${sliceName}/getArticle`, (id, { extra }) => {
+  const { articleApi } = extra;
+
+  return articleApi.getArticle(id);
+});
+
+export { createArticle, fetchAll, fetchOwn, getArticle };
