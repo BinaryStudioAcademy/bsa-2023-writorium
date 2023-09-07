@@ -2,9 +2,10 @@ import { default as aws, SESClient } from '@aws-sdk/client-ses';
 import nodemailer from 'nodemailer';
 import { type default as Mail } from 'nodemailer/lib/mailer/index.js';
 
+import { ExceptionMessage } from '~/libs/enums/enums.js';
 import { type IConfig } from '~/libs/packages/config/config.js';
 
-import { EmailFailedToSendError } from '../exceptions/exceptions.js';
+import { InternalServerError } from '../exceptions/exceptions.js';
 import { getResetPasswordEmailTemplate } from './libs/templates/templates.js';
 import { type SendEmailResponse } from './libs/types/types.js';
 
@@ -48,7 +49,7 @@ class Mailer {
       return (await this.transporter.sendMail(mail)) as SendEmailResponse;
     } catch {
       //ATTENTION:AWS SES may still return errors in response that will not be caught by this try/catch block
-      throw new EmailFailedToSendError();
+      throw new InternalServerError(ExceptionMessage.FAILED_TO_SEND_EMAIL);
     }
   }
 }
