@@ -105,7 +105,10 @@ class HttpApi implements IHttpApi {
       }),
     )) as ServerErrorResponse;
 
-    if (response.status === HttpCode.UNAUTHORIZED) {
+    if (
+      response.status === HttpCode.UNAUTHORIZED &&
+      parsedException.message === 'Invalid token'
+    ) {
       await this.storage.drop(StorageKey.TOKEN);
       window.location.assign(AppRoute.SIGN_IN);
     }

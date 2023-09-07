@@ -37,7 +37,7 @@ class Token implements IToken {
 
       return payload as JWTPayload & T;
     } catch {
-      throw new UnauthorizedError(ExceptionMessage.TOKEN_EXPIRED);
+      throw new UnauthorizedError(ExceptionMessage.INVALID_TOKEN);
     }
   }
 }

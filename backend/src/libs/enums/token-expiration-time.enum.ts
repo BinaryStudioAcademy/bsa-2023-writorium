@@ -1,5 +1,5 @@
 const TokenExpirationTime = {
-  ONE_DAY: '24h',
+  ONE_DAY: '5s',
   ONE_HOUR: '1h',
 } as const;
 
