@@ -1,0 +1,51 @@
+.container {
+  display: flex;
+  justify-content: center;
+  padding-top: 10px;
+}
+
+.dotFlashing {
+  position: relative;
+  animation: dot-flashing 1s infinite linear alternate;
+  animation-delay: 0.5s;
+}
+
+.dotFlashing,
+.dotFlashing::before,
+.dotFlashing::after {
+  width: 10px;
+  height: 10px;
+  color: var(--light-green);
+  background-color: var(--light-green);
+  border-radius: 5px;
+}
+
+.dotFlashing::before,
+.dotFlashing::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  display: inline-block;
+  animation: dot-flashing 1s infinite alternate;
+}
+
+.dotFlashing::before {
+  left: -15px;
+  animation-delay: 0s;
+}
+
+.dotFlashing::after {
+  left: 15px;
+  animation-delay: 1s;
+}
+
+@keyframes dot-flashing {
+  0% {
+    background-color: var(--light-green);
+  }
+
+  50%,
+  100% {
+    background-color: var(--light-gray-40);
+  }
+}
