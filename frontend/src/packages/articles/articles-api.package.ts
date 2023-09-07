@@ -73,6 +73,19 @@ class ArticleApi extends HttpApi {
 
     return await response.json<ArticleBaseResponseDto>();
   }
+
+  public async getArticle(id: number): Promise<ArticleWithAuthorType> {
+    const response = await this.load(
+      this.getFullEndpoint(ArticlesApiPath.$ID, { id: String(id) }),
+      {
+        method: 'GET',
+        contentType: ContentType.JSON,
+        hasAuth: true,
+      },
+    );
+
+    return await response.json<ArticleWithAuthorType>();
+  }
 }
 
 export { ArticleApi };

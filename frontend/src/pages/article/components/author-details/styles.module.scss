@@ -32,6 +32,7 @@
   display: flex;
   align-items: center;
   padding: 0;
+  list-style: none;
 }
 
 .authorInfo {
@@ -69,6 +70,7 @@
   color: var(--dark-gray-40);
   line-height: normal;
   column-gap: 16px;
+  list-style: none;
 }
 
 .articleTimeValue {

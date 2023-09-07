@@ -131,6 +131,18 @@ class ArticleController extends Controller {
           }>,
         ),
     });
+
+    this.addRoute({
+      path: ArticlesApiPath.$ID,
+      method: 'GET',
+      handler: (options) => {
+        return this.find(
+          options as ApiHandlerOptions<{
+            params: { id: number };
+          }>,
+        );
+      },
+    });
   }
 
   /**
@@ -257,6 +269,32 @@ class ArticleController extends Controller {
         payload: options.body,
         user: options.user,
       }),
+    };
+  }
+
+  /**
+   * @swagger
+   * /articles/:id:
+   *    get:
+   *      description: Get an existing article by id
+   *      security:
+   *        - bearerAuth: []
+   *      responses:
+   *        200:
+   *          description: Successful operation
+   *          content:
+   *            application/json:
+   *              schema:
+   *                $ref: '#/components/schemas/Article'
+   */
+  private async find(
+    options: ApiHandlerOptions<{
+      params: { id: number };
+    }>,
+  ): Promise<ApiHandlerResponse> {
+    return {
+      status: HttpCode.OK,
+      payload: await this.articleService.find(options.params.id),
     };
   }
 }

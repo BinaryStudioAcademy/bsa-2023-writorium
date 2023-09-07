@@ -1,9 +1,14 @@
-import { Link, matchPath } from 'react-router-dom';
+import { Link as RouterLink, matchPath } from 'react-router-dom';
 
 import ArticlePreview from '~/assets/img/article-preview.png';
-import { Avatar, Icon } from '~/libs/components/components.js';
+import { Avatar, Icon, Link } from '~/libs/components/components.js';
 import { AppRoute, ArticleSubRoute, DateFormat } from '~/libs/enums/enums.js';
-import { getFormattedDate, getFullName } from '~/libs/helpers/helpers.js';
+import {
+  getFormattedDate,
+  getFullName,
+  getValidClassNames,
+  sanitizeHtml,
+} from '~/libs/helpers/helpers.js';
 import { useLocation } from '~/libs/hooks/hooks.js';
 import { type ArticleWithAuthorType } from '~/packages/articles/articles.js';
 import { type UserDetailsResponseDto } from '~/packages/users/users.js';
@@ -34,6 +39,8 @@ const ArticleCard: React.FC<Properties> = ({
   const { publishedAt, title, text, id } = article;
   const { comments, views, likes, dislikes } = reactions;
 
+  const articleRouteById = AppRoute.ARTICLE.replace(':id', String(id));
+
   const MOCKED_READ_TIME = '7 min read';
 
   return (
@@ -56,9 +63,12 @@ const ArticleCard: React.FC<Properties> = ({
         </div>
         <div className={styles.iconWrapper}>
           {isMyArticles && (
-            <Link to={`${AppRoute.EDIT_ARTICLE_BASE}${id}`} state={article}>
+            <RouterLink
+              to={`${AppRoute.EDIT_ARTICLE_BASE}${id}`}
+              state={article}
+            >
               <Icon iconName="edit" className={styles.editIcon} />
-            </Link>
+            </RouterLink>
           )}
           <Icon iconName="favorite" className={styles.icon} />
         </div>
@@ -66,7 +76,10 @@ const ArticleCard: React.FC<Properties> = ({
       <div className={styles.body}>
         <div className={styles.articleInfo}>
           <h4 className={styles.title}>{title}</h4>
-          <p className={styles.text}>{text}</p>
+          <article
+            className={getValidClassNames(styles.text, 'text-overflow')}
+            dangerouslySetInnerHTML={{ __html: sanitizeHtml(text) }}
+          ></article>
           <Tags tags={tags} />
         </div>
         <img
@@ -95,7 +108,10 @@ const ArticleCard: React.FC<Properties> = ({
           </li>
         </ul>
         <Icon iconName="share" className={styles.icon} />
-        <Link to={AppRoute.ROOT} className={styles.readMore}>
+        <Link
+          to={articleRouteById as typeof AppRoute.ARTICLE}
+          className={styles.readMore}
+        >
           Read more
         </Link>
       </div>
