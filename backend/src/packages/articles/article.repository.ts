@@ -32,13 +32,16 @@ class ArticleRepository implements IRepository {
   }
 
   public async find(id: number): Promise<ArticleEntity | null> {
-    const article = await this.articleModel.query().findById(id).execute();
+    const article = await this.articleModel
+      .query()
+      .findById(id)
+      .withGraphJoined(this.defaultRelationExpression);
 
     if (!article) {
       return null;
     }
 
-    return ArticleEntity.initialize(article);
+    return ArticleEntity.initializeWithAuthor(article);
   }
 
   public async create(entity: ArticleEntity): Promise<ArticleEntity> {
