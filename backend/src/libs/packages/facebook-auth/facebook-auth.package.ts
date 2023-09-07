@@ -28,7 +28,7 @@ class FacebookAuth implements IFacebookAuth {
       const responseData =
         (await response.json()) as FacebookTokenValidationResponse;
 
-      return responseData.data.is_valid ? true : false;
+      return responseData.data.is_valid;
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : 'Unknown error';
