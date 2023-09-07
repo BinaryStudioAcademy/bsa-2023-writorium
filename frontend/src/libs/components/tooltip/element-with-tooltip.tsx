@@ -7,13 +7,13 @@ import {
 } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 
-import { DataTooltipId } from '~/libs/enums/enums.js';
+import { DataTooltipId, TooltipPosition } from '~/libs/enums/enums.js';
 import { type ValueOf } from '~/libs/types/types.js';
 
 type ElementWithTooltipProperties = {
   className?: string;
   elementType: keyof ReactHTML;
-  placement?: 'bottom' | 'top' | 'left' | 'right';
+  placement?: ValueOf<typeof TooltipPosition>;
   tooltipId?: ValueOf<typeof DataTooltipId>;
   tooltipContent: string | ReactElement;
   children?: ReactNode;
@@ -23,7 +23,7 @@ const ElementWithTooltip: FC<ElementWithTooltipProperties> = ({
   children,
   className,
   elementType,
-  placement = 'top',
+  placement = TooltipPosition.TOP,
   tooltipId = DataTooltipId.MAIN_TOOLTIP,
   tooltipContent,
 }) => {
