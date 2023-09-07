@@ -8,7 +8,7 @@ import { type ArticlesFilters } from './libs/types/types.js';
 class ArticleRepository implements IArticleRepository {
   private articleModel: typeof ArticleModel;
 
-  private defaultRelationExpression = 'author';
+  private defaultRelationExpression = '[author,prompt,genre]';
 
   public constructor(articleModel: typeof ArticleModel) {
     this.articleModel = articleModel;
@@ -31,7 +31,16 @@ class ArticleRepository implements IArticleRepository {
     return {
       total: articles.total,
       items: articles.results.map((article) =>
-        ArticleEntity.initializeWithAuthor(article),
+        ArticleEntity.initializeWithAuthor({
+          ...article,
+          genre: article.genre.name,
+          prompt: {
+            character: article.prompt.character,
+            setting: article.prompt.setting,
+            situation: article.prompt.situation,
+            prop: article.prompt.prop,
+          },
+        }),
       ),
     };
   }
@@ -46,7 +55,16 @@ class ArticleRepository implements IArticleRepository {
       return null;
     }
 
-    return ArticleEntity.initializeWithAuthor(article);
+    return ArticleEntity.initializeWithAuthor({
+      ...article,
+      genre: article.genre.name,
+      prompt: {
+        character: article.prompt.character,
+        setting: article.prompt.setting,
+        situation: article.prompt.situation,
+        prop: article.prompt.prop,
+      },
+    });
   }
 
   public async create(entity: ArticleEntity): Promise<ArticleEntity> {

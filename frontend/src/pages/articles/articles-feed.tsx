@@ -9,7 +9,8 @@ import {
 import { actions as articlesActions } from '~/slices/articles/articles.js';
 
 import { ArticleCard } from './components/components.js';
-import { MOCKED_REACTIONS, MOCKED_TAGS } from './libs/constants.js';
+import { MOCKED_REACTIONS } from './libs/constants.js';
+import { getArticleTags } from './libs/helpers/helpers.js';
 
 const ArticlesFeed: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -49,7 +50,7 @@ const ArticlesFeed: React.FC = () => {
             key={article.id}
             article={article}
             author={article.author!}
-            tags={MOCKED_TAGS}
+            tags={getArticleTags(article)}
             reactions={MOCKED_REACTIONS}
           />
         ))}
