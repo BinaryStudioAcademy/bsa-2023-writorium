@@ -143,3 +143,15 @@
 .icon {
   cursor: pointer;
 }
+
+.iconWrapper {
+  display: flex;
+  gap: 10px;
+}
+
+.editIcon {
+  width: 20px;
+  height: 20px;
+  color: var(--light-green);
+  cursor: pointer;
+}

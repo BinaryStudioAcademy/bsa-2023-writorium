@@ -1,7 +1,10 @@
+import { Link, matchPath } from 'react-router-dom';
+
 import ArticlePreview from '~/assets/img/article-preview.png';
-import { Avatar, Icon, Link } from '~/libs/components/components.js';
-import { AppRoute, DateFormat } from '~/libs/enums/enums.js';
+import { Avatar, Icon } from '~/libs/components/components.js';
+import { AppRoute, ArticleSubRoute, DateFormat } from '~/libs/enums/enums.js';
 import { getFormattedDate, getFullName } from '~/libs/helpers/helpers.js';
+import { useLocation } from '~/libs/hooks/hooks.js';
 import { type ArticleWithAuthorType } from '~/packages/articles/articles.js';
 import { type UserDetailsResponseDto } from '~/packages/users/users.js';
 
@@ -22,7 +25,13 @@ const ArticleCard: React.FC<Properties> = ({
   tags,
   reactions,
 }) => {
-  const { publishedAt, title, text } = article;
+  const { pathname } = useLocation();
+
+  const isMyArticles = matchPath(
+    { path: `${AppRoute.ARTICLES}/${ArticleSubRoute.MY_ARTICLES}` },
+    pathname,
+  );
+  const { publishedAt, title, text, id } = article;
   const { comments, views, likes, dislikes } = reactions;
 
   const MOCKED_READ_TIME = '7 min read';
@@ -45,7 +54,14 @@ const ArticleCard: React.FC<Properties> = ({
           )}
           <span className={styles.publicationTime}>{MOCKED_READ_TIME}</span>
         </div>
-        <Icon iconName="favorite" className={styles.icon} />
+        <div className={styles.iconWrapper}>
+          {isMyArticles && (
+            <Link to={`${AppRoute.EDIT_ARTICLE_BASE}${id}`} state={article}>
+              <Icon iconName="edit" className={styles.editIcon} />
+            </Link>
+          )}
+          <Icon iconName="favorite" className={styles.icon} />
+        </div>
       </div>
       <div className={styles.body}>
         <div className={styles.articleInfo}>
