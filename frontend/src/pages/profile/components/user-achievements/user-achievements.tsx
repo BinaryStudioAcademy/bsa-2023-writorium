@@ -14,6 +14,7 @@ import {
   useModal,
 } from '~/libs/hooks/hooks.js';
 import {
+  NUMBER_OF_ACHIEVEMENTS_TO_DISPLAY,
   PROGRESS_MAX,
   PROGRESS_MIN,
 } from '~/pages/profile/libs/constants/constants.js';
@@ -35,7 +36,7 @@ const UserAchievements: FC<Properties> = ({ className }) => {
 
   const mockUserAchievements: UserAchievement[] = useMemo(() => {
     return getShuffledArray(achievements)
-      .slice(-3)
+      .slice(-NUMBER_OF_ACHIEVEMENTS_TO_DISPLAY)
       .map((achievement) => ({
         ...achievement,
         progress: getRandomNumber({ min: PROGRESS_MIN, max: PROGRESS_MAX }),
