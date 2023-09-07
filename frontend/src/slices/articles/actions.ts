@@ -58,7 +58,7 @@ const createArticle = createAsyncThunk<
 );
 
 const shareArticle = createAsyncThunk<
-  { token: string },
+  { link: string },
   { id: string },
   AsyncThunkConfig
 >(`${sliceName}/share`, (articlePayload, { extra }) => {

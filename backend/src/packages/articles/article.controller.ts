@@ -119,11 +119,11 @@ class ArticleController extends Controller {
 
     this.addRoute({
       path: ArticlesApiPath.SHARE,
-      method: 'GET',
+      method: 'POST',
       handler: (options) =>
         this.share(
           options as ApiHandlerOptions<{
-            params: { id: number };
+            body: { id: number };
           }>,
         ),
     });
@@ -286,16 +286,22 @@ class ArticleController extends Controller {
    */
   private async share(
     options: ApiHandlerOptions<{
-      params: { id: number };
+      body: { id: number };
     }>,
   ): Promise<ApiHandlerResponse> {
+    const { origin, body } = options;
+
+    const url = origin as string;
+
     const token = await articleToken.create({
-      articleId: options.params.id,
+      articleId: body.id,
     });
+
+    const link = `${url}${ApiPath.ARTICLES}${ArticlesApiPath.TOKEN}/${token}`;
 
     return {
       status: HttpCode.OK,
-      payload: { token: token },
+      payload: { link: link },
     };
   }
 
