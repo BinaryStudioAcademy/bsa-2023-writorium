@@ -30,6 +30,9 @@
 
   /* z-index */
   --z-index-level-one: 100;
+
+  /* header height */
+  --header-height: 105px;
 }
 
 input {
@@ -38,3 +41,4 @@ input {
   --input-text: rgb(40 40 40 / 50%);
   --input-placeholder-color: rgb(157 164 174 / 40%);
 }
+
