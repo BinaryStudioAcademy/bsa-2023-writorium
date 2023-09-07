@@ -1,13 +1,14 @@
 import { RESET_PASSWORD_ROUTE } from '~/libs/constants/constants.js';
-import { TokenExpirationTime } from '~/libs/enums/enums.js';
+import { ExceptionMessage, TokenExpirationTime } from '~/libs/enums/enums.js';
 import { type IEncrypt } from '~/libs/packages/encrypt/encrypt.js';
 import {
-  InvalidCredentialsError,
-  UserNotFoundError,
+  BadRequestError,
+  ForbiddenError,
+  NotFoundError,
+  UnauthorizedError,
 } from '~/libs/packages/exceptions/exceptions.js';
 import { facebookAuth } from '~/libs/packages/facebook-auth/facebook-auth.js';
 import { googleAuthClient } from '~/libs/packages/google-auth-client/google-auth-client.js';
-import { HttpCode, HttpError } from '~/libs/packages/http/http.js';
 import {
   type Mailer,
   type SendEmailResponse,
@@ -53,7 +54,7 @@ class AuthService {
     const user = await this.userService.findByEmail(email);
 
     if (!user) {
-      throw new UserNotFoundError();
+      throw new NotFoundError(ExceptionMessage.USER_NOT_FOUND);
     }
 
     const userPrivateData = (await this.userService.findPrivateData(
@@ -67,7 +68,7 @@ class AuthService {
     });
 
     if (!hasSamePassword) {
-      throw new InvalidCredentialsError();
+      throw new BadRequestError(ExceptionMessage.INVALID_CREDENTIALS);
     }
 
     const token = await accessToken.create<{ userId: number }>({
@@ -111,6 +112,14 @@ class AuthService {
   public async signUp(
     userRequestDto: UserSignUpRequestDto,
   ): Promise<UserSignUpResponseDto> {
+    const userAlreadyExists = await this.userService.findByEmail(
+      userRequestDto.email,
+    );
+
+    if (userAlreadyExists) {
+      throw new ForbiddenError(ExceptionMessage.EMAIL_IS_ALREADY_USED);
+    }
+
     const user = await this.userService.create(userRequestDto);
 
     const token = await accessToken.create<{ userId: number }>({
@@ -127,7 +136,7 @@ class AuthService {
     const { email } = authRequestPasswordDto;
     const user = await this.userService.findByEmail(email);
     if (!user) {
-      throw new UserNotFoundError();
+      throw new NotFoundError(ExceptionMessage.USER_NOT_FOUND);
     }
     const token = await accessToken.create<{ userId: number }>(
       {
@@ -150,10 +159,7 @@ class AuthService {
     );
 
     if (!userId) {
-      throw new HttpError({
-        message: 'Invalid token',
-        status: HttpCode.UNAUTHORIZED,
-      });
+      throw new UnauthorizedError(ExceptionMessage.INVALID_TOKEN);
     }
 
     const user = await this.userService.updatePassword(
@@ -174,21 +180,15 @@ class AuthService {
     );
 
     if (!userInfo) {
-      throw new HttpError({
-        message: 'Invalid code',
-        status: HttpCode.BAD_REQUEST,
-      });
+      throw new BadRequestError(ExceptionMessage.INVALID_CODE);
     }
     if (!userInfo.email) {
-      throw new HttpError({
-        message: 'Invalid user info format: no email',
-        status: HttpCode.BAD_REQUEST,
-      });
+      throw new BadRequestError(ExceptionMessage.INVALID_USER_INFO_NO_EMAIL);
     }
 
     const user = await this.userService.findByEmail(userInfo.email);
     if (!user) {
-      throw new UserNotFoundError();
+      throw new NotFoundError(ExceptionMessage.USER_NOT_FOUND);
     }
     const token = await accessToken.create<{ userId: number }>({
       userId: user.id,
