@@ -122,7 +122,6 @@ class AuthService {
     }
 
     const user = await this.userService.create(userRequestDto);
-
     const token = await accessToken.create<{ userId: number }>({
       userId: user.id,
     });
