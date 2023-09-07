@@ -40,7 +40,7 @@ const Header: React.FC<Properties> = ({ user }) => {
               >
                 <Avatar
                   username={getFullName(user.firstName, user.lastName)}
-                  avatarUrl={null}
+                  avatarUrl={user.avatarUrl}
                 />
               </button>
             </div>

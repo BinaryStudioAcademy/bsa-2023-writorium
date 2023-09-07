@@ -40,7 +40,7 @@ const ArticleCard: React.FC<Properties> = ({
         <div className={styles.info}>
           <Avatar
             username={getFullName(author.firstName, author.lastName)}
-            avatarUrl={null}
+            avatarUrl={author.avatarUrl}
           />
           <span className={styles.publisherName}>
             {getFullName(author.firstName, author.lastName)}

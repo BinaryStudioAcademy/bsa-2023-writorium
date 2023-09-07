@@ -78,6 +78,7 @@ class ArticleEntity implements IEntity {
       author: {
         firstName: author?.firstName as string,
         lastName: author?.lastName as string,
+        avatarUrl: author?.avatarUrl ?? null,
       },
     });
   }
