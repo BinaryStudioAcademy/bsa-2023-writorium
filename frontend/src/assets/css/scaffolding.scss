@@ -35,6 +35,11 @@ body {
   clip-path: inset(100%);
 }
 
+.text-overflow {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 a {
   text-decoration: none;
 }
