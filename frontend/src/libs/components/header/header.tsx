@@ -23,7 +23,7 @@ const Header: React.FC<Properties> = ({ user }) => {
   return (
     <>
       {user && (
-        <div>
+        <div className={styles.container}>
           <header className={styles.header}>
             <Link to={AppRoute.ARTICLES}>
               <Icon iconName="writoriumLogo" className={styles.logo} />
