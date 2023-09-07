@@ -14,9 +14,9 @@ import {
 import { getGeneratedPromptPayload } from '~/packages/prompts/prompts.js';
 import { actions as articlesActions } from '~/slices/articles/articles.js';
 
+import { ArticleCoverUpload } from './libs/components/components.js';
 import { DEFAULT_ARTICLE_FORM_PAYLOAD } from './libs/constants/constants.js';
 import { ArticleSubmitType } from './libs/enums/enums.js';
-import { ArticleCoverUpload } from './libs/libs/components/components.js';
 import styles from './styles.module.scss';
 
 const ArticleForm: React.FC = () => {
