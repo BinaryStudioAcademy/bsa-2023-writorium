@@ -18,7 +18,7 @@ const PromptGeneration: React.FC = () => {
     dataStatus: prompts.dataStatus,
   }));
 
-  const isSpinning = dataStatus === DataStatus.PENDING;
+  const isGenerating = dataStatus === DataStatus.PENDING;
 
   const dispatch = useAppDispatch();
 
@@ -35,6 +35,7 @@ const PromptGeneration: React.FC = () => {
             key={category}
             category={category}
             text={generatedPrompt?.[category] ?? ''}
+            isGenerating={isGenerating}
           />
         ))}
         <Button
@@ -42,7 +43,7 @@ const PromptGeneration: React.FC = () => {
           label={
             <Icon
               iconName="refresh"
-              className={getValidClassNames(isSpinning && styles.spin)}
+              className={getValidClassNames(isGenerating && styles.spin)}
             />
           }
           onClick={handlePromptGenerate}
