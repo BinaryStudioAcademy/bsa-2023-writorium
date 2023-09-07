@@ -8,4 +8,5 @@ export {
   configureString,
   getDateDifferenceWithUnit,
   getFormattedDate,
+  getShuffledArray,
 } from 'shared/build/index.js';
