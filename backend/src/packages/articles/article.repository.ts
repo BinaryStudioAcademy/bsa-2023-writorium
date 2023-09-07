@@ -1,7 +1,10 @@
 import { ArticleEntity } from './article.entity.js';
 import { type ArticleModel } from './article.model.js';
 import { SortingOrder } from './libs/enums/enums.js';
-import { getWhereUserIdQuery } from './libs/helpers/helpers.js';
+import {
+  getWherePublishedOnlyQuery,
+  getWhereUserIdQuery,
+} from './libs/helpers/helpers.js';
 import { type IArticleRepository } from './libs/interfaces/interfaces.js';
 import { type ArticlesFilters } from './libs/types/types.js';
 
@@ -18,12 +21,15 @@ class ArticleRepository implements IArticleRepository {
     userId,
     take,
     skip,
+    hasPublishedOnly,
   }: {
     userId?: number;
+    hasPublishedOnly?: boolean;
   } & ArticlesFilters): Promise<{ items: ArticleEntity[]; total: number }> {
     const articles = await this.articleModel
       .query()
       .where(getWhereUserIdQuery(userId))
+      .where(getWherePublishedOnlyQuery(hasPublishedOnly))
       .orderBy('articles.publishedAt', SortingOrder.DESCENDING)
       .page(skip / take, take)
       .withGraphJoined(this.defaultRelationExpression);

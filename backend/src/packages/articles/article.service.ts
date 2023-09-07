@@ -88,7 +88,10 @@ class ArticleService implements IService {
   public async findAll(
     filters: ArticlesFilters,
   ): Promise<ArticleGetAllResponseDto> {
-    const { items, total } = await this.articleRepository.findAll(filters);
+    const { items, total } = await this.articleRepository.findAll({
+      ...filters,
+      hasPublishedOnly: true,
+    });
 
     return {
       total,
