@@ -1,10 +1,14 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
+import { AppRoute } from '~/libs/enums/app-route.enum.js';
+import { ArticleSubRoute } from '~/libs/enums/article-sub-route.enum.js';
 import { type AsyncThunkConfig } from '~/libs/types/types.js';
 import {
   type ArticleBaseResponseDto,
   type ArticleGetAllResponseDto,
   type ArticleRequestDto,
+  type ArticleUpdateRequestPayload,
+  type ArticleWithAuthorType,
 } from '~/packages/articles/articles.js';
 import { type PromptRequestDto } from '~/packages/prompts/prompts.js';
 
@@ -56,4 +60,19 @@ const createArticle = createAsyncThunk<
   },
 );
 
-export { createArticle, fetchAll, fetchOwn };
+const updateArticle = createAsyncThunk<
+  ArticleWithAuthorType,
+  ArticleUpdateRequestPayload,
+  AsyncThunkConfig
+>(`${sliceName}/update`, async (payload, { extra }) => {
+  const { articleApi } = extra;
+
+  const article = await articleApi.update(payload);
+  const { navigate } = payload;
+  if (navigate) {
+    navigate(`${AppRoute.ARTICLES}/${ArticleSubRoute.MY_ARTICLES}`);
+  }
+  return article;
+});
+
+export { createArticle, fetchAll, fetchOwn, updateArticle };
