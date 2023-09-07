@@ -13,9 +13,7 @@ type Properties = {
 };
 
 const UserActivity: React.FC<Properties> = ({ userActivity }) => {
-  const uniqueMonths: string[] = userActivity
-    ? getUniqueMonths(userActivity)
-    : [];
+  const uniqueMonths: string[] = getUniqueMonths(userActivity);
 
   const activityStatistic = userActivity.map((activity) => {
     const { count, date } = activity;
