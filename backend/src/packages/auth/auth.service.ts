@@ -9,6 +9,7 @@ import {
 } from '~/libs/packages/exceptions/exceptions.js';
 import { facebookAuth } from '~/libs/packages/facebook-auth/facebook-auth.js';
 import { googleAuthClient } from '~/libs/packages/google-auth-client/google-auth-client.js';
+import { HttpCode, HttpError } from '~/libs/packages/http/http.js';
 import {
   type Mailer,
   type SendEmailResponse,
@@ -93,13 +94,13 @@ class AuthService {
     const { email } = userSignInDto;
 
     if (!email) {
-      throw new InvalidCredentialsError();
+      throw new BadRequestError(ExceptionMessage.INVALID_USER_INFO_NO_EMAIL);
     }
 
     const user = await this.userService.findByEmail(email);
 
     if (!user) {
-      throw new UserNotFoundError();
+      throw new NotFoundError(ExceptionMessage.USER_NOT_FOUND);
     }
 
     const token = await accessToken.create<{ userId: number }>({
