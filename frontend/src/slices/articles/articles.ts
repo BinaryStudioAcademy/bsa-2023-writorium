@@ -1,4 +1,4 @@
-import { createArticle, fetchAll, fetchOwn } from './actions.js';
+import { createArticle, fetchAll, fetchOwn, getArticle } from './actions.js';
 import { actions } from './articles.slice.js';
 
 const allActions = {
@@ -6,6 +6,7 @@ const allActions = {
   fetchAll,
   fetchOwn,
   createArticle,
+  getArticle,
 };
 
 export { allActions as actions };
