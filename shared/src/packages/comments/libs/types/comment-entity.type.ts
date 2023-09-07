@@ -3,7 +3,7 @@ type CommentEntityType = {
   text: string;
   userId: number;
   articleId: number;
-  createdAt: string | undefined;
+  createdAt: string;
 };
 
 export { type CommentEntityType };
