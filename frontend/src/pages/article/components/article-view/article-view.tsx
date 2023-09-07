@@ -8,27 +8,27 @@ import styles from './styles.module.scss';
 
 type Properties = {
   article: ArticleType;
-  isShared: boolean;
+  isShared?: boolean;
 };
 
-const ArticleView: React.FC<Properties> = ({ article, isShared }) => {
+const onButtonClick = (): void => {
+  /**
+   * @todo implement handle logic for buttons clicked events(favorite, comment, share)
+   */
+};
+
+const ArticleView: React.FC<Properties> = ({ article, isShared = false }) => {
   const { title, text, tags } = article;
 
   const { id } = useParams();
 
   const dispatch = useAppDispatch();
 
-  const onButtonClick: React.MouseEventHandler<HTMLButtonElement> = useCallback(
-    (event): void => {
-      const button = event.currentTarget as HTMLButtonElement;
-      const iconName = button.getAttribute('name');
-
-      if (iconName === 'share' && id) {
-        void dispatch(articlesActions.shareArticle({ id }));
-      }
-    },
-    [dispatch, id],
-  );
+  const handleShareButtonClick = useCallback((): void => {
+    if (id) {
+      void dispatch(articlesActions.shareArticle({ id }));
+    }
+  }, [dispatch, id]);
 
   return (
     <div className={styles.body}>
@@ -56,7 +56,7 @@ const ArticleView: React.FC<Properties> = ({ article, isShared }) => {
               iconName="share"
               className={styles.iconButton}
               iconClassName={styles.icon}
-              onClick={onButtonClick}
+              onClick={handleShareButtonClick}
             />
           </div>
         )}

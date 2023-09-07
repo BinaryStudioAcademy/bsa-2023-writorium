@@ -7,7 +7,7 @@ import styles from './styles.module.scss';
 
 type Properties = {
   iconName: IconName;
-  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  onClick?: () => void;
   label?: string;
   className?: string;
   iconClassName?: string;

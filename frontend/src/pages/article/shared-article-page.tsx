@@ -1,12 +1,11 @@
 import { type FC } from 'react';
 
 import { Layout } from '~/libs/components/components.js';
-import { getUrlLastSegment } from '~/libs/helpers/helpers.js';
 import {
   useAppDispatch,
   useAppSelector,
   useEffect,
-  useLocation,
+  useParams,
 } from '~/libs/hooks/hooks.js';
 import { type TagType } from '~/libs/types/types.js';
 import { actions as articlesActions } from '~/slices/articles/articles.js';
@@ -14,9 +13,9 @@ import { actions as articlesActions } from '~/slices/articles/articles.js';
 import { ArticleView, Author } from './components/components.js';
 import styles from './styles.module.scss';
 
-const ArticlePageShared: FC = () => {
+const SharedArticlePage: FC = () => {
   const dispatch = useAppDispatch();
-  const location = useLocation();
+
   const article = useAppSelector(({ articles }) => {
     const dataFromStore = articles.sharedArticle;
     if (dataFromStore) {
@@ -24,10 +23,13 @@ const ArticlePageShared: FC = () => {
     }
   });
 
+  const { token } = useParams();
+
   useEffect(() => {
-    const token = getUrlLastSegment(location.pathname);
-    void dispatch(articlesActions.fetchSharedArticle({ token })).unwrap();
-  }, [dispatch, location.pathname]);
+    if (token) {
+      void dispatch(articlesActions.fetchSharedArticle({ token }));
+    }
+  }, [dispatch, token]);
 
   const MOCKED_TAGS: TagType[] = [
     { id: 1, name: 'IT' },
@@ -47,7 +49,7 @@ const ArticlePageShared: FC = () => {
               text: article?.text,
               tags: MOCKED_TAGS,
             }}
-            isShared={true}
+            isShared
           />
         )}
         {article?.author && <Author author={article.author} />}
@@ -56,4 +58,4 @@ const ArticlePageShared: FC = () => {
   );
 };
 
-export { ArticlePageShared };
+export { SharedArticlePage };
