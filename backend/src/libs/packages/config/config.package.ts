@@ -144,13 +144,13 @@ class Config implements IConfig {
         APP_ID: {
           doc: 'App id of Writorium facebook app',
           format: String,
-          env: 'APP_ID',
+          env: 'FACEBOOK_APP_ID',
           default: null,
         },
         APP_SECRET: {
           doc: 'Secret key of Writorium facebook app',
           format: String,
-          env: 'APP_SECRET',
+          env: 'FACEBOOK_APP_SECRET',
           default: null,
         },
       },

@@ -13,14 +13,14 @@ type Properties = {
 const ShareOnFacebookButton: React.FC<Properties> = ({
   title,
   size,
-  // articleUrl,
+  articleUrl,
   bgColor,
   iconColor,
 }) => {
   return (
     <FacebookShareButton
       quote={title}
-      url="https://www.youtube.com/watch?v=kiSJGGy29fY&ab_channel=CMPG323-ITDevelopments"
+      url={articleUrl}
       className={styles.button}
     >
       <FacebookIcon
