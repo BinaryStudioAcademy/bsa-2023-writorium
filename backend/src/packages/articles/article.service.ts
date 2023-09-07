@@ -115,11 +115,12 @@ class ArticleService implements IService {
   public async getUserActivity(
     userId: number,
   ): Promise<UserActivityResponseDto[]> {
+    const ZERO_ACTIVITY_COUNT = 0;
+    const MONTHS_TO_SUBTRACT_COUNT = 6;
     const currentDate = new Date();
-    const monthsToSubtractCount = 6;
     const sixMonthAgo = subtractMonthsFromDate(
       currentDate,
-      monthsToSubtractCount,
+      MONTHS_TO_SUBTRACT_COUNT,
     );
     const daysInHalfYear = getDifferenceBetweenDates(currentDate, sixMonthAgo);
     const halfYearActivity: UserActivityResponseDto[] = [];
@@ -145,7 +146,7 @@ class ArticleService implements IService {
         );
       });
 
-      if (activeDayIndex >= 0) {
+      if (activeDayIndex >= ZERO_ACTIVITY_COUNT) {
         const dayActivity = userActivity[activeDayIndex];
         halfYearActivity.push({
           date: dayActivity.date,
@@ -154,7 +155,10 @@ class ArticleService implements IService {
         continue;
       }
 
-      halfYearActivity.push({ date: dateForStatistic, count: 0 });
+      halfYearActivity.push({
+        date: dateForStatistic,
+        count: ZERO_ACTIVITY_COUNT,
+      });
     }
 
     return halfYearActivity;
