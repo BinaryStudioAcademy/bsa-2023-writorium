@@ -39,19 +39,6 @@
   overflow: auto;
 }
 
-.achievementListModal::-webkit-scrollbar {
-  width: 5px;
-}
-
-.achievementListModal::-webkit-scrollbar-thumb {
-  background: var(--light-gray-40);
-  border-radius: 2px;
-}
-
-.achievementListModal::-webkit-scrollbar-track {
-  background: transparent;
-}
-
 .achievementBlock .achievementTooltip {
   max-width: 150px;
   color: var(--pale-gray);
