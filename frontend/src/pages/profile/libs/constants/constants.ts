@@ -1,4 +1,4 @@
-import { SUPPORTED_FILE_TYPES } from 'shared/build/index.js';
+import { SUPPORTED_FILE_TYPES } from '~/libs/constants/constants.js';
 
 const SUPPORTED_FILE_TYPES_STRING = SUPPORTED_FILE_TYPES.join(', ');
 
