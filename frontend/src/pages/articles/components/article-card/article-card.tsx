@@ -79,7 +79,7 @@ const ArticleCard: React.FC<Properties> = ({
           </li>
         </ul>
         <Icon iconName="share" className={styles.icon} />
-        <Link to={AppRoute.ROOT} className={styles.readMore}>
+        <Link to={AppRoute.ARTICLE} className={styles.readMore}>
           Read more
         </Link>
       </div>
