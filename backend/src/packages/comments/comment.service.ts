@@ -1,6 +1,6 @@
-import { HttpError } from '~/libs/exceptions/exceptions.js';
+import { ApplicationError } from '~/libs/exceptions/exceptions.js';
 import { type IService } from '~/libs/interfaces/service.interface.js';
-import { HttpCode } from '~/libs/packages/http/http.js';
+import { ForbiddenError } from '~/libs/packages/exceptions/exceptions.js';
 
 import { CommentEntity } from './comment.entity.js';
 import { type CommentRepository } from './comment.repository.js';
@@ -70,10 +70,9 @@ class CommentService implements IService {
     }
 
     if (comment.userId !== payload.userId) {
-      throw new HttpError({
-        status: HttpCode.FORBIDDEN,
-        message: `User with id "${payload.userId}" has no rights to update this comment`,
-      });
+      throw new ForbiddenError(
+        `User with id "${payload.userId}" has no rights to update this comment`,
+      );
     }
 
     const updatedComment = await this.commentRepository.update(
