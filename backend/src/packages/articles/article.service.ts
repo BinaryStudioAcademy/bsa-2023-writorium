@@ -116,7 +116,11 @@ class ArticleService implements IService {
     userId: number,
   ): Promise<UserActivityResponseDto[]> {
     const currentDate = new Date();
-    const sixMonthAgo = subtractMonthsFromDate(currentDate, 6);
+    const monthsToSubtractCount = 6;
+    const sixMonthAgo = subtractMonthsFromDate(
+      currentDate,
+      monthsToSubtractCount,
+    );
     const daysInHalfYear = getDifferenceBetweenDates(currentDate, sixMonthAgo);
     const halfYearActivity: UserActivityResponseDto[] = [];
 
@@ -127,10 +131,11 @@ class ArticleService implements IService {
     });
 
     for (let index = 0; index <= daysInHalfYear; index++) {
+      const incrementedDate = sixMonthAgo.getDate() + index;
       const dateForStatistic = new Date(
         sixMonthAgo.getFullYear(),
         sixMonthAgo.getMonth(),
-        sixMonthAgo.getDate() + index,
+        incrementedDate,
       ).toISOString();
 
       const activeDayIndex = userActivity.findIndex((activity) => {

@@ -1,7 +1,11 @@
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
 import { type UserActivityResponseDto } from '~/packages/users/users.js';
 
-import { getUniqueMonths } from '../../libs/helpers/helpers.js';
+import { ACTIVITY_BREAKPOINTS } from '../../libs/constants/constants.js';
+import {
+  getActivityBreakpoint,
+  getUniqueMonths,
+} from '../../libs/helpers/helpers.js';
 import styles from './styles.module.scss';
 
 type Properties = {
@@ -15,26 +19,7 @@ const UserActivity: React.FC<Properties> = ({ userActivity }) => {
 
   const activityStatistic = userActivity.map((activity) => {
     const { count, date } = activity;
-    let activityBreakpoint = '';
-
-    switch (true) {
-      case count === 0: {
-        activityBreakpoint = 'breakpoint1';
-        break;
-      }
-      case count === 1: {
-        activityBreakpoint = 'breakpoint2';
-        break;
-      }
-      case count > 1 && count < 5: {
-        activityBreakpoint = 'breakpoint3';
-        break;
-      }
-      case count >= 5: {
-        activityBreakpoint = 'breakpoint4';
-        break;
-      }
-    }
+    const activityBreakpoint = getActivityBreakpoint(count);
 
     return (
       <span
@@ -73,25 +58,25 @@ const UserActivity: React.FC<Properties> = ({ userActivity }) => {
             <span
               className={getValidClassNames(
                 styles.breakpoint,
-                styles.breakpoint1,
+                styles[ACTIVITY_BREAKPOINTS.breakpoint1],
               )}
             ></span>
             <span
               className={getValidClassNames(
                 styles.breakpoint,
-                styles.breakpoint2,
+                styles[ACTIVITY_BREAKPOINTS.breakpoint2],
               )}
             ></span>
             <span
               className={getValidClassNames(
                 styles.breakpoint,
-                styles.breakpoint3,
+                styles[ACTIVITY_BREAKPOINTS.breakpoint3],
               )}
             ></span>
             <span
               className={getValidClassNames(
                 styles.breakpoint,
-                styles.breakpoint4,
+                styles[ACTIVITY_BREAKPOINTS.breakpoint4],
               )}
             ></span>
             More
