@@ -3,6 +3,7 @@ const ExceptionMessage = {
   USER_NOT_FOUND: 'User not found',
   INVALID_CREDENTIALS: 'Login failed. Invalid Email or Password',
   INVALID_TOKEN: 'Invalid token',
+  TOKEN_EXPIRED: 'Your session has expired. Please log in again',
   INVALID_CODE: 'Invalid code',
   INVALID_USER_INFO_NO_EMAIL: 'Invalid user info format: no email',
   FAILED_TO_GENERATE_PROMPT: 'Failed to generate prompt',

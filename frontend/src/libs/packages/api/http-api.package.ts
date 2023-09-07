@@ -105,6 +105,11 @@ class HttpApi implements IHttpApi {
       }),
     )) as ServerErrorResponse;
 
+    if (response.status === 401) {
+      await this.storage.drop(StorageKey.TOKEN);
+      window.location.assign('/sign-in');
+    }
+
     const isCustomException = Boolean(parsedException.errorType);
 
     throw new HttpError({
