@@ -1,5 +1,7 @@
 import { type ReactNode } from 'react';
 
+import { Icon } from '~/libs/components/components.js';
+
 import {
   AUTH_FORM_WRAPPER_FLOATING_LETTERS,
   HERO_FLOATING_LETTERS,
@@ -33,7 +35,7 @@ const AuthLayout: React.FC<Properties> = ({ children }) => {
       </div>
       <div className={styles.hero}>
         {renderFloatingLetters(HERO_FLOATING_LETTERS)}
-        <h1 className={styles.heroTitle}>WRITORIUM</h1>
+        <Icon iconName="writoriumLogo" className={styles.heroTitle} />
       </div>
     </div>
   );
