@@ -1,7 +1,3 @@
-import {
-  DEFAULT_PAGINATION_SKIP,
-  DEFAULT_PAGINATION_TAKE,
-} from '~/libs/constants/constants.js';
 import { ApiPath } from '~/libs/enums/enums.js';
 import {
   type ApiHandlerOptions,
@@ -21,6 +17,7 @@ import {
 } from './libs/types/types.js';
 import {
   articleCreateValidationSchema,
+  articlesFiltersValidationSchema,
   articleUpdateValidationSchema,
 } from './libs/validation-schemas/validation-schemas.js';
 
@@ -77,38 +74,29 @@ class ArticleController extends Controller {
     this.addRoute({
       path: ArticlesApiPath.ROOT,
       method: 'GET',
+      validation: {
+        query: articlesFiltersValidationSchema,
+      },
       handler: (options) => {
-        const { skip, take } = options.query as {
-          [key in keyof ArticlesFilters]?: string;
-        };
-
-        return this.findAll({
-          query: {
-            skip: Number.parseInt(skip ?? '') || DEFAULT_PAGINATION_SKIP,
-            take: Number.parseInt(take ?? '') || DEFAULT_PAGINATION_TAKE,
-          },
-        } as ApiHandlerOptions<{ query: ArticlesFilters }>);
+        return this.findAll(
+          options as ApiHandlerOptions<{ query: ArticlesFilters }>,
+        );
       },
     });
 
     this.addRoute({
       path: ArticlesApiPath.OWN,
       method: 'GET',
+      validation: {
+        query: articlesFiltersValidationSchema,
+      },
       handler: (options) => {
-        const { skip, take } = options.query as {
-          [key in keyof ArticlesFilters]?: string;
-        };
-
-        return this.findOwn({
-          user: options.user,
-          query: {
-            skip: Number.parseInt(skip ?? '') || DEFAULT_PAGINATION_SKIP,
-            take: Number.parseInt(take ?? '') || DEFAULT_PAGINATION_TAKE,
-          },
-        } as ApiHandlerOptions<{
-          user: UserAuthResponseDto;
-          query: ArticlesFilters;
-        }>);
+        return this.findOwn(
+          options as ApiHandlerOptions<{
+            user: UserAuthResponseDto;
+            query: ArticlesFilters;
+          }>,
+        );
       },
     });
 

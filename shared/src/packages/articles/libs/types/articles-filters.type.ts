@@ -1,5 +1,5 @@
 import { type PaginationParameters } from '~/libs/types/types.js';
 
-type ArticlesFilters = Partial<PaginationParameters>;
+type ArticlesFilters = PaginationParameters;
 
 export { type ArticlesFilters };

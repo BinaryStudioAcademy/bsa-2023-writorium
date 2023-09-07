@@ -1,8 +1,3 @@
-import {
-  DEFAULT_PAGINATION_SKIP,
-  DEFAULT_PAGINATION_TAKE,
-} from '~/libs/constants/constants.js';
-
 import { ArticleEntity } from './article.entity.js';
 import { type ArticleModel } from './article.model.js';
 import { SortingOrder } from './libs/enums/enums.js';
@@ -21,8 +16,8 @@ class ArticleRepository implements IArticleRepository {
 
   public async findAll({
     userId,
-    take = DEFAULT_PAGINATION_TAKE,
-    skip = DEFAULT_PAGINATION_SKIP,
+    take,
+    skip,
   }: {
     userId?: number;
   } & ArticlesFilters): Promise<{ items: ArticleEntity[]; total: number }> {
