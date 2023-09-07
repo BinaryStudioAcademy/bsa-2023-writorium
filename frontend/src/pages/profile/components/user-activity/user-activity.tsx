@@ -5,7 +5,7 @@ import { getUniqueMonths } from '../../libs/helpers/helpers.js';
 import styles from './styles.module.scss';
 
 type Properties = {
-  userActivity: UserActivityResponseDto;
+  userActivity: UserActivityResponseDto[];
 };
 
 const UserActivity: React.FC<Properties> = ({ userActivity }) => {

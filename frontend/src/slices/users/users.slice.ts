@@ -11,7 +11,7 @@ import { getUserActivity, loadAll } from './actions.js';
 
 type State = {
   users: UserGetAllItemResponseDto[];
-  userActivity: UserActivityResponseDto;
+  userActivity: UserActivityResponseDto[];
   dataStatus: ValueOf<typeof DataStatus>;
 };
 

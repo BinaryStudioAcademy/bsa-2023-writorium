@@ -113,11 +113,11 @@ class ArticleService implements IService {
 
   public async getUserActivity(
     userId: number,
-  ): Promise<UserActivityResponseDto> {
+  ): Promise<UserActivityResponseDto[]> {
     const currentDate = new Date();
     const sixMonthAgo = subMonths(currentDate, 6);
     const daysInHalfYear = differenceInDays(currentDate, sixMonthAgo);
-    const halfYearActivity: UserActivityResponseDto = [];
+    const halfYearActivity: UserActivityResponseDto[] = [];
 
     const userActivity = await this.articleRepository.getUserActivity({
       userId,

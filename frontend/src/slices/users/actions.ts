@@ -21,7 +21,7 @@ const loadAll = createAsyncThunk<
 });
 
 const getUserActivity = createAsyncThunk<
-  UserActivityResponseDto,
+  UserActivityResponseDto[],
   undefined,
   AsyncThunkConfig
 >(`${sliceName}/get-user-activity`, (_, { extra }) => {

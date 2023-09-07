@@ -35,13 +35,13 @@ class UserApi extends HttpApi {
     return await response.json<UserGetAllResponseDto>();
   }
 
-  public async getUserActivity(): Promise<UserActivityResponseDto> {
+  public async getUserActivity(): Promise<UserActivityResponseDto[]> {
     const response = await this.load(
       this.getFullEndpoint(UsersApiPath.ACTIVITY, {}),
       { method: 'GET', contentType: ContentType.JSON, hasAuth: true },
     );
 
-    return await response.json<UserActivityResponseDto>();
+    return await response.json<UserActivityResponseDto[]>();
   }
 
   public async updateUser(

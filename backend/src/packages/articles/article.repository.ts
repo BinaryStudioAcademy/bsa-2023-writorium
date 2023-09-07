@@ -69,7 +69,7 @@ class ArticleRepository implements IRepository {
     userId: number;
     activityFrom: string;
     activityTo: string;
-  }): Promise<UserActivityResponseDto> {
+  }): Promise<UserActivityResponseDto[]> {
     const userActivity = (await this.articleModel
       .query()
       .select(
@@ -80,7 +80,7 @@ class ArticleRepository implements IRepository {
       .whereBetween('createdAt', [activityFrom, activityTo])
       .groupByRaw('date(created_at), date(updated_at)')) as unknown;
 
-    return userActivity as UserActivityResponseDto;
+    return userActivity as UserActivityResponseDto[];
   }
 
   public async update(entity: ArticleEntity): Promise<ArticleEntity> {
