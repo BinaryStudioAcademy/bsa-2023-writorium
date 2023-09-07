@@ -2,6 +2,7 @@ import { type BaseSyntheticEvent, type FC } from 'react';
 
 import { Button, Input } from '~/libs/components/components.js';
 import { ButtonType, InputType } from '~/libs/enums/enums.js';
+import { getValidClassNames } from '~/libs/helpers/helpers.js';
 import {
   useAppDispatch,
   useAppForm,
@@ -129,7 +130,7 @@ const ProfileEditForm: FC<Properties> = ({ user, onEdit }: Properties) => {
           type={ButtonType.SUBMIT}
           label="Save"
           disabled={(!isDirty && avatarId === user.avatarId) || isSubmitting}
-          className={styles.button}
+          className={getValidClassNames(styles.button, styles.buttonSave)}
         />
       </div>
     </form>
