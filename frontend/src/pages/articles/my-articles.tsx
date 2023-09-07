@@ -25,7 +25,7 @@ const MyArticles: React.FC = () => {
         }),
       ).unwrap();
 
-      return skip + data.items.length < data.total;
+      return data.items.length > 0;
     });
   }, [dispatch, load]);
 
