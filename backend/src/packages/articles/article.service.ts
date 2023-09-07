@@ -97,7 +97,7 @@ class ArticleService implements IService {
   }
 
   public async find(id: number): Promise<ArticleWithAuthorType | null> {
-    const article = await this.articleRepository.find(+id);
+    const article = await this.articleRepository.find(id);
 
     if (!article) {
       return null;
