@@ -11,6 +11,7 @@ import { type ArticleService } from '~/packages/articles/article.service.js';
 import { type UserAuthResponseDto } from '~/packages/users/users.js';
 
 import { ArticlesApiPath } from './libs/enums/enums.js';
+import { getSharingLink } from './libs/helpers/helpers.js';
 import {
   type ArticleRequestDto,
   type ArticleUpdateRequestDto,
@@ -329,13 +330,7 @@ class ArticleController extends Controller {
   ): Promise<ApiHandlerResponse> {
     const { origin, body } = options;
 
-    const url = origin as string;
-
-    const token = await articleToken.create({
-      articleId: body.id,
-    });
-
-    const link = `${url}${ApiPath.ARTICLES}${ArticlesApiPath.TOKEN}/${token}`;
+    const link = await getSharingLink(body.id, origin as string);
 
     return {
       status: HttpCode.OK,
