@@ -1,5 +1,3 @@
-import { articleUpdateValidationSchema } from 'shared/build/index.js';
-
 import { Button, Input, TextEditor } from '~/libs/components/components.js';
 import { ButtonType } from '~/libs/enums/enums.js';
 import {
@@ -13,6 +11,7 @@ import { type ValueOf } from '~/libs/types/types.js';
 import {
   articleCreateValidationSchema,
   type ArticleRequestDto,
+  articleUpdateValidationSchema,
   type ArticleWithAuthorType,
 } from '~/packages/articles/articles.js';
 import { getGeneratedPromptPayload } from '~/packages/prompts/prompts.js';
