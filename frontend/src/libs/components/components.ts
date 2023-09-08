@@ -1,6 +1,8 @@
 export { App } from './app/app.js';
 export { Avatar } from './avatar/avatar.js';
 export { Button } from './button/button.js';
+export { CommentCard } from './comment-card/comment-card.js';
+export { Comments } from './comments/comments.js';
 export { ErrorMessage } from './error-message/error-message.js';
 export { Header } from './header/header.js';
 export { Icon } from './icon/icon.js';
@@ -18,5 +20,6 @@ export { PublicRoute } from './public-route/public-route.js';
 export { RouterProvider } from './router-provider/router-provider.js';
 export { Tag } from './tag/tag.js';
 export { TextEditor } from './text-editor/text-editor.js';
+export { BlockWithTooltip, Tooltip } from './tooltip/tooltip.js';
 export { Provider as StoreProvider } from 'react-redux';
 export { Navigate, Outlet as RouterOutlet } from 'react-router-dom';

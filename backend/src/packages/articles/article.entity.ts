@@ -16,6 +16,8 @@ class ArticleEntity implements IEntity {
   private 'genreId': number | null;
   private 'publishedAt': string | null;
   private 'author'?: UserDetailsResponseDto;
+  private 'prompt'?: ArticleWithAuthorType['prompt'];
+  private 'genre'?: string;
 
   private constructor({
     id,
@@ -26,6 +28,8 @@ class ArticleEntity implements IEntity {
     genreId,
     publishedAt,
     author,
+    prompt,
+    genre,
   }: WithNullableKeys<ArticleWithAuthorType, 'id'>) {
     this.id = id;
     this.title = title;
@@ -35,6 +39,8 @@ class ArticleEntity implements IEntity {
     this.genreId = genreId;
     this.publishedAt = publishedAt;
     this.author = author;
+    this.prompt = prompt;
+    this.genre = genre;
   }
 
   public static initialize({
@@ -66,6 +72,8 @@ class ArticleEntity implements IEntity {
     genreId,
     publishedAt,
     author,
+    prompt,
+    genre,
   }: ArticleWithAuthorType): ArticleEntity {
     return new ArticleEntity({
       id,
@@ -80,6 +88,8 @@ class ArticleEntity implements IEntity {
         lastName: author?.lastName as string,
         avatarUrl: author?.avatarUrl ?? null,
       },
+      prompt,
+      genre,
     });
   }
 
@@ -124,6 +134,8 @@ class ArticleEntity implements IEntity {
       genreId: this.genreId,
       publishedAt: this.publishedAt,
       author: this.author,
+      prompt: this.prompt,
+      genre: this.genre,
     };
   }
 
