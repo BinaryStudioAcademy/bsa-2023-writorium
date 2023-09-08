@@ -4,9 +4,10 @@ type ArticleType = {
   title: string;
   text: string;
   tags: TagType[];
-  autor: {
+  author: {
     firstName: string;
     lastName: string;
+    avatarUrl: string | null;
   };
 };
 

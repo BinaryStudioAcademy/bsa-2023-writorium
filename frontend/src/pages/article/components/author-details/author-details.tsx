@@ -13,6 +13,7 @@ type Properties = {
   publishedAt?: string;
   readingTime?: string;
   genre?: string;
+  avatarUrl?: string | null;
 };
 
 const AuthorDetails: FC<Properties> = ({
@@ -22,12 +23,13 @@ const AuthorDetails: FC<Properties> = ({
   publishedAt = '2023-09-04T12:53:07.144Z',
   readingTime = '7 min',
   genre = 'Fiction',
+  avatarUrl = null,
 }) => {
   return (
     <div className={styles.container}>
       <div className={styles.authorWrapper}>
         <div className={styles.avatarWrapper}>
-          <Avatar username={name} avatarUrl={null} />
+          <Avatar username={name} avatarUrl={avatarUrl} />
         </div>
         <div>
           <h2 className={styles.authorName}>{name}</h2>
