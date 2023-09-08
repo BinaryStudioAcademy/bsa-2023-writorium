@@ -27,7 +27,7 @@ const ArticleCard: React.FC<Properties> = ({
   tags,
   reactions,
 }) => {
-  const { publishedAt, title, text, id } = article;
+  const { publishedAt, title, text, id, coverUrl } = article;
   const { comments, views, likes, dislikes } = reactions;
 
   const articleRouteById = AppRoute.ARTICLE.replace(':id', String(id));
@@ -64,7 +64,7 @@ const ArticleCard: React.FC<Properties> = ({
           <Tags tags={tags} />
         </div>
         <img
-          src={ArticlePreview}
+          src={coverUrl ?? ArticlePreview}
           alt="article preview"
           className={styles.preview}
         />
