@@ -42,7 +42,7 @@ const ArticleCard: React.FC<Properties> = ({
 
   const MOCKED_READ_TIME = '7 min read';
 
-  const onSharedButtonClick = useCallback((): void => {
+  const handleSharedButtonClick = useCallback((): void => {
     void dispatch(articlesActions.shareArticle({ id: id.toString() }));
   }, [dispatch, id]);
 
@@ -104,7 +104,7 @@ const ArticleCard: React.FC<Properties> = ({
         <IconButton
           iconName="share"
           className={styles.iconWrapper}
-          onClick={onSharedButtonClick}
+          onClick={handleSharedButtonClick}
         />
 
         <Link
