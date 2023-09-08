@@ -7,8 +7,10 @@ import {
   type ArticleRequestDto,
   type ArticleWithAuthorType,
 } from '~/packages/articles/articles.js';
+import { NotificationType } from '~/packages/notification/notification.js';
 import { type PromptRequestDto } from '~/packages/prompts/prompts.js';
 
+import { appActions } from '../app/app.js';
 import { name as sliceName } from './articles.slice.js';
 
 const fetchAll = createAsyncThunk<
@@ -61,8 +63,14 @@ const shareArticle = createAsyncThunk<
   { link: string },
   { id: string },
   AsyncThunkConfig
->(`${sliceName}/share`, (articlePayload, { extra }) => {
+>(`${sliceName}/share`, (articlePayload, { dispatch, extra }) => {
   const { articleApi } = extra;
+  void dispatch(
+    appActions.notify({
+      type: NotificationType.SUCCESS,
+      message: 'The sharing link was copied to clipboard',
+    }),
+  );
 
   return articleApi.share(articlePayload.id);
 });
