@@ -9,7 +9,7 @@ type ArticleWithAuthorType = ArticleEntityType & {
     setting: string | null;
     situation: string | null;
     prop: string | null;
-  };
+  } | null;
   genre?: string;
 };
 
