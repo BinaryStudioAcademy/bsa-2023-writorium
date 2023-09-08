@@ -1,12 +1,15 @@
 import ArticleBanner from '~/assets/img/article-banner.jpg';
 import { IconButton, Tag } from '~/libs/components/components.js';
 import { sanitizeHtml } from '~/libs/helpers/helpers.js';
-import { type ArticleType } from '~/libs/types/types.js';
+import { type TagType } from '~/libs/types/types.js';
 
 import styles from './styles.module.scss';
 
 type Properties = {
-  article: ArticleType;
+  title: string;
+  text: string;
+  tags: TagType[];
+  coverUrl?: string;
 };
 
 const onButtonClick = (): void => {
@@ -15,16 +18,14 @@ const onButtonClick = (): void => {
    */
 };
 
-const ArticleView: React.FC<Properties> = ({ article }) => {
-  const { title, text, tags } = article;
-
+const ArticleView: React.FC<Properties> = ({ title, text, tags, coverUrl }) => {
   return (
     <div className={styles.body}>
-      <div className={styles.bannerWrapper}>
+      <div className={styles.coverWrapper}>
         <img
-          src={ArticleBanner}
-          alt="article banner"
-          className={styles.banner}
+          alt="article cover"
+          className={styles.cover}
+          src={coverUrl ?? ArticleBanner}
         />
         <div className={styles.buttonsWrapper}>
           <IconButton
