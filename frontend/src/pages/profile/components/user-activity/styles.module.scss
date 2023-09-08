@@ -1,8 +1,12 @@
+.wrapper {
+  grid-area: activity;
+}
+
 .title {
   margin: 30px 0 15px;
 }
 
-.wrapper {
+.activityWrapper {
   display: flex;
   max-width: 830px;
   overflow-x: auto;

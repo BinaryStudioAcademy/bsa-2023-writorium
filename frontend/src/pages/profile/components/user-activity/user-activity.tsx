@@ -34,9 +34,9 @@ const UserActivity: React.FC<Properties> = ({ userActivity }) => {
   return (
     <>
       {Boolean(userActivity.length) && (
-        <section>
+        <section className={styles.wrapper}>
           <h3 className={styles.title}>User writing activity graph</h3>
-          <div className={styles.wrapper}>
+          <div className={styles.activityWrapper}>
             <div className={styles.days}>
               <span>Mon</span>
               <span>Wed</span>

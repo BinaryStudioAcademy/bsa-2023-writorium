@@ -1,7 +1,7 @@
 .profile {
   display: grid;
   grid-template:
-    "info activity activity" 1.4fr "info articles genres" 0.3fr "achievements articles genres" 1.3fr / minmax(
+    "info activity  activity" 1.4fr "info articles genres" 0.3fr "achievements articles genres" 1.3fr / minmax(
       270px,
       0.5fr
     )
