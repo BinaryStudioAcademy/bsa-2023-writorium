@@ -23,7 +23,18 @@
   border: none;
 }
 
-.activeTab {
+.tab:link,
+.tab:visited {
+  color: var(--dark-grey);
+}
+
+.tab:hover,
+.tab:active {
+  color: var(--light-green);
+}
+
+.activeTab.tab:link,
+.activeTab.tab:visited {
   position: relative;
   color: var(--light-green);
 }
