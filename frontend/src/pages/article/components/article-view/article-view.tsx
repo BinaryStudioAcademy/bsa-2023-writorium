@@ -1,6 +1,7 @@
 import ArticleBanner from '~/assets/img/article-banner.jpg';
 import { IconButton, Tag } from '~/libs/components/components.js';
 import { ShareOnFacebookButton } from '~/libs/components/share-on-facebook-icon/share-on-facebook-icon.js';
+import { sanitizeHtml } from '~/libs/helpers/helpers.js';
 import { type ArticleType } from '~/libs/types/types.js';
 
 import styles from './styles.module.scss';
@@ -59,7 +60,10 @@ const ArticleView: React.FC<Properties> = ({ article }) => {
           <Tag key={tag.id} name={tag.name} />
         ))}
       </div>
-      <p className={styles.text}>{text}</p>
+      <p
+        className={styles.text}
+        dangerouslySetInnerHTML={{ __html: sanitizeHtml(text) }}
+      />
     </div>
   );
 };
