@@ -3,6 +3,7 @@ import {
   fetchAll,
   fetchOwn,
   fetchSharedArticle,
+  getArticle,
   shareArticle,
 } from './actions.js';
 import { actions } from './articles.slice.js';
@@ -12,6 +13,7 @@ const allActions = {
   fetchAll,
   fetchOwn,
   createArticle,
+  getArticle,
   shareArticle,
   fetchSharedArticle,
 };

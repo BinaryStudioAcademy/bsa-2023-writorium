@@ -59,6 +59,16 @@ const createArticle = createAsyncThunk<
   },
 );
 
+const getArticle = createAsyncThunk<
+  ArticleBaseResponseDto,
+  number,
+  AsyncThunkConfig
+>(`${sliceName}/getArticle`, (id, { extra }) => {
+  const { articleApi } = extra;
+
+  return articleApi.getArticle(id);
+});
+
 const shareArticle = createAsyncThunk<
   { link: string },
   { id: string },
@@ -85,4 +95,11 @@ const fetchSharedArticle = createAsyncThunk<
   return articleApi.getByToken(articlePayload);
 });
 
-export { createArticle, fetchAll, fetchOwn, fetchSharedArticle, shareArticle };
+export {
+  createArticle,
+  fetchAll,
+  fetchOwn,
+  fetchSharedArticle,
+  getArticle,
+  shareArticle,
+};

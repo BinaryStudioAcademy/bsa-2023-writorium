@@ -2,15 +2,13 @@ import { type FC } from 'react';
 
 import { Avatar, Icon } from '~/libs/components/components.js';
 import { DateFormat } from '~/libs/enums/enums.js';
-import { getFormattedDate } from '~/libs/helpers/helpers.js';
+import { getFormattedDate, getFullName } from '~/libs/helpers/helpers.js';
+import { type UserDetailsResponseDto } from '~/packages/users/users.js';
 
 import styles from './styles.module.scss';
 
 type Properties = {
-  author: {
-    firstName: string;
-    lastName: string;
-  };
+  author: UserDetailsResponseDto;
   followers?: number;
   rating?: number;
   publishedAt?: string;
@@ -18,7 +16,7 @@ type Properties = {
   genre?: string;
 };
 
-const Author: FC<Properties> = ({
+const AuthorDetails: FC<Properties> = ({
   author,
   followers = 10,
   rating = 700,
@@ -26,7 +24,8 @@ const Author: FC<Properties> = ({
   readingTime = '7 min',
   genre = 'Fiction',
 }) => {
-  const authorFullName = author.firstName + ' ' + author.lastName;
+  const { firstName, lastName } = author;
+  const authorFullName = getFullName(firstName, lastName);
   return (
     <div className={styles.container}>
       <div className={styles.authorWrapper}>
@@ -72,4 +71,4 @@ const Author: FC<Properties> = ({
   );
 };
 
-export { Author };
+export { AuthorDetails };

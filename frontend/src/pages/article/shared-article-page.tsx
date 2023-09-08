@@ -7,10 +7,10 @@ import {
   useEffect,
   useParams,
 } from '~/libs/hooks/hooks.js';
-import { type TagType } from '~/libs/types/types.js';
+import { type ArticleType, type TagType } from '~/libs/types/types.js';
 import { actions as articlesActions } from '~/slices/articles/articles.js';
 
-import { ArticleView, Author } from './components/components.js';
+import { ArticleView, AuthorDetails } from './components/components.js';
 import styles from './styles.module.scss';
 
 const SharedArticlePage: FC = () => {
@@ -31,6 +31,8 @@ const SharedArticlePage: FC = () => {
     }
   }, [dispatch, token]);
 
+  const { text, title, author } = article ?? {};
+
   const MOCKED_TAGS: TagType[] = [
     { id: 1, name: 'IT' },
     { id: 2, name: 'CODE' },
@@ -44,15 +46,11 @@ const SharedArticlePage: FC = () => {
       <div className={styles.articlePageWrapper}>
         {article && (
           <ArticleView
-            article={{
-              title: article.title,
-              text: article?.text,
-              tags: MOCKED_TAGS,
-            }}
+            article={{ text, title, tags: MOCKED_TAGS } as ArticleType}
             isShared
           />
         )}
-        {article?.author && <Author author={article.author} />}
+        {author && <AuthorDetails author={author} />}
       </div>
     </Layout>
   );

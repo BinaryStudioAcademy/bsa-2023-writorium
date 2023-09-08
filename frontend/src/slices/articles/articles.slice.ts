@@ -9,15 +9,18 @@ import {
   fetchAll,
   fetchOwn,
   fetchSharedArticle,
+  getArticle,
 } from './actions.js';
 
 type State = {
+  article: ArticleWithAuthorType | null;
   articles: ArticleWithAuthorType[];
   sharedArticle: ArticleWithAuthorType[] | null;
   dataStatus: ValueOf<typeof DataStatus>;
 };
 
 const initialState: State = {
+  article: null,
   articles: [],
   sharedArticle: null,
   dataStatus: DataStatus.IDLE,
@@ -32,6 +35,10 @@ const { reducer, actions, name } = createSlice({
       state.articles = [...state.articles, action.payload];
       state.dataStatus = DataStatus.FULFILLED;
     });
+    builder.addCase(getArticle.fulfilled, (state, action) => {
+      state.dataStatus = DataStatus.FULFILLED;
+      state.article = action.payload;
+    });
     builder.addCase(fetchSharedArticle.fulfilled, (state, action) => {
       state.sharedArticle = [action.payload];
       state.dataStatus = DataStatus.FULFILLED;
@@ -44,13 +51,23 @@ const { reducer, actions, name } = createSlice({
       },
     );
     builder.addMatcher(
-      isAnyOf(fetchAll.pending, fetchOwn.pending, createArticle.pending),
+      isAnyOf(
+        fetchAll.pending,
+        fetchOwn.pending,
+        createArticle.pending,
+        getArticle.pending,
+      ),
       (state) => {
         state.dataStatus = DataStatus.PENDING;
       },
     );
     builder.addMatcher(
-      isAnyOf(fetchAll.rejected, fetchOwn.rejected, createArticle.rejected),
+      isAnyOf(
+        fetchAll.rejected,
+        fetchOwn.rejected,
+        createArticle.rejected,
+        getArticle.rejected,
+      ),
       (state) => {
         state.dataStatus = DataStatus.REJECTED;
       },

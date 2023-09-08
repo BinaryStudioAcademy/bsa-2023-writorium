@@ -85,7 +85,9 @@ class ArticleService implements IService {
   }
 
   public async findAll(): Promise<ArticleGetAllResponseDto> {
-    const articles = await this.articleRepository.findAll({});
+    const articles = await this.articleRepository.findAll({
+      hasPublishedOnly: true,
+    });
 
     return { items: articles.map((article) => article.toObjectWithAuthor()) };
   }
@@ -96,20 +98,8 @@ class ArticleService implements IService {
     return { items: articles.map((article) => article.toObjectWithAuthor()) };
   }
 
-  public async find(id: number): Promise<ArticleBaseResponseDto | null> {
+  public async find(id: number): Promise<ArticleWithAuthorType | null> {
     const article = await this.articleRepository.find(id);
-
-    if (!article) {
-      return null;
-    }
-
-    return article.toObject();
-  }
-
-  public async findArticleWithAuthor(
-    id: number,
-  ): Promise<ArticleWithAuthorType | null> {
-    const article = await this.articleRepository.findArticleWithAuthor({ id });
 
     if (!article) {
       return null;

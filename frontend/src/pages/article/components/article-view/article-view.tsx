@@ -1,5 +1,6 @@
 import ArticleBanner from '~/assets/img/article-banner.jpg';
 import { IconButton, Tag } from '~/libs/components/components.js';
+import { sanitizeHtml } from '~/libs/helpers/helpers.js';
 import { useAppDispatch, useCallback, useParams } from '~/libs/hooks/hooks.js';
 import { type ArticleType } from '~/libs/types/types.js';
 import { actions as articlesActions } from '~/slices/articles/articles.js';
@@ -67,7 +68,10 @@ const ArticleView: React.FC<Properties> = ({ article, isShared = false }) => {
           <Tag key={tag.id} name={tag.name} />
         ))}
       </div>
-      <p className={styles.text}>{text}</p>
+      <p
+        className={styles.text}
+        dangerouslySetInnerHTML={{ __html: sanitizeHtml(text) }}
+      />
     </div>
   );
 };

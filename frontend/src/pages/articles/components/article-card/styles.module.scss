@@ -53,6 +53,7 @@
 .body {
   display: flex;
   justify-content: space-between;
+  gap: 39px;
   margin-bottom: 23px;
   padding-right: 19px;
 }
@@ -72,14 +73,27 @@
   line-height: normal;
 }
 
+.text ul {
+  padding-left: 40px;
+}
+
 .body .text {
-  margin: 15px 0 auto;
+  --max-lines: 3;
+  --height: 51px;
+
+  display: -webkit-box;
+  -webkit-line-clamp: var(--max-lines);
+  -webkit-box-orient: vertical;
+  max-width: 585px;
+  height: var(--height);
+  margin: 14px 0 23px;
   color: var(--dark-gray);
   font-weight: 400;
   font-size: 14px;
   font-family: Lato, sans-serif;
   font-style: normal;
-  line-height: normal;
+  line-height: calc(var(--height) / var(--max-lines));
+  overflow-wrap: break-word;
 }
 
 .body .preview {

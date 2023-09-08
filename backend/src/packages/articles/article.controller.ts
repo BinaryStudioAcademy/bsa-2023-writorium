@@ -118,6 +118,18 @@ class ArticleController extends Controller {
     });
 
     this.addRoute({
+      path: ArticlesApiPath.$ID,
+      method: 'GET',
+      handler: (options) => {
+        return this.find(
+          options as ApiHandlerOptions<{
+            params: { id: number };
+          }>,
+        );
+      },
+    });
+
+    this.addRoute({
       path: ArticlesApiPath.SHARE,
       method: 'POST',
       handler: (options) =>
@@ -270,6 +282,32 @@ class ArticleController extends Controller {
    * @swagger
    * /articles/:id:
    *    get:
+   *      description: Get an existing article by id
+   *      security:
+   *        - bearerAuth: []
+   *      responses:
+   *        200:
+   *          description: Successful operation
+   *          content:
+   *            application/json:
+   *              schema:
+   *                $ref: '#/components/schemas/Article'
+   */
+  private async find(
+    options: ApiHandlerOptions<{
+      params: { id: number };
+    }>,
+  ): Promise<ApiHandlerResponse> {
+    return {
+      status: HttpCode.OK,
+      payload: await this.articleService.find(options.params.id),
+    };
+  }
+
+  /**
+   * @swagger
+   * /articles/:id:
+   *    get:
    *      summary: Get articles token for sharing
    *      description: Get an existing articles token with id encoded
    *      security:
@@ -330,9 +368,7 @@ class ArticleController extends Controller {
 
     return {
       status: HttpCode.OK,
-      payload: await this.articleService.findArticleWithAuthor(
-        Number(encoded.articleId),
-      ),
+      payload: await this.articleService.find(Number(encoded.articleId)),
     };
   }
 }
