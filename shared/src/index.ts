@@ -10,11 +10,13 @@ export {
   DateFormat,
   ServerErrorType,
   SortingOrder,
+  TimeUnit,
 } from './libs/enums/enums.js';
 export { ApplicationError, HttpError } from './libs/exceptions/exceptions.js';
 export {
   configureString,
   constructUrl,
+  getDateDifferenceWithUnit,
   getFormattedDate,
   getShuffledArray,
   safeJSONParse,

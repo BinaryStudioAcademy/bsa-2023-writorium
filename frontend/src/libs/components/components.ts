@@ -1,6 +1,8 @@
 export { App } from './app/app.js';
 export { Avatar } from './avatar/avatar.js';
 export { Button } from './button/button.js';
+export { CommentCard } from './comment-card/comment-card.js';
+export { Comments } from './comments/comments.js';
 export { ErrorMessage } from './error-message/error-message.js';
 export { Header } from './header/header.js';
 export { Icon } from './icon/icon.js';
