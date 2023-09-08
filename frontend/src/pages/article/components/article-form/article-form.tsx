@@ -1,10 +1,11 @@
 import { Button, Input, TextEditor } from '~/libs/components/components.js';
-import { ButtonType } from '~/libs/enums/enums.js';
+import { AppRoute, ArticleSubRoute, ButtonType } from '~/libs/enums/enums.js';
 import {
   useAppDispatch,
   useAppForm,
   useAppSelector,
   useCallback,
+  useNavigate,
 } from '~/libs/hooks/hooks.js';
 import { type ValueOf } from '~/libs/types/types.js';
 import {
@@ -19,10 +20,11 @@ import { ArticleSubmitType } from './libs/enums/enums.js';
 import styles from './styles.module.scss';
 
 const ArticleForm: React.FC = () => {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const { generatedPrompt } = useAppSelector(({ prompts }) => ({
     generatedPrompt: prompts.generatedPrompt,
   }));
-  const dispatch = useAppDispatch();
   const { control, errors, handleSubmit, handleReset, isDirty, isSubmitting } =
     useAppForm<ArticleRequestDto>({
       defaultValues: DEFAULT_ARTICLE_FORM_PAYLOAD,
@@ -32,12 +34,12 @@ const ArticleForm: React.FC = () => {
   const handleArticleSubmit = useCallback(
     (articleSubmitType: ValueOf<typeof ArticleSubmitType>) =>
       (payload: ArticleRequestDto): void => {
+        const isArticlePublish =
+          articleSubmitType === ArticleSubmitType.PUBLISH;
+
         const updatedPayload = {
           ...payload,
-          publishedAt:
-            articleSubmitType === ArticleSubmitType.PUBLISH
-              ? new Date().toISOString()
-              : null,
+          publishedAt: isArticlePublish ? new Date().toISOString() : null,
         };
 
         void dispatch(
@@ -46,8 +48,14 @@ const ArticleForm: React.FC = () => {
             generatedPrompt: getGeneratedPromptPayload(generatedPrompt),
           }),
         );
+
+        navigate(
+          isArticlePublish
+            ? AppRoute.ARTICLES
+            : `${AppRoute.ARTICLES}/${ArticleSubRoute.MY_ARTICLES}`,
+        );
       },
-    [dispatch, generatedPrompt],
+    [dispatch, generatedPrompt, navigate],
   );
 
   const handleFormSubmit = useCallback(
