@@ -3,7 +3,10 @@ import { type IRepository } from '~/libs/interfaces/repository.interface.js';
 import { ArticleEntity } from './article.entity.js';
 import { type ArticleModel } from './article.model.js';
 import { SortingOrder } from './libs/enums/enums.js';
-import { getWhereUserIdQuery } from './libs/helpers/helpers.js';
+import {
+  getWherePublishedOnlyQuery,
+  getWhereUserIdQuery,
+} from './libs/helpers/helpers.js';
 
 class ArticleRepository implements IRepository {
   private articleModel: typeof ArticleModel;
@@ -16,12 +19,15 @@ class ArticleRepository implements IRepository {
 
   public async findAll({
     userId,
+    hasPublishedOnly,
   }: {
     userId?: number;
+    hasPublishedOnly?: boolean;
   }): Promise<ArticleEntity[]> {
     const articles = await this.articleModel
       .query()
       .where(getWhereUserIdQuery(userId))
+      .where(getWherePublishedOnlyQuery(hasPublishedOnly))
       .orderBy('articles.publishedAt', SortingOrder.DESCENDING)
       .withGraphJoined(this.defaultRelationExpression);
 
@@ -29,12 +35,14 @@ class ArticleRepository implements IRepository {
       ArticleEntity.initializeWithAuthor({
         ...article,
         genre: article.genre.name,
-        prompt: {
-          character: article.prompt.character,
-          setting: article.prompt.setting,
-          situation: article.prompt.situation,
-          prop: article.prompt.prop,
-        },
+        prompt: article.prompt
+          ? {
+              character: article.prompt.character,
+              setting: article.prompt.setting,
+              situation: article.prompt.situation,
+              prop: article.prompt.prop,
+            }
+          : null,
       }),
     );
   }
@@ -52,12 +60,14 @@ class ArticleRepository implements IRepository {
     return ArticleEntity.initializeWithAuthor({
       ...article,
       genre: article.genre.name,
-      prompt: {
-        character: article.prompt.character,
-        setting: article.prompt.setting,
-        situation: article.prompt.situation,
-        prop: article.prompt.prop,
-      },
+      prompt: article.prompt
+        ? {
+            character: article.prompt.character,
+            setting: article.prompt.setting,
+            situation: article.prompt.situation,
+            prop: article.prompt.prop,
+          }
+        : null,
     });
   }
 
