@@ -11,6 +11,7 @@ import { actions as articlesActions } from '~/slices/articles/articles.js';
 import { ArticleCard } from './components/components.js';
 import { MOCKED_REACTIONS } from './libs/constants.js';
 import { getArticleTags } from './libs/helpers/helpers.js';
+import styles from './styles.module.scss';
 
 const ArticlesFeed: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -41,6 +42,7 @@ const ArticlesFeed: React.FC = () => {
   return (
     <InfiniteScroll
       hasMore={hasMore}
+      className={styles.articles}
       dataLength={articles.length}
       fetchData={handleLoadArticles}
     >

@@ -5,6 +5,7 @@ type Properties = {
   hasMore: boolean;
   dataLength: number;
   fetchData: () => void;
+  className?: string;
 };
 
 const InfiniteScroll: React.FC<Properties> = ({
@@ -12,6 +13,7 @@ const InfiniteScroll: React.FC<Properties> = ({
   children,
   hasMore,
   dataLength,
+  className,
 }) => {
   return (
     <ReactInfiniteScroll
@@ -19,6 +21,7 @@ const InfiniteScroll: React.FC<Properties> = ({
       next={fetchData}
       hasMore={hasMore}
       dataLength={dataLength}
+      className={className}
     >
       {children}
     </ReactInfiniteScroll>
