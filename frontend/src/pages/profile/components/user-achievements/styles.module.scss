@@ -39,7 +39,11 @@
   overflow: auto;
 }
 
-.achievementBlock .achievementTooltip {
+.achievementModal {
+  overflow: hidden;
+}
+
+.achievementModal .achievementTooltip {
   max-width: 150px;
   color: var(--pale-gray);
   background-color: var(--light-green);

@@ -71,7 +71,11 @@ const UserAchievements: FC<Properties> = ({ className }) => {
         className={styles.buttonShow}
         onClick={handleToggleModalOpen}
       />
-      <Modal isOpen={isOpen} onClose={handleToggleModalOpen}>
+      <Modal
+        isOpen={isOpen}
+        onClose={handleToggleModalOpen}
+        className={styles.achievementModal}
+      >
         <div>
           <h3 className={styles.title}>Achievements</h3>
           <AchievementList
@@ -81,11 +85,11 @@ const UserAchievements: FC<Properties> = ({ className }) => {
             classNameAchievement={styles.achievementItem}
           />
         </div>
+        <Tooltip
+          id={DataTooltipId.ACHIEVEMENT_TOOLTIP}
+          className={styles.achievementTooltip}
+        />
       </Modal>
-      <Tooltip
-        id={DataTooltipId.ACHIEVEMENT_TOOLTIP}
-        className={styles.achievementTooltip}
-      />
     </div>
   );
 };
