@@ -64,7 +64,7 @@ const ArticleCard: React.FC<Properties> = ({
         <div className={styles.iconWrapper}>
           {isMyArticles && (
             <RouterLink
-              to={`${AppRoute.EDIT_ARTICLE_BASE}${id}`}
+              to={AppRoute.EDIT_ARTICLE.replace(':id', id.toString())}
               state={article}
             >
               <Icon iconName="edit" className={styles.editIcon} />
