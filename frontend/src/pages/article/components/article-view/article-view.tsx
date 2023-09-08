@@ -56,7 +56,7 @@ const ArticleView: React.FC<Properties> = ({ article }) => {
       <p
         className={styles.text}
         dangerouslySetInnerHTML={{ __html: sanitizeHtml(text) }}
-      ></p>
+      />
     </div>
   );
 };
