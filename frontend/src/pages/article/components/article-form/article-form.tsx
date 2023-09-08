@@ -1,5 +1,5 @@
 import { Button, Input, TextEditor } from '~/libs/components/components.js';
-import { ButtonType } from '~/libs/enums/enums.js';
+import { AppRoute, ArticleSubRoute, ButtonType } from '~/libs/enums/enums.js';
 import {
   useAppDispatch,
   useAppForm,
@@ -74,9 +74,13 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
       const updatePayload = {
         articleId: articleForUpdate.id,
         articleForUpdate: { text: payload.text, title: payload.title },
-        navigate,
       };
-      void dispatch(articlesActions.updateArticle(updatePayload));
+      void dispatch(articlesActions.updateArticle(updatePayload))
+        .unwrap()
+        .then(() =>
+          navigate(`${AppRoute.ARTICLES}/${ArticleSubRoute.MY_ARTICLES}`),
+        )
+        .catch(() => {});
     },
 
     [dispatch, articleForUpdate, navigate],

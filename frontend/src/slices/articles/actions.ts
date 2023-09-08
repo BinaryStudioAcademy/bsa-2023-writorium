@@ -1,7 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-import { AppRoute } from '~/libs/enums/app-route.enum.js';
-import { ArticleSubRoute } from '~/libs/enums/article-sub-route.enum.js';
 import { type AsyncThunkConfig } from '~/libs/types/types.js';
 import {
   type ArticleBaseResponseDto,
@@ -67,12 +65,7 @@ const updateArticle = createAsyncThunk<
 >(`${sliceName}/update`, async (payload, { extra }) => {
   const { articleApi } = extra;
 
-  const article = await articleApi.update(payload);
-  const { navigate } = payload;
-  if (navigate) {
-    navigate(`${AppRoute.ARTICLES}/${ArticleSubRoute.MY_ARTICLES}`);
-  }
-  return article;
+  return await articleApi.update(payload);
 });
 
 const getArticle = createAsyncThunk<
