@@ -36,10 +36,12 @@ const { reducer, actions, name } = createSlice({
     builder.addCase(updateArticle.fulfilled, (state, action) => {
       const article = action.payload;
       if (article) {
-        state.articles = [
-          article,
-          ...state.articles.filter((item) => item.id !== article.id),
-        ];
+        state.articles = state.articles.map((item) => {
+          if (article.id === item.id) {
+            return article;
+          }
+          return item;
+        });
       }
       state.dataStatus = DataStatus.FULFILLED;
     });
