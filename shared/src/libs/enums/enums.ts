@@ -4,3 +4,4 @@ export { ContentType } from './content-type.enum.js';
 export { DateFormat } from './date-format.enum.js';
 export { ServerErrorType } from './server-error-type.enum.js';
 export { SortingOrder } from './sorting-order.enum.js';
+export { TimeUnit } from './time-unit.enum.js';
