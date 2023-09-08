@@ -16,12 +16,7 @@ import styles from './styles.module.scss';
 const SharedArticlePage: FC = () => {
   const dispatch = useAppDispatch();
 
-  const article = useAppSelector(({ articles }) => {
-    const dataFromStore = articles.sharedArticle;
-    if (dataFromStore) {
-      return dataFromStore[0];
-    }
-  });
+  const article = useAppSelector(({ articles }) => articles.article);
 
   const { token } = useParams();
 

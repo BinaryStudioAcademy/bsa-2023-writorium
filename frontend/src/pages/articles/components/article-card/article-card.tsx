@@ -1,5 +1,10 @@
 import ArticlePreview from '~/assets/img/article-preview.png';
-import { Avatar, Icon, Link } from '~/libs/components/components.js';
+import {
+  Avatar,
+  Icon,
+  IconButton,
+  Link,
+} from '~/libs/components/components.js';
 import { AppRoute, DateFormat } from '~/libs/enums/enums.js';
 import {
   getFormattedDate,
@@ -37,10 +42,9 @@ const ArticleCard: React.FC<Properties> = ({
 
   const MOCKED_READ_TIME = '7 min read';
 
-  const onSharedButtonClick: React.MouseEventHandler<HTMLButtonElement> =
-    useCallback((): void => {
-      void dispatch(articlesActions.shareArticle({ id: id.toString() }));
-    }, [dispatch, id]);
+  const onSharedButtonClick = useCallback((): void => {
+    void dispatch(articlesActions.shareArticle({ id: id.toString() }));
+  }, [dispatch, id]);
 
   return (
     <article className={styles.article}>
@@ -96,9 +100,13 @@ const ArticleCard: React.FC<Properties> = ({
             <span className={styles.reactionCount}>{dislikes}</span>
           </li>
         </ul>
-        <button className={styles.iconWrapper} onClick={onSharedButtonClick}>
-          <Icon iconName="share" className={styles.icon} />
-        </button>
+
+        <IconButton
+          iconName="share"
+          className={styles.iconWrapper}
+          onClick={onSharedButtonClick}
+        />
+
         <Link
           to={articleRouteById as typeof AppRoute.ARTICLE}
           className={styles.readMore}

@@ -24,7 +24,6 @@ const IconButton: React.FC<Properties> = ({
     className={getValidClassNames(styles.iconButton, className)}
     type={ButtonType.BUTTON}
     onClick={onClick}
-    name={iconName}
   >
     <Icon iconName={iconName} className={iconClassName} />
     {label}
