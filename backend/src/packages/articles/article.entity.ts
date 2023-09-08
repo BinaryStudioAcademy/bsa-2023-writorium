@@ -75,6 +75,7 @@ class ArticleEntity implements IEntity {
     prompt,
     genre,
   }: ArticleWithAuthorType): ArticleEntity {
+
     return new ArticleEntity({
       id,
       title,
@@ -86,7 +87,7 @@ class ArticleEntity implements IEntity {
       author: {
         firstName: author?.firstName as string,
         lastName: author?.lastName as string,
-        avatarUrl: author?.avatarUrl ?? null,
+        avatarUrl: author?.avatar?.url ?? null,
       },
       prompt,
       genre,

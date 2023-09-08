@@ -11,7 +11,7 @@ import {
 class ArticleRepository implements IRepository {
   private articleModel: typeof ArticleModel;
 
-  private defaultRelationExpression = '[author,prompt,genre]';
+  private defaultRelationExpression = '[author.avatar,prompt,genre]';
 
   public constructor(articleModel: typeof ArticleModel) {
     this.articleModel = articleModel;

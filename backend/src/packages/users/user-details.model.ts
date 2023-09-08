@@ -7,8 +7,6 @@ import {
 import { composeDatabaseRelationPath } from '~/libs/packages/database/libs/helpers/helpers.js';
 import { FileModel } from '~/packages/files/file.model.js';
 
-import { UserModel } from './user.model.js';
-
 class UserDetailsModel extends AbstractModel {
   public 'firstName': string;
 
@@ -26,20 +24,6 @@ class UserDetailsModel extends AbstractModel {
 
   public static get relationMappings(): RelationMappings {
     return {
-      user: {
-        relation: Model.HasOneRelation,
-        modelClass: UserModel,
-        join: {
-          from: composeDatabaseRelationPath<UserDetailsModel>(
-            DatabaseTableName.USER_DETAILS,
-            'userId',
-          ),
-          to: composeDatabaseRelationPath<UserModel>(
-            DatabaseTableName.FILES,
-            'id',
-          ),
-        },
-      },
       avatar: {
         relation: Model.HasOneRelation,
         modelClass: FileModel,
