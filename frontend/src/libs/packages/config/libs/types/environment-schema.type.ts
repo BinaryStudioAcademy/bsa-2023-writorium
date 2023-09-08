@@ -11,6 +11,9 @@ type EnvironmentSchema = {
   FACEBOOK: {
     APP_ID: string;
   };
+  GOOGLE: {
+    CLIENT_ID: string;
+  };
 };
 
 export { type EnvironmentSchema };

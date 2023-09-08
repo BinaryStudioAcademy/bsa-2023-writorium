@@ -24,6 +24,9 @@ class Config implements IConfig {
       FACEBOOK: {
         APP_ID: import.meta.env.VITE_APP_FACEBOOK_APP_ID as string,
       },
+      GOOGLE: {
+        CLIENT_ID: import.meta.env.VITE_APP_GOOGLE_CLIENT_ID as string,
+      },
     };
   }
 }
