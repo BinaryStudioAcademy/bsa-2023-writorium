@@ -40,12 +40,14 @@ class ArticleRepository implements IArticleRepository {
         ArticleEntity.initializeWithAuthor({
           ...article,
           genre: article.genre.name,
-          prompt: {
-            character: article.prompt.character,
-            setting: article.prompt.setting,
-            situation: article.prompt.situation,
-            prop: article.prompt.prop,
-          },
+          prompt: article.prompt
+            ? {
+                character: article.prompt.character,
+                setting: article.prompt.setting,
+                situation: article.prompt.situation,
+                prop: article.prompt.prop,
+              }
+            : null,
         }),
       ),
     };
@@ -64,12 +66,14 @@ class ArticleRepository implements IArticleRepository {
     return ArticleEntity.initializeWithAuthor({
       ...article,
       genre: article.genre.name,
-      prompt: {
-        character: article.prompt.character,
-        setting: article.prompt.setting,
-        situation: article.prompt.situation,
-        prop: article.prompt.prop,
-      },
+      prompt: article.prompt
+        ? {
+            character: article.prompt.character,
+            setting: article.prompt.setting,
+            situation: article.prompt.situation,
+            prop: article.prompt.prop,
+          }
+        : null,
     });
   }
 
