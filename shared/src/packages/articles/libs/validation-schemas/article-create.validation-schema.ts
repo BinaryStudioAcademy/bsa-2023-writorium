@@ -32,6 +32,7 @@ const articleCreate = joi.object<ArticleRequestDto, true>({
   publishedAt: joi.string().isoDate().required().allow(null).messages({
     'string.isoDate': ArticleValidationMessage.ARTICLE_PUBLISHED_ISO_DATE,
   }),
+  coverId: joi.number().integer().positive().allow(null),
 });
 
 export { articleCreate };
