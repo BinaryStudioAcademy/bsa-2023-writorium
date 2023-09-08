@@ -10,7 +10,7 @@ class CommentEntity implements IEntity {
   private 'text': string;
   private 'userId': number;
   private 'articleId': number;
-  private 'createdAt': string;
+  private 'createdAt': string | null;
 
   private constructor({
     id,
@@ -18,7 +18,7 @@ class CommentEntity implements IEntity {
     userId,
     articleId,
     createdAt,
-  }: WithNullableKeys<CommentEntityType, 'id'>) {
+  }: WithNullableKeys<CommentEntityType, 'id' | 'createdAt'>) {
     this.id = id;
     this.text = text;
     this.userId = userId;
@@ -52,7 +52,7 @@ class CommentEntity implements IEntity {
       text,
       userId,
       articleId,
-      createdAt: '',
+      createdAt: null,
     });
   }
 
@@ -62,7 +62,7 @@ class CommentEntity implements IEntity {
       text: this.text,
       userId: this.userId,
       articleId: this.articleId,
-      createdAt: this.createdAt,
+      createdAt: this.createdAt as string,
     };
   }
 
