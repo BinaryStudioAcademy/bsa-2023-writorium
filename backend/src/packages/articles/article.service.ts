@@ -1,6 +1,7 @@
 import { ApplicationError } from '~/libs/exceptions/exceptions.js';
 import { safeJSONParse } from '~/libs/helpers/helpers.js';
 import { type IService } from '~/libs/interfaces/service.interface.js';
+import { ForbiddenError } from '~/libs/packages/exceptions/exceptions.js';
 import { type OpenAIService } from '~/libs/packages/openai/openai.package.js';
 
 import { GenreEntity } from '../genres/genre.entity.js';
@@ -144,9 +145,7 @@ class ArticleService implements IService {
     }
 
     if (article.userId !== user.id) {
-      throw new ApplicationError({
-        message: 'Article can only be edited by author!',
-      });
+      throw new ForbiddenError('Article can be edited only by author!');
     }
 
     const updatedArticle = await this.articleRepository.update(
