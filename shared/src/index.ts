@@ -15,6 +15,7 @@ export {
   configureString,
   getDifferenceBetweenDates,
   getFormattedDate,
+  getShuffledArray,
   safeJSONParse,
   subtractMonthsFromDate,
 } from './libs/helpers/helpers.js';
