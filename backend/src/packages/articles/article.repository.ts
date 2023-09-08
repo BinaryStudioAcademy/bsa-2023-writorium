@@ -34,7 +34,7 @@ class ArticleRepository implements IRepository {
     return articles.map((article) =>
       ArticleEntity.initializeWithAuthor({
         ...article,
-        genre: article.genre.name,
+        genre: article.genre ? article.genre.name : null,
         prompt: article.prompt
           ? {
               character: article.prompt.character,
@@ -59,7 +59,7 @@ class ArticleRepository implements IRepository {
 
     return ArticleEntity.initializeWithAuthor({
       ...article,
-      genre: article.genre.name,
+      genre: article.genre ? article.genre.name : null,
       prompt: article.prompt
         ? {
             character: article.prompt.character,
