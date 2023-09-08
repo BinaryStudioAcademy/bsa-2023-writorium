@@ -11,7 +11,6 @@ const AppRoute = {
   FORGOT_PASSWORD: '/forgot-password',
   RESET_PASSWORD: RESET_PASSWORD_ROUTE.WITH_PARAM,
   EDIT_ARTICLE: '/articles/edit/:id',
-  EDIT_ARTICLE_BASE: '/articles/edit/',
 } as const;
 
 export { AppRoute };
