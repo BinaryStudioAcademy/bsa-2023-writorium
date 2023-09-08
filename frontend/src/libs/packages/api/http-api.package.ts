@@ -1,4 +1,9 @@
-import { AppRoute, ContentType, ServerErrorType } from '~/libs/enums/enums.js';
+import {
+  AppRoute,
+  ContentType,
+  ExceptionMessage,
+  ServerErrorType,
+} from '~/libs/enums/enums.js';
 import { configureString } from '~/libs/helpers/helpers.js';
 import {
   HttpCode,
@@ -107,7 +112,7 @@ class HttpApi implements IHttpApi {
 
     if (
       response.status === HttpCode.UNAUTHORIZED &&
-      parsedException.message === 'Invalid token'
+      parsedException.message === ExceptionMessage.INVALID_TOKEN
     ) {
       await this.storage.drop(StorageKey.TOKEN);
       window.location.assign(AppRoute.SIGN_IN);
