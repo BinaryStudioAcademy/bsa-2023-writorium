@@ -29,7 +29,7 @@ const ForgotPasswordForm: React.FC<Properties> = ({ onSubmit }) => {
   return (
     <>
       <div className={styles.formWrapper}>
-        <h2 className={styles.authFormTitle}>Forgot password ?</h2>
+        <h2 className={styles.authFormTitle}>Forgot password?</h2>
         <form
           className={styles.form}
           name="loginForm"
