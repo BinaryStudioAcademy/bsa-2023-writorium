@@ -142,12 +142,12 @@ class ArticleController extends Controller {
     });
 
     this.addRoute({
-      path: ArticlesApiPath.TOKEN,
-      method: 'POST',
+      path: ArticlesApiPath.SHARED,
+      method: 'GET',
       handler: (options) =>
         this.encryptShared(
           options as ApiHandlerOptions<{
-            body: { token: string };
+            params: { token: string };
           }>,
         ),
     });
@@ -356,10 +356,10 @@ class ArticleController extends Controller {
    */
   private async encryptShared(
     options: ApiHandlerOptions<{
-      body: { token: string };
+      params: { token: string };
     }>,
   ): Promise<ApiHandlerResponse> {
-    const encoded = await articleToken.verifyToken(options.body.token);
+    const encoded = await articleToken.verifyToken(options.params.token);
 
     return {
       status: HttpCode.OK,

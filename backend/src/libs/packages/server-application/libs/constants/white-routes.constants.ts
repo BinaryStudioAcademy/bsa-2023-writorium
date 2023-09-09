@@ -40,8 +40,8 @@ const STRING_WHITE_ROUTES: readonly WhiteRoute<string>[] = [
     methods: ['GET'],
   },
   {
-    routerPath: '/v1/articles/shared',
-    methods: ['POST'],
+    routerPath: '/api/v1/articles/shared/*',
+    methods: ['GET'],
   },
 ];
 

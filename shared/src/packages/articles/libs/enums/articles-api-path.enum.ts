@@ -5,6 +5,7 @@ const ArticlesApiPath = {
   OWN: '/own',
   SHARE: '/:id/share',
   TOKEN: '/shared',
+  SHARED: '/shared/:token',
 } as const;
 
 export { ArticlesApiPath };

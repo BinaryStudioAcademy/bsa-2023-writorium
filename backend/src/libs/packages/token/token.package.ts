@@ -27,6 +27,14 @@ class Token implements IToken {
       .sign(this.secret);
   }
 
+  public createInfiniteToken<T extends Record<string, unknown>>(
+    payload: T,
+  ): Promise<string> {
+    return new SignJWT(payload)
+      .setProtectedHeader({ alg: this.algorithm })
+      .sign(this.secret);
+  }
+
   public async verifyToken<T extends Record<string, unknown>>(
     token: string,
   ): Promise<JWTPayload & T> {

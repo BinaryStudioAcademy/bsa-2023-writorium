@@ -75,15 +75,12 @@ class ArticleApi extends HttpApi {
     return { link };
   }
 
-  public async getByToken(payload: {
-    token: string;
-  }): Promise<ArticleBaseResponseDto> {
+  public async getByToken(token: string): Promise<ArticleBaseResponseDto> {
     const response = await this.load(
-      this.getFullEndpoint(ArticlesApiPath.TOKEN, {}),
+      this.getFullEndpoint(ArticlesApiPath.SHARED, { token }),
       {
-        method: 'POST',
+        method: 'GET',
         contentType: ContentType.JSON,
-        payload: JSON.stringify(payload),
         hasAuth: false,
       },
     );

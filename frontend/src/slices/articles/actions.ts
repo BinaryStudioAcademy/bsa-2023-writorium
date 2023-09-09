@@ -92,7 +92,7 @@ const fetchSharedArticle = createAsyncThunk<
 >(`${sliceName}/share`, (articlePayload, { extra }) => {
   const { articleApi } = extra;
 
-  return articleApi.getByToken(articlePayload);
+  return articleApi.getByToken(articlePayload.token);
 });
 
 export {

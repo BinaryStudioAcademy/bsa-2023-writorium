@@ -7,7 +7,7 @@ const AppRoute = {
   PROFILE: '/profile',
   ARTICLES: '/articles',
   ARTICLE: '/articles/:id',
-  SHARED: 'articles/shared/:token',
+  SHARED: '/articles/shared/:token',
   CREATE_ARTICLE: '/articles/create',
   FORGOT_PASSWORD: '/forgot-password',
   RESET_PASSWORD: RESET_PASSWORD_ROUTE.WITH_PARAM,
