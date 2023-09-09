@@ -1,6 +1,5 @@
-import ArticleBanner from '~/assets/img/article-banner.jpg';
 import { IconButton, Tag } from '~/libs/components/components.js';
-import { sanitizeHtml } from '~/libs/helpers/helpers.js';
+import { getValidClassNames, sanitizeHtml } from '~/libs/helpers/helpers.js';
 import { type TagType } from '~/libs/types/types.js';
 
 import styles from './styles.module.scss';
@@ -20,13 +19,13 @@ const onButtonClick = (): void => {
 
 const ArticleView: React.FC<Properties> = ({ title, text, tags, coverUrl }) => {
   return (
-    <div className={styles.body}>
+    <div
+      className={getValidClassNames(styles.body, coverUrl && styles.hasCover)}
+    >
       <div className={styles.coverWrapper}>
-        <img
-          alt="article cover"
-          className={styles.cover}
-          src={coverUrl ?? ArticleBanner}
-        />
+        {coverUrl && (
+          <img alt="article cover" className={styles.cover} src={coverUrl} />
+        )}
         <div className={styles.buttonsWrapper}>
           <IconButton
             iconName="favorite"
@@ -48,16 +47,18 @@ const ArticleView: React.FC<Properties> = ({ title, text, tags, coverUrl }) => {
           />
         </div>
       </div>
-      <h4 className={styles.title}>{title}</h4>
-      <div className={styles.tags}>
-        {tags.map((tag) => (
-          <Tag key={tag.id} name={tag.name} />
-        ))}
+      <div>
+        <h4 className={styles.title}>{title}</h4>
+        <div className={styles.tags}>
+          {tags.map((tag) => (
+            <Tag key={tag.id} name={tag.name} />
+          ))}
+        </div>
+        <p
+          className={styles.text}
+          dangerouslySetInnerHTML={{ __html: sanitizeHtml(text) }}
+        />
       </div>
-      <p
-        className={styles.text}
-        dangerouslySetInnerHTML={{ __html: sanitizeHtml(text) }}
-      />
     </div>
   );
 };
