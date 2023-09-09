@@ -52,7 +52,7 @@ const ArticleCard: React.FC<Properties> = ({
           )}
           <span className={styles.publicationTime}>{MOCKED_READ_TIME}</span>
         </div>
-        <Icon iconName="favorite" className={styles.icon} />
+        <Icon iconName="favorite" className={styles.pointerIcon} />
       </div>
       <div className={styles.body}>
         <div className={styles.articleInfo}>
@@ -72,23 +72,23 @@ const ArticleCard: React.FC<Properties> = ({
       <div className={styles.footer}>
         <ul className={styles.reactions}>
           <li className={styles.reaction}>
-            <Icon iconName="comment" className={styles.reactionIcon} />
+            <Icon iconName="comment" className={styles.pointerIcon} />
             <span className={styles.reactionCount}>{comments}</span>
           </li>
           <li className={styles.reaction}>
-            <Icon iconName="view" className={styles.reactionIcon} />
+            <Icon iconName="view" />
             <span className={styles.reactionCount}>{views}</span>
           </li>
           <li className={styles.reaction}>
-            <Icon iconName="like" className={styles.reactionIcon} />
+            <Icon iconName="like" className={styles.pointerIcon} />
             <span className={styles.reactionCount}>{likes}</span>
           </li>
           <li className={styles.reaction}>
-            <Icon iconName="dislike" className={styles.reactionIcon} />
+            <Icon iconName="dislike" className={styles.pointerIcon} />
             <span className={styles.reactionCount}>{dislikes}</span>
           </li>
         </ul>
-        <Icon iconName="share" className={styles.icon} />
+        <Icon iconName="share" className={styles.pointerIcon} />
         <Link
           to={articleRouteById as typeof AppRoute.ARTICLE}
           className={styles.readMore}
