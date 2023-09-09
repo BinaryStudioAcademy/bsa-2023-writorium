@@ -62,6 +62,10 @@ button {
   border-radius: 2px;
 }
 
+::-webkit-scrollbar-thumb:hover {
+  background: var(--medium-brightness-gray);
+}
+
 ::-webkit-scrollbar-track {
   background: transparent;
 }
