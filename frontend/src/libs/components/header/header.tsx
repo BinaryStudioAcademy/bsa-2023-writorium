@@ -23,29 +23,23 @@ const Header: React.FC<Properties> = ({ user }) => {
   return (
     <>
       {user && (
-        <div>
-          <header className={styles.header}>
-            <Link to={AppRoute.ARTICLES}>
-              <Icon iconName="writoriumLogo" className={styles.logo} />
+        <header className={styles.header}>
+          <Link to={AppRoute.ARTICLES}>
+            <Icon iconName="writoriumLogo" className={styles.logo} />
+          </Link>
+
+          <div className={styles.rightSide}>
+            <Link to={AppRoute.CREATE_ARTICLE} className={styles.writeLink}>
+              Write
             </Link>
 
-            <div className={styles.rightSide}>
-              <Link to={AppRoute.CREATE_ARTICLE} className={styles.writeLink}>
-                Write
-              </Link>
-
-              <button
-                className={styles.avatarButton}
-                onClick={handleAvatarClick}
-              >
-                <Avatar
-                  username={getFullName(user.firstName, user.lastName)}
-                  avatarUrl={null}
-                />
-              </button>
-            </div>
-          </header>
-
+            <button className={styles.avatarButton} onClick={handleAvatarClick}>
+              <Avatar
+                username={getFullName(user.firstName, user.lastName)}
+                avatarUrl={null}
+              />
+            </button>
+          </div>
           <Popover
             trigger={{ handleToggleModalOpen, isOpen }}
             content={<Dropdown trigger={{ handleToggleModalOpen, isOpen }} />}
@@ -55,7 +49,7 @@ const Header: React.FC<Properties> = ({ user }) => {
               isOpen && styles.open,
             )}
           />
-        </div>
+        </header>
       )}
     </>
   );
