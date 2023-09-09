@@ -1,6 +1,6 @@
 import { type FC } from 'react';
 
-import { Layout, Loader,Navigate } from '~/libs/components/components.js';
+import { Layout, Loader, Navigate } from '~/libs/components/components.js';
 import { AppRoute, DataStatus } from '~/libs/enums/enums.js';
 import {
   useAppDispatch,
