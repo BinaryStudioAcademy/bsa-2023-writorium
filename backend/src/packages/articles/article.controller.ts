@@ -12,10 +12,12 @@ import { type UserAuthResponseDto } from '~/packages/users/users.js';
 import { ArticlesApiPath } from './libs/enums/enums.js';
 import {
   type ArticleRequestDto,
+  type ArticlesFilters,
   type ArticleUpdateRequestDto,
 } from './libs/types/types.js';
 import {
   articleCreateValidationSchema,
+  articlesFiltersValidationSchema,
   articleUpdateValidationSchema,
 } from './libs/validation-schemas/validation-schemas.js';
 
@@ -72,18 +74,30 @@ class ArticleController extends Controller {
     this.addRoute({
       path: ArticlesApiPath.ROOT,
       method: 'GET',
-      handler: () => this.findAll(),
+      validation: {
+        query: articlesFiltersValidationSchema,
+      },
+      handler: (options) => {
+        return this.findAll(
+          options as ApiHandlerOptions<{ query: ArticlesFilters }>,
+        );
+      },
     });
 
     this.addRoute({
       path: ArticlesApiPath.OWN,
       method: 'GET',
-      handler: (options) =>
-        this.findOwn(
+      validation: {
+        query: articlesFiltersValidationSchema,
+      },
+      handler: (options) => {
+        return this.findOwn(
           options as ApiHandlerOptions<{
             user: UserAuthResponseDto;
+            query: ArticlesFilters;
           }>,
-        ),
+        );
+      },
     });
 
     this.addRoute({
@@ -134,21 +148,37 @@ class ArticleController extends Controller {
    * /articles:
    *    get:
    *      description: Returns an array of articles
+   *      parameters:
+   *        - in: query
+   *          name: skip
+   *          schema:
+   *            type: integer
+   *        - in: query
+   *          name: take
+   *          schema:
+   *            type: integer
    *      responses:
    *        200:
    *          description: Successful operation
    *          content:
    *            application/json:
    *              schema:
-   *                type: array
-   *                items:
-   *                  $ref: '#/components/schemas/Article'
+   *                type: object
+   *                properties:
+   *                  total:
+   *                    type: integer
+   *                  items:
+   *                    type: array
+   *                    items:
+   *                      $ref: '#/components/schemas/Article'
    */
 
-  private async findAll(): Promise<ApiHandlerResponse> {
+  private async findAll(
+    options: ApiHandlerOptions<{ query: ArticlesFilters }>,
+  ): Promise<ApiHandlerResponse> {
     return {
       status: HttpCode.OK,
-      payload: await this.articleService.findAll(),
+      payload: await this.articleService.findAll(options.query),
     };
   }
 
@@ -157,25 +187,43 @@ class ArticleController extends Controller {
    * /articles/:id:
    *    get:
    *      description: Returns an array of user's articles
+   *      parameters:
+   *        - in: query
+   *          name: skip
+   *          schema:
+   *            type: integer
+   *        - in: query
+   *          name: take
+   *          schema:
+   *            type: integer
    *      responses:
    *        200:
    *          description: Successful operation
    *          content:
    *            application/json:
    *              schema:
-   *                type: array
-   *                items:
-   *                  $ref: '#/components/schemas/Article'
+   *                type: object
+   *                properties:
+   *                  total:
+   *                    type: integer
+   *                  items:
+   *                    type: array
+   *                    items:
+   *                      $ref: '#/components/schemas/Article'
    */
 
   private async findOwn(
     options: ApiHandlerOptions<{
       user: UserAuthResponseDto;
+      query: ArticlesFilters;
     }>,
   ): Promise<ApiHandlerResponse> {
     return {
       status: HttpCode.OK,
-      payload: await this.articleService.findOwn(options.user.id),
+      payload: await this.articleService.findOwn(
+        options.user.id,
+        options.query,
+      ),
     };
   }
 
