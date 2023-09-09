@@ -75,7 +75,6 @@ class ArticleEntity implements IEntity {
     prompt,
     genre,
   }: ArticleWithAuthorType): ArticleEntity {
-
     return new ArticleEntity({
       id,
       title,

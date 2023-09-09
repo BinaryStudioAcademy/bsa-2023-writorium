@@ -1,5 +1,4 @@
-import { Layout, Navigate } from '~/libs/components/components.js';
-import { Loader } from '~/libs/components/loader/loader.js';
+import { Layout, Loader, Navigate } from '~/libs/components/components.js';
 import { AppRoute, DataStatus } from '~/libs/enums/enums.js';
 import { getFullName } from '~/libs/helpers/helpers.js';
 import {
@@ -7,6 +6,7 @@ import {
   useAppSelector,
   useEffect,
   useParams,
+  useState,
 } from '~/libs/hooks/hooks.js';
 import { type ArticleType, type TagType } from '~/libs/types/types.js';
 import { actions } from '~/slices/articles/articles.js';
@@ -19,8 +19,12 @@ const ArticlePage: React.FC = () => {
 
   const { id } = useParams();
 
+  const [initialDataLoad, setInitialDataLoad] = useState(false);
+
   useEffect(() => {
-    void dispatch(actions.getArticle(Number(id)));
+    void dispatch(actions.getArticle(Number(id))).then(() => {
+      setInitialDataLoad(true);
+    });
   }, [dispatch, id]);
 
   const { article, dataStatus } = useAppSelector(({ articles }) => ({
@@ -32,7 +36,7 @@ const ArticlePage: React.FC = () => {
     dataStatus === DataStatus.FULFILLED || dataStatus == DataStatus.REJECTED
   );
 
-  if (!article && !isLoading) {
+  if (!article && initialDataLoad) {
     return <Navigate to={AppRoute.ARTICLES} />;
   }
 
