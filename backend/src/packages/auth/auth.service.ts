@@ -7,6 +7,7 @@ import {
   NotFoundError,
   UnauthorizedError,
 } from '~/libs/packages/exceptions/exceptions.js';
+import { facebookAuth } from '~/libs/packages/facebook-auth/facebook-auth.js';
 import { googleAuthClient } from '~/libs/packages/google-auth-client/google-auth-client.js';
 import {
   type Mailer,
@@ -26,6 +27,7 @@ import {
   type AuthLoginWithGoogleDto,
   type AuthRequestPasswordDto,
   type AuthResetPasswordDto,
+  type UserSignInWithFacebookResponseDto,
 } from './libs/types/types.js';
 
 class AuthService {
@@ -50,6 +52,7 @@ class AuthService {
     const { email, password } = userSignInDto;
 
     const user = await this.userService.findByEmail(email);
+
     if (!user) {
       throw new NotFoundError(ExceptionMessage.USER_NOT_FOUND);
     }
@@ -66,6 +69,34 @@ class AuthService {
 
     if (!hasSamePassword) {
       throw new BadRequestError(ExceptionMessage.INVALID_CREDENTIALS);
+    }
+
+    const token = await accessToken.create<{ userId: number }>({
+      userId: user.id,
+    });
+
+    return { user, token };
+  }
+  public async signInWithFacebook(
+    userSignInDto: UserSignInWithFacebookResponseDto,
+  ): Promise<UserSignInResponseDto> {
+    const isValidFacebookAccessToken =
+      await facebookAuth.verifyFacebookAccessToken(userSignInDto.accessToken);
+
+    if (!isValidFacebookAccessToken) {
+      throw new UnauthorizedError(ExceptionMessage.INVALID_TOKEN);
+    }
+
+    const { email } = userSignInDto;
+
+    if (!email) {
+      throw new BadRequestError(ExceptionMessage.INVALID_USER_INFO_NO_EMAIL);
+    }
+
+    const user = await this.userService.findByEmail(email);
+
+    if (!user) {
+      throw new NotFoundError(ExceptionMessage.USER_NOT_FOUND);
     }
 
     const token = await accessToken.create<{ userId: number }>({

@@ -10,6 +10,7 @@ import {
 import {
   type AuthRequestPasswordDto,
   type AuthResetPasswordDto,
+  type UserSignInWithFacebookResponseDto,
 } from '~/packages/auth/auth.js';
 import {
   type UserSignInRequestDto,
@@ -63,6 +64,13 @@ const Auth: React.FC = () => {
     flow: 'auth-code',
   });
 
+  const handleFacebookLogin = useCallback(
+    (payload: UserSignInWithFacebookResponseDto): void => {
+      void dispatch(authActions.signInWithFacebook(payload));
+    },
+    [dispatch],
+  );
+
   const getScreen = (screen: string): React.ReactNode => {
     if (matchPath({ path: AppRoute.RESET_PASSWORD }, pathname)) {
       return <ResetPasswordForm onSubmit={handleResetPasswordSubmit} />;
@@ -74,6 +82,7 @@ const Auth: React.FC = () => {
           <SignInForm
             onSubmit={handleSignInSubmit}
             onGoogleLogin={handleGoogleLogin}
+            onFacebookLogin={handleFacebookLogin}
           />
         );
       }
