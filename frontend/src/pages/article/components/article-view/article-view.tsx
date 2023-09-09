@@ -51,7 +51,10 @@ const ArticleView: React.FC<Properties> = ({ title, text, tags, coverUrl }) => {
           <ShareOnFacebookButton
             title={title}
             articleUrl={articleUrl}
-            iconStyle={styles.facebookIconButton}
+            iconStyle={getValidClassNames(
+              styles.iconButton,
+              styles.facebookIconButton,
+            )}
           />
         </div>
       </div>

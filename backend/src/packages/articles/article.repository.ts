@@ -40,7 +40,7 @@ class ArticleRepository implements IArticleRepository {
         ArticleEntity.initializeWithAuthor({
           ...article,
           coverUrl: article.cover?.url,
-          genre: article.genre.name,
+          genre: article.genre?.name,
           prompt: article.prompt
             ? {
                 character: article.prompt.character,
