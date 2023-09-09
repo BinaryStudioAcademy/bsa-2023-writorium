@@ -6,6 +6,7 @@ export { getValidClassNames } from './get-valid-class-names/get-valid-class-name
 export { sanitizeHtml } from './sanitize-html/sanitize-html.helper.js';
 export {
   configureString,
+  constructUrl,
   getDateDifferenceWithUnit,
   getFormattedDate,
   getShuffledArray,
