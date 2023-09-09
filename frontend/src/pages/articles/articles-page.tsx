@@ -23,7 +23,7 @@ const ArticlesPage: React.FC = () => {
             My articles
           </Link>
         </div>
-        <div className={styles.articles}>{<RouterOutlet />}</div>
+        <RouterOutlet />
       </div>
     </Layout>
   );
