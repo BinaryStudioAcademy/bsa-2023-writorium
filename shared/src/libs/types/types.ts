@@ -1,3 +1,4 @@
+export { type PaginationParameters } from './pagination-parameters.type.js';
 export {
   type ServerCommonErrorResponse,
   type ServerErrorDetail,
