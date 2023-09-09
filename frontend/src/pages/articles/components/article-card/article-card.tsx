@@ -94,20 +94,19 @@ const ArticleCard: React.FC<Properties> = ({
           <li>
             <IconButton
               iconName="comment"
-              className={styles.reaction}
+              className={styles.footerIcon}
               label={MOCKED_REACTIONS.comments}
             />
           </li>
-          <li className={styles.reaction}>
-            <Icon iconName="view" className={styles.reactionIcon} />
-            <span className={styles.reactionCount}>
-              {MOCKED_REACTIONS.views}
-            </span>
+          <li className={styles.footerIcon}>
+            <Icon iconName="view" />
+            <span>{MOCKED_REACTIONS.views}</span>
           </li>
           <li>
             <IconButton
               iconName="like"
               className={getValidClassNames(
+                styles.footerIcon,
                 styles.reaction,
                 isLike && styles.pressed,
               )}
@@ -119,6 +118,7 @@ const ArticleCard: React.FC<Properties> = ({
             <IconButton
               iconName="dislike"
               className={getValidClassNames(
+                styles.footerIcon,
                 styles.reaction,
                 isLike === false && styles.pressed,
               )}
