@@ -125,6 +125,7 @@ export {
   type UserSignInRequestDto,
   type UserSignInResponseDto,
   userSignInValidationSchema,
+  type UserSignInWithFacebookResponseDto,
   type UserSignUpRequestDto,
   type UserSignUpResponseDto,
   userSignUpValidationSchema,
