@@ -41,7 +41,6 @@ export {
 } from './packages/achievements/achievements.js';
 export {
   type ArticleReactionCreateDto,
-  type ArticleReactionCreateResponseDto,
   type ArticleReactionEntityType,
   type ArticleReactionRequestDto,
   type ArticleReactionResponseDto,
@@ -57,7 +56,8 @@ export {
   ArticlesApiPath,
   type ArticleUpdateRequestDto,
   articleUpdateValidationSchema,
-  type ArticleWithAuthorType,
+  type ArticleWithRelationsType,
+  type ReactionResponseDto,
 } from './packages/articles/articles.js';
 export {
   AuthApiPath,

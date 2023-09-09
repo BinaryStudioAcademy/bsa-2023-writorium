@@ -6,7 +6,8 @@ export {
   type ArticleGetAllResponseDto,
   type ArticleRequestDto,
   type ArticleUpdateRequestDto,
-  type ArticleWithAuthorType,
+  type ArticleWithRelationsType,
+  type ReactionResponseDto,
 } from './libs/types/types.js';
 export {
   articleCreate as articleCreateValidationSchema,
