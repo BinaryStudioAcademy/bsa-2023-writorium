@@ -12,6 +12,22 @@
   overflow-x: auto;
 }
 
+.days .monday {
+  grid-area: mon;
+}
+
+.days .wednesday {
+  grid-area: wed;
+}
+
+.days .friday {
+  grid-area: fri;
+}
+
+.days .sunday {
+  grid-area: sun;
+}
+
 .months {
   display: grid;
   grid-template: auto / repeat(5, 1fr) repeat(2, 0.8fr);
@@ -27,22 +43,6 @@
   grid-template: 27px repeat(7, 25px) / auto;
   grid-template-areas: "." "mon" "." "wed" "." "fri" "." "sun";
   padding-right: 6px;
-}
-
-.days > span:nth-child(1) {
-  grid-area: mon;
-}
-
-.days > span:nth-child(2) {
-  grid-area: wed;
-}
-
-.days > span:nth-child(3) {
-  grid-area: fri;
-}
-
-.days > span:nth-child(4) {
-  grid-area: sun;
 }
 
 .activity {

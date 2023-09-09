@@ -37,10 +37,10 @@ const UserActivity: React.FC<Properties> = ({ userActivity }) => {
           <h3 className={styles.title}>User writing activity graph</h3>
           <div className={styles.activityWrapper}>
             <div className={styles.days}>
-              <span>Mon</span>
-              <span>Wed</span>
-              <span>Fri</span>
-              <span>Sun</span>
+              <span className={styles.monday}>Mon</span>
+              <span className={styles.wednesday}>Wed</span>
+              <span className={styles.friday}>Fri</span>
+              <span className={styles.sunday}>Sun</span>
             </div>
             <div>
               <div className={styles.months}>
