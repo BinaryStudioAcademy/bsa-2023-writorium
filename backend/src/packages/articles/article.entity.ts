@@ -3,7 +3,8 @@ import { type WithNullableKeys } from '~/libs/types/types.js';
 
 import {
   type ArticleEntityType,
-  type ArticleWithAuthorType,
+  type ArticleWithRelationsType,
+  type ReactionResponseDto,
   type UserDetailsResponseDto,
 } from './libs/types/types.js';
 
@@ -16,6 +17,7 @@ class ArticleEntity implements IEntity {
   private 'genreId': number | null;
   private 'publishedAt': string | null;
   private 'author'?: UserDetailsResponseDto;
+  private 'reactions'?: ReactionResponseDto[];
 
   private constructor({
     id,
@@ -26,7 +28,8 @@ class ArticleEntity implements IEntity {
     genreId,
     publishedAt,
     author,
-  }: WithNullableKeys<ArticleWithAuthorType, 'id'>) {
+    reactions,
+  }: WithNullableKeys<ArticleWithRelationsType, 'id'>) {
     this.id = id;
     this.title = title;
     this.text = text;
@@ -35,6 +38,7 @@ class ArticleEntity implements IEntity {
     this.genreId = genreId;
     this.publishedAt = publishedAt;
     this.author = author;
+    this.reactions = reactions;
   }
 
   public static initialize({
@@ -57,7 +61,7 @@ class ArticleEntity implements IEntity {
     });
   }
 
-  public static initializeWithAuthor({
+  public static initializeWithRelations({
     id,
     title,
     text,
@@ -66,7 +70,8 @@ class ArticleEntity implements IEntity {
     genreId,
     publishedAt,
     author,
-  }: ArticleWithAuthorType): ArticleEntity {
+    reactions,
+  }: ArticleWithRelationsType): ArticleEntity {
     return new ArticleEntity({
       id,
       title,
@@ -75,6 +80,7 @@ class ArticleEntity implements IEntity {
       promptId,
       genreId,
       publishedAt,
+      reactions,
       author: {
         firstName: author?.firstName as string,
         lastName: author?.lastName as string,
@@ -113,7 +119,7 @@ class ArticleEntity implements IEntity {
     };
   }
 
-  public toObjectWithAuthor(): ArticleWithAuthorType {
+  public toObjectWithRelations(): ArticleWithRelationsType {
     return {
       id: this.id as number,
       title: this.title,
@@ -123,6 +129,7 @@ class ArticleEntity implements IEntity {
       genreId: this.genreId,
       publishedAt: this.publishedAt,
       author: this.author,
+      reactions: this.reactions,
     };
   }
 

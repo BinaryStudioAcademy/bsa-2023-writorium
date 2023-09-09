@@ -6,6 +6,7 @@ export {
   type ArticleGetAllResponseDto,
   type ArticleRequestDto,
   type ArticleUpdateRequestDto,
-  type ArticleWithAuthorType,
+  type ArticleWithRelationsType,
+  type ReactionResponseDto,
   type UserDetailsResponseDto,
 } from 'shared/build/index.js';

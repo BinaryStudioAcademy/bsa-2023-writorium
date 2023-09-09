@@ -8,7 +8,7 @@ import { getWhereUserIdQuery } from './libs/helpers/helpers.js';
 class ArticleRepository implements IRepository {
   private articleModel: typeof ArticleModel;
 
-  private defaultRelationExpression = 'author';
+  private defaultRelationExpression = '[author, reactions]';
 
   public constructor(articleModel: typeof ArticleModel) {
     this.articleModel = articleModel;
@@ -23,10 +23,13 @@ class ArticleRepository implements IRepository {
       .query()
       .where(getWhereUserIdQuery(userId))
       .orderBy('articles.publishedAt', SortingOrder.DESCENDING)
-      .withGraphJoined(this.defaultRelationExpression);
+      .withGraphJoined(this.defaultRelationExpression)
+      .modifyGraph('reactions', (builder) => {
+        void builder.select('id', 'isLike', 'userId');
+      });
 
     return articles.map((article) =>
-      ArticleEntity.initializeWithAuthor(article),
+      ArticleEntity.initializeWithRelations(article),
     );
   }
 
@@ -40,7 +43,7 @@ class ArticleRepository implements IRepository {
       return null;
     }
 
-    return ArticleEntity.initializeWithAuthor(article);
+    return ArticleEntity.initializeWithRelations(article);
   }
 
   public async create(entity: ArticleEntity): Promise<ArticleEntity> {

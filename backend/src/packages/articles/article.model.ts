@@ -23,7 +23,7 @@ class ArticleModel extends AbstractModel {
 
   public static get relationMappings(): RelationMappings {
     return {
-      articleRactions: {
+      reactions: {
         relation: Model.HasManyRelation,
         modelClass: ArticleReactionModel,
         join: {
