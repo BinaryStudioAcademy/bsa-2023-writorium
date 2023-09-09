@@ -26,7 +26,7 @@ const UserActivity: React.FC<Properties> = ({ userActivity }) => {
           styles.activityItem,
           styles[activityBreakpoint],
         )}
-      ></span>
+      />
     );
   });
 
@@ -58,25 +58,25 @@ const UserActivity: React.FC<Properties> = ({ userActivity }) => {
                 styles.breakpoint,
                 styles.firstBreakpoint,
               )}
-            ></span>
+            />
             <span
               className={getValidClassNames(
                 styles.breakpoint,
                 styles.secondBreakpoint,
               )}
-            ></span>
+            />
             <span
               className={getValidClassNames(
                 styles.breakpoint,
                 styles.thirdBreakpoint,
               )}
-            ></span>
+            />
             <span
               className={getValidClassNames(
                 styles.breakpoint,
                 styles.fourthBreakpoint,
               )}
-            ></span>
+            />
             More
           </div>
         </section>
