@@ -1,8 +1,13 @@
 .header {
-  position: relative;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: var(--z-index-level-one);
   display: flex;
   justify-content: space-between;
   align-items: center;
+  height: var(--header-height);
   padding: 30px 60px;
   background: var(--light-grey);
   border-bottom: 2px solid var(--light-grey-15);

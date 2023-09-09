@@ -1,4 +1,5 @@
 export {
+  type PaginationParameters,
   type ServerCommonErrorResponse,
   type ServerErrorResponse,
   type ServerValidationErrorResponse,

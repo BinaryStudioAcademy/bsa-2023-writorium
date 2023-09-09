@@ -9,7 +9,7 @@ import {
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
 import { useAppDispatch, useCallback, useState } from '~/libs/hooks/hooks.js';
 import { type UserAuthResponseDto } from '~/packages/users/users.js';
-import { SUPPORTED_FILE_TYPES_STRING } from '~/pages/profile/constants/constants.js';
+import { SUPPORTED_FILE_TYPES_STRING } from '~/pages/profile/libs/constants/constants.js';
 import { actions as filesActions } from '~/slices/file/file.js';
 
 import styles from './styles.module.scss';

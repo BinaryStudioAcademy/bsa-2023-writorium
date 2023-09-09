@@ -1,14 +1,17 @@
-import { type IRepository } from '~/libs/interfaces/repository.interface.js';
-
 import { ArticleEntity } from './article.entity.js';
 import { type ArticleModel } from './article.model.js';
 import { SortingOrder } from './libs/enums/enums.js';
-import { getWhereUserIdQuery } from './libs/helpers/helpers.js';
+import {
+  getWherePublishedOnlyQuery,
+  getWhereUserIdQuery,
+} from './libs/helpers/helpers.js';
+import { type IArticleRepository } from './libs/interfaces/interfaces.js';
+import { type ArticlesFilters } from './libs/types/types.js';
 
-class ArticleRepository implements IRepository {
+class ArticleRepository implements IArticleRepository {
   private articleModel: typeof ArticleModel;
 
-  private defaultRelationExpression = '[author, reactions]';
+  private defaultRelationExpression = '[author, prompt, genre, reactions]';
 
   public constructor(articleModel: typeof ArticleModel) {
     this.articleModel = articleModel;
@@ -16,21 +19,41 @@ class ArticleRepository implements IRepository {
 
   public async findAll({
     userId,
+    take,
+    skip,
+    hasPublishedOnly,
   }: {
     userId?: number;
-  }): Promise<ArticleEntity[]> {
+    hasPublishedOnly?: boolean;
+  } & ArticlesFilters): Promise<{ items: ArticleEntity[]; total: number }> {
     const articles = await this.articleModel
       .query()
       .where(getWhereUserIdQuery(userId))
+      .where(getWherePublishedOnlyQuery(hasPublishedOnly))
       .orderBy('articles.publishedAt', SortingOrder.DESCENDING)
+      .page(skip / take, take)
       .withGraphJoined(this.defaultRelationExpression)
       .modifyGraph('reactions', (builder) => {
         void builder.select('id', 'isLike', 'userId');
       });
 
-    return articles.map((article) =>
-      ArticleEntity.initializeWithRelations(article),
-    );
+    return {
+      total: articles.total,
+      items: articles.results.map((article) =>
+        ArticleEntity.initializeWithRelations({
+          ...article,
+          genre: article.genre.name,
+          prompt: article.prompt
+            ? {
+                character: article.prompt.character,
+                setting: article.prompt.setting,
+                situation: article.prompt.situation,
+                prop: article.prompt.prop,
+              }
+            : null,
+        }),
+      ),
+    };
   }
 
   public async find(id: number): Promise<ArticleEntity | null> {
@@ -43,7 +66,18 @@ class ArticleRepository implements IRepository {
       return null;
     }
 
-    return ArticleEntity.initializeWithRelations(article);
+    return ArticleEntity.initializeWithRelations({
+      ...article,
+      genre: article.genre.name,
+      prompt: article.prompt
+        ? {
+            character: article.prompt.character,
+            setting: article.prompt.setting,
+            situation: article.prompt.situation,
+            prop: article.prompt.prop,
+          }
+        : null,
+    });
   }
 
   public async create(entity: ArticleEntity): Promise<ArticleEntity> {

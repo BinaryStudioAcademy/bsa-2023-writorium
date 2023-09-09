@@ -10,6 +10,7 @@ import {
   type ArticleReactionRequestDto,
   type ArticleReactionResponseDto,
   type ArticleRequestDto,
+  type ArticlesFilters,
   type ArticleWithRelationsType,
 } from './libs/types/types.js';
 
@@ -24,19 +25,33 @@ class ArticleApi extends HttpApi {
     super({ path: ApiPath.ARTICLES, baseUrl, http, storage });
   }
 
-  public async getAll(): Promise<ArticleGetAllResponseDto> {
+  public async getAll(
+    filters: ArticlesFilters,
+  ): Promise<ArticleGetAllResponseDto> {
     const response = await this.load(
       this.getFullEndpoint(ArticlesApiPath.ROOT, {}),
-      { method: 'GET', contentType: ContentType.JSON, hasAuth: true },
+      {
+        method: 'GET',
+        contentType: ContentType.JSON,
+        hasAuth: true,
+        query: filters,
+      },
     );
 
     return await response.json<ArticleGetAllResponseDto>();
   }
 
-  public async getOwn(): Promise<ArticleGetAllResponseDto> {
+  public async getOwn(
+    filters: ArticlesFilters,
+  ): Promise<ArticleGetAllResponseDto> {
     const response = await this.load(
       this.getFullEndpoint(ArticlesApiPath.OWN, {}),
-      { method: 'GET', contentType: ContentType.JSON, hasAuth: true },
+      {
+        method: 'GET',
+        contentType: ContentType.JSON,
+        hasAuth: true,
+        query: filters,
+      },
     );
 
     return await response.json<ArticleGetAllResponseDto>();

@@ -15,6 +15,7 @@ export {
   type AuthLoginWithGoogleDto,
   type AuthRequestPasswordDto,
   type AuthResetPasswordDto,
+  type UserSignInWithFacebookResponseDto,
 } from './libs/types/types.js';
 export {
   requestPasswordValidationSchema,

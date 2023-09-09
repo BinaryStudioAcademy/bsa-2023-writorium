@@ -12,6 +12,7 @@ import {
   type ArticleBaseResponseDto,
   type ArticleCreateDto,
   type ArticleGetAllResponseDto,
+  type ArticlesFilters,
   type ArticleUpdateRequestDto,
   type ArticleWithRelationsType,
   type DetectedArticleGenre,
@@ -84,19 +85,32 @@ class ArticleService implements IService {
     return await this.getGenreIdForArticle(text);
   }
 
-  public async findAll(): Promise<ArticleGetAllResponseDto> {
-    const articles = await this.articleRepository.findAll({});
+  public async findAll(
+    filters: ArticlesFilters,
+  ): Promise<ArticleGetAllResponseDto> {
+    const { items, total } = await this.articleRepository.findAll({
+      ...filters,
+      hasPublishedOnly: true,
+    });
 
     return {
-      items: articles.map((article) => article.toObjectWithRelations()),
+      total,
+      items: items.map((article) => article.toObjectWithRelations()),
     };
   }
 
-  public async findOwn(userId: number): Promise<ArticleGetAllResponseDto> {
-    const articles = await this.articleRepository.findAll({ userId });
+  public async findOwn(
+    userId: number,
+    filters: ArticlesFilters,
+  ): Promise<ArticleGetAllResponseDto> {
+    const { items, total } = await this.articleRepository.findAll({
+      userId,
+      ...filters,
+    });
 
     return {
-      items: articles.map((article) => article.toObjectWithRelations()),
+      total,
+      items: items.map((article) => article.toObjectWithRelations()),
     };
   }
 

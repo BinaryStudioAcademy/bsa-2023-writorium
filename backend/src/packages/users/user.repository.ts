@@ -36,7 +36,7 @@ class UserRepository implements IRepository {
   public async findByEmail(email: string): Promise<UserEntity | null> {
     const user = await this.userModel
       .query()
-      .where({ email })
+      .where('email', 'ilike', email)
       .first()
       .withGraphJoined(this.defaultRelationExpression);
 

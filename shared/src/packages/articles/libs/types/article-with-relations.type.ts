@@ -6,6 +6,13 @@ import { type ReactionResponseDto } from './reaction-response-dto.type.js';
 type ArticleWithRelationsType = ArticleEntityType & {
   author?: UserDetailsResponseDto;
   reactions?: ReactionResponseDto[];
+  prompt?: {
+    character: string | null;
+    setting: string | null;
+    situation: string | null;
+    prop: string | null;
+  } | null;
+  genre?: string;
 };
 
 export { type ArticleWithRelationsType };
