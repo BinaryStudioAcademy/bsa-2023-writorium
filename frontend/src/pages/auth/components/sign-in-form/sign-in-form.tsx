@@ -1,6 +1,7 @@
 import { Input, Link, Notification } from '~/libs/components/components.js';
 import { AppRoute } from '~/libs/enums/app-route.enum';
 import { useAppForm, useCallback } from '~/libs/hooks/hooks.js';
+import { type UserSignInWithFacebookResponseDto } from '~/packages/auth/auth.js';
 import {
   type UserSignInRequestDto,
   userSignInValidationSchema,
@@ -8,6 +9,7 @@ import {
 
 import { AuthSubmitButton } from '../auth-submit-button/auth-submit-button.js';
 import { AuthSignInButton } from '../components.js';
+import { FacebookLoginButton } from '../facebook-login-button/facebook-login-button.js';
 import { PasswordInput } from '../password-input/password-input.js';
 import { DEFAULT_LOGIN_PAYLOAD } from './libs/constants/constants.js';
 import styles from './styles.module.scss';
@@ -15,9 +17,14 @@ import styles from './styles.module.scss';
 type Properties = {
   onSubmit: (payload: UserSignInRequestDto) => void;
   onGoogleLogin: () => void;
+  onFacebookLogin: (payload: UserSignInWithFacebookResponseDto) => void;
 };
 
-const SignInForm: React.FC<Properties> = ({ onSubmit, onGoogleLogin }) => {
+const SignInForm: React.FC<Properties> = ({
+  onSubmit,
+  onGoogleLogin,
+  onFacebookLogin,
+}) => {
   const { control, errors, handleSubmit } = useAppForm({
     defaultValues: DEFAULT_LOGIN_PAYLOAD,
     validationSchema: userSignInValidationSchema,
@@ -39,6 +46,7 @@ const SignInForm: React.FC<Properties> = ({ onSubmit, onGoogleLogin }) => {
           onClick={onGoogleLogin}
           label="Sign in with Google"
         ></AuthSignInButton>
+        <FacebookLoginButton onLogin={onFacebookLogin} />
         <span className={styles.or}>or</span>
         <form
           className={styles.form}
