@@ -7,6 +7,7 @@ export { sanitizeHtml } from './sanitize-html/sanitize-html.helper.js';
 export { writeTextInClipboard } from './write-text-in-clip-board/write-text-in-clip-board.helper.js';
 export {
   configureString,
+  constructUrl,
   getDateDifferenceWithUnit,
   getFormattedDate,
   getShuffledArray,
