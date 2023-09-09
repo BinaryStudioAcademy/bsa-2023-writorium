@@ -31,8 +31,8 @@ class ArticleRepository implements IRepository {
       .orderBy('articles.publishedAt', SortingOrder.DESCENDING)
       .withGraphJoined(this.defaultRelationExpression);
 
-    return articles.map((article) =>
-      ArticleEntity.initializeWithAuthor({
+    return articles.map((article) => {
+      return ArticleEntity.initializeWithAuthor({
         ...article,
         genre: article.genre.name,
         prompt: article.prompt
@@ -43,8 +43,8 @@ class ArticleRepository implements IRepository {
               prop: article.prompt.prop,
             }
           : null,
-      }),
-    );
+      });
+    });
   }
 
   public async find(id: number): Promise<ArticleEntity | null> {
