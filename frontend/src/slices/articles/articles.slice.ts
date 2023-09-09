@@ -59,6 +59,7 @@ const { reducer, actions, name } = createSlice({
         fetchOwn.pending,
         createArticle.pending,
         getArticle.pending,
+        fetchSharedArticle.pending,
       ),
       (state) => {
         state.dataStatus = DataStatus.PENDING;
@@ -70,6 +71,7 @@ const { reducer, actions, name } = createSlice({
         fetchOwn.rejected,
         createArticle.rejected,
         getArticle.rejected,
+        fetchSharedArticle.rejected,
       ),
       (state) => {
         state.dataStatus = DataStatus.REJECTED;

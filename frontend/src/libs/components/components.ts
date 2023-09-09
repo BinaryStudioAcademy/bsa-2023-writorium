@@ -11,6 +11,7 @@ export { InfiniteScroll } from './infinite-scroll/infinite-scroll.js';
 export { Input } from './input/input.js';
 export { Layout } from './layout/layout.js';
 export { Link } from './link/link.js';
+export { Loader } from './loader/loader.js';
 export { Modal } from './modal/modal.js';
 export { Notification } from './notification/notification.js';
 export { Popover } from './popover/popover.js';

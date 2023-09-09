@@ -1,6 +1,7 @@
 import { type FC } from 'react';
 
-import { Layout } from '~/libs/components/components.js';
+import { Layout, Loader,Navigate } from '~/libs/components/components.js';
+import { AppRoute, DataStatus } from '~/libs/enums/enums.js';
 import {
   useAppDispatch,
   useAppSelector,
@@ -15,9 +16,6 @@ import styles from './styles.module.scss';
 
 const SharedArticlePage: FC = () => {
   const dispatch = useAppDispatch();
-
-  const article = useAppSelector(({ articles }) => articles.article);
-
   const { token } = useParams();
 
   useEffect(() => {
@@ -25,6 +23,19 @@ const SharedArticlePage: FC = () => {
       void dispatch(articlesActions.fetchSharedArticle({ token }));
     }
   }, [dispatch, token]);
+
+  const { article, dataStatus } = useAppSelector(({ articles }) => ({
+    article: articles.article,
+    dataStatus: articles.dataStatus,
+  }));
+
+  const isLoading = !(
+    dataStatus === DataStatus.FULFILLED || dataStatus == DataStatus.REJECTED
+  );
+
+  if (!article && !isLoading) {
+    return <Navigate to={AppRoute.ROOT} />;
+  }
 
   const { text, title, author } = article ?? {};
 
@@ -37,17 +48,19 @@ const SharedArticlePage: FC = () => {
   ];
 
   return (
-    <Layout>
-      <div className={styles.articlePageWrapper}>
-        {article && (
-          <ArticleView
-            article={{ text, title, tags: MOCKED_TAGS } as ArticleType}
-            isShared
-          />
-        )}
-        {author && <AuthorDetails author={author} />}
-      </div>
-    </Layout>
+    <Loader isLoading={isLoading}>
+      <Layout>
+        <div className={styles.articlePageWrapper}>
+          {article && (
+            <ArticleView
+              article={{ text, title, tags: MOCKED_TAGS } as ArticleType}
+              isShared
+            />
+          )}
+          {author && <AuthorDetails author={author} />}
+        </div>
+      </Layout>
+    </Loader>
   );
 };
 
