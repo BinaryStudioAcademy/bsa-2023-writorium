@@ -71,6 +71,7 @@ class ServerApp implements IServerApp {
       handler,
       schema: {
         body: validation?.body,
+        querystring: validation?.query,
       },
     });
 

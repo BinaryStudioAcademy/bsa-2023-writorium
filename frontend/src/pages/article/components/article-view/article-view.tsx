@@ -1,5 +1,6 @@
 import ArticleBanner from '~/assets/img/article-banner.jpg';
 import { IconButton, Tag } from '~/libs/components/components.js';
+import { ShareOnFacebookButton } from '~/libs/components/share-on-facebook-icon/share-on-facebook-icon.js';
 import { sanitizeHtml } from '~/libs/helpers/helpers.js';
 import { type ArticleType } from '~/libs/types/types.js';
 
@@ -17,6 +18,7 @@ const onButtonClick = (): void => {
 
 const ArticleView: React.FC<Properties> = ({ article }) => {
   const { title, text, tags } = article;
+  const articleUrl = window.location.href;
 
   return (
     <div className={styles.body}>
@@ -44,6 +46,11 @@ const ArticleView: React.FC<Properties> = ({ article }) => {
             className={styles.iconButton}
             iconClassName={styles.icon}
             onClick={onButtonClick}
+          />
+          <ShareOnFacebookButton
+            title={title}
+            articleUrl={articleUrl}
+            iconStyle={styles.facebookIconButton}
           />
         </div>
       </div>
