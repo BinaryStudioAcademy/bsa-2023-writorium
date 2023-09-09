@@ -77,6 +77,7 @@ const ArticleCoverUpload = <T extends FieldValues>({
 
   const handleRemoveCover = (): void => {
     setPreviewUrl(null);
+    field.onChange(null);
   };
 
   const handleDragEnter = (): void => {
@@ -96,18 +97,17 @@ const ArticleCoverUpload = <T extends FieldValues>({
       <div className={styles.uploadWrapper}>
         <div className={styles.header}>
           <p className={styles.uploadTitle}>Add a cover image</p>
-          {previewUrl && (
-            <IconButton
-              iconName="crossMark"
-              label="Remove"
-              onClick={handleRemoveCover}
-              className={styles.removeButton}
-            />
-          )}
         </div>
         {isUploadFileLoading && <DotLoader isLoading />}
         {previewUrl && (
           <div className={styles.coverContainer}>
+            <div className={styles.removeCoverOverlay}>
+              <IconButton
+                iconName="trashBin"
+                className={styles.removeButton}
+                onClick={handleRemoveCover}
+              />
+            </div>
             <img alt="article cover" src={previewUrl} />
           </div>
         )}
@@ -121,11 +121,11 @@ const ArticleCoverUpload = <T extends FieldValues>({
             <input
               type="file"
               onDrop={handleDrop}
+              className={styles.fileInput}
               onDragEnter={handleDragEnter}
               onDragLeave={handleDragLeave}
               onChange={handleUploadArticleCover}
               accept={SUPPORTED_FILE_TYPES_STRING}
-              className={styles.fileInput}
             />
             <p className={styles.dropAreaHint}>
               <Icon iconName="image" className={styles.imageIcon} /> Drag and
