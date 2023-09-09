@@ -103,6 +103,14 @@
   object-fit: cover;
 }
 
+.body:not(.hasCover) .articleInfo {
+  flex: 1;
+}
+
+.body:not(.hasCover) .text {
+  max-width: 100%;
+}
+
 .footer {
   position: relative;
   display: flex;

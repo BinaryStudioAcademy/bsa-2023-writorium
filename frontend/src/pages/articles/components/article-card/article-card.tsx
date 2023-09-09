@@ -53,7 +53,9 @@ const ArticleCard: React.FC<Properties> = ({
         </div>
         <Icon iconName="favorite" className={styles.icon} />
       </div>
-      <div className={styles.body}>
+      <div
+        className={getValidClassNames(styles.body, coverUrl && styles.hasCover)}
+      >
         <div className={styles.articleInfo}>
           <h4 className={styles.title}>{title}</h4>
           <article
