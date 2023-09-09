@@ -2,13 +2,19 @@ import { createSlice, isAnyOf } from '@reduxjs/toolkit';
 
 import { DataStatus } from '~/libs/enums/enums.js';
 import { type ValueOf } from '~/libs/types/types.js';
-import { type ArticleWithAuthorType } from '~/packages/articles/articles.js';
+import { type ArticleWithRelationsType } from '~/packages/articles/articles.js';
 
-import { createArticle, fetchAll, fetchOwn, getArticle } from './actions.js';
+import {
+  createArticle,
+  fetchAll,
+  fetchOwn,
+  getArticle,
+  reactToArticle,
+} from './actions.js';
 
 type State = {
-  article: ArticleWithAuthorType | null;
-  articles: ArticleWithAuthorType[];
+  article: ArticleWithRelationsType | null;
+  articles: ArticleWithRelationsType[];
   dataStatus: ValueOf<typeof DataStatus>;
 };
 
@@ -31,6 +37,10 @@ const { reducer, actions, name } = createSlice({
       state.dataStatus = DataStatus.FULFILLED;
       state.article = action.payload;
     });
+    builder.addCase(reactToArticle.fulfilled, (state, action) => {
+      state.dataStatus = DataStatus.FULFILLED;
+      state.articles = action.payload;
+    });
     builder.addMatcher(
       isAnyOf(fetchAll.fulfilled, fetchOwn.fulfilled),
       (state, action) => {
@@ -44,6 +54,7 @@ const { reducer, actions, name } = createSlice({
         fetchOwn.pending,
         createArticle.pending,
         getArticle.pending,
+        reactToArticle.pending,
       ),
       (state) => {
         state.dataStatus = DataStatus.PENDING;
@@ -55,6 +66,7 @@ const { reducer, actions, name } = createSlice({
         fetchOwn.rejected,
         createArticle.rejected,
         getArticle.rejected,
+        reactToArticle.rejected,
       ),
       (state) => {
         state.dataStatus = DataStatus.REJECTED;

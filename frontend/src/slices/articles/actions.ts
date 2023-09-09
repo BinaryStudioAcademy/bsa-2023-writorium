@@ -4,7 +4,9 @@ import { type AsyncThunkConfig } from '~/libs/types/types.js';
 import {
   type ArticleBaseResponseDto,
   type ArticleGetAllResponseDto,
+  type ArticleReactionRequestDto,
   type ArticleRequestDto,
+  type ArticleWithRelationsType,
 } from '~/packages/articles/articles.js';
 import { type PromptRequestDto } from '~/packages/prompts/prompts.js';
 
@@ -57,7 +59,7 @@ const createArticle = createAsyncThunk<
 );
 
 const getArticle = createAsyncThunk<
-  ArticleBaseResponseDto,
+  ArticleWithRelationsType,
   number,
   AsyncThunkConfig
 >(`${sliceName}/getArticle`, (id, { extra }) => {
@@ -66,4 +68,27 @@ const getArticle = createAsyncThunk<
   return articleApi.getArticle(id);
 });
 
-export { createArticle, fetchAll, fetchOwn, getArticle };
+const reactToArticle = createAsyncThunk<
+  ArticleWithRelationsType[],
+  ArticleReactionRequestDto,
+  AsyncThunkConfig
+>(`${sliceName}/reactToArticle`, async (payload, { getState, extra }) => {
+  const { articleApi } = extra;
+  const {
+    articles: { articles },
+  } = getState();
+
+  await articleApi.reactToArticle(payload);
+
+  const articleWithUpdatedReaction = await articleApi.getArticle(
+    payload.articleId,
+  );
+
+  return articles.map((article) =>
+    article.id === articleWithUpdatedReaction.id
+      ? articleWithUpdatedReaction
+      : article,
+  );
+});
+
+export { createArticle, fetchAll, fetchOwn, getArticle, reactToArticle };

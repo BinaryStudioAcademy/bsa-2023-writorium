@@ -1,24 +1,36 @@
 import ArticlePreview from '~/assets/img/article-preview.png';
-import { Avatar, Icon, Link } from '~/libs/components/components.js';
+import {
+  Avatar,
+  Icon,
+  IconButton,
+  Link,
+} from '~/libs/components/components.js';
 import { AppRoute, DateFormat } from '~/libs/enums/enums.js';
 import {
   getFormattedDate,
   getFullName,
+  getReactionsInfo,
   getValidClassNames,
   sanitizeHtml,
 } from '~/libs/helpers/helpers.js';
-import { type ArticleWithAuthorType } from '~/packages/articles/articles.js';
+import { useAppDispatch } from '~/libs/hooks/hooks.js';
+import {
+  type ArticleWithRelationsType,
+  type ReactionResponseDto,
+} from '~/packages/articles/articles.js';
 import { type UserDetailsResponseDto } from '~/packages/users/users.js';
+import { actions as articlesActions } from '~/slices/articles/articles.js';
 
-import { type ReactionsType, type TagType } from '../../libs/types/types.js';
+import { MOCKED_REACTIONS } from '../../libs/constants.js';
+import { type TagType } from '../../libs/types/types.js';
 import { Tags } from '../components.js';
 import styles from './styles.module.scss';
 
 type Properties = {
-  article: ArticleWithAuthorType;
+  article: ArticleWithRelationsType;
   author: UserDetailsResponseDto;
   tags: TagType[];
-  reactions: ReactionsType;
+  reactions: ReactionResponseDto[];
 };
 
 const ArticleCard: React.FC<Properties> = ({
@@ -27,12 +39,20 @@ const ArticleCard: React.FC<Properties> = ({
   tags,
   reactions,
 }) => {
-  const { publishedAt, title, text, id } = article;
-  const { comments, views, likes, dislikes } = reactions;
+  const { publishedAt, title, text, id, userId } = article;
+  const MOCKED_READ_TIME = '7 min read';
+
+  const { likeCount, dislikeCount, isLike } = getReactionsInfo(
+    userId,
+    reactions,
+  );
 
   const articleRouteById = AppRoute.ARTICLE.replace(':id', String(id));
 
-  const MOCKED_READ_TIME = '7 min read';
+  const dispatch = useAppDispatch();
+
+  const handleReaction = (isLike: boolean): void =>
+    void dispatch(articlesActions.reactToArticle({ isLike, articleId: id }));
 
   return (
     <article className={styles.article}>
@@ -71,21 +91,40 @@ const ArticleCard: React.FC<Properties> = ({
       </div>
       <div className={styles.footer}>
         <ul className={styles.reactions}>
-          <li className={styles.reaction}>
-            <Icon iconName="comment" className={styles.reactionIcon} />
-            <span className={styles.reactionCount}>{comments}</span>
+          <li>
+            <IconButton
+              iconName="comment"
+              className={styles.reaction}
+              label={MOCKED_REACTIONS.comments}
+            />
           </li>
           <li className={styles.reaction}>
             <Icon iconName="view" className={styles.reactionIcon} />
-            <span className={styles.reactionCount}>{views}</span>
+            <span className={styles.reactionCount}>
+              {MOCKED_REACTIONS.views}
+            </span>
           </li>
-          <li className={styles.reaction}>
-            <Icon iconName="like" className={styles.reactionIcon} />
-            <span className={styles.reactionCount}>{likes}</span>
+          <li>
+            <IconButton
+              iconName="like"
+              className={getValidClassNames(
+                styles.reaction,
+                isLike && styles.pressed,
+              )}
+              label={String(likeCount)}
+              onClick={(): void => handleReaction(true)}
+            />
           </li>
-          <li className={styles.reaction}>
-            <Icon iconName="dislike" className={styles.reactionIcon} />
-            <span className={styles.reactionCount}>{dislikes}</span>
+          <li>
+            <IconButton
+              iconName="dislike"
+              className={getValidClassNames(
+                styles.reaction,
+                isLike === false && styles.pressed,
+              )}
+              label={String(dislikeCount)}
+              onClick={(): void => handleReaction(false)}
+            />
           </li>
         </ul>
         <Icon iconName="share" className={styles.icon} />

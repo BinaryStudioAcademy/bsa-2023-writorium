@@ -7,8 +7,10 @@ import { ArticlesApiPath } from './libs/enums/enums.js';
 import {
   type ArticleBaseResponseDto,
   type ArticleGetAllResponseDto,
+  type ArticleReactionRequestDto,
+  type ArticleReactionResponseDto,
   type ArticleRequestDto,
-  type ArticleWithAuthorType,
+  type ArticleWithRelationsType,
 } from './libs/types/types.js';
 
 type Constructor = {
@@ -56,7 +58,7 @@ class ArticleApi extends HttpApi {
     return await response.json<ArticleBaseResponseDto>();
   }
 
-  public async getArticle(id: number): Promise<ArticleWithAuthorType> {
+  public async getArticle(id: number): Promise<ArticleWithRelationsType> {
     const response = await this.load(
       this.getFullEndpoint(ArticlesApiPath.$ID, { id: String(id) }),
       {
@@ -66,7 +68,23 @@ class ArticleApi extends HttpApi {
       },
     );
 
-    return await response.json<ArticleWithAuthorType>();
+    return await response.json<ArticleWithRelationsType>();
+  }
+
+  public async reactToArticle(
+    payload: ArticleReactionRequestDto,
+  ): Promise<ArticleReactionResponseDto> {
+    const response = await this.load(
+      this.getFullEndpoint(ArticlesApiPath.REACT, {}),
+      {
+        method: 'PUT',
+        contentType: ContentType.JSON,
+        payload: JSON.stringify(payload),
+        hasAuth: true,
+      },
+    );
+
+    return await response.json<ArticleReactionResponseDto>();
   }
 }
 
