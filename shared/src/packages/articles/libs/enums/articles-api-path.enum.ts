@@ -4,7 +4,7 @@ const ArticlesApiPath = {
   REACT: '/react',
   OWN: '/own',
   SHARE: '/:id/share',
-  TOKEN: '/shared',
+  SHARED_BASE: '/shared',
   SHARED: '/shared/:token',
 } as const;
 

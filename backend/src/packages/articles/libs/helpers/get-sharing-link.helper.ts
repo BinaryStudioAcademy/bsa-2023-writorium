@@ -7,7 +7,7 @@ const getSharingLink = async (id: number, origin: string): Promise<string> => {
     articleId: id,
   });
 
-  return `${origin}${ApiPath.ARTICLES}${ArticlesApiPath.TOKEN}/${token}`;
+  return `${origin}${ApiPath.ARTICLES}${ArticlesApiPath.SHARED_BASE}/${token}`;
 };
 
 export { getSharingLink };

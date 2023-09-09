@@ -356,20 +356,23 @@ class ArticleController extends Controller {
   /**
    * @swagger
    * /articles/:id:
-   *    get:
+   *    post:
    *      summary: Get articles token for sharing
    *      description: Get an existing articles token with id encoded
    *      security:
    *        - bearerAuth: []
    *      requestBody:
-   *        required: false
+   *        required: true
    *      responses:
    *        200:
    *          description: Successful operation
    *          content:
    *            application/json:
    *              schema:
-   *                $ref: '#/components/schemas/Article'
+   *                type: object
+   *                properties:
+   *                  link:
+   *                    type: string
    */
   private async share(
     options: ApiHandlerOptions<{
@@ -392,8 +395,10 @@ class ArticleController extends Controller {
    *    get:
    *      summary: Get article encoded from query
    *      description: Get an existing article with id encoded from query
+   *      security:
+   *        required: false
    *      requestBody:
-   *        required: true
+   *        required: false
    *      responses:
    *        200:
    *          description: Successful operation
