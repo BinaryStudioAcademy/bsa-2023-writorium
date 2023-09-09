@@ -11,6 +11,7 @@ import {
   Icon,
   IconButton,
 } from '~/libs/components/components.js';
+// @todo: fix import after https://github.com/BinaryStudioAcademy/bsa-2023-writorium/issues/159 is done
 import { DotLoader } from '~/libs/components/prompt-generation/libs/components/components.js';
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
 import {
