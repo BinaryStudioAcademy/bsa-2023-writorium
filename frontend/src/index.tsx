@@ -17,6 +17,7 @@ import {
   ArticleSubRoute,
   DataTooltipId,
 } from '~/libs/enums/enums.js';
+import { config } from '~/libs/packages/config/config.js';
 import { store } from '~/libs/packages/store/store.js';
 import { ArticlePage, CreateArticlePage } from '~/pages/article/article.js';
 import { Auth } from '~/pages/auth/auth.js';
@@ -31,9 +32,7 @@ import {
 
 createRoot(document.querySelector('#root') as HTMLElement).render(
   <StrictMode>
-    <GoogleOAuthProvider
-      clientId={import.meta.env.VITE_APP_GOOGLE_CLIENT_ID as string}
-    >
+    <GoogleOAuthProvider clientId={config.ENV.GOOGLE.CLIENT_ID}>
       <StoreProvider store={store.instance}>
         <RouterProvider
           routes={[

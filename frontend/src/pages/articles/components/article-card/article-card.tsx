@@ -1,4 +1,5 @@
 import { Avatar, Icon, Link } from '~/libs/components/components.js';
+import { ShareOnFacebookButton } from '~/libs/components/share-on-facebook-icon/share-on-facebook-icon.js';
 import { AppRoute, DateFormat } from '~/libs/enums/enums.js';
 import {
   getFormattedDate,
@@ -28,6 +29,7 @@ const ArticleCard: React.FC<Properties> = ({
 }) => {
   const { publishedAt, title, text, id, coverUrl } = article;
   const { comments, views, likes, dislikes } = reactions;
+  const articleUrl = window.location.href;
 
   const articleRouteById = AppRoute.ARTICLE.replace(':id', String(id));
 
@@ -88,6 +90,11 @@ const ArticleCard: React.FC<Properties> = ({
           </li>
         </ul>
         <Icon iconName="share" className={styles.icon} />
+        <ShareOnFacebookButton
+          title={title}
+          articleUrl={articleUrl}
+          iconStyle={styles.facebookIconButton}
+        />
         <Link
           to={articleRouteById as typeof AppRoute.ARTICLE}
           className={styles.readMore}

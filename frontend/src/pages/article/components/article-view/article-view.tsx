@@ -1,4 +1,5 @@
 import { IconButton, Tag } from '~/libs/components/components.js';
+import { ShareOnFacebookButton } from '~/libs/components/share-on-facebook-icon/share-on-facebook-icon.js';
 import { getValidClassNames, sanitizeHtml } from '~/libs/helpers/helpers.js';
 import { type TagType } from '~/libs/types/types.js';
 
@@ -18,6 +19,8 @@ const onButtonClick = (): void => {
 };
 
 const ArticleView: React.FC<Properties> = ({ title, text, tags, coverUrl }) => {
+  const articleUrl = window.location.href;
+
   return (
     <div
       className={getValidClassNames(styles.body, coverUrl && styles.hasCover)}
@@ -44,6 +47,11 @@ const ArticleView: React.FC<Properties> = ({ title, text, tags, coverUrl }) => {
             className={styles.iconButton}
             iconClassName={styles.icon}
             onClick={onButtonClick}
+          />
+          <ShareOnFacebookButton
+            title={title}
+            articleUrl={articleUrl}
+            iconStyle={styles.facebookIconButton}
           />
         </div>
       </div>

@@ -5,6 +5,7 @@ import {
   resetPassword,
   sendEmailResetPasswordLink,
   signIn,
+  signInWithFacebook,
   signUp,
 } from './actions.js';
 import { actions } from './auth.slice.js';
@@ -17,6 +18,7 @@ const allActions = {
   logout,
   sendEmailResetPasswordLink,
   resetPassword,
+  signInWithFacebook,
   loginWithGoogle,
 };
 
