@@ -8,27 +8,46 @@
 
 .activityWrapper {
   display: flex;
-  max-width: 830px;
+  max-width: 710px;
   overflow-x: auto;
 }
 
+.months {
+  display: grid;
+  grid-template: auto / repeat(5, 1fr) repeat(2, 0.8fr);
+  padding-bottom: 6px;
+}
+
+.months > span {
+  justify-self: center;
+}
+
 .days {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
+  display: grid;
+  grid-template: 27px repeat(7, 25px) / auto;
+  grid-template-areas: "." "mon" "." "wed" "." "fri" "." "sun";
   padding-right: 6px;
 }
 
-.months {
-  display: flex;
-  justify-content: space-between;
-  padding-bottom: 6px;
+.days > span:nth-child(1) {
+  grid-area: mon;
+}
+
+.days > span:nth-child(2) {
+  grid-area: wed;
+}
+
+.days > span:nth-child(3) {
+  grid-area: fri;
+}
+
+.days > span:nth-child(4) {
+  grid-area: sun;
 }
 
 .activity {
   display: grid;
-  grid-template-rows: repeat(7, 25px);
-  grid-template-columns: repeat(auto-fit, 25px);
+  grid-template: repeat(7, 20px) / repeat(auto-fit, 20px);
   grid-auto-flow: column;
   gap: 5px;
 }

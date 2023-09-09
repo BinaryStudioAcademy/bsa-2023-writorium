@@ -41,6 +41,7 @@ const UserActivity: React.FC<Properties> = ({ userActivity }) => {
               <span>Mon</span>
               <span>Wed</span>
               <span>Fri</span>
+              <span>Sun</span>
             </div>
             <div>
               <div className={styles.months}>
