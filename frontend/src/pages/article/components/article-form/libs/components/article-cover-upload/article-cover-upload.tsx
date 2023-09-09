@@ -47,7 +47,6 @@ const ArticleCoverUpload = <T extends FieldValues>({
   const [isUploadFileLoading, setIsUploadFileLoading] = useState(false);
 
   const error = errors[name]?.message;
-  const hasError = Boolean(error);
 
   const handleUploadArticleCover = (
     event_: ChangeEvent<HTMLInputElement>,
@@ -135,7 +134,7 @@ const ArticleCoverUpload = <T extends FieldValues>({
           </div>
         )}
       </div>
-      {hasError && <ErrorMessage error={error as string} />}
+      <ErrorMessage error={error as string} />
     </>
   );
 };
