@@ -16,6 +16,7 @@ import {
   type AuthLoginWithGoogleDto,
   type AuthRequestPasswordDto,
   type AuthResetPasswordDto,
+  type UserSignInWithFacebookResponseDto,
 } from './libs/types/types.js';
 
 type Constructor = {
@@ -50,6 +51,22 @@ class AuthApi extends HttpApi {
   ): Promise<UserSignInResponseDto> {
     const response = await this.load(
       this.getFullEndpoint(AuthApiPath.SIGN_IN, {}),
+      {
+        method: 'POST',
+        contentType: ContentType.JSON,
+        payload: JSON.stringify(payload),
+        hasAuth: false,
+      },
+    );
+
+    return await response.json<UserSignInResponseDto>();
+  }
+
+  public async signInWithFacebook(
+    payload: UserSignInWithFacebookResponseDto,
+  ): Promise<UserSignInResponseDto> {
+    const response = await this.load(
+      this.getFullEndpoint(AuthApiPath.FACEBOOK, {}),
       {
         method: 'POST',
         contentType: ContentType.JSON,

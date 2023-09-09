@@ -12,6 +12,7 @@ import {
   resetPassword,
   sendEmailResetPasswordLink,
   signIn,
+  signInWithFacebook,
   signUp,
 } from './actions.js';
 
@@ -45,6 +46,7 @@ const { reducer, actions, name } = createSlice({
         signIn.pending,
         sendEmailResetPasswordLink.pending,
         resetPassword.pending,
+        signInWithFacebook.pending,
         loginWithGoogle.pending,
       ),
       (state) => {
@@ -59,6 +61,7 @@ const { reducer, actions, name } = createSlice({
         getCurrentUser.rejected,
         logout.rejected,
         resetPassword.rejected,
+        signInWithFacebook.rejected,
         loginWithGoogle.rejected,
       ),
       (state) => {
@@ -73,6 +76,7 @@ const { reducer, actions, name } = createSlice({
         signIn.fulfilled,
         getCurrentUser.fulfilled,
         resetPassword.fulfilled,
+        signInWithFacebook.fulfilled,
         loginWithGoogle.fulfilled,
       ),
       (state, action) => {

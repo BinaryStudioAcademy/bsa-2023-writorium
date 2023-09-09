@@ -12,6 +12,7 @@ export {
   type UserGetAllResponseDto,
   type UserSignInRequestDto,
   type UserSignInResponseDto,
+  type UserSignInWithFacebookResponseDto,
   type UserSignUpRequestDto,
   type UserSignUpResponseDto,
   type UserUpdateRequestDto,
