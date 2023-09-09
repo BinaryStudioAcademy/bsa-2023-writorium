@@ -90,7 +90,7 @@ const fetchSharedArticle = createAsyncThunk<
   ArticleWithAuthorType,
   { token: string },
   AsyncThunkConfig
->(`${sliceName}/share`, (articlePayload, { extra }) => {
+>(`${sliceName}/shared`, (articlePayload, { extra }) => {
   const { articleApi } = extra;
 
   return articleApi.getByToken(articlePayload.token);
