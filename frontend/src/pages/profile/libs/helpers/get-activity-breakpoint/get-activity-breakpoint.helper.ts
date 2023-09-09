@@ -1,23 +1,28 @@
-import { ActivityBreakpoints, ActivityThresholds } from '../../enums/enums.js';
+import { ActivityBreakpoint, ActivityThreshold } from '../../enums/enums.js';
 
 const getActivityBreakpoint = (activityCount: number): string => {
-  const { breakpoint1, breakpoint2, breakpoint3, breakpoint4 } =
-    ActivityBreakpoints;
-  const { threshold1, threshold2, threshold3 } = ActivityThresholds;
   const DEFAULT_RESULT = '';
 
+  const activityBreakpointToCssClass = {
+    [ActivityBreakpoint.FIRST]: 'firstBreakpoint',
+    [ActivityBreakpoint.SECOND]: 'secondBreakpoint',
+    [ActivityBreakpoint.THIRD]: 'thirdBreakpoint',
+    [ActivityBreakpoint.FOURTH]: 'fourthBreakpoint',
+  };
+
   switch (true) {
-    case activityCount === threshold1: {
-      return breakpoint1;
+    case activityCount === ActivityThreshold.FIRST: {
+      return activityBreakpointToCssClass[ActivityBreakpoint.FIRST];
     }
-    case activityCount === threshold2: {
-      return breakpoint2;
+    case activityCount === ActivityThreshold.SECOND: {
+      return activityBreakpointToCssClass[ActivityBreakpoint.SECOND];
     }
-    case activityCount > threshold2 && activityCount < threshold3: {
-      return breakpoint3;
+    case activityCount > ActivityThreshold.SECOND &&
+      activityCount < ActivityThreshold.THIRD: {
+      return activityBreakpointToCssClass[ActivityBreakpoint.THIRD];
     }
-    case activityCount >= threshold3: {
-      return breakpoint4;
+    case activityCount >= ActivityThreshold.THIRD: {
+      return activityBreakpointToCssClass[ActivityBreakpoint.FOURTH];
     }
     default: {
       return DEFAULT_RESULT;

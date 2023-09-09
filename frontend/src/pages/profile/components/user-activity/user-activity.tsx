@@ -1,7 +1,6 @@
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
 import { type UserActivityResponseDto } from '~/packages/users/users.js';
 
-import { ActivityBreakpoints } from '../../libs/enums/enums.js';
 import {
   getActivityBreakpoint,
   getUniqueMonths,
@@ -57,25 +56,25 @@ const UserActivity: React.FC<Properties> = ({ userActivity }) => {
             <span
               className={getValidClassNames(
                 styles.breakpoint,
-                styles[ActivityBreakpoints.breakpoint1],
+                styles.firstBreakpoint,
               )}
             ></span>
             <span
               className={getValidClassNames(
                 styles.breakpoint,
-                styles[ActivityBreakpoints.breakpoint2],
+                styles.secondBreakpoint,
               )}
             ></span>
             <span
               className={getValidClassNames(
                 styles.breakpoint,
-                styles[ActivityBreakpoints.breakpoint3],
+                styles.thirdBreakpoint,
               )}
             ></span>
             <span
               className={getValidClassNames(
                 styles.breakpoint,
-                styles[ActivityBreakpoints.breakpoint4],
+                styles.fourthBreakpoint,
               )}
             ></span>
             More
