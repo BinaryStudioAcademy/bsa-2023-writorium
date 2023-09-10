@@ -1,18 +1,18 @@
 import { type Knex } from 'knex';
 
-const TableName = 'articles' as const;
+const TABLE_NAME = 'articles';
 
-const ColumnName = 'read_time' as const;
+const COLUMN_NAME = 'read_time';
 
 const up = (knex: Knex): Promise<void> => {
-  return knex.schema.alterTable(TableName, (table) => {
-    table.integer(ColumnName).unsigned().nullable();
+  return knex.schema.alterTable(TABLE_NAME, (table) => {
+    table.integer(COLUMN_NAME).unsigned().nullable();
   });
 };
 
 const down = (knex: Knex): Promise<void> => {
-  return knex.schema.alterTable(TableName, (table) => {
-    table.dropColumn(ColumnName);
+  return knex.schema.alterTable(TABLE_NAME, (table) => {
+    table.dropColumn(COLUMN_NAME);
   });
 };
 
