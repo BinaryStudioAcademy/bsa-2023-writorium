@@ -127,6 +127,7 @@ erDiagram
     dateTime created_at
     dateTime update_at
     text text "article text"
+    int read_time "nullable"
     int user_id FK
     int genre_id FK
     int prompt_id FK "nullable"
