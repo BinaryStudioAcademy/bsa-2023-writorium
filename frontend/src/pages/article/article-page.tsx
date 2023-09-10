@@ -48,7 +48,7 @@ const ArticlePage: React.FC = () => {
     { id: 5, name: 'Tech' },
   ];
 
-  const { text, title, author } = article ?? {};
+  const { text, title, author, readTime } = article ?? {};
 
   return (
     <Loader isLoading={isLoading}>
@@ -59,6 +59,7 @@ const ArticlePage: React.FC = () => {
           />
           {author && (
             <AuthorDetails
+              readTime={readTime}
               name={getFullName(author.firstName, author.lastName)}
             />
           )}

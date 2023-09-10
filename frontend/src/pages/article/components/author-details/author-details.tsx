@@ -11,7 +11,7 @@ type Properties = {
   followers?: number;
   rating?: number;
   publishedAt?: string;
-  readingTime?: string;
+  readTime?: number | null;
   genre?: string;
 };
 
@@ -20,7 +20,7 @@ const AuthorDetails: FC<Properties> = ({
   followers = 10,
   rating = 700,
   publishedAt = '2023-09-04T12:53:07.144Z',
-  readingTime = '7 min',
+  readTime,
   genre = 'Fiction',
 }) => {
   return (
@@ -54,10 +54,12 @@ const AuthorDetails: FC<Properties> = ({
                 {getFormattedDate(publishedAt, DateFormat.DAY_SHORT_MONTH)}
               </span>
             </li>
-            <li className={styles.articleInfoItem}>
-              <span className={styles.articleTimeValue}>{readingTime}</span>
-              read
-            </li>
+            {readTime && (
+              <li className={styles.articleInfoItem}>
+                <span className={styles.articleReadTimeValue}>{readTime}</span>
+                min read
+              </li>
+            )}
           </ul>
         </div>
 
