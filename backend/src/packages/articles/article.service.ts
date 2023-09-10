@@ -7,7 +7,10 @@ import { GenreEntity } from '../genres/genre.entity.js';
 import { type GenreRepository } from '../genres/genre.repository.js';
 import { ArticleEntity } from './article.entity.js';
 import { type ArticleRepository } from './article.repository.js';
-import { getDetectArticleGenreCompletionConfig } from './libs/helpers/helpers.js';
+import {
+  getArticleReadTimeCompletionConfig,
+  getDetectArticleGenreCompletionConfig,
+} from './libs/helpers/helpers.js';
 import {
   type ArticleBaseResponseDto,
   type ArticleCreateDto,
@@ -33,7 +36,7 @@ class ArticleService implements IService {
     this.genreRepository = genreRepository;
   }
 
-  public async detectArticleGenreFromText(
+  private async detectArticleGenreFromText(
     text: string,
   ): Promise<DetectedArticleGenre | null> {
     const genresJSON = await this.openAIService.createCompletion(
@@ -48,6 +51,21 @@ class ArticleService implements IService {
       safeJSONParse<DetectedArticleGenre[]>(genresJSON) ?? [];
 
     return firstParsedGenre ?? null;
+  }
+
+  private async getArticleReadTime(text: string): Promise<number | null> {
+    const readTimeJSON = await this.openAIService.createCompletion(
+      getArticleReadTimeCompletionConfig(text),
+    );
+
+    if (!readTimeJSON) {
+      return null;
+    }
+
+    const { readTime = null } =
+      safeJSONParse<{ readTime: number }>(readTimeJSON) ?? {};
+
+    return readTime;
   }
 
   private async getGenreIdForArticle(
