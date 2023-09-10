@@ -58,7 +58,6 @@ export {
   articleReactionValidationSchema,
 } from './packages/article-reactions/article-reactions.js';
 export {
-  type ArticleBaseResponseDto,
   type ArticleCreateDto,
   articleCreateValidationSchema,
   type ArticleEntityType,

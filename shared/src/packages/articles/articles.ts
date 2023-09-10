@@ -1,6 +1,5 @@
 export { ArticlesApiPath } from './libs/enums/enums.js';
 export {
-  type ArticleBaseResponseDto,
   type ArticleCreateDto,
   type ArticleEntityType,
   type ArticleGetAllResponseDto,

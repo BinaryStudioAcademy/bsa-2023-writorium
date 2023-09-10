@@ -1,11 +1,11 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { type ArticlesFilters } from 'shared/build/index.js';
 
 import { type AsyncThunkConfig } from '~/libs/types/types.js';
 import {
-  type ArticleBaseResponseDto,
   type ArticleGetAllResponseDto,
   type ArticleRequestDto,
+  type ArticlesFilters,
+  type ArticleWithAuthorType,
 } from '~/packages/articles/articles.js';
 import { type PromptRequestDto } from '~/packages/prompts/prompts.js';
 
@@ -32,7 +32,7 @@ const fetchOwn = createAsyncThunk<
 });
 
 const createArticle = createAsyncThunk<
-  ArticleBaseResponseDto,
+  ArticleWithAuthorType,
   {
     articlePayload: ArticleRequestDto;
     generatedPrompt: PromptRequestDto | null;
@@ -58,7 +58,7 @@ const createArticle = createAsyncThunk<
 );
 
 const getArticle = createAsyncThunk<
-  ArticleBaseResponseDto,
+  ArticleWithAuthorType,
   number,
   AsyncThunkConfig
 >(`${sliceName}/getArticle`, (id, { extra }) => {

@@ -5,7 +5,6 @@ import { type IStorage } from '~/libs/packages/storage/storage.js';
 
 import { ArticlesApiPath } from './libs/enums/enums.js';
 import {
-  type ArticleBaseResponseDto,
   type ArticleGetAllResponseDto,
   type ArticleRequestDto,
   type ArticlesFilters,
@@ -57,7 +56,7 @@ class ArticleApi extends HttpApi {
 
   public async create(
     payload: ArticleRequestDto,
-  ): Promise<ArticleBaseResponseDto> {
+  ): Promise<ArticleWithAuthorType> {
     const response = await this.load(
       this.getFullEndpoint(ArticlesApiPath.ROOT, {}),
       {
@@ -68,7 +67,7 @@ class ArticleApi extends HttpApi {
       },
     );
 
-    return await response.json<ArticleBaseResponseDto>();
+    return await response.json<ArticleWithAuthorType>();
   }
 
   public async getArticle(id: number): Promise<ArticleWithAuthorType> {
