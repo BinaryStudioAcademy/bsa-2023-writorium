@@ -36,8 +36,8 @@ class ArticleRepository implements IArticleRepository {
 
     return {
       total: articles.total,
-      items: articles.results.map((article) =>
-        ArticleEntity.initializeWithAuthor({
+      items: articles.results.map((article) => {
+        return ArticleEntity.initializeWithAuthor({
           ...article,
           coverUrl: article.cover?.url,
           genre: article.genre?.name,
@@ -49,8 +49,8 @@ class ArticleRepository implements IArticleRepository {
                 prop: article.prompt.prop,
               }
             : null,
-        }),
-      ),
+        });
+      }),
     };
   }
 
