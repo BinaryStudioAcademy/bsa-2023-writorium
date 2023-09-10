@@ -11,6 +11,7 @@ export {
   AppEnvironment,
   ContentType,
   DateFormat,
+  ExceptionMessage,
   ServerErrorType,
   TimeUnit,
 } from 'shared/build/index.js';

@@ -1,7 +1,12 @@
-import { ContentType, ServerErrorType } from '~/libs/enums/enums.js';
+import {
+  AppRoute,
+  ContentType,
+  ExceptionMessage,
+  ServerErrorType,
+} from '~/libs/enums/enums.js';
 import { configureString, constructUrl } from '~/libs/helpers/helpers.js';
 import {
-  type HttpCode,
+  HttpCode,
   HttpError,
   HttpHeader,
   type IHttp,
@@ -108,6 +113,14 @@ class HttpApi implements IHttpApi {
         message: response.statusText,
       }),
     )) as ServerErrorResponse;
+
+    if (
+      response.status === HttpCode.UNAUTHORIZED &&
+      parsedException.message === ExceptionMessage.INVALID_TOKEN
+    ) {
+      await this.storage.drop(StorageKey.TOKEN);
+      window.location.assign(AppRoute.SIGN_IN);
+    }
 
     const isCustomException = Boolean(parsedException.errorType);
 
