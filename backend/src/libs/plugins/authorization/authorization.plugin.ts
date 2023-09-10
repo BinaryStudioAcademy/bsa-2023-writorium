@@ -52,9 +52,9 @@ const authorization = fp(
         throw new UnauthorizedError(ExceptionMessage.AUTHORIZATION_HEADER);
       }
 
-      const { userId } = await token.verifyToken<{ userId?: number }>(
-        requestToken,
-      );
+      const { userId } = await token.verifyToken<{
+        userId?: number;
+      }>(requestToken);
 
       if (!userId) {
         throw new UnauthorizedError(ExceptionMessage.INVALID_TOKEN);

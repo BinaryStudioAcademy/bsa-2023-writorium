@@ -1,6 +1,8 @@
 import { type JWTPayload, jwtVerify, SignJWT } from 'jose';
 
 import { type TokenExpirationTime } from '~/libs/enums/enums.js';
+import { ExceptionMessage } from '~/libs/enums/enums.js';
+import { UnauthorizedError } from '~/libs/packages/exceptions/exceptions.js';
 import { type ValueOf } from '~/libs/types/types.js';
 
 import { type IConfig } from '../config/config.js';
@@ -30,9 +32,13 @@ class Token implements IToken {
   public async verifyToken<T extends Record<string, unknown>>(
     token: string,
   ): Promise<JWTPayload & T> {
-    const { payload } = await jwtVerify(token, this.secret);
+    try {
+      const { payload } = await jwtVerify(token, this.secret);
 
-    return payload as JWTPayload & T;
+      return payload as JWTPayload & T;
+    } catch {
+      throw new UnauthorizedError(ExceptionMessage.INVALID_TOKEN);
+    }
   }
 }
 

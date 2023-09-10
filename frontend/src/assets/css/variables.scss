@@ -30,11 +30,15 @@
   --picasso: #ffec99;
   --madang: #b2f2bb;
   --overlay-alpha-50: rgb(0 0 0 / 50%);
+  --pale-grey: #dbdbdb;
 
   /* z-index */
   --z-index-level-one: 100;
   --z-index-tooltip: 1000;
   --achievement-columns: 3;
+
+  /* header height */
+  --header-height: 105px;
 }
 
 input {
