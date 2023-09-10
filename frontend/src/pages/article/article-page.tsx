@@ -11,7 +11,7 @@ import {
 import { type ArticleType, type TagType } from '~/libs/types/types.js';
 import { actions } from '~/slices/articles/articles.js';
 
-import { ArticleView, AuthorDetails } from './components/components.js';
+import { ArticleDetails, ArticleView } from './components/components.js';
 import styles from './styles.module.scss';
 
 const ArticlePage: React.FC = () => {
@@ -58,9 +58,9 @@ const ArticlePage: React.FC = () => {
             article={{ text, title, tags: MOCKED_TAGS } as ArticleType}
           />
           {author && (
-            <AuthorDetails
+            <ArticleDetails
               readTime={readTime}
-              name={getFullName(author.firstName, author.lastName)}
+              authorName={getFullName(author.firstName, author.lastName)}
             />
           )}
         </div>
