@@ -1,6 +1,6 @@
 import { type ValueOf } from 'shared/build';
 
-import { ILoader } from '~/libs/enums/enums.js';
+import { type ILoader } from '~/libs/enums/enums.js';
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
 
 import styles from './styles.module.scss';
@@ -20,29 +20,28 @@ const Loader: React.FC<Properties> = ({
   hasOverlay,
   loaderType,
 }) => {
-  if (!isLoading) {
-    return children;
-  }
+  const loaderComponents: Record<string, React.ReactNode> = {
+    'circular': (
+      <div
+        className={getValidClassNames(styles.circularLoader, className)}
+      ></div>
+    ),
+    'dots': (
+      <div className={getValidClassNames(styles.dotFlashing, className)}></div>
+    ),
+  };
 
-  if (hasOverlay && loaderType === ILoader.CIRCULAR) {
+  if (isLoading && loaderComponents[loaderType]) {
+    const containerClassName = hasOverlay
+      ? styles.overlayContainer
+      : styles.notOverlayContainer;
+
     return (
-      <div className={styles.circularContainer}>
-        <div
-          className={getValidClassNames(styles.circularLoader, className)}
-        ></div>
-      </div>
+      <div className={containerClassName}>{loaderComponents[loaderType]}</div>
     );
   }
 
-  if (!hasOverlay && loaderType === ILoader.DOTS) {
-    return (
-      <div className={styles.dotsContainer}>
-        <div className={styles.dotFlashing}></div>
-      </div>
-    );
-  }
-
-  return null;
+  return <>{children}</>;
 };
 
 export { Loader };
