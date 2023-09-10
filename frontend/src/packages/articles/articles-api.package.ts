@@ -74,7 +74,7 @@ class ArticleApi extends HttpApi {
 
   public async share(id: string): Promise<{ link: string }> {
     const response = await this.load(
-      this.getFullEndpoint(ArticlesApiPath.SHARE, { id }),
+      this.getFullEndpoint(ArticlesApiPath.$ID_SHARE, { id }),
       {
         method: 'POST',
         contentType: ContentType.JSON,
@@ -92,7 +92,7 @@ class ArticleApi extends HttpApi {
 
   public async getByToken(token: string): Promise<ArticleBaseResponseDto> {
     const response = await this.load(
-      this.getFullEndpoint(ArticlesApiPath.SHARED, { token }),
+      this.getFullEndpoint(ArticlesApiPath.SHARED_$TOKEN, { token }),
       {
         method: 'GET',
         contentType: ContentType.JSON,

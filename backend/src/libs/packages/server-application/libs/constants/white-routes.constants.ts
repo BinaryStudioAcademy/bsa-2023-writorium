@@ -28,6 +28,12 @@ const STRING_WHITE_ROUTES: readonly WhiteRoute<string>[] = [
     methods: ['POST'],
   },
   {
+    routerPath: `/api/v1${
+      ApiPath.ARTICLES
+    }${ArticlesApiPath.SHARED_$TOKEN.replace(':token', '*')}`,
+    methods: ['GET'],
+  },
+  {
     routerPath: '/v1/documentation',
     methods: ['GET'],
   },
@@ -41,10 +47,6 @@ const STRING_WHITE_ROUTES: readonly WhiteRoute<string>[] = [
   },
   {
     routerPath: '/v1/documentation/json',
-    methods: ['GET'],
-  },
-  {
-    routerPath: `/api/v1/articles${ArticlesApiPath.SHARED_BASE}/*`,
     methods: ['GET'],
   },
 ];

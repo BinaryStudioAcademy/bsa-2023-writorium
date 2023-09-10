@@ -149,7 +149,7 @@ class ArticleController extends Controller {
     });
 
     this.addRoute({
-      path: ArticlesApiPath.SHARE,
+      path: ArticlesApiPath.$ID_SHARE,
       method: 'POST',
       handler: (options) =>
         this.share(
@@ -160,7 +160,7 @@ class ArticleController extends Controller {
     });
 
     this.addRoute({
-      path: ArticlesApiPath.SHARED,
+      path: ArticlesApiPath.SHARED_$TOKEN,
       method: 'GET',
       handler: (options) =>
         this.encryptShared(
