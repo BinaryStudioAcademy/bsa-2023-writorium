@@ -47,13 +47,15 @@ const ArticleForm: React.FC = () => {
             articlePayload: updatedPayload,
             generatedPrompt: getGeneratedPromptPayload(generatedPrompt),
           }),
-        );
-
-        navigate(
-          isArticlePublish
-            ? AppRoute.ARTICLES
-            : `${AppRoute.ARTICLES}/${ArticleSubRoute.MY_ARTICLES}`,
-        );
+        )
+          .unwrap()
+          .then(() => {
+            navigate(
+              isArticlePublish
+                ? AppRoute.ARTICLES
+                : `${AppRoute.ARTICLES}/${ArticleSubRoute.MY_ARTICLES}`,
+            );
+          });
       },
     [dispatch, generatedPrompt, navigate],
   );
