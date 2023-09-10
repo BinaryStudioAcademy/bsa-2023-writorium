@@ -89,6 +89,14 @@ class HttpApi implements IHttpApi {
       headers.append(HttpHeader.CONTENT_TYPE, contentType);
     }
 
+    const sharedArticleToken = await this.storage.get<string>(
+      StorageKey.SHARED_ARTICLE_TOKEN,
+    );
+
+    if (sharedArticleToken) {
+      headers.append(HttpHeader.SHARED_ARTICLE_TOKEN, sharedArticleToken);
+    }
+
     if (hasAuth) {
       const token = await this.storage.get<string>(StorageKey.TOKEN);
 

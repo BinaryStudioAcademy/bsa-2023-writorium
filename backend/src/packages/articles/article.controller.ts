@@ -153,7 +153,7 @@ class ArticleController extends Controller {
     });
 
     this.addRoute({
-      path: ArticlesApiPath.SHARED_$TOKEN,
+      path: ArticlesApiPath.SHARED_BASE,
       method: 'GET',
       handler: (options) =>
         this.findShared(
@@ -404,13 +404,13 @@ class ArticleController extends Controller {
    *                $ref: '#/components/schemas/Article'
    */
   private async findShared(
-    options: ApiHandlerOptions<{
-      params: { token: string };
-    }>,
+    options: ApiHandlerOptions,
   ): Promise<ApiHandlerResponse> {
     return {
       status: HttpCode.OK,
-      payload: await this.articleService.findShared(options.params.token),
+      payload: await this.articleService.findShared(
+        options.sharedArticleToken as string,
+      ),
     };
   }
 }

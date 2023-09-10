@@ -28,9 +28,7 @@ const STRING_WHITE_ROUTES: readonly WhiteRoute<string>[] = [
     methods: ['POST'],
   },
   {
-    routerPath: `/api/v1${
-      ApiPath.ARTICLES
-    }${ArticlesApiPath.SHARED_$TOKEN.replace(':token', '*')}`,
+    routerPath: `/api/v1${ApiPath.ARTICLES}${ArticlesApiPath.SHARED_BASE}`,
     methods: ['GET'],
   },
   {

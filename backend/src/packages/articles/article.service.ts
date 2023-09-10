@@ -170,7 +170,7 @@ class ArticleService implements IService {
   }
 
   public async share(id: number, origin: string): Promise<{ link: string }> {
-    const token = await articleToken.createInfiniteToken({
+    const token = await articleToken.create({
       articleId: id,
     });
 

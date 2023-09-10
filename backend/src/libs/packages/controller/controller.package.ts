@@ -57,6 +57,8 @@ class Controller implements IController {
       fileToUpload,
       user,
       origin: headers.origin,
+      host: headers.host,
+      sharedArticleToken: headers['shared-article-token'] as string,
     };
   }
 }
