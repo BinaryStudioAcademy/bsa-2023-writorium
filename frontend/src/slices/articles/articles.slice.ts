@@ -28,10 +28,6 @@ const { reducer, actions, name } = createSlice({
     },
   },
   extraReducers(builder) {
-    builder.addCase(createArticle.fulfilled, (state, action) => {
-      state.articles = [...state.articles, action.payload];
-      state.dataStatus = DataStatus.FULFILLED;
-    });
     builder.addCase(getArticle.fulfilled, (state, action) => {
       state.dataStatus = DataStatus.FULFILLED;
       state.article = action.payload;
