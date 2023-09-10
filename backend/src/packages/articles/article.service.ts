@@ -146,10 +146,12 @@ class ArticleService implements IService {
     payload: ArticleCreateDto,
   ): Promise<ArticleBaseResponseDto> {
     const genreId = await this.getGenreIdToSet(payload);
+    const readTime = await this.getArticleReadTime(payload.text);
 
     const article = await this.articleRepository.create(
       ArticleEntity.initializeNew({
         genreId,
+        readTime,
         title: payload.title,
         text: payload.text,
         userId: payload.userId,
@@ -173,10 +175,16 @@ class ArticleService implements IService {
       });
     }
 
+    const updatedReadTime =
+      payload.text && payload.text !== article.text
+        ? await this.getArticleReadTime(payload.text)
+        : article.readTime;
+
     const updatedArticle = await this.articleRepository.update(
       ArticleEntity.initialize({
         ...article,
         ...payload,
+        readTime: updatedReadTime,
       }),
     );
 
