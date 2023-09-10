@@ -2,7 +2,7 @@ import { type Knex } from 'knex';
 
 const TableName = 'articles' as const;
 
-const ColumnName = 'readTime' as const;
+const ColumnName = 'read_time' as const;
 
 const up = (knex: Knex): Promise<void> => {
   return knex.schema.alterTable(TableName, (table) => {
