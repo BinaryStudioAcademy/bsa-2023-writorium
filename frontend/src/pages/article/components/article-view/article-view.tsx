@@ -1,6 +1,9 @@
 import ArticleBanner from '~/assets/img/article-banner.jpg';
-import { IconButton, Tag } from '~/libs/components/components.js';
-import { ShareOnFacebookButton } from '~/libs/components/share-on-facebook-icon/share-on-facebook-icon.js';
+import {
+  IconButton,
+  ShareOnFacebookButton,
+  Tag,
+} from '~/libs/components/components.js';
 import { sanitizeHtml } from '~/libs/helpers/helpers.js';
 import { type ArticleType } from '~/libs/types/types.js';
 
