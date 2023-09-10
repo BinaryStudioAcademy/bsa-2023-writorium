@@ -18,6 +18,7 @@ class ArticleEntity implements IEntity {
   private 'author'?: UserDetailsResponseDto;
   private 'prompt'?: ArticleWithAuthorType['prompt'];
   private 'genre'?: string;
+  private 'readTime': number | null;
 
   private constructor({
     id,
@@ -30,6 +31,7 @@ class ArticleEntity implements IEntity {
     author,
     prompt,
     genre,
+    readTime,
   }: WithNullableKeys<ArticleWithAuthorType, 'id'>) {
     this.id = id;
     this.title = title;
@@ -41,6 +43,7 @@ class ArticleEntity implements IEntity {
     this.author = author;
     this.prompt = prompt;
     this.genre = genre;
+    this.readTime = readTime;
   }
 
   public static initialize({
@@ -51,6 +54,7 @@ class ArticleEntity implements IEntity {
     promptId,
     genreId,
     publishedAt,
+    readTime,
   }: ArticleEntityType): ArticleEntity {
     return new ArticleEntity({
       id,
@@ -60,6 +64,7 @@ class ArticleEntity implements IEntity {
       promptId,
       genreId,
       publishedAt,
+      readTime,
     });
   }
 
@@ -74,6 +79,7 @@ class ArticleEntity implements IEntity {
     author,
     prompt,
     genre,
+    readTime,
   }: ArticleWithAuthorType): ArticleEntity {
     return new ArticleEntity({
       id,
@@ -89,6 +95,7 @@ class ArticleEntity implements IEntity {
       },
       prompt,
       genre,
+      readTime,
     });
   }
 
@@ -98,6 +105,7 @@ class ArticleEntity implements IEntity {
     userId,
     promptId,
     genreId,
+    readTime,
     publishedAt,
   }: Omit<ArticleEntityType, 'id'>): ArticleEntity {
     return new ArticleEntity({
@@ -108,6 +116,7 @@ class ArticleEntity implements IEntity {
       promptId,
       genreId,
       publishedAt,
+      readTime,
     });
   }
 
@@ -119,6 +128,7 @@ class ArticleEntity implements IEntity {
       userId: this.userId,
       promptId: this.promptId,
       genreId: this.genreId,
+      readTime: this.readTime,
       publishedAt: this.publishedAt,
     };
   }
@@ -135,6 +145,7 @@ class ArticleEntity implements IEntity {
       author: this.author,
       prompt: this.prompt,
       genre: this.genre,
+      readTime: this.readTime,
     };
   }
 
@@ -145,6 +156,7 @@ class ArticleEntity implements IEntity {
       userId: this.userId,
       promptId: this.promptId,
       genreId: this.genreId,
+      readTime: this.readTime,
       publishedAt: this.publishedAt,
     };
   }
