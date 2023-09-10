@@ -1,7 +1,7 @@
+import { Loader } from '~/libs/components/components.js';
 import { type ValueOf } from '~/libs/types/types.js';
 import { type PromptCategory } from '~/packages/prompts/libs/enums/enums.js';
 
-import { DotLoader } from '../components.js';
 import styles from './styles.module.scss';
 
 type Properties = {
@@ -16,9 +16,9 @@ const PromptCard: React.FC<Properties> = ({ category, text, isGenerating }) => (
       <span className={styles.categoryText}>{category}</span>
     </div>
     <div className={styles.prompt}>
-      <DotLoader isLoading={isGenerating}>
+      <Loader isLoading={isGenerating} hasOverlay={false} loaderType="dots">
         <p className={styles.promptText}>{text}</p>
-      </DotLoader>
+      </Loader>
     </div>
   </li>
 );
