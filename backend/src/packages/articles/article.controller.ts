@@ -1,21 +1,14 @@
-import {
-  ApiPath,
-  ArticlesApiPath,
-  ExceptionMessage,
-} from '~/libs/enums/enums.js';
+import { ApiPath, ArticlesApiPath } from '~/libs/enums/enums.js';
 import {
   type ApiHandlerOptions,
   type ApiHandlerResponse,
   Controller,
 } from '~/libs/packages/controller/controller.js';
-import { NotFoundError } from '~/libs/packages/exceptions/exceptions.js';
 import { HttpCode } from '~/libs/packages/http/http.js';
 import { type ILogger } from '~/libs/packages/logger/logger.js';
-import { token as articleToken } from '~/libs/packages/token/token.js';
 import { type ArticleService } from '~/packages/articles/article.service.js';
 import { type UserAuthResponseDto } from '~/packages/users/users.js';
 
-import { getSharingLink } from './libs/helpers/helpers.js';
 import {
   type ArticleRequestDto,
   type ArticlesFilters,
@@ -163,7 +156,7 @@ class ArticleController extends Controller {
       path: ArticlesApiPath.SHARED_$TOKEN,
       method: 'GET',
       handler: (options) =>
-        this.encryptShared(
+        this.findShared(
           options as ApiHandlerOptions<{
             params: { token: string };
           }>,
@@ -383,13 +376,12 @@ class ArticleController extends Controller {
       body: { id: number };
     }>,
   ): Promise<ApiHandlerResponse> {
-    const { origin, body } = options;
-
-    const link = await getSharingLink(body.id, origin as string);
-
     return {
       status: HttpCode.OK,
-      payload: { link: link },
+      payload: await this.articleService.share(
+        options.body.id,
+        options.origin as string,
+      ),
     };
   }
 
@@ -411,24 +403,14 @@ class ArticleController extends Controller {
    *              schema:
    *                $ref: '#/components/schemas/Article'
    */
-  private async encryptShared(
+  private async findShared(
     options: ApiHandlerOptions<{
       params: { token: string };
     }>,
   ): Promise<ApiHandlerResponse> {
-    const encoded = await articleToken.verifyToken(options.params.token);
-
-    const articleFound = await this.articleService.find(
-      Number(encoded.articleId),
-    );
-
-    if (!articleFound) {
-      throw new NotFoundError(ExceptionMessage.ARTICLE_NOT_FOUND);
-    }
-
     return {
       status: HttpCode.OK,
-      payload: articleFound,
+      payload: await this.articleService.findShared(options.params.token),
     };
   }
 }

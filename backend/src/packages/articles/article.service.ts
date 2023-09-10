@@ -1,12 +1,16 @@
+import { ApiPath, ExceptionMessage } from '~/libs/enums/enums.js';
 import { ApplicationError } from '~/libs/exceptions/exceptions.js';
 import { safeJSONParse } from '~/libs/helpers/helpers.js';
 import { type IService } from '~/libs/interfaces/service.interface.js';
+import { NotFoundError } from '~/libs/packages/exceptions/exceptions.js';
 import { type OpenAIService } from '~/libs/packages/openai/openai.package.js';
+import { token as articleToken } from '~/libs/packages/token/token.js';
 
 import { GenreEntity } from '../genres/genre.entity.js';
 import { type GenreRepository } from '../genres/genre.repository.js';
 import { ArticleEntity } from './article.entity.js';
 import { type ArticleRepository } from './article.repository.js';
+import { SHARED_$TOKEN } from './libs/constants/constants.js';
 import { getDetectArticleGenreCompletionConfig } from './libs/helpers/helpers.js';
 import {
   type ArticleBaseResponseDto,
@@ -163,6 +167,31 @@ class ArticleService implements IService {
     );
 
     return updatedArticle.toObject();
+  }
+
+  public async share(id: number, origin: string): Promise<{ link: string }> {
+    const token = await articleToken.createInfiniteToken({
+      articleId: id,
+    });
+
+    return {
+      link: `${origin}${ApiPath.ARTICLES}${SHARED_$TOKEN.replace(
+        ':token',
+        token,
+      )}`,
+    };
+  }
+
+  public async findShared(token: string): Promise<ArticleWithAuthorType> {
+    const encoded = await articleToken.verifyToken(token);
+
+    const articleFound = await this.find(Number(encoded.articleId));
+
+    if (!articleFound) {
+      throw new NotFoundError(ExceptionMessage.ARTICLE_NOT_FOUND);
+    }
+
+    return articleFound;
   }
 
   public delete(): Promise<boolean> {
