@@ -9,6 +9,7 @@ export {
   AppEnvironment,
   ContentType,
   DateFormat,
+  ExceptionMessage,
   ServerErrorType,
   SortingOrder,
   TimeUnit,
