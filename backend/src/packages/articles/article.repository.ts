@@ -52,13 +52,11 @@ class ArticleRepository implements IArticleRepository {
                 prop: article.prompt.prop,
               }
             : null,
-          author: article.author
-            ? {
-                firstName: article.author.firstName,
-                lastName: article.author.lastName,
-                avatarUrl: article.author.avatar?.url ?? null,
-              }
-            : null,
+          author: {
+            firstName: article.author.firstName,
+            lastName: article.author.lastName,
+            avatarUrl: article.author.avatar?.url ?? null,
+          },
         });
       }),
     };
@@ -86,13 +84,11 @@ class ArticleRepository implements IArticleRepository {
             prop: article.prompt.prop,
           }
         : null,
-      author: article.author
-        ? {
-            firstName: article.author.firstName,
-            lastName: article.author.lastName,
-            avatarUrl: article.author.avatar?.url ?? null,
-          }
-        : null,
+      author: {
+        firstName: article.author.firstName,
+        lastName: article.author.lastName,
+        avatarUrl: article.author.avatar?.url ?? null,
+      },
     });
   }
 
@@ -157,13 +153,11 @@ class ArticleRepository implements IArticleRepository {
             prop: article.prompt.prop,
           }
         : null,
-      author: article.author
-        ? {
-            firstName: article.author.firstName,
-            lastName: article.author.lastName,
-            avatarUrl: article.author.avatar?.url ?? null,
-          }
-        : null,
+      author: {
+        firstName: article.author.firstName,
+        lastName: article.author.lastName,
+        avatarUrl: article.author.avatar?.url ?? null,
+      },
     });
   }
 
