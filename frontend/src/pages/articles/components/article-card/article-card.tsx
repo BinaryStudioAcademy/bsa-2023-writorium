@@ -1,4 +1,3 @@
-import ArticlePreview from '~/assets/img/article-preview.png';
 import { Avatar, Icon, Link } from '~/libs/components/components.js';
 import { ShareOnFacebookButton } from '~/libs/components/share-on-facebook-icon/share-on-facebook-icon.js';
 import { AppRoute, DateFormat } from '~/libs/enums/enums.js';
@@ -28,7 +27,7 @@ const ArticleCard: React.FC<Properties> = ({
   tags,
   reactions,
 }) => {
-  const { publishedAt, title, text, id } = article;
+  const { publishedAt, title, text, id, coverUrl } = article;
   const { comments, views, likes, dislikes } = reactions;
   const articleUrl = window.location.href;
 
@@ -56,7 +55,9 @@ const ArticleCard: React.FC<Properties> = ({
         </div>
         <Icon iconName="favorite" className={styles.pointerIcon} />
       </div>
-      <div className={styles.body}>
+      <div
+        className={getValidClassNames(styles.body, coverUrl && styles.hasCover)}
+      >
         <div className={styles.articleInfo}>
           <h4 className={styles.title}>{title}</h4>
           <article
@@ -65,11 +66,9 @@ const ArticleCard: React.FC<Properties> = ({
           ></article>
           <Tags tags={tags} />
         </div>
-        <img
-          src={ArticlePreview}
-          alt="article preview"
-          className={styles.preview}
-        />
+        {coverUrl && (
+          <img src={coverUrl} alt="article cover" className={styles.cover} />
+        )}
       </div>
       <div className={styles.footer}>
         <ul className={styles.reactions}>
