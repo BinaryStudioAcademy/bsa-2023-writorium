@@ -1,8 +1,6 @@
-import { CustomHttpHeader } from '~/libs/enums/enums.js';
 import { type ILogger } from '~/libs/packages/logger/logger.js';
 import { type ServerAppRouteParameters } from '~/libs/packages/server-application/server-application.js';
 
-import { processRefererHeader } from './libs/helpers/helpers.js';
 import { type IController } from './libs/interfaces/interfaces.js';
 import {
   type ApiHandler,
@@ -59,10 +57,7 @@ class Controller implements IController {
       fileToUpload,
       user,
       origin: headers.origin,
-      refererOrigin: processRefererHeader(headers.referer),
-      sharedArticleToken: headers[
-        CustomHttpHeader.SHARED_ARTICLE_TOKEN
-      ] as string,
+      headers,
     };
   }
 }

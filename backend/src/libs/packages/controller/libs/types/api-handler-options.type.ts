@@ -1,3 +1,5 @@
+import { type IncomingHttpHeaders } from 'node:http';
+
 import { type FileToUpload } from '~/libs/plugins/file-upload/libs/types/types.js';
 import { type UserAuthResponseDto } from '~/packages/users/users.js';
 
@@ -8,8 +10,7 @@ type DefaultApiHandlerOptions = {
   fileToUpload?: FileToUpload | null;
   user?: UserAuthResponseDto | null;
   origin?: string;
-  refererOrigin?: string;
-  sharedArticleToken?: string;
+  headers?: IncomingHttpHeaders;
 };
 
 type ApiHandlerOptions<
@@ -21,8 +22,7 @@ type ApiHandlerOptions<
   fileToUpload: T['fileToUpload'];
   user: T['user'];
   origin: T['origin'];
-  refererOrigin: T['refererOrigin'];
-  sharedArticleToken: T['sharedArticleToken'];
+  headers: T['headers'];
 };
 
 export { type ApiHandlerOptions };

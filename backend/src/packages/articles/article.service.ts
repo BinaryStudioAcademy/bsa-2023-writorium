@@ -1,4 +1,10 @@
-import { ApiPath, ExceptionMessage } from '~/libs/enums/enums.js';
+import { type IncomingHttpHeaders } from 'node:http';
+
+import {
+  ApiPath,
+  CustomHttpHeader,
+  ExceptionMessage,
+} from '~/libs/enums/enums.js';
 import { ApplicationError } from '~/libs/exceptions/exceptions.js';
 import { safeJSONParse } from '~/libs/helpers/helpers.js';
 import { type IService } from '~/libs/interfaces/service.interface.js';
@@ -11,7 +17,10 @@ import { type GenreRepository } from '../genres/genre.repository.js';
 import { ArticleEntity } from './article.entity.js';
 import { type ArticleRepository } from './article.repository.js';
 import { SHARED_$TOKEN } from './libs/constants/constants.js';
-import { getDetectArticleGenreCompletionConfig } from './libs/helpers/helpers.js';
+import {
+  getDetectArticleGenreCompletionConfig,
+  processRefererHeader,
+} from './libs/helpers/helpers.js';
 import {
   type ArticleBaseResponseDto,
   type ArticleCreateDto,
@@ -172,11 +181,13 @@ class ArticleService implements IService {
 
   public async getArticleSharingLink(
     id: number,
-    refererOrigin: string,
+    referer: string,
   ): Promise<{ link: string }> {
     const token = await articleToken.create({
       articleId: id,
     });
+
+    const refererOrigin = processRefererHeader(referer);
 
     return {
       link: `${refererOrigin}${ApiPath.ARTICLES}${SHARED_$TOKEN.replace(
@@ -186,7 +197,10 @@ class ArticleService implements IService {
     };
   }
 
-  public async findShared(token: string): Promise<ArticleWithAuthorType> {
+  public async findShared(
+    headers: IncomingHttpHeaders,
+  ): Promise<ArticleWithAuthorType> {
+    const token = headers[CustomHttpHeader.SHARED_ARTICLE_TOKEN] as string;
     const encoded = await articleToken.verifyToken(token);
 
     const articleFound = await this.find(Number(encoded.articleId));

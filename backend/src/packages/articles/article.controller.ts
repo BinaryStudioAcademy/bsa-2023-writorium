@@ -1,3 +1,5 @@
+import { type IncomingHttpHeaders } from 'node:http';
+
 import { ApiPath, ArticlesApiPath } from '~/libs/enums/enums.js';
 import {
   type ApiHandlerOptions,
@@ -148,6 +150,7 @@ class ArticleController extends Controller {
         this.share(
           options as ApiHandlerOptions<{
             params: { id: number };
+            headers: IncomingHttpHeaders;
           }>,
         ),
     });
@@ -155,7 +158,12 @@ class ArticleController extends Controller {
     this.addRoute({
       path: ArticlesApiPath.SHARED_BASE,
       method: 'GET',
-      handler: (options) => this.findShared(options),
+      handler: (options) =>
+        this.findShared(
+          options as ApiHandlerOptions<{
+            headers: IncomingHttpHeaders;
+          }>,
+        ),
     });
   }
 
@@ -369,13 +377,14 @@ class ArticleController extends Controller {
   private async share(
     options: ApiHandlerOptions<{
       params: { id: number };
+      headers: IncomingHttpHeaders;
     }>,
   ): Promise<ApiHandlerResponse> {
     return {
       status: HttpCode.OK,
       payload: await this.articleService.getArticleSharingLink(
         options.params.id,
-        options.refererOrigin as string,
+        options.headers.referer as string,
       ),
     };
   }
@@ -399,13 +408,13 @@ class ArticleController extends Controller {
    *                $ref: '#/components/schemas/Article'
    */
   private async findShared(
-    options: ApiHandlerOptions,
+    options: ApiHandlerOptions<{
+      headers: IncomingHttpHeaders;
+    }>,
   ): Promise<ApiHandlerResponse> {
     return {
       status: HttpCode.OK,
-      payload: await this.articleService.findShared(
-        options.sharedArticleToken as string,
-      ),
+      payload: await this.articleService.findShared(options.headers),
     };
   }
 }
