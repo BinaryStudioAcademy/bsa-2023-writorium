@@ -83,8 +83,16 @@ class ArticleRepository implements IArticleRepository {
   }
 
   public async create(entity: ArticleEntity): Promise<ArticleEntity> {
-    const { title, text, promptId, genreId, userId, publishedAt, coverId } =
-      entity.toNewObject();
+    const {
+      title,
+      text,
+      promptId,
+      genreId,
+      userId,
+      publishedAt,
+      coverId,
+      readTime,
+    } = entity.toNewObject();
 
     const article = await this.articleModel
       .query()
@@ -96,6 +104,7 @@ class ArticleRepository implements IArticleRepository {
         coverId,
         userId,
         publishedAt,
+        readTime,
       })
       .returning('*')
       .execute();

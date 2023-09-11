@@ -10,7 +10,7 @@ import {
 import { type TagType } from '~/libs/types/types.js';
 import { actions } from '~/slices/articles/articles.js';
 
-import { ArticleView, AuthorDetails } from './components/components.js';
+import { ArticleDetails, ArticleView } from './components/components.js';
 import styles from './styles.module.scss';
 
 const ArticlePage: React.FC = () => {
@@ -47,7 +47,7 @@ const ArticlePage: React.FC = () => {
     { id: 5, name: 'Tech' },
   ];
 
-  const { text, title, author, coverUrl } = article ?? {};
+  const { text, title, author, coverUrl, readTime } = article ?? {};
 
   return (
     <Loader isLoading={isLoading} hasOverlay loaderType="circular">
@@ -60,8 +60,9 @@ const ArticlePage: React.FC = () => {
             coverUrl={coverUrl ?? ''}
           />
           {author && (
-            <AuthorDetails
-              name={getFullName(author.firstName, author.lastName)}
+            <ArticleDetails
+              readTime={readTime}
+              authorName={getFullName(author.firstName, author.lastName)}
             />
           )}
         </div>
