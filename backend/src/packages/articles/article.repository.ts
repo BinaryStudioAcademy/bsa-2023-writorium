@@ -1,7 +1,7 @@
 import { ArticleEntity } from './article.entity.js';
 import { type ArticleModel } from './article.model.js';
-import { SortingOrder } from './libs/enums/enums.js';
 import {
+  getSortedArticles,
   getWherePublishedOnlyQuery,
   getWhereUserIdQuery,
 } from './libs/helpers/helpers.js';
@@ -30,7 +30,7 @@ class ArticleRepository implements IArticleRepository {
       .query()
       .where(getWhereUserIdQuery(userId))
       .where(getWherePublishedOnlyQuery(hasPublishedOnly))
-      .orderBy('articles.publishedAt', SortingOrder.DESCENDING)
+      .orderBy(getSortedArticles(hasPublishedOnly))
       .page(skip / take, take)
       .withGraphJoined(this.defaultRelationExpression);
 
