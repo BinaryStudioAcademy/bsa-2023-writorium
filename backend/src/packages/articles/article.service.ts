@@ -170,7 +170,7 @@ class ArticleService implements IService {
     return updatedArticle.toObject();
   }
 
-  public async share(
+  public async getArticleSharingLink(
     id: number,
     refererOrigin: string,
   ): Promise<{ link: string }> {

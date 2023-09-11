@@ -373,7 +373,7 @@ class ArticleController extends Controller {
   ): Promise<ApiHandlerResponse> {
     return {
       status: HttpCode.OK,
-      payload: await this.articleService.share(
+      payload: await this.articleService.getArticleSharingLink(
         options.params.id,
         options.refererOrigin as string,
       ),
