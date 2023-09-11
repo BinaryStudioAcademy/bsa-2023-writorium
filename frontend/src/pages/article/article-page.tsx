@@ -6,7 +6,6 @@ import {
   useAppSelector,
   useEffect,
   useParams,
-  useState,
 } from '~/libs/hooks/hooks.js';
 import { type TagType } from '~/libs/types/types.js';
 import { actions } from '~/slices/articles/articles.js';
@@ -19,28 +18,24 @@ const ArticlePage: React.FC = () => {
 
   const { id } = useParams();
 
-  const [initialDataLoad, setInitialDataLoad] = useState(false);
-
   useEffect(() => {
-    void dispatch(actions.getArticle(Number(id))).then(() => {
-      setInitialDataLoad(true);
-    });
+    void dispatch(actions.getArticle(Number(id)));
   }, [dispatch, id]);
 
-  const { article, dataStatus } = useAppSelector(({ articles }) => ({
+  const { article, getArticleStatus } = useAppSelector(({ articles }) => ({
     article: articles.article,
-    dataStatus: articles.dataStatus,
+    getArticleStatus: articles.getArticleStatus,
   }));
 
   const isLoading = !(
-    dataStatus === DataStatus.FULFILLED || dataStatus == DataStatus.REJECTED
+    getArticleStatus === DataStatus.FULFILLED || getArticleStatus == DataStatus.REJECTED
   );
 
-  if (!article && initialDataLoad) {
+  if (!article && !isLoading) {
     return <Navigate to={AppRoute.ARTICLES} />;
   }
 
-  if (dataStatus === DataStatus.REJECTED) {
+  if (getArticleStatus === DataStatus.REJECTED) {
     return null;
   }
 

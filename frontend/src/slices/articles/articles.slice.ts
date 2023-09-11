@@ -10,12 +10,14 @@ type State = {
   article: ArticleWithAuthorType | null;
   articles: ArticleWithAuthorType[];
   dataStatus: ValueOf<typeof DataStatus>;
+  getArticleStatus: ValueOf<typeof DataStatus>;
 };
 
 const initialState: State = {
   article: null,
   articles: [],
   dataStatus: DataStatus.IDLE,
+  getArticleStatus: DataStatus.IDLE
 };
 
 const { reducer, actions, name } = createSlice({
@@ -33,7 +35,7 @@ const { reducer, actions, name } = createSlice({
       state.dataStatus = DataStatus.FULFILLED;
     });
     builder.addCase(getArticle.fulfilled, (state, action) => {
-      state.dataStatus = DataStatus.FULFILLED;
+      state.getArticleStatus = DataStatus.FULFILLED;
       state.article = action.payload;
     });
     builder.addMatcher(
