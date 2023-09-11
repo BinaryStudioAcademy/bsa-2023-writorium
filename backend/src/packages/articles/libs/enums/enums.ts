@@ -1,2 +1,2 @@
-export { ArticlesApiPath } from 'shared/build/index.js';
-export { SortingOrder } from 'shared/build/index.js';
+export { ArticleSortingKey } from './article-sorting-key.enum.js';
+export { ArticlesApiPath, SortingOrder } from 'shared/build/index.js';
