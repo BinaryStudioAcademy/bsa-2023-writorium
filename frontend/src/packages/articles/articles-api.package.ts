@@ -3,7 +3,6 @@ import { writeTextInClipboard } from '~/libs/helpers/helpers.js';
 import { HttpApi } from '~/libs/packages/api/api.js';
 import { type IHttp } from '~/libs/packages/http/http.js';
 import { type IStorage } from '~/libs/packages/storage/storage.js';
-import { storage, StorageKey } from '~/libs/packages/storage/storage.js';
 
 import { ArticlesApiPath } from './libs/enums/enums.js';
 import {
@@ -91,18 +90,15 @@ class ArticleApi extends HttpApi {
   }
 
   public async getByToken(token: string): Promise<ArticleBaseResponseDto> {
-    await storage.set(StorageKey.SHARED_ARTICLE_TOKEN, token);
-
     const response = await this.load(
       this.getFullEndpoint(ArticlesApiPath.SHARED_BASE, {}),
       {
         method: 'GET',
         contentType: ContentType.JSON,
         hasAuth: false,
+        sharedArticleToken: token,
       },
     );
-
-    await storage.drop(StorageKey.SHARED_ARTICLE_TOKEN);
 
     return await response.json<ArticleBaseResponseDto>();
   }

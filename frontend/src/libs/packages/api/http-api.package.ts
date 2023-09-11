@@ -51,9 +51,20 @@ class HttpApi implements IHttpApi {
     path: string,
     options: HttpApiOptions,
   ): Promise<HttpApiResponse> {
-    const { method, contentType, payload = null, hasAuth, query } = options;
+    const {
+      method,
+      contentType,
+      payload = null,
+      hasAuth,
+      query,
+      sharedArticleToken = null,
+    } = options;
 
-    const headers = await this.getHeaders(contentType, hasAuth);
+    const headers = await this.getHeaders(
+      contentType,
+      hasAuth,
+      sharedArticleToken,
+    );
 
     const response = await this.http.load(this.getUrl(path, query), {
       method,
@@ -82,16 +93,13 @@ class HttpApi implements IHttpApi {
   private async getHeaders(
     contentType: ValueOf<typeof ContentType>,
     hasAuth: boolean,
+    sharedArticleToken: string | null,
   ): Promise<Headers> {
     const headers = new Headers();
 
     if (contentType !== ContentType.FORM_DATA) {
       headers.append(HttpHeader.CONTENT_TYPE, contentType);
     }
-
-    const sharedArticleToken = await this.storage.get<string>(
-      StorageKey.SHARED_ARTICLE_TOKEN,
-    );
 
     if (sharedArticleToken) {
       headers.append(HttpHeader.SHARED_ARTICLE_TOKEN, sharedArticleToken);
