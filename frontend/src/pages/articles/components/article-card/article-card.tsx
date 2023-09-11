@@ -1,4 +1,3 @@
-import ArticlePreview from '~/assets/img/article-preview.png';
 import {
   Avatar,
   Icon,
@@ -36,7 +35,7 @@ const ArticleCard: React.FC<Properties> = ({
   reactions,
 }) => {
   const dispatch = useAppDispatch();
-  const { publishedAt, title, text, id } = article;
+  const { publishedAt, title, text, id, coverUrl } = article;
   const { comments, views, likes, dislikes } = reactions;
   const articleUrl = window.location.href;
 
@@ -68,7 +67,9 @@ const ArticleCard: React.FC<Properties> = ({
         </div>
         <Icon iconName="favorite" className={styles.pointerIcon} />
       </div>
-      <div className={styles.body}>
+      <div
+        className={getValidClassNames(styles.body, coverUrl && styles.hasCover)}
+      >
         <div className={styles.articleInfo}>
           <h4 className={styles.title}>{title}</h4>
           <article
@@ -77,11 +78,9 @@ const ArticleCard: React.FC<Properties> = ({
           ></article>
           <Tags tags={tags} />
         </div>
-        <img
-          src={ArticlePreview}
-          alt="article preview"
-          className={styles.preview}
-        />
+        {coverUrl && (
+          <img src={coverUrl} alt="article cover" className={styles.cover} />
+        )}
       </div>
       <div className={styles.footer}>
         <ul className={styles.reactions}>

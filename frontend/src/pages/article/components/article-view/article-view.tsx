@@ -1,15 +1,17 @@
-import ArticleBanner from '~/assets/img/article-banner.jpg';
 import { IconButton, Tag } from '~/libs/components/components.js';
 import { ShareOnFacebookButton } from '~/libs/components/share-on-facebook-icon/share-on-facebook-icon.js';
-import { sanitizeHtml } from '~/libs/helpers/helpers.js';
+import { getValidClassNames, sanitizeHtml } from '~/libs/helpers/helpers.js';
 import { useAppDispatch, useCallback, useParams } from '~/libs/hooks/hooks.js';
-import { type ArticleType } from '~/libs/types/types.js';
+import { type TagType } from '~/libs/types/types.js';
 import { actions as articlesActions } from '~/slices/articles/articles.js';
 
 import styles from './styles.module.scss';
 
 type Properties = {
-  article: ArticleType;
+  title: string;
+  text: string;
+  tags: TagType[];
+  coverUrl?: string;
   isShared?: boolean;
 };
 
@@ -19,8 +21,13 @@ const onButtonClick = (): void => {
    */
 };
 
-const ArticleView: React.FC<Properties> = ({ article, isShared = false }) => {
-  const { title, text, tags } = article;
+const ArticleView: React.FC<Properties> = ({
+  title,
+  text,
+  tags,
+  coverUrl,
+  isShared = false,
+}) => {
   const articleUrl = window.location.href;
 
   const { id } = useParams();
@@ -34,13 +41,13 @@ const ArticleView: React.FC<Properties> = ({ article, isShared = false }) => {
   }, [dispatch, id]);
 
   return (
-    <div className={styles.body}>
-      <div className={styles.bannerWrapper}>
-        <img
-          src={ArticleBanner}
-          alt="article banner"
-          className={styles.banner}
-        />
+    <div
+      className={getValidClassNames(styles.body, coverUrl && styles.hasCover)}
+    >
+      <div className={styles.coverWrapper}>
+        {coverUrl && (
+          <img alt="article cover" className={styles.cover} src={coverUrl} />
+        )}
         {!isShared && (
           <div className={styles.buttonsWrapper}>
             <IconButton
@@ -64,21 +71,26 @@ const ArticleView: React.FC<Properties> = ({ article, isShared = false }) => {
             <ShareOnFacebookButton
               title={title}
               articleUrl={articleUrl}
-              iconStyle={styles.facebookIconButton}
+              iconStyle={getValidClassNames(
+                styles.iconButton,
+                styles.facebookIconButton,
+              )}
             />
           </div>
         )}
       </div>
-      <h4 className={styles.title}>{title}</h4>
-      <div className={styles.tags}>
-        {tags.map((tag) => (
-          <Tag key={tag.id} name={tag.name} />
-        ))}
+      <div>
+        <h4 className={styles.title}>{title}</h4>
+        <div className={styles.tags}>
+          {tags.map((tag) => (
+            <Tag key={tag.id} name={tag.name} />
+          ))}
+        </div>
+        <p
+          className={styles.text}
+          dangerouslySetInnerHTML={{ __html: sanitizeHtml(text) }}
+        />
       </div>
-      <p
-        className={styles.text}
-        dangerouslySetInnerHTML={{ __html: sanitizeHtml(text) }}
-      />
     </div>
   );
 };

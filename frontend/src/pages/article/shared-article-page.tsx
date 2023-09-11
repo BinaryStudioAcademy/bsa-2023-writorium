@@ -1,5 +1,3 @@
-import { type FC } from 'react';
-
 import { Layout, Loader, Navigate } from '~/libs/components/components.js';
 import { AppRoute, DataStatus } from '~/libs/enums/enums.js';
 import {
@@ -8,14 +6,15 @@ import {
   useEffect,
   useParams,
 } from '~/libs/hooks/hooks.js';
-import { type ArticleType, type TagType } from '~/libs/types/types.js';
+import { type TagType } from '~/libs/types/types.js';
 import { actions as articlesActions } from '~/slices/articles/articles.js';
 
 import { ArticleView, AuthorDetails } from './components/components.js';
 import styles from './styles.module.scss';
 
-const SharedArticlePage: FC = () => {
+const SharedArticlePage: React.FC = () => {
   const dispatch = useAppDispatch();
+
   const { token } = useParams();
 
   useEffect(() => {
@@ -37,8 +36,6 @@ const SharedArticlePage: FC = () => {
     return <Navigate to={AppRoute.ROOT} />;
   }
 
-  const { text, title, author } = article ?? {};
-
   const MOCKED_TAGS: TagType[] = [
     { id: 1, name: 'IT' },
     { id: 2, name: 'CODE' },
@@ -47,13 +44,18 @@ const SharedArticlePage: FC = () => {
     { id: 5, name: 'Tech' },
   ];
 
+  const { text, title, author, coverUrl } = article ?? {};
+
   return (
     <Loader isLoading={isLoading}>
       <Layout>
         <div className={styles.articlePageWrapper}>
           {article && (
             <ArticleView
-              article={{ text, title, tags: MOCKED_TAGS } as ArticleType}
+              tags={MOCKED_TAGS}
+              text={text ?? ''}
+              title={title ?? ''}
+              coverUrl={coverUrl ?? ''}
               isShared
             />
           )}
