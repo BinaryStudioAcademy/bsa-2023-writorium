@@ -20,12 +20,15 @@ const Tags: React.FC<Properties> = ({ tags }) => (
             tooltipContent={tag.text}
             placement="bottom"
             hasToShowTooltip={true}
+            tooltipId={DataTooltipId.PROMPT_TAG_TOOLTIP}
           >
             <p className={styles.promptText}>{tag.text}</p>
           </BlockWithTooltip>
           <Tooltip
             id={DataTooltipId.PROMPT_TAG_TOOLTIP}
-            className={styles.achievementTooltip}
+            shouldHideArrow={true}
+            className={styles.promptTagTooltip}
+            offset={5}
           />
         </div>
       </li>
