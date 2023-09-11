@@ -6,6 +6,7 @@ import { type IStorage } from '~/libs/packages/storage/storage.js';
 import { UsersApiPath } from './libs/enums/enums.js';
 import {
   type UserActivityResponseDto,
+  type UserArticlesGenresStatsResponseDto,
   type UserAuthResponseDto,
   type UserGetAllResponseDto,
   type UserUpdateRequestDto,
@@ -42,6 +43,17 @@ class UserApi extends HttpApi {
     );
 
     return await response.json<UserActivityResponseDto[]>();
+  }
+
+  public async getUserArticlesGenresStats(): Promise<
+    UserArticlesGenresStatsResponseDto[]
+  > {
+    const response = await this.load(
+      this.getFullEndpoint(UsersApiPath.ARTICLES_GENRES_STATS, {}),
+      { method: 'GET', contentType: ContentType.JSON, hasAuth: true },
+    );
+
+    return await response.json<UserArticlesGenresStatsResponseDto[]>();
   }
 
   public async updateUser(
