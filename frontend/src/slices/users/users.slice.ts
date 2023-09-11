@@ -40,7 +40,7 @@ const { reducer, actions, name } = createSlice({
       },
     );
     builder.addMatcher(
-      isAnyOf(loadAll.rejected, getUserActivity.pending),
+      isAnyOf(loadAll.rejected, getUserActivity.rejected),
       (state) => {
         state.dataStatus = DataStatus.REJECTED;
       },
