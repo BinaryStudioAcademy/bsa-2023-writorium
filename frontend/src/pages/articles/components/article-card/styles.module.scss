@@ -96,10 +96,19 @@
   overflow-wrap: break-word;
 }
 
-.body .preview {
+.body .cover {
   width: 134px;
   height: 134px;
   border-radius: 5px;
+  object-fit: cover;
+}
+
+.body:not(.hasCover) .articleInfo {
+  flex: 1;
+}
+
+.body:not(.hasCover) .text {
+  max-width: 100%;
 }
 
 .footer {
@@ -131,10 +140,6 @@
   gap: 5px;
 }
 
-.footer .reactionIcon {
-  cursor: pointer;
-}
-
 .footer .reactionCount {
   color: var(--dark-gray-50);
   font-weight: 400;
@@ -154,7 +159,7 @@
   line-height: normal;
 }
 
-.icon {
+.pointerIcon {
   cursor: pointer;
 }
 

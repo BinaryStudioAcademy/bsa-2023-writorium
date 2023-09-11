@@ -1,16 +1,18 @@
-import ArticleBanner from '~/assets/img/article-banner.jpg';
 import {
   IconButton,
   ShareOnFacebookButton,
   Tag,
 } from '~/libs/components/components.js';
-import { sanitizeHtml } from '~/libs/helpers/helpers.js';
-import { type ArticleType } from '~/libs/types/types.js';
+import { getValidClassNames, sanitizeHtml } from '~/libs/helpers/helpers.js';
+import { type TagType } from '~/libs/types/types.js';
 
 import styles from './styles.module.scss';
 
 type Properties = {
-  article: ArticleType;
+  title: string;
+  text: string;
+  tags: TagType[];
+  coverUrl?: string;
 };
 
 const onButtonClick = (): void => {
@@ -19,18 +21,17 @@ const onButtonClick = (): void => {
    */
 };
 
-const ArticleView: React.FC<Properties> = ({ article }) => {
-  const { title, text, tags } = article;
+const ArticleView: React.FC<Properties> = ({ title, text, tags, coverUrl }) => {
   const articleUrl = window.location.href;
 
   return (
-    <div className={styles.body}>
-      <div className={styles.bannerWrapper}>
-        <img
-          src={ArticleBanner}
-          alt="article banner"
-          className={styles.banner}
-        />
+    <div
+      className={getValidClassNames(styles.body, coverUrl && styles.hasCover)}
+    >
+      <div className={styles.coverWrapper}>
+        {coverUrl && (
+          <img alt="article cover" className={styles.cover} src={coverUrl} />
+        )}
         <div className={styles.buttonsWrapper}>
           <IconButton
             iconName="favorite"
@@ -53,20 +54,25 @@ const ArticleView: React.FC<Properties> = ({ article }) => {
           <ShareOnFacebookButton
             title={title}
             articleUrl={articleUrl}
-            iconStyle={styles.facebookIconButton}
+            iconStyle={getValidClassNames(
+              styles.iconButton,
+              styles.facebookIconButton,
+            )}
           />
         </div>
       </div>
-      <h4 className={styles.title}>{title}</h4>
-      <div className={styles.tags}>
-        {tags.map((tag) => (
-          <Tag key={tag.id} name={tag.name} />
-        ))}
+      <div>
+        <h4 className={styles.title}>{title}</h4>
+        <div className={styles.tags}>
+          {tags.map((tag) => (
+            <Tag key={tag.id} name={tag.name} />
+          ))}
+        </div>
+        <p
+          className={styles.text}
+          dangerouslySetInnerHTML={{ __html: sanitizeHtml(text) }}
+        />
       </div>
-      <p
-        className={styles.text}
-        dangerouslySetInnerHTML={{ __html: sanitizeHtml(text) }}
-      />
     </div>
   );
 };

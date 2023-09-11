@@ -155,6 +155,7 @@ class ArticleService implements IService {
         title: payload.title,
         text: payload.text,
         userId: payload.userId,
+        coverId: payload.coverId,
         promptId: payload?.promptId ?? null,
         publishedAt: payload?.publishedAt ?? null,
       }),

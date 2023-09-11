@@ -10,6 +10,7 @@ type ArticleBaseResponseDto = Pick<
   | 'genreId'
   | 'publishedAt'
   | 'readTime'
+  | 'coverId'
 >;
 
 export { type ArticleBaseResponseDto };
