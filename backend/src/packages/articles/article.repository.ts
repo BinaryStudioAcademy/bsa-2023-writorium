@@ -43,7 +43,7 @@ class ArticleRepository implements IArticleRepository {
         return ArticleEntity.initializeWithAuthor({
           ...article,
           coverUrl: article.cover?.url,
-          genre: article.genre?.name,
+          genre: article.genre?.name ?? null,
           prompt: article.prompt
             ? {
                 character: article.prompt.character,
@@ -69,7 +69,7 @@ class ArticleRepository implements IArticleRepository {
 
     return ArticleEntity.initializeWithAuthor({
       ...article,
-      genre: article.genre?.name,
+      genre: article.genre?.name ?? null,
       coverUrl: article.cover?.url,
       prompt: article.prompt
         ? {
