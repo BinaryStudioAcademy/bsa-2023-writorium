@@ -10,6 +10,7 @@ const AppRoute = {
   CREATE_ARTICLE: '/articles/create',
   FORGOT_PASSWORD: '/forgot-password',
   RESET_PASSWORD: RESET_PASSWORD_ROUTE.WITH_PARAM,
+  EDIT_ARTICLE: '/articles/edit/:id',
 } as const;
 
 export { AppRoute };

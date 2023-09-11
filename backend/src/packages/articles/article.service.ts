@@ -1,9 +1,11 @@
 import { ApplicationError } from '~/libs/exceptions/exceptions.js';
 import { type IService } from '~/libs/interfaces/service.interface.js';
+import { ForbiddenError } from '~/libs/packages/exceptions/exceptions.js';
 import { type OpenAIService } from '~/libs/packages/openai/openai.package.js';
 
 import { GenreEntity } from '../genres/genre.entity.js';
 import { type GenreRepository } from '../genres/genre.repository.js';
+import { type UserAuthResponseDto } from '../users/users.js';
 import { ArticleEntity } from './article.entity.js';
 import { type ArticleRepository } from './article.repository.js';
 import { INDEX_INCREMENT } from './libs/constants/constants.js';
@@ -207,7 +209,10 @@ class ArticleService implements IService {
 
   public async update(
     id: number,
-    payload: ArticleUpdateRequestDto,
+    {
+      payload,
+      user,
+    }: { payload: ArticleUpdateRequestDto; user: UserAuthResponseDto },
   ): Promise<ArticleBaseResponseDto> {
     const article = await this.find(id);
 
@@ -217,6 +222,10 @@ class ArticleService implements IService {
       });
     }
 
+    if (article.userId !== user.id) {
+      throw new ForbiddenError('Article can be edited only by author!');
+    }
+
     const updatedArticle = await this.articleRepository.update(
       ArticleEntity.initialize({
         ...article,
@@ -224,7 +233,7 @@ class ArticleService implements IService {
       }),
     );
 
-    return updatedArticle.toObject();
+    return updatedArticle.toObjectWithAuthor();
   }
 
   public delete(): Promise<boolean> {

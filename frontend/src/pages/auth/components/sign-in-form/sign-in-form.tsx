@@ -73,7 +73,7 @@ const SignInForm: React.FC<Properties> = ({
               className={styles.forgotPasswordLink}
               to={AppRoute.FORGOT_PASSWORD}
             >
-              Forgot password ?
+              Forgot password?
             </Link>
           </fieldset>
           <AuthSubmitButton label="Sign In" />

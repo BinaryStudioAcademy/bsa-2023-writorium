@@ -129,9 +129,21 @@ class ArticleRepository implements IArticleRepository {
 
     const article = await this.articleModel
       .query()
-      .patchAndFetchById(id, payload);
+      .patchAndFetchById(id, payload)
+      .withGraphFetched(this.defaultRelationExpression);
 
-    return ArticleEntity.initialize(article);
+    return ArticleEntity.initializeWithAuthor({
+      ...article,
+      genre: article.genre?.name ?? null,
+      prompt: article.prompt
+        ? {
+            character: article.prompt.character,
+            setting: article.prompt.setting,
+            situation: article.prompt.situation,
+            prop: article.prompt.prop,
+          }
+        : null,
+    });
   }
 
   public delete(): Promise<boolean> {
