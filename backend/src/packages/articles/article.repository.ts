@@ -5,6 +5,7 @@ import {
   getWherePublishedOnlyQuery,
   getWhereUserIdQuery,
   joinArticleRelations,
+  modifyReactionsGraph,
 } from './libs/helpers/helpers.js';
 import { type IArticleRepository } from './libs/interfaces/interfaces.js';
 import { type ArticlesFilters } from './libs/types/types.js';
@@ -98,13 +99,11 @@ class ArticleRepository implements IArticleRepository {
       })
       .returning('*')
       .withGraphFetched(this.defaultRelationExpression)
-      .modifyGraph('reactions', (builder) => {
-        void builder.select('id', 'isLike', 'userId');
-      });
+      .modifyGraph('reactions', modifyReactionsGraph);
 
     return ArticleEntity.initialize({
       ...article,
-      genre: article.genre.name,
+      genre: article.genre?.name ?? null,
       prompt: article.prompt
         ? {
             character: article.prompt.character,
@@ -122,7 +121,8 @@ class ArticleRepository implements IArticleRepository {
     const article = await this.articleModel
       .query()
       .patchAndFetchById(id, payload)
-      .modify(joinArticleRelations, this.defaultRelationExpression);
+      .withGraphFetched(this.defaultRelationExpression)
+      .modifyGraph('reactions', modifyReactionsGraph);
 
     return ArticleEntity.initialize({
       ...article,

@@ -1,6 +1,7 @@
 import { type QueryBuilder } from 'objection';
 
 import { type ArticleModel } from '../../article.model.js';
+import { modifyReactionsGraph } from './modify-reactions-graph.helper.js';
 
 const joinArticleRelations = <T>(
   queryBuilder: QueryBuilder<ArticleModel, T>,
@@ -8,9 +9,7 @@ const joinArticleRelations = <T>(
 ): void => {
   void queryBuilder
     .withGraphJoined(relations)
-    .modifyGraph('reactions', (builder) => {
-      void builder.select('id', 'isLike', 'userId');
-    });
+    .modifyGraph('reactions', modifyReactionsGraph);
 };
 
 export { joinArticleRelations };
