@@ -6,7 +6,10 @@ import {
   getWhereUserIdQuery,
 } from './libs/helpers/helpers.js';
 import { type IArticleRepository } from './libs/interfaces/interfaces.js';
-import { type ArticlesFilters } from './libs/types/types.js';
+import {
+  type ArticlesFilters,
+  type UserActivityResponseDto,
+} from './libs/types/types.js';
 
 class ArticleRepository implements IArticleRepository {
   private articleModel: typeof ArticleModel;
@@ -40,7 +43,7 @@ class ArticleRepository implements IArticleRepository {
         return ArticleEntity.initializeWithAuthor({
           ...article,
           coverUrl: article.cover?.url,
-          genre: article.genre?.name,
+          genre: article.genre?.name ?? null,
           prompt: article.prompt
             ? {
                 character: article.prompt.character,
@@ -66,7 +69,7 @@ class ArticleRepository implements IArticleRepository {
 
     return ArticleEntity.initializeWithAuthor({
       ...article,
-      genre: article.genre?.name,
+      genre: article.genre?.name ?? null,
       coverUrl: article.cover?.url,
       prompt: article.prompt
         ? {
@@ -109,14 +112,47 @@ class ArticleRepository implements IArticleRepository {
     return ArticleEntity.initialize(article);
   }
 
+  public async getUserActivity({
+    userId,
+    activityFrom,
+    activityTo,
+  }: {
+    userId: number;
+    activityFrom: string;
+    activityTo: string;
+  }): Promise<UserActivityResponseDto[]> {
+    return await this.articleModel
+      .query()
+      .select(
+        this.articleModel.raw('date(created_at), date(updated_at) as date'),
+        this.articleModel.raw('count(*)'),
+      )
+      .where({ userId })
+      .whereBetween('createdAt', [activityFrom, activityTo])
+      .groupByRaw('date(created_at), date(updated_at)')
+      .castTo<UserActivityResponseDto[]>();
+  }
+
   public async update(entity: ArticleEntity): Promise<ArticleEntity> {
     const { id, ...payload } = entity.toObject();
 
     const article = await this.articleModel
       .query()
-      .patchAndFetchById(id, payload);
+      .patchAndFetchById(id, payload)
+      .withGraphFetched(this.defaultRelationExpression);
 
-    return ArticleEntity.initialize(article);
+    return ArticleEntity.initializeWithAuthor({
+      ...article,
+      genre: article.genre?.name ?? null,
+      prompt: article.prompt
+        ? {
+            character: article.prompt.character,
+            setting: article.prompt.setting,
+            situation: article.prompt.situation,
+            prop: article.prompt.prop,
+          }
+        : null,
+    });
   }
 
   public delete(): Promise<boolean> {
