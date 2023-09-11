@@ -76,7 +76,9 @@ const ArticleCard: React.FC<Properties> = ({
           <Tags tags={tags} />
         </div>
         {coverUrl && (
-          <img src={coverUrl} alt="article cover" className={styles.cover} />
+          <div className={styles.coverWrapper}>
+            <img src={coverUrl} alt="article cover" className={styles.cover} />
+          </div>
         )}
       </div>
       <div className={styles.footer}>
