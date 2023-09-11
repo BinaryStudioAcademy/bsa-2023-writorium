@@ -16,7 +16,7 @@ const PromptCard: React.FC<Properties> = ({ category, text, isGenerating }) => (
       <span className={styles.categoryText}>{category}</span>
     </div>
     <div className={styles.prompt}>
-      <Loader isLoading={isGenerating} hasOverlay={false} loaderType="dots">
+      <Loader isLoading={isGenerating} loaderType="dots">
         <p className={styles.promptText}>{text}</p>
       </Loader>
     </div>

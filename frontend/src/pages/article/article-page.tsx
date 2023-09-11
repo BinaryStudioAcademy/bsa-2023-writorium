@@ -1,5 +1,4 @@
-import { Layout, Navigate } from '~/libs/components/components.js';
-import { Loader } from '~/libs/components/loader/loader.js';
+import { Layout, Loader, Navigate } from '~/libs/components/components.js';
 import { AppRoute, DataStatus } from '~/libs/enums/enums.js';
 import { getFullName } from '~/libs/helpers/helpers.js';
 import {
