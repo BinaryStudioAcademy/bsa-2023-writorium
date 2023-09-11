@@ -28,9 +28,7 @@ const SharedArticlePage: React.FC = () => {
     dataStatus: articles.dataStatus,
   }));
 
-  const isLoading = !(
-    dataStatus === DataStatus.FULFILLED || dataStatus == DataStatus.REJECTED
-  );
+  const isLoading = dataStatus === DataStatus.PENDING;
 
   if (!article && !isLoading) {
     return <Navigate to={AppRoute.ROOT} />;
