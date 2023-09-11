@@ -15,6 +15,7 @@ import {
 import { getGeneratedPromptPayload } from '~/packages/prompts/prompts.js';
 import { actions as articlesActions } from '~/slices/articles/articles.js';
 
+import { ArticleCoverUpload } from './libs/components/components.js';
 import { DEFAULT_ARTICLE_FORM_PAYLOAD } from './libs/constants/constants.js';
 import { ArticleSubmitType } from './libs/enums/enums.js';
 import styles from './styles.module.scss';
@@ -82,6 +83,7 @@ const ArticleForm: React.FC = () => {
         onReset={handleCancel}
         className={styles.formContainer}
       >
+        <ArticleCoverUpload name="coverId" control={control} errors={errors} />
         <Input
           type="text"
           placeholder="Enter the title of the article"
@@ -90,9 +92,7 @@ const ArticleForm: React.FC = () => {
           errors={errors}
           className={styles.titleInput}
         />
-
         <TextEditor control={control} name="text" errors={errors} />
-
         <div className={styles.buttonWrapper}>
           <Button
             type={ButtonType.RESET}

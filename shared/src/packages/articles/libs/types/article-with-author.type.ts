@@ -11,6 +11,8 @@ type ArticleWithAuthorType = ArticleEntityType & {
     prop: string | null;
   } | null;
   genre?: string;
+  coverId: number | null;
+  coverUrl?: string | null;
 };
 
 export { type ArticleWithAuthorType };

@@ -2,10 +2,10 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+  max-width: 830px;
 }
 
 .titleInput {
-  max-width: 830px;
   height: 85px;
   line-height: 17px;
 }

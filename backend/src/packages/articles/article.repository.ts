@@ -11,7 +11,7 @@ import { type ArticlesFilters } from './libs/types/types.js';
 class ArticleRepository implements IArticleRepository {
   private articleModel: typeof ArticleModel;
 
-  private defaultRelationExpression = '[author,prompt,genre]';
+  private defaultRelationExpression = '[author,prompt,genre,cover]';
 
   public constructor(articleModel: typeof ArticleModel) {
     this.articleModel = articleModel;
@@ -36,10 +36,11 @@ class ArticleRepository implements IArticleRepository {
 
     return {
       total: articles.total,
-      items: articles.results.map((article) =>
-        ArticleEntity.initializeWithAuthor({
+      items: articles.results.map((article) => {
+        return ArticleEntity.initializeWithAuthor({
           ...article,
-          genre: article.genre.name,
+          coverUrl: article.cover?.url,
+          genre: article.genre?.name,
           prompt: article.prompt
             ? {
                 character: article.prompt.character,
@@ -48,8 +49,8 @@ class ArticleRepository implements IArticleRepository {
                 prop: article.prompt.prop,
               }
             : null,
-        }),
-      ),
+        });
+      }),
     };
   }
 
@@ -65,7 +66,8 @@ class ArticleRepository implements IArticleRepository {
 
     return ArticleEntity.initializeWithAuthor({
       ...article,
-      genre: article.genre.name,
+      genre: article.genre?.name,
+      coverUrl: article.cover?.url,
       prompt: article.prompt
         ? {
             character: article.prompt.character,
@@ -78,7 +80,7 @@ class ArticleRepository implements IArticleRepository {
   }
 
   public async create(entity: ArticleEntity): Promise<ArticleEntity> {
-    const { title, text, promptId, genreId, userId, publishedAt } =
+    const { title, text, promptId, genreId, userId, publishedAt, coverId } =
       entity.toNewObject();
 
     const article = await this.articleModel
@@ -88,6 +90,7 @@ class ArticleRepository implements IArticleRepository {
         text,
         promptId,
         genreId,
+        coverId,
         userId,
         publishedAt,
       })
