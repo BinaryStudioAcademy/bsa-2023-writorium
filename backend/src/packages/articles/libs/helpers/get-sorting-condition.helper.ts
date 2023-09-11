@@ -2,7 +2,7 @@ import { type ColumnRefOrOrderByDescriptor } from 'objection';
 
 import { SortingOrder } from '../enums/enums.js';
 
-const getSortedArticles = (
+const getSortingCondition = (
   hasPublishedOnly?: boolean,
 ): ColumnRefOrOrderByDescriptor[] => {
   const PUBLISHED_ARTICLES = 'articles.publishedAt';
@@ -12,4 +12,4 @@ const getSortedArticles = (
   return [{ column: orderBy, order: SortingOrder.DESCENDING }];
 };
 
-export { getSortedArticles };
+export { getSortingCondition };
