@@ -189,7 +189,7 @@ class UserController extends Controller {
    *          content:
    *            application/json:
    *              schema:
-   *                $ref: '#/components/schemas/Article'
+   *                $ref: 'shared/src/packages/users/libs/types/user-activity-response-dto.type.ts'
    */
   private async getUserActivity(
     options: ApiHandlerOptions<{ user: UserAuthResponseDto }>,
