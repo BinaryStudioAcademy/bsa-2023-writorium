@@ -1,3 +1,4 @@
+export { INDEX_INCREMENT } from './index-increment.constant.js';
 export {
   DEFAULT_PAGINATION_SKIP,
   DEFAULT_PAGINATION_TAKE,

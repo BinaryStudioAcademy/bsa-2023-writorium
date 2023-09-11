@@ -9,5 +9,6 @@ export {
   type ArticleUpdateRequestDto,
   type ArticleWithRelationsType,
   type ReactionResponseDto,
+  type UserActivityResponseDto,
   type UserDetailsResponseDto,
 } from 'shared/build/index.js';
