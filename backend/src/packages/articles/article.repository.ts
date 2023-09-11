@@ -97,7 +97,10 @@ class ArticleRepository implements IArticleRepository {
         publishedAt,
       })
       .returning('*')
-      .modify(joinArticleRelations, this.defaultRelationExpression);
+      .withGraphFetched(this.defaultRelationExpression)
+      .modifyGraph('reactions', (builder) => {
+        void builder.select('id', 'isLike', 'userId');
+      });
 
     return ArticleEntity.initialize({
       ...article,

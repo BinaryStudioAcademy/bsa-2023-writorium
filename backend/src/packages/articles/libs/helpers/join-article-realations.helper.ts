@@ -7,7 +7,7 @@ const joinArticleRelations = <T>(
   relations: string,
 ): void => {
   void queryBuilder
-    .withGraphFetched(relations)
+    .withGraphJoined(relations)
     .modifyGraph('reactions', (builder) => {
       void builder.select('id', 'isLike', 'userId');
     });
