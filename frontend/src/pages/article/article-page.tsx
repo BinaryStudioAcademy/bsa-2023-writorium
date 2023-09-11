@@ -28,7 +28,8 @@ const ArticlePage: React.FC = () => {
   }));
 
   const isLoading = !(
-    getArticleStatus === DataStatus.FULFILLED || getArticleStatus == DataStatus.REJECTED
+    getArticleStatus === DataStatus.FULFILLED ||
+    getArticleStatus == DataStatus.REJECTED
   );
 
   if (!article && !isLoading) {
@@ -62,7 +63,7 @@ const ArticlePage: React.FC = () => {
           {author && (
             <AuthorDetails
               name={getFullName(author.firstName, author.lastName)}
-              avatarUrl={author.avatarUrl}
+              avatarUrl={author.avatar.url}
               publishedAt={publishedAt ?? ''}
               genre={genre ?? ''}
             />

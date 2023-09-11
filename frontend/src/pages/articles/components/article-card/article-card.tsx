@@ -29,6 +29,7 @@ const ArticleCard: React.FC<Properties> = ({
 }) => {
   const { publishedAt, title, text, id, coverUrl } = article;
   const { comments, views, likes, dislikes } = reactions;
+  const { firstName, lastName, avatar } = author;
   const articleUrl = window.location.href;
 
   const articleRouteById = AppRoute.ARTICLE.replace(':id', String(id));
@@ -40,11 +41,11 @@ const ArticleCard: React.FC<Properties> = ({
       <div className={styles.header}>
         <div className={styles.info}>
           <Avatar
-            username={getFullName(author.firstName, author.lastName)}
-            avatarUrl={author.avatarUrl}
+            username={getFullName(firstName, lastName)}
+            avatarUrl={avatar.url}
           />
           <span className={styles.publisherName}>
-            {getFullName(author.firstName, author.lastName)}
+            {getFullName(firstName, lastName)}
           </span>
           {publishedAt && (
             <span className={styles.publicationTime}>

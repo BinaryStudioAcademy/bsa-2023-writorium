@@ -17,7 +17,7 @@ const initialState: State = {
   article: null,
   articles: [],
   dataStatus: DataStatus.IDLE,
-  getArticleStatus: DataStatus.IDLE
+  getArticleStatus: DataStatus.IDLE,
 };
 
 const { reducer, actions, name } = createSlice({

@@ -98,7 +98,9 @@ class ArticleEntity implements IEntity {
       author: {
         firstName: author?.firstName as string,
         lastName: author?.lastName as string,
-        avatarUrl: author?.avatar?.url ?? null,
+        avatar: {
+          url: author?.avatar?.url ?? null,
+        },
       },
       prompt,
       genre,
