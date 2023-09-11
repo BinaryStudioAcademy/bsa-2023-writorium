@@ -19,7 +19,7 @@ class ArticleEntity implements IEntity {
   private 'publishedAt': string | null;
   private 'author'?: UserDetailsResponseDto;
   private 'prompt'?: ArticleWithAuthorType['prompt'];
-  private 'genre'?: string;
+  private 'genre'?: ArticleWithAuthorType['genre'];
 
   private constructor({
     id,
