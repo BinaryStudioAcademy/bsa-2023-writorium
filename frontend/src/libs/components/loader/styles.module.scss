@@ -6,7 +6,7 @@
   height: 100vh;
 }
 
-.circularLoader {
+.circular {
   width: 60px;
   height: 60px;
   margin: auto;
@@ -22,15 +22,15 @@
   padding-top: 10px;
 }
 
-.dotFlashing {
+.dots {
   position: relative;
   animation: dot-flashing 1s infinite linear alternate;
   animation-delay: 0.5s;
 }
 
-.dotFlashing,
-.dotFlashing::before,
-.dotFlashing::after {
+.dots,
+.dots::before,
+.dots::after {
   width: 10px;
   height: 10px;
   color: var(--light-green);
@@ -38,8 +38,8 @@
   border-radius: 5px;
 }
 
-.dotFlashing::before,
-.dotFlashing::after {
+.dots::before,
+.dots::after {
   content: "";
   position: absolute;
   top: 0;
@@ -47,12 +47,12 @@
   animation: dot-flashing 1s infinite alternate;
 }
 
-.dotFlashing::before {
+.dots::before {
   left: -15px;
   animation-delay: 0s;
 }
 
-.dotFlashing::after {
+.dots::after {
   left: 15px;
   animation-delay: 1s;
 }

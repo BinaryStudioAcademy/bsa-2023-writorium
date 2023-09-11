@@ -17,24 +17,19 @@ const Loader: React.FC<Properties> = ({
   hasOverlay = false,
   loaderType,
 }) => {
-  if (isLoading) {
-    const containerClassName = hasOverlay
-      ? styles.overlayContainer
-      : styles.notOverlayContainer;
-
-    const loaderComponentClassName =
-      loaderType === 'circular' ? styles.circularLoader : styles.dotFlashing;
-
-    return (
-      <div className={containerClassName}>
-        <div
-          className={getValidClassNames(loaderComponentClassName, className)}
-        ></div>
-      </div>
-    );
+  if (!isLoading) {
+    return children;
   }
 
-  return children;
+  const containerClassName = hasOverlay
+    ? styles.overlayContainer
+    : styles.notOverlayContainer;
+
+  return (
+    <div className={containerClassName}>
+      <div className={getValidClassNames(styles[loaderType], className)}></div>
+    </div>
+  );
 };
 
 export { Loader };
