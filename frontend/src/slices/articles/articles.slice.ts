@@ -4,7 +4,13 @@ import { DataStatus } from '~/libs/enums/enums.js';
 import { type ValueOf } from '~/libs/types/types.js';
 import { type ArticleWithAuthorType } from '~/packages/articles/articles.js';
 
-import { createArticle, fetchAll, fetchOwn, getArticle } from './actions.js';
+import {
+  createArticle,
+  fetchAll,
+  fetchOwn,
+  getArticle,
+  updateArticle,
+} from './actions.js';
 
 type State = {
   article: ArticleWithAuthorType | null;
@@ -28,6 +34,22 @@ const { reducer, actions, name } = createSlice({
     },
   },
   extraReducers(builder) {
+    builder.addCase(createArticle.fulfilled, (state, action) => {
+      state.articles = [...state.articles, action.payload];
+      state.dataStatus = DataStatus.FULFILLED;
+    });
+    builder.addCase(updateArticle.fulfilled, (state, action) => {
+      const article = action.payload;
+      if (article) {
+        state.articles = state.articles.map((item) => {
+          if (article.id === item.id) {
+            return article;
+          }
+          return item;
+        });
+      }
+      state.dataStatus = DataStatus.FULFILLED;
+    });
     builder.addCase(getArticle.fulfilled, (state, action) => {
       state.dataStatus = DataStatus.FULFILLED;
       state.article = action.payload;
@@ -44,6 +66,7 @@ const { reducer, actions, name } = createSlice({
         fetchAll.pending,
         fetchOwn.pending,
         createArticle.pending,
+        updateArticle.pending,
         getArticle.pending,
       ),
       (state) => {
@@ -55,6 +78,7 @@ const { reducer, actions, name } = createSlice({
         fetchAll.rejected,
         fetchOwn.rejected,
         createArticle.rejected,
+        updateArticle.rejected,
         getArticle.rejected,
       ),
       (state) => {

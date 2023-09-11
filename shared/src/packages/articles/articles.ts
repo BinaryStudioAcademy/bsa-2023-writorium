@@ -6,6 +6,7 @@ export {
   type ArticleRequestDto,
   type ArticlesFilters,
   type ArticleUpdateRequestDto,
+  type ArticleUpdateRequestPayload,
   type ArticleWithAuthorType,
 } from './libs/types/types.js';
 export {

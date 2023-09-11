@@ -1,12 +1,15 @@
+import { Link as RouterLink, matchPath } from 'react-router-dom';
+
 import { Avatar, Icon, Link } from '~/libs/components/components.js';
 import { ShareOnFacebookButton } from '~/libs/components/share-on-facebook-icon/share-on-facebook-icon.js';
-import { AppRoute, DateFormat } from '~/libs/enums/enums.js';
+import { AppRoute, ArticleSubRoute, DateFormat } from '~/libs/enums/enums.js';
 import {
   getFormattedDate,
   getFullName,
   getValidClassNames,
   sanitizeHtml,
 } from '~/libs/helpers/helpers.js';
+import { useLocation } from '~/libs/hooks/hooks.js';
 import { type ArticleWithAuthorType } from '~/packages/articles/articles.js';
 import { type UserDetailsResponseDto } from '~/packages/users/users.js';
 
@@ -27,6 +30,12 @@ const ArticleCard: React.FC<Properties> = ({
   tags,
   reactions,
 }) => {
+  const { pathname } = useLocation();
+
+  const isMyArticles = matchPath(
+    { path: `${AppRoute.ARTICLES}/${ArticleSubRoute.MY_ARTICLES}` },
+    pathname,
+  );
   const { publishedAt, title, text, id, coverUrl } = article;
   const { comments, views, likes, dislikes } = reactions;
   const articleUrl = window.location.href;
@@ -53,7 +62,17 @@ const ArticleCard: React.FC<Properties> = ({
           )}
           <span className={styles.publicationTime}>{MOCKED_READ_TIME}</span>
         </div>
-        <Icon iconName="favorite" className={styles.pointerIcon} />
+        <div className={styles.iconWrapper}>
+          {isMyArticles && (
+            <RouterLink
+              to={AppRoute.EDIT_ARTICLE.replace(':id', id.toString())}
+              state={article}
+            >
+              <Icon iconName="edit" className={styles.editIcon} />
+            </RouterLink>
+          )}
+          <Icon iconName="favorite" className={styles.pointerIcon} />
+        </div>
       </div>
       <div
         className={getValidClassNames(styles.body, coverUrl && styles.hasCover)}
