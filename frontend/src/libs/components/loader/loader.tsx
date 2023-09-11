@@ -1,5 +1,4 @@
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
-import { type LoaderShape } from '~/libs/types/types.js';
 
 import styles from './styles.module.scss';
 
@@ -8,7 +7,7 @@ type Properties = {
   className?: string;
   isLoading: boolean;
   hasOverlay?: boolean;
-  loaderType: LoaderShape;
+  loaderType: 'dots' | 'circular';
 };
 
 const Loader: React.FC<Properties> = ({
