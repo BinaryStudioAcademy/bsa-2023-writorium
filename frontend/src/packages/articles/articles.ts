@@ -17,7 +17,12 @@ export {
   type ArticleReactionResponseDto,
   type ArticleRequestDto,
   type ArticleResponseDto,
+  type ArticleUpdateRequestDto,
+  type ArticleUpdateRequestPayload,
   type ArticleWithRelationsType,
   type ReactionResponseDto,
 } from './libs/types/types.js';
-export { articleCreateValidationSchema } from './libs/validation-schemas/validation-schemas.js';
+export {
+  articleCreateValidationSchema,
+  articleUpdateValidationSchema,
+} from './libs/validation-schemas/validation-schemas.js';

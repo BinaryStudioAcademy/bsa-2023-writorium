@@ -1,19 +1,21 @@
 import { ApplicationError } from '~/libs/exceptions/exceptions.js';
 import { safeJSONParse } from '~/libs/helpers/helpers.js';
 import { type IService } from '~/libs/interfaces/service.interface.js';
+import { ForbiddenError } from '~/libs/packages/exceptions/exceptions.js';
 import { type OpenAIService } from '~/libs/packages/openai/openai.package.js';
 
 import { GenreEntity } from '../genres/genre.entity.js';
 import { type GenreRepository } from '../genres/genre.repository.js';
+import { type UserAuthResponseDto } from '../users/users.js';
 import { ArticleEntity } from './article.entity.js';
 import { type ArticleRepository } from './article.repository.js';
 import { getDetectArticleGenreCompletionConfig } from './libs/helpers/helpers.js';
 import {
   type ArticleCreateDto,
   type ArticleGetAllResponseDto,
+  type ArticleResponseDto,
   type ArticlesFilters,
   type ArticleUpdateRequestDto,
-  type ArticleWithRelationsType,
   type DetectedArticleGenre,
 } from './libs/types/types.js';
 
@@ -113,7 +115,7 @@ class ArticleService implements IService {
     };
   }
 
-  public async find(id: number): Promise<ArticleWithRelationsType | null> {
+  public async find(id: number): Promise<ArticleResponseDto | null> {
     const article = await this.articleRepository.find(id);
 
     if (!article) {
@@ -123,9 +125,7 @@ class ArticleService implements IService {
     return article.toObjectWithRelations();
   }
 
-  public async create(
-    payload: ArticleCreateDto,
-  ): Promise<ArticleWithRelationsType> {
+  public async create(payload: ArticleCreateDto): Promise<ArticleResponseDto> {
     const genreId = await this.getGenreIdToSet(payload);
 
     const article = await this.articleRepository.create(
@@ -145,14 +145,21 @@ class ArticleService implements IService {
 
   public async update(
     id: number,
-    payload: ArticleUpdateRequestDto,
-  ): Promise<ArticleWithRelationsType> {
+    {
+      payload,
+      user,
+    }: { payload: ArticleUpdateRequestDto; user: UserAuthResponseDto },
+  ): Promise<ArticleResponseDto> {
     const article = await this.find(id);
 
     if (!article) {
       throw new ApplicationError({
         message: `Article with id ${id} not found`,
       });
+    }
+
+    if (article.userId !== user.id) {
+      throw new ForbiddenError('Article can be edited only by author!');
     }
 
     const updatedArticle = await this.articleRepository.update(

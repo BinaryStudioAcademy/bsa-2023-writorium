@@ -7,6 +7,7 @@ import {
   type ArticleReactionRequestDto,
   type ArticleRequestDto,
   type ArticleResponseDto,
+  type ArticleUpdateRequestPayload,
 } from '~/packages/articles/articles.js';
 import { type PromptRequestDto } from '~/packages/prompts/prompts.js';
 
@@ -58,6 +59,16 @@ const createArticle = createAsyncThunk<
   },
 );
 
+const updateArticle = createAsyncThunk<
+  ArticleResponseDto,
+  ArticleUpdateRequestPayload,
+  AsyncThunkConfig
+>(`${sliceName}/update`, async (payload, { extra }) => {
+  const { articleApi } = extra;
+
+  return await articleApi.update(payload);
+});
+
 const getArticle = createAsyncThunk<
   ArticleResponseDto,
   number,
@@ -91,4 +102,11 @@ const reactToArticle = createAsyncThunk<
   );
 });
 
-export { createArticle, fetchAll, fetchOwn, getArticle, reactToArticle };
+export {
+  createArticle,
+  fetchAll,
+  fetchOwn,
+  getArticle,
+  reactToArticle,
+  updateArticle,
+};

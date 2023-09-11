@@ -11,6 +11,7 @@ import {
   type ArticleRequestDto,
   type ArticleResponseDto,
   type ArticlesFilters,
+  type ArticleUpdateRequestPayload,
 } from './libs/types/types.js';
 
 type Constructor = {
@@ -63,6 +64,23 @@ class ArticleApi extends HttpApi {
         method: 'POST',
         contentType: ContentType.JSON,
         payload: JSON.stringify(payload),
+        hasAuth: true,
+      },
+    );
+
+    return await response.json<ArticleResponseDto>();
+  }
+  public async update(
+    payload: ArticleUpdateRequestPayload,
+  ): Promise<ArticleResponseDto> {
+    const response = await this.load(
+      this.getFullEndpoint(ArticlesApiPath.EDIT, {
+        id: payload.articleId.toString(),
+      }),
+      {
+        method: 'PUT',
+        contentType: ContentType.JSON,
+        payload: JSON.stringify(payload.articleForUpdate),
         hasAuth: true,
       },
     );

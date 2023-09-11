@@ -10,6 +10,7 @@ import {
   fetchOwn,
   getArticle,
   reactToArticle,
+  updateArticle,
 } from './actions.js';
 
 type State = {
@@ -38,6 +39,18 @@ const { reducer, actions, name } = createSlice({
       state.articles = [...state.articles, action.payload];
       state.dataStatus = DataStatus.FULFILLED;
     });
+    builder.addCase(updateArticle.fulfilled, (state, action) => {
+      const article = action.payload;
+      if (article) {
+        state.articles = state.articles.map((item) => {
+          if (article.id === item.id) {
+            return article;
+          }
+          return item;
+        });
+      }
+      state.dataStatus = DataStatus.FULFILLED;
+    });
     builder.addCase(getArticle.fulfilled, (state, action) => {
       state.dataStatus = DataStatus.FULFILLED;
       state.article = action.payload;
@@ -58,6 +71,7 @@ const { reducer, actions, name } = createSlice({
         fetchAll.pending,
         fetchOwn.pending,
         createArticle.pending,
+        updateArticle.pending,
         getArticle.pending,
         reactToArticle.pending,
       ),
@@ -70,6 +84,7 @@ const { reducer, actions, name } = createSlice({
         fetchAll.rejected,
         fetchOwn.rejected,
         createArticle.rejected,
+        updateArticle.rejected,
         getArticle.rejected,
         reactToArticle.rejected,
       ),

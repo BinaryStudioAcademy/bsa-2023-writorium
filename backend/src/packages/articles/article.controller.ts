@@ -153,6 +153,22 @@ class ArticleController extends Controller {
           options as ApiHandlerOptions<{
             params: { id: number };
             body: ArticleUpdateRequestDto;
+            user: UserAuthResponseDto;
+          }>,
+        ),
+    });
+    this.addRoute({
+      path: ArticlesApiPath.EDIT,
+      method: 'PUT',
+      validation: {
+        body: articleUpdateValidationSchema,
+      },
+      handler: (options) =>
+        this.update(
+          options as ApiHandlerOptions<{
+            params: { id: number };
+            body: ArticleUpdateRequestDto;
+            user: UserAuthResponseDto;
           }>,
         ),
     });
@@ -319,14 +335,15 @@ class ArticleController extends Controller {
     options: ApiHandlerOptions<{
       params: { id: number };
       body: ArticleUpdateRequestDto;
+      user: UserAuthResponseDto;
     }>,
   ): Promise<ApiHandlerResponse> {
     return {
       status: HttpCode.OK,
-      payload: await this.articleService.update(
-        options.params.id,
-        options.body,
-      ),
+      payload: await this.articleService.update(options.params.id, {
+        payload: options.body,
+        user: options.user,
+      }),
     };
   }
 

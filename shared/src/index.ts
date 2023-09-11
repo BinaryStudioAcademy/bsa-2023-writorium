@@ -67,6 +67,7 @@ export {
   type ArticlesFilters,
   articlesFiltersValidationSchema,
   type ArticleUpdateRequestDto,
+  type ArticleUpdateRequestPayload,
   articleUpdateValidationSchema,
   type ArticleWithRelationsType,
   type ReactionResponseDto,

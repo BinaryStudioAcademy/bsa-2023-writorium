@@ -7,6 +7,7 @@ export {
   type ArticleResponseDto,
   type ArticlesFilters,
   type ArticleUpdateRequestDto,
+  type ArticleUpdateRequestPayload,
   type ArticleWithRelationsType,
   type ReactionResponseDto,
 } from './libs/types/types.js';
