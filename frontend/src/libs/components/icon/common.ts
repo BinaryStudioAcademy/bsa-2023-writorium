@@ -35,6 +35,7 @@ import { ReactComponent as Search } from '~/assets/img/icons/search-icon.svg';
 import { ReactComponent as Share } from '~/assets/img/icons/share-icon.svg';
 import { ReactComponent as Sparkles } from '~/assets/img/icons/sparkles-icon.svg';
 import { ReactComponent as Star } from '~/assets/img/icons/star-icon.svg';
+import { ReactComponent as TrashBinIcon } from '~/assets/img/icons/trash-bin-icon.svg';
 import { ReactComponent as View } from '~/assets/img/icons/view-icon.svg';
 import { ReactComponent as WritoriumLogo } from '~/assets/img/icons/writorium-logo-icon.svg';
 
@@ -77,6 +78,7 @@ type IconName =
   | 'header4'
   | 'header5'
   | 'header6'
+  | 'trashBin'
   | 'facebook';
 
 const iconNameToIcon: Record<
@@ -121,6 +123,7 @@ const iconNameToIcon: Record<
   header4: Header4,
   header5: Header5,
   header6: Header6,
+  trashBin: TrashBinIcon,
   facebook: Facebook,
 };
 

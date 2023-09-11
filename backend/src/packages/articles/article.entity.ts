@@ -16,11 +16,13 @@ class ArticleEntity implements IEntity {
   private 'userId': number;
   private 'promptId': number | null;
   private 'genreId': number | null;
+  private 'coverId': number | null;
+  private 'coverUrl'?: string | null;
   private 'publishedAt': string | null;
   private 'author'?: UserDetailsResponseDto;
-  private 'reactions'?: ReactionResponseDto[];
   private 'prompt'?: ArticleWithRelationsType['prompt'];
-  private 'genre'?: string;
+  private 'genre'?: ArticleWithRelationsType['genre'];
+  private 'reactions'?: ReactionResponseDto[];
 
   private constructor({
     id,
@@ -29,6 +31,8 @@ class ArticleEntity implements IEntity {
     userId,
     promptId,
     genreId,
+    coverId,
+    coverUrl,
     publishedAt,
     author,
     reactions,
@@ -46,6 +50,8 @@ class ArticleEntity implements IEntity {
     this.reactions = reactions;
     this.prompt = prompt;
     this.genre = genre;
+    this.coverId = coverId;
+    this.coverUrl = coverUrl;
   }
 
   public static initialize({
@@ -53,6 +59,8 @@ class ArticleEntity implements IEntity {
     title,
     text,
     userId,
+    coverId,
+    coverUrl,
     promptId,
     genreId,
     publishedAt,
@@ -66,6 +74,8 @@ class ArticleEntity implements IEntity {
       title,
       text,
       userId,
+      coverId,
+      coverUrl,
       promptId,
       genreId,
       publishedAt,
@@ -83,6 +93,7 @@ class ArticleEntity implements IEntity {
     title,
     text,
     userId,
+    coverId,
     promptId,
     genreId,
     publishedAt,
@@ -93,6 +104,7 @@ class ArticleEntity implements IEntity {
       text,
       userId,
       promptId,
+      coverId,
       genreId,
       publishedAt,
     });
@@ -104,6 +116,7 @@ class ArticleEntity implements IEntity {
       title: this.title,
       text: this.text,
       userId: this.userId,
+      coverId: this.coverId,
       promptId: this.promptId,
       genreId: this.genreId,
       publishedAt: this.publishedAt,
@@ -118,11 +131,13 @@ class ArticleEntity implements IEntity {
       userId: this.userId,
       promptId: this.promptId,
       genreId: this.genreId,
+      coverId: this.coverId,
+      coverUrl: this.coverUrl as ArticleResponseDto['coverUrl'],
       publishedAt: this.publishedAt,
       author: this.author as UserDetailsResponseDto,
       reactions: this.reactions as ReactionResponseDto[],
       prompt: this.prompt as ArticleResponseDto['prompt'],
-      genre: this.genre as string,
+      genre: this.genre as ArticleResponseDto['genre'],
     };
   }
 
@@ -131,6 +146,7 @@ class ArticleEntity implements IEntity {
       title: this.title,
       text: this.text,
       userId: this.userId,
+      coverId: this.coverId,
       promptId: this.promptId,
       genreId: this.genreId,
       publishedAt: this.publishedAt,

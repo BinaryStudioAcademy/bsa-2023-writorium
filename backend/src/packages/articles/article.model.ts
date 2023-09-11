@@ -7,6 +7,7 @@ import {
 import { composeDatabaseRelationPath } from '~/libs/packages/database/libs/helpers/helpers.js';
 
 import { ArticleReactionModel } from '../article-reactions/article-reaction.model.js';
+import { FileModel } from '../files/file.model.js';
 import { GenreModel } from '../genres/genre.model.js';
 import { PromptModel } from '../prompts/prompt.model.js';
 import { UserDetailsModel } from '../users/user-details.model.js';
@@ -22,6 +23,8 @@ class ArticleModel extends AbstractModel {
   public 'genre': GenreModel;
   public 'prompt': PromptModel;
   public 'reactions': ReactionResponseDto[];
+  public 'coverId': number | null;
+  public 'cover': FileModel | null;
 
   public static override get tableName(): string {
     return DatabaseTableName.ARTICLES;
@@ -81,6 +84,20 @@ class ArticleModel extends AbstractModel {
           ),
           to: composeDatabaseRelationPath<GenreModel>(
             DatabaseTableName.GENRES,
+            'id',
+          ),
+        },
+      },
+      cover: {
+        relation: Model.HasOneRelation,
+        modelClass: FileModel,
+        join: {
+          from: composeDatabaseRelationPath<ArticleModel>(
+            DatabaseTableName.ARTICLES,
+            'coverId',
+          ),
+          to: composeDatabaseRelationPath<FileModel>(
+            DatabaseTableName.FILES,
             'id',
           ),
         },

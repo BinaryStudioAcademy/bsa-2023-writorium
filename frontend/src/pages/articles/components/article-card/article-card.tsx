@@ -1,4 +1,3 @@
-import ArticlePreview from '~/assets/img/article-preview.png';
 import {
   Avatar,
   Icon,
@@ -45,7 +44,7 @@ const ArticleCard: React.FC<Properties> = ({
 }) => {
   const user = useAppSelector(({ auth }) => auth.user) as UserAuthResponseDto;
 
-  const { publishedAt, title, text, id, userId } = article;
+  const { publishedAt, title, text, id, userId, coverUrl } = article;
   const MOCKED_READ_TIME = '7 min read';
   const { likeCount, dislikeCount, isLike } = getReactionsInfo(
     user.id,
@@ -81,9 +80,11 @@ const ArticleCard: React.FC<Properties> = ({
           )}
           <span className={styles.publicationTime}>{MOCKED_READ_TIME}</span>
         </div>
-        <Icon iconName="favorite" className={styles.icon} />
+        <Icon iconName="favorite" className={styles.pointerIcon} />
       </div>
-      <div className={styles.body}>
+      <div
+        className={getValidClassNames(styles.body, coverUrl && styles.hasCover)}
+      >
         <div className={styles.articleInfo}>
           <h4 className={styles.title}>{title}</h4>
           <article
@@ -92,11 +93,9 @@ const ArticleCard: React.FC<Properties> = ({
           ></article>
           <Tags tags={tags} />
         </div>
-        <img
-          src={ArticlePreview}
-          alt="article preview"
-          className={styles.preview}
-        />
+        {coverUrl && (
+          <img src={coverUrl} alt="article cover" className={styles.cover} />
+        )}
       </div>
       <div className={styles.footer}>
         <ul className={styles.reactions}>
@@ -136,7 +135,7 @@ const ArticleCard: React.FC<Properties> = ({
             />
           </li>
         </ul>
-        <Icon iconName="share" className={styles.icon} />
+        <Icon iconName="share" className={styles.pointerIcon} />
         <ShareOnFacebookButton
           title={title}
           articleUrl={articleUrl}
