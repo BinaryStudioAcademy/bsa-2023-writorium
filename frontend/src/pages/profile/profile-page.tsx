@@ -10,6 +10,7 @@ import { actions as usersActions } from '~/slices/users/users.js';
 import {
   UserAchievements,
   UserActivity,
+  UserArticlesGenresStats,
   UserInfo,
 } from './components/components.js';
 import styles from './styles.module.scss';
@@ -31,6 +32,7 @@ const ProfilePage: React.FC = () => {
         <UserInfo user={user} className={styles.profileBlock} />
         <UserActivity userActivity={userActivity} />
         <UserAchievements className={styles.profileBlock} />
+        <UserArticlesGenresStats />
       </div>
     </Layout>
   );
