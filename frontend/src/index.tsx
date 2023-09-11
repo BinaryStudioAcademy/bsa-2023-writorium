@@ -85,7 +85,7 @@ createRoot(document.querySelector('#root') as HTMLElement).render(
                   ),
                   children: [
                     {
-                      path: ArticleSubRoute.ARTICLES,
+                      index: true,
                       element: <ArticlesFeed />,
                     },
                     {

@@ -1,5 +1,5 @@
 import { Layout, Navigate } from '~/libs/components/components.js';
-import { AppRoute, ArticleSubRoute } from '~/libs/enums/enums.js';
+import { ArticleSubRoute } from '~/libs/enums/enums.js';
 import { useLocation } from '~/libs/hooks/hooks.js';
 import { type ArticleWithAuthorType } from '~/packages/articles/articles.js';
 
@@ -10,7 +10,7 @@ const EditArticlePage: React.FC = () => {
   const location = useLocation();
   if (!location.state) {
     return (
-      <Navigate to={`${AppRoute.ARTICLES}/${ArticleSubRoute.MY_ARTICLES}`} />
+      <Navigate to={ArticleSubRoute.MY_ARTICLES} />
     );
   }
   return (
