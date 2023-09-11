@@ -38,6 +38,12 @@ const { reducer, actions, name } = createSlice({
       state.getArticleStatus = DataStatus.FULFILLED;
       state.article = action.payload;
     });
+    builder.addCase(getArticle.pending, (state) => {
+      state.getArticleStatus = DataStatus.PENDING;
+    });
+    builder.addCase(getArticle.rejected, (state) => {
+      state.getArticleStatus = DataStatus.REJECTED;
+    });
     builder.addMatcher(
       isAnyOf(fetchAll.fulfilled, fetchOwn.fulfilled),
       (state, action) => {
@@ -46,23 +52,13 @@ const { reducer, actions, name } = createSlice({
       },
     );
     builder.addMatcher(
-      isAnyOf(
-        fetchAll.pending,
-        fetchOwn.pending,
-        createArticle.pending,
-        getArticle.pending,
-      ),
+      isAnyOf(fetchAll.pending, fetchOwn.pending, createArticle.pending),
       (state) => {
         state.dataStatus = DataStatus.PENDING;
       },
     );
     builder.addMatcher(
-      isAnyOf(
-        fetchAll.rejected,
-        fetchOwn.rejected,
-        createArticle.rejected,
-        getArticle.rejected,
-      ),
+      isAnyOf(fetchAll.rejected, fetchOwn.rejected, createArticle.rejected),
       (state) => {
         state.dataStatus = DataStatus.REJECTED;
       },

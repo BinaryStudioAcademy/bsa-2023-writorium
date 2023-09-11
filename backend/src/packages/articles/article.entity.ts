@@ -4,7 +4,6 @@ import { type WithNullableKeys } from '~/libs/types/types.js';
 import {
   type ArticleEntityType,
   type ArticleWithAuthorType,
-  type UserDetailsResponseDto,
 } from './libs/types/types.js';
 
 class ArticleEntity implements IEntity {
@@ -17,7 +16,7 @@ class ArticleEntity implements IEntity {
   private 'coverId': number | null;
   private 'coverUrl'?: string | null;
   private 'publishedAt': string | null;
-  private 'author'?: UserDetailsResponseDto;
+  private 'author'?: ArticleWithAuthorType['author'];
   private 'prompt'?: ArticleWithAuthorType['prompt'];
   private 'genre'?: ArticleWithAuthorType['genre'];
 
@@ -95,13 +94,7 @@ class ArticleEntity implements IEntity {
       promptId,
       genreId,
       publishedAt,
-      author: {
-        firstName: author?.firstName as string,
-        lastName: author?.lastName as string,
-        avatar: {
-          url: author?.avatar?.url ?? null,
-        },
-      },
+      author,
       prompt,
       genre,
     });

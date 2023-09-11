@@ -49,6 +49,13 @@ class ArticleRepository implements IArticleRepository {
                 prop: article.prompt.prop,
               }
             : null,
+          author: article.author
+            ? {
+                firstName: article.author.firstName,
+                lastName: article.author.lastName,
+                avatarUrl: article.author.avatar?.url ?? null,
+              }
+            : null,
         });
       }),
     };
@@ -74,6 +81,13 @@ class ArticleRepository implements IArticleRepository {
             setting: article.prompt.setting,
             situation: article.prompt.situation,
             prop: article.prompt.prop,
+          }
+        : null,
+      author: article.author
+        ? {
+            firstName: article.author.firstName,
+            lastName: article.author.lastName,
+            avatarUrl: article.author.avatar?.url ?? null,
           }
         : null,
     });

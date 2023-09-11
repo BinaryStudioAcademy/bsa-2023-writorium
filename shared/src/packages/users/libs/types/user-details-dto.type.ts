@@ -2,9 +2,7 @@ type UserDetailsDto = {
   id: number;
   firstName: string;
   lastName: string;
-  avatar: {
-    url: string | null;
-  };
+  avatarUrl: string | null;
 };
 
 export { type UserDetailsDto };

@@ -63,7 +63,7 @@ const ArticlePage: React.FC = () => {
           {author && (
             <AuthorDetails
               name={getFullName(author.firstName, author.lastName)}
-              avatarUrl={author.avatar.url}
+              avatarUrl={author.avatarUrl}
               publishedAt={publishedAt ?? ''}
               genre={genre ?? ''}
             />
