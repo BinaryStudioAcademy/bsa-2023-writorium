@@ -14,12 +14,15 @@ import {
   getValidClassNames,
   sanitizeHtml,
 } from '~/libs/helpers/helpers.js';
-import { useAppDispatch } from '~/libs/hooks/hooks.js';
+import { useAppDispatch, useAppSelector } from '~/libs/hooks/hooks.js';
 import {
   type ArticleWithRelationsType,
   type ReactionResponseDto,
 } from '~/packages/articles/articles.js';
-import { type UserDetailsResponseDto } from '~/packages/users/users.js';
+import {
+  type UserAuthResponseDto,
+  type UserDetailsResponseDto,
+} from '~/packages/users/users.js';
 import { actions as articlesActions } from '~/slices/articles/articles.js';
 
 import { MOCKED_REACTIONS } from '../../libs/constants.js';
@@ -40,19 +43,25 @@ const ArticleCard: React.FC<Properties> = ({
   tags,
   reactions,
 }) => {
+  const user = useAppSelector(({ auth }) => auth.user) as UserAuthResponseDto;
+
   const { publishedAt, title, text, id, userId } = article;
   const MOCKED_READ_TIME = '7 min read';
   const { likeCount, dislikeCount, isLike } = getReactionsInfo(
-    userId,
+    user.id,
     reactions,
   );
   const articleUrl = window.location.href;
   const articleRouteById = AppRoute.ARTICLE.replace(':id', String(id));
+  const isOwnArticle = user.id === userId;
 
   const dispatch = useAppDispatch();
 
-  const handleReaction = (isLike: boolean): void =>
-    void dispatch(articlesActions.reactToArticle({ isLike, articleId: id }));
+  const handleReaction = (isLike: boolean): void => {
+    if (!isOwnArticle) {
+      void dispatch(articlesActions.reactToArticle({ isLike, articleId: id }));
+    }
+  };
 
   return (
     <article className={styles.article}>
@@ -107,7 +116,7 @@ const ArticleCard: React.FC<Properties> = ({
               iconName="like"
               className={getValidClassNames(
                 styles.footerIcon,
-                styles.reaction,
+                isOwnArticle ? styles.disable : styles.reaction,
                 isLike && styles.pressed,
               )}
               label={String(likeCount)}
@@ -119,7 +128,7 @@ const ArticleCard: React.FC<Properties> = ({
               iconName="dislike"
               className={getValidClassNames(
                 styles.footerIcon,
-                styles.reaction,
+                isOwnArticle ? styles.disable : styles.reaction,
                 isLike === false && styles.pressed,
               )}
               label={String(dislikeCount)}
