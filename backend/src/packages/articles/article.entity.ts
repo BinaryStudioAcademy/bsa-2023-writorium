@@ -14,6 +14,8 @@ class ArticleEntity implements IEntity {
   private 'userId': number;
   private 'promptId': number | null;
   private 'genreId': number | null;
+  private 'coverId': number | null;
+  private 'coverUrl'?: string | null;
   private 'publishedAt': string | null;
   private 'author'?: UserDetailsResponseDto;
   private 'prompt'?: ArticleWithAuthorType['prompt'];
@@ -26,6 +28,8 @@ class ArticleEntity implements IEntity {
     userId,
     promptId,
     genreId,
+    coverId,
+    coverUrl,
     publishedAt,
     author,
     prompt,
@@ -41,6 +45,8 @@ class ArticleEntity implements IEntity {
     this.author = author;
     this.prompt = prompt;
     this.genre = genre;
+    this.coverId = coverId;
+    this.coverUrl = coverUrl;
   }
 
   public static initialize({
@@ -48,6 +54,7 @@ class ArticleEntity implements IEntity {
     title,
     text,
     userId,
+    coverId,
     promptId,
     genreId,
     publishedAt,
@@ -57,8 +64,9 @@ class ArticleEntity implements IEntity {
       title,
       text,
       userId,
-      promptId,
+      coverId,
       genreId,
+      promptId,
       publishedAt,
     });
   }
@@ -68,9 +76,11 @@ class ArticleEntity implements IEntity {
     title,
     text,
     userId,
+    coverId,
     promptId,
     genreId,
     publishedAt,
+    coverUrl,
     author,
     prompt,
     genre,
@@ -80,6 +90,8 @@ class ArticleEntity implements IEntity {
       title,
       text,
       userId,
+      coverId,
+      coverUrl,
       promptId,
       genreId,
       publishedAt,
@@ -97,6 +109,7 @@ class ArticleEntity implements IEntity {
     title,
     text,
     userId,
+    coverId,
     promptId,
     genreId,
     publishedAt,
@@ -107,6 +120,7 @@ class ArticleEntity implements IEntity {
       text,
       userId,
       promptId,
+      coverId,
       genreId,
       publishedAt,
     });
@@ -118,6 +132,7 @@ class ArticleEntity implements IEntity {
       title: this.title,
       text: this.text,
       userId: this.userId,
+      coverId: this.coverId,
       promptId: this.promptId,
       genreId: this.genreId,
       publishedAt: this.publishedAt,
@@ -132,6 +147,8 @@ class ArticleEntity implements IEntity {
       userId: this.userId,
       promptId: this.promptId,
       genreId: this.genreId,
+      coverId: this.coverId,
+      coverUrl: this.coverUrl,
       publishedAt: this.publishedAt,
       author: this.author,
       prompt: this.prompt,
@@ -144,6 +161,7 @@ class ArticleEntity implements IEntity {
       title: this.title,
       text: this.text,
       userId: this.userId,
+      coverId: this.coverId,
       promptId: this.promptId,
       genreId: this.genreId,
       publishedAt: this.publishedAt,

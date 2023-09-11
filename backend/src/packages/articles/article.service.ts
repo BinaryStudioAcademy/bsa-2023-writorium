@@ -12,6 +12,7 @@ import {
   type ArticleBaseResponseDto,
   type ArticleCreateDto,
   type ArticleGetAllResponseDto,
+  type ArticlesFilters,
   type ArticleUpdateRequestDto,
   type ArticleWithAuthorType,
   type DetectedArticleGenre,
@@ -84,18 +85,33 @@ class ArticleService implements IService {
     return await this.getGenreIdForArticle(text);
   }
 
-  public async findAll(): Promise<ArticleGetAllResponseDto> {
-    const articles = await this.articleRepository.findAll({
+  public async findAll(
+    filters: ArticlesFilters,
+  ): Promise<ArticleGetAllResponseDto> {
+    const { items, total } = await this.articleRepository.findAll({
+      ...filters,
       hasPublishedOnly: true,
     });
 
-    return { items: articles.map((article) => article.toObjectWithAuthor()) };
+    return {
+      total,
+      items: items.map((article) => article.toObjectWithAuthor()),
+    };
   }
 
-  public async findOwn(userId: number): Promise<ArticleGetAllResponseDto> {
-    const articles = await this.articleRepository.findAll({ userId });
+  public async findOwn(
+    userId: number,
+    filters: ArticlesFilters,
+  ): Promise<ArticleGetAllResponseDto> {
+    const { items, total } = await this.articleRepository.findAll({
+      userId,
+      ...filters,
+    });
 
-    return { items: articles.map((article) => article.toObjectWithAuthor()) };
+    return {
+      total,
+      items: items.map((article) => article.toObjectWithAuthor()),
+    };
   }
 
   public async find(id: number): Promise<ArticleWithAuthorType | null> {
@@ -116,9 +132,10 @@ class ArticleService implements IService {
     const article = await this.articleRepository.create(
       ArticleEntity.initializeNew({
         genreId,
-        title: payload.title,
         text: payload.text,
+        title: payload.title,
         userId: payload.userId,
+        coverId: payload.coverId,
         promptId: payload?.promptId ?? null,
         publishedAt: payload?.publishedAt ?? null,
       }),

@@ -8,7 +8,7 @@ import {
   useParams,
   useState,
 } from '~/libs/hooks/hooks.js';
-import { type ArticleType, type TagType } from '~/libs/types/types.js';
+import { type TagType } from '~/libs/types/types.js';
 import { actions } from '~/slices/articles/articles.js';
 
 import { ArticleView, AuthorDetails } from './components/components.js';
@@ -52,14 +52,17 @@ const ArticlePage: React.FC = () => {
     { id: 5, name: 'Tech' },
   ];
 
-  const { text, title, author } = article ?? {};
+  const { text, title, author, coverUrl } = article ?? {};
 
   return (
     <Loader isLoading={isLoading}>
       <Layout>
         <div className={styles.articlePageWrapper}>
           <ArticleView
-            article={{ text, title, tags: MOCKED_TAGS } as ArticleType}
+            tags={MOCKED_TAGS}
+            text={text ?? ''}
+            title={title ?? ''}
+            coverUrl={coverUrl ?? ''}
           />
           {author && (
             <AuthorDetails
