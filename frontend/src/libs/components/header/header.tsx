@@ -36,7 +36,7 @@ const Header: React.FC<Properties> = ({ user }) => {
             <button className={styles.avatarButton} onClick={handleAvatarClick}>
               <Avatar
                 username={getFullName(user.firstName, user.lastName)}
-                avatarUrl={null}
+                avatarUrl={user.avatarUrl}
               />
             </button>
           </div>

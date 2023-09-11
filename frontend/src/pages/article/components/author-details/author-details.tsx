@@ -7,22 +7,22 @@ import { getFormattedDate } from '~/libs/helpers/helpers.js';
 import styles from './styles.module.scss';
 
 type Properties = {
-  name?: string;
+  name: string;
   followers?: number;
   rating?: number;
-  publishedAt?: string;
+  publishedAt: string;
   readingTime?: string;
-  genre?: string;
-  avatarUrl?: string | null;
+  genre: string | null;
+  avatarUrl: string | null;
 };
 
 const AuthorDetails: FC<Properties> = ({
   name = 'Charlie Culhane',
   followers = 10,
   rating = 700,
-  publishedAt = '2023-09-04T12:53:07.144Z',
+  publishedAt,
   readingTime = '7 min',
-  genre = 'Fiction',
+  genre,
   avatarUrl = null,
 }) => {
   return (

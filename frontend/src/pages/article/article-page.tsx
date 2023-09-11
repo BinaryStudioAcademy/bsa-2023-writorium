@@ -52,7 +52,7 @@ const ArticlePage: React.FC = () => {
     { id: 5, name: 'Tech' },
   ];
 
-  const { text, title, author, coverUrl } = article ?? {};
+  const { text, title, author, coverUrl, publishedAt, genre } = article ?? {};
 
   return (
     <Loader isLoading={isLoading}>
@@ -68,6 +68,8 @@ const ArticlePage: React.FC = () => {
             <AuthorDetails
               name={getFullName(author.firstName, author.lastName)}
               avatarUrl={author.avatarUrl}
+              publishedAt={publishedAt ?? ''}
+              genre={genre ?? ''}
             />
           )}
         </div>
