@@ -81,7 +81,7 @@
   color: var(--light-grey);
 }
 
-@media only screen and (max-width: breakpoints.$medium) {
+@media only screen and (max-width: breakpoints.$large) {
   .authLayout {
     display: block;
   }
