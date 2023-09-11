@@ -26,6 +26,7 @@ import {
   type ArticleWithAuthorType,
   type DetectedArticleGenre,
   type UserActivityResponseDto,
+  type UserArticlesGenresStatsResponseDto,
 } from './libs/types/types.js';
 
 class ArticleService implements IService {
@@ -185,6 +186,21 @@ class ArticleService implements IService {
     });
 
     return halfYearActivity;
+  }
+
+  public async getUserArticlesGenresStats(
+    userId: number,
+  ): Promise<UserArticlesGenresStatsResponseDto> {
+    const stats = await this.articleRepository.getUserArticlesGenresStats(
+      userId,
+    );
+
+    return {
+      items: stats.map((statsItem) => ({
+        ...statsItem,
+        count: Number.parseInt(statsItem.count),
+      })),
+    };
   }
 
   public async create(

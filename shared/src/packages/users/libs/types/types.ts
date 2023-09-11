@@ -1,4 +1,6 @@
 export { type UserActivityResponseDto } from './user-activity-response-dto.type.js';
+export { type UserArticlesGenresStatsItem } from './user-articles-genres-stats-item.type.js';
+export { type UserArticlesGenresStatsResponseDto } from './user-articles-genres-stats-response-dto.type.js';
 export { type UserAuthResponseDto } from './user-auth-response-dto.type.js';
 export { type UserDetailsDto } from './user-details-dto.type.js';
 export { type UserDetailsResponseDto } from './user-details-response-dto.type.js';

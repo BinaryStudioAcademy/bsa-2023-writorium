@@ -5,6 +5,8 @@ export {
 } from './libs/enums/enums.js';
 export {
   type UserActivityResponseDto,
+  type UserArticlesGenresStatsItem,
+  type UserArticlesGenresStatsResponseDto,
   type UserAuthResponseDto,
   type UserDetailsDto,
   type UserDetailsResponseDto,

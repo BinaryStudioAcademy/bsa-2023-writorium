@@ -8,6 +8,7 @@ import {
 import { type IArticleRepository } from './libs/interfaces/interfaces.js';
 import {
   type ArticlesFilters,
+  type GetUserArticlesGenresStatsDatabaseResponse,
   type UserActivityResponseDto,
 } from './libs/types/types.js';
 
@@ -122,6 +123,23 @@ class ArticleRepository implements IArticleRepository {
       .whereBetween('createdAt', [activityFrom, activityTo])
       .groupByRaw('date(created_at), date(updated_at)')
       .castTo<UserActivityResponseDto[]>();
+  }
+
+  public getUserArticlesGenresStats(
+    userId: number,
+  ): Promise<GetUserArticlesGenresStatsDatabaseResponse[]> {
+    return this.articleModel
+      .query()
+      .select(
+        'genre.name',
+        'genre.key',
+        this.articleModel.raw('count(*) as count'),
+      )
+      .joinRelated('genre')
+      .groupBy('genre.key', 'genre.name')
+      .where({ userId })
+      .castTo<GetUserArticlesGenresStatsDatabaseResponse[]>()
+      .execute();
   }
 
   public async update(entity: ArticleEntity): Promise<ArticleEntity> {

@@ -1,6 +1,7 @@
 export { type UserPrivateData } from './user-private-data.type.js';
 export {
   type UserActivityResponseDto,
+  type UserArticlesGenresStatsResponseDto,
   type UserAuthResponseDto,
   type UserGetAllResponseDto,
   type UserSignInRequestDto,
