@@ -1,47 +1,41 @@
-import { type ValueOf } from 'shared/build';
-
-import { type ILoader } from '~/libs/enums/enums.js';
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
+import { type LoaderShape } from '~/libs/types/types.js';
 
 import styles from './styles.module.scss';
 
 type Properties = {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   className?: string;
   isLoading: boolean;
-  hasOverlay: boolean;
-  loaderType: ValueOf<typeof ILoader>;
+  hasOverlay?: boolean;
+  loaderType: LoaderShape;
 };
 
 const Loader: React.FC<Properties> = ({
   children,
   className,
   isLoading,
-  hasOverlay,
+  hasOverlay = false,
   loaderType,
 }) => {
-  const loaderComponents: Record<string, React.ReactNode> = {
-    'circular': (
-      <div
-        className={getValidClassNames(styles.circularLoader, className)}
-      ></div>
-    ),
-    'dots': (
-      <div className={getValidClassNames(styles.dotFlashing, className)}></div>
-    ),
-  };
-
-  if (isLoading && loaderComponents[loaderType]) {
+  if (isLoading) {
     const containerClassName = hasOverlay
       ? styles.overlayContainer
       : styles.notOverlayContainer;
 
+    const loaderComponentClassName =
+      loaderType === 'circular' ? styles.circularLoader : styles.dotFlashing;
+
     return (
-      <div className={containerClassName}>{loaderComponents[loaderType]}</div>
+      <div className={containerClassName}>
+        <div
+          className={getValidClassNames(loaderComponentClassName, className)}
+        ></div>
+      </div>
     );
   }
 
-  return <>{children}</>;
+  return children;
 };
 
 export { Loader };

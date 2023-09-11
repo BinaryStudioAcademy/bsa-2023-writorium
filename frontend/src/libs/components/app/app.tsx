@@ -34,7 +34,7 @@ const App: React.FC = () => {
 
   return (
     <>
-      <Loader isLoading={isLoading} hasOverlay={true} loaderType="circular">
+      <Loader isLoading={isLoading} hasOverlay loaderType="circular">
         <Header user={user} />
         <div className={styles.container}>
           <RouterOutlet />
