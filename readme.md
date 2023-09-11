@@ -108,20 +108,10 @@ erDiagram
     text url
   }
 
-  %%optional relationship if articles may have preview image
-  files_to_articles ||..|| files : file_id
-  files_to_articles ||..|| articles : article_id
-  files_to_articles {
-    int id PK
-    dateTime created_at
-    dateTime update_at
-    int file_id FK
-    int article_id FK
-  }
-
   articles }o--|| users : user_id
   articles ||..|o prompts : prompt_id
   articles ||--|| genres : genre_id
+  articles ||..|o files : cover_id
   articles {
     int id PK
     dateTime created_at
@@ -130,6 +120,7 @@ erDiagram
     int user_id FK
     int genre_id FK
     int prompt_id FK "nullable"
+    int cover_id FK "nullable"
   }
 
   comments }o..|| users : user_id

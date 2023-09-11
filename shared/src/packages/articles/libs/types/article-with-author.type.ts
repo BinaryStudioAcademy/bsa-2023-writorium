@@ -10,7 +10,8 @@ type ArticleWithAuthorType = ArticleEntityType & {
     situation: string | null;
     prop: string | null;
   } | null;
-  genre?: string;
+  genre?: string | null;
+  coverUrl?: string | null;
 };
 
 export { type ArticleWithAuthorType };

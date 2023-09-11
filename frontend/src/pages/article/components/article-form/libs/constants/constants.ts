@@ -6,6 +6,7 @@ const DEFAULT_ARTICLE_FORM_PAYLOAD: ArticleRequestDto = {
   genreId: null,
   publishedAt: null,
   promptId: null,
+  coverId: null,
 };
 
 export { DEFAULT_ARTICLE_FORM_PAYLOAD };

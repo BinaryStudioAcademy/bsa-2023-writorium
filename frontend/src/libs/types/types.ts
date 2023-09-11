@@ -1,4 +1,3 @@
-export { type ArticleType } from './article.type.js';
 export { type AsyncThunkConfig } from './async-thunk-config.type.js';
 export { type LoaderShape } from './loader.type.js';
 export { type SelectOption } from './select-option.type.js';

@@ -15,6 +15,11 @@ export {
   type ArticleBaseResponseDto,
   type ArticleGetAllResponseDto,
   type ArticleRequestDto,
+  type ArticleUpdateRequestDto,
+  type ArticleUpdateRequestPayload,
   type ArticleWithAuthorType,
 } from './libs/types/types.js';
-export { articleCreateValidationSchema } from './libs/validation-schemas/validation-schemas.js';
+export {
+  articleCreateValidationSchema,
+  articleUpdateValidationSchema,
+} from './libs/validation-schemas/validation-schemas.js';
