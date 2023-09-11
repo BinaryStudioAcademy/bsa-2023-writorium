@@ -200,7 +200,7 @@ class ArticleController extends Controller {
 
   /**
    * @swagger
-   * /articles/:id:
+   * /articles/own:
    *    get:
    *      description: Returns an array of user's articles
    *      parameters:
