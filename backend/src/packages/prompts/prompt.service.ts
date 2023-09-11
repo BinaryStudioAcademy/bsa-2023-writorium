@@ -6,7 +6,10 @@ import { type OpenAIService } from '~/libs/packages/openai/openai.package.js';
 
 import { GenreEntity } from '../genres/genre.entity.js';
 import { type GenreRepository } from '../genres/genre.repository.js';
-import { ARTICLE_PROMPT_COMPLETION_MESSAGE } from './libs/constants/constants.js';
+import {
+  ARTICLE_PROMPT_COMPLETION_MESSAGE,
+  ARTICLE_PROMPT_COMPLETION_TEMPERATURE,
+} from './libs/constants/constants.js';
 import {
   type GenerateArticlePromptResponseDto,
   type GeneratedArticlePrompt,
@@ -34,6 +37,7 @@ class PromptService implements IService {
   public async generate(): Promise<GenerateArticlePromptResponseDto> {
     const promptJSON = await this.openAIService.createCompletion({
       prompt: ARTICLE_PROMPT_COMPLETION_MESSAGE,
+      temperature: ARTICLE_PROMPT_COMPLETION_TEMPERATURE,
     });
 
     if (!promptJSON) {
