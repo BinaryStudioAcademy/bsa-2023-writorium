@@ -9,9 +9,7 @@ import styles from './styles.module.scss';
 const EditArticlePage: React.FC = () => {
   const location = useLocation();
   if (!location.state) {
-    return (
-      <Navigate to={ArticleSubRoute.MY_ARTICLES} />
-    );
+    return <Navigate to={ArticleSubRoute.MY_ARTICLES} />;
   }
   return (
     <Layout>
