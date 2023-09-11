@@ -29,6 +29,7 @@ const articleUpdate = joi
     publishedAt: joi.string().isoDate().allow(null).messages({
       'string.isoDate': ArticleValidationMessage.ARTICLE_PUBLISHED_ISO_DATE,
     }),
+    coverId: joi.number().integer().positive().allow(null),
   })
   .min(ArticleValidationRule.ARTICLE_UPDATE_MINIMUM_NUMBER_OF_KEYS)
   .messages({

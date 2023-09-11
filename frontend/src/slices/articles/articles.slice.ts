@@ -27,7 +27,12 @@ const initialState: State = {
 const { reducer, actions, name } = createSlice({
   initialState,
   name: 'articles',
-  reducers: {},
+  reducers: {
+    resetArticles(state) {
+      state.articles = initialState.articles;
+      state.dataStatus = DataStatus.IDLE;
+    },
+  },
   extraReducers(builder) {
     builder.addCase(createArticle.fulfilled, (state, action) => {
       state.articles = [...state.articles, action.payload];
@@ -53,7 +58,7 @@ const { reducer, actions, name } = createSlice({
       isAnyOf(fetchAll.fulfilled, fetchOwn.fulfilled),
       (state, action) => {
         state.dataStatus = DataStatus.FULFILLED;
-        state.articles = action.payload.items;
+        state.articles = [...state.articles, ...action.payload.items];
       },
     );
     builder.addMatcher(
