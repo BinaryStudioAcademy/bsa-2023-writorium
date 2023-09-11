@@ -1,7 +1,7 @@
 import styles from './styles.module.scss';
 
 type Properties = {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   isLoading: boolean;
 };
 

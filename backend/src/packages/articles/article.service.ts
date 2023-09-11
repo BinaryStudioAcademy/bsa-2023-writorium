@@ -193,9 +193,10 @@ class ArticleService implements IService {
     const article = await this.articleRepository.create(
       ArticleEntity.initializeNew({
         genreId,
-        title: payload.title,
         text: payload.text,
+        title: payload.title,
         userId: payload.userId,
+        coverId: payload.coverId,
         promptId: payload?.promptId ?? null,
         publishedAt: payload?.publishedAt ?? null,
       }),

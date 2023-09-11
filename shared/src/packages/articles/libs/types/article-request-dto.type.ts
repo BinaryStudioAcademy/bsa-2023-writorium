@@ -2,7 +2,7 @@ import { type ArticleEntityType } from '~/packages/articles/libs/types/article-e
 
 type ArticleRequestDto = Pick<
   ArticleEntityType,
-  'title' | 'text' | 'promptId' | 'genreId' | 'publishedAt'
+  'title' | 'text' | 'promptId' | 'genreId' | 'publishedAt' | 'coverId'
 >;
 
 export { type ArticleRequestDto };
