@@ -169,13 +169,16 @@ class ArticleService implements IService {
     return updatedArticle.toObject();
   }
 
-  public async share(id: number, origin: string): Promise<{ link: string }> {
+  public async share(
+    id: number,
+    refererOrigin: string,
+  ): Promise<{ link: string }> {
     const token = await articleToken.create({
       articleId: id,
     });
 
     return {
-      link: `${origin}${ApiPath.ARTICLES}${SHARED_$TOKEN.replace(
+      link: `${refererOrigin}${ApiPath.ARTICLES}${SHARED_$TOKEN.replace(
         ':token',
         token,
       )}`,

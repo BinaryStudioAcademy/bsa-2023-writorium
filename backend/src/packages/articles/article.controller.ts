@@ -143,11 +143,11 @@ class ArticleController extends Controller {
 
     this.addRoute({
       path: ArticlesApiPath.$ID_SHARE,
-      method: 'POST',
+      method: 'GET',
       handler: (options) =>
         this.share(
           options as ApiHandlerOptions<{
-            body: { id: number };
+            params: { id: number };
           }>,
         ),
     });
@@ -155,12 +155,7 @@ class ArticleController extends Controller {
     this.addRoute({
       path: ArticlesApiPath.SHARED_BASE,
       method: 'GET',
-      handler: (options) =>
-        this.findShared(
-          options as ApiHandlerOptions<{
-            params: { token: string };
-          }>,
-        ),
+      handler: (options) => this.findShared(options),
     });
   }
 
@@ -373,14 +368,14 @@ class ArticleController extends Controller {
    */
   private async share(
     options: ApiHandlerOptions<{
-      body: { id: number };
+      params: { id: number };
     }>,
   ): Promise<ApiHandlerResponse> {
     return {
       status: HttpCode.OK,
       payload: await this.articleService.share(
-        options.body.id,
-        options.origin as string,
+        options.params.id,
+        options.refererOrigin as string,
       ),
     };
   }

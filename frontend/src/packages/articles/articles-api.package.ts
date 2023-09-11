@@ -77,9 +77,8 @@ class ArticleApi extends HttpApi {
     const response = await this.load(
       this.getFullEndpoint(ArticlesApiPath.$ID_SHARE, { id }),
       {
-        method: 'POST',
+        method: 'GET',
         contentType: ContentType.JSON,
-        payload: JSON.stringify({ id }),
         hasAuth: true,
       },
     );

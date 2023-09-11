@@ -1,6 +1,7 @@
 import { type ILogger } from '~/libs/packages/logger/logger.js';
 import { type ServerAppRouteParameters } from '~/libs/packages/server-application/server-application.js';
 
+import { processRefererHeader } from './libs/helpers/helpers.js';
 import { type IController } from './libs/interfaces/interfaces.js';
 import {
   type ApiHandler,
@@ -57,7 +58,7 @@ class Controller implements IController {
       fileToUpload,
       user,
       origin: headers.origin,
-      host: headers.host,
+      refererOrigin: processRefererHeader(headers.referer),
       sharedArticleToken: headers['shared-article-token'] as string,
     };
   }

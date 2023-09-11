@@ -8,7 +8,7 @@ type DefaultApiHandlerOptions = {
   fileToUpload?: FileToUpload | null;
   user?: UserAuthResponseDto | null;
   origin?: string;
-  host?: string;
+  refererOrigin?: string;
   sharedArticleToken?: string;
 };
 
@@ -21,7 +21,7 @@ type ApiHandlerOptions<
   fileToUpload: T['fileToUpload'];
   user: T['user'];
   origin: T['origin'];
-  host: T['host'];
+  refererOrigin: T['refererOrigin'];
   sharedArticleToken: T['sharedArticleToken'];
 };
 
