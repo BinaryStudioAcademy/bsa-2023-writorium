@@ -45,15 +45,13 @@ class UserApi extends HttpApi {
     return await response.json<UserActivityResponseDto[]>();
   }
 
-  public async getUserArticlesGenresStats(): Promise<
-    UserArticlesGenresStatsResponseDto[]
-  > {
+  public async getUserArticlesGenresStats(): Promise<UserArticlesGenresStatsResponseDto> {
     const response = await this.load(
       this.getFullEndpoint(UsersApiPath.ARTICLES_GENRES_STATS, {}),
       { method: 'GET', contentType: ContentType.JSON, hasAuth: true },
     );
 
-    return await response.json<UserArticlesGenresStatsResponseDto[]>();
+    return await response.json<UserArticlesGenresStatsResponseDto>();
   }
 
   public async updateUser(

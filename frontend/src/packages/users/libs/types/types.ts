@@ -1,5 +1,6 @@
 export {
   type UserActivityResponseDto,
+  type UserArticlesGenresStatsItem,
   type UserArticlesGenresStatsResponseDto,
   type UserAuthResponseDto,
   type UserDetailsResponseDto,
