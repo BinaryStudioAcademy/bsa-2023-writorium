@@ -1,5 +1,5 @@
 import { Button, Input, TextEditor } from '~/libs/components/components.js';
-import { AppRoute, ArticleSubRoute, ButtonType } from '~/libs/enums/enums.js';
+import { ArticleSubRoute, ButtonType } from '~/libs/enums/enums.js';
 import {
   useAppDispatch,
   useAppForm,
@@ -53,8 +53,8 @@ const ArticleForm: React.FC = () => {
           .then(() => {
             navigate(
               isArticlePublish
-                ? AppRoute.ARTICLES
-                : `${AppRoute.ARTICLES}/${ArticleSubRoute.MY_ARTICLES}`,
+                ? ArticleSubRoute.ARTICLES
+                : ArticleSubRoute.MY_ARTICLES,
             );
           });
       },

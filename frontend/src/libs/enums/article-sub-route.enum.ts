@@ -1,5 +1,6 @@
 const ArticleSubRoute = {
-  MY_ARTICLES: 'my-articles',
+  ARTICLES: '/articles',
+  MY_ARTICLES: '/articles/my-articles',
 } as const;
 
 export { ArticleSubRoute };
