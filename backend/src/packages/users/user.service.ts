@@ -88,6 +88,12 @@ class UserService implements IService {
     return await this.articleService.getUserActivity(userId);
   }
 
+  public async getUserArticlesGenresStats(
+    userId: number,
+  ): Promise<UserActivityResponseDto[]> {
+    return await this.articleService.getUserActivity(userId);
+  }
+
   public async create(
     payload: UserSignUpRequestDto,
   ): Promise<UserAuthResponseDto> {
