@@ -6,6 +6,7 @@ import {
   type AuthLoginWithGoogleDto,
   type AuthRequestPasswordDto,
   type AuthResetPasswordDto,
+  type UserSignInWithFacebookResponseDto,
 } from '~/packages/auth/auth.js';
 import { NotificationType } from '~/packages/notification/notification.js';
 import {
@@ -38,6 +39,19 @@ const signIn = createAsyncThunk<
 >(`${sliceName}/sign-in`, async (loginPayload, { extra }) => {
   const { authApi, storage } = extra;
   const { user, token } = await authApi.signIn(loginPayload);
+
+  await storage.set(StorageKey.TOKEN, token);
+
+  return user;
+});
+
+const signInWithFacebook = createAsyncThunk<
+  UserAuthResponseDto,
+  UserSignInWithFacebookResponseDto,
+  AsyncThunkConfig
+>(`${sliceName}/facebook-sign-in`, async (loginPayload, { extra }) => {
+  const { authApi, storage } = extra;
+  const { user, token } = await authApi.signInWithFacebook(loginPayload);
 
   await storage.set(StorageKey.TOKEN, token);
 
@@ -129,5 +143,6 @@ export {
   resetPassword,
   sendEmailResetPasswordLink,
   signIn,
+  signInWithFacebook,
   signUp,
 };

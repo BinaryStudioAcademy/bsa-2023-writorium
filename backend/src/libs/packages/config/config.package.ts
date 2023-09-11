@@ -140,6 +140,20 @@ class Config implements IConfig {
           default: null,
         },
       },
+      FACEBOOK_AUTH: {
+        APP_ID: {
+          doc: 'App id of Writorium facebook app',
+          format: String,
+          env: 'FACEBOOK_APP_ID',
+          default: null,
+        },
+        APP_SECRET: {
+          doc: 'Secret key of Writorium facebook app',
+          format: String,
+          env: 'FACEBOOK_APP_SECRET',
+          default: null,
+        },
+      },
       GOOGLE_AUTH: {
         CLIENT_ID: {
           doc: 'Google Auth api client id',

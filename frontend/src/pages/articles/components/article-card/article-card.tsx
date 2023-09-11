@@ -1,5 +1,5 @@
-import ArticlePreview from '~/assets/img/article-preview.png';
 import { Avatar, Icon, Link } from '~/libs/components/components.js';
+import { ShareOnFacebookButton } from '~/libs/components/share-on-facebook-icon/share-on-facebook-icon.js';
 import { AppRoute, DateFormat } from '~/libs/enums/enums.js';
 import {
   getFormattedDate,
@@ -27,8 +27,9 @@ const ArticleCard: React.FC<Properties> = ({
   tags,
   reactions,
 }) => {
-  const { publishedAt, title, text, id } = article;
+  const { publishedAt, title, text, id, coverUrl } = article;
   const { comments, views, likes, dislikes } = reactions;
+  const articleUrl = window.location.href;
 
   const articleRouteById = AppRoute.ARTICLE.replace(':id', String(id));
 
@@ -52,9 +53,11 @@ const ArticleCard: React.FC<Properties> = ({
           )}
           <span className={styles.publicationTime}>{MOCKED_READ_TIME}</span>
         </div>
-        <Icon iconName="favorite" className={styles.icon} />
+        <Icon iconName="favorite" className={styles.pointerIcon} />
       </div>
-      <div className={styles.body}>
+      <div
+        className={getValidClassNames(styles.body, coverUrl && styles.hasCover)}
+      >
         <div className={styles.articleInfo}>
           <h4 className={styles.title}>{title}</h4>
           <article
@@ -63,32 +66,35 @@ const ArticleCard: React.FC<Properties> = ({
           ></article>
           <Tags tags={tags} />
         </div>
-        <img
-          src={ArticlePreview}
-          alt="article preview"
-          className={styles.preview}
-        />
+        {coverUrl && (
+          <img src={coverUrl} alt="article cover" className={styles.cover} />
+        )}
       </div>
       <div className={styles.footer}>
         <ul className={styles.reactions}>
           <li className={styles.reaction}>
-            <Icon iconName="comment" className={styles.reactionIcon} />
+            <Icon iconName="comment" className={styles.pointerIcon} />
             <span className={styles.reactionCount}>{comments}</span>
           </li>
           <li className={styles.reaction}>
-            <Icon iconName="view" className={styles.reactionIcon} />
+            <Icon iconName="view" />
             <span className={styles.reactionCount}>{views}</span>
           </li>
           <li className={styles.reaction}>
-            <Icon iconName="like" className={styles.reactionIcon} />
+            <Icon iconName="like" className={styles.pointerIcon} />
             <span className={styles.reactionCount}>{likes}</span>
           </li>
           <li className={styles.reaction}>
-            <Icon iconName="dislike" className={styles.reactionIcon} />
+            <Icon iconName="dislike" className={styles.pointerIcon} />
             <span className={styles.reactionCount}>{dislikes}</span>
           </li>
         </ul>
-        <Icon iconName="share" className={styles.icon} />
+        <Icon iconName="share" className={styles.pointerIcon} />
+        <ShareOnFacebookButton
+          title={title}
+          articleUrl={articleUrl}
+          iconStyle={styles.facebookIconButton}
+        />
         <Link
           to={articleRouteById as typeof AppRoute.ARTICLE}
           className={styles.readMore}
