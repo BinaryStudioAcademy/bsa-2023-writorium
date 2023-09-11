@@ -5,13 +5,12 @@ import { type IStorage } from '~/libs/packages/storage/storage.js';
 
 import { ArticlesApiPath } from './libs/enums/enums.js';
 import {
-  type ArticleBaseResponseDto,
   type ArticleGetAllResponseDto,
   type ArticleReactionRequestDto,
   type ArticleReactionResponseDto,
   type ArticleRequestDto,
+  type ArticleResponseDto,
   type ArticlesFilters,
-  type ArticleWithRelationsType,
 } from './libs/types/types.js';
 
 type Constructor = {
@@ -57,9 +56,7 @@ class ArticleApi extends HttpApi {
     return await response.json<ArticleGetAllResponseDto>();
   }
 
-  public async create(
-    payload: ArticleRequestDto,
-  ): Promise<ArticleBaseResponseDto> {
+  public async create(payload: ArticleRequestDto): Promise<ArticleResponseDto> {
     const response = await this.load(
       this.getFullEndpoint(ArticlesApiPath.ROOT, {}),
       {
@@ -70,10 +67,10 @@ class ArticleApi extends HttpApi {
       },
     );
 
-    return await response.json<ArticleBaseResponseDto>();
+    return await response.json<ArticleResponseDto>();
   }
 
-  public async getArticle(id: number): Promise<ArticleWithRelationsType> {
+  public async getArticle(id: number): Promise<ArticleResponseDto> {
     const response = await this.load(
       this.getFullEndpoint(ArticlesApiPath.$ID, { id: String(id) }),
       {
@@ -83,7 +80,7 @@ class ArticleApi extends HttpApi {
       },
     );
 
-    return await response.json<ArticleWithRelationsType>();
+    return await response.json<ArticleResponseDto>();
   }
 
   public async reactToArticle(

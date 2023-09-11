@@ -4,6 +4,7 @@ import { SortingOrder } from './libs/enums/enums.js';
 import {
   getWherePublishedOnlyQuery,
   getWhereUserIdQuery,
+  joinArticleRelations,
 } from './libs/helpers/helpers.js';
 import { type IArticleRepository } from './libs/interfaces/interfaces.js';
 import { type ArticlesFilters } from './libs/types/types.js';
@@ -32,15 +33,12 @@ class ArticleRepository implements IArticleRepository {
       .where(getWherePublishedOnlyQuery(hasPublishedOnly))
       .orderBy('articles.publishedAt', SortingOrder.DESCENDING)
       .page(skip / take, take)
-      .withGraphJoined(this.defaultRelationExpression)
-      .modifyGraph('reactions', (builder) => {
-        void builder.select('id', 'isLike', 'userId');
-      });
+      .modify(joinArticleRelations, this.defaultRelationExpression);
 
     return {
       total: articles.total,
       items: articles.results.map((article) =>
-        ArticleEntity.initializeWithRelations({
+        ArticleEntity.initialize({
           ...article,
           genre: article.genre.name,
           prompt: article.prompt
@@ -60,13 +58,13 @@ class ArticleRepository implements IArticleRepository {
     const article = await this.articleModel
       .query()
       .findById(id)
-      .withGraphJoined(this.defaultRelationExpression);
+      .modify(joinArticleRelations, this.defaultRelationExpression);
 
     if (!article) {
       return null;
     }
 
-    return ArticleEntity.initializeWithRelations({
+    return ArticleEntity.initialize({
       ...article,
       genre: article.genre.name,
       prompt: article.prompt
@@ -95,9 +93,20 @@ class ArticleRepository implements IArticleRepository {
         publishedAt,
       })
       .returning('*')
-      .execute();
+      .modify(joinArticleRelations, this.defaultRelationExpression);
 
-    return ArticleEntity.initialize(article);
+    return ArticleEntity.initialize({
+      ...article,
+      genre: article.genre.name,
+      prompt: article.prompt
+        ? {
+            character: article.prompt.character,
+            setting: article.prompt.setting,
+            situation: article.prompt.situation,
+            prop: article.prompt.prop,
+          }
+        : null,
+    });
   }
 
   public async update(entity: ArticleEntity): Promise<ArticleEntity> {
@@ -105,9 +114,21 @@ class ArticleRepository implements IArticleRepository {
 
     const article = await this.articleModel
       .query()
-      .patchAndFetchById(id, payload);
+      .patchAndFetchById(id, payload)
+      .modify(joinArticleRelations, this.defaultRelationExpression);
 
-    return ArticleEntity.initialize(article);
+    return ArticleEntity.initialize({
+      ...article,
+      genre: article?.genre.name,
+      prompt: article.prompt
+        ? {
+            character: article.prompt.character,
+            setting: article.prompt.setting,
+            situation: article.prompt.situation,
+            prop: article.prompt.prop,
+          }
+        : null,
+    });
   }
 
   public delete(): Promise<boolean> {

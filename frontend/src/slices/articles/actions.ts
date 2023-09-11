@@ -3,11 +3,10 @@ import { type ArticlesFilters } from 'shared/build/index.js';
 
 import { type AsyncThunkConfig } from '~/libs/types/types.js';
 import {
-  type ArticleBaseResponseDto,
   type ArticleGetAllResponseDto,
   type ArticleReactionRequestDto,
   type ArticleRequestDto,
-  type ArticleWithRelationsType,
+  type ArticleResponseDto,
 } from '~/packages/articles/articles.js';
 import { type PromptRequestDto } from '~/packages/prompts/prompts.js';
 
@@ -34,7 +33,7 @@ const fetchOwn = createAsyncThunk<
 });
 
 const createArticle = createAsyncThunk<
-  ArticleBaseResponseDto,
+  ArticleResponseDto,
   {
     articlePayload: ArticleRequestDto;
     generatedPrompt: PromptRequestDto | null;
@@ -60,7 +59,7 @@ const createArticle = createAsyncThunk<
 );
 
 const getArticle = createAsyncThunk<
-  ArticleWithRelationsType,
+  ArticleResponseDto,
   number,
   AsyncThunkConfig
 >(`${sliceName}/getArticle`, (id, { extra }) => {
@@ -70,7 +69,7 @@ const getArticle = createAsyncThunk<
 });
 
 const reactToArticle = createAsyncThunk<
-  ArticleWithRelationsType[],
+  ArticleResponseDto[],
   ArticleReactionRequestDto,
   AsyncThunkConfig
 >(`${sliceName}/reactToArticle`, async (payload, { getState, extra }) => {

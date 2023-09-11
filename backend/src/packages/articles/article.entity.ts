@@ -3,6 +3,7 @@ import { type WithNullableKeys } from '~/libs/types/types.js';
 
 import {
   type ArticleEntityType,
+  type ArticleResponseDto,
   type ArticleWithRelationsType,
   type ReactionResponseDto,
   type UserDetailsResponseDto,
@@ -55,26 +56,6 @@ class ArticleEntity implements IEntity {
     promptId,
     genreId,
     publishedAt,
-  }: ArticleEntityType): ArticleEntity {
-    return new ArticleEntity({
-      id,
-      title,
-      text,
-      userId,
-      promptId,
-      genreId,
-      publishedAt,
-    });
-  }
-
-  public static initializeWithRelations({
-    id,
-    title,
-    text,
-    userId,
-    promptId,
-    genreId,
-    publishedAt,
     author,
     reactions,
     prompt,
@@ -88,11 +69,11 @@ class ArticleEntity implements IEntity {
       promptId,
       genreId,
       publishedAt,
-      reactions,
       author: {
         firstName: author?.firstName as string,
         lastName: author?.lastName as string,
       },
+      reactions,
       prompt,
       genre,
     });
@@ -129,7 +110,7 @@ class ArticleEntity implements IEntity {
     };
   }
 
-  public toObjectWithRelations(): ArticleWithRelationsType {
+  public toObjectWithRelations(): ArticleResponseDto {
     return {
       id: this.id as number,
       title: this.title,
@@ -138,10 +119,10 @@ class ArticleEntity implements IEntity {
       promptId: this.promptId,
       genreId: this.genreId,
       publishedAt: this.publishedAt,
-      author: this.author,
-      reactions: this.reactions,
-      prompt: this.prompt,
-      genre: this.genre,
+      author: this.author as UserDetailsResponseDto,
+      reactions: this.reactions as ReactionResponseDto[],
+      prompt: this.prompt as ArticleResponseDto['prompt'],
+      genre: this.genre as string,
     };
   }
 

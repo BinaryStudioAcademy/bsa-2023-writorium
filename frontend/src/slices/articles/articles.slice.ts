@@ -2,7 +2,7 @@ import { createSlice, isAnyOf } from '@reduxjs/toolkit';
 
 import { DataStatus } from '~/libs/enums/enums.js';
 import { type ValueOf } from '~/libs/types/types.js';
-import { type ArticleWithRelationsType } from '~/packages/articles/articles.js';
+import { type ArticleResponseDto } from '~/packages/articles/articles.js';
 
 import {
   createArticle,
@@ -13,8 +13,8 @@ import {
 } from './actions.js';
 
 type State = {
-  article: ArticleWithRelationsType | null;
-  articles: ArticleWithRelationsType[];
+  article: ArticleResponseDto | null;
+  articles: ArticleResponseDto[];
   dataStatus: ValueOf<typeof DataStatus>;
 };
 

@@ -1,7 +1,7 @@
-import { type ArticleWithRelationsType } from './article-with-relations.type.js';
+import { type ArticleResponseDto } from './article-response-dto.type.js';
 
 type ArticleGetAllResponseDto = {
-  items: ArticleWithRelationsType[];
+  items: ArticleResponseDto[];
   total: number;
 };
 

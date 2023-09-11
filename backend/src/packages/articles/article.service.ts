@@ -9,7 +9,6 @@ import { ArticleEntity } from './article.entity.js';
 import { type ArticleRepository } from './article.repository.js';
 import { getDetectArticleGenreCompletionConfig } from './libs/helpers/helpers.js';
 import {
-  type ArticleBaseResponseDto,
   type ArticleCreateDto,
   type ArticleGetAllResponseDto,
   type ArticlesFilters,
@@ -126,7 +125,7 @@ class ArticleService implements IService {
 
   public async create(
     payload: ArticleCreateDto,
-  ): Promise<ArticleBaseResponseDto> {
+  ): Promise<ArticleWithRelationsType> {
     const genreId = await this.getGenreIdToSet(payload);
 
     const article = await this.articleRepository.create(
@@ -140,13 +139,13 @@ class ArticleService implements IService {
       }),
     );
 
-    return article.toObject();
+    return article.toObjectWithRelations();
   }
 
   public async update(
     id: number,
     payload: ArticleUpdateRequestDto,
-  ): Promise<ArticleBaseResponseDto> {
+  ): Promise<ArticleWithRelationsType> {
     const article = await this.find(id);
 
     if (!article) {
@@ -162,7 +161,7 @@ class ArticleService implements IService {
       }),
     );
 
-    return updatedArticle.toObject();
+    return updatedArticle.toObjectWithRelations();
   }
 
   public delete(): Promise<boolean> {

@@ -12,11 +12,11 @@ const articleApi = new ArticleApi({
 
 export { articleApi };
 export {
-  type ArticleBaseResponseDto,
   type ArticleGetAllResponseDto,
   type ArticleReactionRequestDto,
   type ArticleReactionResponseDto,
   type ArticleRequestDto,
+  type ArticleResponseDto,
   type ArticleWithRelationsType,
   type ReactionResponseDto,
 } from './libs/types/types.js';
