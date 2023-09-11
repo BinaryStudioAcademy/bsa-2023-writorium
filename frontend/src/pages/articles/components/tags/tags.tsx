@@ -8,6 +8,8 @@ type Properties = {
   tags: TagType[];
 };
 
+const TOOLTIP_OFFSET = 5;
+
 const Tags: React.FC<Properties> = ({ tags }) => (
   <ul className={styles.tags}>
     {tags.map((tag) => (
@@ -27,7 +29,7 @@ const Tags: React.FC<Properties> = ({ tags }) => (
             id={DataTooltipId.PROMPT_TAG_TOOLTIP}
             shouldHideArrow
             className={styles.promptTagTooltip}
-            offset={5}
+            offset={TOOLTIP_OFFSET}
           />
         </div>
       </li>
