@@ -6,6 +6,7 @@ import {
   type ArticleBaseResponseDto,
   type ArticleGetAllResponseDto,
   type ArticleRequestDto,
+  type ArticleUpdateRequestPayload,
   type ArticleWithAuthorType,
 } from '~/packages/articles/articles.js';
 import { NotificationType } from '~/packages/notification/notification.js';
@@ -60,6 +61,16 @@ const createArticle = createAsyncThunk<
   },
 );
 
+const updateArticle = createAsyncThunk<
+  ArticleWithAuthorType,
+  ArticleUpdateRequestPayload,
+  AsyncThunkConfig
+>(`${sliceName}/update`, async (payload, { extra }) => {
+  const { articleApi } = extra;
+
+  return await articleApi.update(payload);
+});
+
 const getArticle = createAsyncThunk<
   ArticleBaseResponseDto,
   number,
@@ -103,4 +114,5 @@ export {
   fetchSharedArticle,
   getArticle,
   shareArticle,
+  updateArticle,
 };

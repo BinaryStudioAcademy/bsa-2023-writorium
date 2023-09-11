@@ -5,6 +5,7 @@ import {
   fetchSharedArticle,
   getArticle,
   shareArticle,
+  updateArticle,
 } from './actions.js';
 import { actions } from './articles.slice.js';
 
@@ -13,6 +14,7 @@ const allActions = {
   fetchAll,
   fetchOwn,
   createArticle,
+  updateArticle,
   getArticle,
   shareArticle,
   fetchSharedArticle,

@@ -1,10 +1,11 @@
-import { loadAll, updateUser } from './actions.js';
+import { getUserActivity, loadAll, updateUser } from './actions.js';
 import { actions } from './users.slice.js';
 
 const allActions = {
   ...actions,
   loadAll,
   updateUser,
+  getUserActivity,
 };
 
 export { allActions as actions };

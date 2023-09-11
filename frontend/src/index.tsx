@@ -22,6 +22,7 @@ import { store } from '~/libs/packages/store/store.js';
 import {
   ArticlePage,
   CreateArticlePage,
+  EditArticlePage,
   SharedArticlePage,
 } from '~/pages/article/article.js';
 import { Auth } from '~/pages/auth/auth.js';
@@ -115,6 +116,14 @@ createRoot(document.querySelector('#root') as HTMLElement).render(
                   element: (
                     <ProtectedRoute>
                       <CreateArticlePage />
+                    </ProtectedRoute>
+                  ),
+                },
+                {
+                  path: AppRoute.EDIT_ARTICLE,
+                  element: (
+                    <ProtectedRoute>
+                      <EditArticlePage />
                     </ProtectedRoute>
                   ),
                 },

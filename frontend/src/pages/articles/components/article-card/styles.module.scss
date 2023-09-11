@@ -163,13 +163,22 @@
   cursor: pointer;
 }
 
+.iconWrapper {
+  display: flex;
+  gap: 10px;
+  background-color: transparent;
+}
+
+.editIcon {
+  width: 20px;
+  height: 20px;
+  color: var(--light-green);
+  cursor: pointer;
+}
+
 .facebookIconButton {
   width: 18px;
   height: 18px;
   color: var(--light-green);
   border-radius: 50%;
-}
-
-.iconWrapper {
-  background-color: transparent;
 }

@@ -1,6 +1,7 @@
 export {
   DEFAULT_PAGINATION_SKIP,
   DEFAULT_PAGINATION_TAKE,
+  INDEX_INCREMENT,
   RESET_PASSWORD_ROUTE,
   SHARED_$TOKEN,
 } from './libs/constants/constants.js';
@@ -19,9 +20,11 @@ export {
   configureString,
   constructUrl,
   getDateDifferenceWithUnit,
+  getDifferenceBetweenDates,
   getFormattedDate,
   getShuffledArray,
   safeJSONParse,
+  subtractMonthsFromDate,
 } from './libs/helpers/helpers.js';
 export { type IConfig } from './libs/packages/config/config.js';
 export {
@@ -70,6 +73,7 @@ export {
   type ArticlesFilters,
   articlesFiltersValidationSchema,
   type ArticleUpdateRequestDto,
+  type ArticleUpdateRequestPayload,
   articleUpdateValidationSchema,
   type ArticleWithAuthorType,
 } from './packages/articles/articles.js';
@@ -119,6 +123,7 @@ export {
   PromptType,
 } from './packages/prompts/prompts.js';
 export {
+  type UserActivityResponseDto,
   type UserAuthResponseDto,
   type UserDetailsDto,
   type UserDetailsResponseDto,
