@@ -1,6 +1,7 @@
 export {
   DEFAULT_PAGINATION_SKIP,
   DEFAULT_PAGINATION_TAKE,
+  INDEX_INCREMENT,
   RESET_PASSWORD_ROUTE,
 } from './libs/constants/constants.js';
 export {
@@ -18,9 +19,11 @@ export {
   configureString,
   constructUrl,
   getDateDifferenceWithUnit,
+  getDifferenceBetweenDates,
   getFormattedDate,
   getShuffledArray,
   safeJSONParse,
+  subtractMonthsFromDate,
 } from './libs/helpers/helpers.js';
 export { type IConfig } from './libs/packages/config/config.js';
 export {
@@ -117,6 +120,7 @@ export {
   PromptType,
 } from './packages/prompts/prompts.js';
 export {
+  type UserActivityResponseDto,
   type UserAuthResponseDto,
   type UserDetailsDto,
   type UserDetailsResponseDto,

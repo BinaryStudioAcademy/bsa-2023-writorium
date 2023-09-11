@@ -6,7 +6,10 @@ import {
   getWhereUserIdQuery,
 } from './libs/helpers/helpers.js';
 import { type IArticleRepository } from './libs/interfaces/interfaces.js';
-import { type ArticlesFilters } from './libs/types/types.js';
+import {
+  type ArticlesFilters,
+  type UserActivityResponseDto,
+} from './libs/types/types.js';
 
 class ArticleRepository implements IArticleRepository {
   private articleModel: typeof ArticleModel;
@@ -110,6 +113,27 @@ class ArticleRepository implements IArticleRepository {
           }
         : null,
     });
+  }
+
+  public async getUserActivity({
+    userId,
+    activityFrom,
+    activityTo,
+  }: {
+    userId: number;
+    activityFrom: string;
+    activityTo: string;
+  }): Promise<UserActivityResponseDto[]> {
+    return await this.articleModel
+      .query()
+      .select(
+        this.articleModel.raw('date(created_at), date(updated_at) as date'),
+        this.articleModel.raw('count(*)'),
+      )
+      .where({ userId })
+      .whereBetween('createdAt', [activityFrom, activityTo])
+      .groupByRaw('date(created_at), date(updated_at)')
+      .castTo<UserActivityResponseDto[]>();
   }
 
   public async update(entity: ArticleEntity): Promise<ArticleEntity> {
