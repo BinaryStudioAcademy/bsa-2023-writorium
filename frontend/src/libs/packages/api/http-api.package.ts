@@ -6,6 +6,7 @@ import {
 } from '~/libs/enums/enums.js';
 import { configureString, constructUrl } from '~/libs/helpers/helpers.js';
 import {
+  CustomHttpHeader,
   HttpCode,
   HttpError,
   HttpHeader,
@@ -102,7 +103,7 @@ class HttpApi implements IHttpApi {
     }
 
     if (sharedArticleToken) {
-      headers.append(HttpHeader.SHARED_ARTICLE_TOKEN, sharedArticleToken);
+      headers.append(CustomHttpHeader.SHARED_ARTICLE_TOKEN, sharedArticleToken);
     }
 
     if (hasAuth) {

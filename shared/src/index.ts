@@ -25,6 +25,7 @@ export {
 } from './libs/helpers/helpers.js';
 export { type IConfig } from './libs/packages/config/config.js';
 export {
+  CustomHttpHeader,
   HttpCode,
   HttpHeader,
   type HttpMethod,

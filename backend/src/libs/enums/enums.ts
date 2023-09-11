@@ -4,6 +4,7 @@ export {
   AppEnvironment,
   ArticlesApiPath,
   AuthApiPath,
+  CustomHttpHeader,
   ExceptionMessage,
   ServerErrorType,
 } from 'shared/build/index.js';

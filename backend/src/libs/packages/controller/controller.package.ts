@@ -1,3 +1,4 @@
+import { CustomHttpHeader } from '~/libs/enums/enums.js';
 import { type ILogger } from '~/libs/packages/logger/logger.js';
 import { type ServerAppRouteParameters } from '~/libs/packages/server-application/server-application.js';
 
@@ -59,7 +60,9 @@ class Controller implements IController {
       user,
       origin: headers.origin,
       refererOrigin: processRefererHeader(headers.referer),
-      sharedArticleToken: headers['shared-article-token'] as string,
+      sharedArticleToken: headers[
+        CustomHttpHeader.SHARED_ARTICLE_TOKEN
+      ] as string,
     };
   }
 }
