@@ -20,6 +20,7 @@ class ArticleEntity implements IEntity {
   private 'author'?: UserDetailsResponseDto;
   private 'prompt'?: ArticleWithAuthorType['prompt'];
   private 'genre'?: ArticleWithAuthorType['genre'];
+  private 'deletedAt': string | null;
 
   private constructor({
     id,
@@ -34,6 +35,7 @@ class ArticleEntity implements IEntity {
     author,
     prompt,
     genre,
+    deletedAt,
   }: WithNullableKeys<ArticleWithAuthorType, 'id'>) {
     this.id = id;
     this.title = title;
@@ -47,6 +49,7 @@ class ArticleEntity implements IEntity {
     this.genre = genre;
     this.coverId = coverId;
     this.coverUrl = coverUrl;
+    this.deletedAt = deletedAt;
   }
 
   public static initialize({
@@ -58,6 +61,7 @@ class ArticleEntity implements IEntity {
     promptId,
     genreId,
     publishedAt,
+    deletedAt,
   }: ArticleEntityType): ArticleEntity {
     return new ArticleEntity({
       id,
@@ -68,6 +72,7 @@ class ArticleEntity implements IEntity {
       genreId,
       promptId,
       publishedAt,
+      deletedAt,
     });
   }
 
@@ -84,6 +89,7 @@ class ArticleEntity implements IEntity {
     author,
     prompt,
     genre,
+    deletedAt,
   }: ArticleWithAuthorType): ArticleEntity {
     return new ArticleEntity({
       id,
@@ -101,6 +107,7 @@ class ArticleEntity implements IEntity {
       },
       prompt,
       genre,
+      deletedAt,
     });
   }
 
@@ -112,6 +119,7 @@ class ArticleEntity implements IEntity {
     promptId,
     genreId,
     publishedAt,
+    deletedAt,
   }: Omit<ArticleEntityType, 'id'>): ArticleEntity {
     return new ArticleEntity({
       id: null,
@@ -122,6 +130,7 @@ class ArticleEntity implements IEntity {
       coverId,
       genreId,
       publishedAt,
+      deletedAt,
     });
   }
 
@@ -135,6 +144,7 @@ class ArticleEntity implements IEntity {
       promptId: this.promptId,
       genreId: this.genreId,
       publishedAt: this.publishedAt,
+      deletedAt: this.deletedAt,
     };
   }
 
@@ -152,6 +162,7 @@ class ArticleEntity implements IEntity {
       author: this.author,
       prompt: this.prompt,
       genre: this.genre,
+      deletedAt: this.deletedAt,
     };
   }
 
@@ -164,6 +175,7 @@ class ArticleEntity implements IEntity {
       promptId: this.promptId,
       genreId: this.genreId,
       publishedAt: this.publishedAt,
+      deletedAt: this.deletedAt,
     };
   }
 }

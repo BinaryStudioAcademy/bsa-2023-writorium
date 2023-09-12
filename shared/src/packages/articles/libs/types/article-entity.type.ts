@@ -7,6 +7,7 @@ type ArticleEntityType = {
   genreId: number | null;
   coverId: number | null;
   publishedAt: string | null;
+  deletedAt: string | null;
 };
 
 export { type ArticleEntityType };

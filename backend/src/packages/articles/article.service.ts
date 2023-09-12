@@ -201,6 +201,7 @@ class ArticleService implements IService {
         coverId: payload.coverId,
         promptId: payload?.promptId ?? null,
         publishedAt: payload?.publishedAt ?? null,
+        deletedAt: null,
       }),
     );
 
@@ -236,8 +237,25 @@ class ArticleService implements IService {
     return updatedArticle.toObjectWithAuthor();
   }
 
-  public delete(): Promise<boolean> {
-    return Promise.resolve(false);
+  public async delete(
+    id: number,
+    userId: number,
+  ): Promise<ArticleBaseResponseDto> {
+    const article = await this.find(id);
+
+    if (!article) {
+      throw new ApplicationError({
+        message: `Article with id ${id} not found`,
+      });
+    }
+
+    if (article.userId !== userId) {
+      throw new ForbiddenError('Article can be deleted only by author!');
+    }
+
+    const deletedArticle = await this.articleRepository.delete(id);
+
+    return deletedArticle.toObjectWithAuthor();
   }
 }
 

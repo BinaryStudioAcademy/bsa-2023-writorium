@@ -23,6 +23,7 @@ class ArticleModel extends AbstractModel {
   public 'prompt': PromptModel;
   public 'coverId': number | null;
   public 'cover': FileModel | null;
+  public 'deletedAt': string | null;
 
   public static override get tableName(): string {
     return DatabaseTableName.ARTICLES;
