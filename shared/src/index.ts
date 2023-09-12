@@ -23,6 +23,7 @@ export {
   getDifferenceBetweenDates,
   getFormattedDate,
   getShuffledArray,
+  makePluralOrSingular,
   safeJSONParse,
   subtractMonthsFromDate,
 } from './libs/helpers/helpers.js';

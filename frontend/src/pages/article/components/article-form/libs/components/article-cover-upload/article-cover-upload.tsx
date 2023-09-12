@@ -10,9 +10,8 @@ import {
   ErrorMessage,
   Icon,
   IconButton,
+  Loader,
 } from '~/libs/components/components.js';
-// @todo: fix import after https://github.com/BinaryStudioAcademy/bsa-2023-writorium/issues/159 is done
-import { DotLoader } from '~/libs/components/prompt-generation/libs/components/components.js';
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
 import {
   useAppDispatch,
@@ -97,7 +96,7 @@ const ArticleCoverUpload = <T extends FieldValues>({
         <div className={styles.header}>
           <p className={styles.uploadTitle}>Add a cover image</p>
         </div>
-        {isUploadFileLoading && <DotLoader isLoading />}
+        {isUploadFileLoading && <Loader isLoading type="dots" />}
         {previewUrl && (
           <div className={styles.coverContainer}>
             <div className={styles.removeCoverOverlay}>

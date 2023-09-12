@@ -37,6 +37,10 @@ const SharedArticlePage: React.FC = () => {
     return <Navigate to={AppRoute.ROOT} />;
   }
 
+  if (dataStatus === DataStatus.REJECTED) {
+    return null;
+  }
+
   const MOCKED_TAGS: TagType[] = [
     { id: 1, name: 'IT' },
     { id: 2, name: 'CODE' },
@@ -45,25 +49,28 @@ const SharedArticlePage: React.FC = () => {
     { id: 5, name: 'Tech' },
   ];
 
-  const { text, title, author, coverUrl, readTime } = article ?? {};
-
   return (
-    <Loader isLoading={isLoading}>
+    <Loader isLoading={isLoading} hasOverlay type="circular">
       <Layout>
         <div className={styles.articlePageWrapper}>
-          {article && (
-            <ArticleView
-              tags={MOCKED_TAGS}
-              text={text ?? ''}
-              title={title ?? ''}
-              coverUrl={coverUrl ?? ''}
-              isShared
-            />
-          )}
-          {author && (
+          <ArticleView
+            tags={MOCKED_TAGS}
+            text={article?.text ?? ''}
+            title={article?.title ?? ''}
+            coverUrl={article?.coverUrl ?? ''}
+            isShared
+          />
+
+          {article?.author && (
             <ArticleDetails
-              readTime={readTime}
-              authorName={getFullName(author.firstName, author.lastName)}
+              readTime={article.readTime}
+              authorName={getFullName(
+                article.author.firstName,
+                article.author.lastName,
+              )}
+              publishedAt={article.publishedAt ?? ''}
+              genre={article.genre ?? ''}
+              avatarUrl={article.author.avatarUrl}
             />
           )}
         </div>

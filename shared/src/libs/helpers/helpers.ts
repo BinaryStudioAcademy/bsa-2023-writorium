@@ -4,5 +4,6 @@ export { getDateDifferenceWithUnit } from './get-date-difference-with-unit/get-d
 export { getDifferenceBetweenDates } from './get-difference-between-dates/get-difference-between-dates.helper.js';
 export { getFormattedDate } from './get-formatted-date/get-formatted-date.helper.js';
 export { getShuffledArray } from './get-shuffled-array/get-shuffled-array.helper.js';
+export { makePluralOrSingular } from './make-plural-or-singular/make-plural-or-singular.helper.js';
 export { safeJSONParse } from './safe-json-parse/safe-json-parse.helper.js';
 export { subtractMonthsFromDate } from './subtract-months-from-date/subtract-months-from-date.helper.js';

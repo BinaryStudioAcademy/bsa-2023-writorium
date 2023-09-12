@@ -29,7 +29,10 @@ const ProfilePage: React.FC = () => {
     <Layout>
       <div className={styles.profile}>
         <UserInfo user={user} className={styles.profileBlock} />
-        <UserActivity userActivity={userActivity} />
+        <UserActivity
+          userActivity={userActivity}
+          className={styles.profileBlock}
+        />
         <UserAchievements className={styles.profileBlock} />
       </div>
     </Layout>
