@@ -1,4 +1,4 @@
-import { type ArticleEntityType } from '~/packages/articles/libs/types/article-entity.type.js';
+import { type ArticleEntityType } from '~/packages/articles/libs/types/types.js';
 
 type ArticleBaseResponseDto = Pick<
   ArticleEntityType,
@@ -9,6 +9,7 @@ type ArticleBaseResponseDto = Pick<
   | 'promptId'
   | 'genreId'
   | 'publishedAt'
+  | 'readTime'
   | 'coverId'
 >;
 

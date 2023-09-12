@@ -1,5 +1,6 @@
 import { Layout, Loader, Navigate } from '~/libs/components/components.js';
 import { AppRoute, DataStatus } from '~/libs/enums/enums.js';
+import { getFullName } from '~/libs/helpers/helpers.js';
 import {
   useAppDispatch,
   useAppSelector,
@@ -9,7 +10,7 @@ import {
 import { type TagType } from '~/libs/types/types.js';
 import { actions as articlesActions } from '~/slices/articles/articles.js';
 
-import { ArticleView, AuthorDetails } from './components/components.js';
+import { ArticleDetails, ArticleView } from './components/components.js';
 import styles from './styles.module.scss';
 
 const SharedArticlePage: React.FC = () => {
@@ -28,7 +29,9 @@ const SharedArticlePage: React.FC = () => {
     dataStatus: articles.dataStatus,
   }));
 
-  const isLoading = dataStatus === DataStatus.PENDING;
+  const isLoading = !(
+    dataStatus === DataStatus.FULFILLED || dataStatus == DataStatus.REJECTED
+  );
 
   if (!article && !isLoading) {
     return <Navigate to={AppRoute.ROOT} />;
@@ -42,7 +45,7 @@ const SharedArticlePage: React.FC = () => {
     { id: 5, name: 'Tech' },
   ];
 
-  const { text, title, author, coverUrl } = article ?? {};
+  const { text, title, author, coverUrl, readTime } = article ?? {};
 
   return (
     <Loader isLoading={isLoading}>
@@ -57,7 +60,12 @@ const SharedArticlePage: React.FC = () => {
               isShared
             />
           )}
-          {author && <AuthorDetails author={author} />}
+          {author && (
+            <ArticleDetails
+              readTime={readTime}
+              authorName={getFullName(author.firstName, author.lastName)}
+            />
+          )}
         </div>
       </Layout>
     </Loader>

@@ -1,5 +1,8 @@
-import { IconButton, Tag } from '~/libs/components/components.js';
-import { ShareOnFacebookButton } from '~/libs/components/share-on-facebook-icon/share-on-facebook-icon.js';
+import {
+  IconButton,
+  ShareOnFacebookButton,
+  Tag,
+} from '~/libs/components/components.js';
 import { getValidClassNames, sanitizeHtml } from '~/libs/helpers/helpers.js';
 import { useAppDispatch, useCallback, useParams } from '~/libs/hooks/hooks.js';
 import { type TagType } from '~/libs/types/types.js';

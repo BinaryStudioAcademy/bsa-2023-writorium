@@ -56,8 +56,8 @@ const { reducer, actions, name } = createSlice({
       state.article = action.payload;
     });
     builder.addCase(fetchSharedArticle.fulfilled, (state, action) => {
-      state.article = action.payload;
       state.dataStatus = DataStatus.FULFILLED;
+      state.article = action.payload;
     });
     builder.addMatcher(
       isAnyOf(fetchAll.fulfilled, fetchOwn.fulfilled),

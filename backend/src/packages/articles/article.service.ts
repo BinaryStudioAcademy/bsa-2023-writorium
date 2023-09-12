@@ -22,6 +22,7 @@ import { type ArticleRepository } from './article.repository.js';
 import { INDEX_INCREMENT, SHARED_$TOKEN } from './libs/constants/constants.js';
 import { DateFormat } from './libs/enums/enums.js';
 import {
+  getArticleReadTimeCompletionConfig,
   getDetectArticleGenreCompletionConfig,
   getDifferenceBetweenDates,
   getFormattedDate,
@@ -55,7 +56,7 @@ class ArticleService implements IService {
     this.genreRepository = genreRepository;
   }
 
-  public async detectArticleGenreFromText(
+  private async detectArticleGenreFromText(
     text: string,
   ): Promise<DetectedArticleGenre | null> {
     const genresJSON = await this.openAIService.createCompletion(
@@ -70,6 +71,21 @@ class ArticleService implements IService {
       safeJSONParse<DetectedArticleGenre[]>(genresJSON) ?? [];
 
     return firstParsedGenre ?? null;
+  }
+
+  private async getArticleReadTime(text: string): Promise<number | null> {
+    const readTimeJSON = await this.openAIService.createCompletion(
+      getArticleReadTimeCompletionConfig(text),
+    );
+
+    if (!readTimeJSON) {
+      return null;
+    }
+
+    const { readTime = null } =
+      safeJSONParse<{ readTime: number }>(readTimeJSON) ?? {};
+
+    return readTime;
   }
 
   private async getGenreIdForArticle(
@@ -203,12 +219,14 @@ class ArticleService implements IService {
     payload: ArticleCreateDto,
   ): Promise<ArticleBaseResponseDto> {
     const genreId = await this.getGenreIdToSet(payload);
+    const readTime = await this.getArticleReadTime(payload.text);
 
     const article = await this.articleRepository.create(
       ArticleEntity.initializeNew({
         genreId,
-        text: payload.text,
+        readTime,
         title: payload.title,
+        text: payload.text,
         userId: payload.userId,
         coverId: payload.coverId,
         promptId: payload?.promptId ?? null,
@@ -234,6 +252,11 @@ class ArticleService implements IService {
       });
     }
 
+    const updatedReadTime =
+      payload.text && payload.text !== article.text
+        ? await this.getArticleReadTime(payload.text)
+        : article.readTime;
+
     if (article.userId !== user.id) {
       throw new ForbiddenError('Article can be edited only by author!');
     }
@@ -242,6 +265,7 @@ class ArticleService implements IService {
       ArticleEntity.initialize({
         ...article,
         ...payload,
+        readTime: updatedReadTime,
       }),
     );
 
