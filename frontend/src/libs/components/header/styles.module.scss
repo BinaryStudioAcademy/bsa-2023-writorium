@@ -1,5 +1,5 @@
 .header {
-  position: fixed;
+  position: sticky;
   top: 0;
   right: 0;
   left: 0;
@@ -7,7 +7,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: var(--header-height);
+  height: 105px;
   padding: 30px 60px;
   background: var(--light-gray);
   border-bottom: 2px solid var(--light-gray-15);
