@@ -21,6 +21,7 @@ const UserActivity: React.FC<Properties> = ({ userActivity }) => {
   const dateFormatter = new Intl.DateTimeFormat(DATE_LOCALE, DATE_OPTIONS);
 
   const activityStatistic = userActivity.map((activity, index) => {
+    const FIST_ITEM_INDEX = 0;
     const { count, date } = activity;
     const activityBreakpoint = getActivityBreakpoint(count);
     const localDate = dateFormatter.format(new Date(date));
@@ -35,7 +36,7 @@ const UserActivity: React.FC<Properties> = ({ userActivity }) => {
         className={getValidClassNames(
           styles.activityItem,
           styles[activityBreakpoint],
-          index === 0 &&
+          index === FIST_ITEM_INDEX &&
             styles[
               getFormattedDate(localDate, DateFormat.DAY_OF_WEEK).toLowerCase()
             ],
