@@ -7,7 +7,7 @@ type Properties = {
   className?: string;
   isLoading: boolean;
   hasOverlay?: boolean;
-  loaderType: 'dots' | 'circular';
+  type: 'dots' | 'circular';
 };
 
 const Loader: React.FC<Properties> = ({
@@ -15,7 +15,7 @@ const Loader: React.FC<Properties> = ({
   className,
   isLoading,
   hasOverlay = false,
-  loaderType,
+  type,
 }) => {
   if (!isLoading) {
     return children;
@@ -27,7 +27,7 @@ const Loader: React.FC<Properties> = ({
 
   return (
     <div className={containerClassName}>
-      <div className={getValidClassNames(styles[loaderType], className)}></div>
+      <div className={getValidClassNames(styles[type], className)}></div>
     </div>
   );
 };

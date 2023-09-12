@@ -97,7 +97,7 @@ const ArticleCoverUpload = <T extends FieldValues>({
         <div className={styles.header}>
           <p className={styles.uploadTitle}>Add a cover image</p>
         </div>
-        {isUploadFileLoading && <Loader isLoading loaderType="dots" />}
+        {isUploadFileLoading && <Loader isLoading type="dots" />}
         {previewUrl && (
           <div className={styles.coverContainer}>
             <div className={styles.removeCoverOverlay}>

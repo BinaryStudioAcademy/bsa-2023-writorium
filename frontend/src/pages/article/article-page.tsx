@@ -50,7 +50,7 @@ const ArticlePage: React.FC = () => {
   const { text, title, author, coverUrl, readTime } = article ?? {};
 
   return (
-    <Loader isLoading={isLoading} hasOverlay loaderType="circular">
+    <Loader isLoading={isLoading} hasOverlay type="circular">
       <Layout>
         <div className={styles.articlePageWrapper}>
           <ArticleView
