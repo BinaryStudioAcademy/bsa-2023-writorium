@@ -1,32 +1,39 @@
+import { Reaction } from '~/libs/enums/enums.js';
+import { type ValueOf } from '~/libs/types/types.js';
 import { type ReactionResponseDto } from '~/packages/articles/articles.js';
 
-type ReturnValue = {
-  isLike?: boolean;
-  likeCount: number;
-  dislikeCount: number;
+type ReactionsInfo = {
+  hasAlreadyReactedWith: ValueOf<typeof Reaction> | null;
+  likesCount: number;
+  dislikesCount: number;
 };
 
 const getReactionsInfo = (
   userId: number,
   reactions: ReactionResponseDto[],
-): ReturnValue => {
-  let likeCount = 0;
-  let dislikeCount = 0;
-  let isLike: boolean | undefined;
+): ReactionsInfo => {
+  // eslint-disable-next-line unicorn/no-array-reduce
+  return reactions.reduce<ReactionsInfo>(
+    (reactionsInfo, reaction) => {
+      const reactionType: ValueOf<typeof Reaction> = reaction.isLike
+        ? Reaction.LIKE
+        : Reaction.DISLIKE;
 
-  for (const reaction of reactions) {
-    if (reaction.userId === userId) {
-      isLike = reaction.isLike ? true : false;
-    }
-
-    reaction.isLike ? likeCount++ : dislikeCount++;
-  }
-
-  return {
-    isLike,
-    likeCount,
-    dislikeCount,
-  };
+      return {
+        likesCount: reaction.isLike
+          ? reactionsInfo.likesCount + 1
+          : reactionsInfo.likesCount,
+        dislikesCount: reaction.isLike
+          ? reactionsInfo.dislikesCount
+          : reactionsInfo.dislikesCount + 1,
+        hasAlreadyReactedWith:
+          reaction.userId === userId
+            ? reactionType
+            : reactionsInfo.hasAlreadyReactedWith,
+      };
+    },
+    { likesCount: 0, dislikesCount: 0, hasAlreadyReactedWith: null },
+  );
 };
 
 export { getReactionsInfo };

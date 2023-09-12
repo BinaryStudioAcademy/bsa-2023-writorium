@@ -101,7 +101,7 @@ class ArticleApi extends HttpApi {
     return await response.json<ArticleResponseDto>();
   }
 
-  public async reactToArticle(
+  public async updateArticleReaction(
     payload: ArticleReactionRequestDto,
   ): Promise<ArticleReactionResponseDto> {
     const response = await this.load(

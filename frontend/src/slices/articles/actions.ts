@@ -8,6 +8,7 @@ import {
   type ArticleRequestDto,
   type ArticleResponseDto,
   type ArticleUpdateRequestPayload,
+  type ReactionResponseDto,
 } from '~/packages/articles/articles.js';
 import { type PromptRequestDto } from '~/packages/prompts/prompts.js';
 
@@ -80,30 +81,44 @@ const getArticle = createAsyncThunk<
 });
 
 const reactToArticle = createAsyncThunk<
-  ArticleResponseDto[],
+  {
+    articleId: number;
+    reaction: ReactionResponseDto;
+  },
   ArticleReactionRequestDto,
   AsyncThunkConfig
->(`${sliceName}/reactToArticle`, async (payload, { getState, extra }) => {
+>(`${sliceName}/reactToArticle`, async (payload, { extra }) => {
   const { articleApi } = extra;
-  const {
-    articles: { articles },
-  } = getState();
-
-  await articleApi.reactToArticle(payload);
-
-  const articleWithUpdatedReaction = await articleApi.getArticle(
-    payload.articleId,
+  const { articleId, ...reaction } = await articleApi.updateArticleReaction(
+    payload,
   );
 
-  return articles.map((article) =>
-    article.id === articleWithUpdatedReaction.id
-      ? articleWithUpdatedReaction
-      : article,
-  );
+  return {
+    articleId,
+    reaction,
+  };
+});
+
+const deleteArticleReaction = createAsyncThunk<
+  {
+    articleId: number;
+    reactionId: number;
+  },
+  ArticleReactionRequestDto,
+  AsyncThunkConfig
+>(`${sliceName}/deleteArticleReaction`, async (payload, { extra }) => {
+  const { articleApi } = extra;
+  const { articleId, id } = await articleApi.updateArticleReaction(payload);
+
+  return {
+    articleId,
+    reactionId: id,
+  };
 });
 
 export {
   createArticle,
+  deleteArticleReaction,
   fetchAll,
   fetchOwn,
   getArticle,

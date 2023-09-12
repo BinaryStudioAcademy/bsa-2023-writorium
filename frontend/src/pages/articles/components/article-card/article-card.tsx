@@ -7,10 +7,16 @@ import {
   Link,
 } from '~/libs/components/components.js';
 import { ShareOnFacebookButton } from '~/libs/components/share-on-facebook-icon/share-on-facebook-icon.js';
-import { AppRoute, ArticleSubRoute, DateFormat } from '~/libs/enums/enums.js';
+import {
+  AppRoute,
+  ArticleSubRoute,
+  DateFormat,
+  Reaction,
+} from '~/libs/enums/enums.js';
 import {
   getFormattedDate,
   getFullName,
+  getReactionConvertedToBoolean,
   getReactionsInfo,
   getValidClassNames,
   sanitizeHtml,
@@ -20,6 +26,7 @@ import {
   useAppSelector,
   useLocation,
 } from '~/libs/hooks/hooks.js';
+import { type ValueOf } from '~/libs/types/types.js';
 import {
   type ArticleWithRelationsType,
   type ReactionResponseDto,
@@ -58,7 +65,7 @@ const ArticleCard: React.FC<Properties> = ({
   );
   const { publishedAt, title, text, id, userId, coverUrl } = article;
   const MOCKED_READ_TIME = '7 min read';
-  const { likeCount, dislikeCount, isLike } = getReactionsInfo(
+  const { likesCount, dislikesCount, hasAlreadyReactedWith } = getReactionsInfo(
     user.id,
     reactions,
   );
@@ -66,10 +73,34 @@ const ArticleCard: React.FC<Properties> = ({
   const articleRouteById = AppRoute.ARTICLE.replace(':id', String(id));
   const isOwnArticle = user.id === userId;
 
-  const handleReaction = (isLike: boolean): void => {
-    if (!isOwnArticle) {
-      void dispatch(articlesActions.reactToArticle({ isLike, articleId: id }));
+  const handleReaction = (reaction: ValueOf<typeof Reaction>): void => {
+    if (isOwnArticle) {
+      return;
     }
+
+    if (hasAlreadyReactedWith === reaction) {
+      return void dispatch(
+        articlesActions.deleteArticleReaction({
+          isLike: getReactionConvertedToBoolean(reaction),
+          articleId: id,
+        }),
+      );
+    }
+
+    void dispatch(
+      articlesActions.reactToArticle({
+        isLike: getReactionConvertedToBoolean(reaction),
+        articleId: id,
+      }),
+    );
+  };
+
+  const handleLikeReaction = (): void => {
+    handleReaction(Reaction.LIKE);
+  };
+
+  const handleDislikeReaction = (): void => {
+    handleReaction(Reaction.DISLIKE);
   };
 
   return (
@@ -135,11 +166,11 @@ const ArticleCard: React.FC<Properties> = ({
               iconName="like"
               className={getValidClassNames(
                 styles.footerIcon,
-                isOwnArticle ? styles.disable : styles.reaction,
-                isLike && styles.pressed,
+                isOwnArticle ? styles.disabled : styles.reaction,
+                hasAlreadyReactedWith === Reaction.LIKE && styles.pressed,
               )}
-              label={String(likeCount)}
-              onClick={(): void => handleReaction(true)}
+              label={String(likesCount)}
+              onClick={handleLikeReaction}
             />
           </li>
           <li>
@@ -147,11 +178,11 @@ const ArticleCard: React.FC<Properties> = ({
               iconName="dislike"
               className={getValidClassNames(
                 styles.footerIcon,
-                isOwnArticle ? styles.disable : styles.reaction,
-                isLike === false && styles.pressed,
+                isOwnArticle ? styles.disabled : styles.reaction,
+                hasAlreadyReactedWith === Reaction.DISLIKE && styles.pressed,
               )}
-              label={String(dislikeCount)}
-              onClick={(): void => handleReaction(false)}
+              label={String(dislikesCount)}
+              onClick={handleDislikeReaction}
             />
           </li>
         </ul>
