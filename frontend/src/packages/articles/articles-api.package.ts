@@ -101,6 +101,19 @@ class ArticleApi extends HttpApi {
 
     return await response.json<ArticleWithAuthorType>();
   }
+
+  public async delete(id: number): Promise<ArticleWithAuthorType> {
+    const response = await this.load(
+      this.getFullEndpoint(ArticlesApiPath.$ID, { id: String(id) }),
+      {
+        method: 'DELETE',
+        contentType: ContentType.JSON,
+        hasAuth: true,
+      },
+    );
+
+    return await response.json<ArticleWithAuthorType>();
+  }
 }
 
 export { ArticleApi };
