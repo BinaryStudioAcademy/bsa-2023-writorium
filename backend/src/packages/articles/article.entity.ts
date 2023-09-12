@@ -83,10 +83,7 @@ class ArticleEntity implements IEntity {
       promptId,
       genreId,
       publishedAt,
-      author: {
-        firstName: author?.firstName as string,
-        lastName: author?.lastName as string,
-      },
+      author,
       reactions,
       prompt,
       genre,
