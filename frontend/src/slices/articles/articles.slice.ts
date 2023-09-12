@@ -66,18 +66,29 @@ const { reducer, actions, name } = createSlice({
           return article;
         }
 
-        const reactionIndex = article.reactions.findIndex(
-          ({ id }) => id === updatedReaction.id,
-        );
+        let reactionIndex: number;
 
-        if (reactionIndex === -1) {
-          article.reactions.push(updatedReaction);
-          return article;
+        const existingReaction = article.reactions.find(({ id }, index) => {
+          if (id === updatedReaction.id) {
+            reactionIndex = index;
+            return true;
+          }
+        });
+
+        if (!existingReaction) {
+          return {
+            ...article,
+            reactions: [...article.reactions, updatedReaction],
+          };
         }
 
-        article.reactions[reactionIndex] = updatedReaction;
+        const reactionsToUpdate = [...article.reactions];
+        reactionsToUpdate[reactionIndex!] = updatedReaction;
 
-        return article;
+        return {
+          ...article,
+          reactions: reactionsToUpdate,
+        };
       });
 
       state.articleReactionDataStatus = DataStatus.FULFILLED;
@@ -91,7 +102,13 @@ const { reducer, actions, name } = createSlice({
             ({ id }) => id === reactionId,
           );
 
-          article.reactions.splice(reactionIndex, 1);
+          const reactionsToUpdate = [...article.reactions];
+          reactionsToUpdate.splice(reactionIndex, 1);
+
+          return {
+            ...article,
+            reactions: reactionsToUpdate,
+          };
         }
         return article;
       });
