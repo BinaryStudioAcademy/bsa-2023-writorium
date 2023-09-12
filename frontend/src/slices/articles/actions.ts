@@ -89,4 +89,11 @@ const deleteArticle = createAsyncThunk<
   return await articleApi.delete(id);
 });
 
-export { createArticle, deleteArticle, fetchAll, fetchOwn, getArticle, updateArticle };
+export {
+  createArticle,
+  deleteArticle,
+  fetchAll,
+  fetchOwn,
+  getArticle,
+  updateArticle,
+};

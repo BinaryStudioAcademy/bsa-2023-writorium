@@ -3,6 +3,7 @@ import { Link as RouterLink, matchPath } from 'react-router-dom';
 import {
   Avatar,
   Icon,
+  IconButton,
   Link,
   ShareOnFacebookButton,
 } from '~/libs/components/components.js';
@@ -13,7 +14,7 @@ import {
   getValidClassNames,
   sanitizeHtml,
 } from '~/libs/helpers/helpers.js';
-import { useLocation } from '~/libs/hooks/hooks.js';
+import { useCallback, useLocation } from '~/libs/hooks/hooks.js';
 import {
   type ArticleWithAuthorType,
   getReadTimeString,
@@ -29,6 +30,7 @@ type Properties = {
   author: UserDetailsResponseDto;
   tags: TagType[];
   reactions: ReactionsType;
+  onDeleteArticle?: (id: number) => void;
 };
 
 const ArticleCard: React.FC<Properties> = ({
@@ -36,6 +38,7 @@ const ArticleCard: React.FC<Properties> = ({
   author,
   tags,
   reactions,
+  onDeleteArticle,
 }) => {
   const { publishedAt, title, text, id, coverUrl, readTime } = article;
   const { pathname } = useLocation();
@@ -48,6 +51,10 @@ const ArticleCard: React.FC<Properties> = ({
   const articleUrl = window.location.href;
 
   const articleRouteById = AppRoute.ARTICLE.replace(':id', String(id));
+
+  const handleDeleteArticle = useCallback(() => {
+    onDeleteArticle?.(id);
+  }, [id, onDeleteArticle]);
 
   return (
     <article className={styles.article}>
@@ -73,12 +80,29 @@ const ArticleCard: React.FC<Properties> = ({
         </div>
         <div className={styles.iconWrapper}>
           {isMyArticles && (
-            <RouterLink
-              to={AppRoute.EDIT_ARTICLE.replace(':id', id.toString())}
-              state={article}
-            >
-              <Icon iconName="edit" className={styles.editIcon} />
-            </RouterLink>
+            <>
+              <IconButton
+                className={styles.iconButton}
+                iconName="trashBin"
+                iconClassName={getValidClassNames(
+                  styles.deleteIcon,
+                  styles.pointerIcon,
+                )}
+                onClick={handleDeleteArticle}
+              ></IconButton>
+              <RouterLink
+                to={AppRoute.EDIT_ARTICLE.replace(':id', id.toString())}
+                state={article}
+              >
+                <Icon
+                  iconName="edit"
+                  className={getValidClassNames(
+                    styles.editIcon,
+                    styles.pointerIcon,
+                  )}
+                />
+              </RouterLink>
+            </>
           )}
           <Icon iconName="favorite" className={styles.pointerIcon} />
         </div>

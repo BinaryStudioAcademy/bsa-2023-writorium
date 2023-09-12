@@ -107,7 +107,7 @@ class ArticleApi extends HttpApi {
       this.getFullEndpoint(ArticlesApiPath.$ID, { id: String(id) }),
       {
         method: 'DELETE',
-        contentType: ContentType.JSON,
+        contentType: ContentType.FORM_DATA,
         hasAuth: true,
       },
     );

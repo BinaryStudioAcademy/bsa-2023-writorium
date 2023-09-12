@@ -31,6 +31,13 @@ const MyArticles: React.FC = () => {
     });
   }, [dispatch, loadMore]);
 
+  const handleDeleteArticle = useCallback(
+    (id: number): void => {
+      void dispatch(articlesActions.deleteArticle(id));
+    },
+    [dispatch],
+  );
+
   useEffect(() => {
     handleLoadArticles();
 
@@ -54,6 +61,7 @@ const MyArticles: React.FC = () => {
             author={article.author!}
             tags={getArticleTags(article)}
             reactions={MOCKED_REACTIONS}
+            onDeleteArticle={handleDeleteArticle}
           />
         ))}
     </InfiniteScroll>

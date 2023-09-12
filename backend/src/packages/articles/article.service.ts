@@ -273,6 +273,14 @@ class ArticleService implements IService {
       });
     }
 
+    const { deletedAt } = article;
+
+    if (deletedAt) {
+      throw new ApplicationError({
+        message: `Article with id ${id} has already been deleted`,
+      });
+    }
+
     if (article.userId !== userId) {
       throw new ForbiddenError('Article can be deleted only by author!');
     }
