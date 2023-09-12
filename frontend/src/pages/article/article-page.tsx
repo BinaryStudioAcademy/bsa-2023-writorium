@@ -48,24 +48,22 @@ const ArticlePage: React.FC = () => {
     { id: 5, name: 'Tech' },
   ];
 
-  const { text, title, author, coverUrl, publishedAt, genre } = article ?? {};
-
   return (
     <Loader isLoading={isLoading}>
       <Layout>
         <div className={styles.articlePageWrapper}>
           <ArticleView
             tags={MOCKED_TAGS}
-            text={text ?? ''}
-            title={title ?? ''}
-            coverUrl={coverUrl ?? ''}
+            text={article?.text ?? ''}
+            title={article?.title ?? ''}
+            coverUrl={article?.coverUrl ?? ''}
           />
-          {author && (
+          {article?.author && (
             <AuthorDetails
-              name={getFullName(author.firstName, author.lastName)}
-              avatarUrl={author.avatarUrl}
-              publishedAt={publishedAt ?? ''}
-              genre={genre ?? ''}
+              name={getFullName(article.author.firstName, article.author.lastName)}
+              avatarUrl={article.author.avatarUrl}
+              publishedAt={article.publishedAt ?? ''}
+              genre={article.genre ?? ''}
             />
           )}
         </div>
