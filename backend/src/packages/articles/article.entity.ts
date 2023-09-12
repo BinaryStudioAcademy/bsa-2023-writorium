@@ -23,6 +23,7 @@ class ArticleEntity implements IEntity {
   private 'prompt'?: ArticleWithRelationsType['prompt'];
   private 'genre'?: ArticleWithRelationsType['genre'];
   private 'reactions'?: ReactionResponseDto[];
+  private 'readTime': number | null;
 
   private constructor({
     id,
@@ -38,6 +39,7 @@ class ArticleEntity implements IEntity {
     reactions,
     prompt,
     genre,
+    readTime,
   }: WithNullableKeys<ArticleWithRelationsType, 'id'>) {
     this.id = id;
     this.title = title;
@@ -50,6 +52,7 @@ class ArticleEntity implements IEntity {
     this.reactions = reactions;
     this.prompt = prompt;
     this.genre = genre;
+    this.readTime = readTime;
     this.coverId = coverId;
     this.coverUrl = coverUrl;
   }
@@ -68,6 +71,7 @@ class ArticleEntity implements IEntity {
     reactions,
     prompt,
     genre,
+    readTime,
   }: ArticleWithRelationsType): ArticleEntity {
     return new ArticleEntity({
       id,
@@ -86,6 +90,7 @@ class ArticleEntity implements IEntity {
       reactions,
       prompt,
       genre,
+      readTime,
     });
   }
 
@@ -96,6 +101,7 @@ class ArticleEntity implements IEntity {
     coverId,
     promptId,
     genreId,
+    readTime,
     publishedAt,
   }: Omit<ArticleEntityType, 'id'>): ArticleEntity {
     return new ArticleEntity({
@@ -107,6 +113,7 @@ class ArticleEntity implements IEntity {
       coverId,
       genreId,
       publishedAt,
+      readTime,
     });
   }
 
@@ -119,6 +126,7 @@ class ArticleEntity implements IEntity {
       coverId: this.coverId,
       promptId: this.promptId,
       genreId: this.genreId,
+      readTime: this.readTime,
       publishedAt: this.publishedAt,
     };
   }
@@ -138,6 +146,7 @@ class ArticleEntity implements IEntity {
       reactions: this.reactions as ReactionResponseDto[],
       prompt: this.prompt as ArticleResponseDto['prompt'],
       genre: this.genre as ArticleResponseDto['genre'],
+      readTime: this.readTime,
     };
   }
 
@@ -149,6 +158,7 @@ class ArticleEntity implements IEntity {
       coverId: this.coverId,
       promptId: this.promptId,
       genreId: this.genreId,
+      readTime: this.readTime,
       publishedAt: this.publishedAt,
     };
   }

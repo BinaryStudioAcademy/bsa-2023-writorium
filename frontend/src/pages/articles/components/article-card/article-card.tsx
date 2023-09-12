@@ -5,8 +5,8 @@ import {
   Icon,
   IconButton,
   Link,
+  ShareOnFacebookButton,
 } from '~/libs/components/components.js';
-import { ShareOnFacebookButton } from '~/libs/components/share-on-facebook-icon/share-on-facebook-icon.js';
 import {
   AppRoute,
   ArticleSubRoute,
@@ -29,6 +29,7 @@ import {
 import { type ValueOf } from '~/libs/types/types.js';
 import {
   type ArticleWithRelationsType,
+  getReadTimeString,
   type ReactionResponseDto,
 } from '~/packages/articles/articles.js';
 import {
@@ -63,8 +64,7 @@ const ArticleCard: React.FC<Properties> = ({
     { path: `${AppRoute.ARTICLES}/${ArticleSubRoute.MY_ARTICLES}` },
     pathname,
   );
-  const { publishedAt, title, text, id, userId, coverUrl } = article;
-  const MOCKED_READ_TIME = '7 min read';
+  const { publishedAt, title, text, id, userId, coverUrl, readTime } = article;
   const { likesCount, dislikesCount, hasAlreadyReactedWith } = getReactionsInfo(
     user.id,
     reactions,
@@ -119,7 +119,11 @@ const ArticleCard: React.FC<Properties> = ({
               {getFormattedDate(publishedAt, DateFormat.DAY_SHORT_MONTH)}
             </span>
           )}
-          <span className={styles.publicationTime}>{MOCKED_READ_TIME}</span>
+          {readTime && (
+            <span className={styles.publicationTime}>
+              {getReadTimeString(readTime)}
+            </span>
+          )}
         </div>
         <div className={styles.iconWrapper}>
           {isMyArticles && (
@@ -145,7 +149,9 @@ const ArticleCard: React.FC<Properties> = ({
           <Tags tags={tags} />
         </div>
         {coverUrl && (
-          <img src={coverUrl} alt="article cover" className={styles.cover} />
+          <div className={styles.coverWrapper}>
+            <img src={coverUrl} alt="article cover" className={styles.cover} />
+          </div>
         )}
       </div>
       <div className={styles.footer}>

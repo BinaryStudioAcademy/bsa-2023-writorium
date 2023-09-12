@@ -11,6 +11,7 @@ const articleApi = new ArticleApi({
 });
 
 export { articleApi };
+export { getReadTimeString } from './libs/helpers/helpers.js';
 export {
   type ArticleGetAllResponseDto,
   type ArticleReactionRequestDto,

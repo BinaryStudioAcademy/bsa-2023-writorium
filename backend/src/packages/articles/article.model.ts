@@ -23,6 +23,7 @@ class ArticleModel extends AbstractModel {
   public 'genre': GenreModel;
   public 'prompt': PromptModel;
   public 'reactions': ReactionResponseDto[];
+  public 'readTime': number | null;
   public 'coverId': number | null;
   public 'cover': FileModel | null;
 
