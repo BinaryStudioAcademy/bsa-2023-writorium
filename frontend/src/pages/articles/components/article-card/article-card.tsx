@@ -28,7 +28,7 @@ import {
 } from '~/libs/hooks/hooks.js';
 import { type ValueOf } from '~/libs/types/types.js';
 import {
-  type ArticleWithRelationsType,
+  type ArticleResponseDto,
   getReadTimeString,
   type ReactionResponseDto,
 } from '~/packages/articles/articles.js';
@@ -44,7 +44,7 @@ import { Tags } from '../components.js';
 import styles from './styles.module.scss';
 
 type Properties = {
-  article: ArticleWithRelationsType;
+  article: ArticleResponseDto;
   author: UserDetailsResponseDto;
   tags: TagType[];
   reactions: ReactionResponseDto[];

@@ -1,8 +1,8 @@
-import { type ArticleWithRelationsType } from '~/packages/articles/articles.js';
+import { type ArticleResponseDto } from '~/packages/articles/articles.js';
 
 import { type TagType } from '../types/types.js';
 
-const getArticleTags = (article: ArticleWithRelationsType): TagType[] => {
+const getArticleTags = (article: ArticleResponseDto): TagType[] => {
   const result: TagType[] = [];
   const { prompt, genre } = article;
 

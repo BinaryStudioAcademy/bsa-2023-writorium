@@ -8,6 +8,5 @@ export {
   type ArticlesFilters,
   type ArticleUpdateRequestDto,
   type ArticleUpdateRequestPayload,
-  type ArticleWithRelationsType,
   type ReactionResponseDto,
 } from 'shared/build/index.js';
