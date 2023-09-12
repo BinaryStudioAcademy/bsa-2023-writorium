@@ -6,12 +6,10 @@ import {
 } from '~/libs/enums/enums.js';
 import { configureString, constructUrl } from '~/libs/helpers/helpers.js';
 import {
-  CustomHttpHeader,
-  HttpCode,
-  HttpError,
-  HttpHeader,
+  type CustomHttpHeader,
   type IHttp,
 } from '~/libs/packages/http/http.js';
+import { HttpCode, HttpError, HttpHeader } from '~/libs/packages/http/http.js';
 import { type IStorage, StorageKey } from '~/libs/packages/storage/storage.js';
 import { type ServerErrorResponse, type ValueOf } from '~/libs/types/types.js';
 
@@ -58,14 +56,10 @@ class HttpApi implements IHttpApi {
       payload = null,
       hasAuth,
       query,
-      sharedArticleToken = null,
+      customHeaders = null,
     } = options;
 
-    const headers = await this.getHeaders(
-      contentType,
-      hasAuth,
-      sharedArticleToken,
-    );
+    const headers = await this.getHeaders(contentType, hasAuth, customHeaders);
 
     const response = await this.http.load(this.getUrl(path, query), {
       method,
@@ -94,7 +88,7 @@ class HttpApi implements IHttpApi {
   private async getHeaders(
     contentType: ValueOf<typeof ContentType>,
     hasAuth: boolean,
-    sharedArticleToken: string | null,
+    customHeaders: Record<ValueOf<typeof CustomHttpHeader>, 'string'> | null,
   ): Promise<Headers> {
     const headers = new Headers();
 
@@ -102,8 +96,10 @@ class HttpApi implements IHttpApi {
       headers.append(HttpHeader.CONTENT_TYPE, contentType);
     }
 
-    if (sharedArticleToken) {
-      headers.append(CustomHttpHeader.SHARED_ARTICLE_TOKEN, sharedArticleToken);
+    if (customHeaders) {
+      for (const [headerKey, headerValue] of Object.entries(customHeaders)) {
+        headers.append(headerKey, headerValue);
+      }
     }
 
     if (hasAuth) {

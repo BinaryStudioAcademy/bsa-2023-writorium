@@ -1,7 +1,7 @@
 import { ApiPath, ContentType } from '~/libs/enums/enums.js';
 import { writeTextInClipboard } from '~/libs/helpers/helpers.js';
 import { HttpApi } from '~/libs/packages/api/api.js';
-import { type IHttp } from '~/libs/packages/http/http.js';
+import { CustomHttpHeader, type IHttp } from '~/libs/packages/http/http.js';
 import { type IStorage } from '~/libs/packages/storage/storage.js';
 
 import { ArticlesApiPath } from './libs/enums/enums.js';
@@ -114,7 +114,9 @@ class ArticleApi extends HttpApi {
         method: 'GET',
         contentType: ContentType.JSON,
         hasAuth: false,
-        sharedArticleToken: token,
+        customHeaders: {
+          [CustomHttpHeader.SHARED_ARTICLE_TOKEN]: token,
+        } as Record<keyof typeof CustomHttpHeader, 'string'>,
       },
     );
 

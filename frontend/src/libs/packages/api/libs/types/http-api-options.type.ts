@@ -1,5 +1,8 @@
 import { type ContentType } from '~/libs/enums/enums.js';
-import { type HttpOptions } from '~/libs/packages/http/http.js';
+import {
+  type CustomHttpHeader,
+  type HttpOptions,
+} from '~/libs/packages/http/http.js';
 import { type ValueOf } from '~/libs/types/types.js';
 
 type HttpApiOptions = Omit<HttpOptions, 'headers' | 'payload'> & {
@@ -7,7 +10,7 @@ type HttpApiOptions = Omit<HttpOptions, 'headers' | 'payload'> & {
   contentType: ValueOf<typeof ContentType>;
   payload?: HttpOptions['payload'];
   query?: Record<string, unknown>;
-  sharedArticleToken?: string | null;
+  customHeaders?: Record<ValueOf<typeof CustomHttpHeader>, 'string'>;
 };
 
 export { type HttpApiOptions };
