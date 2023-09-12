@@ -1,5 +1,5 @@
-import { format } from 'date-fns';
-import { enUS } from 'date-fns/locale';
+import { format, type Locale } from 'date-fns';
+import enUS from 'date-fns/locale/en-US/index.js';
 
 import { type DateFormat } from '~/libs/enums/enums.js';
 import { type ValueOf } from '~/libs/types/types.js';

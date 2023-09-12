@@ -2,6 +2,7 @@ import { DateFormat } from '~/libs/enums/enums.js';
 import {
   getFormattedDate,
   getValidClassNames,
+  makePluralOrSingular,
 } from '~/libs/helpers/helpers.js';
 import { type UserActivityResponseDto } from '~/packages/users/users.js';
 
@@ -19,13 +20,14 @@ const UserActivity: React.FC<Properties> = ({ userActivity }) => {
   const uniqueMonths: string[] = getUniqueMonths(userActivity);
 
   const activityStatistic = userActivity.map((activity, index) => {
-    const FIST_ITEM_INDEX = 0;
+    const FIRST_ITEM_INDEX = 0;
     const { count, date } = activity;
     const activityBreakpoint = getActivityBreakpoint(count);
     const localDate = getFormattedDate(date, DateFormat.FULL_DATE);
-    const activityTitle = `${count} action${
-      count === 1 ? '' : 's'
-    } on ${localDate}`;
+    const activityTitle = `${count} ${makePluralOrSingular(
+      'action',
+      count,
+    )} on ${localDate}`;
 
     return (
       <span
@@ -34,7 +36,7 @@ const UserActivity: React.FC<Properties> = ({ userActivity }) => {
         className={getValidClassNames(
           styles.activityItem,
           styles[activityBreakpoint],
-          index === FIST_ITEM_INDEX &&
+          index === FIRST_ITEM_INDEX &&
             styles[
               getFormattedDate(localDate, DateFormat.DAY_OF_WEEK).toLowerCase()
             ],
