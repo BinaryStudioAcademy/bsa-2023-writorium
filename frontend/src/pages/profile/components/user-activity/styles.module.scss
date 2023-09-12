@@ -1,6 +1,9 @@
+@use "src/assets/css/breakpoints.scss";
+
 .wrapper {
-  display: block;
+  display: flex;
   grid-area: activity;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 20px 40px;
@@ -13,7 +16,6 @@
 .activityWrapper {
   display: flex;
   max-width: 710px;
-  overflow-x: auto;
 }
 
 .days .monday {
@@ -89,4 +91,11 @@
 
 .fourthBreakpoint {
   background: #30a14e;
+}
+
+@media only screen and (max-width: breakpoints.$extra-large) {
+  .wrapper {
+    align-items: start;
+    overflow-x: auto;
+  }
 }
