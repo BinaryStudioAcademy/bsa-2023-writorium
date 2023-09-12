@@ -35,7 +35,7 @@ const ProfilePage: React.FC = () => {
           className={styles.profileBlock}
         />
         <UserAchievements className={styles.profileBlock} />
-        <UserArticlesGenresStats />
+        <UserArticlesGenresStats className={styles.profileBlock} />
       </div>
     </Layout>
   );
