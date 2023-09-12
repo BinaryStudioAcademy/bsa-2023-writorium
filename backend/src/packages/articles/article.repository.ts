@@ -1,11 +1,11 @@
+import { type Model, type QueryBuilder } from 'objection';
+
 import { ArticleEntity } from './article.entity.js';
 import { type ArticleModel } from './article.model.js';
 import { SortingOrder } from './libs/enums/enums.js';
 import {
   getWherePublishedOnlyQuery,
   getWhereUserIdQuery,
-  joinArticleRelations,
-  modifyReactionsGraph,
 } from './libs/helpers/helpers.js';
 import { type IArticleRepository } from './libs/interfaces/interfaces.js';
 import {
@@ -23,6 +23,20 @@ class ArticleRepository implements IArticleRepository {
     this.articleModel = articleModel;
   }
 
+  private joinArticleRelations = <T>(
+    queryBuilder: QueryBuilder<ArticleModel, T>,
+  ): void => {
+    void queryBuilder
+      .withGraphJoined(this.defaultRelationExpression)
+      .modifyGraph('reactions', this.modifyReactionsGraph);
+  };
+
+  private modifyReactionsGraph = (
+    builder: QueryBuilder<Model, Model[]>,
+  ): void => {
+    void builder.select('id', 'isLike', 'userId');
+  };
+
   public async findAll({
     userId,
     take,
@@ -38,7 +52,7 @@ class ArticleRepository implements IArticleRepository {
       .where(getWherePublishedOnlyQuery(hasPublishedOnly))
       .orderBy('articles.publishedAt', SortingOrder.DESCENDING)
       .page(skip / take, take)
-      .modify(joinArticleRelations, this.defaultRelationExpression);
+      .modify(this.joinArticleRelations);
 
     return {
       total: articles.total,
@@ -64,7 +78,7 @@ class ArticleRepository implements IArticleRepository {
     const article = await this.articleModel
       .query()
       .findById(id)
-      .modify(joinArticleRelations, this.defaultRelationExpression);
+      .modify(this.joinArticleRelations);
 
     if (!article) {
       return null;
@@ -102,7 +116,7 @@ class ArticleRepository implements IArticleRepository {
       })
       .returning('*')
       .withGraphFetched(this.defaultRelationExpression)
-      .modifyGraph('reactions', modifyReactionsGraph);
+      .modifyGraph('reactions', this.modifyReactionsGraph);
 
     return ArticleEntity.initialize({
       ...article,
@@ -146,7 +160,7 @@ class ArticleRepository implements IArticleRepository {
       .query()
       .patchAndFetchById(id, payload)
       .withGraphFetched(this.defaultRelationExpression)
-      .modifyGraph('reactions', modifyReactionsGraph);
+      .modifyGraph('reactions', this.modifyReactionsGraph);
 
     return ArticleEntity.initialize({
       ...article,
