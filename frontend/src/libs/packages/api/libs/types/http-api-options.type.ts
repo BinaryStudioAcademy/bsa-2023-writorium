@@ -10,7 +10,7 @@ type HttpApiOptions = Omit<HttpOptions, 'headers' | 'payload'> & {
   contentType: ValueOf<typeof ContentType>;
   payload?: HttpOptions['payload'];
   query?: Record<string, unknown>;
-  customHeaders?: Record<ValueOf<typeof CustomHttpHeader>, 'string'>;
+  customHeaders?: Record<ValueOf<typeof CustomHttpHeader>, string>;
 };
 
 export { type HttpApiOptions };

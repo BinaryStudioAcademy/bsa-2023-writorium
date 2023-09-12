@@ -88,7 +88,7 @@ class HttpApi implements IHttpApi {
   private async getHeaders(
     contentType: ValueOf<typeof ContentType>,
     hasAuth: boolean,
-    customHeaders: Record<ValueOf<typeof CustomHttpHeader>, 'string'> | null,
+    customHeaders: Record<ValueOf<typeof CustomHttpHeader>, string> | null,
   ): Promise<Headers> {
     const headers = new Headers();
 

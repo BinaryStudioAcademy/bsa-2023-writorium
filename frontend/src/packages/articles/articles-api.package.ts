@@ -116,7 +116,7 @@ class ArticleApi extends HttpApi {
         hasAuth: false,
         customHeaders: {
           [CustomHttpHeader.SHARED_ARTICLE_TOKEN]: token,
-        } as Record<keyof typeof CustomHttpHeader, 'string'>,
+        },
       },
     );
 

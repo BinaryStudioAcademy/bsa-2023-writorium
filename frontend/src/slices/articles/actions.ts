@@ -85,8 +85,11 @@ const shareArticle = createAsyncThunk<
   { link: string },
   { id: string },
   AsyncThunkConfig
->(`${sliceName}/share`, (articlePayload, { dispatch, extra }) => {
+>(`${sliceName}/share`, async (articlePayload, { dispatch, extra }) => {
   const { articleApi } = extra;
+
+  const response = await articleApi.share(articlePayload.id);
+
   void dispatch(
     appActions.notify({
       type: NotificationType.SUCCESS,
@@ -94,7 +97,7 @@ const shareArticle = createAsyncThunk<
     }),
   );
 
-  return articleApi.share(articlePayload.id);
+  return response;
 });
 
 const fetchSharedArticle = createAsyncThunk<
