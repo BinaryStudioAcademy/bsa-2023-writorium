@@ -1,11 +1,6 @@
-import { DateFormat } from '~/libs/enums/enums.js';
-import {
-  getFormattedDate,
-  getValidClassNames,
-} from '~/libs/helpers/helpers.js';
+import { getValidClassNames } from '~/libs/helpers/helpers.js';
 import { type UserActivityResponseDto } from '~/packages/users/users.js';
 
-import { DATE_LOCALE, DATE_OPTIONS } from '../../libs/constants/constants.js';
 import {
   getActivityBreakpoint,
   getUniqueMonths,
@@ -18,27 +13,18 @@ type Properties = {
 
 const UserActivity: React.FC<Properties> = ({ userActivity }) => {
   const uniqueMonths: string[] = getUniqueMonths(userActivity);
-  const dateFormatter = new Intl.DateTimeFormat(DATE_LOCALE, DATE_OPTIONS);
 
-  const activityStatistic = userActivity.map((activity, index) => {
+  const activityStatistic = userActivity.map((activity) => {
     const { count, date } = activity;
     const activityBreakpoint = getActivityBreakpoint(count);
-    const localDate = dateFormatter.format(new Date(date));
-    const activityTitle = `${count} action${
-      count > 1 ? 's' : ''
-    } on ${localDate}`;
 
     return (
       <span
-        title={activityTitle}
-        key={localDate}
+        title={date}
+        key={date}
         className={getValidClassNames(
           styles.activityItem,
           styles[activityBreakpoint],
-          index === 0 &&
-            styles[
-              getFormattedDate(localDate, DateFormat.DAY_OF_WEEK).toLowerCase()
-            ],
         )}
       />
     );
