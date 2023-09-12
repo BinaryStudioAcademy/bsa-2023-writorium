@@ -10,4 +10,5 @@ export {
   getDateDifferenceWithUnit,
   getFormattedDate,
   getShuffledArray,
+  makePluralOrSingular,
 } from 'shared/build/index.js';
