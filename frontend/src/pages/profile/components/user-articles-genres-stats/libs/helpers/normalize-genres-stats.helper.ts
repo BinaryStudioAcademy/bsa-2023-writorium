@@ -1,6 +1,10 @@
 import { type UserArticlesGenresStatsItem } from '~/packages/users/users.js';
 
-import { MAX_VISIBLE_GENRES } from '../constants/constants.js';
+import {
+  MAX_VISIBLE_GENRES,
+  OTHER_GENRES_KEY,
+  OTHER_GENRES_NAME,
+} from '../constants/constants.js';
 
 const normalizeGenresStats = (
   stats: UserArticlesGenresStatsItem[],
@@ -16,8 +20,8 @@ const normalizeGenresStats = (
     stats.length > maxGenres
       ? [
           {
-            key: 'others',
-            name: 'Others',
+            key: OTHER_GENRES_KEY,
+            name: OTHER_GENRES_NAME,
             count: restGenres.reduce((count, value) => count + value.count, 0),
           },
         ]
