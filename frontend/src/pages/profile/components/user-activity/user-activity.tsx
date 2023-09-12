@@ -100,4 +100,3 @@ const UserActivity: React.FC<Properties> = ({ userActivity }) => {
 };
 
 export { UserActivity };
-
