@@ -1,7 +1,7 @@
 const UsersApiPath = {
   ROOT: '/',
   ACTIVITY: '/activity',
-  ARTICLES_GENRES_STATS: '/articles-genres-stats',
+  ARTICLES_GENRE_STATS: '/articles-genre-stats',
 } as const;
 
 export { UsersApiPath };

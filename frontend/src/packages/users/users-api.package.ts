@@ -47,7 +47,7 @@ class UserApi extends HttpApi {
 
   public async getUserArticlesGenresStats(): Promise<UserArticlesGenreStatsResponseDto> {
     const response = await this.load(
-      this.getFullEndpoint(UsersApiPath.ARTICLES_GENRES_STATS, {}),
+      this.getFullEndpoint(UsersApiPath.ARTICLES_GENRE_STATS, {}),
       { method: 'GET', contentType: ContentType.JSON, hasAuth: true },
     );
 

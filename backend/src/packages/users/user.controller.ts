@@ -140,7 +140,7 @@ class UserController extends Controller {
     });
 
     this.addRoute({
-      path: UsersApiPath.ARTICLES_GENRES_STATS,
+      path: UsersApiPath.ARTICLES_GENRE_STATS,
       method: 'GET',
       handler: (options) =>
         this.getUserArticlesGenreStats(
@@ -213,7 +213,7 @@ class UserController extends Controller {
 
   /**
    * @swagger
-   * /users/articles-genres-stats:
+   * /users/articles-genre-stats:
    *    get:
    *      summary: Get articles genres stats for current user
    *      description: Get articles genres stats for current user
