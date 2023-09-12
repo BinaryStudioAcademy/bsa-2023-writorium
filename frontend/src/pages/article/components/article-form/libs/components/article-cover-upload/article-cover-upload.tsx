@@ -12,7 +12,6 @@ import {
   IconButton,
   Loader,
 } from '~/libs/components/components.js';
-// @todo: fix import after https://github.com/BinaryStudioAcademy/bsa-2023-writorium/issues/159 is done
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
 import {
   useAppDispatch,
