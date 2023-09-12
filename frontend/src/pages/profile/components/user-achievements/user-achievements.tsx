@@ -71,9 +71,13 @@ const UserAchievements: FC<Properties> = ({ className }) => {
         className={styles.buttonShow}
         onClick={handleToggleModalOpen}
       />
-      <Modal isOpen={isOpen} onClose={handleToggleModalOpen}>
+      <Modal
+        isOpen={isOpen}
+        onClose={handleToggleModalOpen}
+        className={styles.modal}
+      >
         <div>
-          <h3 className={styles.title}>Achievements</h3>
+          <h2 className={styles.title}>Achievements</h2>
           <AchievementList
             hasToShowTooltip={true}
             achievements={achievementsList}

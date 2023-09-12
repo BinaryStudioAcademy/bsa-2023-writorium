@@ -16,12 +16,14 @@ type State = {
   article: ArticleWithAuthorType | null;
   articles: ArticleWithAuthorType[];
   dataStatus: ValueOf<typeof DataStatus>;
+  getArticleStatus: ValueOf<typeof DataStatus>;
 };
 
 const initialState: State = {
   article: null,
   articles: [],
   dataStatus: DataStatus.IDLE,
+  getArticleStatus: DataStatus.IDLE,
 };
 
 const { reducer, actions, name } = createSlice({
@@ -51,8 +53,14 @@ const { reducer, actions, name } = createSlice({
       state.dataStatus = DataStatus.FULFILLED;
     });
     builder.addCase(getArticle.fulfilled, (state, action) => {
-      state.dataStatus = DataStatus.FULFILLED;
+      state.getArticleStatus = DataStatus.FULFILLED;
       state.article = action.payload;
+    });
+    builder.addCase(getArticle.pending, (state) => {
+      state.getArticleStatus = DataStatus.PENDING;
+    });
+    builder.addCase(getArticle.rejected, (state) => {
+      state.getArticleStatus = DataStatus.REJECTED;
     });
     builder.addMatcher(
       isAnyOf(fetchAll.fulfilled, fetchOwn.fulfilled),
@@ -67,7 +75,6 @@ const { reducer, actions, name } = createSlice({
         fetchOwn.pending,
         createArticle.pending,
         updateArticle.pending,
-        getArticle.pending,
       ),
       (state) => {
         state.dataStatus = DataStatus.PENDING;
@@ -79,7 +86,6 @@ const { reducer, actions, name } = createSlice({
         fetchOwn.rejected,
         createArticle.rejected,
         updateArticle.rejected,
-        getArticle.rejected,
       ),
       (state) => {
         state.dataStatus = DataStatus.REJECTED;

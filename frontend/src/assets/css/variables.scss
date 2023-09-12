@@ -7,8 +7,8 @@
   --dark-blue: #14253f;
   --dark-blue-40: rgb(20 37 63 / 40%);
   --light-green: #44996b;
-  --light-grey: #ebece7;
-  --dark-grey: #353535;
+  --light-gray: #ebece7;
+  --dark-gray: #353535;
   --black: #000000;
   --black-20: rgb(29 29 29 / 20%);
   --dark-blue-70: rgb(20 37 63 / 70%);
@@ -18,31 +18,28 @@
   --dark-gray-40: rgba(53 53 53 / 40%);
   --dark-gray-50: rgba(53 53 53 / 50%);
   --dark-gray-80: rgba(53 53 53 / 80%);
-  --light-grey-15: rgba(151 151 151 / 15%);
+  --light-gray-15: rgba(151 151 151 / 15%);
   --light-gray-40: rgb(174 174 174 / 40%);
   --medium-brightness-gray: #919191;
-  --light-grey-text: #b6b6b6;
-  --light-grey-border: #dbdbdb;
-  --light-grey-dashed-border: #c6c8cd;
+  --light-gray-text: #b6b6b6;
+  --light-gray-border: var(--pastel-gray);
+  --light-gray-dashed-border: #c6c8cd;
   --red: #df1c3d;
   --light-red: #d88184;
   --shadow-color: rgba(53 53 53 / 20%);
   --picasso: #ffec99;
   --madang: #b2f2bb;
   --overlay-alpha-50: rgb(0 0 0 / 50%);
-  --pale-grey: #dbdbdb;
+  --pastel-gray: #dbdbdb;
 
   /* z-index */
   --z-index-level-one: 100;
   --z-index-tooltip: 1000;
   --achievement-columns: 3;
-
-  /* header height */
-  --header-height: 105px;
 }
 
 input {
-  --input-bg: #f8f8f8;
+  --input-bg: var(--pale-gray);
   --input-shadow-color: var(--shadow-color);
   --input-text: rgb(40 40 40 / 50%);
   --input-placeholder-color: rgb(157 164 174 / 40%);
