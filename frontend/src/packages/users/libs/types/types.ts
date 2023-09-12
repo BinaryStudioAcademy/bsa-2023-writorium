@@ -1,7 +1,7 @@
 export {
   type UserActivityResponseDto,
-  type UserArticlesGenresStatsItem,
-  type UserArticlesGenresStatsResponseDto,
+  type UserArticlesGenreStatsItem,
+  type UserArticlesGenreStatsResponseDto,
   type UserAuthResponseDto,
   type UserDetailsResponseDto,
   type UserGetAllItemResponseDto,

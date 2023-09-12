@@ -10,7 +10,7 @@ export {
   type ArticleUpdateRequestDto,
   type ArticleWithAuthorType,
   type UserActivityResponseDto,
-  type UserArticlesGenresStatsItem,
-  type UserArticlesGenresStatsResponseDto,
+  type UserArticlesGenreStatsItem,
+  type UserArticlesGenreStatsResponseDto,
   type UserDetailsResponseDto,
 } from 'shared/build/index.js';

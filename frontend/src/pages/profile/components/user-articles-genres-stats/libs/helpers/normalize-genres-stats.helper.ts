@@ -1,4 +1,4 @@
-import { type UserArticlesGenresStatsItem } from '~/packages/users/users.js';
+import { type UserArticlesGenreStatsItem } from '~/packages/users/users.js';
 
 import {
   MAX_VISIBLE_GENRES,
@@ -7,9 +7,9 @@ import {
 } from '../constants/constants.js';
 
 const normalizeGenresStats = (
-  stats: UserArticlesGenresStatsItem[],
+  stats: UserArticlesGenreStatsItem[],
   maxGenres = MAX_VISIBLE_GENRES,
-): UserArticlesGenresStatsItem[] => {
+): UserArticlesGenreStatsItem[] => {
   const sortedData = [...stats].sort(
     (itemA, itemB) => itemB.count - itemA.count,
   );

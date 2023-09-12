@@ -27,7 +27,7 @@ import {
   type ArticleWithAuthorType,
   type DetectedArticleGenre,
   type UserActivityResponseDto,
-  type UserArticlesGenresStatsResponseDto,
+  type UserArticlesGenreStatsResponseDto,
 } from './libs/types/types.js';
 
 class ArticleService implements IService {
@@ -204,10 +204,10 @@ class ArticleService implements IService {
     return halfYearActivity;
   }
 
-  public async getUserArticlesGenresStats(
+  public async getUserArticlesGenreStats(
     userId: number,
-  ): Promise<UserArticlesGenresStatsResponseDto> {
-    const stats = await this.articleRepository.getUserArticlesGenresStats(
+  ): Promise<UserArticlesGenreStatsResponseDto> {
+    const stats = await this.articleRepository.getUserArticlesGenreStats(
       userId,
     );
 

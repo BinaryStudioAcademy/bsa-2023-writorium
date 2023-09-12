@@ -143,7 +143,7 @@ class UserController extends Controller {
       path: UsersApiPath.ARTICLES_GENRES_STATS,
       method: 'GET',
       handler: (options) =>
-        this.getUserArticlesGenresStats(
+        this.getUserArticlesGenreStats(
           options as ApiHandlerOptions<{
             user: UserAuthResponseDto;
           }>,
@@ -221,12 +221,12 @@ class UserController extends Controller {
    *        200:
    *          description: Successful operation
    */
-  private async getUserArticlesGenresStats(
+  private async getUserArticlesGenreStats(
     options: ApiHandlerOptions<{ user: UserAuthResponseDto }>,
   ): Promise<ApiHandlerResponse> {
     return {
       status: HttpCode.OK,
-      payload: await this.userService.getUserArticlesGenresStats(
+      payload: await this.userService.getUserArticlesGenreStats(
         options.user.id,
       ),
     };

@@ -123,8 +123,8 @@ export {
 } from './packages/prompts/prompts.js';
 export {
   type UserActivityResponseDto,
-  type UserArticlesGenresStatsItem,
-  type UserArticlesGenresStatsResponseDto,
+  type UserArticlesGenreStatsItem,
+  type UserArticlesGenreStatsResponseDto,
   type UserAuthResponseDto,
   type UserDetailsDto,
   type UserDetailsResponseDto,

@@ -4,7 +4,7 @@ import { DataStatus } from '~/libs/enums/enums.js';
 import { type ValueOf } from '~/libs/types/types.js';
 import {
   type UserActivityResponseDto,
-  type UserArticlesGenresStatsItem,
+  type UserArticlesGenreStatsItem,
   type UserGetAllItemResponseDto,
 } from '~/packages/users/users.js';
 
@@ -18,7 +18,7 @@ type State = {
   users: UserGetAllItemResponseDto[];
   userActivity: UserActivityResponseDto[];
   dataStatus: ValueOf<typeof DataStatus>;
-  userArticlesGenresStats: UserArticlesGenresStatsItem[];
+  userArticlesGenresStats: UserArticlesGenreStatsItem[];
   userArticlesGenresStatsStatus: ValueOf<typeof DataStatus>;
 };
 

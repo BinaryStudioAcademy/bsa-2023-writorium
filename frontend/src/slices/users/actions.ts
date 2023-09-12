@@ -3,7 +3,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { type AsyncThunkConfig } from '~/libs/types/types.js';
 import {
   type UserActivityResponseDto,
-  type UserArticlesGenresStatsResponseDto,
+  type UserArticlesGenreStatsResponseDto,
   type UserAuthResponseDto,
   type UserGetAllResponseDto,
   type UserUpdateRequestDto,
@@ -32,7 +32,7 @@ const getUserActivity = createAsyncThunk<
 });
 
 const getUserArticlesGenresStats = createAsyncThunk<
-  UserArticlesGenresStatsResponseDto,
+  UserArticlesGenreStatsResponseDto,
   undefined,
   AsyncThunkConfig
 >(`${sliceName}/get-user-articles-genres-stats`, (_, { extra }) => {

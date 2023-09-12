@@ -144,7 +144,7 @@ class ArticleRepository implements IArticleRepository {
       .castTo<UserActivityResponseDto[]>();
   }
 
-  public getUserArticlesGenresStats(
+  public getUserArticlesGenreStats(
     userId: number,
   ): Promise<GetUserArticlesGenresStatsDatabaseResponse[]> {
     return this.articleModel

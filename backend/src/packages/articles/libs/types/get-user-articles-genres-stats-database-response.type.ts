@@ -1,7 +1,7 @@
-import { type UserArticlesGenresStatsItem } from './types.js';
+import { type UserArticlesGenreStatsItem } from './types.js';
 
 type GetUserArticlesGenresStatsDatabaseResponse = Omit<
-  UserArticlesGenresStatsItem,
+  UserArticlesGenreStatsItem,
   'count'
 > & { count: string };
 
