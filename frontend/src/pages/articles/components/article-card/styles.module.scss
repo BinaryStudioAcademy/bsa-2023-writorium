@@ -151,17 +151,21 @@
   background-color: var(--white);
 }
 
-.disable {
+.footerIcon svg {
+  color: black;
+}
+
+.disabled {
   cursor: default;
 }
 
-.disable path {
-  fill: var(--light-green);
+.disabled svg {
+  color: var(--light-green);
 }
 
-.pressed path,
-.reaction:hover path {
-  fill: var(--light-green);
+.pressed svg,
+.reaction:hover svg {
+  color: var(--light-green);
 }
 
 .footer .readMore {
