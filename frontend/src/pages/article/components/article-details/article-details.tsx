@@ -7,27 +7,29 @@ import { getFormattedDate } from '~/libs/helpers/helpers.js';
 import styles from './styles.module.scss';
 
 type Properties = {
-  authorName?: string;
+  authorName: string;
   authorFollowers?: number;
   authorRating?: number;
-  publishedAt?: string;
-  readTime?: number | null;
-  genre?: string;
+  publishedAt: string;
+  readTime: number | null;
+  genre: string | null;
+  avatarUrl: string | null;
 };
 
 const ArticleDetails: FC<Properties> = ({
   authorName = 'Charlie Culhane',
   authorFollowers = 10,
   authorRating = 700,
-  publishedAt = '2023-09-04T12:53:07.144Z',
+  publishedAt,
   readTime,
-  genre = 'Fiction',
+  genre,
+  avatarUrl = null,
 }) => {
   return (
     <div className={styles.container}>
       <div className={styles.authorWrapper}>
         <div className={styles.avatarWrapper}>
-          <Avatar username={authorName} avatarUrl={null} />
+          <Avatar username={authorName} avatarUrl={avatarUrl} />
         </div>
         <div>
           <h2 className={styles.authorName}>{authorName}</h2>
