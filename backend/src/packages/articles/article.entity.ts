@@ -19,6 +19,7 @@ class ArticleEntity implements IEntity {
   private 'publishedAt': string | null;
   private 'author'?: UserDetailsResponseDto;
   private 'prompt'?: ArticleWithAuthorType['prompt'];
+  private 'readTime': number | null;
   private 'genre'?: ArticleWithAuthorType['genre'];
   private 'deletedAt': string | null;
 
@@ -36,6 +37,7 @@ class ArticleEntity implements IEntity {
     prompt,
     genre,
     deletedAt,
+    readTime,
   }: WithNullableKeys<ArticleWithAuthorType, 'id'>) {
     this.id = id;
     this.title = title;
@@ -47,6 +49,7 @@ class ArticleEntity implements IEntity {
     this.author = author;
     this.prompt = prompt;
     this.genre = genre;
+    this.readTime = readTime;
     this.coverId = coverId;
     this.coverUrl = coverUrl;
     this.deletedAt = deletedAt;
@@ -62,6 +65,7 @@ class ArticleEntity implements IEntity {
     genreId,
     publishedAt,
     deletedAt,
+    readTime,
   }: ArticleEntityType): ArticleEntity {
     return new ArticleEntity({
       id,
@@ -73,6 +77,7 @@ class ArticleEntity implements IEntity {
       promptId,
       publishedAt,
       deletedAt,
+      readTime,
     });
   }
 
@@ -90,6 +95,7 @@ class ArticleEntity implements IEntity {
     prompt,
     genre,
     deletedAt,
+    readTime,
   }: ArticleWithAuthorType): ArticleEntity {
     return new ArticleEntity({
       id,
@@ -108,6 +114,7 @@ class ArticleEntity implements IEntity {
       prompt,
       genre,
       deletedAt,
+      readTime,
     });
   }
 
@@ -118,6 +125,7 @@ class ArticleEntity implements IEntity {
     coverId,
     promptId,
     genreId,
+    readTime,
     publishedAt,
     deletedAt,
   }: Omit<ArticleEntityType, 'id'>): ArticleEntity {
@@ -131,6 +139,7 @@ class ArticleEntity implements IEntity {
       genreId,
       publishedAt,
       deletedAt,
+      readTime,
     });
   }
 
@@ -143,6 +152,7 @@ class ArticleEntity implements IEntity {
       coverId: this.coverId,
       promptId: this.promptId,
       genreId: this.genreId,
+      readTime: this.readTime,
       publishedAt: this.publishedAt,
       deletedAt: this.deletedAt,
     };
@@ -163,6 +173,7 @@ class ArticleEntity implements IEntity {
       prompt: this.prompt,
       genre: this.genre,
       deletedAt: this.deletedAt,
+      readTime: this.readTime,
     };
   }
 
@@ -174,6 +185,7 @@ class ArticleEntity implements IEntity {
       coverId: this.coverId,
       promptId: this.promptId,
       genreId: this.genreId,
+      readTime: this.readTime,
       publishedAt: this.publishedAt,
       deletedAt: this.deletedAt,
     };

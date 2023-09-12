@@ -8,6 +8,7 @@ type ArticleEntityType = {
   coverId: number | null;
   publishedAt: string | null;
   deletedAt: string | null;
+  readTime: number | null;
 };
 
 export { type ArticleEntityType };
