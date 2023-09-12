@@ -1,5 +1,4 @@
-import { Layout, Navigate } from '~/libs/components/components.js';
-import { Loader } from '~/libs/components/loader/loader.js';
+import { Layout, Loader, Navigate } from '~/libs/components/components.js';
 import { AppRoute, DataStatus } from '~/libs/enums/enums.js';
 import { getFullName } from '~/libs/helpers/helpers.js';
 import {
@@ -23,20 +22,21 @@ const ArticlePage: React.FC = () => {
     void dispatch(actions.getArticle(Number(id)));
   }, [dispatch, id]);
 
-  const { article, dataStatus } = useAppSelector(({ articles }) => ({
+  const { article, getArticleStatus } = useAppSelector(({ articles }) => ({
     article: articles.article,
-    dataStatus: articles.dataStatus,
+    getArticleStatus: articles.getArticleStatus,
   }));
 
   const isLoading = !(
-    dataStatus === DataStatus.FULFILLED || dataStatus == DataStatus.REJECTED
+    getArticleStatus === DataStatus.FULFILLED ||
+    getArticleStatus == DataStatus.REJECTED
   );
 
   if (!article && !isLoading) {
     return <Navigate to={AppRoute.ARTICLES} />;
   }
 
-  if (dataStatus === DataStatus.REJECTED) {
+  if (getArticleStatus === DataStatus.REJECTED) {
     return null;
   }
 
@@ -48,22 +48,26 @@ const ArticlePage: React.FC = () => {
     { id: 5, name: 'Tech' },
   ];
 
-  const { text, title, author, coverUrl, readTime } = article ?? {};
-
   return (
-    <Loader isLoading={isLoading}>
+    <Loader isLoading={isLoading} hasOverlay type="circular">
       <Layout>
         <div className={styles.articlePageWrapper}>
           <ArticleView
             tags={MOCKED_TAGS}
-            text={text ?? ''}
-            title={title ?? ''}
-            coverUrl={coverUrl ?? ''}
+            text={article?.text ?? ''}
+            title={article?.title ?? ''}
+            coverUrl={article?.coverUrl ?? ''}
           />
-          {author && (
+          {article?.author && (
             <ArticleDetails
-              readTime={readTime}
-              authorName={getFullName(author.firstName, author.lastName)}
+              readTime={article.readTime}
+              authorName={getFullName(
+                article.author.firstName,
+                article.author.lastName,
+              )}
+              publishedAt={article.publishedAt ?? ''}
+              genre={article.genre ?? ''}
+              avatarUrl={article.author.avatarUrl}
             />
           )}
         </div>

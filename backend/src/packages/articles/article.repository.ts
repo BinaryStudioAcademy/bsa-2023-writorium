@@ -14,7 +14,7 @@ import {
 class ArticleRepository implements IArticleRepository {
   private articleModel: typeof ArticleModel;
 
-  private defaultRelationExpression = '[author,prompt,genre,cover]';
+  private defaultRelationExpression = '[author.avatar,prompt,genre,cover]';
 
   public constructor(articleModel: typeof ArticleModel) {
     this.articleModel = articleModel;
@@ -53,6 +53,11 @@ class ArticleRepository implements IArticleRepository {
                 prop: article.prompt.prop,
               }
             : null,
+          author: {
+            firstName: article.author.firstName,
+            lastName: article.author.lastName,
+            avatarUrl: article.author.avatar?.url ?? null,
+          },
         });
       }),
     };
@@ -80,6 +85,11 @@ class ArticleRepository implements IArticleRepository {
             prop: article.prompt.prop,
           }
         : null,
+      author: {
+        firstName: article.author.firstName,
+        lastName: article.author.lastName,
+        avatarUrl: article.author.avatar?.url ?? null,
+      },
     });
   }
 
@@ -153,6 +163,11 @@ class ArticleRepository implements IArticleRepository {
             prop: article.prompt.prop,
           }
         : null,
+      author: {
+        firstName: article.author.firstName,
+        lastName: article.author.lastName,
+        avatarUrl: article.author.avatar?.url ?? null,
+      },
     });
   }
 
@@ -173,6 +188,11 @@ class ArticleRepository implements IArticleRepository {
             prop: article.prompt.prop,
           }
         : null,
+      author: {
+        firstName: article.author.firstName,
+        lastName: article.author.lastName,
+        avatarUrl: article.author.avatar?.url ?? null,
+      },
     });
   }
 }

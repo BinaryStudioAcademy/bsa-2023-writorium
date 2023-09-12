@@ -1,4 +1,9 @@
-import { getValidClassNames } from '~/libs/helpers/helpers.js';
+import { DateFormat } from '~/libs/enums/enums.js';
+import {
+  getFormattedDate,
+  getValidClassNames,
+  makePluralOrSingular,
+} from '~/libs/helpers/helpers.js';
 import { type UserActivityResponseDto } from '~/packages/users/users.js';
 
 import {
@@ -9,22 +14,33 @@ import styles from './styles.module.scss';
 
 type Properties = {
   userActivity: UserActivityResponseDto[];
+  className?: string;
 };
 
-const UserActivity: React.FC<Properties> = ({ userActivity }) => {
+const UserActivity: React.FC<Properties> = ({ userActivity, className }) => {
   const uniqueMonths: string[] = getUniqueMonths(userActivity);
 
-  const activityStatistic = userActivity.map((activity) => {
+  const activityStatistic = userActivity.map((activity, index) => {
+    const FIRST_ITEM_INDEX = 0;
     const { count, date } = activity;
     const activityBreakpoint = getActivityBreakpoint(count);
+    const localDate = getFormattedDate(date, DateFormat.FULL_DATE);
+    const activityTitle = `${count} ${makePluralOrSingular(
+      'action',
+      count,
+    )} on ${localDate}`;
 
     return (
       <span
-        title={date}
-        key={date}
+        title={activityTitle}
+        key={localDate}
         className={getValidClassNames(
           styles.activityItem,
           styles[activityBreakpoint],
+          index === FIRST_ITEM_INDEX &&
+            styles[
+              getFormattedDate(localDate, DateFormat.DAY_OF_WEEK).toLowerCase()
+            ],
         )}
       />
     );
@@ -33,7 +49,7 @@ const UserActivity: React.FC<Properties> = ({ userActivity }) => {
   return (
     <>
       {Boolean(userActivity.length) && (
-        <section className={styles.wrapper}>
+        <section className={getValidClassNames(styles.wrapper, className)}>
           <h3 className={styles.title}>Your writing activity</h3>
           <div className={styles.activityWrapper}>
             <div className={styles.days}>
