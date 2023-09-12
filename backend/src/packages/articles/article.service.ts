@@ -8,6 +8,7 @@ import {
 import { ApplicationError } from '~/libs/exceptions/exceptions.js';
 import { type IService } from '~/libs/interfaces/service.interface.js';
 import {
+  BadRequestError,
   ForbiddenError,
   NotFoundError,
 } from '~/libs/packages/exceptions/exceptions.js';
@@ -26,7 +27,7 @@ import {
   getDetectArticleGenreCompletionConfig,
   getDifferenceBetweenDates,
   getFormattedDate,
-  processRefererHeader,
+  getOriginFromRefererHeader,
   safeJSONParse,
   subtractMonthsFromDate,
 } from './libs/helpers/helpers.js';
@@ -280,7 +281,7 @@ class ArticleService implements IService {
       articleId: id,
     });
 
-    const refererOrigin = processRefererHeader(referer);
+    const refererOrigin = getOriginFromRefererHeader(referer);
 
     return {
       link: `${refererOrigin}${ApiPath.ARTICLES}${SHARED_$TOKEN.replace(
@@ -294,6 +295,11 @@ class ArticleService implements IService {
     headers: IncomingHttpHeaders,
   ): Promise<ArticleWithAuthorType> {
     const token = headers[CustomHttpHeader.SHARED_ARTICLE_TOKEN] as string;
+
+    if (!token) {
+      throw new BadRequestError(ExceptionMessage.INVALID_TOKEN);
+    }
+
     const encoded = await articleToken.verifyToken(token);
 
     const articleFound = await this.find(Number(encoded.articleId));
