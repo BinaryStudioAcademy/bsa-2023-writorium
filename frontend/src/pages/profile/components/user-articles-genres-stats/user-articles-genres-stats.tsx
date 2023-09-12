@@ -20,6 +20,7 @@ import {
   GENRES_CHART_OUTER_RADIUS,
   GENRES_CHART_SIZE,
 } from './libs/constants/constants.js';
+import { normalizeGenresStats } from './libs/helpers/helpers.js';
 import styles from './styles.module.scss';
 
 type Properties = {
@@ -35,9 +36,7 @@ const UserArticlesGenresStats: React.FC<Properties> = ({ className }) => {
     void dispatch(usersActions.getUserArticlesGenresStats());
   }, [dispatch]);
 
-  const sortedData = [...userArticlesGenresStats].sort(
-    (a, b) => b.count - a.count,
-  );
+  const chartData = normalizeGenresStats(userArticlesGenresStats);
 
   return (
     <div className={getValidClassNames(styles.wrapper, className)}>
@@ -58,11 +57,11 @@ const UserArticlesGenresStats: React.FC<Properties> = ({ className }) => {
                 label={false}
                 dataKey="count"
                 labelLine={false}
-                data={sortedData}
+                data={chartData}
                 innerRadius={GENRES_CHART_INNER_RADIUS}
                 outerRadius={GENRES_CHART_OUTER_RADIUS}
               >
-                {sortedData.map((entry, index) => (
+                {chartData.map((entry, index) => (
                   <Cell
                     key={entry.key as React.Key}
                     fill={
