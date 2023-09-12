@@ -122,6 +122,11 @@ class ArticleRepository implements IArticleRepository {
 
     return ArticleEntity.initializeWithAuthor({
       ...article,
+      author: {
+        firstName: article.author.firstName,
+        lastName: article.author.lastName,
+        avatarUrl: article.author.avatar?.url ?? null,
+      },
       genre: article.genre.name,
       prompt: article.prompt
         ? {
