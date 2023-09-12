@@ -6,6 +6,7 @@ import { type ArticleWithAuthorType } from '~/packages/articles/articles.js';
 
 import {
   createArticle,
+  deleteArticle,
   fetchAll,
   fetchOwn,
   getArticle,
@@ -54,6 +55,15 @@ const { reducer, actions, name } = createSlice({
       state.dataStatus = DataStatus.FULFILLED;
       state.article = action.payload;
     });
+    builder.addCase(deleteArticle.fulfilled, (state, action) => {
+      const article = action.payload;
+      if (article) {
+        state.articles = state.articles.filter(
+          (item) => item.id !== article.id,
+        );
+      }
+      state.dataStatus = DataStatus.FULFILLED;
+    });
     builder.addMatcher(
       isAnyOf(fetchAll.fulfilled, fetchOwn.fulfilled),
       (state, action) => {
@@ -68,6 +78,7 @@ const { reducer, actions, name } = createSlice({
         createArticle.pending,
         updateArticle.pending,
         getArticle.pending,
+        deleteArticle.pending,
       ),
       (state) => {
         state.dataStatus = DataStatus.PENDING;
@@ -80,6 +91,7 @@ const { reducer, actions, name } = createSlice({
         createArticle.rejected,
         updateArticle.rejected,
         getArticle.rejected,
+        deleteArticle.rejected,
       ),
       (state) => {
         state.dataStatus = DataStatus.REJECTED;

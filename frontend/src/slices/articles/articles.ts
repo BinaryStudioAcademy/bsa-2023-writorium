@@ -1,5 +1,6 @@
 import {
   createArticle,
+  deleteArticle,
   fetchAll,
   fetchOwn,
   getArticle,
@@ -14,6 +15,7 @@ const allActions = {
   createArticle,
   updateArticle,
   getArticle,
+  deleteArticle,
 };
 
 export { allActions as actions };

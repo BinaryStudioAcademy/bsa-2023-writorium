@@ -79,4 +79,14 @@ const getArticle = createAsyncThunk<
   return articleApi.getArticle(id);
 });
 
-export { createArticle, fetchAll, fetchOwn, getArticle, updateArticle };
+const deleteArticle = createAsyncThunk<
+  ArticleWithAuthorType,
+  number,
+  AsyncThunkConfig
+>(`${sliceName}/delete`, async (id, { extra }) => {
+  const { articleApi } = extra;
+
+  return await articleApi.delete(id);
+});
+
+export { createArticle, deleteArticle, fetchAll, fetchOwn, getArticle, updateArticle };
