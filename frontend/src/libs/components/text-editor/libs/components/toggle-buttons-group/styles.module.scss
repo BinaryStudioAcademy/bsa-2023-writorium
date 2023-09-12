@@ -1,7 +1,7 @@
 .buttonsGroup {
   display: inline-flex;
   overflow: hidden;
-  border: 1px solid var(--light-grey-text);
+  border: 1px solid var(--light-gray-text);
   border-radius: 3px;
 }
 
@@ -15,7 +15,7 @@
 }
 
 .button:not(:last-child) {
-  border-right: 1px solid var(--light-grey-text);
+  border-right: 1px solid var(--light-gray-text);
 }
 
 .button:hover {
