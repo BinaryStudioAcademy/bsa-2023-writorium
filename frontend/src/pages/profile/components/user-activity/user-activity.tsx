@@ -9,9 +9,10 @@ import styles from './styles.module.scss';
 
 type Properties = {
   userActivity: UserActivityResponseDto[];
+  className?: string;
 };
 
-const UserActivity: React.FC<Properties> = ({ userActivity }) => {
+const UserActivity: React.FC<Properties> = ({ userActivity, className }) => {
   const uniqueMonths: string[] = getUniqueMonths(userActivity);
 
   const activityStatistic = userActivity.map((activity) => {
@@ -33,7 +34,7 @@ const UserActivity: React.FC<Properties> = ({ userActivity }) => {
   return (
     <>
       {Boolean(userActivity.length) && (
-        <section className={styles.wrapper}>
+        <section className={getValidClassNames(styles.wrapper, className)}>
           <h3 className={styles.title}>Your writing activity</h3>
           <div className={styles.activityWrapper}>
             <div className={styles.days}>
