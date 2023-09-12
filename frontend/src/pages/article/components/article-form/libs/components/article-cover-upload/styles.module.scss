@@ -7,7 +7,7 @@
 .dropArea {
   position: relative;
   padding: 15px 17px;
-  border: 2px dashed var(--light-grey-dashed-border);
+  border: 2px dashed var(--light-gray-dashed-border);
   border-radius: 5px;
   transition:
     transform 0.2s ease,
@@ -15,7 +15,7 @@
 }
 
 .dropArea.dropAreaActive {
-  background-color: var(--light-grey-15);
+  background-color: var(--light-gray-15);
   transform: scale(0.99);
 }
 
@@ -65,7 +65,7 @@
   font-size: 13px;
   column-gap: 5px;
   background-color: transparent;
-  background-color: var(--light-grey);
+  background-color: var(--light-gray);
   border-radius: 50%;
 }
 
