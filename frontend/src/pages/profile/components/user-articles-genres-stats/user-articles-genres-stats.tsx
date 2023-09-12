@@ -14,12 +14,8 @@ import { getValidClassNames } from '~/libs/helpers/helpers.js';
 import { useAppDispatch, useAppSelector } from '~/libs/hooks/hooks.js';
 import { actions as usersActions } from '~/slices/users/users.js';
 
-import {
-  GENRES_CHART_COLORS,
-  GENRES_CHART_INNER_RADIUS,
-  GENRES_CHART_OUTER_RADIUS,
-  GENRES_CHART_SIZE,
-} from './libs/constants/constants.js';
+import { GENRES_CHART_COLORS } from './libs/constants/constants.js';
+import { GenresChartConfig } from './libs/enums/genres-chart-config.enum.js';
 import { normalizeGenresStats } from './libs/helpers/helpers.js';
 import styles from './styles.module.scss';
 
@@ -36,7 +32,10 @@ const UserArticlesGenresStats: React.FC<Properties> = ({ className }) => {
     void dispatch(usersActions.getUserArticlesGenresStats());
   }, [dispatch]);
 
-  const chartData = normalizeGenresStats(userArticlesGenresStats);
+  const chartData = normalizeGenresStats(
+    userArticlesGenresStats,
+    GenresChartConfig.MAX_VISIBLE_GENRES,
+  );
 
   return (
     <div className={getValidClassNames(styles.wrapper, className)}>
@@ -48,8 +47,8 @@ const UserArticlesGenresStats: React.FC<Properties> = ({ className }) => {
         {userArticlesGenresStatsStatus === DataStatus.FULFILLED && (
           <ResponsiveContainer width="100%" height="100%">
             <RechartsPieChart
-              width={GENRES_CHART_SIZE}
-              height={GENRES_CHART_SIZE}
+              width={GenresChartConfig.SIZE}
+              height={GenresChartConfig.SIZE}
             >
               <Pie
                 cx="50%"
@@ -58,8 +57,8 @@ const UserArticlesGenresStats: React.FC<Properties> = ({ className }) => {
                 dataKey="count"
                 labelLine={false}
                 data={chartData}
-                innerRadius={GENRES_CHART_INNER_RADIUS}
-                outerRadius={GENRES_CHART_OUTER_RADIUS}
+                innerRadius={GenresChartConfig.INNER_RADIUS}
+                outerRadius={GenresChartConfig.OUTER_RADIUS}
               >
                 {chartData.map((entry, index) => (
                   <Cell

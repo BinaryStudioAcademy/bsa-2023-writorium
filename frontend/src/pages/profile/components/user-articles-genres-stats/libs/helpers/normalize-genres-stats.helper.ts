@@ -1,14 +1,10 @@
 import { type UserArticlesGenreStatsItem } from '~/packages/users/users.js';
 
-import {
-  MAX_VISIBLE_GENRES,
-  OTHER_GENRES_KEY,
-  OTHER_GENRES_NAME,
-} from '../constants/constants.js';
+import { OtherGenre } from '../enums/enums.js';
 
 const normalizeGenresStats = (
   stats: UserArticlesGenreStatsItem[],
-  maxGenres = MAX_VISIBLE_GENRES,
+  maxGenres: number,
 ): UserArticlesGenreStatsItem[] => {
   const sortedData = [...stats].sort(
     (itemA, itemB) => itemB.count - itemA.count,
@@ -20,8 +16,8 @@ const normalizeGenresStats = (
     stats.length > maxGenres
       ? [
           {
-            key: OTHER_GENRES_KEY,
-            name: OTHER_GENRES_NAME,
+            key: OtherGenre.KEY,
+            name: OtherGenre.NAME,
             count: restGenres.reduce((count, value) => count + value.count, 0),
           },
         ]
