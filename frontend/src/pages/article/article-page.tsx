@@ -10,7 +10,7 @@ import {
 import { type TagType } from '~/libs/types/types.js';
 import { actions } from '~/slices/articles/articles.js';
 
-import { ArticleView, AuthorDetails } from './components/components.js';
+import { ArticleDetails, ArticleView } from './components/components.js';
 import styles from './styles.module.scss';
 
 const ArticlePage: React.FC = () => {
@@ -59,11 +59,15 @@ const ArticlePage: React.FC = () => {
             coverUrl={article?.coverUrl ?? ''}
           />
           {article?.author && (
-            <AuthorDetails
-              name={getFullName(article.author.firstName, article.author.lastName)}
-              avatarUrl={article.author.avatarUrl}
+            <ArticleDetails
+              readTime={article.readTime}
+              authorName={getFullName(
+                article.author.firstName,
+                article.author.lastName,
+              )}
               publishedAt={article.publishedAt ?? ''}
               genre={article.genre ?? ''}
+              avatarUrl={article.author.avatarUrl}
             />
           )}
         </div>

@@ -7,21 +7,21 @@ import { getFormattedDate } from '~/libs/helpers/helpers.js';
 import styles from './styles.module.scss';
 
 type Properties = {
-  name: string;
-  followers?: number;
-  rating?: number;
+  authorName: string;
+  authorFollowers?: number;
+  authorRating?: number;
   publishedAt: string;
-  readingTime?: string;
+  readTime: number | null;
   genre: string | null;
   avatarUrl: string | null;
 };
 
-const AuthorDetails: FC<Properties> = ({
-  name = 'Charlie Culhane',
-  followers = 10,
-  rating = 700,
+const ArticleDetails: FC<Properties> = ({
+  authorName = 'Charlie Culhane',
+  authorFollowers = 10,
+  authorRating = 700,
   publishedAt,
-  readingTime = '7 min',
+  readTime,
   genre,
   avatarUrl = null,
 }) => {
@@ -29,19 +29,19 @@ const AuthorDetails: FC<Properties> = ({
     <div className={styles.container}>
       <div className={styles.authorWrapper}>
         <div className={styles.avatarWrapper}>
-          <Avatar username={name} avatarUrl={avatarUrl} />
+          <Avatar username={authorName} avatarUrl={avatarUrl} />
         </div>
         <div>
-          <h2 className={styles.authorName}>{name}</h2>
+          <h2 className={styles.authorName}>{authorName}</h2>
           <ul className={styles.authorInfoWrapper}>
             <li className={styles.authorInfo}>
               <Icon iconName="renew" />
-              <span className={styles.authorInfoValue}>{followers}</span>
+              <span className={styles.authorInfoValue}>{authorFollowers}</span>
               following
             </li>
             <li className={styles.authorInfo}>
               <Icon iconName="star" />
-              <span className={styles.authorInfoValue}>{rating}</span>
+              <span className={styles.authorInfoValue}>{authorRating}</span>
               rating
             </li>
           </ul>
@@ -56,13 +56,14 @@ const AuthorDetails: FC<Properties> = ({
                 {getFormattedDate(publishedAt, DateFormat.DAY_SHORT_MONTH)}
               </span>
             </li>
-            <li className={styles.articleInfoItem}>
-              <span className={styles.articleTimeValue}>{readingTime}</span>
-              read
-            </li>
+            {readTime && (
+              <li className={styles.articleInfoItem}>
+                <span className={styles.articleReadTimeValue}>{readTime}</span>
+                min read
+              </li>
+            )}
           </ul>
         </div>
-
         <Icon iconName="sparkles" />
         <span className={styles.articleGenre}>{genre}</span>
       </div>
@@ -70,4 +71,4 @@ const AuthorDetails: FC<Properties> = ({
   );
 };
 
-export { AuthorDetails };
+export { ArticleDetails };

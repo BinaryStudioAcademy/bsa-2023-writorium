@@ -10,7 +10,7 @@ class OpenAIService {
 
   private DEFAULT_COMPLETION_MODEL: CompletionCreateParamsBase['model'] =
     'gpt-3.5-turbo';
-  private DEFAULT_TEMPERATURE = 1.5;
+  private DEFAULT_TEMPERATURE = 0;
   private DEFAULT_MAX_TOKENS = 256;
   private DEFAULT_FREQUENCY_PENALTY = 0.5;
 
