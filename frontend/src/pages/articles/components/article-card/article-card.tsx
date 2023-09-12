@@ -16,7 +16,6 @@ import {
 import {
   getFormattedDate,
   getFullName,
-  getReactionConvertedToBoolean,
   getReactionsInfo,
   getValidClassNames,
   sanitizeHtml,
@@ -39,6 +38,7 @@ import {
 import { actions as articlesActions } from '~/slices/articles/articles.js';
 
 import { MOCKED_REACTIONS } from '../../libs/constants.js';
+import { getReactionConvertedToBoolean } from '../../libs/helpers/helpers.js';
 import { type TagType } from '../../libs/types/types.js';
 import { Tags } from '../components.js';
 import styles from './styles.module.scss';

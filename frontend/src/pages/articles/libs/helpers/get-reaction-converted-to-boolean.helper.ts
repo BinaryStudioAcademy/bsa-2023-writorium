@@ -4,7 +4,7 @@ import { type ValueOf } from '~/libs/types/types.js';
 const getReactionConvertedToBoolean = (
   reaction: ValueOf<typeof Reaction>,
 ): boolean => {
-  return reaction === Reaction.LIKE ? true : false;
+  return reaction === Reaction.LIKE;
 };
 
 export { getReactionConvertedToBoolean };
