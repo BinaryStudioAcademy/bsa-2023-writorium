@@ -1,18 +1,12 @@
-import { Link as RouterLink, matchPath } from 'react-router-dom';
-
 import {
   Avatar,
   Icon,
   IconButton,
   Link,
+  Popover,
   ShareOnFacebookButton,
 } from '~/libs/components/components.js';
-import {
-  AppRoute,
-  ArticleSubRoute,
-  DateFormat,
-  Reaction,
-} from '~/libs/enums/enums.js';
+import { AppRoute, DateFormat, Reaction } from '~/libs/enums/enums.js';
 import {
   getFormattedDate,
   getFullName,
@@ -23,7 +17,8 @@ import {
 import {
   useAppDispatch,
   useAppSelector,
-  useLocation,
+  useCallback,
+  useModal,
 } from '~/libs/hooks/hooks.js';
 import { type ValueOf } from '~/libs/types/types.js';
 import {
@@ -41,6 +36,7 @@ import { MOCKED_REACTIONS } from '../../libs/constants.js';
 import { getReactionConvertedToBoolean } from '../../libs/helpers/helpers.js';
 import { type TagType } from '../../libs/types/types.js';
 import { Tags } from '../components.js';
+import { PopoverButtonsGroup } from './libs/components/components.js';
 import styles from './styles.module.scss';
 
 type Properties = {
@@ -57,13 +53,9 @@ const ArticleCard: React.FC<Properties> = ({
   reactions,
 }) => {
   const user = useAppSelector(({ auth }) => auth.user) as UserAuthResponseDto;
-  const { pathname } = useLocation();
   const dispatch = useAppDispatch();
+  const { handleToggleModalOpen, isOpen } = useModal();
 
-  const isMyArticles = matchPath(
-    { path: `${AppRoute.ARTICLES}/${ArticleSubRoute.MY_ARTICLES}` },
-    pathname,
-  );
   const { publishedAt, title, text, id, userId, coverUrl, readTime } = article;
   const { likesCount, dislikesCount, hasAlreadyReactedWith } = getReactionsInfo(
     user.id,
@@ -73,6 +65,12 @@ const ArticleCard: React.FC<Properties> = ({
   const articleUrl = window.location.href;
   const articleRouteById = AppRoute.ARTICLE.replace(':id', String(id));
   const isOwnArticle = user.id === userId;
+
+  const handleActionsButtonClick = useCallback((): void => {
+    if (!isOpen) {
+      handleToggleModalOpen();
+    }
+  }, [handleToggleModalOpen, isOpen]);
 
   const handleReaction = (reaction: ValueOf<typeof Reaction>): void => {
     if (isOwnArticle) {
@@ -127,15 +125,30 @@ const ArticleCard: React.FC<Properties> = ({
           )}
         </div>
         <div className={styles.iconWrapper}>
-          {isMyArticles && (
-            <RouterLink
-              to={AppRoute.EDIT_ARTICLE.replace(':id', id.toString())}
-              state={article}
-            >
-              <Icon iconName="edit" className={styles.editIcon} />
-            </RouterLink>
-          )}
-          <Icon iconName="favorite" className={styles.pointerIcon} />
+          <IconButton
+            iconName="threeDotsVertical"
+            className={styles.iconButton}
+            iconClassName={getValidClassNames(
+              styles.threeDotsIcon,
+              styles.pointerIcon,
+            )}
+            onClick={handleActionsButtonClick}
+          />
+          <Popover
+            trigger={{ handleToggleModalOpen, isOpen }}
+            content={
+              <PopoverButtonsGroup
+                isOwnArticle={isOwnArticle}
+                article={article}
+                // trigger={{ handleToggleModalOpen, isOpen }}
+              />
+            }
+            className={getValidClassNames(
+              styles.buttonsGroup,
+              styles.dropdownModal,
+              isOpen && styles.open,
+            )}
+          />
         </div>
       </div>
       <div

@@ -1,0 +1,30 @@
+.buttonsGroup {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--white);
+  border-radius: 7px;
+}
+
+.buttonsGroup button {
+  display: flex;
+  gap: 15px;
+  padding: 10px 15px;
+  border-bottom: 2px solid var(--light-gray-15);
+  border-radius: 0;
+}
+
+.buttonsGroup button:last-child {
+  border-bottom: 0;
+}
+
+.buttonsGroup button:hover {
+  background-color: var(--pale-gray);
+}
+
+.editLink {
+  border-bottom: 2px solid var(--light-gray-15);
+}
+
+.editLink:hover {
+  background-color: var(--pale-gray);
+}
