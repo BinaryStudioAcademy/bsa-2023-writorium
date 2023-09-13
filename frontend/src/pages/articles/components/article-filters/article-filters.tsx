@@ -1,11 +1,14 @@
 import { type default as React } from 'react';
+import { matchPath } from 'react-router-dom';
 
 import { Input } from '~/libs/components/components.js';
 import { Select } from '~/libs/components/select/select.js';
+import { AppRoute, ArticleSubRoute } from '~/libs/enums/enums.js';
 import {
   useAppForm,
   useCallback,
   useDeepCompareEffect,
+  useLocation,
 } from '~/libs/hooks/hooks.js';
 import { type SelectOption } from '~/libs/types/select-option.type.js';
 
@@ -28,7 +31,11 @@ const ArticleFilters: React.FC<Properties> = ({
     defaultValues: DEFAULT_FILTER_PAYLOAD,
     mode: 'onChange',
   });
-
+  const { pathname } = useLocation();
+  const isMyArticlesPage = matchPath(
+    { path: `${AppRoute.ARTICLES}/${ArticleSubRoute.MY_ARTICLES}` },
+    pathname,
+  );
   const data: FilterFormValues = watch();
 
   useDeepCompareEffect(() => {
@@ -63,15 +70,17 @@ const ArticleFilters: React.FC<Properties> = ({
             control={control}
             errors={errors}
           />
-          <Select
-            name="authorId"
-            placeholder="Search.."
-            label="Author"
-            control={control}
-            errors={errors}
-            options={authorsSelectOptions}
-            defaultValue={null}
-          />
+          {!isMyArticlesPage && (
+            <Select
+              name="authorId"
+              placeholder="Search.."
+              label="Author"
+              control={control}
+              errors={errors}
+              options={authorsSelectOptions}
+            />
+          )}
+
           <Select
             name="genreId"
             placeholder="Search.."
