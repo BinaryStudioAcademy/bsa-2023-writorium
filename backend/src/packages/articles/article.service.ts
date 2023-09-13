@@ -32,12 +32,11 @@ import {
   subtractMonthsFromDate,
 } from './libs/helpers/helpers.js';
 import {
-  type ArticleBaseResponseDto,
   type ArticleCreateDto,
   type ArticleGetAllResponseDto,
+  type ArticleResponseDto,
   type ArticlesFilters,
   type ArticleUpdateRequestDto,
-  type ArticleWithAuthorType,
   type DetectedArticleGenre,
   type UserActivityResponseDto,
 } from './libs/types/types.js';
@@ -134,7 +133,7 @@ class ArticleService implements IService {
 
     return {
       total,
-      items: items.map((article) => article.toObjectWithAuthor()),
+      items: items.map((article) => article.toObjectWithRelations()),
     };
   }
 
@@ -149,18 +148,18 @@ class ArticleService implements IService {
 
     return {
       total,
-      items: items.map((article) => article.toObjectWithAuthor()),
+      items: items.map((article) => article.toObjectWithRelations()),
     };
   }
 
-  public async find(id: number): Promise<ArticleWithAuthorType | null> {
+  public async find(id: number): Promise<ArticleResponseDto | null> {
     const article = await this.articleRepository.find(id);
 
     if (!article) {
       return null;
     }
 
-    return article.toObjectWithAuthor();
+    return article.toObjectWithRelations();
   }
 
   public async getUserActivity(
@@ -216,9 +215,7 @@ class ArticleService implements IService {
     return halfYearActivity;
   }
 
-  public async create(
-    payload: ArticleCreateDto,
-  ): Promise<ArticleBaseResponseDto> {
+  public async create(payload: ArticleCreateDto): Promise<ArticleResponseDto> {
     const genreId = await this.getGenreIdToSet(payload);
     const readTime = await this.getArticleReadTime(payload.text);
 
@@ -235,7 +232,7 @@ class ArticleService implements IService {
       }),
     );
 
-    return article.toObject();
+    return article.toObjectWithRelations();
   }
 
   public async update(
@@ -244,7 +241,7 @@ class ArticleService implements IService {
       payload,
       user,
     }: { payload: ArticleUpdateRequestDto; user: UserAuthResponseDto },
-  ): Promise<ArticleBaseResponseDto> {
+  ): Promise<ArticleResponseDto> {
     const article = await this.find(id);
 
     if (!article) {
@@ -270,7 +267,7 @@ class ArticleService implements IService {
       }),
     );
 
-    return updatedArticle.toObjectWithAuthor();
+    return updatedArticle.toObjectWithRelations();
   }
 
   public async getArticleSharingLink(
@@ -293,7 +290,7 @@ class ArticleService implements IService {
 
   public async findShared(
     headers: IncomingHttpHeaders,
-  ): Promise<ArticleWithAuthorType> {
+  ): Promise<ArticleResponseDto> {
     const token = headers[CustomHttpHeader.SHARED_ARTICLE_TOKEN] as string;
 
     if (!token) {

@@ -3,11 +3,12 @@ import { type ArticlesFilters } from 'shared/build/index.js';
 
 import { type AsyncThunkConfig } from '~/libs/types/types.js';
 import {
-  type ArticleBaseResponseDto,
   type ArticleGetAllResponseDto,
+  type ArticleReactionRequestDto,
   type ArticleRequestDto,
+  type ArticleResponseDto,
   type ArticleUpdateRequestPayload,
-  type ArticleWithAuthorType,
+  type ReactionResponseDto,
 } from '~/packages/articles/articles.js';
 import { NotificationType } from '~/packages/notification/notification.js';
 import { type PromptRequestDto } from '~/packages/prompts/prompts.js';
@@ -36,7 +37,7 @@ const fetchOwn = createAsyncThunk<
 });
 
 const createArticle = createAsyncThunk<
-  ArticleBaseResponseDto,
+  ArticleResponseDto,
   {
     articlePayload: ArticleRequestDto;
     generatedPrompt: PromptRequestDto | null;
@@ -62,7 +63,7 @@ const createArticle = createAsyncThunk<
 );
 
 const updateArticle = createAsyncThunk<
-  ArticleWithAuthorType,
+  ArticleResponseDto,
   ArticleUpdateRequestPayload,
   AsyncThunkConfig
 >(`${sliceName}/update`, async (payload, { extra }) => {
@@ -72,7 +73,7 @@ const updateArticle = createAsyncThunk<
 });
 
 const getArticle = createAsyncThunk<
-  ArticleBaseResponseDto,
+  ArticleResponseDto,
   number,
   AsyncThunkConfig
 >(`${sliceName}/getArticle`, (id, { extra }) => {
@@ -101,7 +102,7 @@ const shareArticle = createAsyncThunk<
 });
 
 const fetchSharedArticle = createAsyncThunk<
-  ArticleWithAuthorType,
+  ArticleResponseDto,
   { token: string },
   AsyncThunkConfig
 >(`${sliceName}/shared`, (articlePayload, { extra }) => {
@@ -110,12 +111,50 @@ const fetchSharedArticle = createAsyncThunk<
   return articleApi.getByToken(articlePayload.token);
 });
 
+const reactToArticle = createAsyncThunk<
+  {
+    articleId: number;
+    reaction: ReactionResponseDto;
+  },
+  ArticleReactionRequestDto,
+  AsyncThunkConfig
+>(`${sliceName}/reactToArticle`, async (payload, { extra }) => {
+  const { articleApi } = extra;
+  const { articleId, ...reaction } = await articleApi.updateArticleReaction(
+    payload,
+  );
+
+  return {
+    articleId,
+    reaction,
+  };
+});
+
+const deleteArticleReaction = createAsyncThunk<
+  {
+    articleId: number;
+    reactionId: number;
+  },
+  ArticleReactionRequestDto,
+  AsyncThunkConfig
+>(`${sliceName}/deleteArticleReaction`, async (payload, { extra }) => {
+  const { articleApi } = extra;
+  const { articleId, id } = await articleApi.updateArticleReaction(payload);
+
+  return {
+    articleId,
+    reactionId: id,
+  };
+});
+
 export {
   createArticle,
+  deleteArticleReaction,
   fetchAll,
   fetchOwn,
   fetchSharedArticle,
   getArticle,
+  reactToArticle,
   shareArticle,
   updateArticle,
 };

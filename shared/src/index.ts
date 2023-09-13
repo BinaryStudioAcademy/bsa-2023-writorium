@@ -57,26 +57,26 @@ export {
 } from './packages/achievements/achievements.js';
 export {
   type ArticleReactionCreateDto,
-  type ArticleReactionCreateResponseDto,
   type ArticleReactionEntityType,
   type ArticleReactionRequestDto,
   type ArticleReactionResponseDto,
   articleReactionValidationSchema,
 } from './packages/article-reactions/article-reactions.js';
 export {
-  type ArticleBaseResponseDto,
   type ArticleCreateDto,
   articleCreateValidationSchema,
   type ArticleEntityType,
   type ArticleGetAllResponseDto,
   type ArticleRequestDto,
+  type ArticleResponseDto,
   ArticlesApiPath,
   type ArticlesFilters,
   articlesFiltersValidationSchema,
   type ArticleUpdateRequestDto,
   type ArticleUpdateRequestPayload,
   articleUpdateValidationSchema,
-  type ArticleWithAuthorType,
+  type ArticleWithRelationsType,
+  type ReactionResponseDto,
 } from './packages/articles/articles.js';
 export {
   AuthApiPath,

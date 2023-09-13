@@ -1,9 +1,11 @@
 import {
   createArticle,
+  deleteArticleReaction,
   fetchAll,
   fetchOwn,
   fetchSharedArticle,
   getArticle,
+  reactToArticle,
   shareArticle,
   updateArticle,
 } from './actions.js';
@@ -16,6 +18,8 @@ const allActions = {
   createArticle,
   updateArticle,
   getArticle,
+  reactToArticle,
+  deleteArticleReaction,
   shareArticle,
   fetchSharedArticle,
 };

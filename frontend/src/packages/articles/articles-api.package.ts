@@ -6,12 +6,13 @@ import { type IStorage } from '~/libs/packages/storage/storage.js';
 
 import { ArticlesApiPath } from './libs/enums/enums.js';
 import {
-  type ArticleBaseResponseDto,
   type ArticleGetAllResponseDto,
+  type ArticleReactionRequestDto,
+  type ArticleReactionResponseDto,
   type ArticleRequestDto,
+  type ArticleResponseDto,
   type ArticlesFilters,
   type ArticleUpdateRequestPayload,
-  type ArticleWithAuthorType,
 } from './libs/types/types.js';
 
 type Constructor = {
@@ -57,9 +58,7 @@ class ArticleApi extends HttpApi {
     return await response.json<ArticleGetAllResponseDto>();
   }
 
-  public async create(
-    payload: ArticleRequestDto,
-  ): Promise<ArticleBaseResponseDto> {
+  public async create(payload: ArticleRequestDto): Promise<ArticleResponseDto> {
     const response = await this.load(
       this.getFullEndpoint(ArticlesApiPath.ROOT, {}),
       {
@@ -70,11 +69,11 @@ class ArticleApi extends HttpApi {
       },
     );
 
-    return await response.json<ArticleBaseResponseDto>();
+    return await response.json<ArticleResponseDto>();
   }
   public async update(
     payload: ArticleUpdateRequestPayload,
-  ): Promise<ArticleWithAuthorType> {
+  ): Promise<ArticleResponseDto> {
     const response = await this.load(
       this.getFullEndpoint(ArticlesApiPath.EDIT, {
         id: payload.articleId.toString(),
@@ -87,7 +86,7 @@ class ArticleApi extends HttpApi {
       },
     );
 
-    return await response.json<ArticleBaseResponseDto>();
+    return await response.json<ArticleResponseDto>();
   }
 
   public async share(id: string): Promise<{ link: string }> {
@@ -107,7 +106,7 @@ class ArticleApi extends HttpApi {
     return { link };
   }
 
-  public async getByToken(token: string): Promise<ArticleBaseResponseDto> {
+  public async getByToken(token: string): Promise<ArticleResponseDto> {
     const response = await this.load(
       this.getFullEndpoint(ArticlesApiPath.SHARED_BASE, {}),
       {
@@ -120,10 +119,10 @@ class ArticleApi extends HttpApi {
       },
     );
 
-    return await response.json<ArticleBaseResponseDto>();
+    return await response.json<ArticleResponseDto>();
   }
 
-  public async getArticle(id: number): Promise<ArticleWithAuthorType> {
+  public async getArticle(id: number): Promise<ArticleResponseDto> {
     const response = await this.load(
       this.getFullEndpoint(ArticlesApiPath.$ID, { id: String(id) }),
       {
@@ -133,7 +132,23 @@ class ArticleApi extends HttpApi {
       },
     );
 
-    return await response.json<ArticleWithAuthorType>();
+    return await response.json<ArticleResponseDto>();
+  }
+
+  public async updateArticleReaction(
+    payload: ArticleReactionRequestDto,
+  ): Promise<ArticleReactionResponseDto> {
+    const response = await this.load(
+      this.getFullEndpoint(ArticlesApiPath.REACT, {}),
+      {
+        method: 'PUT',
+        contentType: ContentType.JSON,
+        payload: JSON.stringify(payload),
+        hasAuth: true,
+      },
+    );
+
+    return await response.json<ArticleReactionResponseDto>();
   }
 }
 

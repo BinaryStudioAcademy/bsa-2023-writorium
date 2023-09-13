@@ -143,19 +143,38 @@
   gap: 22px;
 }
 
-.footer .reaction {
+.reactions > li {
+  list-style: none;
+}
+
+.footerIcon {
   display: flex;
   align-items: center;
   gap: 5px;
-}
-
-.footer .reactionCount {
   color: var(--dark-gray-50);
   font-weight: 400;
   font-size: 12px;
   font-family: Lato, sans-serif;
   font-style: normal;
   line-height: normal;
+  background-color: var(--white);
+}
+
+.footerIcon svg {
+  color: black;
+}
+
+.disabled {
+  cursor: default;
+}
+
+.disabled svg {
+  color: var(--light-green);
+}
+
+.pressed svg,
+.reaction:hover svg {
+  color: var(--light-green);
 }
 
 .footer .readMore {
