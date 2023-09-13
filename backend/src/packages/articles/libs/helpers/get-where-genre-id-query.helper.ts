@@ -4,7 +4,7 @@ import { type ArticleModel } from '../../article.model.js';
 
 const getWhereGenreIdQuery = (genreId?: number | null) => {
   return (builder: QueryBuilder<ArticleModel, ArticleModel[]>): void => {
-    if (genreId && genreId > 0) {
+    if (genreId) {
       void builder.where('articles.genreId', genreId);
     }
   };
