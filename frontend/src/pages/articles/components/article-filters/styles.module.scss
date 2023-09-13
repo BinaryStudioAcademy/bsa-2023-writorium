@@ -1,0 +1,38 @@
+.title {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.wrapper {
+  position: sticky;
+  top: var(--header-height);
+  flex-shrink: 0;
+  align-self: flex-start;
+  min-width: 389px;
+  margin-left: auto;
+}
+
+.filterGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 0;
+}
+
+.form {
+  padding: 20px;
+  border: 1px solid var(--light-grey-border);
+}
+
+.filterTitle {
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.clearFilters {
+  font-weight: 500;
+  font-size: 12px;
+  border: none;
+  cursor: pointer;
+}
