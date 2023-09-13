@@ -1,10 +1,27 @@
-.articlePageWrapper {
+.articleCreatePageWrapper,
+.editArticlePage {
   display: flex;
   align-items: start;
   gap: 21px;
-  padding-bottom: 97px;
+  padding-bottom: 38px;
+}
+
+.articleCreatePageWrapper .articleFormWrapper {
+  max-width: 830px;
+}
+
+.editArticlePage .leftColumn {
+  flex: 60%;
+}
+
+.editArticlePage .rightColumn {
+  flex: 40%;
 }
 
 .articleCreatePageWrapper {
   padding-bottom: 126px;
+}
+
+.editArticlePage {
+  display: flex;
 }

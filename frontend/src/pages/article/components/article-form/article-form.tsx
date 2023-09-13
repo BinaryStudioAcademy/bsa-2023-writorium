@@ -111,48 +111,46 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
   }, [handleReset, articleForUpdate]);
 
   return (
-    <div>
-      <form
-        method="POST"
-        onSubmit={handleFormSubmit}
-        onReset={handleCancel}
-        className={styles.formContainer}
-      >
-        <ArticleCoverUpload name="coverId" control={control} errors={errors} />
-        <Input
-          type="text"
-          placeholder="Enter the title of the article"
-          name="title"
-          control={control}
-          errors={errors}
-          className={styles.titleInput}
+    <form
+      method="POST"
+      onSubmit={handleFormSubmit}
+      onReset={handleCancel}
+      className={styles.formContainer}
+    >
+      <ArticleCoverUpload name="coverId" control={control} errors={errors} />
+      <Input
+        type="text"
+        placeholder="Enter the title of the article"
+        name="title"
+        control={control}
+        errors={errors}
+        className={styles.titleInput}
+      />
+      <TextEditor control={control} name="text" errors={errors} />
+      <div className={styles.buttonWrapper}>
+        <Button
+          type={ButtonType.RESET}
+          label="Cancel"
+          className={styles.cancelBtn}
         />
-        <TextEditor control={control} name="text" errors={errors} />
-        <div className={styles.buttonWrapper}>
-          <Button
-            type={ButtonType.RESET}
-            label="Cancel"
-            className={styles.cancelBtn}
-          />
-          {!articleForUpdate && (
-            <Button
-              type={ButtonType.SUBMIT}
-              label="Save draft"
-              name="draft"
-              className={styles.saveDraftBtn}
-              disabled={!isDirty || isSubmitting}
-            />
-          )}
+        {!articleForUpdate && (
           <Button
             type={ButtonType.SUBMIT}
-            label="Publish"
-            name="publish"
-            className={styles.publishBtn}
+            label="Save draft"
+            name="draft"
+            className={styles.saveDraftBtn}
             disabled={!isDirty || isSubmitting}
           />
-        </div>
-      </form>
-    </div>
+        )}
+        <Button
+          type={ButtonType.SUBMIT}
+          label="Publish"
+          name="publish"
+          className={styles.publishBtn}
+          disabled={!isDirty || isSubmitting}
+        />
+      </div>
+    </form>
   );
 };
 
