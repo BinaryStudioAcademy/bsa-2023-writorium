@@ -19,6 +19,7 @@ import {
   type UserSignUpRequestDto,
   type UserUpdateRequestDto,
 } from './libs/types/types.js';
+import { type UserDetailsModel } from './users.js';
 
 type Constructor = {
   config: IConfig;
@@ -173,6 +174,10 @@ class UserService implements IService {
 
   public delete(): ReturnType<IService['delete']> {
     return Promise.resolve(true);
+  }
+
+  public async getAllAuthors(): Promise<UserDetailsModel[] | null> {
+    return await this.userRepository.getAllAuthors();
   }
 }
 

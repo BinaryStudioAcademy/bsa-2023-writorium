@@ -140,6 +140,14 @@ class UserController extends Controller {
     });
 
     this.addRoute({
+      path: UsersApiPath.AUTHORS,
+      method: 'GET',
+      handler: () => {
+        return this.getAllAuthors();
+      },
+    });
+
+    this.addRoute({
       path: UsersApiPath.ROOT,
       method: 'PUT',
       validation: {
@@ -233,6 +241,35 @@ class UserController extends Controller {
     return {
       status: HttpCode.OK,
       payload: await this.userService.update(options.user.id, options.body),
+    };
+  }
+
+  /**
+   * @swagger
+   *  /users/authors:
+   *    post:
+   *      summary: Get list of authors
+   *      description: Get list of users with at least one written article
+   *      security:
+   *        - bearerAuth: []
+   *      requestBody:
+   *        required: true
+   *      responses:
+   *        200:
+   *          description: Successful operation
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: object
+   *                properties:
+   *                  link:
+   *                    type: string
+   */
+
+  private async getAllAuthors(): Promise<ApiHandlerResponse> {
+    return {
+      status: HttpCode.OK,
+      payload: await this.userService.getAllAuthors(),
     };
   }
 }
