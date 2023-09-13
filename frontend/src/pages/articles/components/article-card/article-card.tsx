@@ -23,6 +23,7 @@ import {
 import {
   useAppDispatch,
   useAppSelector,
+  useCallback,
   useLocation,
 } from '~/libs/hooks/hooks.js';
 import { type ValueOf } from '~/libs/types/types.js';
@@ -56,9 +57,9 @@ const ArticleCard: React.FC<Properties> = ({
   tags,
   reactions,
 }) => {
+  const dispatch = useAppDispatch();
   const user = useAppSelector(({ auth }) => auth.user) as UserAuthResponseDto;
   const { pathname } = useLocation();
-  const dispatch = useAppDispatch();
 
   const isMyArticles = matchPath(
     { path: `${AppRoute.ARTICLES}/${ArticleSubRoute.MY_ARTICLES}` },
@@ -103,6 +104,10 @@ const ArticleCard: React.FC<Properties> = ({
   const handleDislikeReaction = (): void => {
     handleReaction(Reaction.DISLIKE);
   };
+
+  const handleSharedButtonClick = useCallback((): void => {
+    void dispatch(articlesActions.shareArticle({ id: id.toString() }));
+  }, [dispatch, id]);
 
   return (
     <article className={styles.article}>
@@ -193,12 +198,18 @@ const ArticleCard: React.FC<Properties> = ({
             />
           </li>
         </ul>
-        <Icon iconName="share" className={styles.pointerIcon} />
+
+        <IconButton
+          iconName="share"
+          className={styles.iconWrapper}
+          onClick={handleSharedButtonClick}
+        />
         <ShareOnFacebookButton
           title={title}
           articleUrl={articleUrl}
           iconStyle={styles.facebookIconButton}
         />
+
         <Link
           to={articleRouteById as typeof AppRoute.ARTICLE}
           className={styles.readMore}

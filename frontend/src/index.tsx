@@ -23,6 +23,7 @@ import {
   ArticlePage,
   CreateArticlePage,
   EditArticlePage,
+  SharedArticlePage,
 } from '~/pages/article/article.js';
 import { Auth } from '~/pages/auth/auth.js';
 import { Landing } from '~/pages/landing/landing.js';
@@ -100,6 +101,14 @@ createRoot(document.querySelector('#root') as HTMLElement).render(
                     <ProtectedRoute>
                       <ArticlePage />
                     </ProtectedRoute>
+                  ),
+                },
+                {
+                  path: AppRoute.SHARED,
+                  element: (
+                    <PublicRoute>
+                      <SharedArticlePage />
+                    </PublicRoute>
                   ),
                 },
                 {
