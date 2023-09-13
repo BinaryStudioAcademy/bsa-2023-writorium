@@ -1,3 +1,4 @@
+import { getFullName } from '~/libs/helpers/helpers.js';
 import { type SelectOption } from '~/libs/types/types.js';
 import { type GenreGetAllItemResponseDto } from '~/packages/genres/genres.js';
 import { type UserDetailsDto } from '~/packages/users/users.js';
@@ -14,7 +15,7 @@ const getSelectGenresOptions = (
 const getSelectAuthorsOptions = (authors: UserDetailsDto[]): SelectOption[] => {
   const selectOptions: SelectOption[] = authors.map((author) => {
     return {
-      label: `${author.firstName} ${author.lastName}`,
+      label: getFullName(author.firstName, author.lastName),
       value: author.id,
     };
   });
