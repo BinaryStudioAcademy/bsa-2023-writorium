@@ -44,14 +44,13 @@ const ArticlePage: React.FC = () => {
     <Loader isLoading={isLoading} hasOverlay type="circular">
       <Layout>
         <div className={styles.articlePageWrapper}>
-          {getArticleStatus === DataStatus.FULFILLED && (
-            <ArticleView
-              tags={article ? getArticleViewTags(article) : null}
-              text={article?.text ?? ''}
-              title={article?.title ?? ''}
-              coverUrl={article?.coverUrl ?? ''}
-            />
-          )}
+          <ArticleView
+            tags={article ? getArticleViewTags(article) : null}
+            text={article?.text ?? ''}
+            title={article?.title ?? ''}
+            coverUrl={article?.coverUrl ?? ''}
+          />
+
           {article?.author && (
             <ArticleDetails
               readTime={article.readTime}
