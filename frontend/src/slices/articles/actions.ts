@@ -1,12 +1,19 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { type ArticlesFilters } from 'shared/build/index.js';
 
 import { type AsyncThunkConfig } from '~/libs/types/types.js';
 import {
-  type ArticleBaseResponseDto,
   type ArticleGetAllResponseDto,
   type ArticleRequestDto,
+  type ArticleResponseDto,
+  type ArticlesFilters,
+  type ArticleWithCommentCountResponseDto,
 } from '~/packages/articles/articles.js';
+import {
+  type CommentBaseRequestDto,
+  type CommentGetAllResponseDto,
+  type CommentUpdateRequestDto,
+  type CommentWithRelationsResponseDto,
+} from '~/packages/comments/comments.js';
 import { type PromptRequestDto } from '~/packages/prompts/prompts.js';
 
 import { name as sliceName } from './articles.slice.js';
@@ -32,7 +39,7 @@ const fetchOwn = createAsyncThunk<
 });
 
 const createArticle = createAsyncThunk<
-  ArticleBaseResponseDto,
+  ArticleWithCommentCountResponseDto,
   {
     articlePayload: ArticleRequestDto;
     generatedPrompt: PromptRequestDto | null;
@@ -58,7 +65,7 @@ const createArticle = createAsyncThunk<
 );
 
 const getArticle = createAsyncThunk<
-  ArticleBaseResponseDto,
+  ArticleResponseDto,
   number,
   AsyncThunkConfig
 >(`${sliceName}/getArticle`, (id, { extra }) => {
@@ -67,4 +74,42 @@ const getArticle = createAsyncThunk<
   return articleApi.getArticle(id);
 });
 
-export { createArticle, fetchAll, fetchOwn, getArticle };
+const fetchAllCommentsToArticle = createAsyncThunk<
+  CommentGetAllResponseDto,
+  number,
+  AsyncThunkConfig
+>(`${sliceName}/get-all-comments-to-article`, (articleId, { extra }) => {
+  const { commentsApi } = extra;
+
+  return commentsApi.fetchAllByArticleId(articleId);
+});
+
+const createComment = createAsyncThunk<
+  CommentWithRelationsResponseDto,
+  CommentBaseRequestDto,
+  AsyncThunkConfig
+>(`${sliceName}/create-comment`, (payload, { extra }) => {
+  const { commentsApi } = extra;
+
+  return commentsApi.create(payload);
+});
+
+const updateComment = createAsyncThunk<
+  CommentWithRelationsResponseDto,
+  CommentUpdateRequestDto,
+  AsyncThunkConfig
+>(`${sliceName}/update-comment`, (payload, { extra }) => {
+  const { commentsApi } = extra;
+
+  return commentsApi.update(payload);
+});
+
+export {
+  createArticle,
+  createComment,
+  fetchAll,
+  fetchAllCommentsToArticle,
+  fetchOwn,
+  getArticle,
+  updateComment,
+};
