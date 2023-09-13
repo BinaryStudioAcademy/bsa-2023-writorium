@@ -129,6 +129,17 @@ class UserController extends Controller {
     });
 
     this.addRoute({
+      path: UsersApiPath.ACTIVITY,
+      method: 'GET',
+      handler: (options) =>
+        this.getUserActivity(
+          options as ApiHandlerOptions<{
+            user: UserAuthResponseDto;
+          }>,
+        ),
+    });
+
+    this.addRoute({
       path: UsersApiPath.ROOT,
       method: 'PUT',
       validation: {
@@ -163,6 +174,29 @@ class UserController extends Controller {
     return {
       status: HttpCode.OK,
       payload: await this.userService.findAll(),
+    };
+  }
+
+  /**
+   * @swagger
+   * /articles/activity:
+   *    get:
+   *      summary: Get user activity statistic
+   *      description: Get user activity statistic
+   *      responses:
+   *        200:
+   *          description: Successful operation
+   *          content:
+   *            application/json:
+   *              schema:
+   *                $ref: 'shared/src/packages/users/libs/types/user-activity-response-dto.type.ts'
+   */
+  private async getUserActivity(
+    options: ApiHandlerOptions<{ user: UserAuthResponseDto }>,
+  ): Promise<ApiHandlerResponse> {
+    return {
+      status: HttpCode.OK,
+      payload: await this.userService.getUserActivity(options.user.id),
     };
   }
 

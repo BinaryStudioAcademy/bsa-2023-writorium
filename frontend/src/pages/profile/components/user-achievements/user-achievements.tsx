@@ -74,10 +74,10 @@ const UserAchievements: FC<Properties> = ({ className }) => {
       <Modal
         isOpen={isOpen}
         onClose={handleToggleModalOpen}
-        className={styles.achievementModal}
+        className={styles.modal}
       >
         <div>
-          <h3 className={styles.title}>Achievements</h3>
+          <h2 className={styles.title}>Achievements</h2>
           <AchievementList
             hasToShowTooltip={true}
             achievements={achievementsList}

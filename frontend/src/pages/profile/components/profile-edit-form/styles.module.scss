@@ -13,7 +13,7 @@
   height: 45px;
   color: var(--dark-green);
   font-family: Lato, sans-serif;
-  background-color: var(--light-grey);
+  background-color: var(--light-gray);
   border: 2px solid var(--dark-green);
   transition:
     background-color 0.3s ease-in,
@@ -28,7 +28,7 @@
 
 .button:disabled {
   color: var(--white);
-  background-color: var(--pale-grey);
+  background-color: var(--pastel-gray);
   border-color: transparent;
 }
 

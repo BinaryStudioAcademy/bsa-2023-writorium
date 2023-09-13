@@ -20,6 +20,7 @@ import {
   type AuthLoginWithGoogleDto,
   type AuthRequestPasswordDto,
   type AuthResetPasswordDto,
+  type UserSignInWithFacebookResponseDto,
 } from './libs/types/types.js';
 import {
   loginWithGoogleValidationSchema,
@@ -45,6 +46,17 @@ class AuthController extends Controller {
         this.signIn(
           options as ApiHandlerOptions<{
             body: UserSignInRequestDto;
+          }>,
+        ),
+    });
+
+    this.addRoute({
+      path: AuthApiPath.FACEBOOK,
+      method: 'POST',
+      handler: (options) =>
+        this.signInWithFacebook(
+          options as ApiHandlerOptions<{
+            body: UserSignInWithFacebookResponseDto;
           }>,
         ),
     });
@@ -173,6 +185,17 @@ class AuthController extends Controller {
     return {
       status: HttpCode.OK,
       payload: await this.authService.signIn(options.body),
+    };
+  }
+
+  private async signInWithFacebook(
+    options: ApiHandlerOptions<{
+      body: UserSignInWithFacebookResponseDto;
+    }>,
+  ): Promise<ApiHandlerResponse> {
+    return {
+      status: HttpCode.OK,
+      payload: await this.authService.signInWithFacebook(options.body),
     };
   }
 

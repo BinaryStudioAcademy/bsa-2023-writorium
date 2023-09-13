@@ -1,11 +1,15 @@
-import { ContentType, ServerErrorType } from '~/libs/enums/enums.js';
-import { configureString } from '~/libs/helpers/helpers.js';
 import {
-  type HttpCode,
-  HttpError,
-  HttpHeader,
+  AppRoute,
+  ContentType,
+  ExceptionMessage,
+  ServerErrorType,
+} from '~/libs/enums/enums.js';
+import { configureString, constructUrl } from '~/libs/helpers/helpers.js';
+import {
+  type CustomHttpHeader,
   type IHttp,
 } from '~/libs/packages/http/http.js';
+import { HttpCode, HttpError, HttpHeader } from '~/libs/packages/http/http.js';
 import { type IStorage, StorageKey } from '~/libs/packages/storage/storage.js';
 import { type ServerErrorResponse, type ValueOf } from '~/libs/types/types.js';
 
@@ -38,15 +42,26 @@ class HttpApi implements IHttpApi {
     this.storage = storage;
   }
 
+  private getUrl(path: string, query?: Record<string, unknown>): string {
+    return constructUrl({ path, queryParams: query });
+  }
+
   public async load(
     path: string,
     options: HttpApiOptions,
   ): Promise<HttpApiResponse> {
-    const { method, contentType, payload = null, hasAuth } = options;
+    const {
+      method,
+      contentType,
+      payload = null,
+      hasAuth,
+      query,
+      customHeaders = null,
+    } = options;
 
-    const headers = await this.getHeaders(contentType, hasAuth);
+    const headers = await this.getHeaders(contentType, hasAuth, customHeaders);
 
-    const response = await this.http.load(path, {
+    const response = await this.http.load(this.getUrl(path, query), {
       method,
       headers,
       payload,
@@ -73,11 +88,18 @@ class HttpApi implements IHttpApi {
   private async getHeaders(
     contentType: ValueOf<typeof ContentType>,
     hasAuth: boolean,
+    customHeaders: Record<ValueOf<typeof CustomHttpHeader>, string> | null,
   ): Promise<Headers> {
     const headers = new Headers();
 
     if (contentType !== ContentType.FORM_DATA) {
       headers.append(HttpHeader.CONTENT_TYPE, contentType);
+    }
+
+    if (customHeaders) {
+      for (const [headerKey, headerValue] of Object.entries(customHeaders)) {
+        headers.append(headerKey, headerValue);
+      }
     }
 
     if (hasAuth) {
@@ -104,6 +126,14 @@ class HttpApi implements IHttpApi {
         message: response.statusText,
       }),
     )) as ServerErrorResponse;
+
+    if (
+      response.status === HttpCode.UNAUTHORIZED &&
+      parsedException.message === ExceptionMessage.INVALID_TOKEN
+    ) {
+      await this.storage.drop(StorageKey.TOKEN);
+      window.location.assign(AppRoute.SIGN_IN);
+    }
 
     const isCustomException = Boolean(parsedException.errorType);
 

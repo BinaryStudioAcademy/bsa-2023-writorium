@@ -11,10 +11,18 @@ const articleApi = new ArticleApi({
 });
 
 export { articleApi };
+export { getReadTimeString } from './libs/helpers/helpers.js';
 export {
-  type ArticleBaseResponseDto,
   type ArticleGetAllResponseDto,
+  type ArticleReactionRequestDto,
+  type ArticleReactionResponseDto,
   type ArticleRequestDto,
-  type ArticleWithAuthorType,
+  type ArticleResponseDto,
+  type ArticleUpdateRequestDto,
+  type ArticleUpdateRequestPayload,
+  type ReactionResponseDto,
 } from './libs/types/types.js';
-export { articleCreateValidationSchema } from './libs/validation-schemas/validation-schemas.js';
+export {
+  articleCreateValidationSchema,
+  articleUpdateValidationSchema,
+} from './libs/validation-schemas/validation-schemas.js';

@@ -4,6 +4,7 @@ export {
   UserValidationRule,
 } from './libs/enums/enums.js';
 export {
+  type UserActivityResponseDto,
   type UserAuthResponseDto,
   type UserDetailsDto,
   type UserDetailsResponseDto,
@@ -11,6 +12,7 @@ export {
   type UserGetAllResponseDto,
   type UserSignInRequestDto,
   type UserSignInResponseDto,
+  type UserSignInWithFacebookResponseDto,
   type UserSignUpRequestDto,
   type UserSignUpResponseDto,
   type UserUpdateRequestDto,

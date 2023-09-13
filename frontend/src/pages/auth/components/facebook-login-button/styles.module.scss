@@ -1,0 +1,17 @@
+.facebookLoginButton {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 24px;
+  padding: 11px 0;
+  color: var(--dark-green);
+  font-weight: 700;
+  font-size: 16px;
+  font-family: inherit;
+  line-height: 19px;
+  text-align: center;
+  background-color: transparent;
+  border: 2px var(--dark-green) solid;
+  border-radius: 7px;
+  cursor: pointer;
+}
