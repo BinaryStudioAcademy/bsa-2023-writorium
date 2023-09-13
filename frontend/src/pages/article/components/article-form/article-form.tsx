@@ -123,7 +123,7 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
     return () => {
       dispatch(promptActions.resetPrompts());
     };
-  }, []);
+  }, [dispatch]);
 
   return (
     <div>
