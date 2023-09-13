@@ -63,7 +63,7 @@ const ArticleFilters: React.FC<Properties> = ({
           <Input
             name="titleFilter"
             type="text"
-            placeholder="Search.."
+            placeholder="Search..."
             label="Title"
             labelClassName={styles.filterTitle}
             control={control}
@@ -72,7 +72,7 @@ const ArticleFilters: React.FC<Properties> = ({
           {!isMyArticlesPage && (
             <Select
               name="authorId"
-              placeholder="Search.."
+              placeholder="Search..."
               label="Author"
               control={control}
               errors={errors}
@@ -82,7 +82,7 @@ const ArticleFilters: React.FC<Properties> = ({
 
           <Select
             name="genreId"
-            placeholder="Search.."
+            placeholder="Search..."
             label="Genre"
             options={genreSelectOptions}
             control={control}
