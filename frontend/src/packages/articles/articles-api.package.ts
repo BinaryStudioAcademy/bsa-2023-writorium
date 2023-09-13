@@ -1,6 +1,7 @@
 import { ApiPath, ContentType } from '~/libs/enums/enums.js';
+import { writeTextInClipboard } from '~/libs/helpers/helpers.js';
 import { HttpApi } from '~/libs/packages/api/api.js';
-import { type IHttp } from '~/libs/packages/http/http.js';
+import { CustomHttpHeader, type IHttp } from '~/libs/packages/http/http.js';
 import { type IStorage } from '~/libs/packages/storage/storage.js';
 
 import { ArticlesApiPath } from './libs/enums/enums.js';
@@ -82,6 +83,39 @@ class ArticleApi extends HttpApi {
         contentType: ContentType.JSON,
         payload: JSON.stringify(payload.articleForUpdate),
         hasAuth: true,
+      },
+    );
+
+    return await response.json<ArticleResponseDto>();
+  }
+
+  public async share(id: string): Promise<{ link: string }> {
+    const response = await this.load(
+      this.getFullEndpoint(ArticlesApiPath.$ID_SHARE, { id }),
+      {
+        method: 'GET',
+        contentType: ContentType.JSON,
+        hasAuth: true,
+      },
+    );
+
+    const { link } = await response.json<{ link: string }>();
+
+    await writeTextInClipboard(link);
+
+    return { link };
+  }
+
+  public async getByToken(token: string): Promise<ArticleResponseDto> {
+    const response = await this.load(
+      this.getFullEndpoint(ArticlesApiPath.SHARED_BASE, {}),
+      {
+        method: 'GET',
+        contentType: ContentType.JSON,
+        hasAuth: false,
+        customHeaders: {
+          [CustomHttpHeader.SHARED_ARTICLE_TOKEN]: token,
+        },
       },
     );
 

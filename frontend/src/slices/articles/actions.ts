@@ -10,8 +10,10 @@ import {
   type ArticleUpdateRequestPayload,
   type ReactionResponseDto,
 } from '~/packages/articles/articles.js';
+import { NotificationType } from '~/packages/notification/notification.js';
 import { type PromptRequestDto } from '~/packages/prompts/prompts.js';
 
+import { appActions } from '../app/app.js';
 import { name as sliceName } from './articles.slice.js';
 
 const fetchAll = createAsyncThunk<
@@ -80,6 +82,35 @@ const getArticle = createAsyncThunk<
   return articleApi.getArticle(id);
 });
 
+const shareArticle = createAsyncThunk<
+  { link: string },
+  { id: string },
+  AsyncThunkConfig
+>(`${sliceName}/share`, async (articlePayload, { dispatch, extra }) => {
+  const { articleApi } = extra;
+
+  const response = await articleApi.share(articlePayload.id);
+
+  void dispatch(
+    appActions.notify({
+      type: NotificationType.SUCCESS,
+      message: 'The sharing link was copied to clipboard',
+    }),
+  );
+
+  return response;
+});
+
+const fetchSharedArticle = createAsyncThunk<
+  ArticleResponseDto,
+  { token: string },
+  AsyncThunkConfig
+>(`${sliceName}/shared`, (articlePayload, { extra }) => {
+  const { articleApi } = extra;
+
+  return articleApi.getByToken(articlePayload.token);
+});
+
 const reactToArticle = createAsyncThunk<
   {
     articleId: number;
@@ -121,7 +152,9 @@ export {
   deleteArticleReaction,
   fetchAll,
   fetchOwn,
+  fetchSharedArticle,
   getArticle,
   reactToArticle,
+  shareArticle,
   updateArticle,
 };
