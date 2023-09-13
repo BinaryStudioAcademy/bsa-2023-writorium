@@ -1,4 +1,3 @@
-import { type default as React } from 'react';
 import { matchPath } from 'react-router-dom';
 
 import { Input } from '~/libs/components/components.js';
