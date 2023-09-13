@@ -1,17 +1,24 @@
+import { type Page } from 'objection';
+
 import { ArticleEntity } from './article.entity.js';
 import { type ArticleModel } from './article.model.js';
+import { EMPTY_COMMENT_COUNT } from './libs/constants/constants.js';
 import { SortingOrder } from './libs/enums/enums.js';
 import {
+  getCommentsCountQuery,
   getWherePublishedOnlyQuery,
   getWhereUserIdQuery,
 } from './libs/helpers/helpers.js';
 import { type IArticleRepository } from './libs/interfaces/interfaces.js';
-import { type ArticlesFilters } from './libs/types/types.js';
+import {
+  type ArticleCommentCount,
+  type ArticlesFilters,
+} from './libs/types/types.js';
 
 class ArticleRepository implements IArticleRepository {
   private articleModel: typeof ArticleModel;
 
-  private defaultRelationExpression = '[author,prompt,genre]';
+  private defaultRelationExpression = '[author.avatar,prompt,genre]';
 
   public constructor(articleModel: typeof ArticleModel) {
     this.articleModel = articleModel;
@@ -28,17 +35,25 @@ class ArticleRepository implements IArticleRepository {
   } & ArticlesFilters): Promise<{ items: ArticleEntity[]; total: number }> {
     const articles = await this.articleModel
       .query()
+      .select('articles.*', getCommentsCountQuery(this.articleModel))
       .where(getWhereUserIdQuery(userId))
       .where(getWherePublishedOnlyQuery(hasPublishedOnly))
       .orderBy('articles.publishedAt', SortingOrder.DESCENDING)
+      .withGraphJoined(this.defaultRelationExpression)
       .page(skip / take, take)
-      .withGraphJoined(this.defaultRelationExpression);
+      .castTo<Page<ArticleModel & ArticleCommentCount>>()
+      .execute();
 
     return {
       total: articles.total,
       items: articles.results.map((article) =>
-        ArticleEntity.initializeWithAuthor({
+        ArticleEntity.initialize({
           ...article,
+          author: {
+            firstName: article.author.firstName,
+            lastName: article.author.lastName,
+            avatarUrl: article.author.avatar?.url ?? null,
+          },
           genre: article.genre.name,
           prompt: article.prompt
             ? {
@@ -63,8 +78,13 @@ class ArticleRepository implements IArticleRepository {
       return null;
     }
 
-    return ArticleEntity.initializeWithAuthor({
+    return ArticleEntity.initialize({
       ...article,
+      author: {
+        firstName: article.author.firstName,
+        lastName: article.author.lastName,
+        avatarUrl: article.author.avatar?.url ?? null,
+      },
       genre: article.genre.name,
       prompt: article.prompt
         ? {
@@ -74,6 +94,7 @@ class ArticleRepository implements IArticleRepository {
             prop: article.prompt.prop,
           }
         : null,
+      commentCount: null,
     });
   }
 
@@ -92,9 +113,27 @@ class ArticleRepository implements IArticleRepository {
         publishedAt,
       })
       .returning('*')
+      .withGraphFetched(this.defaultRelationExpression)
       .execute();
 
-    return ArticleEntity.initialize(article);
+    return ArticleEntity.initialize({
+      ...article,
+      author: {
+        firstName: article.author.firstName,
+        lastName: article.author.lastName,
+        avatarUrl: article.author.avatar?.url ?? null,
+      },
+      genre: article.genre.name,
+      prompt: article.prompt
+        ? {
+            character: article.prompt.character,
+            setting: article.prompt.setting,
+            situation: article.prompt.situation,
+            prop: article.prompt.prop,
+          }
+        : null,
+      commentCount: EMPTY_COMMENT_COUNT,
+    });
   }
 
   public async update(entity: ArticleEntity): Promise<ArticleEntity> {
@@ -102,9 +141,29 @@ class ArticleRepository implements IArticleRepository {
 
     const article = await this.articleModel
       .query()
-      .patchAndFetchById(id, payload);
+      .patchAndFetchById(id, payload)
+      .select('articles.*', getCommentsCountQuery(this.articleModel))
+      .withGraphFetched(this.defaultRelationExpression)
+      .castTo<ArticleModel & ArticleCommentCount>()
+      .execute();
 
-    return ArticleEntity.initialize(article);
+    return ArticleEntity.initialize({
+      ...article,
+      author: {
+        firstName: article.author.firstName,
+        lastName: article.author.lastName,
+        avatarUrl: article.author.avatar?.url ?? null,
+      },
+      genre: article.genre.name,
+      prompt: article.prompt
+        ? {
+            character: article.prompt.character,
+            setting: article.prompt.setting,
+            situation: article.prompt.situation,
+            prop: article.prompt.prop,
+          }
+        : null,
+    });
   }
 
   public delete(): Promise<boolean> {

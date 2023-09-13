@@ -9,12 +9,12 @@ import { ArticleEntity } from './article.entity.js';
 import { type ArticleRepository } from './article.repository.js';
 import { getDetectArticleGenreCompletionConfig } from './libs/helpers/helpers.js';
 import {
-  type ArticleBaseResponseDto,
   type ArticleCreateDto,
   type ArticleGetAllResponseDto,
+  type ArticleResponseDto,
   type ArticlesFilters,
   type ArticleUpdateRequestDto,
-  type ArticleWithAuthorType,
+  type ArticleWithCommentCountResponseDto,
   type DetectedArticleGenre,
 } from './libs/types/types.js';
 
@@ -95,7 +95,9 @@ class ArticleService implements IService {
 
     return {
       total,
-      items: items.map((article) => article.toObjectWithAuthor()),
+      items: items.map((article) =>
+        article.toObjectWithRelationsAndCommentCount(),
+      ),
     };
   }
 
@@ -110,23 +112,25 @@ class ArticleService implements IService {
 
     return {
       total,
-      items: items.map((article) => article.toObjectWithAuthor()),
+      items: items.map((article) =>
+        article.toObjectWithRelationsAndCommentCount(),
+      ),
     };
   }
 
-  public async find(id: number): Promise<ArticleWithAuthorType | null> {
+  public async find(id: number): Promise<ArticleResponseDto | null> {
     const article = await this.articleRepository.find(id);
 
     if (!article) {
       return null;
     }
 
-    return article.toObjectWithAuthor();
+    return article.toObjectWithRelations();
   }
 
   public async create(
     payload: ArticleCreateDto,
-  ): Promise<ArticleBaseResponseDto> {
+  ): Promise<ArticleWithCommentCountResponseDto> {
     const genreId = await this.getGenreIdToSet(payload);
 
     const article = await this.articleRepository.create(
@@ -140,13 +144,13 @@ class ArticleService implements IService {
       }),
     );
 
-    return article.toObject();
+    return article.toObjectWithRelationsAndCommentCount();
   }
 
   public async update(
     id: number,
     payload: ArticleUpdateRequestDto,
-  ): Promise<ArticleBaseResponseDto> {
+  ): Promise<ArticleWithCommentCountResponseDto> {
     const article = await this.find(id);
 
     if (!article) {
@@ -159,10 +163,11 @@ class ArticleService implements IService {
       ArticleEntity.initialize({
         ...article,
         ...payload,
+        commentCount: null,
       }),
     );
 
-    return updatedArticle.toObject();
+    return updatedArticle.toObjectWithRelationsAndCommentCount();
   }
 
   public delete(): Promise<boolean> {
