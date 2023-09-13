@@ -14,11 +14,14 @@ export { articleApi };
 export { getReadTimeString } from './libs/helpers/helpers.js';
 export {
   type ArticleGetAllResponseDto,
+  type ArticleReactionRequestDto,
+  type ArticleReactionResponseDto,
   type ArticleRequestDto,
+  type ArticleResponseDto,
   type ArticlesFilters,
   type ArticleUpdateRequestDto,
   type ArticleUpdateRequestPayload,
-  type ArticleWithAuthorType,
+  type ReactionResponseDto,
 } from './libs/types/types.js';
 export {
   articleCreateValidationSchema,

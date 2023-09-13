@@ -49,7 +49,7 @@ const ArticlePage: React.FC = () => {
   ];
 
   return (
-    <Loader isLoading={isLoading}>
+    <Loader isLoading={isLoading} hasOverlay type="circular">
       <Layout>
         <div className={styles.articlePageWrapper}>
           <ArticleView

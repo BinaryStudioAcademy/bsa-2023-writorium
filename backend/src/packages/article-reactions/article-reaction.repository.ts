@@ -2,8 +2,6 @@ import { type IRepository } from '~/libs/interfaces/interfaces.js';
 
 import { ArticleReactionEntity } from './article-reaction.entity.js';
 import { type ArticleReactionModel } from './article-reaction.model.js';
-import { getReactionsQuery } from './libs/helpers/helpers.js';
-import { type ArticleReactionCreateResponseDto } from './libs/types/types.js';
 
 class ArticleReactionRepository implements IRepository {
   private articleReactionModel: typeof ArticleReactionModel;
@@ -27,30 +25,6 @@ class ArticleReactionRepository implements IRepository {
     }
 
     return ArticleReactionEntity.initialize(reaction);
-  }
-
-  public async findAllByArticleId(
-    articleId: number,
-  ): Promise<ArticleReactionCreateResponseDto> {
-    const reactions = await this.articleReactionModel
-      .query()
-      .select(
-        getReactionsQuery(this.articleReactionModel)(true),
-        getReactionsQuery(this.articleReactionModel)(false),
-      )
-      .where('articleId', articleId)
-      .first()
-      .castTo<ArticleReactionModel & ArticleReactionCreateResponseDto>()
-      .execute();
-
-    if (!reactions) {
-      return {
-        likeCount: 0,
-        dislikeCount: 0,
-      };
-    }
-
-    return reactions;
   }
 
   public async findArticleReaction(

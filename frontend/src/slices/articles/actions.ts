@@ -3,10 +3,12 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { type AsyncThunkConfig } from '~/libs/types/types.js';
 import {
   type ArticleGetAllResponseDto,
+  type ArticleReactionRequestDto,
   type ArticleRequestDto,
+  type ArticleResponseDto,
   type ArticlesFilters,
   type ArticleUpdateRequestPayload,
-  type ArticleWithAuthorType,
+  type ReactionResponseDto,
 } from '~/packages/articles/articles.js';
 import { type PromptRequestDto } from '~/packages/prompts/prompts.js';
 
@@ -33,7 +35,7 @@ const fetchOwn = createAsyncThunk<
 });
 
 const createArticle = createAsyncThunk<
-  ArticleWithAuthorType,
+  ArticleResponseDto,
   {
     articlePayload: ArticleRequestDto;
     generatedPrompt: PromptRequestDto | null;
@@ -59,7 +61,7 @@ const createArticle = createAsyncThunk<
 );
 
 const updateArticle = createAsyncThunk<
-  ArticleWithAuthorType,
+  ArticleResponseDto,
   ArticleUpdateRequestPayload,
   AsyncThunkConfig
 >(`${sliceName}/update`, async (payload, { extra }) => {
@@ -69,7 +71,7 @@ const updateArticle = createAsyncThunk<
 });
 
 const getArticle = createAsyncThunk<
-  ArticleWithAuthorType,
+  ArticleResponseDto,
   number,
   AsyncThunkConfig
 >(`${sliceName}/getArticle`, (id, { extra }) => {
@@ -78,4 +80,48 @@ const getArticle = createAsyncThunk<
   return articleApi.getArticle(id);
 });
 
-export { createArticle, fetchAll, fetchOwn, getArticle, updateArticle };
+const reactToArticle = createAsyncThunk<
+  {
+    articleId: number;
+    reaction: ReactionResponseDto;
+  },
+  ArticleReactionRequestDto,
+  AsyncThunkConfig
+>(`${sliceName}/reactToArticle`, async (payload, { extra }) => {
+  const { articleApi } = extra;
+  const { articleId, ...reaction } = await articleApi.updateArticleReaction(
+    payload,
+  );
+
+  return {
+    articleId,
+    reaction,
+  };
+});
+
+const deleteArticleReaction = createAsyncThunk<
+  {
+    articleId: number;
+    reactionId: number;
+  },
+  ArticleReactionRequestDto,
+  AsyncThunkConfig
+>(`${sliceName}/deleteArticleReaction`, async (payload, { extra }) => {
+  const { articleApi } = extra;
+  const { articleId, id } = await articleApi.updateArticleReaction(payload);
+
+  return {
+    articleId,
+    reactionId: id,
+  };
+});
+
+export {
+  createArticle,
+  deleteArticleReaction,
+  fetchAll,
+  fetchOwn,
+  getArticle,
+  reactToArticle,
+  updateArticle,
+};

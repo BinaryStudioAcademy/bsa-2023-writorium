@@ -1,3 +1,5 @@
+import { type Model, type QueryBuilder } from 'objection';
+
 import { ArticleEntity } from './article.entity.js';
 import { type ArticleModel } from './article.model.js';
 import {
@@ -14,11 +16,26 @@ import {
 class ArticleRepository implements IArticleRepository {
   private articleModel: typeof ArticleModel;
 
-  private defaultRelationExpression = '[author.avatar,prompt,genre,cover]';
+  private defaultRelationExpression =
+    '[author.avatar, prompt, genre, reactions, cover]';
 
   public constructor(articleModel: typeof ArticleModel) {
     this.articleModel = articleModel;
   }
+
+  private joinArticleRelations = <T>(
+    queryBuilder: QueryBuilder<ArticleModel, T>,
+  ): void => {
+    void queryBuilder
+      .withGraphJoined(this.defaultRelationExpression)
+      .modifyGraph('reactions', this.modifyReactionsGraph);
+  };
+
+  private modifyReactionsGraph = (
+    builder: QueryBuilder<Model, Model[]>,
+  ): void => {
+    void builder.select('id', 'isLike', 'userId');
+  };
 
   public async findAll({
     userId,
@@ -35,12 +52,12 @@ class ArticleRepository implements IArticleRepository {
       .where(getWherePublishedOnlyQuery(hasPublishedOnly))
       .orderBy(getSortingCondition(hasPublishedOnly))
       .page(skip / take, take)
-      .withGraphJoined(this.defaultRelationExpression);
+      .modify(this.joinArticleRelations);
 
     return {
       total: articles.total,
       items: articles.results.map((article) => {
-        return ArticleEntity.initializeWithAuthor({
+        return ArticleEntity.initialize({
           ...article,
           coverUrl: article.cover?.url,
           genre: article.genre?.name ?? null,
@@ -66,13 +83,13 @@ class ArticleRepository implements IArticleRepository {
     const article = await this.articleModel
       .query()
       .findById(id)
-      .withGraphJoined(this.defaultRelationExpression);
+      .modify(this.joinArticleRelations);
 
     if (!article) {
       return null;
     }
 
-    return ArticleEntity.initializeWithAuthor({
+    return ArticleEntity.initialize({
       ...article,
       genre: article.genre?.name ?? null,
       coverUrl: article.cover?.url,
@@ -118,16 +135,11 @@ class ArticleRepository implements IArticleRepository {
       })
       .returning('*')
       .withGraphFetched(this.defaultRelationExpression)
-      .execute();
+      .modifyGraph('reactions', this.modifyReactionsGraph);
 
-    return ArticleEntity.initializeWithAuthor({
+    return ArticleEntity.initialize({
       ...article,
-      author: {
-        firstName: article.author.firstName,
-        lastName: article.author.lastName,
-        avatarUrl: article.author.avatar?.url ?? null,
-      },
-      genre: article.genre.name,
+      genre: article.genre?.name ?? null,
       prompt: article.prompt
         ? {
             character: article.prompt.character,
@@ -136,6 +148,11 @@ class ArticleRepository implements IArticleRepository {
             prop: article.prompt.prop,
           }
         : null,
+      author: {
+        firstName: article.author.firstName,
+        lastName: article.author.lastName,
+        avatarUrl: article.author.avatar?.url ?? null,
+      },
     });
   }
 
@@ -166,9 +183,10 @@ class ArticleRepository implements IArticleRepository {
     const article = await this.articleModel
       .query()
       .patchAndFetchById(id, payload)
-      .withGraphFetched(this.defaultRelationExpression);
+      .withGraphFetched(this.defaultRelationExpression)
+      .modifyGraph('reactions', this.modifyReactionsGraph);
 
-    return ArticleEntity.initializeWithAuthor({
+    return ArticleEntity.initialize({
       ...article,
       genre: article.genre?.name ?? null,
       prompt: article.prompt
