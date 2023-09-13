@@ -10,6 +10,7 @@ import {
   deleteArticleReaction,
   fetchAll,
   fetchOwn,
+  fetchSharedArticle,
   getArticle,
   reactToArticle,
   updateArticle,
@@ -133,6 +134,10 @@ const { reducer, actions, name } = createSlice({
     builder.addCase(getArticle.rejected, (state) => {
       state.getArticleStatus = DataStatus.REJECTED;
     });
+    builder.addCase(fetchSharedArticle.fulfilled, (state, action) => {
+      state.dataStatus = DataStatus.FULFILLED;
+      state.article = action.payload;
+    });
     builder.addMatcher(
       isAnyOf(fetchAll.fulfilled, fetchOwn.fulfilled),
       (state, action) => {
@@ -152,6 +157,7 @@ const { reducer, actions, name } = createSlice({
         fetchOwn.pending,
         createArticle.pending,
         updateArticle.pending,
+        fetchSharedArticle.pending,
         deleteArticle.pending,
       ),
       (state) => {
@@ -170,6 +176,7 @@ const { reducer, actions, name } = createSlice({
         fetchOwn.rejected,
         createArticle.rejected,
         updateArticle.rejected,
+        fetchSharedArticle.rejected,
         deleteArticle.rejected,
       ),
       (state) => {

@@ -57,6 +57,7 @@ class Controller implements IController {
       fileToUpload,
       user,
       origin: headers.origin,
+      headers,
     };
   }
 }
