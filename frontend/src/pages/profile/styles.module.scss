@@ -6,13 +6,14 @@
       0.5fr
     )
     1.3fr 1.2fr;
-  gap: 30px;
+  gap: 60px;
   width: 100%;
   max-width: 1590px;
   margin: 0 auto;
 }
 
 .profileBlock {
+  background-color: var(--white);
   border-radius: 7px;
   box-shadow: 0 0 6px rgb(16 24 40 / 16%);
 }

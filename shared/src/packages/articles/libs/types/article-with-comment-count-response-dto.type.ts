@@ -1,7 +1,7 @@
 import { type ArticleCommentCount } from './article-comment-count.type.js';
-import { type ArticleWithRelationsType } from './article-with-relations.type.js';
+import { type ArticleResponseDto } from './article-response-dto.type.js';
 
-type ArticleWithCommentCountResponseDto = ArticleWithRelationsType &
+type ArticleWithCommentCountResponseDto = ArticleResponseDto &
   ArticleCommentCount;
 
 export { type ArticleWithCommentCountResponseDto };

@@ -1,5 +1,9 @@
-import { CommentCard, Layout, Navigate } from '~/libs/components/components.js';
-import { Loader } from '~/libs/components/loader/loader.js';
+import {
+  CommentCard,
+  Layout,
+  Loader,
+  Navigate,
+} from '~/libs/components/components.js';
 import { AppRoute, DataStatus } from '~/libs/enums/enums.js';
 import { getFullName } from '~/libs/helpers/helpers.js';
 import {
@@ -10,17 +14,14 @@ import {
   useLocation,
   useParams,
 } from '~/libs/hooks/hooks.js';
-import { type ArticleType, type TagType } from '~/libs/types/types.js';
+import { type TagType } from '~/libs/types/types.js';
 import { type ArticleResponseDto } from '~/packages/articles/articles.js';
 import { type CommentBaseRequestDto } from '~/packages/comments/comments.js';
-import {
-  actions,
-  actions as articleActions,
-} from '~/slices/articles/articles.js';
+import { actions as articleActions } from '~/slices/articles/articles.js';
 
 import {
+  ArticleDetails,
   ArticleView,
-  AuthorDetails,
   CommentForm,
 } from './components/components.js';
 import styles from './styles.module.scss';
@@ -28,10 +29,10 @@ import styles from './styles.module.scss';
 const ArticlePage: React.FC = () => {
   const location = useLocation();
   const dispatch = useAppDispatch();
-  const { article, dataStatus, articleComments, commentsDataStatus } =
+  const { article, getArticleStatus, articleComments, commentsDataStatus } =
     useAppSelector(({ articles }) => ({
       article: articles.article as ArticleResponseDto,
-      dataStatus: articles.dataStatus,
+      getArticleStatus: articles.getArticleStatus,
       articleComments: articles.articleComments,
       commentsDataStatus: articles.articleCommentsDataStatus,
     }));
@@ -52,11 +53,11 @@ const ArticlePage: React.FC = () => {
   }, [commentsDataStatus, location]);
 
   useEffect(() => {
-    void dispatch(actions.getArticle(Number(id)));
-    void dispatch(actions.fetchAllCommentsToArticle(Number(id)));
+    void dispatch(articleActions.getArticle(Number(id)));
+    void dispatch(articleActions.fetchAllCommentsToArticle(Number(id)));
 
     return () => {
-      void dispatch(actions.resetComments());
+      void dispatch(articleActions.resetComments());
     };
   }, [dispatch, id]);
 
@@ -70,8 +71,8 @@ const ArticlePage: React.FC = () => {
   );
 
   const isLoading = !(
-    dataStatus === DataStatus.FULFILLED ||
-    dataStatus == DataStatus.REJECTED ||
+    getArticleStatus === DataStatus.FULFILLED ||
+    getArticleStatus == DataStatus.REJECTED ||
     commentsDataStatus === DataStatus.FULFILLED ||
     commentsDataStatus == DataStatus.REJECTED
   );
@@ -80,7 +81,7 @@ const ArticlePage: React.FC = () => {
     return <Navigate to={AppRoute.ARTICLES} />;
   }
 
-  if (dataStatus === DataStatus.REJECTED) {
+  if (getArticleStatus === DataStatus.REJECTED) {
     return null;
   }
 
@@ -92,18 +93,26 @@ const ArticlePage: React.FC = () => {
     { id: 5, name: 'Tech' },
   ];
 
-  const { text, title, author } = article ?? {};
-
   return (
-    <Loader isLoading={isLoading}>
+    <Loader isLoading={isLoading} hasOverlay type="circular">
       <Layout>
         <div className={styles.articlePageWrapper}>
           <ArticleView
-            article={{ text, title, tags: MOCKED_TAGS } as ArticleType}
+            tags={MOCKED_TAGS}
+            text={article.text}
+            title={article.title}
+            coverUrl={article.coverUrl}
           />
-          {author && (
-            <AuthorDetails
-              name={getFullName(author.firstName, author.lastName)}
+          {article?.author && (
+            <ArticleDetails
+              readTime={article.readTime}
+              authorName={getFullName(
+                article.author.firstName,
+                article.author.lastName,
+              )}
+              publishedAt={article.publishedAt ?? ''}
+              genre={article.genre ?? ''}
+              avatarUrl={article.author.avatarUrl}
             />
           )}
           <div>

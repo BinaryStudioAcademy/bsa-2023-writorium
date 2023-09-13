@@ -11,12 +11,21 @@ const articleApi = new ArticleApi({
 });
 
 export { articleApi };
+export { getReadTimeString } from './libs/helpers/helpers.js';
 export {
   type ArticleGetAllResponseDto,
+  type ArticleReactionRequestDto,
+  type ArticleReactionResponseDto,
   type ArticleRequestDto,
   type ArticleResponseDto,
   type ArticlesFilters,
+  type ArticleUpdateRequestDto,
+  type ArticleUpdateRequestPayload,
   type ArticleWithCommentCountResponseDto,
   type ArticleWithRelationsType,
+  type ReactionResponseDto,
 } from './libs/types/types.js';
-export { articleCreateValidationSchema } from './libs/validation-schemas/validation-schemas.js';
+export {
+  articleCreateValidationSchema,
+  articleUpdateValidationSchema,
+} from './libs/validation-schemas/validation-schemas.js';

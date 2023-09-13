@@ -6,17 +6,26 @@ import {
   ForbiddenError,
   NotFoundError,
 } from '~/libs/packages/exceptions/exceptions.js';
+import { type ArticleService } from '~/packages/articles/article.service.js';
 import { type AuthResetPasswordDto } from '~/packages/auth/libs/types/types.js';
 import { UserEntity } from '~/packages/users/user.entity.js';
 import { type UserRepository } from '~/packages/users/user.repository.js';
 
 import {
+  type UserActivityResponseDto,
   type UserAuthResponseDto,
   type UserGetAllResponseDto,
   type UserPrivateData,
   type UserSignUpRequestDto,
   type UserUpdateRequestDto,
 } from './libs/types/types.js';
+
+type Constructor = {
+  config: IConfig;
+  encrypt: IEncrypt;
+  userRepository: UserRepository;
+  articleService: ArticleService;
+};
 
 class UserService implements IService {
   private userRepository: UserRepository;
@@ -25,14 +34,18 @@ class UserService implements IService {
 
   private config: IConfig;
 
-  public constructor(
-    config: IConfig,
-    encrypt: IEncrypt,
-    userRepository: UserRepository,
-  ) {
+  private articleService: ArticleService;
+
+  public constructor({
+    config,
+    encrypt,
+    userRepository,
+    articleService,
+  }: Constructor) {
     this.userRepository = userRepository;
     this.encrypt = encrypt;
     this.config = config;
+    this.articleService = articleService;
   }
 
   public async find(id: number): Promise<UserAuthResponseDto | null> {
@@ -67,6 +80,12 @@ class UserService implements IService {
     }
 
     return user.privateData;
+  }
+
+  public async getUserActivity(
+    userId: number,
+  ): Promise<UserActivityResponseDto[]> {
+    return await this.articleService.getUserActivity(userId);
   }
 
   public async create(

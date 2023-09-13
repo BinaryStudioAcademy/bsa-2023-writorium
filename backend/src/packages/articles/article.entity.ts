@@ -7,6 +7,7 @@ import {
   type ArticleResponseDto,
   type ArticleWithCommentCountResponseDto,
   type ArticleWithRelationsType,
+  type ReactionResponseDto,
 } from './libs/types/types.js';
 
 class ArticleEntity implements IEntity {
@@ -16,11 +17,15 @@ class ArticleEntity implements IEntity {
   private 'userId': number;
   private 'promptId': number | null;
   private 'genreId': number | null;
+  private 'coverId': number | null;
+  private 'coverUrl'?: string | null;
   private 'publishedAt': string | null;
   private 'author': ArticleWithRelationsType['author'] | null;
   private 'prompt': ArticleWithRelationsType['prompt'];
   private 'genre': ArticleWithRelationsType['genre'];
   private 'commentCount': number | null;
+  private 'reactions': ReactionResponseDto[] | null;
+  private 'readTime': number | null;
 
   private constructor({
     id,
@@ -29,14 +34,18 @@ class ArticleEntity implements IEntity {
     userId,
     promptId,
     genreId,
+    coverId,
+    coverUrl,
     publishedAt,
     author,
+    reactions,
     prompt,
     genre,
+    readTime,
     commentCount,
   }: WithNullableKeys<
     ArticleWithRelationsType & ArticleCommentCount,
-    'id' | 'author' | 'commentCount'
+    'id' | 'author' | 'commentCount' | 'reactions'
   >) {
     this.id = id;
     this.title = title;
@@ -49,6 +58,10 @@ class ArticleEntity implements IEntity {
     this.prompt = prompt;
     this.genre = genre;
     this.commentCount = commentCount;
+    this.reactions = reactions;
+    this.readTime = readTime;
+    this.coverId = coverId;
+    this.coverUrl = coverUrl;
   }
 
   public static initialize({
@@ -63,6 +76,10 @@ class ArticleEntity implements IEntity {
     prompt,
     genre,
     commentCount,
+    coverId,
+    coverUrl,
+    reactions,
+    readTime,
   }: ArticleWithRelationsType &
     WithNullableKeys<ArticleCommentCount, 'commentCount'>): ArticleEntity {
     return new ArticleEntity({
@@ -77,6 +94,10 @@ class ArticleEntity implements IEntity {
       prompt,
       genre,
       commentCount,
+      coverId,
+      coverUrl,
+      reactions,
+      readTime,
     });
   }
 
@@ -87,9 +108,11 @@ class ArticleEntity implements IEntity {
     promptId,
     genreId,
     publishedAt,
+    coverId,
+    readTime,
   }: Omit<
     ArticleWithRelationsType,
-    'id' | 'author' | 'prompt' | 'genre'
+    'id' | 'author' | 'prompt' | 'genre' | 'reactions' | 'coverUrl'
   >): ArticleEntity {
     return new ArticleEntity({
       id: null,
@@ -98,11 +121,15 @@ class ArticleEntity implements IEntity {
       userId,
       promptId,
       genreId,
+      coverId,
       publishedAt,
       commentCount: null,
       author: null,
       prompt: null,
       genre: null,
+      coverUrl: null,
+      reactions: null,
+      readTime,
     });
   }
 
@@ -112,8 +139,10 @@ class ArticleEntity implements IEntity {
       title: this.title,
       text: this.text,
       userId: this.userId,
+      coverId: this.coverId,
       promptId: this.promptId,
       genreId: this.genreId,
+      readTime: this.readTime,
       publishedAt: this.publishedAt,
     };
   }
@@ -126,10 +155,14 @@ class ArticleEntity implements IEntity {
       userId: this.userId,
       promptId: this.promptId,
       genreId: this.genreId,
+      coverId: this.coverId,
+      coverUrl: this.coverUrl as ArticleResponseDto['coverUrl'],
       publishedAt: this.publishedAt,
       author: this.author as ArticleWithRelationsType['author'],
+      reactions: this.reactions as ReactionResponseDto[],
       prompt: this.prompt,
       genre: this.genre,
+      readTime: this.readTime,
     };
   }
 
@@ -141,10 +174,14 @@ class ArticleEntity implements IEntity {
       userId: this.userId,
       promptId: this.promptId,
       genreId: this.genreId,
+      coverId: this.coverId,
+      coverUrl: this.coverUrl as ArticleResponseDto['coverUrl'],
       publishedAt: this.publishedAt,
       author: this.author as ArticleWithRelationsType['author'],
       prompt: this.prompt,
       genre: this.genre,
+      readTime: this.readTime,
+      reactions: this.reactions as ReactionResponseDto[],
       commentCount: Number(this.commentCount as number),
     };
   }
@@ -154,8 +191,10 @@ class ArticleEntity implements IEntity {
       title: this.title,
       text: this.text,
       userId: this.userId,
+      coverId: this.coverId,
       promptId: this.promptId,
       genreId: this.genreId,
+      readTime: this.readTime,
       publishedAt: this.publishedAt,
     };
   }

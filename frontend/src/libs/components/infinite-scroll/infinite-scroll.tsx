@@ -14,18 +14,16 @@ const InfiniteScroll: React.FC<Properties> = ({
   hasMore,
   dataLength,
   className,
-}) => {
-  return (
-    <ReactInfiniteScroll
-      loader={null}
-      next={fetchData}
-      hasMore={hasMore}
-      dataLength={dataLength}
-      className={className}
-    >
-      {children}
-    </ReactInfiniteScroll>
-  );
-};
+}) => (
+  <ReactInfiniteScroll
+    loader={null}
+    next={fetchData}
+    hasMore={hasMore}
+    dataLength={dataLength}
+    className={className}
+  >
+    {children}
+  </ReactInfiniteScroll>
+);
 
 export { InfiniteScroll };

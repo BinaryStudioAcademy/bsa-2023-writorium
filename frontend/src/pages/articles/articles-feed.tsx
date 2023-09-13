@@ -9,7 +9,6 @@ import {
 import { actions as articlesActions } from '~/slices/articles/articles.js';
 
 import { ArticleCard } from './components/components.js';
-import { MOCKED_REACTIONS } from './libs/constants.js';
 import { getArticleTags } from './libs/helpers/helpers.js';
 import styles from './styles.module.scss';
 
@@ -53,7 +52,7 @@ const ArticlesFeed: React.FC = () => {
             article={article}
             author={article.author}
             tags={getArticleTags(article)}
-            reactions={MOCKED_REACTIONS}
+            reactions={article.reactions}
           />
         ))}
     </InfiniteScroll>

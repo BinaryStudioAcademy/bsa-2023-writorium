@@ -2,10 +2,10 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+  max-width: 830px;
 }
 
 .titleInput {
-  max-width: 830px;
   height: 85px;
   line-height: 17px;
 }
@@ -27,7 +27,7 @@
   max-width: 160px;
   color: var(--dark-green);
   font-family: Lato, sans-serif;
-  background-color: var(--light-grey);
+  background-color: var(--light-gray);
   border: 2px solid var(--dark-green);
 }
 

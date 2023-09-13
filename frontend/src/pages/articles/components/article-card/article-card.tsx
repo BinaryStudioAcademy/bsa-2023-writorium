@@ -1,17 +1,46 @@
-import ArticlePreview from '~/assets/img/article-preview.png';
-import { Avatar, Icon, Link } from '~/libs/components/components.js';
-import { ShareOnFacebookButton } from '~/libs/components/share-on-facebook-icon/share-on-facebook-icon.js';
-import { AppRoute, DateFormat } from '~/libs/enums/enums.js';
+import { Link as RouterLink, matchPath } from 'react-router-dom';
+
+import {
+  Avatar,
+  Icon,
+  IconButton,
+  Link,
+  ShareOnFacebookButton,
+} from '~/libs/components/components.js';
+import {
+  AppRoute,
+  ArticleSubRoute,
+  DateFormat,
+  Reaction,
+} from '~/libs/enums/enums.js';
 import {
   getFormattedDate,
   getFullName,
+  getReactionsInfo,
   getValidClassNames,
   sanitizeHtml,
 } from '~/libs/helpers/helpers.js';
-import { type ArticleWithCommentCountResponseDto } from '~/packages/articles/articles.js';
-import { type UserDetailsResponseDto } from '~/packages/users/users.js';
+import {
+  useAppDispatch,
+  useAppSelector,
+  useCallback,
+  useLocation,
+} from '~/libs/hooks/hooks.js';
+import { type ValueOf } from '~/libs/types/types.js';
+import {
+  type ArticleWithCommentCountResponseDto,
+  getReadTimeString,
+  type ReactionResponseDto,
+} from '~/packages/articles/articles.js';
+import {
+  type UserAuthResponseDto,
+  type UserDetailsResponseDto,
+} from '~/packages/users/users.js';
+import { actions as articlesActions } from '~/slices/articles/articles.js';
 
-import { type ReactionsType, type TagType } from '../../libs/types/types.js';
+import { MOCKED_REACTIONS } from '../../libs/constants.js';
+import { getReactionConvertedToBoolean } from '../../libs/helpers/helpers.js';
+import { type TagType } from '../../libs/types/types.js';
 import { Tags } from '../components.js';
 import styles from './styles.module.scss';
 
@@ -19,7 +48,7 @@ type Properties = {
   article: ArticleWithCommentCountResponseDto;
   author: UserDetailsResponseDto;
   tags: TagType[];
-  reactions: ReactionsType;
+  reactions: ReactionResponseDto[];
 };
 
 const ArticleCard: React.FC<Properties> = ({
@@ -28,35 +57,104 @@ const ArticleCard: React.FC<Properties> = ({
   tags,
   reactions,
 }) => {
-  const { publishedAt, title, text, id, commentCount } = article;
-  const { views, likes, dislikes } = reactions;
+  const dispatch = useAppDispatch();
+  const user = useAppSelector(({ auth }) => auth.user) as UserAuthResponseDto;
+  const { pathname } = useLocation();
+
+  const isMyArticles = matchPath(
+    { path: `${AppRoute.ARTICLES}/${ArticleSubRoute.MY_ARTICLES}` },
+    pathname,
+  );
+  const {
+    publishedAt,
+    title,
+    text,
+    id,
+    userId,
+    coverUrl,
+    readTime,
+    commentCount,
+  } = article;
+  const { likesCount, dislikesCount, hasAlreadyReactedWith } = getReactionsInfo(
+    user.id,
+    reactions,
+  );
+  const { firstName, lastName, avatarUrl } = author;
   const articleUrl = window.location.href;
-
   const articleRouteById = AppRoute.ARTICLE.replace(':id', String(id));
+  const isOwnArticle = user.id === userId;
 
-  const MOCKED_READ_TIME = '7 min read';
+  const handleReaction = (reaction: ValueOf<typeof Reaction>): void => {
+    if (isOwnArticle) {
+      return;
+    }
+
+    if (hasAlreadyReactedWith === reaction) {
+      return void dispatch(
+        articlesActions.deleteArticleReaction({
+          isLike: getReactionConvertedToBoolean(reaction),
+          articleId: id,
+        }),
+      );
+    }
+
+    void dispatch(
+      articlesActions.reactToArticle({
+        isLike: getReactionConvertedToBoolean(reaction),
+        articleId: id,
+      }),
+    );
+  };
+
+  const handleLikeReaction = (): void => {
+    handleReaction(Reaction.LIKE);
+  };
+
+  const handleDislikeReaction = (): void => {
+    handleReaction(Reaction.DISLIKE);
+  };
+
+  const handleSharedButtonClick = useCallback((): void => {
+    void dispatch(articlesActions.shareArticle({ id: id.toString() }));
+  }, [dispatch, id]);
 
   return (
     <article className={styles.article}>
       <div className={styles.header}>
         <div className={styles.info}>
           <Avatar
-            username={getFullName(author.firstName, author.lastName)}
-            avatarUrl={author.avatarUrl}
+            username={getFullName(firstName, lastName)}
+            avatarUrl={avatarUrl}
           />
           <span className={styles.publisherName}>
-            {getFullName(author.firstName, author.lastName)}
+            {getFullName(firstName, lastName)}
           </span>
           {publishedAt && (
             <span className={styles.publicationTime}>
               {getFormattedDate(publishedAt, DateFormat.DAY_SHORT_MONTH)}
             </span>
           )}
-          <span className={styles.publicationTime}>{MOCKED_READ_TIME}</span>
+          {readTime && (
+            <span className={styles.publicationTime}>
+              {getReadTimeString(readTime)}
+            </span>
+          )}
         </div>
-        <Icon iconName="favorite" className={styles.icon} />
+        <div className={styles.iconWrapper}>
+          {isMyArticles && (
+            <RouterLink
+              to={AppRoute.EDIT_ARTICLE.replace(':id', id.toString())}
+              state={article}
+            >
+              <Icon iconName="edit" className={styles.editIcon} />
+            </RouterLink>
+          )}
+          <Icon iconName="favorite" className={styles.pointerIcon} />
+        </div>
       </div>
-      <div className={styles.body}>
+      <div
+        className={getValidClassNames(styles.body, coverUrl && styles.hasCover)}
+      >
         <div className={styles.articleInfo}>
           <h4 className={styles.title}>{title}</h4>
           <article
@@ -65,11 +163,11 @@ const ArticleCard: React.FC<Properties> = ({
           ></article>
           <Tags tags={tags} />
         </div>
-        <img
-          src={ArticlePreview}
-          alt="article preview"
-          className={styles.preview}
-        />
+        {coverUrl && (
+          <div className={styles.coverWrapper}>
+            <img src={coverUrl} alt="article cover" className={styles.cover} />
+          </div>
+        )}
       </div>
       <div className={styles.footer}>
         <ul className={styles.reactions}>
@@ -81,24 +179,48 @@ const ArticleCard: React.FC<Properties> = ({
               }}
               className={styles.reaction}
             >
-              <Icon iconName="comment" className={styles.reactionIcon} />
-              <span className={styles.reactionCount}>{commentCount}</span>
+              <IconButton
+                iconName="comment"
+                className={styles.footerIcon}
+                label={commentCount.toString()}
+              />
             </Link>
           </li>
-          <li className={styles.reaction}>
-            <Icon iconName="view" className={styles.reactionIcon} />
-            <span className={styles.reactionCount}>{views}</span>
+          <li className={styles.footerIcon}>
+            <Icon iconName="view" />
+            <span>{MOCKED_REACTIONS.views}</span>
           </li>
-          <li className={styles.reaction}>
-            <Icon iconName="like" className={styles.reactionIcon} />
-            <span className={styles.reactionCount}>{likes}</span>
+          <li>
+            <IconButton
+              iconName="like"
+              className={getValidClassNames(
+                styles.footerIcon,
+                isOwnArticle ? styles.disabled : styles.reaction,
+                hasAlreadyReactedWith === Reaction.LIKE && styles.pressed,
+              )}
+              label={String(likesCount)}
+              onClick={handleLikeReaction}
+            />
           </li>
-          <li className={styles.reaction}>
-            <Icon iconName="dislike" className={styles.reactionIcon} />
-            <span className={styles.reactionCount}>{dislikes}</span>
+          <li>
+            <IconButton
+              iconName="dislike"
+              className={getValidClassNames(
+                styles.footerIcon,
+                isOwnArticle ? styles.disabled : styles.reaction,
+                hasAlreadyReactedWith === Reaction.DISLIKE && styles.pressed,
+              )}
+              label={String(dislikesCount)}
+              onClick={handleDislikeReaction}
+            />
           </li>
         </ul>
-        <Icon iconName="share" className={styles.icon} />
+
+        <IconButton
+          iconName="share"
+          className={styles.iconWrapper}
+          onClick={handleSharedButtonClick}
+        />
         <ShareOnFacebookButton
           title={title}
           articleUrl={articleUrl}

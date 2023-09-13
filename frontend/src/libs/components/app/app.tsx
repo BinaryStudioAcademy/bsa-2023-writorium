@@ -1,9 +1,10 @@
 import {
   Header,
+  Loader,
   Notification,
   RouterOutlet,
 } from '~/libs/components/components.js';
-import { DataStatus } from '~/libs/enums/data-status.enum.js';
+import { DataStatus } from '~/libs/enums/enums.js';
 import {
   useAppDispatch,
   useAppSelector,
@@ -11,7 +12,6 @@ import {
 } from '~/libs/hooks/hooks.js';
 import { actions } from '~/slices/auth/auth.js';
 
-import { Loader } from '../loader/loader.js';
 import styles from './styles.module.scss';
 
 const App: React.FC = () => {
@@ -34,7 +34,7 @@ const App: React.FC = () => {
 
   return (
     <>
-      <Loader isLoading={isLoading}>
+      <Loader isLoading={isLoading} hasOverlay type="circular">
         <Header user={user} />
         <div className={styles.container}>
           <RouterOutlet />
