@@ -90,7 +90,7 @@ const ArticleCard: React.FC<Properties> = ({
                   styles.pointerIcon,
                 )}
                 onClick={handleDeleteArticle}
-              ></IconButton>
+              />
               <RouterLink
                 to={AppRoute.EDIT_ARTICLE.replace(':id', id.toString())}
                 state={article}
