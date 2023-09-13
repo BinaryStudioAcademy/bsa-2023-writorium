@@ -7,8 +7,16 @@ import { type ValueOf } from '~/libs/types/types.js';
 
 import styles from './styles.module.scss';
 
+type PathName = ValueOf<typeof AppRoute> | ValueOf<typeof ArticleSubRoute>;
+
+type Path = {
+  pathname: PathName;
+  search: string;
+  hash: string;
+};
+
 type Properties = {
-  to: ValueOf<typeof AppRoute> | ValueOf<typeof ArticleSubRoute>;
+  to: PathName | Partial<Path>;
   className?: string;
   activeClassName?: string;
   children: React.ReactNode;
