@@ -1,13 +1,15 @@
 export { ArticlesApiPath } from './libs/enums/enums.js';
 export {
-  type ArticleBaseResponseDto,
+  type ArticleCommentCount,
   type ArticleCreateDto,
   type ArticleEntityType,
   type ArticleGetAllResponseDto,
   type ArticleRequestDto,
+  type ArticleResponseDto,
   type ArticlesFilters,
   type ArticleUpdateRequestDto,
-  type ArticleWithAuthorType,
+  type ArticleWithCommentCountResponseDto,
+  type ArticleWithRelationsType,
 } from './libs/types/types.js';
 export {
   articleCreate as articleCreateValidationSchema,

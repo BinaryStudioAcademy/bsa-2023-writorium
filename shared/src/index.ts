@@ -57,18 +57,20 @@ export {
   articleReactionValidationSchema,
 } from './packages/article-reactions/article-reactions.js';
 export {
-  type ArticleBaseResponseDto,
+  type ArticleCommentCount,
   type ArticleCreateDto,
   articleCreateValidationSchema,
   type ArticleEntityType,
   type ArticleGetAllResponseDto,
   type ArticleRequestDto,
+  type ArticleResponseDto,
   ArticlesApiPath,
   type ArticlesFilters,
   articlesFiltersValidationSchema,
   type ArticleUpdateRequestDto,
   articleUpdateValidationSchema,
-  type ArticleWithAuthorType,
+  type ArticleWithCommentCountResponseDto,
+  type ArticleWithRelationsType,
 } from './packages/articles/articles.js';
 export {
   AuthApiPath,
@@ -91,6 +93,7 @@ export {
   type CommentUpdateDto,
   type CommentUpdateRequestDto,
   commentUpdateValidationSchema,
+  type CommentWithRelationsResponseDto,
 } from './packages/comments/comments.js';
 export {
   FilesApiPath,
