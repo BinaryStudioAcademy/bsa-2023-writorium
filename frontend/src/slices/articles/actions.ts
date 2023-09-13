@@ -1,8 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import {
-  type ArticlesFilters,
-  type UserDetailsDto,
-} from 'shared/build/index.js';
+import { type ArticlesFilters } from 'shared/build/index.js';
 
 import { type AsyncThunkConfig } from '~/libs/types/types.js';
 import {
@@ -95,15 +92,6 @@ const getAllGenres = createAsyncThunk<
   return await genresApi.getAll();
 });
 
-const getAllAuthors = createAsyncThunk<
-  UserDetailsDto[],
-  undefined,
-  AsyncThunkConfig
->(`${sliceName}/getAllAuthors`, async (_loginPayload, { extra }) => {
-  const { articleApi } = extra;
-  return await articleApi.getAllAuthors();
-});
-
 const shareArticle = createAsyncThunk<
   { link: string },
   { id: string },
@@ -175,7 +163,6 @@ export {
   fetchAll,
   fetchOwn,
   fetchSharedArticle,
-  getAllAuthors,
   getAllGenres,
   getArticle,
   reactToArticle,

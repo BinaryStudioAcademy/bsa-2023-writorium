@@ -1,5 +1,4 @@
 import { createSlice, isAnyOf } from '@reduxjs/toolkit';
-import { type UserDetailsDto } from 'shared/build/index.js';
 
 import { DataStatus } from '~/libs/enums/enums.js';
 import { type ValueOf } from '~/libs/types/types.js';
@@ -12,7 +11,6 @@ import {
   fetchAll,
   fetchOwn,
   fetchSharedArticle,
-  getAllAuthors,
   getAllGenres,
   getArticle,
   reactToArticle,
@@ -24,7 +22,6 @@ type State = {
   articles: ArticleResponseDto[];
   dataStatus: ValueOf<typeof DataStatus>;
   genres: GenreGetAllResponseDto['items'];
-  authors: UserDetailsDto[];
   articleReactionDataStatus: ValueOf<typeof DataStatus>;
   getArticleStatus: ValueOf<typeof DataStatus>;
 };
@@ -33,7 +30,6 @@ const initialState: State = {
   article: null,
   articles: [],
   genres: [],
-  authors: [],
   dataStatus: DataStatus.IDLE,
   articleReactionDataStatus: DataStatus.IDLE,
   getArticleStatus: DataStatus.IDLE,
@@ -144,14 +140,7 @@ const { reducer, actions, name } = createSlice({
       state.dataStatus = DataStatus.REJECTED;
       state.genres = [];
     });
-    builder.addCase(getAllAuthors.fulfilled, (state, action) => {
-      state.dataStatus = DataStatus.FULFILLED;
-      state.authors = action.payload;
-    });
-    builder.addCase(getAllAuthors.rejected, (state) => {
-      state.dataStatus = DataStatus.REJECTED;
-      state.authors = [];
-    });
+
     builder.addMatcher(
       isAnyOf(fetchAll.fulfilled, fetchOwn.fulfilled),
       (state, action) => {
@@ -173,7 +162,6 @@ const { reducer, actions, name } = createSlice({
         updateArticle.pending,
         getArticle.pending,
         getAllGenres.pending,
-        getAllAuthors.pending,
         fetchSharedArticle.pending,
       ),
       (state) => {
