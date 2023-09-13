@@ -141,6 +141,14 @@ class ArticleController extends Controller {
         );
       },
     });
+
+    this.addRoute({
+      path: ArticlesApiPath.AUTHORS,
+      method: 'GET',
+      handler: () => {
+        return this.getAllAuthors();
+      },
+    });
   }
 
   /**
@@ -326,6 +334,28 @@ class ArticleController extends Controller {
     return {
       status: HttpCode.OK,
       payload: await this.articleService.find(options.params.id),
+    };
+  }
+
+  /**
+   * @swagger
+   * /articles/authors:
+   *    get:
+   *      description: Get list of authors
+   *      security:
+   *        - bearerAuth: []
+   *      responses:
+   *        200:
+   *          description: Successful operation
+   *          content:
+   *            application/json:
+   *              schema:
+   *                $ref: '#/components/schemas/Article'
+   */
+  private async getAllAuthors(): Promise<ApiHandlerResponse> {
+    return {
+      status: HttpCode.OK,
+      payload: await this.articleService.getAllAuthors(),
     };
   }
 }

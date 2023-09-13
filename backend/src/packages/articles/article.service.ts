@@ -5,6 +5,7 @@ import { type OpenAIService } from '~/libs/packages/openai/openai.package.js';
 
 import { GenreEntity } from '../genres/genre.entity.js';
 import { type GenreRepository } from '../genres/genre.repository.js';
+import { type UserDetailsModel, type UserRepository } from '../users/users.js';
 import { ArticleEntity } from './article.entity.js';
 import { type ArticleRepository } from './article.repository.js';
 import { getDetectArticleGenreCompletionConfig } from './libs/helpers/helpers.js';
@@ -22,15 +23,23 @@ class ArticleService implements IService {
   private articleRepository: ArticleRepository;
   private openAIService: OpenAIService;
   private genreRepository: GenreRepository;
+  private userRepository: UserRepository;
 
-  public constructor(
-    articleRepository: ArticleRepository,
-    openAIService: OpenAIService,
-    genreRepository: GenreRepository,
-  ) {
+  public constructor({
+    articleRepository,
+    openAIService,
+    genreRepository,
+    userRepository,
+  }: {
+    articleRepository: ArticleRepository;
+    openAIService: OpenAIService;
+    genreRepository: GenreRepository;
+    userRepository: UserRepository;
+  }) {
     this.articleRepository = articleRepository;
     this.openAIService = openAIService;
     this.genreRepository = genreRepository;
+    this.userRepository = userRepository;
   }
 
   public async detectArticleGenreFromText(
@@ -168,6 +177,9 @@ class ArticleService implements IService {
 
   public delete(): Promise<boolean> {
     return Promise.resolve(false);
+  }
+  public async getAllAuthors(): Promise<UserDetailsModel[] | null> {
+    return await this.userRepository.getAllAuthors();
   }
 }
 
