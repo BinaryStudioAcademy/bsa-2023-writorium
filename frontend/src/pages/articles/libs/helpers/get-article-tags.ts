@@ -1,8 +1,10 @@
-import { type ArticleWithAuthorType } from '~/packages/articles/articles.js';
+import { type ArticleWithCommentCountResponseDto } from '~/packages/articles/articles.js';
 
 import { type TagType } from '../types/types.js';
 
-const getArticleTags = (article: ArticleWithAuthorType): TagType[] => {
+const getArticleTags = (
+  article: ArticleWithCommentCountResponseDto,
+): TagType[] => {
   const result: TagType[] = [];
   const { prompt, genre } = article;
 

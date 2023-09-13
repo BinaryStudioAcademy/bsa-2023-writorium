@@ -5,11 +5,11 @@ import { type IStorage } from '~/libs/packages/storage/storage.js';
 
 import { ArticlesApiPath } from './libs/enums/enums.js';
 import {
-  type ArticleBaseResponseDto,
   type ArticleGetAllResponseDto,
   type ArticleRequestDto,
+  type ArticleResponseDto,
   type ArticlesFilters,
-  type ArticleWithAuthorType,
+  type ArticleWithCommentCountResponseDto,
 } from './libs/types/types.js';
 
 type Constructor = {
@@ -57,7 +57,7 @@ class ArticleApi extends HttpApi {
 
   public async create(
     payload: ArticleRequestDto,
-  ): Promise<ArticleBaseResponseDto> {
+  ): Promise<ArticleWithCommentCountResponseDto> {
     const response = await this.load(
       this.getFullEndpoint(ArticlesApiPath.ROOT, {}),
       {
@@ -68,10 +68,10 @@ class ArticleApi extends HttpApi {
       },
     );
 
-    return await response.json<ArticleBaseResponseDto>();
+    return await response.json<ArticleWithCommentCountResponseDto>();
   }
 
-  public async getArticle(id: number): Promise<ArticleWithAuthorType> {
+  public async getArticle(id: number): Promise<ArticleResponseDto> {
     const response = await this.load(
       this.getFullEndpoint(ArticlesApiPath.$ID, { id: String(id) }),
       {
@@ -81,7 +81,7 @@ class ArticleApi extends HttpApi {
       },
     );
 
-    return await response.json<ArticleWithAuthorType>();
+    return await response.json<ArticleResponseDto>();
   }
 }
 
