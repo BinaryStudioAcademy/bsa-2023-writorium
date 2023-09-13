@@ -10,6 +10,7 @@ import {
   useState,
 } from '~/libs/hooks/hooks.js';
 import { actions as articlesActions } from '~/slices/articles/articles.js';
+import { actions as userActions } from '~/slices/users/users.js';
 
 import { ArticleFilters } from './components/article-filters/article-filters.js';
 import { ArticleCard } from './components/components.js';
@@ -24,9 +25,8 @@ import styles from './styles.module.scss';
 
 const ArticlesFeed: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { articles, genres, authors } = useAppSelector(
-    ({ articles }) => articles,
-  );
+  const { articles, genres } = useAppSelector(({ articles }) => articles);
+  const { authors } = useAppSelector(({ users }) => users);
   const [filters, setFilters] = useState<FilterFormValues>({
     titleFilter: '',
     authorId: null,
@@ -54,7 +54,7 @@ const ArticlesFeed: React.FC = () => {
   }, [dispatch]);
 
   const handleLoadAuthors = useCallback(() => {
-    void dispatch(articlesActions.getAllAuthors());
+    void dispatch(userActions.getAllAuthors());
   }, [dispatch]);
 
   const handleFiltersSubmit = useCallback(
