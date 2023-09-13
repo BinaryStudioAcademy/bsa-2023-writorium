@@ -1,8 +1,5 @@
 .articleCreatePageWrapper,
 .editArticlePage {
-  display: flex;
-  align-items: start;
-  gap: 21px;
   padding-bottom: 38px;
 }
 
@@ -18,10 +15,8 @@
   flex: 40%;
 }
 
-.articleCreatePageWrapper {
-  padding-bottom: 126px;
-}
-
 .editArticlePage {
   display: flex;
+  align-items: start;
+  gap: 21px;
 }
