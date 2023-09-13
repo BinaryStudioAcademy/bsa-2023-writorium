@@ -187,14 +187,6 @@ class ArticleController extends Controller {
     });
 
     this.addRoute({
-      path: ArticlesApiPath.AUTHORS,
-      method: 'GET',
-      handler: () => {
-        return this.getAllAuthors();
-      },
-    });
-
-    this.addRoute({
       path: ArticlesApiPath.$ID_SHARE,
       method: 'GET',
       handler: (options) =>
@@ -438,34 +430,6 @@ class ArticleController extends Controller {
         options.params.id,
         options.headers.referer as string,
       ),
-    };
-  }
-  /**
-   * @swagger
-   *  /articles/authors:
-   *    post:
-   *      summary: Get list of authors
-   *      description: Get list of users with at least one written article
-   *      security:
-   *        - bearerAuth: []
-   *      requestBody:
-   *        required: true
-   *      responses:
-   *        200:
-   *          description: Successful operation
-   *          content:
-   *            application/json:
-   *              schema:
-   *                type: object
-   *                properties:
-   *                  link:
-   *                    type: string
-   */
-
-  private async getAllAuthors(): Promise<ApiHandlerResponse> {
-    return {
-      status: HttpCode.OK,
-      payload: await this.articleService.getAllAuthors(),
     };
   }
 
