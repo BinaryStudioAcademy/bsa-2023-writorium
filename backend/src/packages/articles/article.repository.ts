@@ -1,11 +1,13 @@
 import { type Model, type Page, type QueryBuilder } from 'objection';
 
+import { DatabaseTableName } from '~/libs/packages/database/libs/enums/database-table-name.enum.js';
+import { type CommentModel } from '~/packages/comments/comment.model.js';
+
 import { ArticleEntity } from './article.entity.js';
 import { type ArticleModel } from './article.model.js';
 import { EMPTY_COMMENT_COUNT } from './libs/constants/constants.js';
 import { SortingOrder } from './libs/enums/enums.js';
 import {
-  getCommentsCountQuery,
   getWherePublishedOnlyQuery,
   getWhereUserIdQuery,
 } from './libs/helpers/helpers.js';
@@ -40,6 +42,13 @@ class ArticleRepository implements IArticleRepository {
     void builder.select('id', 'isLike', 'userId');
   };
 
+  private getCommentsCountQuery(): QueryBuilder<CommentModel> {
+    return this.articleModel
+      .relatedQuery<CommentModel>(DatabaseTableName.COMMENTS)
+      .count()
+      .as('commentCount');
+  }
+
   public async findAll({
     userId,
     take,
@@ -51,7 +60,7 @@ class ArticleRepository implements IArticleRepository {
   } & ArticlesFilters): Promise<{ items: ArticleEntity[]; total: number }> {
     const articles = await this.articleModel
       .query()
-      .select('articles.*', getCommentsCountQuery(this.articleModel))
+      .select('articles.*', this.getCommentsCountQuery())
       .where(getWhereUserIdQuery(userId))
       .where(getWherePublishedOnlyQuery(hasPublishedOnly))
       .orderBy('articles.publishedAt', SortingOrder.DESCENDING)
@@ -116,29 +125,11 @@ class ArticleRepository implements IArticleRepository {
   }
 
   public async create(entity: ArticleEntity): Promise<ArticleEntity> {
-    const {
-      title,
-      text,
-      promptId,
-      genreId,
-      userId,
-      publishedAt,
-      coverId,
-      readTime,
-    } = entity.toNewObject();
+    const payload = entity.toNewObject();
 
     const article = await this.articleModel
       .query()
-      .insert({
-        title,
-        text,
-        promptId,
-        genreId,
-        userId,
-        publishedAt,
-        coverId,
-        readTime,
-      })
+      .insert(payload)
       .returning('*')
       .withGraphFetched(this.defaultRelationExpression)
       .modifyGraph('reactions', this.modifyReactionsGraph);
@@ -191,7 +182,7 @@ class ArticleRepository implements IArticleRepository {
     const article = await this.articleModel
       .query()
       .patchAndFetchById(id, payload)
-      .select('articles.*', getCommentsCountQuery(this.articleModel))
+      .select('articles.*', this.getCommentsCountQuery())
       .withGraphFetched(this.defaultRelationExpression)
       .modifyGraph('reactions', this.modifyReactionsGraph)
       .castTo<ArticleModel & ArticleCommentCount>();
