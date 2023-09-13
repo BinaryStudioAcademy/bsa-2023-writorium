@@ -1,1 +1,4 @@
-export { type GenreGetAllResponseDto } from 'shared/build/index.js';
+export {
+  type GenreGetAllItemResponseDto,
+  type GenreGetAllResponseDto,
+} from 'shared/build/index.js';

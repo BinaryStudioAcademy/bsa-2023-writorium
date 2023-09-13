@@ -11,4 +11,7 @@ const genresApi = new GenresApi({
 });
 
 export { genresApi };
-export { type GenreGetAllResponseDto } from './libs/types/types.js';
+export {
+  type GenreGetAllItemResponseDto,
+  type GenreGetAllResponseDto,
+} from './libs/types/types.js';
