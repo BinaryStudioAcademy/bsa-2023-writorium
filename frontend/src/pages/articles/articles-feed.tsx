@@ -1,6 +1,5 @@
-import isEqual from 'lodash.isequal';
-
 import { InfiniteScroll } from '~/libs/components/components.js';
+import { checkIsEqual } from '~/libs/helpers/helpers.js';
 import {
   useAppDispatch,
   useAppSelector,
@@ -59,7 +58,7 @@ const ArticlesFeed: React.FC = () => {
 
   const handleFiltersSubmit = useCallback(
     (payload: FilterFormValues): void => {
-      if (!isEqual(filters, payload)) {
+      if (!checkIsEqual(filters, payload)) {
         setFilters(payload);
         resetSkip();
       }
