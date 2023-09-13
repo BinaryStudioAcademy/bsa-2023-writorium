@@ -5,7 +5,6 @@ import { ArticleReactionEntity } from './article-reaction.entity.js';
 import { type ArticleReactionRepository } from './article-reaction.repository.js';
 import {
   type ArticleReactionCreateDto,
-  type ArticleReactionCreateResponseDto,
   type ArticleReactionRequestDto,
   type ArticleReactionResponseDto,
 } from './libs/types/types.js';
@@ -33,16 +32,14 @@ class ArticleReactionService implements IService {
 
   public async create(
     payload: ArticleReactionCreateDto,
-  ): Promise<ArticleReactionCreateResponseDto> {
-    await this.articleReactionRepository.create(
+  ): Promise<ArticleReactionResponseDto> {
+    const reaction = await this.articleReactionRepository.create(
       ArticleReactionEntity.initializeNew({
         ...payload,
       }),
     );
 
-    return await this.articleReactionRepository.findAllByArticleId(
-      payload.articleId,
-    );
+    return reaction.toObject();
   }
 
   public async update(
@@ -57,9 +54,7 @@ class ArticleReactionService implements IService {
       );
 
     if (!reactionEntity) {
-      throw new ApplicationError({
-        message: `Reaction for article with ID ${articleId} not found`,
-      });
+      return await this.create({ isLike, userId, articleId });
     }
 
     const reaction = reactionEntity.toObject();

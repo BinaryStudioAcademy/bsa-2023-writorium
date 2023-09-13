@@ -57,10 +57,37 @@ import {
  *            format: int64
  *            example: 198772
  *          publishedAt:
- *           type: string
- *           format: date-time
- *           nullable: true
- *           example: 2023-08-26T11:21:14.994Z
+ *            type: string
+ *            format: date-time
+ *            nullable: true
+ *            example: 2023-08-26T11:21:14.994Z
+ *          author:
+ *            readOnly: true
+ *            type: object
+ *            properties:
+ *              firstName:
+ *                type: string
+ *              lastName:
+ *                type: string
+ *          reactions:
+ *            readOnly: true
+ *            type: array
+ *            items:
+ *              type: object
+ *              properties:
+ *                id:
+ *                  type: integer
+ *                  format: int64
+ *                  minimum: 1
+ *                  example: 1234
+ *                isLike:
+ *                  type: boolean
+ *                userId:
+ *                  type: integer
+ *                  format: int64
+ *                  minimum: 1
+ *                  example: 8564
+ *
  */
 
 class ArticleController extends Controller {
