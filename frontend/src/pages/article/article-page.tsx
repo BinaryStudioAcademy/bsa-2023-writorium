@@ -4,7 +4,7 @@ import {
   Loader,
   Navigate,
 } from '~/libs/components/components.js';
-import { AppRoute, DataStatus } from '~/libs/enums/enums.js';
+import { AppRoute, DataStatus, LinkHash } from '~/libs/enums/enums.js';
 import { getFullName, getValidClassNames } from '~/libs/helpers/helpers.js';
 import {
   useAppDispatch,
@@ -121,7 +121,7 @@ const ArticlePage: React.FC = () => {
           <div className={styles.commentsBlockWrapper}>
             <h2
               className={getValidClassNames(styles.anchor, 'visually-hidden')}
-              id="comments"
+              id={LinkHash.COMMENTS}
             >
               Comments
             </h2>

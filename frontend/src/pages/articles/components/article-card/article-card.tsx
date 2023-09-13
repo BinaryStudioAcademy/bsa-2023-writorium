@@ -11,6 +11,7 @@ import {
   AppRoute,
   ArticleSubRoute,
   DateFormat,
+  LinkHash,
   Reaction,
 } from '~/libs/enums/enums.js';
 import {
@@ -175,7 +176,7 @@ const ArticleCard: React.FC<Properties> = ({
             <Link
               to={{
                 pathname: articleRouteById as typeof AppRoute.ARTICLE,
-                hash: 'comments',
+                hash: LinkHash.COMMENTS,
               }}
               className={styles.reaction}
             >
