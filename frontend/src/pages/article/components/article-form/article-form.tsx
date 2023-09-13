@@ -49,12 +49,12 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
   const handleArticleSubmit = useCallback(
     (articleSubmitType: ValueOf<typeof ArticleSubmitType>) =>
       (payload: ArticleRequestDto): void => {
-        const isArticlePublish =
+        const isArticlePublished =
           articleSubmitType === ArticleSubmitType.PUBLISH;
 
         const updatedPayload = {
           ...payload,
-          publishedAt: isArticlePublish ? new Date().toISOString() : null,
+          publishedAt: isArticlePublished ? new Date().toISOString() : null,
         };
 
         void dispatch(
@@ -66,7 +66,7 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
           .unwrap()
           .then(() => {
             navigate(
-              isArticlePublish
+              isArticlePublished
                 ? AppRoute.ARTICLES
                 : ArticleSubRoute.MY_ARTICLES,
             );
