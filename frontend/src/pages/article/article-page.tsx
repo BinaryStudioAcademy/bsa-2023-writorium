@@ -72,9 +72,9 @@ const ArticlePage: React.FC = () => {
 
   const isLoading = !(
     getArticleStatus === DataStatus.FULFILLED ||
-    getArticleStatus == DataStatus.REJECTED ||
+    getArticleStatus === DataStatus.REJECTED ||
     commentsDataStatus === DataStatus.FULFILLED ||
-    commentsDataStatus == DataStatus.REJECTED
+    commentsDataStatus === DataStatus.REJECTED
   );
 
   if (!article && !isLoading) {
@@ -97,23 +97,25 @@ const ArticlePage: React.FC = () => {
     <Loader isLoading={isLoading} hasOverlay type="circular">
       <Layout>
         <div className={styles.articlePageWrapper}>
-          <ArticleView
-            tags={MOCKED_TAGS}
-            text={article.text}
-            title={article.title}
-            coverUrl={article.coverUrl}
-          />
-          {article?.author && (
-            <ArticleDetails
-              readTime={article.readTime}
-              authorName={getFullName(
-                article.author.firstName,
-                article.author.lastName,
-              )}
-              publishedAt={article.publishedAt ?? ''}
-              genre={article.genre ?? ''}
-              avatarUrl={article.author.avatarUrl}
-            />
+          {article && (
+            <>
+              <ArticleView
+                tags={MOCKED_TAGS}
+                text={article.text}
+                title={article.title}
+                coverUrl={article.coverUrl}
+              />
+              <ArticleDetails
+                readTime={article.readTime}
+                authorName={getFullName(
+                  article.author.firstName,
+                  article.author.lastName,
+                )}
+                publishedAt={article.publishedAt ?? ''}
+                genre={article.genre}
+                avatarUrl={article.author.avatarUrl}
+              />
+            </>
           )}
           <div>
             <h2 className="visually-hidden" id="comments">
