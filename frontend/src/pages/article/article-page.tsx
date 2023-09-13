@@ -5,7 +5,7 @@ import {
   Navigate,
 } from '~/libs/components/components.js';
 import { AppRoute, DataStatus } from '~/libs/enums/enums.js';
-import { getFullName } from '~/libs/helpers/helpers.js';
+import { getFullName, getValidClassNames } from '~/libs/helpers/helpers.js';
 import {
   useAppDispatch,
   useAppSelector,
@@ -48,6 +48,7 @@ const ArticlePage: React.FC = () => {
     if (hash && element) {
       element.scrollIntoView({
         block: 'start',
+        behavior: 'smooth',
       });
     }
   }, [commentsDataStatus, location]);
@@ -117,8 +118,11 @@ const ArticlePage: React.FC = () => {
               />
             </>
           )}
-          <div>
-            <h2 className="visually-hidden" id="comments">
+          <div className={styles.commentsBlockWrapper}>
+            <h2
+              className={getValidClassNames(styles.anchor, 'visually-hidden')}
+              id="comments"
+            >
               Comments
             </h2>
             {hasComments && (
