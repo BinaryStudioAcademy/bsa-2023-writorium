@@ -154,9 +154,9 @@ const { reducer, actions, name } = createSlice({
     builder.addCase(updateComment.fulfilled, (state, action) => {
       const updatedComment = action.payload;
 
-      state.articleComments = state.articleComments.map((comment) =>
-        comment.id === updatedComment.id ? updatedComment : comment,
-      );
+      state.articleComments = state.articleComments.map((comment) => {
+        return comment.id === updatedComment.id ? updatedComment : comment;
+      });
       state.articleCommentsDataStatus = DataStatus.FULFILLED;
     });
     builder.addMatcher(

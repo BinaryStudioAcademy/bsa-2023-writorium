@@ -1,13 +1,14 @@
 import { ApplicationError } from '~/libs/exceptions/exceptions.js';
 import { type IService } from '~/libs/interfaces/service.interface.js';
 import { ForbiddenError } from '~/libs/packages/exceptions/exceptions.js';
+import { type UserAuthResponseDto } from '~/packages/users/users.js';
 
 import { CommentEntity } from './comment.entity.js';
 import { type CommentRepository } from './comment.repository.js';
 import {
   type CommentCreateDto,
   type CommentGetAllResponseDto,
-  type CommentUpdateDto,
+  type CommentUpdateRequestDto,
   type CommentWithRelationsResponseDto,
 } from './libs/types/types.js';
 
@@ -60,7 +61,10 @@ class CommentService implements IService {
 
   public async update(
     id: number,
-    payload: CommentUpdateDto,
+    {
+      payload,
+      userId,
+    }: { payload: CommentUpdateRequestDto; userId: UserAuthResponseDto['id'] },
   ): Promise<CommentWithRelationsResponseDto> {
     const comment = await this.find(id);
 
@@ -70,9 +74,9 @@ class CommentService implements IService {
       });
     }
 
-    if (comment.userId !== payload.userId) {
+    if (comment.userId !== userId) {
       throw new ForbiddenError(
-        `User with id "${payload.userId}" has no rights to update this comment`,
+        `User with id "${userId}" has no rights to update this comment`,
       );
     }
 

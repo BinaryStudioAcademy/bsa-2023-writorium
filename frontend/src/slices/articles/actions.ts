@@ -14,7 +14,7 @@ import {
 import {
   type CommentBaseRequestDto,
   type CommentGetAllResponseDto,
-  type CommentUpdateRequestDto,
+  type CommentUpdateDto,
   type CommentWithRelationsResponseDto,
 } from '~/packages/comments/comments.js';
 import { NotificationType } from '~/packages/notification/notification.js';
@@ -176,7 +176,7 @@ const createComment = createAsyncThunk<
 
 const updateComment = createAsyncThunk<
   CommentWithRelationsResponseDto,
-  CommentUpdateRequestDto,
+  CommentUpdateDto,
   AsyncThunkConfig
 >(`${sliceName}/update-comment`, (payload, { extra }) => {
   const { commentsApi } = extra;

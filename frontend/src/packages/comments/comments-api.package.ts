@@ -7,7 +7,7 @@ import { CommentsApiPath } from './libs/enums/enums.js';
 import {
   type CommentBaseRequestDto,
   type CommentGetAllResponseDto,
-  type CommentUpdateRequestDto,
+  type CommentUpdateDto,
   type CommentWithRelationsResponseDto,
 } from './libs/types/types.js';
 
@@ -54,11 +54,14 @@ class CommentsApi extends HttpApi {
     return await response.json<CommentWithRelationsResponseDto>();
   }
 
-  public async update(
-    payload: CommentUpdateRequestDto,
-  ): Promise<CommentWithRelationsResponseDto> {
+  public async update({
+    id,
+    ...payload
+  }: CommentUpdateDto): Promise<CommentWithRelationsResponseDto> {
     const response = await this.load(
-      this.getFullEndpoint(CommentsApiPath.$ID, {}),
+      this.getFullEndpoint(CommentsApiPath.$ID, {
+        id: id.toString(),
+      }),
       {
         method: 'PATCH',
         contentType: ContentType.JSON,
