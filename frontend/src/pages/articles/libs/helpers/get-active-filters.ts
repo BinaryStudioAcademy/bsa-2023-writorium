@@ -3,16 +3,19 @@ import { type FilterFormValues } from '../types/types.js';
 const getActiveFilters = (
   filters: FilterFormValues,
 ): Partial<FilterFormValues> => {
-  const activeFilters: Partial<FilterFormValues> = {};
-
-  let keys: keyof FilterFormValues;
-  for (keys in filters) {
-    const value = filters[keys];
-    if (value) {
-      Object.assign(activeFilters, { [keys]: value });
-    }
-  }
-  return activeFilters;
+  // eslint-disable-next-line unicorn/no-array-reduce
+  return Object.entries(filters).reduce<Partial<FilterFormValues>>(
+    (activeFilters, [keys, value]) => {
+      if (value) {
+        return {
+          ...activeFilters,
+          [keys]: value,
+        };
+      }
+      return activeFilters;
+    },
+    {},
+  );
 };
 
 export { getActiveFilters };
