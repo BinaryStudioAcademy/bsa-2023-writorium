@@ -1,5 +1,8 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { type ArticlesFilters } from 'shared/build/index.js';
+import {
+  type ArticlesFilters,
+  type UserDetailsDto,
+} from 'shared/build/index.js';
 
 import { type AsyncThunkConfig } from '~/libs/types/types.js';
 import {
@@ -7,6 +10,7 @@ import {
   type ArticleGetAllResponseDto,
   type ArticleRequestDto,
 } from '~/packages/articles/articles.js';
+import { type GenreGetAllResponseDto } from '~/packages/genres/genres.js';
 import { type PromptRequestDto } from '~/packages/prompts/prompts.js';
 
 import { name as sliceName } from './articles.slice.js';
@@ -67,4 +71,29 @@ const getArticle = createAsyncThunk<
   return articleApi.getArticle(id);
 });
 
-export { createArticle, fetchAll, fetchOwn, getArticle };
+const getAllGenres = createAsyncThunk<
+  GenreGetAllResponseDto,
+  undefined,
+  AsyncThunkConfig
+>(`${sliceName}/getAllGenres`, async (_loginPayload, { extra }) => {
+  const { genresApi } = extra;
+  return await genresApi.getAll();
+});
+
+const getAllAuthors = createAsyncThunk<
+  UserDetailsDto[],
+  undefined,
+  AsyncThunkConfig
+>(`${sliceName}/getAllAuthors`, async (_loginPayload, { extra }) => {
+  const { articleApi } = extra;
+  return await articleApi.getAllAuthors();
+});
+
+export {
+  createArticle,
+  fetchAll,
+  fetchOwn,
+  getAllAuthors,
+  getAllGenres,
+  getArticle,
+};
