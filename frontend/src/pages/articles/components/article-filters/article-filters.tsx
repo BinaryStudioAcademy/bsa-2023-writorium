@@ -26,6 +26,7 @@ const ArticleFilters: React.FC<Properties> = ({
   authorsSelectOptions,
   onSubmit,
 }) => {
+  const FILTERS_FORM_SUBMISSION_DELAY = 500;
   const { control, errors, watch, handleReset } = useAppForm<FilterFormValues>({
     defaultValues: DEFAULT_FILTER_PAYLOAD,
     mode: 'onChange',
@@ -40,7 +41,7 @@ const ArticleFilters: React.FC<Properties> = ({
   useDeepCompareEffect(() => {
     const handler = setTimeout(() => {
       onSubmit(data);
-    }, 500);
+    }, FILTERS_FORM_SUBMISSION_DELAY);
     return () => {
       clearTimeout(handler);
     };
