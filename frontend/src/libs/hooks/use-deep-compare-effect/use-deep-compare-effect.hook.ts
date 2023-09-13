@@ -4,8 +4,7 @@ import { type DependencyList, type EffectCallback } from 'react';
 import React from 'react';
 
 function useDeepCompareMemoize<T>(value: T): T {
-  const reference = React.useRef<T>(value); // const signalReference = React.useRef<number>(0);
-
+  const reference = React.useRef<T>(value);
   if (!isEqual(value, reference.current)) {
     reference.current = cloneDeep(value);
   }
