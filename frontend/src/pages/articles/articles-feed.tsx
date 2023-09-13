@@ -1,3 +1,5 @@
+import isEqual from 'lodash.isequal';
+
 import { InfiniteScroll } from '~/libs/components/components.js';
 import {
   useAppDispatch,
@@ -5,18 +7,34 @@ import {
   useCallback,
   useEffect,
   usePagination,
+  useState,
 } from '~/libs/hooks/hooks.js';
 import { actions as articlesActions } from '~/slices/articles/articles.js';
 
+import { ArticleFilters } from './components/article-filters/article-filters.js';
 import { ArticleCard } from './components/components.js';
 import { MOCKED_REACTIONS } from './libs/constants.js';
-import { getArticleTags } from './libs/helpers/helpers.js';
+import {
+  getActiveFilters,
+  getArticleTags,
+  getSelectAuthorsOptions,
+  getSelectGenresOptions,
+} from './libs/helpers/helpers.js';
+import { type FilterFormValues } from './libs/types/types.js';
 import styles from './styles.module.scss';
 
 const ArticlesFeed: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { articles } = useAppSelector(({ articles }) => articles);
-  const { hasMore, loadMore } = usePagination();
+  const { articles, genres, authors } = useAppSelector(
+    ({ articles }) => articles,
+  );
+  const [filters, setFilters] = useState<FilterFormValues>({
+    titleFilter: '',
+    authorId: null,
+    genreId: null,
+  });
+
+  const { hasMore, loadMore, resetSkip } = usePagination();
 
   const handleLoadArticles = useCallback(() => {
     void loadMore(async (skip: number, take: number) => {
@@ -24,39 +42,68 @@ const ArticlesFeed: React.FC = () => {
         articlesActions.fetchAll({
           take,
           skip,
+          ...getActiveFilters(filters),
         }),
       ).unwrap();
 
       return Boolean(data.items.length);
     });
-  }, [dispatch, loadMore]);
+  }, [dispatch, loadMore, filters]);
+
+  const handleLoadGenres = useCallback(() => {
+    void dispatch(articlesActions.getAllGenres());
+  }, [dispatch]);
+
+  const handleLoadAuthors = useCallback(() => {
+    void dispatch(articlesActions.getAllAuthors());
+  }, [dispatch]);
+
+  const handleFiltersSubmit = useCallback(
+    (payload: FilterFormValues): void => {
+      if (!isEqual(filters, payload)) {
+        setFilters(payload);
+        resetSkip();
+      }
+    },
+    [filters, resetSkip],
+  );
 
   useEffect(() => {
     handleLoadArticles();
+    handleLoadAuthors();
+    handleLoadGenres();
 
     return () => {
       dispatch(articlesActions.resetArticles());
     };
-  }, [dispatch, handleLoadArticles]);
+  }, [dispatch, handleLoadArticles, handleLoadAuthors, handleLoadGenres]);
 
   return (
-    <InfiniteScroll
-      hasMore={hasMore}
-      className={styles.articles}
-      dataLength={articles.length}
-      fetchData={handleLoadArticles}
-    >
-      {Boolean(articles.length) &&
-        articles.map((article) => (
-          <ArticleCard
-            key={article.id}
-            article={article}
-            author={article.author!}
-            tags={getArticleTags(article)}
-            reactions={MOCKED_REACTIONS}
-          />
-        ))}
-    </InfiniteScroll>
+    <div className={styles.articlesWrapper}>
+      <InfiniteScroll
+        hasMore={hasMore}
+        className={styles.articles}
+        dataLength={articles.length}
+        fetchData={handleLoadArticles}
+      >
+        {Boolean(articles.length) &&
+          articles.map((article) => (
+            <ArticleCard
+              key={article.id}
+              article={article}
+              author={article.author!}
+              tags={getArticleTags(article)}
+              reactions={MOCKED_REACTIONS}
+            />
+          ))}
+      </InfiniteScroll>
+
+      <ArticleFilters
+        genreSelectOptions={getSelectGenresOptions(genres)}
+        authorsSelectOptions={getSelectAuthorsOptions(authors)}
+        onSubmit={handleFiltersSubmit}
+      />
+    </div>
   );
 };
 
