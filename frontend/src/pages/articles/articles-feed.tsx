@@ -51,7 +51,7 @@ const ArticlesFeed: React.FC = () => {
           <ArticleCard
             key={article.id}
             article={article}
-            author={article.author!}
+            author={article.author}
             tags={getArticleTags(article)}
             reactions={MOCKED_REACTIONS}
           />
