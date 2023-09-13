@@ -17,4 +17,7 @@ export {
   type ArticleRequestDto,
   type ArticleWithAuthorType,
 } from './libs/types/types.js';
-export { articleCreateValidationSchema } from './libs/validation-schemas/validation-schemas.js';
+export {
+  articleCreateValidationSchema,
+  articlesFormFiltersValidationSchema,
+} from './libs/validation-schemas/validation-schemas.js';
