@@ -4,7 +4,6 @@ import { HttpApi } from '~/libs/packages/api/api.js';
 import { CustomHttpHeader, type IHttp } from '~/libs/packages/http/http.js';
 import { type IStorage } from '~/libs/packages/storage/storage.js';
 
-import { type UserDetailsDto } from '../users/users.js';
 import { ArticlesApiPath } from './libs/enums/enums.js';
 import {
   type ArticleGetAllResponseDto,
@@ -150,19 +149,6 @@ class ArticleApi extends HttpApi {
     );
 
     return await response.json<ArticleReactionResponseDto>();
-  }
-
-  public async getAllAuthors(): Promise<UserDetailsDto[]> {
-    const response = await this.load(
-      this.getFullEndpoint(ArticlesApiPath.AUTHORS, {}),
-      {
-        method: 'GET',
-        contentType: ContentType.JSON,
-        hasAuth: true,
-      },
-    );
-
-    return await response.json<UserDetailsDto[]>();
   }
 }
 
