@@ -6,6 +6,7 @@ import {
   IconButton,
   Link,
   ShareOnFacebookButton,
+  Tags,
 } from '~/libs/components/components.js';
 import {
   AppRoute,
@@ -40,7 +41,6 @@ import { actions as articlesActions } from '~/slices/articles/articles.js';
 
 import { MOCKED_REACTIONS } from '../../libs/constants.js';
 import { getReactionConvertedToBoolean } from '../../libs/helpers/helpers.js';
-import { Tags } from '../components.js';
 import styles from './styles.module.scss';
 
 type Properties = {

@@ -1,13 +1,13 @@
 import {
   IconButton,
   ShareOnFacebookButton,
+  Tags,
 } from '~/libs/components/components.js';
 import { getValidClassNames, sanitizeHtml } from '~/libs/helpers/helpers.js';
 import { useAppDispatch, useCallback, useParams } from '~/libs/hooks/hooks.js';
 import { type TagType } from '~/libs/types/types.js';
 import { actions as articlesActions } from '~/slices/articles/articles.js';
 
-import { Tags } from '../../../articles/components/components.js';
 import styles from './styles.module.scss';
 
 type Properties = {
