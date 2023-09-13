@@ -2,7 +2,10 @@ import { ArticleEntity } from './article.entity.js';
 import { type ArticleModel } from './article.model.js';
 import { SortingOrder } from './libs/enums/enums.js';
 import {
+  getWhereAuthorIdQuery,
+  getWhereGenreIdQuery,
   getWherePublishedOnlyQuery,
+  getWhereTitleLikeQuery,
   getWhereUserIdQuery,
 } from './libs/helpers/helpers.js';
 import { type IArticleRepository } from './libs/interfaces/interfaces.js';
@@ -22,6 +25,9 @@ class ArticleRepository implements IArticleRepository {
     take,
     skip,
     hasPublishedOnly,
+    genreId,
+    titleFilter,
+    authorId,
   }: {
     userId?: number;
     hasPublishedOnly?: boolean;
@@ -29,6 +35,9 @@ class ArticleRepository implements IArticleRepository {
     const articles = await this.articleModel
       .query()
       .where(getWhereUserIdQuery(userId))
+      .where(getWhereGenreIdQuery(genreId))
+      .where(getWhereAuthorIdQuery(authorId))
+      .where(getWhereTitleLikeQuery(titleFilter))
       .where(getWherePublishedOnlyQuery(hasPublishedOnly))
       .orderBy('articles.publishedAt', SortingOrder.DESCENDING)
       .page(skip / take, take)
