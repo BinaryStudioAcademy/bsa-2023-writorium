@@ -3,7 +3,10 @@ import { type WithNullableKeys } from '~/libs/types/types.js';
 
 import {
   type ArticleEntityType,
-  type ArticleWithAuthorType,
+  type ArticleResponseDto,
+  type ArticleWithRelationsType,
+  type ReactionResponseDto,
+  type UserDetailsResponseDto,
 } from './libs/types/types.js';
 
 class ArticleEntity implements IEntity {
@@ -16,10 +19,11 @@ class ArticleEntity implements IEntity {
   private 'coverId': number | null;
   private 'coverUrl'?: string | null;
   private 'publishedAt': string | null;
-  private 'author'?: ArticleWithAuthorType['author'];
-  private 'prompt'?: ArticleWithAuthorType['prompt'];
+  private 'author'?: UserDetailsResponseDto;
+  private 'prompt'?: ArticleWithRelationsType['prompt'];
+  private 'genre'?: ArticleWithRelationsType['genre'];
+  private 'reactions'?: ReactionResponseDto[];
   private 'readTime': number | null;
-  private 'genre'?: ArticleWithAuthorType['genre'];
   private 'deletedAt': string | null;
 
   private constructor({
@@ -33,11 +37,12 @@ class ArticleEntity implements IEntity {
     coverUrl,
     publishedAt,
     author,
+    reactions,
     prompt,
     genre,
     deletedAt,
     readTime,
-  }: WithNullableKeys<ArticleWithAuthorType, 'id'>) {
+  }: WithNullableKeys<ArticleWithRelationsType, 'id'>) {
     this.id = id;
     this.title = title;
     this.text = text;
@@ -46,6 +51,7 @@ class ArticleEntity implements IEntity {
     this.genreId = genreId;
     this.publishedAt = publishedAt;
     this.author = author;
+    this.reactions = reactions;
     this.prompt = prompt;
     this.genre = genre;
     this.readTime = readTime;
@@ -60,42 +66,17 @@ class ArticleEntity implements IEntity {
     text,
     userId,
     coverId,
-    promptId,
-    genreId,
-    publishedAt,
-    deletedAt,
-    readTime,
-  }: ArticleEntityType): ArticleEntity {
-    return new ArticleEntity({
-      id,
-      title,
-      text,
-      userId,
-      coverId,
-      genreId,
-      promptId,
-      publishedAt,
-      deletedAt,
-      readTime,
-    });
-  }
-
-  public static initializeWithAuthor({
-    id,
-    title,
-    text,
-    userId,
-    coverId,
-    promptId,
-    genreId,
-    publishedAt,
     coverUrl,
+    promptId,
+    genreId,
+    publishedAt,
     author,
+    reactions,
     prompt,
     genre,
     deletedAt,
     readTime,
-  }: ArticleWithAuthorType): ArticleEntity {
+  }: ArticleWithRelationsType): ArticleEntity {
     return new ArticleEntity({
       id,
       title,
@@ -107,6 +88,7 @@ class ArticleEntity implements IEntity {
       genreId,
       publishedAt,
       author,
+      reactions,
       prompt,
       genre,
       deletedAt,
@@ -154,7 +136,7 @@ class ArticleEntity implements IEntity {
     };
   }
 
-  public toObjectWithAuthor(): ArticleWithAuthorType {
+  public toObjectWithRelations(): ArticleResponseDto {
     return {
       id: this.id as number,
       title: this.title,
@@ -163,13 +145,14 @@ class ArticleEntity implements IEntity {
       promptId: this.promptId,
       genreId: this.genreId,
       coverId: this.coverId,
-      coverUrl: this.coverUrl,
+      coverUrl: this.coverUrl as ArticleResponseDto['coverUrl'],
       publishedAt: this.publishedAt,
-      author: this.author,
-      prompt: this.prompt,
-      genre: this.genre,
-      deletedAt: this.deletedAt,
+      author: this.author as UserDetailsResponseDto,
+      reactions: this.reactions as ReactionResponseDto[],
+      prompt: this.prompt as ArticleResponseDto['prompt'],
+      genre: this.genre as ArticleResponseDto['genre'],
       readTime: this.readTime,
+      deletedAt: this.deletedAt,
     };
   }
 

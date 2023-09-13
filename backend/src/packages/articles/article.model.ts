@@ -11,6 +11,7 @@ import { FileModel } from '../files/file.model.js';
 import { GenreModel } from '../genres/genre.model.js';
 import { PromptModel } from '../prompts/prompt.model.js';
 import { UserDetailsModel } from '../users/user-details.model.js';
+import { type ReactionResponseDto } from './libs/types/types.js';
 
 class ArticleModel extends AbstractModel {
   public 'title': string;
@@ -21,6 +22,7 @@ class ArticleModel extends AbstractModel {
   public 'publishedAt': string | null;
   public 'genre': GenreModel;
   public 'prompt': PromptModel;
+  public 'reactions': ReactionResponseDto[];
   public 'readTime': number | null;
   public 'coverId': number | null;
   public 'cover': FileModel | null;
@@ -33,7 +35,7 @@ class ArticleModel extends AbstractModel {
 
   public static get relationMappings(): RelationMappings {
     return {
-      articleRactions: {
+      reactions: {
         relation: Model.HasManyRelation,
         modelClass: ArticleReactionModel,
         join: {

@@ -1,9 +1,11 @@
 import {
   createArticle,
   deleteArticle,
+  deleteArticleReaction,
   fetchAll,
   fetchOwn,
   getArticle,
+  reactToArticle,
   updateArticle,
 } from './actions.js';
 import { actions } from './articles.slice.js';
@@ -16,6 +18,8 @@ const allActions = {
   updateArticle,
   getArticle,
   deleteArticle,
+  reactToArticle,
+  deleteArticleReaction,
 };
 
 export { allActions as actions };
