@@ -1,5 +1,5 @@
 .header {
-  position: fixed;
+  position: sticky;
   top: 0;
   right: 0;
   left: 0;
@@ -7,10 +7,10 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: var(--header-height);
+  height: 105px;
   padding: 30px 60px;
-  background: var(--light-grey);
-  border-bottom: 2px solid var(--light-grey-15);
+  background: var(--light-gray);
+  border-bottom: 2px solid var(--light-gray-15);
 }
 
 .logo {
@@ -37,7 +37,7 @@
 }
 
 .dropdown.dropdownModal {
-  background-color: var(--light-grey-15);
+  background-color: var(--light-gray-15);
 }
 
 .dropdown .dropdownModal.open {

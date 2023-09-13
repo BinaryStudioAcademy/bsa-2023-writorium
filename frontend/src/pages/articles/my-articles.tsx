@@ -13,7 +13,6 @@ import { actions as articlesActions } from '~/slices/articles/articles.js';
 
 import { ArticleFilters } from './components/article-filters/article-filters.js';
 import { ArticleCard } from './components/components.js';
-import { MOCKED_REACTIONS } from './libs/constants.js';
 import {
   getActiveFilters,
   getArticleTags,
@@ -92,9 +91,9 @@ const MyArticles: React.FC = () => {
             <ArticleCard
               key={article.id}
               article={article}
-              author={article.author!}
+              author={article.author}
               tags={getArticleTags(article)}
-              reactions={MOCKED_REACTIONS}
+              reactions={article.reactions}
             />
           ))}
       </InfiniteScroll>

@@ -1,16 +1,19 @@
 import { ApiPath, ContentType } from '~/libs/enums/enums.js';
+import { writeTextInClipboard } from '~/libs/helpers/helpers.js';
 import { HttpApi } from '~/libs/packages/api/api.js';
-import { type IHttp } from '~/libs/packages/http/http.js';
+import { CustomHttpHeader, type IHttp } from '~/libs/packages/http/http.js';
 import { type IStorage } from '~/libs/packages/storage/storage.js';
 
 import { type UserDetailsDto } from '../users/users.js';
 import { ArticlesApiPath } from './libs/enums/enums.js';
 import {
-  type ArticleBaseResponseDto,
   type ArticleGetAllResponseDto,
+  type ArticleReactionRequestDto,
+  type ArticleReactionResponseDto,
   type ArticleRequestDto,
+  type ArticleResponseDto,
   type ArticlesFilters,
-  type ArticleWithAuthorType,
+  type ArticleUpdateRequestPayload,
 } from './libs/types/types.js';
 
 type Constructor = {
@@ -56,9 +59,7 @@ class ArticleApi extends HttpApi {
     return await response.json<ArticleGetAllResponseDto>();
   }
 
-  public async create(
-    payload: ArticleRequestDto,
-  ): Promise<ArticleBaseResponseDto> {
+  public async create(payload: ArticleRequestDto): Promise<ArticleResponseDto> {
     const response = await this.load(
       this.getFullEndpoint(ArticlesApiPath.ROOT, {}),
       {
@@ -69,10 +70,60 @@ class ArticleApi extends HttpApi {
       },
     );
 
-    return await response.json<ArticleBaseResponseDto>();
+    return await response.json<ArticleResponseDto>();
+  }
+  public async update(
+    payload: ArticleUpdateRequestPayload,
+  ): Promise<ArticleResponseDto> {
+    const response = await this.load(
+      this.getFullEndpoint(ArticlesApiPath.EDIT, {
+        id: payload.articleId.toString(),
+      }),
+      {
+        method: 'PUT',
+        contentType: ContentType.JSON,
+        payload: JSON.stringify(payload.articleForUpdate),
+        hasAuth: true,
+      },
+    );
+
+    return await response.json<ArticleResponseDto>();
   }
 
-  public async getArticle(id: number): Promise<ArticleWithAuthorType> {
+  public async share(id: string): Promise<{ link: string }> {
+    const response = await this.load(
+      this.getFullEndpoint(ArticlesApiPath.$ID_SHARE, { id }),
+      {
+        method: 'GET',
+        contentType: ContentType.JSON,
+        hasAuth: true,
+      },
+    );
+
+    const { link } = await response.json<{ link: string }>();
+
+    await writeTextInClipboard(link);
+
+    return { link };
+  }
+
+  public async getByToken(token: string): Promise<ArticleResponseDto> {
+    const response = await this.load(
+      this.getFullEndpoint(ArticlesApiPath.SHARED_BASE, {}),
+      {
+        method: 'GET',
+        contentType: ContentType.JSON,
+        hasAuth: false,
+        customHeaders: {
+          [CustomHttpHeader.SHARED_ARTICLE_TOKEN]: token,
+        },
+      },
+    );
+
+    return await response.json<ArticleResponseDto>();
+  }
+
+  public async getArticle(id: number): Promise<ArticleResponseDto> {
     const response = await this.load(
       this.getFullEndpoint(ArticlesApiPath.$ID, { id: String(id) }),
       {
@@ -82,7 +133,23 @@ class ArticleApi extends HttpApi {
       },
     );
 
-    return await response.json<ArticleWithAuthorType>();
+    return await response.json<ArticleResponseDto>();
+  }
+
+  public async updateArticleReaction(
+    payload: ArticleReactionRequestDto,
+  ): Promise<ArticleReactionResponseDto> {
+    const response = await this.load(
+      this.getFullEndpoint(ArticlesApiPath.REACT, {}),
+      {
+        method: 'PUT',
+        contentType: ContentType.JSON,
+        payload: JSON.stringify(payload),
+        hasAuth: true,
+      },
+    );
+
+    return await response.json<ArticleReactionResponseDto>();
   }
 
   public async getAllAuthors(): Promise<UserDetailsDto[]> {

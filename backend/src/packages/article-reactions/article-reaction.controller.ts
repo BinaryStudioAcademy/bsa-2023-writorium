@@ -38,7 +38,6 @@ import { articleReactionValidationSchema } from './libs/validation-schemas/valid
  *            format: int64
  *            minimum: 1
  *            example: 10
- *            readOnly: true
  */
 
 class ArticleReactionController extends Controller {
@@ -104,18 +103,7 @@ class ArticleReactionController extends Controller {
    *          content:
    *            application/json:
    *              schema:
-   *                type: object
-   *                properties:
-   *                  likeCount:
-   *                    type: integer
-   *                    format: int64
-   *                    minimum: 0
-   *                    example: 10
-   *                  dislikeCount:
-   *                    type: integer
-   *                    format: int64
-   *                    minimum: 0
-   *                    example: 10
+   *                $ref: '#/components/schemas/Article reaction'
    */
   public async create(
     options: ApiHandlerOptions<{
@@ -136,12 +124,12 @@ class ArticleReactionController extends Controller {
    * @swagger
    * /articles/react:
    *    put:
-   *      summary: Update or delete an existing article reaction
-   *      description: Update or delete an existing article reaction
+   *      summary: Create, update or delete an existing article reaction
+   *      description: Create, update or delete an existing article reaction
    *      security:
    *        - bearerAuth: []
    *      requestBody:
-   *        description: Create a new article
+   *        description: Change an article reaction
    *        required: true
    *        content:
    *          application/json:
@@ -153,18 +141,7 @@ class ArticleReactionController extends Controller {
    *          content:
    *            application/json:
    *              schema:
-   *                type: object
-   *                properties:
-   *                  likeCount:
-   *                    type: integer
-   *                    format: int64
-   *                    minimum: 0
-   *                    example: 10
-   *                  dislikeCount:
-   *                    type: integer
-   *                    format: int64
-   *                    minimum: 0
-   *                    example: 10
+   *                $ref: '#/components/schemas/Article reaction'
    */
   public async update(
     options: ApiHandlerOptions<{

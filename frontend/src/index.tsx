@@ -19,7 +19,12 @@ import {
 } from '~/libs/enums/enums.js';
 import { config } from '~/libs/packages/config/config.js';
 import { store } from '~/libs/packages/store/store.js';
-import { ArticlePage, CreateArticlePage } from '~/pages/article/article.js';
+import {
+  ArticlePage,
+  CreateArticlePage,
+  EditArticlePage,
+  SharedArticlePage,
+} from '~/pages/article/article.js';
 import { Auth } from '~/pages/auth/auth.js';
 import { Landing } from '~/pages/landing/landing.js';
 import { ProfilePage } from '~/pages/profile/profile-page.js';
@@ -99,10 +104,26 @@ createRoot(document.querySelector('#root') as HTMLElement).render(
                   ),
                 },
                 {
+                  path: AppRoute.SHARED,
+                  element: (
+                    <PublicRoute>
+                      <SharedArticlePage />
+                    </PublicRoute>
+                  ),
+                },
+                {
                   path: AppRoute.CREATE_ARTICLE,
                   element: (
                     <ProtectedRoute>
                       <CreateArticlePage />
+                    </ProtectedRoute>
+                  ),
+                },
+                {
+                  path: AppRoute.EDIT_ARTICLE,
+                  element: (
+                    <ProtectedRoute>
+                      <EditArticlePage />
                     </ProtectedRoute>
                   ),
                 },

@@ -13,13 +13,20 @@ type Properties = {
   id: ValueOf<typeof DataTooltipId>;
   shouldHideArrow?: boolean;
   className?: string;
+  offset?: number;
 };
 
-const TooltipWrapper: FC<Properties> = ({ id, shouldHideArrow, className }) => (
+const TooltipWrapper: FC<Properties> = ({
+  id,
+  shouldHideArrow,
+  className,
+  offset,
+}) => (
   <ReactTooltip
     id={id}
     noArrow={shouldHideArrow}
     className={getValidClassNames(className, styles.tooltip)}
+    offset={offset}
   />
 );
 

@@ -1,22 +1,44 @@
+import { type IncomingHttpHeaders } from 'node:http';
+
+import {
+  ApiPath,
+  CustomHttpHeader,
+  ExceptionMessage,
+} from '~/libs/enums/enums.js';
 import { ApplicationError } from '~/libs/exceptions/exceptions.js';
-import { safeJSONParse } from '~/libs/helpers/helpers.js';
 import { type IService } from '~/libs/interfaces/service.interface.js';
+import {
+  BadRequestError,
+  ForbiddenError,
+  NotFoundError,
+} from '~/libs/packages/exceptions/exceptions.js';
 import { type OpenAIService } from '~/libs/packages/openai/openai.package.js';
+import { token as articleToken } from '~/libs/packages/token/token.js';
 
 import { GenreEntity } from '../genres/genre.entity.js';
 import { type GenreRepository } from '../genres/genre.repository.js';
-import { type UserDetailsModel, type UserRepository } from '../users/users.js';
+import { type UserAuthResponseDto,type UserDetailsModel, type UserRepository  } from '../users/users.js';
 import { ArticleEntity } from './article.entity.js';
 import { type ArticleRepository } from './article.repository.js';
-import { getDetectArticleGenreCompletionConfig } from './libs/helpers/helpers.js';
+import { INDEX_INCREMENT, SHARED_$TOKEN } from './libs/constants/constants.js';
+import { DateFormat } from './libs/enums/enums.js';
 import {
-  type ArticleBaseResponseDto,
+  getArticleReadTimeCompletionConfig,
+  getDetectArticleGenreCompletionConfig,
+  getDifferenceBetweenDates,
+  getFormattedDate,
+  getOriginFromRefererHeader,
+  safeJSONParse,
+  subtractMonthsFromDate,
+} from './libs/helpers/helpers.js';
+import {
   type ArticleCreateDto,
   type ArticleGetAllResponseDto,
+  type ArticleResponseDto,
   type ArticlesFilters,
   type ArticleUpdateRequestDto,
-  type ArticleWithAuthorType,
   type DetectedArticleGenre,
+  type UserActivityResponseDto,
 } from './libs/types/types.js';
 
 class ArticleService implements IService {
@@ -42,7 +64,7 @@ class ArticleService implements IService {
     this.userRepository = userRepository;
   }
 
-  public async detectArticleGenreFromText(
+  private async detectArticleGenreFromText(
     text: string,
   ): Promise<DetectedArticleGenre | null> {
     const genresJSON = await this.openAIService.createCompletion(
@@ -57,6 +79,21 @@ class ArticleService implements IService {
       safeJSONParse<DetectedArticleGenre[]>(genresJSON) ?? [];
 
     return firstParsedGenre ?? null;
+  }
+
+  private async getArticleReadTime(text: string): Promise<number | null> {
+    const readTimeJSON = await this.openAIService.createCompletion(
+      getArticleReadTimeCompletionConfig(text),
+    );
+
+    if (!readTimeJSON) {
+      return null;
+    }
+
+    const { readTime = null } =
+      safeJSONParse<{ readTime: number }>(readTimeJSON) ?? {};
+
+    return readTime;
   }
 
   private async getGenreIdForArticle(
@@ -104,7 +141,7 @@ class ArticleService implements IService {
 
     return {
       total,
-      items: items.map((article) => article.toObjectWithAuthor()),
+      items: items.map((article) => article.toObjectWithRelations()),
     };
   }
 
@@ -119,30 +156,83 @@ class ArticleService implements IService {
 
     return {
       total,
-      items: items.map((article) => article.toObjectWithAuthor()),
+      items: items.map((article) => article.toObjectWithRelations()),
     };
   }
 
-  public async find(id: number): Promise<ArticleWithAuthorType | null> {
+  public async find(id: number): Promise<ArticleResponseDto | null> {
     const article = await this.articleRepository.find(id);
 
     if (!article) {
       return null;
     }
 
-    return article.toObjectWithAuthor();
+    return article.toObjectWithRelations();
   }
 
-  public async create(
-    payload: ArticleCreateDto,
-  ): Promise<ArticleBaseResponseDto> {
+  public async getUserActivity(
+    userId: number,
+  ): Promise<UserActivityResponseDto[]> {
+    const ZERO_ACTIVITY_COUNT = 0;
+    const MONTHS_TO_SUBTRACT_COUNT = 6;
+    const currentDate = new Date();
+    const sixMonthAgo = subtractMonthsFromDate(
+      currentDate,
+      MONTHS_TO_SUBTRACT_COUNT,
+    );
+    const daysInHalfYear = getDifferenceBetweenDates(currentDate, sixMonthAgo);
+
+    const userActivity = await this.articleRepository.getUserActivity({
+      userId,
+      activityFrom: sixMonthAgo.toISOString(),
+      activityTo: currentDate.toISOString(),
+    });
+
+    const halfYearActivity: UserActivityResponseDto[] = Array.from({
+      length: daysInHalfYear + INDEX_INCREMENT,
+    }).map((_, index) => {
+      const incrementedDate = sixMonthAgo.getDate() + index;
+      const dateForStatistic = new Date(
+        sixMonthAgo.getFullYear(),
+        sixMonthAgo.getMonth(),
+        incrementedDate,
+      ).toISOString();
+
+      const activeDayIndex = userActivity.findIndex((activity) => {
+        return (
+          getFormattedDate(activity.date, DateFormat.YEAR_MONTH_DATE) ===
+          getFormattedDate(dateForStatistic, DateFormat.YEAR_MONTH_DATE)
+        );
+      });
+
+      if (activeDayIndex >= ZERO_ACTIVITY_COUNT) {
+        const dayActivity = userActivity[activeDayIndex];
+
+        return {
+          date: dayActivity.date,
+          count: Number(dayActivity.count),
+        };
+      }
+
+      return {
+        date: dateForStatistic,
+        count: ZERO_ACTIVITY_COUNT,
+      };
+    });
+
+    return halfYearActivity;
+  }
+
+  public async create(payload: ArticleCreateDto): Promise<ArticleResponseDto> {
     const genreId = await this.getGenreIdToSet(payload);
+    const readTime = await this.getArticleReadTime(payload.text);
 
     const article = await this.articleRepository.create(
       ArticleEntity.initializeNew({
         genreId,
-        text: payload.text,
+        readTime,
         title: payload.title,
+        text: payload.text,
         userId: payload.userId,
         coverId: payload.coverId,
         promptId: payload?.promptId ?? null,
@@ -150,13 +240,16 @@ class ArticleService implements IService {
       }),
     );
 
-    return article.toObject();
+    return article.toObjectWithRelations();
   }
 
   public async update(
     id: number,
-    payload: ArticleUpdateRequestDto,
-  ): Promise<ArticleBaseResponseDto> {
+    {
+      payload,
+      user,
+    }: { payload: ArticleUpdateRequestDto; user: UserAuthResponseDto },
+  ): Promise<ArticleResponseDto> {
     const article = await this.find(id);
 
     if (!article) {
@@ -165,14 +258,62 @@ class ArticleService implements IService {
       });
     }
 
+    const updatedReadTime =
+      payload.text && payload.text !== article.text
+        ? await this.getArticleReadTime(payload.text)
+        : article.readTime;
+
+    if (article.userId !== user.id) {
+      throw new ForbiddenError('Article can be edited only by author!');
+    }
+
     const updatedArticle = await this.articleRepository.update(
       ArticleEntity.initialize({
         ...article,
         ...payload,
+        readTime: updatedReadTime,
       }),
     );
 
-    return updatedArticle.toObject();
+    return updatedArticle.toObjectWithRelations();
+  }
+
+  public async getArticleSharingLink(
+    id: number,
+    referer: string,
+  ): Promise<{ link: string }> {
+    const token = await articleToken.create({
+      articleId: id,
+    });
+
+    const refererOrigin = getOriginFromRefererHeader(referer);
+
+    return {
+      link: `${refererOrigin}${ApiPath.ARTICLES}${SHARED_$TOKEN.replace(
+        ':token',
+        token,
+      )}`,
+    };
+  }
+
+  public async findShared(
+    headers: IncomingHttpHeaders,
+  ): Promise<ArticleResponseDto> {
+    const token = headers[CustomHttpHeader.SHARED_ARTICLE_TOKEN] as string;
+
+    if (!token) {
+      throw new BadRequestError(ExceptionMessage.INVALID_TOKEN);
+    }
+
+    const encoded = await articleToken.verifyToken(token);
+
+    const articleFound = await this.find(Number(encoded.articleId));
+
+    if (!articleFound) {
+      throw new NotFoundError(ExceptionMessage.ARTICLE_NOT_FOUND);
+    }
+
+    return articleFound;
   }
 
   public delete(): Promise<boolean> {

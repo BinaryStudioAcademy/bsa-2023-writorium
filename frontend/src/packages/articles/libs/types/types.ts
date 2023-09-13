@@ -1,8 +1,12 @@
 export {
-  type ArticleBaseResponseDto,
   type ArticleCreateDto,
   type ArticleGetAllResponseDto,
+  type ArticleReactionRequestDto,
+  type ArticleReactionResponseDto,
   type ArticleRequestDto,
+  type ArticleResponseDto,
   type ArticlesFilters,
-  type ArticleWithAuthorType,
+  type ArticleUpdateRequestDto,
+  type ArticleUpdateRequestPayload,
+  type ReactionResponseDto,
 } from 'shared/build/index.js';

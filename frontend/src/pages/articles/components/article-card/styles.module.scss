@@ -96,10 +96,19 @@
   overflow-wrap: break-word;
 }
 
-.body .cover {
+.coverWrapper {
+  flex-shrink: 0;
   width: 134px;
   height: 134px;
+  overflow: hidden;
   border-radius: 5px;
+}
+
+.cover {
+  display: block;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 1 / 1;
   object-fit: cover;
 }
 
@@ -135,19 +144,38 @@
   gap: 22px;
 }
 
-.footer .reaction {
+.reactions > li {
+  list-style: none;
+}
+
+.footerIcon {
   display: flex;
   align-items: center;
   gap: 5px;
-}
-
-.footer .reactionCount {
   color: var(--dark-gray-50);
   font-weight: 400;
   font-size: 12px;
   font-family: Lato, sans-serif;
   font-style: normal;
   line-height: normal;
+  background-color: var(--white);
+}
+
+.footerIcon svg {
+  color: black;
+}
+
+.disabled {
+  cursor: default;
+}
+
+.disabled svg {
+  color: var(--light-green);
+}
+
+.pressed svg,
+.reaction:hover svg {
+  color: var(--light-green);
 }
 
 .footer .readMore {
@@ -161,6 +189,19 @@
 }
 
 .pointerIcon {
+  cursor: pointer;
+}
+
+.iconWrapper {
+  display: flex;
+  gap: 10px;
+  background-color: transparent;
+}
+
+.editIcon {
+  width: 20px;
+  height: 20px;
+  color: var(--light-green);
   cursor: pointer;
 }
 
