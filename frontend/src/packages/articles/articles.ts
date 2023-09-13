@@ -13,12 +13,14 @@ const articleApi = new ArticleApi({
 export { articleApi };
 export { getReadTimeString } from './libs/helpers/helpers.js';
 export {
-  type ArticleBaseResponseDto,
   type ArticleGetAllResponseDto,
+  type ArticleReactionRequestDto,
+  type ArticleReactionResponseDto,
   type ArticleRequestDto,
+  type ArticleResponseDto,
   type ArticleUpdateRequestDto,
   type ArticleUpdateRequestPayload,
-  type ArticleWithAuthorType,
+  type ReactionResponseDto,
 } from './libs/types/types.js';
 export {
   articleCreateValidationSchema,

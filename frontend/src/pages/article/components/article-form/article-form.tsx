@@ -11,8 +11,8 @@ import { type ValueOf } from '~/libs/types/types.js';
 import {
   articleCreateValidationSchema,
   type ArticleRequestDto,
+  type ArticleResponseDto,
   articleUpdateValidationSchema,
-  type ArticleWithAuthorType,
 } from '~/packages/articles/articles.js';
 import { getGeneratedPromptPayload } from '~/packages/prompts/prompts.js';
 import { actions as articlesActions } from '~/slices/articles/articles.js';
@@ -23,7 +23,7 @@ import { ArticleSubmitType } from './libs/enums/enums.js';
 import styles from './styles.module.scss';
 
 type Properties = {
-  articleForUpdate?: ArticleWithAuthorType;
+  articleForUpdate?: ArticleResponseDto;
 };
 
 const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
