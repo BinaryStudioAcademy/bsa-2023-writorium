@@ -4,7 +4,7 @@ import { type ValueOf } from '~/libs/types/types.js';
 
 type HttpApiOptions = Omit<HttpOptions, 'headers' | 'payload'> & {
   hasAuth: boolean;
-  contentType: ValueOf<typeof ContentType>;
+  contentType?: ValueOf<typeof ContentType>;
   payload?: HttpOptions['payload'];
   query?: Record<string, unknown>;
 };
