@@ -1,4 +1,4 @@
-import { ApiPath, AuthApiPath } from '~/libs/enums/enums.js';
+import { ApiPath, ArticlesApiPath, AuthApiPath } from '~/libs/enums/enums.js';
 
 import { type WhiteRoute } from '../types/types.js';
 
@@ -26,6 +26,10 @@ const STRING_WHITE_ROUTES: readonly WhiteRoute<string>[] = [
   {
     routerPath: `/api/v1${ApiPath.AUTH}${AuthApiPath.FACEBOOK}`,
     methods: ['POST'],
+  },
+  {
+    routerPath: `/api/v1${ApiPath.ARTICLES}${ArticlesApiPath.SHARED_BASE}`,
+    methods: ['GET'],
   },
   {
     routerPath: '/v1/documentation',
