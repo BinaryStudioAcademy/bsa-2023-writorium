@@ -8,7 +8,7 @@ import {
   getValidClassNames,
   sanitizeHtml,
 } from '~/libs/helpers/helpers.js';
-import { type ArticleWithAuthorType } from '~/packages/articles/articles.js';
+import { type ArticleWithCommentCountResponseDto } from '~/packages/articles/articles.js';
 import { type UserDetailsResponseDto } from '~/packages/users/users.js';
 
 import { type ReactionsType, type TagType } from '../../libs/types/types.js';
@@ -16,7 +16,7 @@ import { Tags } from '../components.js';
 import styles from './styles.module.scss';
 
 type Properties = {
-  article: ArticleWithAuthorType;
+  article: ArticleWithCommentCountResponseDto;
   author: UserDetailsResponseDto;
   tags: TagType[];
   reactions: ReactionsType;
@@ -28,8 +28,8 @@ const ArticleCard: React.FC<Properties> = ({
   tags,
   reactions,
 }) => {
-  const { publishedAt, title, text, id } = article;
-  const { comments, views, likes, dislikes } = reactions;
+  const { publishedAt, title, text, id, commentCount } = article;
+  const { views, likes, dislikes } = reactions;
   const articleUrl = window.location.href;
 
   const articleRouteById = AppRoute.ARTICLE.replace(':id', String(id));
@@ -42,7 +42,7 @@ const ArticleCard: React.FC<Properties> = ({
         <div className={styles.info}>
           <Avatar
             username={getFullName(author.firstName, author.lastName)}
-            avatarUrl={null}
+            avatarUrl={author.avatarUrl}
           />
           <span className={styles.publisherName}>
             {getFullName(author.firstName, author.lastName)}
@@ -74,8 +74,16 @@ const ArticleCard: React.FC<Properties> = ({
       <div className={styles.footer}>
         <ul className={styles.reactions}>
           <li className={styles.reaction}>
-            <Icon iconName="comment" className={styles.reactionIcon} />
-            <span className={styles.reactionCount}>{comments}</span>
+            <Link
+              to={{
+                pathname: articleRouteById as typeof AppRoute.ARTICLE,
+                hash: 'comments',
+              }}
+              className={styles.reaction}
+            >
+              <Icon iconName="comment" className={styles.reactionIcon} />
+              <span className={styles.reactionCount}>{commentCount}</span>
+            </Link>
           </li>
           <li className={styles.reaction}>
             <Icon iconName="view" className={styles.reactionIcon} />
