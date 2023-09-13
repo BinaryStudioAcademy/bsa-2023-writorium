@@ -10,6 +10,9 @@ const articlesFilters = joi.object<ArticlesFilters, true>({
     .min(ArticleValidationRule.ARTICLES_PAGINATION_MIN_SKIP)
     .required(),
   take: joi.number().integer().positive().required(),
+  genreId: joi.number().integer(),
+  titleFilter: joi.string().trim(),
+  authorId: joi.number().integer(),
 });
 
 export { articlesFilters };
