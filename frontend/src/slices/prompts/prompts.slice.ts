@@ -19,7 +19,12 @@ const initialState: State = {
 const { reducer, actions, name } = createSlice({
   initialState,
   name: 'prompts',
-  reducers: {},
+  reducers: {
+    resetPrompts(state) {
+      state.generatedPrompt = initialState.generatedPrompt;
+      state.dataStatus = DataStatus.IDLE;
+    },
+  },
   extraReducers(builder) {
     builder.addCase(generatePrompt.pending, (state) => {
       state.dataStatus = DataStatus.PENDING;

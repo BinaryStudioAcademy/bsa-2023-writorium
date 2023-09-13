@@ -16,6 +16,7 @@ import {
 } from '~/packages/articles/articles.js';
 import { getGeneratedPromptPayload } from '~/packages/prompts/prompts.js';
 import { actions as articlesActions } from '~/slices/articles/articles.js';
+import { actions as promptActions } from '~/slices/prompts/prompts.js';
 
 import { ArticleCoverUpload } from './libs/components/components.js';
 import { DEFAULT_ARTICLE_FORM_PAYLOAD } from './libs/constants/constants.js';
@@ -70,6 +71,8 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
                 ? AppRoute.ARTICLES
                 : ArticleSubRoute.MY_ARTICLES,
             );
+
+            dispatch(promptActions.resetPrompts());
           })
           .catch(() => {});
       },
