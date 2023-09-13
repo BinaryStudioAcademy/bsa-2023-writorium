@@ -14,6 +14,7 @@
   --green: #12b76a;
   --gray: #e0e0e0;
   --pale-gray: #f8f8f8;
+  --pale-grey: #dbdbdb;
   --dark-gray-40: rgba(53 53 53 / 40%);
   --dark-gray-50: rgba(53 53 53 / 50%);
   --dark-gray-80: rgba(53 53 53 / 80%);
@@ -21,7 +22,7 @@
   --light-gray-40: rgb(174 174 174 / 40%);
   --medium-brightness-gray: #919191;
   --light-grey-text: #b6b6b6;
-  --light-grey-border: #dbdbdb;
+  --light-grey-border: var(--pale-grey);
   --red: #df1c3d;
   --light-red: #d88184;
   --shadow-color: rgba(53 53 53 / 20%);
@@ -35,7 +36,8 @@
   --achievement-columns: 3;
 }
 
-input {
+input,
+textarea {
   --input-bg: #f8f8f8;
   --input-shadow-color: var(--shadow-color);
   --input-text: rgb(40 40 40 / 50%);
