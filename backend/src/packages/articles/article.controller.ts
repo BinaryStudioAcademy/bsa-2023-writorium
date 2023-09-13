@@ -1,4 +1,6 @@
-import { ApiPath } from '~/libs/enums/enums.js';
+import { type IncomingHttpHeaders } from 'node:http';
+
+import { ApiPath, ArticlesApiPath } from '~/libs/enums/enums.js';
 import {
   type ApiHandlerOptions,
   type ApiHandlerResponse,
@@ -9,7 +11,6 @@ import { type ILogger } from '~/libs/packages/logger/logger.js';
 import { type ArticleService } from '~/packages/articles/article.service.js';
 import { type UserAuthResponseDto } from '~/packages/users/users.js';
 
-import { ArticlesApiPath } from './libs/enums/enums.js';
 import {
   type ArticleRequestDto,
   type ArticlesFilters,
@@ -57,10 +58,37 @@ import {
  *            format: int64
  *            example: 198772
  *          publishedAt:
- *           type: string
- *           format: date-time
- *           nullable: true
- *           example: 2023-08-26T11:21:14.994Z
+ *            type: string
+ *            format: date-time
+ *            nullable: true
+ *            example: 2023-08-26T11:21:14.994Z
+ *          author:
+ *            readOnly: true
+ *            type: object
+ *            properties:
+ *              firstName:
+ *                type: string
+ *              lastName:
+ *                type: string
+ *          reactions:
+ *            readOnly: true
+ *            type: array
+ *            items:
+ *              type: object
+ *              properties:
+ *                id:
+ *                  type: integer
+ *                  format: int64
+ *                  minimum: 1
+ *                  example: 1234
+ *                isLike:
+ *                  type: boolean
+ *                userId:
+ *                  type: integer
+ *                  format: int64
+ *                  minimum: 1
+ *                  example: 8564
+ *
  */
 
 class ArticleController extends Controller {
@@ -156,6 +184,29 @@ class ArticleController extends Controller {
           }>,
         );
       },
+    });
+
+    this.addRoute({
+      path: ArticlesApiPath.$ID_SHARE,
+      method: 'GET',
+      handler: (options) =>
+        this.share(
+          options as ApiHandlerOptions<{
+            params: { id: number };
+            headers: IncomingHttpHeaders;
+          }>,
+        ),
+    });
+
+    this.addRoute({
+      path: ArticlesApiPath.SHARED_BASE,
+      method: 'GET',
+      handler: (options) =>
+        this.findShared(
+          options as ApiHandlerOptions<{
+            headers: IncomingHttpHeaders;
+          }>,
+        ),
     });
   }
 
@@ -343,6 +394,71 @@ class ArticleController extends Controller {
     return {
       status: HttpCode.OK,
       payload: await this.articleService.find(options.params.id),
+    };
+  }
+
+  /**
+   * @swagger
+   * /articles/:id:
+   *    post:
+   *      summary: Get articles token for sharing
+   *      description: Get an existing articles token with id encoded
+   *      security:
+   *        - bearerAuth: []
+   *      requestBody:
+   *        required: true
+   *      responses:
+   *        200:
+   *          description: Successful operation
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: object
+   *                properties:
+   *                  link:
+   *                    type: string
+   */
+  private async share(
+    options: ApiHandlerOptions<{
+      params: { id: number };
+      headers: IncomingHttpHeaders;
+    }>,
+  ): Promise<ApiHandlerResponse> {
+    return {
+      status: HttpCode.OK,
+      payload: await this.articleService.getArticleSharingLink(
+        options.params.id,
+        options.headers.referer as string,
+      ),
+    };
+  }
+
+  /**
+   * @swagger
+   * /articles/shared
+   *    get:
+   *      summary: Get article encoded from query
+   *      description: Get an existing article with id encoded from query
+   *      security:
+   *        required: false
+   *      requestBody:
+   *        required: false
+   *      responses:
+   *        200:
+   *          description: Successful operation
+   *          content:
+   *            application/json:
+   *              schema:
+   *                $ref: '#/components/schemas/Article'
+   */
+  private async findShared(
+    options: ApiHandlerOptions<{
+      headers: IncomingHttpHeaders;
+    }>,
+  ): Promise<ApiHandlerResponse> {
+    return {
+      status: HttpCode.OK,
+      payload: await this.articleService.findShared(options.headers),
     };
   }
 }

@@ -3,32 +3,52 @@ import { Link as RouterLink, matchPath } from 'react-router-dom';
 import {
   Avatar,
   Icon,
+  IconButton,
   Link,
   ShareOnFacebookButton,
 } from '~/libs/components/components.js';
-import { AppRoute, ArticleSubRoute, DateFormat } from '~/libs/enums/enums.js';
+import {
+  AppRoute,
+  ArticleSubRoute,
+  DateFormat,
+  Reaction,
+} from '~/libs/enums/enums.js';
 import {
   getFormattedDate,
   getFullName,
+  getReactionsInfo,
   getValidClassNames,
   sanitizeHtml,
 } from '~/libs/helpers/helpers.js';
-import { useLocation } from '~/libs/hooks/hooks.js';
 import {
-  type ArticleWithAuthorType,
+  useAppDispatch,
+  useAppSelector,
+  useCallback,
+  useLocation,
+} from '~/libs/hooks/hooks.js';
+import { type ValueOf } from '~/libs/types/types.js';
+import {
+  type ArticleResponseDto,
   getReadTimeString,
+  type ReactionResponseDto,
 } from '~/packages/articles/articles.js';
-import { type UserDetailsResponseDto } from '~/packages/users/users.js';
+import {
+  type UserAuthResponseDto,
+  type UserDetailsResponseDto,
+} from '~/packages/users/users.js';
+import { actions as articlesActions } from '~/slices/articles/articles.js';
 
-import { type ReactionsType, type TagType } from '../../libs/types/types.js';
+import { MOCKED_REACTIONS } from '../../libs/constants.js';
+import { getReactionConvertedToBoolean } from '../../libs/helpers/helpers.js';
+import { type TagType } from '../../libs/types/types.js';
 import { Tags } from '../components.js';
 import styles from './styles.module.scss';
 
 type Properties = {
-  article: ArticleWithAuthorType;
+  article: ArticleResponseDto;
   author: UserDetailsResponseDto;
   tags: TagType[];
-  reactions: ReactionsType;
+  reactions: ReactionResponseDto[];
 };
 
 const ArticleCard: React.FC<Properties> = ({
@@ -37,18 +57,57 @@ const ArticleCard: React.FC<Properties> = ({
   tags,
   reactions,
 }) => {
-  const { publishedAt, title, text, id, coverUrl, readTime } = article;
+  const dispatch = useAppDispatch();
+  const user = useAppSelector(({ auth }) => auth.user) as UserAuthResponseDto;
   const { pathname } = useLocation();
 
   const isMyArticles = matchPath(
     { path: `${AppRoute.ARTICLES}/${ArticleSubRoute.MY_ARTICLES}` },
     pathname,
   );
-  const { comments, views, likes, dislikes } = reactions;
+  const { publishedAt, title, text, id, userId, coverUrl, readTime } = article;
+  const { likesCount, dislikesCount, hasAlreadyReactedWith } = getReactionsInfo(
+    user.id,
+    reactions,
+  );
   const { firstName, lastName, avatarUrl } = author;
   const articleUrl = window.location.href;
-
   const articleRouteById = AppRoute.ARTICLE.replace(':id', String(id));
+  const isOwnArticle = user.id === userId;
+
+  const handleReaction = (reaction: ValueOf<typeof Reaction>): void => {
+    if (isOwnArticle) {
+      return;
+    }
+
+    if (hasAlreadyReactedWith === reaction) {
+      return void dispatch(
+        articlesActions.deleteArticleReaction({
+          isLike: getReactionConvertedToBoolean(reaction),
+          articleId: id,
+        }),
+      );
+    }
+
+    void dispatch(
+      articlesActions.reactToArticle({
+        isLike: getReactionConvertedToBoolean(reaction),
+        articleId: id,
+      }),
+    );
+  };
+
+  const handleLikeReaction = (): void => {
+    handleReaction(Reaction.LIKE);
+  };
+
+  const handleDislikeReaction = (): void => {
+    handleReaction(Reaction.DISLIKE);
+  };
+
+  const handleSharedButtonClick = useCallback((): void => {
+    void dispatch(articlesActions.shareArticle({ id: id.toString() }));
+  }, [dispatch, id]);
 
   return (
     <article className={styles.article}>
@@ -105,29 +164,54 @@ const ArticleCard: React.FC<Properties> = ({
       </div>
       <div className={styles.footer}>
         <ul className={styles.reactions}>
-          <li className={styles.reaction}>
-            <Icon iconName="comment" className={styles.pointerIcon} />
-            <span className={styles.reactionCount}>{comments}</span>
+          <li>
+            <IconButton
+              iconName="comment"
+              className={styles.footerIcon}
+              label={MOCKED_REACTIONS.comments}
+            />
           </li>
-          <li className={styles.reaction}>
+          <li className={styles.footerIcon}>
             <Icon iconName="view" />
-            <span className={styles.reactionCount}>{views}</span>
+            <span>{MOCKED_REACTIONS.views}</span>
           </li>
-          <li className={styles.reaction}>
-            <Icon iconName="like" className={styles.pointerIcon} />
-            <span className={styles.reactionCount}>{likes}</span>
+          <li>
+            <IconButton
+              iconName="like"
+              className={getValidClassNames(
+                styles.footerIcon,
+                isOwnArticle ? styles.disabled : styles.reaction,
+                hasAlreadyReactedWith === Reaction.LIKE && styles.pressed,
+              )}
+              label={String(likesCount)}
+              onClick={handleLikeReaction}
+            />
           </li>
-          <li className={styles.reaction}>
-            <Icon iconName="dislike" className={styles.pointerIcon} />
-            <span className={styles.reactionCount}>{dislikes}</span>
+          <li>
+            <IconButton
+              iconName="dislike"
+              className={getValidClassNames(
+                styles.footerIcon,
+                isOwnArticle ? styles.disabled : styles.reaction,
+                hasAlreadyReactedWith === Reaction.DISLIKE && styles.pressed,
+              )}
+              label={String(dislikesCount)}
+              onClick={handleDislikeReaction}
+            />
           </li>
         </ul>
-        <Icon iconName="share" className={styles.pointerIcon} />
+
+        <IconButton
+          iconName="share"
+          className={styles.iconWrapper}
+          onClick={handleSharedButtonClick}
+        />
         <ShareOnFacebookButton
           title={title}
           articleUrl={articleUrl}
           iconStyle={styles.facebookIconButton}
         />
+
         <Link
           to={articleRouteById as typeof AppRoute.ARTICLE}
           className={styles.readMore}

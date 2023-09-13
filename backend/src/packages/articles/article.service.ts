@@ -1,30 +1,42 @@
+import { type IncomingHttpHeaders } from 'node:http';
+
+import {
+  ApiPath,
+  CustomHttpHeader,
+  ExceptionMessage,
+} from '~/libs/enums/enums.js';
 import { ApplicationError } from '~/libs/exceptions/exceptions.js';
 import { type IService } from '~/libs/interfaces/service.interface.js';
-import { ForbiddenError } from '~/libs/packages/exceptions/exceptions.js';
+import {
+  BadRequestError,
+  ForbiddenError,
+  NotFoundError,
+} from '~/libs/packages/exceptions/exceptions.js';
 import { type OpenAIService } from '~/libs/packages/openai/openai.package.js';
+import { token as articleToken } from '~/libs/packages/token/token.js';
 
 import { GenreEntity } from '../genres/genre.entity.js';
 import { type GenreRepository } from '../genres/genre.repository.js';
 import { type UserAuthResponseDto } from '../users/users.js';
 import { ArticleEntity } from './article.entity.js';
 import { type ArticleRepository } from './article.repository.js';
-import { INDEX_INCREMENT } from './libs/constants/constants.js';
+import { INDEX_INCREMENT, SHARED_$TOKEN } from './libs/constants/constants.js';
 import { DateFormat } from './libs/enums/enums.js';
 import {
   getArticleReadTimeCompletionConfig,
   getDetectArticleGenreCompletionConfig,
   getDifferenceBetweenDates,
   getFormattedDate,
+  getOriginFromRefererHeader,
   safeJSONParse,
   subtractMonthsFromDate,
 } from './libs/helpers/helpers.js';
 import {
-  type ArticleBaseResponseDto,
   type ArticleCreateDto,
   type ArticleGetAllResponseDto,
+  type ArticleResponseDto,
   type ArticlesFilters,
   type ArticleUpdateRequestDto,
-  type ArticleWithAuthorType,
   type DetectedArticleGenre,
   type UserActivityResponseDto,
 } from './libs/types/types.js';
@@ -121,7 +133,7 @@ class ArticleService implements IService {
 
     return {
       total,
-      items: items.map((article) => article.toObjectWithAuthor()),
+      items: items.map((article) => article.toObjectWithRelations()),
     };
   }
 
@@ -136,18 +148,18 @@ class ArticleService implements IService {
 
     return {
       total,
-      items: items.map((article) => article.toObjectWithAuthor()),
+      items: items.map((article) => article.toObjectWithRelations()),
     };
   }
 
-  public async find(id: number): Promise<ArticleWithAuthorType | null> {
+  public async find(id: number): Promise<ArticleResponseDto | null> {
     const article = await this.articleRepository.find(id);
 
     if (!article) {
       return null;
     }
 
-    return article.toObjectWithAuthor();
+    return article.toObjectWithRelations();
   }
 
   public async getUserActivity(
@@ -203,9 +215,7 @@ class ArticleService implements IService {
     return halfYearActivity;
   }
 
-  public async create(
-    payload: ArticleCreateDto,
-  ): Promise<ArticleBaseResponseDto> {
+  public async create(payload: ArticleCreateDto): Promise<ArticleResponseDto> {
     const genreId = await this.getGenreIdToSet(payload);
     const readTime = await this.getArticleReadTime(payload.text);
 
@@ -222,7 +232,7 @@ class ArticleService implements IService {
       }),
     );
 
-    return article.toObject();
+    return article.toObjectWithRelations();
   }
 
   public async update(
@@ -231,7 +241,7 @@ class ArticleService implements IService {
       payload,
       user,
     }: { payload: ArticleUpdateRequestDto; user: UserAuthResponseDto },
-  ): Promise<ArticleBaseResponseDto> {
+  ): Promise<ArticleResponseDto> {
     const article = await this.find(id);
 
     if (!article) {
@@ -257,7 +267,45 @@ class ArticleService implements IService {
       }),
     );
 
-    return updatedArticle.toObjectWithAuthor();
+    return updatedArticle.toObjectWithRelations();
+  }
+
+  public async getArticleSharingLink(
+    id: number,
+    referer: string,
+  ): Promise<{ link: string }> {
+    const token = await articleToken.create({
+      articleId: id,
+    });
+
+    const refererOrigin = getOriginFromRefererHeader(referer);
+
+    return {
+      link: `${refererOrigin}${ApiPath.ARTICLES}${SHARED_$TOKEN.replace(
+        ':token',
+        token,
+      )}`,
+    };
+  }
+
+  public async findShared(
+    headers: IncomingHttpHeaders,
+  ): Promise<ArticleResponseDto> {
+    const token = headers[CustomHttpHeader.SHARED_ARTICLE_TOKEN] as string;
+
+    if (!token) {
+      throw new BadRequestError(ExceptionMessage.INVALID_TOKEN);
+    }
+
+    const encoded = await articleToken.verifyToken(token);
+
+    const articleFound = await this.find(Number(encoded.articleId));
+
+    if (!articleFound) {
+      throw new NotFoundError(ExceptionMessage.ARTICLE_NOT_FOUND);
+    }
+
+    return articleFound;
   }
 
   public delete(): Promise<boolean> {
