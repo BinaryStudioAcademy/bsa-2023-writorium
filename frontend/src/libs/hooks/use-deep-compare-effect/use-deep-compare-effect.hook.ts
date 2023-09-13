@@ -12,14 +12,14 @@ function useDeepCompareMemoize<T>(value: T): T {
   return reference.current;
 }
 
-function useDeepCompareEffect(
+const useDeepCompareEffect = (
   callback: EffectCallback,
   dependencies: DependencyList,
-): void {
+): void => {
   return React.useEffect(callback, [
     useDeepCompareMemoize(dependencies),
     callback,
   ]);
-}
+};
 
 export { useDeepCompareEffect };
