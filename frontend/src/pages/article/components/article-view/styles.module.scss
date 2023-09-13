@@ -58,31 +58,28 @@
 }
 
 .title {
-  padding: 18px 33px 0;
+  margin-bottom: 10px;
   color: var(--dark-gray);
   font-weight: 700;
   font-size: 40px;
   font-family: "Libre Baskerville", serif;
-  font-style: normal;
   line-height: normal;
 }
 
+.textWrapper {
+  padding: 18px 33px 62px;
+}
+
 .text {
-  padding: 24px 124px 62px 121px;
+  max-width: 586px;
+  margin-top: 28px;
+  margin-right: auto;
+  margin-left: auto;
   color: var(--dark-gray);
   font-weight: 400;
   font-size: 18px;
-  font-family: Lato, sans-serif;
-  font-style: normal;
   line-height: 145%;
   word-break: break-word;
-}
-
-.tags {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  padding: 18px 33px 0;
 }
 
 .facebookIconButton {

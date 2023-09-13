@@ -7,10 +7,10 @@ import {
   useEffect,
   useParams,
 } from '~/libs/hooks/hooks.js';
-import { type TagType } from '~/libs/types/types.js';
 import { actions } from '~/slices/articles/articles.js';
 
 import { ArticleDetails, ArticleView } from './components/components.js';
+import { getArticleViewTags } from './libs/helpers/helpers.js';
 import styles from './styles.module.scss';
 
 const ArticlePage: React.FC = () => {
@@ -40,24 +40,18 @@ const ArticlePage: React.FC = () => {
     return null;
   }
 
-  const MOCKED_TAGS: TagType[] = [
-    { id: 1, name: 'IT' },
-    { id: 2, name: 'CODE' },
-    { id: 3, name: 'Humor' },
-    { id: 4, name: 'Work' },
-    { id: 5, name: 'Tech' },
-  ];
-
   return (
     <Loader isLoading={isLoading} hasOverlay type="circular">
       <Layout>
         <div className={styles.articlePageWrapper}>
-          <ArticleView
-            tags={MOCKED_TAGS}
-            text={article?.text ?? ''}
-            title={article?.title ?? ''}
-            coverUrl={article?.coverUrl ?? ''}
-          />
+          {getArticleStatus === DataStatus.FULFILLED && (
+            <ArticleView
+              tags={article ? getArticleViewTags(article) : null}
+              text={article?.text ?? ''}
+              title={article?.title ?? ''}
+              coverUrl={article?.coverUrl ?? ''}
+            />
+          )}
           {article?.author && (
             <ArticleDetails
               readTime={article.readTime}
