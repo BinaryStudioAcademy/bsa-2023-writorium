@@ -82,7 +82,7 @@ const ArticleView: React.FC<Properties> = ({
           </div>
         )}
       </div>
-      <div>
+      <div className={styles.articleContent}>
         <h4 className={styles.title}>{title}</h4>
         <div className={styles.tags}>
           {tags.map((tag) => (

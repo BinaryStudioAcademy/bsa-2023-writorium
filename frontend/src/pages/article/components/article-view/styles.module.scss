@@ -25,6 +25,10 @@
   flex-direction: row-reverse;
 }
 
+.body:not(.hasCover) .articleContent {
+  padding-top: 40px;
+}
+
 .body:not(.hasCover) .buttonsWrapper {
   position: static;
 }
