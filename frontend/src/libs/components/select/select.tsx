@@ -59,13 +59,9 @@ const Select = <
   ): SelectOption | SelectOption[] | undefined => {
     return isMulti
       ? (options as SelectOption[])?.filter((option) => {
-          return (value as Array<string | number>).includes(
-            (option ).value,
-          );
+          return (value as Array<string | number>).includes(option.value);
         })
-      : (options as SelectOption[])?.find(
-          (opt) => (opt ).value === value,
-        );
+      : (options as SelectOption[])?.find((opt) => opt.value === value);
   };
 
   return (
