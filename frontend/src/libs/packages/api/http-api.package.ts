@@ -59,7 +59,7 @@ class HttpApi implements IHttpApi {
       customHeaders = null,
     } = options;
 
-    const headers = await this.getHeaders(contentType, hasAuth, customHeaders);
+    const headers = await this.getHeaders(hasAuth, customHeaders, contentType);
 
     const response = await this.http.load(this.getUrl(path, query), {
       method,
@@ -86,13 +86,13 @@ class HttpApi implements IHttpApi {
   }
 
   private async getHeaders(
-    contentType: ValueOf<typeof ContentType>,
     hasAuth: boolean,
     customHeaders: Record<ValueOf<typeof CustomHttpHeader>, string> | null,
+    contentType?: ValueOf<typeof ContentType>,
   ): Promise<Headers> {
     const headers = new Headers();
 
-    if (contentType !== ContentType.FORM_DATA) {
+    if (contentType && contentType !== ContentType.FORM_DATA) {
       headers.append(HttpHeader.CONTENT_TYPE, contentType);
     }
 
