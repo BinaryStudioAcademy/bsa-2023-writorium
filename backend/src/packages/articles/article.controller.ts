@@ -412,7 +412,7 @@ class ArticleController extends Controller {
 
   /**
    * @swagger
-   * /articles/:id:
+   *  /articles/:id:
    *    post:
    *      summary: Get articles token for sharing
    *      description: Get an existing articles token with id encoded

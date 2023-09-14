@@ -2,6 +2,8 @@ import { type IRepository } from '~/libs/interfaces/interfaces.js';
 import { UserEntity } from '~/packages/users/user.entity.js';
 import { type UserModel } from '~/packages/users/user.model.js';
 
+import { UserDetailsModel } from './user-details.model.js';
+
 class UserRepository implements IRepository {
   private userModel: typeof UserModel;
   private defaultRelationExpression = 'userDetails.[avatar]';
@@ -158,6 +160,21 @@ class UserRepository implements IRepository {
 
   public delete(): ReturnType<IRepository['delete']> {
     return Promise.resolve(true);
+  }
+
+  public async getAllAuthors(): Promise<UserDetailsModel[] | null> {
+    const authors = await UserDetailsModel.query().distinctOn('userId')
+      .whereRaw(`
+      EXISTS(SELECT 1
+      FROM articles,user_details
+      WHERE articles.user_id = user_details.user_id)
+    `);
+
+    if (!authors) {
+      return null;
+    }
+
+    return authors;
   }
 }
 
