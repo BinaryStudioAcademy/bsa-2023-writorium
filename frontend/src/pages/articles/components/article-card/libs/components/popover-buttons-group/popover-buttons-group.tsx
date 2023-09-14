@@ -24,12 +24,10 @@ const PopoverButtonsGroup: React.FC<Properties> = ({
   return (
     <div className={styles.buttonsGroup}>
       <Button
-        type="button"
-        name="Add to bookmarks"
         label={
           <>
             <Icon iconName="favorite" className={styles.editIcon} />
-            <span>Add to bookmarks</span>
+            <span>Add to favorites</span>
           </>
         }
         onClick={(): void => {}}

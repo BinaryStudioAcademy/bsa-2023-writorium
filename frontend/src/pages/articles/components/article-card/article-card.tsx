@@ -1,12 +1,18 @@
 import {
   Avatar,
+  Button,
   Icon,
   IconButton,
   Link,
-  Popover,
   ShareOnFacebookButton,
+  TooltipClickable,
 } from '~/libs/components/components.js';
-import { AppRoute, DateFormat, Reaction } from '~/libs/enums/enums.js';
+import {
+  AppRoute,
+  DataTooltipId,
+  DateFormat,
+  Reaction,
+} from '~/libs/enums/enums.js';
 import {
   getFormattedDate,
   getFullName,
@@ -14,12 +20,7 @@ import {
   getValidClassNames,
   sanitizeHtml,
 } from '~/libs/helpers/helpers.js';
-import {
-  useAppDispatch,
-  useAppSelector,
-  useCallback,
-  useModal,
-} from '~/libs/hooks/hooks.js';
+import { useAppDispatch, useAppSelector } from '~/libs/hooks/hooks.js';
 import { type ValueOf } from '~/libs/types/types.js';
 import {
   type ArticleResponseDto,
@@ -54,7 +55,7 @@ const ArticleCard: React.FC<Properties> = ({
 }) => {
   const user = useAppSelector(({ auth }) => auth.user) as UserAuthResponseDto;
   const dispatch = useAppDispatch();
-  const { handleToggleModalOpen, isOpen } = useModal();
+  // const { handleToggleModalOpen, isOpen } = useModal();
 
   const { publishedAt, title, text, id, userId, coverUrl, readTime } = article;
   const { likesCount, dislikesCount, hasAlreadyReactedWith } = getReactionsInfo(
@@ -66,11 +67,11 @@ const ArticleCard: React.FC<Properties> = ({
   const articleRouteById = AppRoute.ARTICLE.replace(':id', String(id));
   const isOwnArticle = user.id === userId;
 
-  const handleActionsButtonClick = useCallback((): void => {
-    if (!isOpen) {
-      handleToggleModalOpen();
-    }
-  }, [handleToggleModalOpen, isOpen]);
+  // const handleActionsButtonClick = useCallback((): void => {
+  //   if (!isOpen) {
+  //     handleToggleModalOpen();
+  //   }
+  // }, [handleToggleModalOpen, isOpen]);
 
   const handleReaction = (reaction: ValueOf<typeof Reaction>): void => {
     if (isOwnArticle) {
@@ -125,30 +126,34 @@ const ArticleCard: React.FC<Properties> = ({
           )}
         </div>
         <div className={styles.iconWrapper}>
-          <IconButton
-            iconName="threeDotsVertical"
-            className={styles.iconButton}
-            iconClassName={getValidClassNames(
-              styles.threeDotsIcon,
-              styles.pointerIcon,
-            )}
-            onClick={handleActionsButtonClick}
-          />
-          <Popover
-            trigger={{ handleToggleModalOpen, isOpen }}
-            content={
-              <PopoverButtonsGroup
-                isOwnArticle={isOwnArticle}
-                article={article}
-                // trigger={{ handleToggleModalOpen, isOpen }}
+          <Button
+            name="more-actions"
+            label={
+              <Icon
+                iconName="threeDotsVertical"
+                className={getValidClassNames(
+                  styles.threeDotsIcon,
+                  styles.pointerIcon,
+                )}
               />
             }
+            className={styles.iconButtonDots}
+            onClick={(): void => {}}
+          />
+          <TooltipClickable
+            id={DataTooltipId.ARTICLE_ACTIONS_TOOLTIP}
+            anchorSelect="button[name='more-actions']"
             className={getValidClassNames(
               styles.buttonsGroup,
               styles.dropdownModal,
-              isOpen && styles.open,
+              // isOpen && styles.open,
             )}
-          />
+          >
+            <PopoverButtonsGroup
+              isOwnArticle={isOwnArticle}
+              article={article}
+            />
+          </TooltipClickable>
         </div>
       </div>
       <div

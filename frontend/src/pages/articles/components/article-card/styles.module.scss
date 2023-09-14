@@ -192,11 +192,12 @@
 }
 
 .iconWrapper {
-  display: flex;
-  gap: 10px;
+  // display: flex;
+  // gap: 10px;
+  position: relative;
 }
 
-.iconButton {
+.iconButtonDots {
   background-color: var(--white);
 }
 
@@ -221,21 +222,30 @@
 }
 
 .buttonsGroup.dropdownModal {
+  position: absolute;
+  top: 40px;
+  left: -275px;
   background-color: transparent;
 }
 
 .buttonsGroup .dropdownModal.open {
+  position: absolute;
+  top: 0;
+  left: 80px;
+  width: 210px;
   animation: fade 0.3s ease-in-out;
 }
 
 .buttonsGroup .dropdownModal {
-  position: relative;
-  top: -150px;
-  right: 200px;
-  width: 210px;
+  // position: relative;
+  // top: 0;
+  // left: 80px;
+  // width: 210px;
   padding: 0;
   border-radius: 7px;
   box-shadow: 0 0 8px -2px rgb(16 24 40 / 16%);
+
+  // z-index: 100;
 }
 
 .buttonsGroup button {
