@@ -9,4 +9,6 @@ const DEFAULT_ARTICLE_FORM_PAYLOAD: ArticleRequestDto = {
   coverId: null,
 };
 
-export { DEFAULT_ARTICLE_FORM_PAYLOAD };
+const PREVIOUS_PAGE_INDEX = -1;
+
+export { DEFAULT_ARTICLE_FORM_PAYLOAD, PREVIOUS_PAGE_INDEX };
