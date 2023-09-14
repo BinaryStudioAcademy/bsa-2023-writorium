@@ -11,13 +11,17 @@
 
 .buttonsWrapper {
   position: absolute;
-  top: 100px;
   bottom: 5%;
   left: 28px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 11px;
+}
+
+.articleContent {
+  flex-grow: 1;
+  padding: 18px 33px 62px;
 }
 
 .body:not(.hasCover) {
@@ -68,11 +72,6 @@
   font-size: 40px;
   font-family: "Libre Baskerville", serif;
   line-height: normal;
-}
-
-.textWrapper {
-  flex-grow: 1;
-  padding: 18px 33px 62px;
 }
 
 .text {
