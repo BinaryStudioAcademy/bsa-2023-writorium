@@ -1,5 +1,8 @@
 import { Modal } from '~/libs/components/components.js';
+import { getValidClassNames } from '~/libs/helpers/helpers.js';
 import { useCallback } from '~/libs/hooks/hooks.js';
+
+import styles from './styles.module.scss';
 
 type Properties = {
   content: React.ReactNode;
@@ -22,7 +25,11 @@ const Popover: React.FC<Properties> = ({ content, trigger, className }) => {
   return (
     <>
       {isOpen && (
-        <Modal isOpen onClose={handleClose} className={className}>
+        <Modal
+          isOpen
+          onClose={handleClose}
+          className={getValidClassNames(styles.popover, className)}
+        >
           {content}
         </Modal>
       )}

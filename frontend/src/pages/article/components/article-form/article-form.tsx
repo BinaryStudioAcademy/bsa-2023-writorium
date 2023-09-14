@@ -18,7 +18,10 @@ import { getGeneratedPromptPayload } from '~/packages/prompts/prompts.js';
 import { actions as articlesActions } from '~/slices/articles/articles.js';
 
 import { ArticleCoverUpload } from './libs/components/components.js';
-import { DEFAULT_ARTICLE_FORM_PAYLOAD } from './libs/constants/constants.js';
+import {
+  DEFAULT_ARTICLE_FORM_PAYLOAD,
+  PREVIOUS_PAGE_INDEX,
+} from './libs/constants/constants.js';
 import { ArticleSubmitType } from './libs/enums/enums.js';
 import styles from './styles.module.scss';
 
@@ -37,6 +40,7 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
       defaultValues: articleForUpdate
         ? {
             ...DEFAULT_ARTICLE_FORM_PAYLOAD,
+            coverId: articleForUpdate.coverId,
             text: articleForUpdate.text,
             title: articleForUpdate.title,
           }
@@ -45,6 +49,8 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
         ? articleUpdateValidationSchema
         : articleCreateValidationSchema,
     });
+
+  const isDraft = !articleForUpdate?.publishedAt;
 
   const handleArticleSubmit = useCallback(
     (articleSubmitType: ValueOf<typeof ArticleSubmitType>) =>
@@ -72,10 +78,17 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
       if (!articleForUpdate) {
         return;
       }
+
       const updatePayload = {
         articleId: articleForUpdate.id,
-        articleForUpdate: { text: payload.text, title: payload.title },
+        articleForUpdate: {
+          text: payload.text,
+          title: payload.title,
+          publishedAt: articleForUpdate.publishedAt ?? new Date().toISOString(),
+          coverId: payload.coverId,
+        },
       };
+
       void dispatch(articlesActions.updateArticle(updatePayload))
         .unwrap()
         .then(() =>
@@ -103,12 +116,21 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
   );
 
   const handleCancel = useCallback(() => {
+    if (!isDirty) {
+      navigate(PREVIOUS_PAGE_INDEX);
+      return;
+    }
+
     handleReset(
       articleForUpdate
-        ? { text: articleForUpdate.text, title: articleForUpdate.title }
+        ? {
+            text: articleForUpdate.text,
+            title: articleForUpdate.title,
+            coverId: articleForUpdate.coverId,
+          }
         : DEFAULT_ARTICLE_FORM_PAYLOAD,
     );
-  }, [handleReset, articleForUpdate]);
+  }, [handleReset, navigate, isDirty, articleForUpdate]);
 
   return (
     <div>
@@ -118,7 +140,12 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
         onReset={handleCancel}
         className={styles.formContainer}
       >
-        <ArticleCoverUpload name="coverId" control={control} errors={errors} />
+        <ArticleCoverUpload
+          name="coverId"
+          control={control}
+          errors={errors}
+          initialPreviewUrl={articleForUpdate?.coverUrl}
+        />
         <Input
           type="text"
           placeholder="Enter the title of the article"
@@ -127,7 +154,12 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
           errors={errors}
           className={styles.titleInput}
         />
-        <TextEditor control={control} name="text" errors={errors} />
+        <TextEditor
+          control={control}
+          name="text"
+          errors={errors}
+          wasEdited={isDirty}
+        />
         <div className={styles.buttonWrapper}>
           <Button
             type={ButtonType.RESET}
@@ -148,7 +180,7 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
             label="Publish"
             name="publish"
             className={styles.publishBtn}
-            disabled={!isDirty || isSubmitting}
+            disabled={(!isDirty && !isDraft) || isSubmitting}
           />
         </div>
       </form>

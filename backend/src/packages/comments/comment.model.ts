@@ -5,13 +5,13 @@ import {
   DatabaseTableName,
 } from '~/libs/packages/database/database.js';
 import { composeDatabaseRelationPath } from '~/libs/packages/database/libs/helpers/helpers.js';
-
-import { UserModel } from '../users/users.js';
+import { UserDetailsModel } from '~/packages/users/user-details.model.js';
 
 class CommentModel extends AbstractModel {
   public 'text': string;
   public 'userId': number;
   public 'articleId': number;
+  public 'author': UserDetailsModel;
 
   public static override get tableName(): string {
     return DatabaseTableName.COMMENTS;
@@ -20,15 +20,15 @@ class CommentModel extends AbstractModel {
     return {
       author: {
         relation: Model.HasOneRelation,
-        modelClass: UserModel,
+        modelClass: UserDetailsModel,
         join: {
           from: composeDatabaseRelationPath<CommentModel>(
             DatabaseTableName.COMMENTS,
             'userId',
           ),
-          to: composeDatabaseRelationPath<UserModel>(
-            DatabaseTableName.USERS,
-            'id',
+          to: composeDatabaseRelationPath<UserDetailsModel>(
+            DatabaseTableName.USER_DETAILS,
+            'userId',
           ),
         },
       },
