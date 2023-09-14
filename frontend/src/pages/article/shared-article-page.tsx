@@ -7,10 +7,10 @@ import {
   useEffect,
   useParams,
 } from '~/libs/hooks/hooks.js';
-import { type TagType } from '~/libs/types/types.js';
 import { actions as articlesActions } from '~/slices/articles/articles.js';
 
 import { ArticleDetails, ArticleView } from './components/components.js';
+import { getArticleViewTags } from './libs/helpers/helpers.js';
 import styles from './styles.module.scss';
 
 const SharedArticlePage: React.FC = () => {
@@ -41,24 +41,15 @@ const SharedArticlePage: React.FC = () => {
     return null;
   }
 
-  const MOCKED_TAGS: TagType[] = [
-    { id: 1, name: 'IT' },
-    { id: 2, name: 'CODE' },
-    { id: 3, name: 'Humor' },
-    { id: 4, name: 'Work' },
-    { id: 5, name: 'Tech' },
-  ];
-
   return (
     <Loader isLoading={isLoading} hasOverlay type="circular">
       <Layout>
         <div className={styles.articlePageWrapper}>
           <ArticleView
-            tags={MOCKED_TAGS}
+            tags={article ? getArticleViewTags(article) : null}
             text={article?.text ?? ''}
             title={article?.title ?? ''}
             coverUrl={article?.coverUrl ?? ''}
-            isShared
           />
 
           {article?.author && (

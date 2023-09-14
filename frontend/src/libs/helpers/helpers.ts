@@ -1,3 +1,4 @@
+export { getArticleTags } from './get-article-tags/get-article-tags.js';
 export { getAxisOffset } from './get-axis-offset/get-axis-offset.helper.js';
 export { getFirstLetters } from './get-first-letters/get-first-letters.helper.js';
 export { getFullName } from './get-full-name/get-full-name.helper.js';
