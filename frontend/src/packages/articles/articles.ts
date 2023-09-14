@@ -27,5 +27,6 @@ export {
 } from './libs/types/types.js';
 export {
   articleCreateValidationSchema,
+  articlesFormFiltersValidationSchema,
   articleUpdateValidationSchema,
 } from './libs/validation-schemas/validation-schemas.js';

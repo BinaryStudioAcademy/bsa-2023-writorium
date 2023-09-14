@@ -48,11 +48,15 @@ class ArticleService implements IService {
   private openAIService: OpenAIService;
   private genreRepository: GenreRepository;
 
-  public constructor(
-    articleRepository: ArticleRepository,
-    openAIService: OpenAIService,
-    genreRepository: GenreRepository,
-  ) {
+  public constructor({
+    articleRepository,
+    openAIService,
+    genreRepository,
+  }: {
+    articleRepository: ArticleRepository;
+    openAIService: OpenAIService;
+    genreRepository: GenreRepository;
+  }) {
     this.articleRepository = articleRepository;
     this.openAIService = openAIService;
     this.genreRepository = genreRepository;

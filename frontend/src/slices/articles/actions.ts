@@ -17,6 +17,7 @@ import {
   type CommentUpdateDto,
   type CommentWithRelationsResponseDto,
 } from '~/packages/comments/comments.js';
+import { type GenreGetAllResponseDto } from '~/packages/genres/genres.js';
 import { NotificationType } from '~/packages/notification/notification.js';
 import { type PromptRequestDto } from '~/packages/prompts/prompts.js';
 
@@ -87,6 +88,15 @@ const getArticle = createAsyncThunk<
   const { articleApi } = extra;
 
   return articleApi.getArticle(id);
+});
+
+const getAllGenres = createAsyncThunk<
+  GenreGetAllResponseDto,
+  undefined,
+  AsyncThunkConfig
+>(`${sliceName}/getAllGenres`, async (_loginPayload, { extra }) => {
+  const { genresApi } = extra;
+  return await genresApi.getAll();
 });
 
 const shareArticle = createAsyncThunk<
@@ -203,6 +213,7 @@ export {
   fetchAllCommentsToArticle,
   fetchOwn,
   fetchSharedArticle,
+  getAllGenres,
   getArticle,
   reactToArticle,
   shareArticle,

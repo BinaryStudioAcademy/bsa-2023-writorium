@@ -16,5 +16,6 @@ export {
 export {
   articleCreate as articleCreateValidationSchema,
   articlesFilters as articlesFiltersValidationSchema,
+  articlesFormFilters as articlesFormFiltersValidationSchema,
   articleUpdate as articleUpdateValidationSchema,
 } from './libs/validation-schemas/validation-schemas.js';
