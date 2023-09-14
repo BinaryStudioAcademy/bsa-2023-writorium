@@ -152,7 +152,12 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
           errors={errors}
           className={styles.titleInput}
         />
-        <TextEditor control={control} name="text" errors={errors} />
+        <TextEditor
+          control={control}
+          name="text"
+          errors={errors}
+          wasEdited={isDirty}
+        />
         <div className={styles.buttonWrapper}>
           <Button
             type={ButtonType.RESET}
