@@ -245,7 +245,7 @@ class CommentController extends Controller {
       status: HttpCode.OK,
       payload: await this.commentService.update(options.params.id, {
         userId: options.user.id,
-        ...options.body,
+        payload: options.body,
       }),
     };
   }

@@ -3,6 +3,7 @@ export {
   type UserActivityResponseDto,
   type UserArticlesGenreStatsResponseDto,
   type UserAuthResponseDto,
+  type UserDetailsResponseDto,
   type UserGetAllResponseDto,
   type UserSignInRequestDto,
   type UserSignInResponseDto,
