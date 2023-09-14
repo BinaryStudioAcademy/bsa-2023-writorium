@@ -85,11 +85,11 @@ const UserAchievements: FC<Properties> = ({ className }) => {
             classNameAchievement={styles.achievementItem}
           />
         </div>
+        <Tooltip
+          id={DataTooltipId.ACHIEVEMENT_TOOLTIP}
+          className={styles.achievementTooltip}
+        />
       </Modal>
-      <Tooltip
-        id={DataTooltipId.ACHIEVEMENT_TOOLTIP}
-        className={styles.achievementTooltip}
-      />
     </div>
   );
 };
