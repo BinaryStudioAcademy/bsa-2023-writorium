@@ -50,6 +50,7 @@ const SharedArticlePage: React.FC = () => {
             text={article?.text ?? ''}
             title={article?.title ?? ''}
             coverUrl={article?.coverUrl ?? ''}
+            isShared
           />
 
           {article?.author && (
