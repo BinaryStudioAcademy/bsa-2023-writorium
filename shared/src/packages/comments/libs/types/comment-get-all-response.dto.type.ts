@@ -1,7 +1,7 @@
-import { type CommentBaseResponseDto } from '~/packages/comments/libs/types/comment-base-response-dto.type.js';
+import { type CommentWithRelationsResponseDto } from '~/packages/comments/libs/types/comment-with-relations-response-dto.type.js';
 
 type CommentGetAllResponseDto = {
-  items: CommentBaseResponseDto[];
+  items: CommentWithRelationsResponseDto[];
 };
 
 export { type CommentGetAllResponseDto };

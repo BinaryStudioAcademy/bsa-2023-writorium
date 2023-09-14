@@ -8,6 +8,7 @@ export {
   type CommentGetAllResponseDto,
   type CommentUpdateDto,
   type CommentUpdateRequestDto,
+  type CommentWithRelationsResponseDto,
 } from './libs/types/types.js';
 export {
   commentCreate as commentCreateValidationSchema,
