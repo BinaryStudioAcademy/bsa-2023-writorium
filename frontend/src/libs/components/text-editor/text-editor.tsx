@@ -19,7 +19,7 @@ import {
   TextAlign,
   Underline,
   Upperline,
-} from './libs/extensions/extenstions.js';
+} from './libs/extensions/extensions.js';
 import styles from './styles.module.scss';
 
 type Properties<T extends FieldValues> = {
