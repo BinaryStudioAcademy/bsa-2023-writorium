@@ -140,6 +140,17 @@ class UserController extends Controller {
     });
 
     this.addRoute({
+      path: UsersApiPath.ARTICLES_GENRE_STATS,
+      method: 'GET',
+      handler: (options) =>
+        this.getUserArticlesGenreStats(
+          options as ApiHandlerOptions<{
+            user: UserAuthResponseDto;
+          }>,
+        ),
+    });
+
+    this.addRoute({
       path: UsersApiPath.ROOT,
       method: 'PUT',
       validation: {
@@ -179,7 +190,7 @@ class UserController extends Controller {
 
   /**
    * @swagger
-   * /articles/activity:
+   * /users/activity:
    *    get:
    *      summary: Get user activity statistic
    *      description: Get user activity statistic
@@ -197,6 +208,27 @@ class UserController extends Controller {
     return {
       status: HttpCode.OK,
       payload: await this.userService.getUserActivity(options.user.id),
+    };
+  }
+
+  /**
+   * @swagger
+   * /users/articles-genre-stats:
+   *    get:
+   *      summary: Get articles genres stats for current user
+   *      description: Get articles genres stats for current user
+   *      responses:
+   *        200:
+   *          description: Successful operation
+   */
+  private async getUserArticlesGenreStats(
+    options: ApiHandlerOptions<{ user: UserAuthResponseDto }>,
+  ): Promise<ApiHandlerResponse> {
+    return {
+      status: HttpCode.OK,
+      payload: await this.userService.getUserArticlesGenreStats(
+        options.user.id,
+      ),
     };
   }
 
