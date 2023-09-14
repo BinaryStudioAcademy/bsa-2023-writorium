@@ -25,21 +25,21 @@ const SuggestionCard: React.FC<Properties> = ({
     [ArticleSuggestionPriority.Low]: 'Low',
     [ArticleSuggestionPriority.Medium]: 'Medium',
     [ArticleSuggestionPriority.High]: 'High',
-  } as const;
+  }[priority];
 
   return (
     <li className={getValidClassNames(styles.suggestion, priorityClassName)}>
       <div className={styles.suggestionHeader}>
         <h4>{title}</h4>
-        <div>
+        <div className={styles.priorityLabel}>
           <span className={styles.priorityText}>Priority: </span>
           <span
             className={getValidClassNames(
-              styles.priorityLabel,
+              styles.priorityLabelTag,
               priorityClassName,
             )}
           >
-            {priorityDisplayText[priority]}
+            {priorityDisplayText}
           </span>
         </div>
       </div>

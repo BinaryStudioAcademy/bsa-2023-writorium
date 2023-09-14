@@ -26,23 +26,27 @@
 }
 
 .priorityLabel {
+  white-space: nowrap;
+}
+
+.priorityLabelTag {
   padding: 3px 10px;
   color: var(--white);
   font-size: 12px;
   border-radius: 20px;
 }
 
-.priorityLabel.low,
+.priorityLabelTag.low,
 .suggestion.low::before {
   background-color: var(--light-green-100);
 }
 
-.priorityLabel.medium,
+.priorityLabelTag.medium,
 .suggestion.medium::before {
   background-color: var(--light-green-200);
 }
 
-.priorityLabel.high,
+.priorityLabelTag.high,
 .suggestion.high::before {
   background-color: var(--light-green-300);
 }
