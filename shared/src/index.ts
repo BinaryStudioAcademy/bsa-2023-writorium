@@ -63,6 +63,7 @@ export {
   articleReactionValidationSchema,
 } from './packages/article-reactions/article-reactions.js';
 export {
+  type ArticleCommentCount,
   type ArticleCreateDto,
   articleCreateValidationSchema,
   type ArticleEntityType,
@@ -76,6 +77,7 @@ export {
   type ArticleUpdateRequestDto,
   type ArticleUpdateRequestPayload,
   articleUpdateValidationSchema,
+  type ArticleWithCommentCountResponseDto,
   type ArticleWithRelationsType,
   type ReactionResponseDto,
 } from './packages/articles/articles.js';
@@ -100,6 +102,7 @@ export {
   type CommentUpdateDto,
   type CommentUpdateRequestDto,
   commentUpdateValidationSchema,
+  type CommentWithRelationsResponseDto,
 } from './packages/comments/comments.js';
 export {
   FilesApiPath,

@@ -18,8 +18,11 @@ export {
   type ArticleReactionResponseDto,
   type ArticleRequestDto,
   type ArticleResponseDto,
+  type ArticlesFilters,
   type ArticleUpdateRequestDto,
   type ArticleUpdateRequestPayload,
+  type ArticleWithCommentCountResponseDto,
+  type ArticleWithRelationsType,
   type ReactionResponseDto,
 } from './libs/types/types.js';
 export {

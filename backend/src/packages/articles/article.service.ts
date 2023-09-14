@@ -37,6 +37,7 @@ import {
   type ArticleResponseDto,
   type ArticlesFilters,
   type ArticleUpdateRequestDto,
+  type ArticleWithCommentCountResponseDto,
   type DetectedArticleGenre,
   type UserActivityResponseDto,
   type UserArticlesGenreStatsResponseDto,
@@ -138,7 +139,9 @@ class ArticleService implements IService {
 
     return {
       total,
-      items: items.map((article) => article.toObjectWithRelations()),
+      items: items.map((article) =>
+        article.toObjectWithRelationsAndCommentCount(),
+      ),
     };
   }
 
@@ -153,7 +156,9 @@ class ArticleService implements IService {
 
     return {
       total,
-      items: items.map((article) => article.toObjectWithRelations()),
+      items: items.map((article) =>
+        article.toObjectWithRelationsAndCommentCount(),
+      ),
     };
   }
 
@@ -235,7 +240,9 @@ class ArticleService implements IService {
     };
   }
 
-  public async create(payload: ArticleCreateDto): Promise<ArticleResponseDto> {
+  public async create(
+    payload: ArticleCreateDto,
+  ): Promise<ArticleWithCommentCountResponseDto> {
     const genreId = await this.getGenreIdToSet(payload);
     const readTime = await this.getArticleReadTime(payload.text);
 
@@ -249,11 +256,10 @@ class ArticleService implements IService {
         coverId: payload.coverId,
         promptId: payload?.promptId ?? null,
         publishedAt: payload?.publishedAt ?? null,
-        deletedAt: null,
       }),
     );
 
-    return article.toObjectWithRelations();
+    return article.toObjectWithRelationsAndCommentCount();
   }
 
   public async update(
@@ -262,7 +268,7 @@ class ArticleService implements IService {
       payload,
       user,
     }: { payload: ArticleUpdateRequestDto; user: UserAuthResponseDto },
-  ): Promise<ArticleResponseDto> {
+  ): Promise<ArticleWithCommentCountResponseDto> {
     const article = await this.find(id);
 
     if (!article) {
@@ -271,24 +277,25 @@ class ArticleService implements IService {
       });
     }
 
+    if (article.userId !== user.id) {
+      throw new ForbiddenError('Article can be edited only by author!');
+    }
+
     const updatedReadTime =
       payload.text && payload.text !== article.text
         ? await this.getArticleReadTime(payload.text)
         : article.readTime;
-
-    if (article.userId !== user.id) {
-      throw new ForbiddenError('Article can be edited only by author!');
-    }
 
     const updatedArticle = await this.articleRepository.update(
       ArticleEntity.initialize({
         ...article,
         ...payload,
         readTime: updatedReadTime,
+        commentCount: null,
       }),
     );
 
-    return updatedArticle.toObjectWithRelations();
+    return updatedArticle.toObjectWithRelationsAndCommentCount();
   }
 
   public async getArticleSharingLink(
@@ -329,7 +336,10 @@ class ArticleService implements IService {
     return articleFound;
   }
 
-  public async delete(id: number, userId: number): Promise<ArticleResponseDto> {
+  public async delete(
+    id: number,
+    userId: number,
+  ): Promise<ArticleWithCommentCountResponseDto> {
     const article = await this.find(id);
 
     if (!article) {
@@ -352,7 +362,7 @@ class ArticleService implements IService {
 
     const deletedArticle = await this.articleRepository.delete(id);
 
-    return deletedArticle.toObjectWithRelations();
+    return deletedArticle.toObjectWithRelationsAndCommentCount();
   }
 }
 

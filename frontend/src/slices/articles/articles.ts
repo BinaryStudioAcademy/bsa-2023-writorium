@@ -1,8 +1,10 @@
 import {
   createArticle,
+  createComment,
   deleteArticle,
   deleteArticleReaction,
   fetchAll,
+  fetchAllCommentsToArticle,
   fetchOwn,
   fetchSharedArticle,
   getAllGenres,
@@ -10,6 +12,7 @@ import {
   reactToArticle,
   shareArticle,
   updateArticle,
+  updateComment,
 } from './actions.js';
 import { actions } from './articles.slice.js';
 
@@ -21,6 +24,9 @@ const allActions = {
   updateArticle,
   getArticle,
   getAllGenres,
+  fetchAllCommentsToArticle,
+  createComment,
+  updateComment,
   deleteArticle,
   reactToArticle,
   deleteArticleReaction,

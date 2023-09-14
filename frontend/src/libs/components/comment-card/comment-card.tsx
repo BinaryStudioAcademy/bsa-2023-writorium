@@ -5,12 +5,12 @@ import {
   getPublicationTime,
 } from '~/libs/helpers/helpers.js';
 import { type CommentBaseResponseDto } from '~/packages/comments/comments.js';
-import { type UserAuthResponseDto } from '~/packages/users/users.js';
+import { type UserDetailsResponseDto } from '~/packages/users/users.js';
 
 import styles from './styles.module.scss';
 
 type Properties = {
-  user: UserAuthResponseDto;
+  user: UserDetailsResponseDto;
   comment: CommentBaseResponseDto;
 };
 
