@@ -28,4 +28,7 @@ export {
   userSignUpValidationSchema,
 } from './libs/validation-schemas/validation-schemas.js';
 export { UserModel } from './user.model.js';
+export { type UserRepository } from './user.repository.js';
 export { type UserService } from './user.service.js';
+export { type UserDetailsModel } from './user-details.model.js';
+export { userRepository };

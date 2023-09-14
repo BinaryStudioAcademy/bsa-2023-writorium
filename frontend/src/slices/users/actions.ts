@@ -5,6 +5,7 @@ import {
   type UserActivityResponseDto,
   type UserArticlesGenreStatsResponseDto,
   type UserAuthResponseDto,
+  type UserDetailsDto,
   type UserGetAllResponseDto,
   type UserUpdateRequestDto,
 } from '~/packages/users/users.js';
@@ -51,4 +52,19 @@ const updateUser = createAsyncThunk<
   return await userApi.updateUser(updateUserPayload);
 });
 
-export { getUserActivity, getUserArticlesGenresStats, loadAll, updateUser };
+const getAllAuthors = createAsyncThunk<
+  UserDetailsDto[],
+  undefined,
+  AsyncThunkConfig
+>(`${sliceName}/getAllAuthors`, async (_loginPayload, { extra }) => {
+  const { userApi } = extra;
+  return await userApi.getAllAuthors();
+});
+
+export {
+  getAllAuthors,
+  getUserActivity,
+  getUserArticlesGenresStats,
+  loadAll,
+  updateUser,
+};

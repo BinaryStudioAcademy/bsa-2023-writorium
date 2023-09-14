@@ -26,6 +26,8 @@
     "@tiptap/react": "2.1.7",
     "@tiptap/starter-kit": "2.1.7",
     "clsx": "2.0.0",
+    "lodash.clonedeep": "4.5.0",
+    "lodash.isequal": "4.5.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-facebook": "9.0.12",
@@ -41,6 +43,8 @@
     "sanitize-html": "2.11.0"
   },
   "devDependencies": {
+    "@types/lodash.clonedeep": "4.5.7",
+    "@types/lodash.isequal": "4.5.6",
     "@types/react": "18.2.20",
     "@types/react-dom": "18.2.7",
     "@types/sanitize-html": "2.9.0",

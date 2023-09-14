@@ -3,6 +3,7 @@ type UsePaginationReturn = {
   loadMore: (
     callback: (skip: number, take: number) => Promise<boolean>,
   ) => Promise<void>;
+  resetSkip: () => void;
 };
 
 export { type UsePaginationReturn };

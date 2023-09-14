@@ -5,10 +5,12 @@ import { type ValueOf } from '~/libs/types/types.js';
 import {
   type UserActivityResponseDto,
   type UserArticlesGenreStatsItem,
+  type UserDetailsDto,
   type UserGetAllItemResponseDto,
 } from '~/packages/users/users.js';
 
 import {
+  getAllAuthors,
   getUserActivity,
   getUserArticlesGenresStats,
   loadAll,
@@ -18,6 +20,7 @@ type State = {
   users: UserGetAllItemResponseDto[];
   userActivity: UserActivityResponseDto[];
   dataStatus: ValueOf<typeof DataStatus>;
+  authors: UserDetailsDto[];
   userArticlesGenresStats: UserArticlesGenreStatsItem[];
   userArticlesGenresStatsStatus: ValueOf<typeof DataStatus>;
 };
@@ -25,6 +28,7 @@ type State = {
 const initialState: State = {
   users: [],
   userActivity: [],
+  authors: [],
   userArticlesGenresStats: [],
   dataStatus: DataStatus.IDLE,
   userArticlesGenresStatsStatus: DataStatus.IDLE,
@@ -42,6 +46,14 @@ const { reducer, actions, name } = createSlice({
     builder.addCase(getUserActivity.fulfilled, (state, action) => {
       state.userActivity = action.payload;
     });
+    builder.addCase(getAllAuthors.fulfilled, (state, action) => {
+      state.dataStatus = DataStatus.FULFILLED;
+      state.authors = action.payload;
+    });
+    builder.addCase(getAllAuthors.rejected, (state) => {
+      state.dataStatus = DataStatus.REJECTED;
+      state.authors = [];
+    });
     builder.addCase(getUserArticlesGenresStats.fulfilled, (state, action) => {
       state.userArticlesGenresStats = action.payload.items;
       state.userArticlesGenresStatsStatus = DataStatus.FULFILLED;
@@ -53,7 +65,7 @@ const { reducer, actions, name } = createSlice({
       state.userArticlesGenresStatsStatus = DataStatus.REJECTED;
     });
     builder.addMatcher(
-      isAnyOf(loadAll.pending, getUserActivity.pending),
+      isAnyOf(loadAll.pending, getUserActivity.pending, getAllAuthors.pending),
       (state) => {
         state.dataStatus = DataStatus.PENDING;
       },
