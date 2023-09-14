@@ -4,24 +4,34 @@ import { DataStatus } from '~/libs/enums/enums.js';
 import { type ValueOf } from '~/libs/types/types.js';
 import {
   type UserActivityResponseDto,
+  type UserArticlesGenreStatsItem,
   type UserDetailsDto,
   type UserGetAllItemResponseDto,
 } from '~/packages/users/users.js';
 
-import { getAllAuthors, getUserActivity, loadAll } from './actions.js';
+import {
+  getAllAuthors,
+  getUserActivity,
+  getUserArticlesGenresStats,
+  loadAll,
+} from './actions.js';
 
 type State = {
   users: UserGetAllItemResponseDto[];
   userActivity: UserActivityResponseDto[];
   dataStatus: ValueOf<typeof DataStatus>;
   authors: UserDetailsDto[];
+  userArticlesGenresStats: UserArticlesGenreStatsItem[];
+  userArticlesGenresStatsStatus: ValueOf<typeof DataStatus>;
 };
 
 const initialState: State = {
   users: [],
   userActivity: [],
   authors: [],
+  userArticlesGenresStats: [],
   dataStatus: DataStatus.IDLE,
+  userArticlesGenresStatsStatus: DataStatus.IDLE,
 };
 
 const { reducer, actions, name } = createSlice({
@@ -43,6 +53,16 @@ const { reducer, actions, name } = createSlice({
     builder.addCase(getAllAuthors.rejected, (state) => {
       state.dataStatus = DataStatus.REJECTED;
       state.authors = [];
+    });
+    builder.addCase(getUserArticlesGenresStats.fulfilled, (state, action) => {
+      state.userArticlesGenresStats = action.payload.items;
+      state.userArticlesGenresStatsStatus = DataStatus.FULFILLED;
+    });
+    builder.addCase(getUserArticlesGenresStats.pending, (state) => {
+      state.userArticlesGenresStatsStatus = DataStatus.PENDING;
+    });
+    builder.addCase(getUserArticlesGenresStats.rejected, (state) => {
+      state.userArticlesGenresStatsStatus = DataStatus.REJECTED;
     });
     builder.addMatcher(
       isAnyOf(loadAll.pending, getUserActivity.pending, getAllAuthors.pending),

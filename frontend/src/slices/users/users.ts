@@ -1,6 +1,7 @@
 import {
   getAllAuthors,
   getUserActivity,
+  getUserArticlesGenresStats,
   loadAll,
   updateUser,
 } from './actions.js';
@@ -12,6 +13,7 @@ const allActions = {
   updateUser,
   getUserActivity,
   getAllAuthors,
+  getUserArticlesGenresStats,
 };
 
 export { allActions as actions };

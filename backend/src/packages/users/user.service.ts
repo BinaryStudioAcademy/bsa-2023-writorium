@@ -13,6 +13,7 @@ import { type UserRepository } from '~/packages/users/user.repository.js';
 
 import {
   type UserActivityResponseDto,
+  type UserArticlesGenreStatsResponseDto,
   type UserAuthResponseDto,
   type UserGetAllResponseDto,
   type UserPrivateData,
@@ -87,6 +88,12 @@ class UserService implements IService {
     userId: number,
   ): Promise<UserActivityResponseDto[]> {
     return await this.articleService.getUserActivity(userId);
+  }
+
+  public async getUserArticlesGenreStats(
+    userId: number,
+  ): Promise<UserArticlesGenreStatsResponseDto> {
+    return await this.articleService.getUserArticlesGenreStats(userId);
   }
 
   public async create(
