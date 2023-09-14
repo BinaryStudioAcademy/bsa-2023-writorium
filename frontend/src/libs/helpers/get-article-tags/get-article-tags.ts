@@ -1,6 +1,5 @@
+import { type TagType } from '~/libs/types/types.js';
 import { type ArticleResponseDto } from '~/packages/articles/articles.js';
-
-import { type TagType } from '../types/types.js';
 
 const getArticleTags = (article: ArticleResponseDto): TagType[] => {
   const result: TagType[] = [];
