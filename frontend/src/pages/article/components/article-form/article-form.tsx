@@ -37,6 +37,7 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
       defaultValues: articleForUpdate
         ? {
             ...DEFAULT_ARTICLE_FORM_PAYLOAD,
+            coverId: articleForUpdate.coverId,
             text: articleForUpdate.text,
             title: articleForUpdate.title,
           }
@@ -74,7 +75,11 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
       }
       const updatePayload = {
         articleId: articleForUpdate.id,
-        articleForUpdate: { text: payload.text, title: payload.title },
+        articleForUpdate: {
+          text: payload.text,
+          title: payload.title,
+          coverId: payload.coverId,
+        },
       };
       void dispatch(articlesActions.updateArticle(updatePayload))
         .unwrap()
@@ -118,7 +123,12 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
         onReset={handleCancel}
         className={styles.formContainer}
       >
-        <ArticleCoverUpload name="coverId" control={control} errors={errors} />
+        <ArticleCoverUpload
+          name="coverId"
+          control={control}
+          errors={errors}
+          initialPreviewUrl={articleForUpdate?.coverUrl}
+        />
         <Input
           type="text"
           placeholder="Enter the title of the article"
