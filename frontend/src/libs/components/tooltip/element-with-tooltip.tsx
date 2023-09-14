@@ -7,7 +7,11 @@ import {
 } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 
-import { DataTooltipId, TooltipPosition } from '~/libs/enums/enums.js';
+import {
+  DataTooltipId,
+  TooltipPosition,
+  TooltipPositionStrategy,
+} from '~/libs/enums/enums.js';
 import { type ValueOf } from '~/libs/types/types.js';
 
 type ElementWithTooltipProperties = {
@@ -15,6 +19,7 @@ type ElementWithTooltipProperties = {
   elementType: keyof ReactHTML;
   placement?: ValueOf<typeof TooltipPosition>;
   tooltipId?: ValueOf<typeof DataTooltipId>;
+  tooltipPositionStrategy?: ValueOf<typeof TooltipPositionStrategy>;
   hasToShowTooltip?: boolean;
   tooltipContent: string | ReactElement;
   children?: ReactNode;
@@ -26,6 +31,7 @@ const ElementWithTooltip: FC<ElementWithTooltipProperties> = ({
   elementType,
   placement = TooltipPosition.TOP,
   tooltipId = DataTooltipId.MAIN_TOOLTIP,
+  tooltipPositionStrategy = TooltipPositionStrategy.ABSOLUTE,
   hasToShowTooltip = true,
   tooltipContent,
 }) => {
@@ -40,6 +46,7 @@ const ElementWithTooltip: FC<ElementWithTooltipProperties> = ({
     ? {
         'data-tooltip-id': tooltipId,
         'data-tooltip-place': placement,
+        'data-tooltip-position-strategy': tooltipPositionStrategy,
         [contentDataAttribute]: adaptedTooltipContent,
       }
     : {};
