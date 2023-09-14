@@ -184,9 +184,20 @@ const updateComment = createAsyncThunk<
   return commentsApi.update(payload);
 });
 
+const deleteArticle = createAsyncThunk<
+  ArticleWithCommentCountResponseDto,
+  number,
+  AsyncThunkConfig
+>(`${sliceName}/delete`, (id, { extra }) => {
+  const { articleApi } = extra;
+
+  return articleApi.delete(id);
+});
+
 export {
   createArticle,
   createComment,
+  deleteArticle,
   deleteArticleReaction,
   fetchAll,
   fetchAllCommentsToArticle,

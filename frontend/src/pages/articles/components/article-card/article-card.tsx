@@ -49,6 +49,7 @@ type Properties = {
   author: UserDetailsResponseDto;
   tags: TagType[];
   reactions: ReactionResponseDto[];
+  onDeleteArticle?: (id: number) => void;
 };
 
 const ArticleCard: React.FC<Properties> = ({
@@ -56,6 +57,7 @@ const ArticleCard: React.FC<Properties> = ({
   author,
   tags,
   reactions,
+  onDeleteArticle,
 }) => {
   const dispatch = useAppDispatch();
   const user = useAppSelector(({ auth }) => auth.user) as UserAuthResponseDto;
@@ -82,6 +84,10 @@ const ArticleCard: React.FC<Properties> = ({
   const { firstName, lastName, avatarUrl } = author;
   const articleUrl = window.location.href;
   const articleRouteById = AppRoute.ARTICLE.replace(':id', String(id));
+
+  const handleDeleteArticle = useCallback(() => {
+    onDeleteArticle?.(id);
+  }, [id, onDeleteArticle]);
   const isOwnArticle = user.id === userId;
 
   const handleReaction = (reaction: ValueOf<typeof Reaction>): void => {
@@ -142,12 +148,29 @@ const ArticleCard: React.FC<Properties> = ({
         </div>
         <div className={styles.iconWrapper}>
           {isMyArticles && (
-            <RouterLink
-              to={AppRoute.EDIT_ARTICLE.replace(':id', id.toString())}
-              state={article}
-            >
-              <Icon iconName="edit" className={styles.editIcon} />
-            </RouterLink>
+            <>
+              <IconButton
+                className={styles.iconButton}
+                iconName="trashBin"
+                iconClassName={getValidClassNames(
+                  styles.deleteIcon,
+                  styles.pointerIcon,
+                )}
+                onClick={handleDeleteArticle}
+              />
+              <RouterLink
+                to={AppRoute.EDIT_ARTICLE.replace(':id', id.toString())}
+                state={article}
+              >
+                <Icon
+                  iconName="edit"
+                  className={getValidClassNames(
+                    styles.editIcon,
+                    styles.pointerIcon,
+                  )}
+                />
+              </RouterLink>
+            </>
           )}
           <Icon iconName="favorite" className={styles.pointerIcon} />
         </div>

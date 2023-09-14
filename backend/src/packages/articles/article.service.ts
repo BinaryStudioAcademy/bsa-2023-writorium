@@ -40,6 +40,7 @@ import {
   type ArticleWithCommentCountResponseDto,
   type DetectedArticleGenre,
   type UserActivityResponseDto,
+  type UserArticlesGenreStatsResponseDto,
 } from './libs/types/types.js';
 
 class ArticleService implements IService {
@@ -57,7 +58,7 @@ class ArticleService implements IService {
     this.genreRepository = genreRepository;
   }
 
-  public async detectArticleGenreFromText(
+  private async detectArticleGenreFromText(
     text: string,
   ): Promise<DetectedArticleGenre | null> {
     const genresJSON = await this.openAIService.createCompletion(
@@ -220,6 +221,21 @@ class ArticleService implements IService {
     return halfYearActivity;
   }
 
+  public async getUserArticlesGenreStats(
+    userId: number,
+  ): Promise<UserArticlesGenreStatsResponseDto> {
+    const stats = await this.articleRepository.getUserArticlesGenreStats(
+      userId,
+    );
+
+    return {
+      items: stats.map((statsItem) => ({
+        ...statsItem,
+        count: Number.parseInt(statsItem.count),
+      })),
+    };
+  }
+
   public async create(
     payload: ArticleCreateDto,
   ): Promise<ArticleWithCommentCountResponseDto> {
@@ -316,8 +332,33 @@ class ArticleService implements IService {
     return articleFound;
   }
 
-  public delete(): Promise<boolean> {
-    return Promise.resolve(false);
+  public async delete(
+    id: number,
+    userId: number,
+  ): Promise<ArticleWithCommentCountResponseDto> {
+    const article = await this.find(id);
+
+    if (!article) {
+      throw new ApplicationError({
+        message: `Article with id ${id} not found`,
+      });
+    }
+
+    const { deletedAt } = article;
+
+    if (deletedAt) {
+      throw new ApplicationError({
+        message: `Article with id ${id} has already been deleted`,
+      });
+    }
+
+    if (article.userId !== userId) {
+      throw new ForbiddenError('Article can be deleted only by author!');
+    }
+
+    const deletedArticle = await this.articleRepository.delete(id);
+
+    return deletedArticle.toObjectWithRelationsAndCommentCount();
   }
 }
 

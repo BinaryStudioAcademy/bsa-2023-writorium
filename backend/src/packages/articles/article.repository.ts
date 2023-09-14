@@ -15,6 +15,7 @@ import { type IArticleRepository } from './libs/interfaces/interfaces.js';
 import {
   type ArticleCommentCount,
   type ArticlesFilters,
+  type GetUserArticlesGenresStatsDatabaseResponse,
   type UserActivityResponseDto,
 } from './libs/types/types.js';
 
@@ -60,9 +61,10 @@ class ArticleRepository implements IArticleRepository {
   } & ArticlesFilters): Promise<{ items: ArticleEntity[]; total: number }> {
     const articles = await this.articleModel
       .query()
-      .select('articles.*', this.getCommentsCountQuery())
+      .select(`${DatabaseTableName.ARTICLES}.*`, this.getCommentsCountQuery())
       .where(getWhereUserIdQuery(userId))
       .where(getWherePublishedOnlyQuery(hasPublishedOnly))
+      .whereNull('deletedAt')
       .orderBy('articles.publishedAt', SortingOrder.DESCENDING)
       .page(skip / take, take)
       .modify(this.joinArticleRelations)
@@ -176,13 +178,30 @@ class ArticleRepository implements IArticleRepository {
       .castTo<UserActivityResponseDto[]>();
   }
 
+  public getUserArticlesGenreStats(
+    userId: number,
+  ): Promise<GetUserArticlesGenresStatsDatabaseResponse[]> {
+    return this.articleModel
+      .query()
+      .select(
+        'genre.name',
+        'genre.key',
+        this.articleModel.raw('count(*) as count'),
+      )
+      .joinRelated('genre')
+      .groupBy('genre.key', 'genre.name')
+      .where({ userId })
+      .castTo<GetUserArticlesGenresStatsDatabaseResponse[]>()
+      .execute();
+  }
+
   public async update(entity: ArticleEntity): Promise<ArticleEntity> {
     const { id, ...payload } = entity.toObject();
 
     const article = await this.articleModel
       .query()
       .patchAndFetchById(id, payload)
-      .select('articles.*', this.getCommentsCountQuery())
+      .select(`${DatabaseTableName.ARTICLES}.*`, this.getCommentsCountQuery())
       .withGraphFetched(this.defaultRelationExpression)
       .modifyGraph('reactions', this.modifyReactionsGraph)
       .castTo<ArticleModel & ArticleCommentCount>();
@@ -207,8 +226,32 @@ class ArticleRepository implements IArticleRepository {
     });
   }
 
-  public delete(): Promise<boolean> {
-    return Promise.resolve(false);
+  public async delete(id: number): Promise<ArticleEntity> {
+    const article = await this.articleModel
+      .query()
+      .patchAndFetchById(id, { deletedAt: new Date().toISOString() })
+      .select(`${DatabaseTableName.ARTICLES}.*`, this.getCommentsCountQuery())
+      .withGraphFetched(this.defaultRelationExpression)
+      .castTo<ArticleModel & ArticleCommentCount>();
+
+    return ArticleEntity.initialize({
+      ...article,
+      genre: article.genre?.name ?? null,
+      prompt: article.prompt
+        ? {
+            character: article.prompt.character,
+            setting: article.prompt.setting,
+            situation: article.prompt.situation,
+            prop: article.prompt.prop,
+          }
+        : null,
+      author: {
+        firstName: article.author.firstName,
+        lastName: article.author.lastName,
+        avatarUrl: article.author.avatar?.url ?? null,
+      },
+      coverUrl: article.cover?.url ?? null,
+    });
   }
 }
 

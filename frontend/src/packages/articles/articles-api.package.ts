@@ -154,6 +154,18 @@ class ArticleApi extends HttpApi {
 
     return await response.json<ArticleReactionResponseDto>();
   }
+
+  public async delete(id: number): Promise<ArticleWithCommentCountResponseDto> {
+    const response = await this.load(
+      this.getFullEndpoint(ArticlesApiPath.$ID, { id: String(id) }),
+      {
+        method: 'DELETE',
+        hasAuth: true,
+      },
+    );
+
+    return await response.json<ArticleWithCommentCountResponseDto>();
+  }
 }
 
 export { ArticleApi };

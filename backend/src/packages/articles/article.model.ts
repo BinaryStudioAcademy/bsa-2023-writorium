@@ -23,11 +23,12 @@ class ArticleModel extends AbstractModel {
   public 'publishedAt': string | null;
   public 'genre': GenreModel;
   public 'prompt': PromptModel;
-  public 'author': UserDetailsModel;
   public 'reactions': ReactionResponseDto[];
   public 'readTime': number | null;
   public 'coverId': number | null;
   public 'cover': FileModel | null;
+  public 'deletedAt': string | null;
+  public 'author': UserDetailsModel;
 
   public static override get tableName(): string {
     return DatabaseTableName.ARTICLES;

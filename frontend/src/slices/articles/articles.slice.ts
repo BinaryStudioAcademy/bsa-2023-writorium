@@ -11,6 +11,7 @@ import { type CommentWithRelationsResponseDto } from '~/packages/comments/commen
 import {
   createArticle,
   createComment,
+  deleteArticle,
   deleteArticleReaction,
   fetchAll,
   fetchAllCommentsToArticle,
@@ -75,6 +76,15 @@ const { reducer, actions, name } = createSlice({
     builder.addCase(getArticle.fulfilled, (state, action) => {
       state.getArticleStatus = DataStatus.FULFILLED;
       state.article = action.payload;
+    });
+    builder.addCase(deleteArticle.fulfilled, (state, action) => {
+      const article = action.payload;
+      if (article) {
+        state.articles = state.articles.filter(
+          (item) => item.id !== article.id,
+        );
+      }
+      state.dataStatus = DataStatus.FULFILLED;
     });
     builder.addCase(reactToArticle.fulfilled, (state, action) => {
       const { articleId, reaction: updatedReaction } = action.payload;
@@ -198,8 +208,8 @@ const { reducer, actions, name } = createSlice({
         fetchOwn.pending,
         createArticle.pending,
         updateArticle.pending,
-        getArticle.pending,
         fetchSharedArticle.pending,
+        deleteArticle.pending,
       ),
       (state) => {
         state.dataStatus = DataStatus.PENDING;
@@ -218,6 +228,7 @@ const { reducer, actions, name } = createSlice({
         createArticle.rejected,
         updateArticle.rejected,
         fetchSharedArticle.rejected,
+        deleteArticle.rejected,
       ),
       (state) => {
         state.dataStatus = DataStatus.REJECTED;

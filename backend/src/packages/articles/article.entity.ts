@@ -26,6 +26,7 @@ class ArticleEntity implements IEntity {
   private 'commentCount': number | null;
   private 'reactions': ReactionResponseDto[] | null;
   private 'readTime': number | null;
+  private 'deletedAt': string | null;
 
   private constructor({
     id,
@@ -41,11 +42,12 @@ class ArticleEntity implements IEntity {
     reactions,
     prompt,
     genre,
+    deletedAt,
     readTime,
     commentCount,
   }: WithNullableKeys<
     ArticleWithRelationsType & ArticleCommentCount,
-    'id' | 'author' | 'commentCount' | 'reactions'
+    'id' | 'author' | 'commentCount' | 'reactions' | 'deletedAt'
   >) {
     this.id = id;
     this.title = title;
@@ -62,6 +64,7 @@ class ArticleEntity implements IEntity {
     this.readTime = readTime;
     this.coverId = coverId;
     this.coverUrl = coverUrl;
+    this.deletedAt = deletedAt;
   }
 
   public static initialize({
@@ -79,6 +82,7 @@ class ArticleEntity implements IEntity {
     coverId,
     coverUrl,
     reactions,
+    deletedAt,
     readTime,
   }: ArticleWithRelationsType &
     WithNullableKeys<ArticleCommentCount, 'commentCount'>): ArticleEntity {
@@ -97,6 +101,7 @@ class ArticleEntity implements IEntity {
       coverId,
       coverUrl,
       reactions,
+      deletedAt,
       readTime,
     });
   }
@@ -112,7 +117,13 @@ class ArticleEntity implements IEntity {
     readTime,
   }: Omit<
     ArticleWithRelationsType,
-    'id' | 'author' | 'prompt' | 'genre' | 'reactions' | 'coverUrl'
+    | 'id'
+    | 'author'
+    | 'prompt'
+    | 'genre'
+    | 'reactions'
+    | 'coverUrl'
+    | 'deletedAt'
   >): ArticleEntity {
     return new ArticleEntity({
       id: null,
@@ -129,6 +140,7 @@ class ArticleEntity implements IEntity {
       genre: null,
       coverUrl: null,
       reactions: null,
+      deletedAt: null,
       readTime,
     });
   }
@@ -144,6 +156,7 @@ class ArticleEntity implements IEntity {
       genreId: this.genreId,
       readTime: this.readTime,
       publishedAt: this.publishedAt,
+      deletedAt: this.deletedAt,
     };
   }
 
@@ -163,6 +176,7 @@ class ArticleEntity implements IEntity {
       prompt: this.prompt,
       genre: this.genre,
       readTime: this.readTime,
+      deletedAt: this.deletedAt,
     };
   }
 
@@ -183,6 +197,7 @@ class ArticleEntity implements IEntity {
       readTime: this.readTime,
       reactions: this.reactions as ReactionResponseDto[],
       commentCount: Number(this.commentCount as number),
+      deletedAt: this.deletedAt,
     };
   }
 
@@ -196,6 +211,7 @@ class ArticleEntity implements IEntity {
       genreId: this.genreId,
       readTime: this.readTime,
       publishedAt: this.publishedAt,
+      deletedAt: this.deletedAt,
     };
   }
 }
