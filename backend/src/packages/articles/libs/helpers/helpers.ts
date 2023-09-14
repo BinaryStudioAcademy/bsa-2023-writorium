@@ -1,3 +1,4 @@
+export { getArticleImprovementSuggestionsCompletionConfig } from './get-article-improvement-suggestions-completion-config.helper.js';
 export { getArticleReadTimeCompletionConfig } from './get-article-read-time-completion-config.helper.js';
 export { getDetectArticleGenreCompletionConfig } from './get-detect-article-genre-completion-config.helper.js';
 export { getOriginFromRefererHeader } from './get-origin-from-referer-header.helper.js';

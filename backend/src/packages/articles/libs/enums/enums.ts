@@ -1,4 +1,5 @@
 export {
+  ArticleImprovementSuggestionPriority,
   ArticlesApiPath,
   DateFormat,
   SortingOrder,
