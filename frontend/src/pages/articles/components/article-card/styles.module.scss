@@ -207,11 +207,16 @@
   color: var(--light-green);
 }
 
-.editIcon {
+.editIcon,
+.deleteIcon {
   width: 20px;
   height: 20px;
   color: var(--light-green);
-  cursor: pointer;
+}
+
+.iconButton {
+  align-self: flex-start;
+  background-color: var(--white);
 }
 
 .facebookIconButton {

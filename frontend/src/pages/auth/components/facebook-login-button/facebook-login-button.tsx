@@ -1,3 +1,5 @@
+/**
+ * @todo replace implementation with react-facebook package
 import {
   type ReactFacebookFailureResponse,
   type ReactFacebookLoginInfo,
@@ -47,3 +49,7 @@ const FacebookLoginButton: React.FC<FacebookLoginButtonProperties> = ({
 };
 
 export { FacebookLoginButton };
+*/
+const ShouldBeFixed = (): JSX.Element => <div>Should be fixed</div>;
+
+export { ShouldBeFixed };

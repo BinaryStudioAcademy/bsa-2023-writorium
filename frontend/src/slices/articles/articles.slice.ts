@@ -6,9 +6,11 @@ import { type ArticleResponseDto } from '~/packages/articles/articles.js';
 
 import {
   createArticle,
+  deleteArticle,
   deleteArticleReaction,
   fetchAll,
   fetchOwn,
+  fetchSharedArticle,
   getArticle,
   reactToArticle,
   updateArticle,
@@ -59,6 +61,15 @@ const { reducer, actions, name } = createSlice({
     builder.addCase(getArticle.fulfilled, (state, action) => {
       state.getArticleStatus = DataStatus.FULFILLED;
       state.article = action.payload;
+    });
+    builder.addCase(deleteArticle.fulfilled, (state, action) => {
+      const article = action.payload;
+      if (article) {
+        state.articles = state.articles.filter(
+          (item) => item.id !== article.id,
+        );
+      }
+      state.dataStatus = DataStatus.FULFILLED;
     });
     builder.addCase(reactToArticle.fulfilled, (state, action) => {
       const { articleId, reaction: updatedReaction } = action.payload;
@@ -123,6 +134,10 @@ const { reducer, actions, name } = createSlice({
     builder.addCase(getArticle.rejected, (state) => {
       state.getArticleStatus = DataStatus.REJECTED;
     });
+    builder.addCase(fetchSharedArticle.fulfilled, (state, action) => {
+      state.dataStatus = DataStatus.FULFILLED;
+      state.article = action.payload;
+    });
     builder.addMatcher(
       isAnyOf(fetchAll.fulfilled, fetchOwn.fulfilled),
       (state, action) => {
@@ -142,6 +157,8 @@ const { reducer, actions, name } = createSlice({
         fetchOwn.pending,
         createArticle.pending,
         updateArticle.pending,
+        fetchSharedArticle.pending,
+        deleteArticle.pending,
       ),
       (state) => {
         state.dataStatus = DataStatus.PENDING;
@@ -159,6 +176,8 @@ const { reducer, actions, name } = createSlice({
         fetchOwn.rejected,
         createArticle.rejected,
         updateArticle.rejected,
+        fetchSharedArticle.rejected,
+        deleteArticle.rejected,
       ),
       (state) => {
         state.dataStatus = DataStatus.REJECTED;

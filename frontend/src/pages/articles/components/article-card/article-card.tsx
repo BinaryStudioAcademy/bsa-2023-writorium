@@ -5,6 +5,7 @@ import {
   IconButton,
   Link,
   ShareOnFacebookButton,
+  Tags,
   TooltipClickable,
 } from '~/libs/components/components.js';
 import {
@@ -20,8 +21,12 @@ import {
   getValidClassNames,
   sanitizeHtml,
 } from '~/libs/helpers/helpers.js';
-import { useAppDispatch, useAppSelector } from '~/libs/hooks/hooks.js';
-import { type ValueOf } from '~/libs/types/types.js';
+import {
+  useAppDispatch,
+  useAppSelector,
+  useCallback,
+} from '~/libs/hooks/hooks.js';
+import { type TagType, type ValueOf } from '~/libs/types/types.js';
 import {
   type ArticleResponseDto,
   getReadTimeString,
@@ -35,8 +40,6 @@ import { actions as articlesActions } from '~/slices/articles/articles.js';
 
 import { MOCKED_REACTIONS } from '../../libs/constants.js';
 import { getReactionConvertedToBoolean } from '../../libs/helpers/helpers.js';
-import { type TagType } from '../../libs/types/types.js';
-import { Tags } from '../components.js';
 import { PopoverButtonsGroup } from './libs/components/components.js';
 import styles from './styles.module.scss';
 
@@ -53,8 +56,8 @@ const ArticleCard: React.FC<Properties> = ({
   tags,
   reactions,
 }) => {
-  const user = useAppSelector(({ auth }) => auth.user) as UserAuthResponseDto;
   const dispatch = useAppDispatch();
+  const user = useAppSelector(({ auth }) => auth.user) as UserAuthResponseDto;
   // const { handleToggleModalOpen, isOpen } = useModal();
 
   const { publishedAt, title, text, id, userId, coverUrl, readTime } = article;
@@ -65,6 +68,7 @@ const ArticleCard: React.FC<Properties> = ({
   const { firstName, lastName, avatarUrl } = author;
   const articleUrl = window.location.href;
   const articleRouteById = AppRoute.ARTICLE.replace(':id', String(id));
+
   const isOwnArticle = user.id === userId;
 
   // const handleActionsButtonClick = useCallback((): void => {
@@ -102,6 +106,10 @@ const ArticleCard: React.FC<Properties> = ({
   const handleDislikeReaction = (): void => {
     handleReaction(Reaction.DISLIKE);
   };
+
+  const handleSharedButtonClick = useCallback((): void => {
+    void dispatch(articlesActions.shareArticle({ id: id.toString() }));
+  }, [dispatch, id]);
 
   return (
     <article className={styles.article}>
@@ -211,12 +219,18 @@ const ArticleCard: React.FC<Properties> = ({
             />
           </li>
         </ul>
-        <Icon iconName="share" className={styles.pointerIcon} />
+
+        <IconButton
+          iconName="share"
+          className={styles.iconWrapper}
+          onClick={handleSharedButtonClick}
+        />
         <ShareOnFacebookButton
           title={title}
           articleUrl={articleUrl}
           iconStyle={styles.facebookIconButton}
         />
+
         <Link
           to={articleRouteById as typeof AppRoute.ARTICLE}
           className={styles.readMore}
