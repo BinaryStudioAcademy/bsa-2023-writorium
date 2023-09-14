@@ -1,13 +1,7 @@
-/**
- * @todo replace implementation with react-facebook package
-import {
-  type ReactFacebookFailureResponse,
-  type ReactFacebookLoginInfo,
-} from 'react-facebook-login';
-import FacebookLogin from 'react-facebook-login';
+import { LoginStatus, useFacebook } from 'react-facebook';
 
+import { Button } from '~/libs/components/components.js';
 import { useCallback } from '~/libs/hooks/hooks.js';
-import { config } from '~/libs/packages/config/config.js';
 import { type UserSignInWithFacebookResponseDto } from '~/packages/auth/auth.js';
 import { notification } from '~/packages/notification/notification.js';
 
@@ -17,39 +11,59 @@ type FacebookLoginButtonProperties = {
   onLogin: (response: UserSignInWithFacebookResponseDto) => void;
 };
 
+type ProfileResponse = {
+  email: string;
+  id: string;
+};
+
+const FACEBOOK_ERROR_MESSAGE = 'Facebook sign in failed';
+
 const FacebookLoginButton: React.FC<FacebookLoginButtonProperties> = ({
   onLogin,
 }) => {
-  const responseFacebook = useCallback(
-    (response: ReactFacebookLoginInfo | ReactFacebookFailureResponse): void => {
-      if ('accessToken' in response) {
-        const { accessToken, email, name } = response;
-        onLogin({
-          accessToken,
-          email,
-          name,
-        });
-      } else {
-        notification.error('Facebook sign in failed');
+  const { init, isLoading } = useFacebook();
+
+  const handleFacebookLogin = useCallback(async (): Promise<void> => {
+    try {
+      const api = await init();
+
+      if (!api) {
+        throw new Error(FACEBOOK_ERROR_MESSAGE);
       }
-    },
-    [onLogin],
-  );
+
+      const response = await api.login({ scope: 'email' });
+
+      if (response.status !== LoginStatus.CONNECTED) {
+        throw new Error(FACEBOOK_ERROR_MESSAGE);
+      }
+
+      const profile = (await api.getProfile({
+        fields: ['email'],
+      })) as ProfileResponse | undefined;
+
+      if (!profile?.email) {
+        throw new Error(FACEBOOK_ERROR_MESSAGE);
+      }
+
+      onLogin({
+        accessToken: response.authResponse.accessToken,
+        email: profile.email,
+      });
+    } catch (error) {
+      error instanceof Error && notification.error(error.message);
+    }
+  }, [onLogin, init]);
 
   return (
-    <FacebookLogin
-      appId={config.ENV.FACEBOOK.APP_ID}
-      autoLoad={false}
-      fields="name,email,picture"
-      callback={responseFacebook}
-      textButton="Sign in with Facebook"
-      cssClass={styles.facebookLoginButton}
+    <Button
+      type="button"
+      label="Sign in with Facebook"
+      name="Sign in with Facebook"
+      disabled={isLoading}
+      onClick={handleFacebookLogin}
+      className={styles.facebookLoginButton}
     />
   );
 };
 
 export { FacebookLoginButton };
-*/
-const ShouldBeFixed = (): JSX.Element => <div>Should be fixed</div>;
-
-export { ShouldBeFixed };
