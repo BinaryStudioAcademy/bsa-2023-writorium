@@ -11,8 +11,7 @@ import {
 import { actions as articlesActions } from '~/slices/articles/articles.js';
 import { actions as userActions } from '~/slices/users/users.js';
 
-import { ArticleFilters } from './components/components.js';
-import { ArticleCard } from './components/components.js';
+import { ArticleCard,ArticleFilters } from './components/components.js';
 import {
   getActiveFilters,
   getArticleTags,
