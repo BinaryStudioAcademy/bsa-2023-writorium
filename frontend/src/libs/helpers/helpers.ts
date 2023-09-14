@@ -1,5 +1,5 @@
 export { checkIsEqual } from './check-is-equal/check-is-equal.helper.js';
-export { cloneDeep } from './clone-deep/clone-deep.js';
+export { cloneDeep } from './clone-deep/clone-deep.helper.js';
 export { getArticleTags } from './get-article-tags/get-article-tags.js';
 export { getAxisOffset } from './get-axis-offset/get-axis-offset.helper.js';
 export { getFirstLetters } from './get-first-letters/get-first-letters.helper.js';
