@@ -28,7 +28,7 @@ type Properties<T extends FieldValues> = {
   control: Control<T, null>;
   errors: FieldErrors<T>;
   name: FieldPath<T>;
-  initialPreviewUrl?: string;
+  initialPreviewUrl?: string | null;
 };
 
 const ArticleCoverUpload = <T extends FieldValues>({

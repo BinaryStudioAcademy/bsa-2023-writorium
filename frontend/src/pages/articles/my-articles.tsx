@@ -1,5 +1,5 @@
 import { InfiniteScroll } from '~/libs/components/components.js';
-import { checkIsEqual } from '~/libs/helpers/helpers.js';
+import { checkIsEqual, getArticleTags } from '~/libs/helpers/helpers.js';
 import {
   useAppDispatch,
   useAppSelector,
@@ -11,10 +11,9 @@ import {
 import { actions as articlesActions } from '~/slices/articles/articles.js';
 import { actions as userActions } from '~/slices/users/users.js';
 
-import { ArticleCard,ArticleFilters } from './components/components.js';
+import { ArticleCard, ArticleFilters } from './components/components.js';
 import {
   getActiveFilters,
-  getArticleTags,
   getSelectAuthorsOptions,
   getSelectGenresOptions,
 } from './libs/helpers/helpers.js';
