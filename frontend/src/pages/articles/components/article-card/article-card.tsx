@@ -135,10 +135,12 @@ const ArticleCard: React.FC<Properties> = ({
           <span className={styles.publisherName}>
             {getFullName(firstName, lastName)}
           </span>
-          {publishedAt && (
+          {publishedAt ? (
             <span className={styles.publicationTime}>
               {getFormattedDate(publishedAt, DateFormat.DAY_SHORT_MONTH)}
             </span>
+          ) : (
+            <span className={styles.publicationTime}>draft</span>
           )}
           {readTime && (
             <span className={styles.publicationTime}>
