@@ -73,10 +73,14 @@ class ArticleService implements IService {
       return null;
     }
 
-    const [firstParsedGenre] =
+    const parsedGenres =
       safeJSONParse<DetectedArticleGenre[]>(genresJSON) ?? [];
 
-    return firstParsedGenre ?? null;
+    if (Array.isArray(parsedGenres) && parsedGenres[0]) {
+      return parsedGenres[0];
+    }
+
+    return null;
   }
 
   private async getArticleReadTime(text: string): Promise<number | null> {
