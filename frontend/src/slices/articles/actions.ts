@@ -1,5 +1,4 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { type ArticlesFilters } from 'shared/build/index.js';
 
 import { type AsyncThunkConfig } from '~/libs/types/types.js';
 import {
@@ -7,9 +6,17 @@ import {
   type ArticleReactionRequestDto,
   type ArticleRequestDto,
   type ArticleResponseDto,
+  type ArticlesFilters,
   type ArticleUpdateRequestPayload,
+  type ArticleWithCommentCountResponseDto,
   type ReactionResponseDto,
 } from '~/packages/articles/articles.js';
+import {
+  type CommentBaseRequestDto,
+  type CommentGetAllResponseDto,
+  type CommentUpdateDto,
+  type CommentWithRelationsResponseDto,
+} from '~/packages/comments/comments.js';
 import { NotificationType } from '~/packages/notification/notification.js';
 import { type PromptRequestDto } from '~/packages/prompts/prompts.js';
 
@@ -37,7 +44,7 @@ const fetchOwn = createAsyncThunk<
 });
 
 const createArticle = createAsyncThunk<
-  ArticleResponseDto,
+  ArticleWithCommentCountResponseDto,
   {
     articlePayload: ArticleRequestDto;
     generatedPrompt: PromptRequestDto | null;
@@ -63,7 +70,7 @@ const createArticle = createAsyncThunk<
 );
 
 const updateArticle = createAsyncThunk<
-  ArticleResponseDto,
+  ArticleWithCommentCountResponseDto,
   ArticleUpdateRequestPayload,
   AsyncThunkConfig
 >(`${sliceName}/update`, async (payload, { extra }) => {
@@ -147,25 +154,58 @@ const deleteArticleReaction = createAsyncThunk<
   };
 });
 
-const deleteArticle = createAsyncThunk<
-  ArticleResponseDto,
+const fetchAllCommentsToArticle = createAsyncThunk<
+  CommentGetAllResponseDto,
   number,
   AsyncThunkConfig
->(`${sliceName}/delete`, async (id, { extra }) => {
+>(`${sliceName}/get-all-comments-to-article`, (articleId, { extra }) => {
+  const { commentsApi } = extra;
+
+  return commentsApi.fetchAllByArticleId(articleId);
+});
+
+const createComment = createAsyncThunk<
+  CommentWithRelationsResponseDto,
+  CommentBaseRequestDto,
+  AsyncThunkConfig
+>(`${sliceName}/create-comment`, (payload, { extra }) => {
+  const { commentsApi } = extra;
+
+  return commentsApi.create(payload);
+});
+
+const updateComment = createAsyncThunk<
+  CommentWithRelationsResponseDto,
+  CommentUpdateDto,
+  AsyncThunkConfig
+>(`${sliceName}/update-comment`, (payload, { extra }) => {
+  const { commentsApi } = extra;
+
+  return commentsApi.update(payload);
+});
+
+const deleteArticle = createAsyncThunk<
+  ArticleWithCommentCountResponseDto,
+  number,
+  AsyncThunkConfig
+>(`${sliceName}/delete`, (id, { extra }) => {
   const { articleApi } = extra;
 
-  return await articleApi.delete(id);
+  return articleApi.delete(id);
 });
 
 export {
   createArticle,
+  createComment,
   deleteArticle,
   deleteArticleReaction,
   fetchAll,
+  fetchAllCommentsToArticle,
   fetchOwn,
   fetchSharedArticle,
   getArticle,
   reactToArticle,
   shareArticle,
   updateArticle,
+  updateComment,
 };

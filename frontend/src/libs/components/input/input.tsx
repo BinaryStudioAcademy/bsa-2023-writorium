@@ -23,6 +23,7 @@ type Properties<T extends FieldValues> = {
   className?: string;
   labelClassName?: string;
   required?: boolean;
+  rows?: number;
 };
 
 const Input = <T extends FieldValues>({
@@ -35,11 +36,19 @@ const Input = <T extends FieldValues>({
   className,
   labelClassName,
   required,
+  rows,
 }: Properties<T>): JSX.Element => {
   const { field } = useFormController({ name, control });
 
   const error = errors[name]?.message;
   const hasError = Boolean(error);
+
+  const classNames = getValidClassNames(
+    styles.input,
+    hasError && styles.error,
+    className,
+    rows && styles.textarea,
+  );
 
   return (
     <label className={styles.label}>
@@ -52,16 +61,21 @@ const Input = <T extends FieldValues>({
       >
         {label}
       </span>
-      <input
-        className={getValidClassNames(
-          styles.input,
-          hasError && styles.error,
-          className,
-        )}
-        {...field}
-        type={type}
-        placeholder={placeholder}
-      />
+      {rows ? (
+        <textarea
+          {...field}
+          className={classNames}
+          placeholder={placeholder}
+          rows={rows}
+        />
+      ) : (
+        <input
+          {...field}
+          className={classNames}
+          placeholder={placeholder}
+          type={type}
+        />
+      )}
       <ErrorMessage error={error as string} />
     </label>
   );
