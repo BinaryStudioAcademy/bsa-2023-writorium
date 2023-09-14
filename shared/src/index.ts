@@ -73,6 +73,7 @@ export {
   ArticlesApiPath,
   type ArticlesFilters,
   articlesFiltersValidationSchema,
+  articlesFormFiltersValidationSchema,
   type ArticleUpdateRequestDto,
   type ArticleUpdateRequestPayload,
   articleUpdateValidationSchema,
