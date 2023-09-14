@@ -59,6 +59,7 @@ class ArticleRepository implements IArticleRepository {
       .where(getWhereAuthorIdQuery(authorId))
       .where(getWhereTitleLikeQuery(titleFilter))
       .where(getWherePublishedOnlyQuery(hasPublishedOnly))
+      .whereNull('deletedAt')
       .orderBy('articles.publishedAt', SortingOrder.DESCENDING)
       .page(skip / take, take)
       .modify(this.joinArticleRelations);
@@ -214,8 +215,29 @@ class ArticleRepository implements IArticleRepository {
     });
   }
 
-  public delete(): Promise<boolean> {
-    return Promise.resolve(false);
+  public async delete(id: number): Promise<ArticleEntity> {
+    const article = await this.articleModel
+      .query()
+      .patchAndFetchById(id, { deletedAt: new Date().toISOString() })
+      .withGraphFetched(this.defaultRelationExpression);
+
+    return ArticleEntity.initialize({
+      ...article,
+      genre: article.genre?.name ?? null,
+      prompt: article.prompt
+        ? {
+            character: article.prompt.character,
+            setting: article.prompt.setting,
+            situation: article.prompt.situation,
+            prop: article.prompt.prop,
+          }
+        : null,
+      author: {
+        firstName: article.author.firstName,
+        lastName: article.author.lastName,
+        avatarUrl: article.author.avatar?.url ?? null,
+      },
+    });
   }
 }
 
