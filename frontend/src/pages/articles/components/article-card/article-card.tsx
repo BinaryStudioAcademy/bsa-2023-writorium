@@ -6,6 +6,7 @@ import {
   IconButton,
   Link,
   ShareOnFacebookButton,
+  Tags,
 } from '~/libs/components/components.js';
 import {
   AppRoute,
@@ -26,7 +27,7 @@ import {
   useCallback,
   useLocation,
 } from '~/libs/hooks/hooks.js';
-import { type ValueOf } from '~/libs/types/types.js';
+import { type TagType, type ValueOf } from '~/libs/types/types.js';
 import {
   type ArticleResponseDto,
   getReadTimeString,
@@ -40,8 +41,6 @@ import { actions as articlesActions } from '~/slices/articles/articles.js';
 
 import { MOCKED_REACTIONS } from '../../libs/constants.js';
 import { getReactionConvertedToBoolean } from '../../libs/helpers/helpers.js';
-import { type TagType } from '../../libs/types/types.js';
-import { Tags } from '../components.js';
 import styles from './styles.module.scss';
 
 type Properties = {
