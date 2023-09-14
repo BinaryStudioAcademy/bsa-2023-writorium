@@ -7,6 +7,7 @@ import {
 import { composeDatabaseRelationPath } from '~/libs/packages/database/libs/helpers/helpers.js';
 
 import { ArticleReactionModel } from '../article-reactions/article-reaction.model.js';
+import { CommentModel } from '../comments/comments.js';
 import { FileModel } from '../files/file.model.js';
 import { GenreModel } from '../genres/genre.model.js';
 import { PromptModel } from '../prompts/prompt.model.js';
@@ -88,6 +89,20 @@ class ArticleModel extends AbstractModel {
           to: composeDatabaseRelationPath<GenreModel>(
             DatabaseTableName.GENRES,
             'id',
+          ),
+        },
+      },
+      comments: {
+        relation: Model.HasManyRelation,
+        modelClass: CommentModel,
+        join: {
+          from: composeDatabaseRelationPath<ArticleModel>(
+            DatabaseTableName.ARTICLES,
+            'id',
+          ),
+          to: composeDatabaseRelationPath<CommentModel>(
+            DatabaseTableName.COMMENTS,
+            'articleId',
           ),
         },
       },

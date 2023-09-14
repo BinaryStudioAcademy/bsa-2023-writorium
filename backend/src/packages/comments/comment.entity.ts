@@ -1,7 +1,11 @@
 import { type IEntity } from '~/libs/interfaces/interfaces.js';
 import { type WithNullableKeys } from '~/libs/types/types.js';
+import { type UserDetailsResponseDto } from '~/packages/users/libs/types/types.js';
 
-import { type CommentEntityType } from './libs/types/types.js';
+import {
+  type CommentEntityType,
+  type CommentWithRelationsResponseDto,
+} from './libs/types/types.js';
 
 type CommentEntityPayloadType = Omit<CommentEntityType, 'id' | 'createdAt'>;
 
@@ -11,6 +15,7 @@ class CommentEntity implements IEntity {
   private 'userId': number;
   private 'articleId': number;
   private 'createdAt': string | null;
+  private 'author': UserDetailsResponseDto | null;
 
   private constructor({
     id,
@@ -18,12 +23,17 @@ class CommentEntity implements IEntity {
     userId,
     articleId,
     createdAt,
-  }: WithNullableKeys<CommentEntityType, 'id' | 'createdAt'>) {
+    author,
+  }: WithNullableKeys<
+    CommentWithRelationsResponseDto,
+    'id' | 'createdAt' | 'author'
+  >) {
     this.id = id;
     this.text = text;
     this.userId = userId;
     this.articleId = articleId;
     this.createdAt = createdAt;
+    this.author = author;
   }
 
   public static initialize({
@@ -32,13 +42,15 @@ class CommentEntity implements IEntity {
     userId,
     articleId,
     createdAt,
-  }: CommentEntityType): CommentEntity {
+    author,
+  }: CommentWithRelationsResponseDto): CommentEntity {
     return new CommentEntity({
       id,
       text,
       userId,
       articleId,
       createdAt,
+      author,
     });
   }
 
@@ -53,6 +65,7 @@ class CommentEntity implements IEntity {
       userId,
       articleId,
       createdAt: null,
+      author: null,
     });
   }
 
@@ -63,6 +76,17 @@ class CommentEntity implements IEntity {
       userId: this.userId,
       articleId: this.articleId,
       createdAt: this.createdAt as string,
+    };
+  }
+
+  public toObjectWithRelations(): CommentWithRelationsResponseDto {
+    return {
+      id: this.id as number,
+      text: this.text,
+      userId: this.userId,
+      articleId: this.articleId,
+      createdAt: this.createdAt as string,
+      author: this.author as UserDetailsResponseDto,
     };
   }
 

@@ -12,6 +12,7 @@ import {
   AppRoute,
   ArticleSubRoute,
   DateFormat,
+  LinkHash,
   Reaction,
 } from '~/libs/enums/enums.js';
 import {
@@ -29,7 +30,7 @@ import {
 } from '~/libs/hooks/hooks.js';
 import { type TagType, type ValueOf } from '~/libs/types/types.js';
 import {
-  type ArticleResponseDto,
+  type ArticleWithCommentCountResponseDto,
   getReadTimeString,
   type ReactionResponseDto,
 } from '~/packages/articles/articles.js';
@@ -44,7 +45,7 @@ import { getReactionConvertedToBoolean } from '../../libs/helpers/helpers.js';
 import styles from './styles.module.scss';
 
 type Properties = {
-  article: ArticleResponseDto;
+  article: ArticleWithCommentCountResponseDto;
   author: UserDetailsResponseDto;
   tags: TagType[];
   reactions: ReactionResponseDto[];
@@ -66,7 +67,16 @@ const ArticleCard: React.FC<Properties> = ({
     { path: `${AppRoute.ARTICLES}/${ArticleSubRoute.MY_ARTICLES}` },
     pathname,
   );
-  const { publishedAt, title, text, id, userId, coverUrl, readTime } = article;
+  const {
+    publishedAt,
+    title,
+    text,
+    id,
+    userId,
+    coverUrl,
+    readTime,
+    commentCount,
+  } = article;
   const { likesCount, dislikesCount, hasAlreadyReactedWith } = getReactionsInfo(
     user.id,
     reactions,
@@ -186,12 +196,20 @@ const ArticleCard: React.FC<Properties> = ({
       </div>
       <div className={styles.footer}>
         <ul className={styles.reactions}>
-          <li>
-            <IconButton
-              iconName="comment"
-              className={styles.footerIcon}
-              label={MOCKED_REACTIONS.comments}
-            />
+          <li className={styles.reaction}>
+            <Link
+              to={{
+                pathname: articleRouteById as typeof AppRoute.ARTICLE,
+                hash: LinkHash.COMMENTS,
+              }}
+              className={styles.reaction}
+            >
+              <IconButton
+                iconName="comment"
+                className={styles.footerIcon}
+                label={commentCount.toString()}
+              />
+            </Link>
           </li>
           <li className={styles.footerIcon}>
             <Icon iconName="view" />
@@ -233,7 +251,6 @@ const ArticleCard: React.FC<Properties> = ({
           articleUrl={articleUrl}
           iconStyle={styles.facebookIconButton}
         />
-
         <Link
           to={articleRouteById as typeof AppRoute.ARTICLE}
           className={styles.readMore}

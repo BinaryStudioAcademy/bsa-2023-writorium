@@ -14,7 +14,7 @@ type Properties = {
   title: string;
   text: string;
   tags: TagType[] | null;
-  coverUrl?: string;
+  coverUrl: string | null;
   isShared?: boolean;
 };
 
