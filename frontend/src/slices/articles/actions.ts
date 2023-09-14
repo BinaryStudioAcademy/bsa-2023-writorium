@@ -147,8 +147,19 @@ const deleteArticleReaction = createAsyncThunk<
   };
 });
 
+const deleteArticle = createAsyncThunk<
+  ArticleResponseDto,
+  number,
+  AsyncThunkConfig
+>(`${sliceName}/delete`, async (id, { extra }) => {
+  const { articleApi } = extra;
+
+  return await articleApi.delete(id);
+});
+
 export {
   createArticle,
+  deleteArticle,
   deleteArticleReaction,
   fetchAll,
   fetchOwn,

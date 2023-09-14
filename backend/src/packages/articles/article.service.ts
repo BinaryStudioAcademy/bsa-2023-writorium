@@ -229,6 +229,7 @@ class ArticleService implements IService {
         coverId: payload.coverId,
         promptId: payload?.promptId ?? null,
         publishedAt: payload?.publishedAt ?? null,
+        deletedAt: null,
       }),
     );
 
@@ -308,8 +309,30 @@ class ArticleService implements IService {
     return articleFound;
   }
 
-  public delete(): Promise<boolean> {
-    return Promise.resolve(false);
+  public async delete(id: number, userId: number): Promise<ArticleResponseDto> {
+    const article = await this.find(id);
+
+    if (!article) {
+      throw new ApplicationError({
+        message: `Article with id ${id} not found`,
+      });
+    }
+
+    const { deletedAt } = article;
+
+    if (deletedAt) {
+      throw new ApplicationError({
+        message: `Article with id ${id} has already been deleted`,
+      });
+    }
+
+    if (article.userId !== userId) {
+      throw new ForbiddenError('Article can be deleted only by author!');
+    }
+
+    const deletedArticle = await this.articleRepository.delete(id);
+
+    return deletedArticle.toObjectWithRelations();
   }
 }
 
