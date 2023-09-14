@@ -3,6 +3,7 @@ import { createSlice, isAnyOf } from '@reduxjs/toolkit';
 import { DataStatus } from '~/libs/enums/enums.js';
 import { type ValueOf } from '~/libs/types/types.js';
 import {
+  type ArticleImprovementSuggestion,
   type ArticleResponseDto,
   type ArticleWithCommentCountResponseDto,
 } from '~/packages/articles/articles.js';
@@ -20,6 +21,7 @@ import {
   fetchSharedArticle,
   getAllGenres,
   getArticle,
+  getImprovementSuggestions,
   reactToArticle,
   updateArticle,
   updateComment,
@@ -34,6 +36,8 @@ type State = {
   articleCommentsDataStatus: ValueOf<typeof DataStatus>;
   articleReactionDataStatus: ValueOf<typeof DataStatus>;
   getArticleStatus: ValueOf<typeof DataStatus>;
+  improvementSuggestions: ArticleImprovementSuggestion[];
+  improvementSuggestionsDataStatus: ValueOf<typeof DataStatus>;
 };
 
 const initialState: State = {
@@ -41,10 +45,12 @@ const initialState: State = {
   articleComments: [],
   articles: [],
   genres: [],
+  improvementSuggestions: [],
   dataStatus: DataStatus.IDLE,
   articleCommentsDataStatus: DataStatus.IDLE,
   articleReactionDataStatus: DataStatus.IDLE,
   getArticleStatus: DataStatus.IDLE,
+  improvementSuggestionsDataStatus: DataStatus.IDLE,
 };
 
 const { reducer, actions, name } = createSlice({
@@ -181,6 +187,16 @@ const { reducer, actions, name } = createSlice({
         return comment.id === updatedComment.id ? updatedComment : comment;
       });
       state.articleCommentsDataStatus = DataStatus.FULFILLED;
+    });
+    builder.addCase(getImprovementSuggestions.fulfilled, (state, action) => {
+      state.improvementSuggestions = action.payload.items;
+      state.improvementSuggestionsDataStatus = DataStatus.FULFILLED;
+    });
+    builder.addCase(getImprovementSuggestions.pending, (state) => {
+      state.improvementSuggestionsDataStatus = DataStatus.PENDING;
+    });
+    builder.addCase(getImprovementSuggestions.rejected, (state) => {
+      state.improvementSuggestionsDataStatus = DataStatus.REJECTED;
     });
     builder.addMatcher(
       isAnyOf(

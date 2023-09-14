@@ -1,4 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { type ArticleGetImprovementSuggestionsResponseDto } from 'shared/build/index.js';
 
 import { type AsyncThunkConfig } from '~/libs/types/types.js';
 import {
@@ -204,6 +205,16 @@ const deleteArticle = createAsyncThunk<
   return articleApi.delete(id);
 });
 
+const getImprovementSuggestions = createAsyncThunk<
+  ArticleGetImprovementSuggestionsResponseDto,
+  number,
+  AsyncThunkConfig
+>(`${sliceName}/get-improvement-suggestions`, (id, { extra }) => {
+  const { articleApi } = extra;
+
+  return articleApi.getImprovementSuggestions(id);
+});
+
 export {
   createArticle,
   createComment,
@@ -215,6 +226,7 @@ export {
   fetchSharedArticle,
   getAllGenres,
   getArticle,
+  getImprovementSuggestions,
   reactToArticle,
   shareArticle,
   updateArticle,

@@ -76,8 +76,7 @@ class ArticleService implements IService {
       return null;
     }
 
-    const parsedGenres =
-      safeJSONParse<DetectedArticleGenre[]>(genresJSON) ?? [];
+    const parsedGenres = safeJSONParse<DetectedArticleGenre[]>(genresJSON);
 
     if (Array.isArray(parsedGenres) && parsedGenres[0]) {
       return parsedGenres[0];
@@ -191,7 +190,7 @@ class ArticleService implements IService {
     }
 
     const parsedSuggestions =
-      safeJSONParse<ArticleImprovementSuggestion[]>(suggestionsJSON) ?? [];
+      safeJSONParse<ArticleImprovementSuggestion[]>(suggestionsJSON);
 
     if (Array.isArray(parsedSuggestions)) {
       return parsedSuggestions;

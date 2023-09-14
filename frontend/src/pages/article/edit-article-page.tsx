@@ -27,7 +27,9 @@ const EditArticlePage: React.FC = () => {
           />
         </div>
         <div className={styles.rightColumn}>
-          <ArticleImprovementSuggestions />
+          <ArticleImprovementSuggestions
+            articleId={(location.state as ArticleResponseDto).id}
+          />
         </div>
       </div>
     </Layout>
