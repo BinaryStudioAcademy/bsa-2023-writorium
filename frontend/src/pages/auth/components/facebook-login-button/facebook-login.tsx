@@ -3,7 +3,7 @@ import { FacebookProvider } from 'react-facebook';
 import { config } from '~/libs/packages/config/config.js';
 import { type UserSignInWithFacebookResponseDto } from '~/packages/auth/auth.js';
 
-import { FacebookLoginButton } from '../components.js';
+import { FacebookLoginButton } from './facebook-login-button.js';
 
 type FacebookLoginProperties = {
   onLogin: (response: UserSignInWithFacebookResponseDto) => void;
