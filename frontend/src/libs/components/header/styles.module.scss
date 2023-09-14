@@ -34,6 +34,14 @@
   background-color: var(--dark-green);
   border-radius: 5px;
   cursor: pointer;
+  transition:
+    color 0.3s ease,
+    background-color 0.3s ease;
+}
+
+.writeLink:hover {
+  color: var(--white);
+  background-color: var(--light-green);
 }
 
 .dropdown.dropdownModal {
@@ -59,7 +67,24 @@
 }
 
 .avatarButton {
+  background-color: transparent;
   border: none;
+}
+
+.avatarButton > span {
+  transition: background-color 0.3s ease;
+}
+
+.avatarButton:hover > span {
+  background-color: var(--light-green-80);
+}
+
+.avatarButton img {
+  transition: opacity 0.3s ease;
+}
+
+.avatarButton:hover img {
+  opacity: 0.8;
 }
 
 @keyframes fade {
