@@ -14,7 +14,6 @@ import {
   useLocation,
   useParams,
 } from '~/libs/hooks/hooks.js';
-import { type TagType } from '~/libs/types/types.js';
 import { type ArticleResponseDto } from '~/packages/articles/articles.js';
 import { type CommentBaseRequestDto } from '~/packages/comments/comments.js';
 import { actions as articleActions } from '~/slices/articles/articles.js';
@@ -24,6 +23,7 @@ import {
   ArticleView,
   CommentForm,
 } from './components/components.js';
+import { getArticleViewTags } from './libs/helpers/helpers.js';
 import styles from './styles.module.scss';
 
 const ArticlePage: React.FC = () => {
@@ -86,14 +86,6 @@ const ArticlePage: React.FC = () => {
     return null;
   }
 
-  const MOCKED_TAGS: TagType[] = [
-    { id: 1, name: 'IT' },
-    { id: 2, name: 'CODE' },
-    { id: 3, name: 'Humor' },
-    { id: 4, name: 'Work' },
-    { id: 5, name: 'Tech' },
-  ];
-
   return (
     <Loader isLoading={isLoading} hasOverlay type="circular">
       <Layout>
@@ -101,7 +93,7 @@ const ArticlePage: React.FC = () => {
           {article && (
             <>
               <ArticleView
-                tags={MOCKED_TAGS}
+                tags={getArticleViewTags(article)}
                 text={article.text}
                 title={article.title}
                 coverUrl={article.coverUrl}
