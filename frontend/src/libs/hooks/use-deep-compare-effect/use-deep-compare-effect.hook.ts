@@ -1,8 +1,7 @@
-import { default as cloneDeep } from 'lodash.clonedeep';
 import { type DependencyList, type EffectCallback } from 'react';
 import React from 'react';
 
-import { checkIsEqual } from '~/libs/helpers/helpers.js';
+import { checkIsEqual, cloneDeep } from '~/libs/helpers/helpers.js';
 
 function useDeepCompareMemoize<T>(value: T): T {
   const reference = React.useRef<T>(value);
