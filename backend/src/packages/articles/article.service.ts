@@ -39,6 +39,7 @@ import {
   type ArticleUpdateRequestDto,
   type DetectedArticleGenre,
   type UserActivityResponseDto,
+  type UserArticlesGenreStatsResponseDto,
 } from './libs/types/types.js';
 
 class ArticleService implements IService {
@@ -213,6 +214,21 @@ class ArticleService implements IService {
     });
 
     return halfYearActivity;
+  }
+
+  public async getUserArticlesGenreStats(
+    userId: number,
+  ): Promise<UserArticlesGenreStatsResponseDto> {
+    const stats = await this.articleRepository.getUserArticlesGenreStats(
+      userId,
+    );
+
+    return {
+      items: stats.map((statsItem) => ({
+        ...statsItem,
+        count: Number.parseInt(statsItem.count),
+      })),
+    };
   }
 
   public async create(payload: ArticleCreateDto): Promise<ArticleResponseDto> {
