@@ -50,7 +50,9 @@ const FacebookLoginButton: React.FC<FacebookLoginButtonProperties> = ({
         email: profile.email,
       });
     } catch (error) {
-      error instanceof Error && notification.error(error.message);
+      if (error instanceof Error) {
+        notification.error(error.message);
+      }
     }
   }, [onLogin, init]);
 
