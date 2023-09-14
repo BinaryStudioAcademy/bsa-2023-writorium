@@ -49,6 +49,8 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
         : articleCreateValidationSchema,
     });
 
+  const isDraft = !articleForUpdate?.publishedAt;
+
   const handleArticleSubmit = useCallback(
     (articleSubmitType: ValueOf<typeof ArticleSubmitType>) =>
       (payload: ArticleRequestDto): void => {
@@ -84,14 +86,17 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
       if (!articleForUpdate) {
         return;
       }
+
       const updatePayload = {
         articleId: articleForUpdate.id,
         articleForUpdate: {
           text: payload.text,
           title: payload.title,
+          publishedAt: articleForUpdate.publishedAt ?? new Date().toISOString(),
           coverId: payload.coverId,
         },
       };
+
       void dispatch(articlesActions.updateArticle(updatePayload))
         .unwrap()
         .then(() => navigate(ArticleSubRoute.MY_ARTICLES))
@@ -173,7 +178,7 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
             label="Publish"
             name="publish"
             className={styles.publishBtn}
-            disabled={!isDirty || isSubmitting}
+            disabled={(!isDirty && !isDraft) || isSubmitting}
           />
         </div>
       </form>

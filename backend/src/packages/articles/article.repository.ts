@@ -1,7 +1,11 @@
-import { type Model, type QueryBuilder } from 'objection';
+import { type Model, type Page, type QueryBuilder } from 'objection';
+
+import { DatabaseTableName } from '~/libs/packages/database/libs/enums/database-table-name.enum.js';
+import { type CommentModel } from '~/packages/comments/comment.model.js';
 
 import { ArticleEntity } from './article.entity.js';
 import { type ArticleModel } from './article.model.js';
+import { EMPTY_COMMENT_COUNT } from './libs/constants/constants.js';
 import {
   getSortingCondition,
   getWherePublishedOnlyQuery,
@@ -9,7 +13,9 @@ import {
 } from './libs/helpers/helpers.js';
 import { type IArticleRepository } from './libs/interfaces/interfaces.js';
 import {
+  type ArticleCommentCount,
   type ArticlesFilters,
+  type GetUserArticlesGenresStatsDatabaseResponse,
   type UserActivityResponseDto,
 } from './libs/types/types.js';
 
@@ -37,6 +43,13 @@ class ArticleRepository implements IArticleRepository {
     void builder.select('id', 'isLike', 'userId');
   };
 
+  private getCommentsCountQuery(): QueryBuilder<CommentModel> {
+    return this.articleModel
+      .relatedQuery<CommentModel>(DatabaseTableName.COMMENTS)
+      .count()
+      .as('commentCount');
+  }
+
   public async findAll({
     userId,
     take,
@@ -48,18 +61,26 @@ class ArticleRepository implements IArticleRepository {
   } & ArticlesFilters): Promise<{ items: ArticleEntity[]; total: number }> {
     const articles = await this.articleModel
       .query()
+      .select(`${DatabaseTableName.ARTICLES}.*`, this.getCommentsCountQuery())
       .where(getWhereUserIdQuery(userId))
       .where(getWherePublishedOnlyQuery(hasPublishedOnly))
+      .whereNull('deletedAt')
       .orderBy(getSortingCondition(hasPublishedOnly))
       .page(skip / take, take)
-      .modify(this.joinArticleRelations);
+      .modify(this.joinArticleRelations)
+      .castTo<Page<ArticleModel & ArticleCommentCount>>();
 
     return {
       total: articles.total,
-      items: articles.results.map((article) => {
-        return ArticleEntity.initialize({
+      items: articles.results.map((article) =>
+        ArticleEntity.initialize({
           ...article,
-          coverUrl: article.cover?.url,
+          coverUrl: article.cover?.url ?? null,
+          author: {
+            firstName: article.author.firstName,
+            lastName: article.author.lastName,
+            avatarUrl: article.author.avatar?.url ?? null,
+          },
           genre: article.genre?.name ?? null,
           prompt: article.prompt
             ? {
@@ -69,13 +90,8 @@ class ArticleRepository implements IArticleRepository {
                 prop: article.prompt.prop,
               }
             : null,
-          author: {
-            firstName: article.author.firstName,
-            lastName: article.author.lastName,
-            avatarUrl: article.author.avatar?.url ?? null,
-          },
-        });
-      }),
+        }),
+      ),
     };
   }
 
@@ -91,8 +107,13 @@ class ArticleRepository implements IArticleRepository {
 
     return ArticleEntity.initialize({
       ...article,
+      author: {
+        firstName: article.author.firstName,
+        lastName: article.author.lastName,
+        avatarUrl: article.author.avatar?.url ?? null,
+      },
       genre: article.genre?.name ?? null,
-      coverUrl: article.cover?.url,
+      coverUrl: article.cover?.url ?? null,
       prompt: article.prompt
         ? {
             character: article.prompt.character,
@@ -101,44 +122,27 @@ class ArticleRepository implements IArticleRepository {
             prop: article.prompt.prop,
           }
         : null,
-      author: {
-        firstName: article.author.firstName,
-        lastName: article.author.lastName,
-        avatarUrl: article.author.avatar?.url ?? null,
-      },
+      commentCount: null,
     });
   }
 
   public async create(entity: ArticleEntity): Promise<ArticleEntity> {
-    const {
-      title,
-      text,
-      promptId,
-      genreId,
-      userId,
-      publishedAt,
-      coverId,
-      readTime,
-    } = entity.toNewObject();
+    const payload = entity.toNewObject();
 
     const article = await this.articleModel
       .query()
-      .insert({
-        title,
-        text,
-        promptId,
-        genreId,
-        coverId,
-        userId,
-        publishedAt,
-        readTime,
-      })
+      .insert(payload)
       .returning('*')
       .withGraphFetched(this.defaultRelationExpression)
       .modifyGraph('reactions', this.modifyReactionsGraph);
 
     return ArticleEntity.initialize({
       ...article,
+      author: {
+        firstName: article.author.firstName,
+        lastName: article.author.lastName,
+        avatarUrl: article.author.avatar?.url ?? null,
+      },
       genre: article.genre?.name ?? null,
       prompt: article.prompt
         ? {
@@ -148,11 +152,8 @@ class ArticleRepository implements IArticleRepository {
             prop: article.prompt.prop,
           }
         : null,
-      author: {
-        firstName: article.author.firstName,
-        lastName: article.author.lastName,
-        avatarUrl: article.author.avatar?.url ?? null,
-      },
+      commentCount: EMPTY_COMMENT_COUNT,
+      coverUrl: article.cover?.url ?? null,
     });
   }
 
@@ -177,14 +178,61 @@ class ArticleRepository implements IArticleRepository {
       .castTo<UserActivityResponseDto[]>();
   }
 
+  public getUserArticlesGenreStats(
+    userId: number,
+  ): Promise<GetUserArticlesGenresStatsDatabaseResponse[]> {
+    return this.articleModel
+      .query()
+      .select(
+        'genre.name',
+        'genre.key',
+        this.articleModel.raw('count(*) as count'),
+      )
+      .joinRelated('genre')
+      .groupBy('genre.key', 'genre.name')
+      .where({ userId })
+      .castTo<GetUserArticlesGenresStatsDatabaseResponse[]>()
+      .execute();
+  }
+
   public async update(entity: ArticleEntity): Promise<ArticleEntity> {
     const { id, ...payload } = entity.toObject();
 
     const article = await this.articleModel
       .query()
       .patchAndFetchById(id, payload)
+      .select(`${DatabaseTableName.ARTICLES}.*`, this.getCommentsCountQuery())
       .withGraphFetched(this.defaultRelationExpression)
-      .modifyGraph('reactions', this.modifyReactionsGraph);
+      .modifyGraph('reactions', this.modifyReactionsGraph)
+      .castTo<ArticleModel & ArticleCommentCount>();
+
+    return ArticleEntity.initialize({
+      ...article,
+      author: {
+        firstName: article.author.firstName,
+        lastName: article.author.lastName,
+        avatarUrl: article.author.avatar?.url ?? null,
+      },
+      genre: article.genre?.name ?? null,
+      prompt: article.prompt
+        ? {
+            character: article.prompt.character,
+            setting: article.prompt.setting,
+            situation: article.prompt.situation,
+            prop: article.prompt.prop,
+          }
+        : null,
+      coverUrl: article.cover?.url ?? null,
+    });
+  }
+
+  public async delete(id: number): Promise<ArticleEntity> {
+    const article = await this.articleModel
+      .query()
+      .patchAndFetchById(id, { deletedAt: new Date().toISOString() })
+      .select(`${DatabaseTableName.ARTICLES}.*`, this.getCommentsCountQuery())
+      .withGraphFetched(this.defaultRelationExpression)
+      .castTo<ArticleModel & ArticleCommentCount>();
 
     return ArticleEntity.initialize({
       ...article,
@@ -202,11 +250,8 @@ class ArticleRepository implements IArticleRepository {
         lastName: article.author.lastName,
         avatarUrl: article.author.avatar?.url ?? null,
       },
+      coverUrl: article.cover?.url ?? null,
     });
-  }
-
-  public delete(): Promise<boolean> {
-    return Promise.resolve(false);
   }
 }
 

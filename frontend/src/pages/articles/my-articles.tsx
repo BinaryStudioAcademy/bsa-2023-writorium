@@ -1,4 +1,5 @@
 import { InfiniteScroll } from '~/libs/components/components.js';
+import { getArticleTags } from '~/libs/helpers/helpers.js';
 import {
   useAppDispatch,
   useAppSelector,
@@ -9,7 +10,6 @@ import {
 import { actions as articlesActions } from '~/slices/articles/articles.js';
 
 import { ArticleCard } from './components/components.js';
-import { getArticleTags } from './libs/helpers/helpers.js';
 import styles from './styles.module.scss';
 
 const MyArticles: React.FC = () => {
@@ -29,6 +29,13 @@ const MyArticles: React.FC = () => {
       return Boolean(data.items.length);
     });
   }, [dispatch, loadMore]);
+
+  const handleDeleteArticle = useCallback(
+    (id: number): void => {
+      void dispatch(articlesActions.deleteArticle(id));
+    },
+    [dispatch],
+  );
 
   useEffect(() => {
     handleLoadArticles();
@@ -53,6 +60,7 @@ const MyArticles: React.FC = () => {
             author={article.author}
             tags={getArticleTags(article)}
             reactions={article.reactions}
+            onDeleteArticle={handleDeleteArticle}
           />
         ))}
     </InfiniteScroll>

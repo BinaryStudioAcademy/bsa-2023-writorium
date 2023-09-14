@@ -1,4 +1,5 @@
 import { InfiniteScroll } from '~/libs/components/components.js';
+import { getArticleTags } from '~/libs/helpers/helpers.js';
 import {
   useAppDispatch,
   useAppSelector,
@@ -9,7 +10,6 @@ import {
 import { actions as articlesActions } from '~/slices/articles/articles.js';
 
 import { ArticleCard } from './components/components.js';
-import { getArticleTags } from './libs/helpers/helpers.js';
 import styles from './styles.module.scss';
 
 const ArticlesFeed: React.FC = () => {

@@ -1,7 +1,7 @@
 import { BlockWithTooltip, Tooltip } from '~/libs/components/components.js';
 import { DataTooltipId } from '~/libs/enums/enums.js';
+import { type TagType } from '~/libs/types/types.js';
 
-import { type TagType } from '../../libs/types/types.js';
 import styles from './styles.module.scss';
 
 type Properties = {
