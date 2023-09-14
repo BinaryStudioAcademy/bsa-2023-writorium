@@ -18,7 +18,10 @@ import { getGeneratedPromptPayload } from '~/packages/prompts/prompts.js';
 import { actions as articlesActions } from '~/slices/articles/articles.js';
 
 import { ArticleCoverUpload } from './libs/components/components.js';
-import { DEFAULT_ARTICLE_FORM_PAYLOAD } from './libs/constants/constants.js';
+import {
+  DEFAULT_ARTICLE_FORM_PAYLOAD,
+  PREVIOUS_PAGE_INDEX,
+} from './libs/constants/constants.js';
 import { ArticleSubmitType } from './libs/enums/enums.js';
 import styles from './styles.module.scss';
 
@@ -113,7 +116,6 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
   );
 
   const handleCancel = useCallback(() => {
-    const PREVIOUS_PAGE_INDEX = -1;
     if (!isDirty) {
       navigate(PREVIOUS_PAGE_INDEX);
       return;
