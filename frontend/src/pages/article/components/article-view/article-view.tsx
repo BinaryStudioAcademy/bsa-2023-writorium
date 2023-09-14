@@ -1,7 +1,7 @@
 import {
   IconButton,
   ShareOnFacebookButton,
-  Tag,
+  Tags,
 } from '~/libs/components/components.js';
 import { getValidClassNames, sanitizeHtml } from '~/libs/helpers/helpers.js';
 import { useAppDispatch, useCallback, useParams } from '~/libs/hooks/hooks.js';
@@ -13,7 +13,7 @@ import styles from './styles.module.scss';
 type Properties = {
   title: string;
   text: string;
-  tags: TagType[];
+  tags: TagType[] | null;
   coverUrl?: string;
   isShared?: boolean;
 };
@@ -82,13 +82,9 @@ const ArticleView: React.FC<Properties> = ({
           </div>
         )}
       </div>
-      <div>
+      <div className={styles.textWrapper}>
         <h4 className={styles.title}>{title}</h4>
-        <div className={styles.tags}>
-          {tags.map((tag) => (
-            <Tag key={tag.id} name={tag.name} />
-          ))}
-        </div>
+        {tags && <Tags tags={tags} />}
         <p
           className={styles.text}
           dangerouslySetInnerHTML={{ __html: sanitizeHtml(text) }}
