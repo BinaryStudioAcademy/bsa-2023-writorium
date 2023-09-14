@@ -35,7 +35,9 @@
   color: var(--white);
   background-color: var(--dark-green);
   border: 1px solid var(--dark-blue);
-  transition: color 0.3s ease;
+  transition:
+    color 0.3s ease,
+    background-color 0.3s ease;
 }
 
 .publishBtn:hover {
