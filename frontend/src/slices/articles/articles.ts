@@ -1,5 +1,6 @@
 import {
   createArticle,
+  deleteArticle,
   deleteArticleReaction,
   fetchAll,
   fetchOwn,
@@ -18,6 +19,7 @@ const allActions = {
   createArticle,
   updateArticle,
   getArticle,
+  deleteArticle,
   reactToArticle,
   deleteArticleReaction,
   shareArticle,

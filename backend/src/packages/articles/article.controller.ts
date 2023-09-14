@@ -208,6 +208,19 @@ class ArticleController extends Controller {
           }>,
         ),
     });
+
+    this.addRoute({
+      path: ArticlesApiPath.$ID,
+      method: 'DELETE',
+      handler: (options) => {
+        return this.delete(
+          options as ApiHandlerOptions<{
+            params: { id: number };
+            user: UserAuthResponseDto;
+          }>,
+        );
+      },
+    });
   }
 
   /**
@@ -459,6 +472,45 @@ class ArticleController extends Controller {
     return {
       status: HttpCode.OK,
       payload: await this.articleService.findShared(options.headers),
+    };
+  }
+
+  /**
+   * @swagger
+   * /articles/:id:
+   *    delete:
+   *      summary: Delete an existing article
+   *      description: Delete an existing article by id
+   *      security:
+   *        - bearerAuth: []
+   *      parameters:
+   *        - in: path
+   *          name: id
+   *          schema:
+   *            type: integer
+   *          required: true
+   *          description: The ID of the article to delete
+   *      responses:
+   *        200:
+   *          description: Successful operation
+   *          content:
+   *            application/json:
+   *              schema:
+   *                $ref: '#/components/schemas/Article'
+   */
+
+  private async delete(
+    options: ApiHandlerOptions<{
+      params: { id: number };
+      user: UserAuthResponseDto;
+    }>,
+  ): Promise<ApiHandlerResponse> {
+    return {
+      status: HttpCode.OK,
+      payload: await this.articleService.delete(
+        options.params.id,
+        options.user.id,
+      ),
     };
   }
 }

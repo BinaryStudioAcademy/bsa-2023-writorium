@@ -24,6 +24,7 @@ class ArticleEntity implements IEntity {
   private 'genre'?: ArticleWithRelationsType['genre'];
   private 'reactions'?: ReactionResponseDto[];
   private 'readTime': number | null;
+  private 'deletedAt': string | null;
 
   private constructor({
     id,
@@ -39,6 +40,7 @@ class ArticleEntity implements IEntity {
     reactions,
     prompt,
     genre,
+    deletedAt,
     readTime,
   }: WithNullableKeys<ArticleWithRelationsType, 'id'>) {
     this.id = id;
@@ -55,6 +57,7 @@ class ArticleEntity implements IEntity {
     this.readTime = readTime;
     this.coverId = coverId;
     this.coverUrl = coverUrl;
+    this.deletedAt = deletedAt;
   }
 
   public static initialize({
@@ -71,6 +74,7 @@ class ArticleEntity implements IEntity {
     reactions,
     prompt,
     genre,
+    deletedAt,
     readTime,
   }: ArticleWithRelationsType): ArticleEntity {
     return new ArticleEntity({
@@ -87,6 +91,7 @@ class ArticleEntity implements IEntity {
       reactions,
       prompt,
       genre,
+      deletedAt,
       readTime,
     });
   }
@@ -100,6 +105,7 @@ class ArticleEntity implements IEntity {
     genreId,
     readTime,
     publishedAt,
+    deletedAt,
   }: Omit<ArticleEntityType, 'id'>): ArticleEntity {
     return new ArticleEntity({
       id: null,
@@ -110,6 +116,7 @@ class ArticleEntity implements IEntity {
       coverId,
       genreId,
       publishedAt,
+      deletedAt,
       readTime,
     });
   }
@@ -125,6 +132,7 @@ class ArticleEntity implements IEntity {
       genreId: this.genreId,
       readTime: this.readTime,
       publishedAt: this.publishedAt,
+      deletedAt: this.deletedAt,
     };
   }
 
@@ -144,6 +152,7 @@ class ArticleEntity implements IEntity {
       prompt: this.prompt as ArticleResponseDto['prompt'],
       genre: this.genre as ArticleResponseDto['genre'],
       readTime: this.readTime,
+      deletedAt: this.deletedAt,
     };
   }
 
@@ -157,6 +166,7 @@ class ArticleEntity implements IEntity {
       genreId: this.genreId,
       readTime: this.readTime,
       publishedAt: this.publishedAt,
+      deletedAt: this.deletedAt,
     };
   }
 }
