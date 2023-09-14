@@ -4,7 +4,7 @@ const getArticleImprovementSuggestionsCompletionConfig = (
   text: string,
 ): CompletionConfig => {
   return {
-    prompt: `You'll be given a text of an article and your task is to identify some points that you would suggest to change to make the article better. Provide the result in JSON format as an array of objects where each object has keys: title (title of suggestion), description (detailed description of suggestion), and importance (can be 1, 2, or 3, it identifies the priority of suggestion, 1 - lowest priority, 3 - highest priority). Here's the text ${text}`,
+    prompt: `You'll be given a text of an article and your task is to identify some points that you would suggest to change to make the article better. Provide the result in JSON format as an array of objects where each object has keys: title (title of suggestion), description (description of suggestion), and priority (can be 1, 2, or 3, it identifies the importance of suggestion, 1 - lowest priority, 3 - highest priority). Here's the text ${text}`,
   };
 };
 
