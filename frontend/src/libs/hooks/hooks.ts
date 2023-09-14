@@ -8,7 +8,6 @@ export { usePagination } from './use-pagination/use-pagination.hook.js';
 export {
   type DependencyList,
   type EffectCallback,
-  default as React,
   useCallback,
   useEffect,
   useMemo,

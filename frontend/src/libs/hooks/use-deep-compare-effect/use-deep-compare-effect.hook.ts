@@ -1,10 +1,14 @@
 import { checkIsEqual, cloneDeep } from '~/libs/helpers/helpers.js';
 
-import { type DependencyList, type EffectCallback } from '../hooks.js';
-import { React } from '../hooks.js';
+import {
+  type DependencyList,
+  type EffectCallback,
+  useEffect,
+  useRef as useReference,
+} from '../hooks.js';
 
 const useDeepCompareMemoize = <T>(value: T): T => {
-  const reference = React.useRef<T>(value);
+  const reference = useReference<T>(value);
   if (!checkIsEqual(value, reference.current)) {
     reference.current = cloneDeep(value);
   }
@@ -15,10 +19,7 @@ const useDeepCompareEffect = (
   callback: EffectCallback,
   dependencies: DependencyList,
 ): void => {
-  return React.useEffect(callback, [
-    useDeepCompareMemoize(dependencies),
-    callback,
-  ]);
+  return useEffect(callback, [useDeepCompareMemoize(dependencies), callback]);
 };
 
 export { useDeepCompareEffect };
