@@ -44,3 +44,8 @@
   color: var(--red);
   content: "*";
 }
+
+.textarea {
+  resize: none;
+  padding: 20px 16px;
+}

@@ -13,6 +13,8 @@ const userApi = new UserApi({
 export { userApi };
 export {
   type UserActivityResponseDto,
+  type UserArticlesGenreStatsItem,
+  type UserArticlesGenreStatsResponseDto,
   type UserAuthResponseDto,
   type UserDetailsResponseDto,
   type UserGetAllItemResponseDto,

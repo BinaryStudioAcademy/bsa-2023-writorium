@@ -2,31 +2,43 @@ import { createSlice, isAnyOf } from '@reduxjs/toolkit';
 
 import { DataStatus } from '~/libs/enums/enums.js';
 import { type ValueOf } from '~/libs/types/types.js';
-import { type ArticleResponseDto } from '~/packages/articles/articles.js';
+import {
+  type ArticleResponseDto,
+  type ArticleWithCommentCountResponseDto,
+} from '~/packages/articles/articles.js';
+import { type CommentWithRelationsResponseDto } from '~/packages/comments/comments.js';
 
 import {
   createArticle,
+  createComment,
+  deleteArticle,
   deleteArticleReaction,
   fetchAll,
+  fetchAllCommentsToArticle,
   fetchOwn,
   fetchSharedArticle,
   getArticle,
   reactToArticle,
   updateArticle,
+  updateComment,
 } from './actions.js';
 
 type State = {
   article: ArticleResponseDto | null;
-  articles: ArticleResponseDto[];
+  articleComments: CommentWithRelationsResponseDto[];
+  articles: ArticleWithCommentCountResponseDto[];
   dataStatus: ValueOf<typeof DataStatus>;
+  articleCommentsDataStatus: ValueOf<typeof DataStatus>;
   articleReactionDataStatus: ValueOf<typeof DataStatus>;
   getArticleStatus: ValueOf<typeof DataStatus>;
 };
 
 const initialState: State = {
   article: null,
+  articleComments: [],
   articles: [],
   dataStatus: DataStatus.IDLE,
+  articleCommentsDataStatus: DataStatus.IDLE,
   articleReactionDataStatus: DataStatus.IDLE,
   getArticleStatus: DataStatus.IDLE,
 };
@@ -38,6 +50,10 @@ const { reducer, actions, name } = createSlice({
     resetArticles(state) {
       state.articles = initialState.articles;
       state.dataStatus = DataStatus.IDLE;
+    },
+    resetComments(state) {
+      state.articleComments = initialState.articleComments;
+      state.articleCommentsDataStatus = DataStatus.IDLE;
     },
   },
   extraReducers(builder) {
@@ -60,6 +76,15 @@ const { reducer, actions, name } = createSlice({
     builder.addCase(getArticle.fulfilled, (state, action) => {
       state.getArticleStatus = DataStatus.FULFILLED;
       state.article = action.payload;
+    });
+    builder.addCase(deleteArticle.fulfilled, (state, action) => {
+      const article = action.payload;
+      if (article) {
+        state.articles = state.articles.filter(
+          (item) => item.id !== article.id,
+        );
+      }
+      state.dataStatus = DataStatus.FULFILLED;
     });
     builder.addCase(reactToArticle.fulfilled, (state, action) => {
       const { articleId, reaction: updatedReaction } = action.payload;
@@ -128,6 +153,42 @@ const { reducer, actions, name } = createSlice({
       state.dataStatus = DataStatus.FULFILLED;
       state.article = action.payload;
     });
+    builder.addCase(createComment.fulfilled, (state, action) => {
+      state.articleComments = [action.payload, ...state.articleComments];
+      state.articleCommentsDataStatus = DataStatus.FULFILLED;
+    });
+    builder.addCase(fetchAllCommentsToArticle.fulfilled, (state, action) => {
+      state.articleComments = action.payload.items;
+      state.articleCommentsDataStatus = DataStatus.FULFILLED;
+    });
+    builder.addCase(updateComment.fulfilled, (state, action) => {
+      const updatedComment = action.payload;
+
+      state.articleComments = state.articleComments.map((comment) => {
+        return comment.id === updatedComment.id ? updatedComment : comment;
+      });
+      state.articleCommentsDataStatus = DataStatus.FULFILLED;
+    });
+    builder.addMatcher(
+      isAnyOf(
+        createComment.pending,
+        fetchAllCommentsToArticle.pending,
+        updateComment.pending,
+      ),
+      (state) => {
+        state.articleCommentsDataStatus = DataStatus.PENDING;
+      },
+    );
+    builder.addMatcher(
+      isAnyOf(
+        createComment.rejected,
+        fetchAllCommentsToArticle.rejected,
+        updateComment.rejected,
+      ),
+      (state) => {
+        state.articleCommentsDataStatus = DataStatus.REJECTED;
+      },
+    );
     builder.addMatcher(
       isAnyOf(fetchAll.fulfilled, fetchOwn.fulfilled),
       (state, action) => {
@@ -147,8 +208,8 @@ const { reducer, actions, name } = createSlice({
         fetchOwn.pending,
         createArticle.pending,
         updateArticle.pending,
-        getArticle.pending,
         fetchSharedArticle.pending,
+        deleteArticle.pending,
       ),
       (state) => {
         state.dataStatus = DataStatus.PENDING;
@@ -167,6 +228,7 @@ const { reducer, actions, name } = createSlice({
         createArticle.rejected,
         updateArticle.rejected,
         fetchSharedArticle.rejected,
+        deleteArticle.rejected,
       ),
       (state) => {
         state.dataStatus = DataStatus.REJECTED;
