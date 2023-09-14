@@ -4,11 +4,8 @@
   background-color: var(--pale-gray);
   border-top-right-radius: 6px;
   border-bottom-right-radius: 6px;
-  transition: box-shadow 0.2s ease;
-}
-
-.suggestion:hover {
   box-shadow: 0 2px 12px 0.5px rgb(135 141 162 / 10%);
+  transition: box-shadow 0.2s ease;
 }
 
 .suggestion::before {

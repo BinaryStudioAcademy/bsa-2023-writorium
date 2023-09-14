@@ -15,7 +15,6 @@
   justify-content: center;
   align-items: center;
   gap: 10px;
-  margin-bottom: 30px;
   padding: 14px 20px;
   color: var(--white);
   font-weight: 700;
@@ -54,6 +53,8 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
+  max-height: 740px;
+  overflow: auto;
   list-style: none;
 }
 
@@ -74,4 +75,10 @@
   font-weight: 600;
   background-color: var(--light-green);
   border-radius: 50%;
+}
+
+.loadingDescription {
+  margin-top: 25px;
+  color: var(--dark-blue-40);
+  text-align: center;
 }
