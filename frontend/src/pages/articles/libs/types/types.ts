@@ -1,1 +1,1 @@
-export { type TagType } from './tag.type.js';
+export { type FilterFormValues } from './filter-form-values.type.js';

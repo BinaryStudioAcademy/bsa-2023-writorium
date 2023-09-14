@@ -114,6 +114,7 @@
 
 .body:not(.hasCover) .articleInfo {
   flex: 1;
+  min-width: 0;
 }
 
 .body:not(.hasCover) .text {
@@ -197,11 +198,16 @@
   background-color: transparent;
 }
 
-.editIcon {
+.editIcon,
+.deleteIcon {
   width: 20px;
   height: 20px;
   color: var(--light-green);
-  cursor: pointer;
+}
+
+.iconButton {
+  align-self: flex-start;
+  background-color: var(--white);
 }
 
 .facebookIconButton {

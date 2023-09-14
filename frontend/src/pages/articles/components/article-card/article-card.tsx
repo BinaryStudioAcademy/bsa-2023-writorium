@@ -6,11 +6,13 @@ import {
   IconButton,
   Link,
   ShareOnFacebookButton,
+  Tags,
 } from '~/libs/components/components.js';
 import {
   AppRoute,
   ArticleSubRoute,
   DateFormat,
+  LinkHash,
   Reaction,
 } from '~/libs/enums/enums.js';
 import {
@@ -26,9 +28,9 @@ import {
   useCallback,
   useLocation,
 } from '~/libs/hooks/hooks.js';
-import { type ValueOf } from '~/libs/types/types.js';
+import { type TagType, type ValueOf } from '~/libs/types/types.js';
 import {
-  type ArticleResponseDto,
+  type ArticleWithCommentCountResponseDto,
   getReadTimeString,
   type ReactionResponseDto,
 } from '~/packages/articles/articles.js';
@@ -40,15 +42,14 @@ import { actions as articlesActions } from '~/slices/articles/articles.js';
 
 import { MOCKED_REACTIONS } from '../../libs/constants.js';
 import { getReactionConvertedToBoolean } from '../../libs/helpers/helpers.js';
-import { type TagType } from '../../libs/types/types.js';
-import { Tags } from '../components.js';
 import styles from './styles.module.scss';
 
 type Properties = {
-  article: ArticleResponseDto;
+  article: ArticleWithCommentCountResponseDto;
   author: UserDetailsResponseDto;
   tags: TagType[];
   reactions: ReactionResponseDto[];
+  onDeleteArticle?: (id: number) => void;
 };
 
 const ArticleCard: React.FC<Properties> = ({
@@ -56,6 +57,7 @@ const ArticleCard: React.FC<Properties> = ({
   author,
   tags,
   reactions,
+  onDeleteArticle,
 }) => {
   const dispatch = useAppDispatch();
   const user = useAppSelector(({ auth }) => auth.user) as UserAuthResponseDto;
@@ -65,7 +67,16 @@ const ArticleCard: React.FC<Properties> = ({
     { path: `${AppRoute.ARTICLES}/${ArticleSubRoute.MY_ARTICLES}` },
     pathname,
   );
-  const { publishedAt, title, text, id, userId, coverUrl, readTime } = article;
+  const {
+    publishedAt,
+    title,
+    text,
+    id,
+    userId,
+    coverUrl,
+    readTime,
+    commentCount,
+  } = article;
   const { likesCount, dislikesCount, hasAlreadyReactedWith } = getReactionsInfo(
     user.id,
     reactions,
@@ -73,6 +84,10 @@ const ArticleCard: React.FC<Properties> = ({
   const { firstName, lastName, avatarUrl } = author;
   const articleUrl = window.location.href;
   const articleRouteById = AppRoute.ARTICLE.replace(':id', String(id));
+
+  const handleDeleteArticle = useCallback(() => {
+    onDeleteArticle?.(id);
+  }, [id, onDeleteArticle]);
   const isOwnArticle = user.id === userId;
 
   const handleReaction = (reaction: ValueOf<typeof Reaction>): void => {
@@ -120,10 +135,12 @@ const ArticleCard: React.FC<Properties> = ({
           <span className={styles.publisherName}>
             {getFullName(firstName, lastName)}
           </span>
-          {publishedAt && (
+          {publishedAt ? (
             <span className={styles.publicationTime}>
               {getFormattedDate(publishedAt, DateFormat.DAY_SHORT_MONTH)}
             </span>
+          ) : (
+            <span className={styles.publicationTime}>draft</span>
           )}
           {readTime && (
             <span className={styles.publicationTime}>
@@ -133,12 +150,29 @@ const ArticleCard: React.FC<Properties> = ({
         </div>
         <div className={styles.iconWrapper}>
           {isMyArticles && (
-            <RouterLink
-              to={AppRoute.EDIT_ARTICLE.replace(':id', id.toString())}
-              state={article}
-            >
-              <Icon iconName="edit" className={styles.editIcon} />
-            </RouterLink>
+            <>
+              <IconButton
+                className={styles.iconButton}
+                iconName="trashBin"
+                iconClassName={getValidClassNames(
+                  styles.deleteIcon,
+                  styles.pointerIcon,
+                )}
+                onClick={handleDeleteArticle}
+              />
+              <RouterLink
+                to={AppRoute.EDIT_ARTICLE.replace(':id', id.toString())}
+                state={article}
+              >
+                <Icon
+                  iconName="edit"
+                  className={getValidClassNames(
+                    styles.editIcon,
+                    styles.pointerIcon,
+                  )}
+                />
+              </RouterLink>
+            </>
           )}
           <Icon iconName="favorite" className={styles.pointerIcon} />
         </div>
@@ -162,12 +196,20 @@ const ArticleCard: React.FC<Properties> = ({
       </div>
       <div className={styles.footer}>
         <ul className={styles.reactions}>
-          <li>
-            <IconButton
-              iconName="comment"
-              className={styles.footerIcon}
-              label={MOCKED_REACTIONS.comments}
-            />
+          <li className={styles.reaction}>
+            <Link
+              to={{
+                pathname: articleRouteById as typeof AppRoute.ARTICLE,
+                hash: LinkHash.COMMENTS,
+              }}
+              className={styles.reaction}
+            >
+              <IconButton
+                iconName="comment"
+                className={styles.footerIcon}
+                label={commentCount.toString()}
+              />
+            </Link>
           </li>
           <li className={styles.footerIcon}>
             <Icon iconName="view" />
@@ -209,7 +251,6 @@ const ArticleCard: React.FC<Properties> = ({
           articleUrl={articleUrl}
           iconStyle={styles.facebookIconButton}
         />
-
         <Link
           to={articleRouteById as typeof AppRoute.ARTICLE}
           className={styles.readMore}

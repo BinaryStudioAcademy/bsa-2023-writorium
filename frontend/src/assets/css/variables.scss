@@ -43,7 +43,8 @@
   --achievement-columns: 3;
 }
 
-input {
+input,
+textarea {
   --input-bg: var(--pale-gray);
   --input-shadow-color: var(--shadow-color);
   --input-text: rgb(40 40 40 / 50%);
