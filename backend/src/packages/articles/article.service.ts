@@ -94,10 +94,17 @@ class ArticleService implements IService {
       return null;
     }
 
-    const { readTime = null } =
+    const readTimeData =
       safeJSONParse<{ readTime: number }>(readTimeJSON) ?? {};
 
-    return readTime;
+    if (
+      'readTime' in readTimeData &&
+      typeof readTimeData.readTime === 'number'
+    ) {
+      return readTimeData.readTime;
+    }
+
+    return null;
   }
 
   private async getGenreIdForArticle(
