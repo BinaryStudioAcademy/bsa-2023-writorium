@@ -53,12 +53,10 @@
   cursor: default;
 }
 
-.prompt .promptTagTooltip {
+.tags .promptTagTooltip {
   max-width: 150px;
-  color: var(--dark-gray);
-  font-weight: 700;
-  word-break: break-word;
-  background-color: var(--pale-gray);
+  color: var(--pale-gray);
+  text-align: center;
+  background-color: var(--dark-green);
   border-radius: 7px;
-  box-shadow: 0 0 1px 0 var(--shadow-color);
 }

@@ -18,6 +18,19 @@
   margin-right: 16px;
 }
 
+.avatarWrapper > span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.avatarWrapper img {
+  width: 100%;
+  height: 100%;
+}
+
 .authorName {
   margin-bottom: 10px;
   color: var(--dark-gray);
