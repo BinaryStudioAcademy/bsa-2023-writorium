@@ -201,7 +201,7 @@ class ArticleEntity implements IEntity {
     };
   }
 
-  public toNewObject(): Omit<ArticleEntityType, 'id' | 'updatedAt'> {
+  public toNewObject(): Omit<ArticleEntityType, 'id'> {
     return {
       title: this.title,
       text: this.text,
