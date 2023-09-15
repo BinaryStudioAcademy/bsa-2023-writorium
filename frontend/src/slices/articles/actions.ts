@@ -78,9 +78,27 @@ const updateArticle = createAsyncThunk<
   ArticleUpdateRequestPayload,
   AsyncThunkConfig
 >(`${sliceName}/update`, async (payload, { extra }) => {
-  const { articleApi } = extra;
+  const { articleApi, sessionStorage } = extra;
 
-  return await articleApi.update(payload);
+  const updatedArticle = await articleApi.update(payload);
+
+  const existingSuggestionsJSON = await sessionStorage.get(
+    StorageKey.ARTICLES_IMPROVEMENT_SUGGESTIONS,
+  );
+
+  const existingSuggestionsByArticles = parseImprovementSuggestionsJSON(
+    existingSuggestionsJSON,
+  );
+
+  await sessionStorage.set(
+    StorageKey.ARTICLES_IMPROVEMENT_SUGGESTIONS,
+    JSON.stringify({
+      ...existingSuggestionsByArticles,
+      [payload.articleId]: null,
+    }),
+  );
+
+  return updatedArticle;
 });
 
 const getArticle = createAsyncThunk<
