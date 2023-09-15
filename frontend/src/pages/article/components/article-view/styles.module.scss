@@ -39,10 +39,14 @@
 
 .iconButton {
   display: flex;
+  flex: 1 1 auto;
   justify-content: center;
   align-items: center;
-  width: 54px;
-  height: 54px;
+  min-width: 30px;
+  max-width: 54px;
+  min-height: 30px;
+  max-height: 54px;
+  color: var(--light-green);
   background-color: var(--white-90);
   border-radius: 50%;
   transition: background-color 0.2s ease;
@@ -55,7 +59,6 @@
 .icon {
   width: 20px;
   height: 20px;
-  color: var(--light-green);
 }
 
 .title {
@@ -80,13 +83,4 @@
   font-size: 18px;
   line-height: 145%;
   word-break: break-word;
-}
-
-.facebookIconButton {
-  width: 54px;
-  height: 54px;
-  padding: 15px;
-  color: var(--light-green);
-  background-color: var(--white-90);
-  border-radius: 50%;
 }
