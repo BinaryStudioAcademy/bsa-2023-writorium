@@ -1,9 +1,10 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { type ArticleGetImprovementSuggestionsResponseDto } from 'shared/build/index.js';
 
+import { StorageKey } from '~/libs/packages/storage/storage.js';
 import { type AsyncThunkConfig } from '~/libs/types/types.js';
 import {
   type ArticleGetAllResponseDto,
+  type ArticleImprovementSuggestion,
   type ArticleReactionRequestDto,
   type ArticleRequestDto,
   type ArticleResponseDto,
@@ -24,6 +25,7 @@ import { type PromptRequestDto } from '~/packages/prompts/prompts.js';
 
 import { appActions } from '../app/app.js';
 import { name as sliceName } from './articles.slice.js';
+import { parseImprovementSuggestionsJSON } from './libs/helpers/helpers.js';
 
 const fetchAll = createAsyncThunk<
   ArticleGetAllResponseDto,
@@ -205,14 +207,55 @@ const deleteArticle = createAsyncThunk<
   return articleApi.delete(id);
 });
 
-const getImprovementSuggestions = createAsyncThunk<
-  ArticleGetImprovementSuggestionsResponseDto,
+const getImprovementSuggestionsBySession = createAsyncThunk<
+  ArticleImprovementSuggestion[] | null,
   number,
   AsyncThunkConfig
->(`${sliceName}/get-improvement-suggestions`, (id, { extra }) => {
-  const { articleApi } = extra;
+>(
+  `${sliceName}/get-improvement-suggestions-by-session`,
+  async (id, { extra }) => {
+    const { sessionStorage } = extra;
+    const suggestionsJSON = await sessionStorage.get(
+      StorageKey.ARTICLES_IMPROVEMENT_SUGGESTIONS,
+    );
 
-  return articleApi.getImprovementSuggestions(id);
+    const existingSuggestionsByArticles =
+      parseImprovementSuggestionsJSON(suggestionsJSON);
+
+    if (existingSuggestionsByArticles[id]) {
+      return existingSuggestionsByArticles[id];
+    }
+
+    return null;
+  },
+);
+
+const getImprovementSuggestions = createAsyncThunk<
+  ArticleImprovementSuggestion[],
+  number,
+  AsyncThunkConfig
+>(`${sliceName}/get-improvement-suggestions`, async (id, { extra }) => {
+  const { articleApi, sessionStorage } = extra;
+
+  const newSuggestions = await articleApi.getImprovementSuggestions(id);
+
+  const existingSuggestionsJSON = await sessionStorage.get(
+    StorageKey.ARTICLES_IMPROVEMENT_SUGGESTIONS,
+  );
+
+  const existingSuggestionsByArticles = parseImprovementSuggestionsJSON(
+    existingSuggestionsJSON,
+  );
+
+  await sessionStorage.set(
+    StorageKey.ARTICLES_IMPROVEMENT_SUGGESTIONS,
+    JSON.stringify({
+      ...existingSuggestionsByArticles,
+      [id]: newSuggestions.items,
+    }),
+  );
+
+  return newSuggestions.items;
 });
 
 export {
@@ -227,6 +270,7 @@ export {
   getAllGenres,
   getArticle,
   getImprovementSuggestions,
+  getImprovementSuggestionsBySession,
   reactToArticle,
   shareArticle,
   updateArticle,

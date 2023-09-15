@@ -22,6 +22,7 @@ import {
   getAllGenres,
   getArticle,
   getImprovementSuggestions,
+  getImprovementSuggestionsBySession,
   reactToArticle,
   updateArticle,
   updateComment,
@@ -36,7 +37,7 @@ type State = {
   articleCommentsDataStatus: ValueOf<typeof DataStatus>;
   articleReactionDataStatus: ValueOf<typeof DataStatus>;
   getArticleStatus: ValueOf<typeof DataStatus>;
-  improvementSuggestions: ArticleImprovementSuggestion[];
+  improvementSuggestions: ArticleImprovementSuggestion[] | null;
   improvementSuggestionsDataStatus: ValueOf<typeof DataStatus>;
 };
 
@@ -45,7 +46,7 @@ const initialState: State = {
   articleComments: [],
   articles: [],
   genres: [],
-  improvementSuggestions: [],
+  improvementSuggestions: null,
   dataStatus: DataStatus.IDLE,
   articleCommentsDataStatus: DataStatus.IDLE,
   articleReactionDataStatus: DataStatus.IDLE,
@@ -188,16 +189,34 @@ const { reducer, actions, name } = createSlice({
       });
       state.articleCommentsDataStatus = DataStatus.FULFILLED;
     });
-    builder.addCase(getImprovementSuggestions.fulfilled, (state, action) => {
-      state.improvementSuggestions = action.payload.items;
-      state.improvementSuggestionsDataStatus = DataStatus.FULFILLED;
-    });
-    builder.addCase(getImprovementSuggestions.pending, (state) => {
-      state.improvementSuggestionsDataStatus = DataStatus.PENDING;
-    });
-    builder.addCase(getImprovementSuggestions.rejected, (state) => {
-      state.improvementSuggestionsDataStatus = DataStatus.REJECTED;
-    });
+    builder.addMatcher(
+      isAnyOf(
+        getImprovementSuggestions.fulfilled,
+        getImprovementSuggestionsBySession.fulfilled,
+      ),
+      (state, action) => {
+        state.improvementSuggestions = action.payload;
+        state.improvementSuggestionsDataStatus = DataStatus.FULFILLED;
+      },
+    );
+    builder.addMatcher(
+      isAnyOf(
+        getImprovementSuggestions.pending,
+        getImprovementSuggestionsBySession.pending,
+      ),
+      (state) => {
+        state.improvementSuggestionsDataStatus = DataStatus.PENDING;
+      },
+    );
+    builder.addMatcher(
+      isAnyOf(
+        getImprovementSuggestions.rejected,
+        getImprovementSuggestionsBySession.rejected,
+      ),
+      (state) => {
+        state.improvementSuggestionsDataStatus = DataStatus.REJECTED;
+      },
+    );
     builder.addMatcher(
       isAnyOf(
         createComment.pending,

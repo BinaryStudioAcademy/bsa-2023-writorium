@@ -10,6 +10,7 @@ import {
   getAllGenres,
   getArticle,
   getImprovementSuggestions,
+  getImprovementSuggestionsBySession,
   reactToArticle,
   shareArticle,
   updateArticle,
@@ -34,6 +35,7 @@ const allActions = {
   shareArticle,
   fetchSharedArticle,
   getImprovementSuggestions,
+  getImprovementSuggestionsBySession,
 };
 
 export { allActions as actions };

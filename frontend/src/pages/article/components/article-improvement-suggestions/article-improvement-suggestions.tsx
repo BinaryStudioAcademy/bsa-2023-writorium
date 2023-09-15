@@ -1,17 +1,20 @@
 import { IconButton, Loader } from '~/libs/components/components.js';
 import { DataStatus } from '~/libs/enums/data-status.enum.js';
-import { useAppDispatch, useAppSelector } from '~/libs/hooks/hooks.js';
-import { type ValueOf } from '~/libs/types/types.js';
+import {
+  useAppDispatch,
+  useAppSelector,
+  useEffect,
+} from '~/libs/hooks/hooks.js';
 import { actions as articlesActions } from '~/slices/articles/articles.js';
 
 import { SuggestionCard } from './libs/components/components.js';
 import styles from './styles.module.scss';
 
 type Properties = {
-  articleId: number;
+  id: number;
 };
 
-const ArticleImprovementSuggestions: React.FC<Properties> = ({ articleId }) => {
+const ArticleImprovementSuggestions: React.FC<Properties> = ({ id }) => {
   const dispatch = useAppDispatch();
   const { improvementSuggestions, dataStatus } = useAppSelector(
     ({ articles }) => ({
@@ -20,9 +23,17 @@ const ArticleImprovementSuggestions: React.FC<Properties> = ({ articleId }) => {
     }),
   );
 
-  const handleSuggestImprovement = (): void => {
-    void dispatch(articlesActions.getImprovementSuggestions(articleId));
+  useEffect(() => {
+    void dispatch(articlesActions.getImprovementSuggestionsBySession(id));
+  }, [dispatch, id]);
+
+  const handleSuggestImprovements = (): void => {
+    void dispatch(articlesActions.getImprovementSuggestions(id));
   };
+
+  const showSuggestImprovementButton =
+    (!improvementSuggestions || improvementSuggestions.length <= 0) &&
+    dataStatus !== DataStatus.PENDING;
 
   return (
     <div className={styles.wrapper}>
@@ -32,13 +43,11 @@ const ArticleImprovementSuggestions: React.FC<Properties> = ({ articleId }) => {
             Enhance your article to make it stand out!
           </div>
         )}
-        {(
-          [DataStatus.IDLE, DataStatus.REJECTED] as ValueOf<typeof DataStatus>[]
-        ).includes(dataStatus) && (
+        {showSuggestImprovementButton && (
           <IconButton
             iconName="autoFix"
             label="Suggest Improvements"
-            onClick={handleSuggestImprovement}
+            onClick={handleSuggestImprovements}
             className={styles.suggestImprovementsButton}
           />
         )}
@@ -51,7 +60,7 @@ const ArticleImprovementSuggestions: React.FC<Properties> = ({ articleId }) => {
             </p>
           </div>
         )}
-        {dataStatus === DataStatus.FULFILLED && (
+        {improvementSuggestions && Boolean(improvementSuggestions?.length) && (
           <>
             <div className={styles.suggestionsListTitle}>
               <div className={styles.suggestionsCount}>
@@ -60,7 +69,7 @@ const ArticleImprovementSuggestions: React.FC<Properties> = ({ articleId }) => {
               <h3>All suggestions</h3>
             </div>
             <ul className={styles.suggestionsList}>
-              {improvementSuggestions.map((item) => {
+              {improvementSuggestions?.map((item) => {
                 return (
                   <SuggestionCard
                     key={item.title}

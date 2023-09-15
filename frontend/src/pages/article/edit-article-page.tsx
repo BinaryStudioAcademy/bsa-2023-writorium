@@ -11,8 +11,9 @@ import styles from './styles.module.scss';
 
 const EditArticlePage: React.FC = () => {
   const location = useLocation();
+  const article = location.state as ArticleResponseDto;
 
-  if (!location.state) {
+  if (!article) {
     return (
       <Navigate to={`${AppRoute.ARTICLES}/${ArticleSubRoute.MY_ARTICLES}`} />
     );
@@ -22,14 +23,10 @@ const EditArticlePage: React.FC = () => {
     <Layout>
       <div className={styles.editArticlePage}>
         <div className={styles.leftColumn}>
-          <ArticleForm
-            articleForUpdate={location.state as ArticleResponseDto}
-          />
+          <ArticleForm articleForUpdate={article} />
         </div>
         <div className={styles.rightColumn}>
-          <ArticleImprovementSuggestions
-            articleId={(location.state as ArticleResponseDto).id}
-          />
+          <ArticleImprovementSuggestions id={article.id} />
         </div>
       </div>
     </Layout>
