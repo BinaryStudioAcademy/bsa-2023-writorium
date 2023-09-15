@@ -1,5 +1,4 @@
-import { Link } from 'react-router-dom';
-
+import { Link } from '~/libs/components/components.js';
 import { AppRoute } from '~/libs/enums/enums.js';
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
 import {
@@ -40,8 +39,16 @@ const UserLatestArticles: React.FC<Properties> = ({ className }) => {
     <div className={getValidClassNames(className, styles.wrapper)}>
       <ol>
         {articles.map((article) => (
-          <li key={article.id}>
-            <Link to={AppRoute.ARTICLE.replace(':id', article.id.toString())}>
+          <li key={article.id} className={styles.articleTitle}>
+            <Link
+              to={
+                AppRoute.ARTICLE.replace(
+                  ':id',
+                  article.id.toString(),
+                ) as typeof AppRoute.ARTICLE
+              }
+              className={styles.articleLink}
+            >
               {article.title}
             </Link>
           </li>

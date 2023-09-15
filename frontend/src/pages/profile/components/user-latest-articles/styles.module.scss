@@ -1,4 +1,20 @@
 .wrapper {
+  grid-area: articles;
   padding: 30px;
   border: none;
+}
+
+.articleTitle {
+  margin-bottom: 10px;
+  padding-left: 20px;
+}
+
+.articleLink {
+  color: var(--dark-gray);
+  font-size: 18px;
+  line-height: normal;
+}
+
+.articleLink:hover {
+  color: var(--light-green);
 }
