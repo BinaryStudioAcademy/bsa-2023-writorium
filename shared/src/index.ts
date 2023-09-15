@@ -135,6 +135,7 @@ export {
   type UserArticlesGenreStatsItem,
   type UserArticlesGenreStatsResponseDto,
   type UserAuthResponseDto,
+  type UserDetailsAuthorResponseDto,
   type UserDetailsDto,
   type UserDetailsResponseDto,
   type UserGetAllItemResponseDto,
