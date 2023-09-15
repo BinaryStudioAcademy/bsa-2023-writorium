@@ -115,6 +115,7 @@
 
 .body:not(.hasCover) .articleInfo {
   flex: 1;
+  min-width: 0;
 }
 
 .body:not(.hasCover) .text {

@@ -8,7 +8,10 @@ import { type ArticleModel } from './article.model.js';
 import { EMPTY_COMMENT_COUNT } from './libs/constants/constants.js';
 import {
   getSortingCondition,
+  getWhereAuthorIdQuery,
+  getWhereGenreIdQuery,
   getWherePublishedOnlyQuery,
+  getWhereTitleLikeQuery,
   getWhereUserIdQuery,
 } from './libs/helpers/helpers.js';
 import { type IArticleRepository } from './libs/interfaces/interfaces.js';
@@ -55,6 +58,9 @@ class ArticleRepository implements IArticleRepository {
     take,
     skip,
     hasPublishedOnly,
+    genreId,
+    titleFilter,
+    authorId,
   }: {
     userId?: number;
     hasPublishedOnly?: boolean;
@@ -63,6 +69,9 @@ class ArticleRepository implements IArticleRepository {
       .query()
       .select(`${DatabaseTableName.ARTICLES}.*`, this.getCommentsCountQuery())
       .where(getWhereUserIdQuery(userId))
+      .where(getWhereGenreIdQuery(genreId))
+      .where(getWhereAuthorIdQuery(authorId))
+      .where(getWhereTitleLikeQuery(titleFilter))
       .where(getWherePublishedOnlyQuery(hasPublishedOnly))
       .whereNull('deletedAt')
       .orderBy(getSortingCondition(hasPublishedOnly))

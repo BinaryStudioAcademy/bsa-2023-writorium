@@ -8,11 +8,11 @@ import { ArticleRepository } from './article.repository.js';
 import { ArticleService } from './article.service.js';
 
 const articleRepository = new ArticleRepository(ArticleModel);
-const articleService = new ArticleService(
+const articleService = new ArticleService({
   articleRepository,
   openAIService,
   genreRepository,
-);
+});
 const articleController = new ArticleController(logger, articleService);
 
 export { articleController, articleService };

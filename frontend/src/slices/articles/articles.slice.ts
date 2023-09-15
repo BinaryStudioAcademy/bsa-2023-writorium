@@ -7,6 +7,7 @@ import {
   type ArticleWithCommentCountResponseDto,
 } from '~/packages/articles/articles.js';
 import { type CommentWithRelationsResponseDto } from '~/packages/comments/comments.js';
+import { type GenreGetAllResponseDto } from '~/packages/genres/genres.js';
 
 import {
   createArticle,
@@ -17,6 +18,7 @@ import {
   fetchAllCommentsToArticle,
   fetchOwn,
   fetchSharedArticle,
+  getAllGenres,
   getArticle,
   reactToArticle,
   updateArticle,
@@ -28,6 +30,7 @@ type State = {
   articleComments: CommentWithRelationsResponseDto[];
   articles: ArticleWithCommentCountResponseDto[];
   dataStatus: ValueOf<typeof DataStatus>;
+  genres: GenreGetAllResponseDto['items'];
   articleCommentsDataStatus: ValueOf<typeof DataStatus>;
   articleReactionDataStatus: ValueOf<typeof DataStatus>;
   getArticleStatus: ValueOf<typeof DataStatus>;
@@ -37,6 +40,7 @@ const initialState: State = {
   article: null,
   articleComments: [],
   articles: [],
+  genres: [],
   dataStatus: DataStatus.IDLE,
   articleCommentsDataStatus: DataStatus.IDLE,
   articleReactionDataStatus: DataStatus.IDLE,
@@ -153,6 +157,15 @@ const { reducer, actions, name } = createSlice({
       state.dataStatus = DataStatus.FULFILLED;
       state.article = action.payload;
     });
+    builder.addCase(getAllGenres.fulfilled, (state, action) => {
+      state.dataStatus = DataStatus.FULFILLED;
+      state.genres = action.payload.items;
+    });
+    builder.addCase(getAllGenres.rejected, (state) => {
+      state.dataStatus = DataStatus.REJECTED;
+      state.genres = [];
+    });
+
     builder.addCase(createComment.fulfilled, (state, action) => {
       state.articleComments = [action.payload, ...state.articleComments];
       state.articleCommentsDataStatus = DataStatus.FULFILLED;
@@ -208,6 +221,8 @@ const { reducer, actions, name } = createSlice({
         fetchOwn.pending,
         createArticle.pending,
         updateArticle.pending,
+        getArticle.pending,
+        getAllGenres.pending,
         fetchSharedArticle.pending,
         deleteArticle.pending,
       ),

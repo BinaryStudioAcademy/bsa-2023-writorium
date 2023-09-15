@@ -16,6 +16,7 @@ export {
   type UserArticlesGenreStatsItem,
   type UserArticlesGenreStatsResponseDto,
   type UserAuthResponseDto,
+  type UserDetailsDto,
   type UserDetailsResponseDto,
   type UserGetAllItemResponseDto,
   type UserGetAllResponseDto,
