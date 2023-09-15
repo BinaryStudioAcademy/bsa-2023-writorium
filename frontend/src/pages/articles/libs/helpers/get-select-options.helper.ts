@@ -1,7 +1,7 @@
 import { getFullName } from '~/libs/helpers/helpers.js';
 import { type SelectOption } from '~/libs/types/types.js';
 import { type GenreGetAllItemResponseDto } from '~/packages/genres/genres.js';
-import { type UserDetailsDto } from '~/packages/users/users.js';
+import { type UserDetailsAuthorResponseDto } from '~/packages/users/users.js';
 
 const getSelectGenresOptions = (
   genres: GenreGetAllItemResponseDto[],
@@ -12,11 +12,13 @@ const getSelectGenresOptions = (
   return selectOptions;
 };
 
-const getSelectAuthorsOptions = (authors: UserDetailsDto[]): SelectOption[] => {
+const getSelectAuthorsOptions = (
+  authors: UserDetailsAuthorResponseDto[],
+): SelectOption[] => {
   const selectOptions: SelectOption[] = authors.map((author) => {
     return {
       label: getFullName(author.firstName, author.lastName),
-      value: author.id,
+      value: author.userId,
     };
   });
   return selectOptions;

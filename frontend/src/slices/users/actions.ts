@@ -5,7 +5,7 @@ import {
   type UserActivityResponseDto,
   type UserArticlesGenreStatsResponseDto,
   type UserAuthResponseDto,
-  type UserDetailsDto,
+  type UserDetailsAuthorResponseDto,
   type UserGetAllResponseDto,
   type UserUpdateRequestDto,
 } from '~/packages/users/users.js';
@@ -53,7 +53,7 @@ const updateUser = createAsyncThunk<
 });
 
 const getAllAuthors = createAsyncThunk<
-  UserDetailsDto[],
+  UserDetailsAuthorResponseDto[],
   undefined,
   AsyncThunkConfig
 >(`${sliceName}/getAllAuthors`, async (_loginPayload, { extra }) => {
