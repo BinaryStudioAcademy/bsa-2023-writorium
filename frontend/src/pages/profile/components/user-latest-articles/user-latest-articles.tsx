@@ -1,5 +1,5 @@
 import { Link } from '~/libs/components/components.js';
-import { AppRoute } from '~/libs/enums/enums.js';
+import { AppRoute, ArticleSubRoute } from '~/libs/enums/enums.js';
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
 import {
   useAppDispatch,
@@ -55,7 +55,12 @@ const UserLatestArticles: React.FC<Properties> = ({ className }) => {
           </li>
         ))}
       </ol>
-      <Link to={AppRoute.ARTICLES} className={styles.showAll}>
+      <Link
+        to={
+          `${AppRoute.ARTICLES}/${ArticleSubRoute.MY_ARTICLES}` as typeof AppRoute.ARTICLE
+        }
+        className={styles.showAll}
+      >
         Show all
       </Link>
     </div>
