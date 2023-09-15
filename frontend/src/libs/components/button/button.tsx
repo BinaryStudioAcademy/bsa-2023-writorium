@@ -10,7 +10,7 @@ type Properties = {
   type?: ValueOf<typeof ButtonType>;
   name?: string;
   className?: string;
-  onClick?: () => void;
+  onClick?: (() => void) | (() => Promise<void>);
 };
 
 const Button: React.FC<Properties> = ({
