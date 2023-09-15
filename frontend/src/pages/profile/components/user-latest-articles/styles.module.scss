@@ -1,5 +1,8 @@
 .wrapper {
+  display: flex;
   grid-area: articles;
+  flex-direction: column;
+  justify-content: space-between;
   padding: 30px;
   border: none;
 }
@@ -16,5 +19,22 @@
 }
 
 .articleLink:hover {
+  color: var(--light-green);
+}
+
+.showAll {
+  width: 100%;
+  padding: 13px 20px;
+  color: var(--white);
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 19px;
+  text-align: center;
+  background-color: var(--dark-green);
+  border-radius: 5px;
+  transition: color 0.3s ease;
+}
+
+.showAll:hover {
   color: var(--light-green);
 }

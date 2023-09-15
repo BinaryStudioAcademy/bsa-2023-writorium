@@ -54,6 +54,9 @@ const UserLatestArticles: React.FC<Properties> = ({ className }) => {
           </li>
         ))}
       </ol>
+      <Link to={AppRoute.ARTICLES} className={styles.showAll}>
+        Show all
+      </Link>
     </div>
   );
 };
