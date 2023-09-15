@@ -187,36 +187,16 @@
   line-height: normal;
 }
 
-.pointerIcon {
-  cursor: pointer;
-}
-
 .iconWrapper {
-  // display: flex;
-  // gap: 10px;
-  position: relative;
+  display: flex;
+  gap: 10px;
+  background-color: transparent;
 }
 
-.iconButtonDots {
-  background-color: var(--white);
-}
-
-.threeDotsIcon {
-  width: 24px;
-  height: 24px;
-  color: var(--light-green);
-}
-
-.editIcon,
-.deleteIcon {
-  width: 20px;
-  height: 20px;
-  color: var(--light-green);
-}
-
-.iconButton {
-  align-self: flex-start;
-  background-color: var(--white);
+.moreActionsButton {
+  background-color: transparent;
+  border: none;
+  outline: none;
 }
 
 .facebookIconButton {
@@ -226,33 +206,11 @@
   border-radius: 50%;
 }
 
-.buttonsGroup.dropdownModal {
-  position: absolute;
-  top: 40px;
-  left: -275px;
-  background-color: transparent;
-}
-
-.buttonsGroup .dropdownModal.open {
-  position: absolute;
-  top: 0;
-  left: 80px;
-  width: 210px;
-  animation: fade 0.3s ease-in-out;
-}
-
-.buttonsGroup .dropdownModal {
-  // position: relative;
-  // top: 0;
-  // left: 80px;
-  // width: 210px;
+.header .moreActionsTooltip {
+  z-index: 0;
+  width: 200px;
   padding: 0;
+  background-color: var(--white);
   border-radius: 7px;
-  box-shadow: 0 0 8px -2px rgb(16 24 40 / 16%);
-
-  // z-index: 100;
-}
-
-.buttonsGroup button {
-  background-color: transparent;
+  box-shadow: 0 0 6px -2px var(--shadow-color);
 }

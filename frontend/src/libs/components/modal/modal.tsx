@@ -9,7 +9,6 @@ type Properties = {
   onClose: () => void;
   isOpen: boolean;
   className?: string;
-  isPopover?: boolean;
 };
 
 const Modal: React.FC<Properties> = ({
@@ -17,7 +16,6 @@ const Modal: React.FC<Properties> = ({
   onClose,
   children,
   className,
-  isPopover = false,
 }) => {
   const overlayReference = useRef<HTMLDivElement>(null);
 
@@ -48,37 +46,24 @@ const Modal: React.FC<Properties> = ({
   }
 
   return (
-    <>
-      {isPopover ? (
-        <div className={getValidClassNames(styles.popover, className)}>
-          <div
-            ref={overlayReference}
-            className={getValidClassNames(styles.popoverContent, className)}
-          >
-            {children}
-          </div>
-        </div>
-      ) : (
-        <Portal>
-          <div
-            className={getValidClassNames(styles.modal, className)}
-            ref={overlayReference}
-          >
-            <div
-              className={getValidClassNames(styles.content, className)}
-              role="button"
-              tabIndex={0}
-            >
-              <button className={styles.closeBtn} onClick={onClose}>
-                <Icon iconName="crossMark" />
-              </button>
+    <Portal>
+      <div
+        className={getValidClassNames(styles.modal, className)}
+        ref={overlayReference}
+      >
+        <div
+          className={getValidClassNames(styles.content, className)}
+          role="button"
+          tabIndex={0}
+        >
+          <button className={styles.closeBtn} onClick={onClose}>
+            <Icon iconName="crossMark" />
+          </button>
 
-              {children}
-            </div>
-          </div>
-        </Portal>
-      )}
-    </>
+          {children}
+        </div>
+      </div>
+    </Portal>
   );
 };
 

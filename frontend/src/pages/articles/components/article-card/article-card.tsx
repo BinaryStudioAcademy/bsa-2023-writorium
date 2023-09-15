@@ -6,13 +6,13 @@ import {
   Link,
   ShareOnFacebookButton,
   Tags,
-  TooltipClickable,
+  Tooltip,
 } from '~/libs/components/components.js';
 import {
   AppRoute,
-  DataTooltipId,
   DateFormat,
   Reaction,
+  TooltipPosition,
 } from '~/libs/enums/enums.js';
 import {
   getFormattedDate,
@@ -58,7 +58,22 @@ const ArticleCard: React.FC<Properties> = ({
 }) => {
   const dispatch = useAppDispatch();
   const user = useAppSelector(({ auth }) => auth.user) as UserAuthResponseDto;
-  // const { handleToggleModalOpen, isOpen } = useModal();
+  // const [isTooltipHidden, setIsTooltipHidden] = useState(true);
+  // console.log(isTooltipHidden);
+
+  // const handleToggleTooltipOpen = (): void => {
+  //   setIsTooltipHidden((previousOpen) => !previousOpen);
+  //   if (isTooltipHidden) {
+  //     setIsTooltipHidden(false);
+  //   } else {
+  //     setIsTooltipHidden(true);
+  //   }
+  //   setIsTooltipHidden(!isTooltipHidden);
+  // };
+
+  // const handleTooltipClose = ():void => {
+  //   setIsTooltipHidden(false);
+  // };
 
   const { publishedAt, title, text, id, userId, coverUrl, readTime } = article;
   const { likesCount, dislikesCount, hasAlreadyReactedWith } = getReactionsInfo(
@@ -70,12 +85,6 @@ const ArticleCard: React.FC<Properties> = ({
   const articleRouteById = AppRoute.ARTICLE.replace(':id', String(id));
 
   const isOwnArticle = user.id === userId;
-
-  // const handleActionsButtonClick = useCallback((): void => {
-  //   if (!isOpen) {
-  //     handleToggleModalOpen();
-  //   }
-  // }, [handleToggleModalOpen, isOpen]);
 
   const handleReaction = (reaction: ValueOf<typeof Reaction>): void => {
     if (isOwnArticle) {
@@ -111,6 +120,8 @@ const ArticleCard: React.FC<Properties> = ({
     void dispatch(articlesActions.shareArticle({ id: id.toString() }));
   }, [dispatch, id]);
 
+  // console.log(isTooltipHidden);
+
   return (
     <article className={styles.article}>
       <div className={styles.header}>
@@ -133,36 +144,23 @@ const ArticleCard: React.FC<Properties> = ({
             </span>
           )}
         </div>
-        <div className={styles.iconWrapper}>
-          <Button
-            name="more-actions"
-            label={
-              <Icon
-                iconName="threeDotsVertical"
-                className={getValidClassNames(
-                  styles.threeDotsIcon,
-                  styles.pointerIcon,
-                )}
-              />
-            }
-            className={styles.iconButtonDots}
-            onClick={(): void => {}}
-          />
-          <TooltipClickable
-            id={DataTooltipId.ARTICLE_ACTIONS_TOOLTIP}
-            anchorSelect="button[name='more-actions']"
-            className={getValidClassNames(
-              styles.buttonsGroup,
-              styles.dropdownModal,
-              // isOpen && styles.open,
-            )}
-          >
-            <PopoverButtonsGroup
-              isOwnArticle={isOwnArticle}
-              article={article}
+
+        <Tooltip
+          id={String(id)}
+          className={styles.moreActionsTooltip}
+          place={TooltipPosition.BOTTOM_END}
+          clickable
+          openOnClick
+          shouldHideArrow
+          anchorElement={
+            <Button
+              label={<Icon iconName="threeDotsVertical" />}
+              className={styles.moreActionsButton}
             />
-          </TooltipClickable>
-        </div>
+          }
+        >
+          <PopoverButtonsGroup isOwnArticle={isOwnArticle} article={article} />
+        </Tooltip>
       </div>
       <div
         className={getValidClassNames(styles.body, coverUrl && styles.hasCover)}

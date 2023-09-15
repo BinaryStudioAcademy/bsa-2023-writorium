@@ -7,10 +7,6 @@ import { type ArticleResponseDto } from '~/packages/articles/articles.js';
 import styles from './styles.module.scss';
 
 type Properties = {
-  // trigger: {
-  //   handleToggleModalOpen: () => void;
-  //   isOpen: boolean;
-  // };
   isOwnArticle: boolean;
   article: ArticleResponseDto;
 };
@@ -26,14 +22,11 @@ const PopoverButtonsGroup: React.FC<Properties> = ({
       <Button
         label={
           <>
-            <Icon iconName="favorite" className={styles.editIcon} />
+            <Icon iconName="favorite" />
             <span>Add to favorites</span>
           </>
         }
-        onClick={(): void => {}}
-        className={styles.bookmarkBtn}
       />
-
       {isOwnArticle && (
         <>
           <RouterLink
@@ -44,22 +37,19 @@ const PopoverButtonsGroup: React.FC<Properties> = ({
             <Button
               label={
                 <>
-                  <Icon iconName="edit" className={styles.editIcon} />
+                  <Icon iconName="edit" />
                   <span>Edit</span>
                 </>
               }
             />
           </RouterLink>
-
           <Button
             label={
               <>
-                <Icon iconName="trashBin" className={styles.editIcon} />
+                <Icon iconName="trashBin" />
                 <span>Delete</span>
               </>
             }
-            className={styles.deleteBtn}
-            onClick={(): void => {}}
           />
         </>
       )}
