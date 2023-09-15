@@ -6,14 +6,13 @@ import {
   type UserSignInRequestDto,
   userSignInValidationSchema,
 } from '~/packages/users/users.js';
+import {
+  AuthSignInButton,
+  AuthSubmitButton,
+  FacebookLogin,
+  PasswordInput,
+} from '~/pages/auth/components/components.js';
 
-import { AuthSubmitButton } from '../auth-submit-button/auth-submit-button.js';
-import { AuthSignInButton } from '../components.js';
-/**
- * @todo should be fixed with react-facebook package
- */
-// import { FacebookLoginButton } from '../facebook-login-button/facebook-login-button.js';
-import { PasswordInput } from '../password-input/password-input.js';
 import { DEFAULT_LOGIN_PAYLOAD } from './libs/constants/constants.js';
 import styles from './styles.module.scss';
 
@@ -26,7 +25,7 @@ type Properties = {
 const SignInForm: React.FC<Properties> = ({
   onSubmit,
   onGoogleLogin,
-  // onFacebookLogin,
+  onFacebookLogin,
 }) => {
   const { control, errors, handleSubmit } = useAppForm({
     defaultValues: DEFAULT_LOGIN_PAYLOAD,
@@ -49,7 +48,7 @@ const SignInForm: React.FC<Properties> = ({
           onClick={onGoogleLogin}
           label="Sign in with Google"
         ></AuthSignInButton>
-        {/* <FacebookLoginButton onLogin={onFacebookLogin} /> */}
+        <FacebookLogin onLogin={onFacebookLogin} />
         <span className={styles.or}>or</span>
         <form
           className={styles.form}

@@ -114,6 +114,7 @@
 
 .body:not(.hasCover) .articleInfo {
   flex: 1;
+  min-width: 0;
 }
 
 .body:not(.hasCover) .text {
@@ -177,7 +178,7 @@
   color: var(--light-green);
 }
 
-.footer .readMore {
+.readMore {
   margin-left: auto;
   color: var(--light-green);
   font-weight: 700;
@@ -185,6 +186,11 @@
   font-family: Lato, sans-serif;
   font-style: normal;
   line-height: normal;
+  transition: color 0.3s ease;
+}
+
+.readMore:hover {
+  color: var(--dark-green);
 }
 
 .iconWrapper {

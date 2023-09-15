@@ -12,6 +12,8 @@ import { storage } from '~/libs/packages/storage/storage.js';
 import { achievementsApi } from '~/packages/achievements/achievements.js';
 import { articleApi } from '~/packages/articles/articles.js';
 import { authApi } from '~/packages/auth/auth.js';
+import { commentsApi } from '~/packages/comments/comments.js';
+import { genresApi } from '~/packages/genres/genres.js';
 import { notification } from '~/packages/notification/notification.js';
 import { promptApi } from '~/packages/prompts/prompts.js';
 import { userApi } from '~/packages/users/users.js';
@@ -40,6 +42,8 @@ type ExtraArguments = {
   storage: typeof storage;
   fileApi: typeof fileApi;
   achievementsApi: typeof achievementsApi;
+  genresApi: typeof genresApi;
+  commentsApi: typeof commentsApi;
 };
 
 class Store {
@@ -86,6 +90,8 @@ class Store {
       storage,
       fileApi,
       achievementsApi,
+      genresApi,
+      commentsApi,
     };
   }
 }

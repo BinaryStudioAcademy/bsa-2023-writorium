@@ -1,4 +1,5 @@
 import {
+  getAllAuthors,
   getUserActivity,
   getUserArticlesGenresStats,
   loadAll,
@@ -11,6 +12,7 @@ const allActions = {
   loadAll,
   updateUser,
   getUserActivity,
+  getAllAuthors,
   getUserArticlesGenresStats,
 };
 

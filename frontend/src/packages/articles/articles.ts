@@ -18,11 +18,15 @@ export {
   type ArticleReactionResponseDto,
   type ArticleRequestDto,
   type ArticleResponseDto,
+  type ArticlesFilters,
   type ArticleUpdateRequestDto,
   type ArticleUpdateRequestPayload,
+  type ArticleWithCommentCountResponseDto,
+  type ArticleWithRelationsType,
   type ReactionResponseDto,
 } from './libs/types/types.js';
 export {
   articleCreateValidationSchema,
+  articlesFormFiltersValidationSchema,
   articleUpdateValidationSchema,
 } from './libs/validation-schemas/validation-schemas.js';

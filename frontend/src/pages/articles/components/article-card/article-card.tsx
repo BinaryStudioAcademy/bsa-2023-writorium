@@ -11,6 +11,7 @@ import {
 import {
   AppRoute,
   DateFormat,
+  LinkHash,
   Reaction,
   TooltipPosition,
 } from '~/libs/enums/enums.js';
@@ -28,7 +29,7 @@ import {
 } from '~/libs/hooks/hooks.js';
 import { type TagType, type ValueOf } from '~/libs/types/types.js';
 import {
-  type ArticleResponseDto,
+  type ArticleWithCommentCountResponseDto,
   getReadTimeString,
   type ReactionResponseDto,
 } from '~/packages/articles/articles.js';
@@ -44,7 +45,7 @@ import { PopoverButtonsGroup } from './libs/components/components.js';
 import styles from './styles.module.scss';
 
 type Properties = {
-  article: ArticleResponseDto;
+  article: ArticleWithCommentCountResponseDto;
   author: UserDetailsResponseDto;
   tags: TagType[];
   reactions: ReactionResponseDto[];
@@ -75,7 +76,16 @@ const ArticleCard: React.FC<Properties> = ({
   //   setIsTooltipHidden(false);
   // };
 
-  const { publishedAt, title, text, id, userId, coverUrl, readTime } = article;
+  const {
+    publishedAt,
+    title,
+    text,
+    id,
+    userId,
+    coverUrl,
+    readTime,
+    commentCount,
+  } = article;
   const { likesCount, dislikesCount, hasAlreadyReactedWith } = getReactionsInfo(
     user.id,
     reactions,
@@ -133,10 +143,12 @@ const ArticleCard: React.FC<Properties> = ({
           <span className={styles.publisherName}>
             {getFullName(firstName, lastName)}
           </span>
-          {publishedAt && (
+          {publishedAt ? (
             <span className={styles.publicationTime}>
               {getFormattedDate(publishedAt, DateFormat.DAY_SHORT_MONTH)}
             </span>
+          ) : (
+            <span className={styles.publicationTime}>draft</span>
           )}
           {readTime && (
             <span className={styles.publicationTime}>
@@ -181,12 +193,20 @@ const ArticleCard: React.FC<Properties> = ({
       </div>
       <div className={styles.footer}>
         <ul className={styles.reactions}>
-          <li>
-            <IconButton
-              iconName="comment"
-              className={styles.footerIcon}
-              label={MOCKED_REACTIONS.comments}
-            />
+          <li className={styles.reaction}>
+            <Link
+              to={{
+                pathname: articleRouteById as typeof AppRoute.ARTICLE,
+                hash: LinkHash.COMMENTS,
+              }}
+              className={styles.reaction}
+            >
+              <IconButton
+                iconName="comment"
+                className={styles.footerIcon}
+                label={commentCount.toString()}
+              />
+            </Link>
           </li>
           <li className={styles.footerIcon}>
             <Icon iconName="view" />
@@ -228,7 +248,6 @@ const ArticleCard: React.FC<Properties> = ({
           articleUrl={articleUrl}
           iconStyle={styles.facebookIconButton}
         />
-
         <Link
           to={articleRouteById as typeof AppRoute.ARTICLE}
           className={styles.readMore}
