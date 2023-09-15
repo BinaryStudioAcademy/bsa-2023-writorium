@@ -27,7 +27,6 @@ class ArticleEntity implements IEntity {
   private 'reactions': ReactionResponseDto[] | null;
   private 'readTime': number | null;
   private 'deletedAt': string | null;
-  private 'updatedAt': string | null;
 
   private constructor({
     id,
@@ -46,10 +45,9 @@ class ArticleEntity implements IEntity {
     deletedAt,
     readTime,
     commentCount,
-    updatedAt,
   }: WithNullableKeys<
     ArticleWithRelationsType & ArticleCommentCount,
-    'id' | 'author' | 'commentCount' | 'reactions' | 'deletedAt' | 'updatedAt'
+    'id' | 'author' | 'commentCount' | 'reactions' | 'deletedAt'
   >) {
     this.id = id;
     this.title = title;
@@ -67,7 +65,6 @@ class ArticleEntity implements IEntity {
     this.coverId = coverId;
     this.coverUrl = coverUrl;
     this.deletedAt = deletedAt;
-    this.updatedAt = updatedAt;
   }
 
   public static initialize({
@@ -87,7 +84,6 @@ class ArticleEntity implements IEntity {
     reactions,
     deletedAt,
     readTime,
-    updatedAt,
   }: ArticleWithRelationsType &
     WithNullableKeys<ArticleCommentCount, 'commentCount'>): ArticleEntity {
     return new ArticleEntity({
@@ -107,7 +103,6 @@ class ArticleEntity implements IEntity {
       reactions,
       deletedAt,
       readTime,
-      updatedAt,
     });
   }
 
@@ -129,7 +124,6 @@ class ArticleEntity implements IEntity {
     | 'reactions'
     | 'coverUrl'
     | 'deletedAt'
-    | 'updatedAt'
   >): ArticleEntity {
     return new ArticleEntity({
       id: null,
@@ -148,7 +142,6 @@ class ArticleEntity implements IEntity {
       reactions: null,
       deletedAt: null,
       readTime,
-      updatedAt: null,
     });
   }
 
@@ -164,7 +157,6 @@ class ArticleEntity implements IEntity {
       readTime: this.readTime,
       publishedAt: this.publishedAt,
       deletedAt: this.deletedAt,
-      updatedAt: this.updatedAt as string,
     };
   }
 
@@ -185,7 +177,6 @@ class ArticleEntity implements IEntity {
       genre: this.genre,
       readTime: this.readTime,
       deletedAt: this.deletedAt,
-      updatedAt: this.updatedAt as string,
     };
   }
 
@@ -207,7 +198,6 @@ class ArticleEntity implements IEntity {
       reactions: this.reactions as ReactionResponseDto[],
       commentCount: Number(this.commentCount as number),
       deletedAt: this.deletedAt,
-      updatedAt: this.updatedAt as string,
     };
   }
 

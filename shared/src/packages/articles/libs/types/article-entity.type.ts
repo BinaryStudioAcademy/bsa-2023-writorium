@@ -3,7 +3,6 @@ type ArticleEntityType = {
   title: string;
   text: string;
   userId: number;
-  updatedAt: string;
   promptId: number | null;
   genreId: number | null;
   coverId: number | null;
