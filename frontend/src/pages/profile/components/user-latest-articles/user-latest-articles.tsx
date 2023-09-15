@@ -9,6 +9,7 @@ import {
 } from '~/libs/hooks/hooks.js';
 import { actions as articlesActions } from '~/slices/articles/articles.js';
 
+import { ownArticlesConfig } from './libs/enums/enums.js';
 import styles from './styles.module.scss';
 
 type Properties = {
@@ -22,8 +23,8 @@ const UserLatestArticles: React.FC<Properties> = ({ className }) => {
   const getLatest = useCallback(() => {
     void dispatch(
       articlesActions.fetchOwn({
-        take: 5,
-        skip: 0,
+        take: ownArticlesConfig.TAKE,
+        skip: ownArticlesConfig.SKIP,
       }),
     );
   }, [dispatch]);
