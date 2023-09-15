@@ -4,12 +4,11 @@ import { getValidClassNames } from '~/libs/helpers/helpers.js';
 import {
   useAppDispatch,
   useAppSelector,
-  useCallback,
   useEffect,
 } from '~/libs/hooks/hooks.js';
 import { actions as articlesActions } from '~/slices/articles/articles.js';
 
-import { ownArticlesConfig } from './libs/enums/enums.js';
+import { ownArticlesPaginationConfig } from './libs/enums/enums.js';
 import styles from './styles.module.scss';
 
 type Properties = {
@@ -20,21 +19,17 @@ const UserLatestArticles: React.FC<Properties> = ({ className }) => {
   const dispatch = useAppDispatch();
   const { articles } = useAppSelector(({ articles }) => articles);
 
-  const getLatest = useCallback(() => {
+  useEffect(() => {
     void dispatch(
       articlesActions.fetchOwn({
-        take: ownArticlesConfig.TAKE,
-        skip: ownArticlesConfig.SKIP,
+        take: ownArticlesPaginationConfig.TAKE,
+        skip: ownArticlesPaginationConfig.SKIP,
       }),
     );
-  }, [dispatch]);
-
-  useEffect(() => {
-    getLatest();
     return () => {
       dispatch(articlesActions.resetArticles());
     };
-  }, [dispatch, getLatest]);
+  }, [dispatch]);
 
   return (
     <div className={getValidClassNames(className, styles.wrapper)}>
