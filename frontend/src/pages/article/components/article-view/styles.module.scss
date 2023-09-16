@@ -11,13 +11,19 @@
 
 .buttonsWrapper {
   position: absolute;
-  top: 100px;
-  bottom: 5%;
+  top: 5%;
   left: 28px;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
   gap: 11px;
+  height: 90%;
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
 }
 
 .body:not(.hasCover) {
@@ -27,6 +33,12 @@
 
 .body:not(.hasCover) .buttonsWrapper {
   position: static;
+  justify-content: flex-start;
+}
+
+.body.hasCover .icon {
+  width: 15px;
+  height: 15px;
 }
 
 .cover {
@@ -39,13 +51,10 @@
 
 .iconButton {
   display: flex;
-  flex: 1 1 auto;
   justify-content: center;
   align-items: center;
-  min-width: 30px;
-  max-width: 54px;
-  min-height: 30px;
-  max-height: 54px;
+  width: 30px;
+  height: 30px;
   color: var(--light-green);
   background-color: var(--white-90);
   border-radius: 50%;
@@ -54,11 +63,6 @@
 
 .iconButton:hover {
   background-color: var(--light-gray);
-}
-
-.icon {
-  width: 20px;
-  height: 20px;
 }
 
 .title {
