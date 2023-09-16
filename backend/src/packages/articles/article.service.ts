@@ -206,7 +206,7 @@ class ArticleService implements IService {
     return null;
   }
 
-  public async getArticleImprovementSuggesstions(
+  public async getArticleImprovementSuggestions(
     id: number,
   ): Promise<ArticleGetImprovementSuggestionsResponseDto> {
     const article = await this.find(id);

@@ -557,7 +557,7 @@ class ArticleController extends Controller {
   ): Promise<ApiHandlerResponse> {
     return {
       status: HttpCode.OK,
-      payload: await this.articleService.getArticleImprovementSuggesstions(
+      payload: await this.articleService.getArticleImprovementSuggestions(
         options.params.id,
       ),
     };
