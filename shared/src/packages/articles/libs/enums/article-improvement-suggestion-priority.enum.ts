@@ -1,7 +1,7 @@
 const ArticleImprovementSuggestionPriority = {
-  Low: 1,
-  Medium: 2,
-  High: 3,
+  LOW: 1,
+  MEDIUM: 2,
+  HIGH: 3,
 } as const;
 
 export { ArticleImprovementSuggestionPriority };

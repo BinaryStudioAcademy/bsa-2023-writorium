@@ -1,13 +1,13 @@
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
 import { type ValueOf } from '~/libs/types/types.js';
+import { ArticleImprovementSuggestionPriority } from '~/packages/articles/articles.js';
 
-import { ArticleSuggestionPriority } from '../../enums/enums.js';
 import styles from './styles.module.scss';
 
 type Properties = {
   title: string;
   description: string;
-  priority: ValueOf<typeof ArticleSuggestionPriority>;
+  priority: ValueOf<typeof ArticleImprovementSuggestionPriority>;
 };
 
 const SuggestionCard: React.FC<Properties> = ({
@@ -16,15 +16,15 @@ const SuggestionCard: React.FC<Properties> = ({
   priority,
 }) => {
   const priorityClassName = {
-    [ArticleSuggestionPriority.Low]: styles.low,
-    [ArticleSuggestionPriority.Medium]: styles.medium,
-    [ArticleSuggestionPriority.High]: styles.high,
+    [ArticleImprovementSuggestionPriority.LOW]: styles.low,
+    [ArticleImprovementSuggestionPriority.MEDIUM]: styles.medium,
+    [ArticleImprovementSuggestionPriority.HIGH]: styles.high,
   }[priority];
 
   const priorityDisplayText = {
-    [ArticleSuggestionPriority.Low]: 'Low',
-    [ArticleSuggestionPriority.Medium]: 'Medium',
-    [ArticleSuggestionPriority.High]: 'High',
+    [ArticleImprovementSuggestionPriority.LOW]: 'Low',
+    [ArticleImprovementSuggestionPriority.MEDIUM]: 'Medium',
+    [ArticleImprovementSuggestionPriority.HIGH]: 'High',
   }[priority];
 
   return (
