@@ -78,8 +78,10 @@ class ArticleService implements IService {
 
     const parsedGenres = safeJSONParse<DetectedArticleGenre[]>(genresJSON);
 
-    if (Array.isArray(parsedGenres) && parsedGenres[0]) {
-      return parsedGenres[0];
+    const FIRST_ITEM_INDEX = 0;
+
+    if (Array.isArray(parsedGenres) && parsedGenres[FIRST_ITEM_INDEX]) {
+      return parsedGenres[FIRST_ITEM_INDEX];
     }
 
     return null;
@@ -185,7 +187,7 @@ class ArticleService implements IService {
     return article.toObjectWithRelations();
   }
 
-  private async generateArticleImprovementSuggestions(
+  private async generateImprovementSuggestions(
     text: string,
   ): Promise<ArticleImprovementSuggestion[] | null> {
     const suggestionsJSON = await this.openAIService.createCompletion(
@@ -206,7 +208,7 @@ class ArticleService implements IService {
     return null;
   }
 
-  public async getArticleImprovementSuggestions(
+  public async getImprovementSuggestions(
     id: number,
   ): Promise<ArticleGetImprovementSuggestionsResponseDto> {
     const article = await this.find(id);
@@ -217,9 +219,7 @@ class ArticleService implements IService {
       });
     }
 
-    const suggestions = await this.generateArticleImprovementSuggestions(
-      article.text,
-    );
+    const suggestions = await this.generateImprovementSuggestions(article.text);
 
     if (!suggestions) {
       throw new ApplicationError({
