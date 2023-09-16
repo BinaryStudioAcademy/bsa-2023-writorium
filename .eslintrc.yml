@@ -50,6 +50,8 @@ rules:
   curly:
     - error
     - all
+  unicorn/no-array-reduce:
+    - off
   unicorn/no-null:
     - off
   '@typescript-eslint/padding-line-between-statements':

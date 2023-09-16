@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
+import { AppRoute, ArticleSubRoute } from '~/libs/enums/enums.js';
 import { type AsyncThunkConfig } from '~/libs/types/types.js';
 import {
   type ArticleGetAllResponseDto,
@@ -21,7 +22,7 @@ import { type GenreGetAllResponseDto } from '~/packages/genres/genres.js';
 import { NotificationType } from '~/packages/notification/notification.js';
 import { type PromptRequestDto } from '~/packages/prompts/prompts.js';
 
-import { appActions } from '../app/app.js';
+import { actions as appActions } from '../app/app.js';
 import { name as sliceName } from './articles.slice.js';
 
 const fetchAll = createAsyncThunk<
@@ -53,7 +54,7 @@ const createArticle = createAsyncThunk<
   AsyncThunkConfig
 >(
   `${sliceName}/create`,
-  async ({ articlePayload, generatedPrompt }, { extra }) => {
+  async ({ articlePayload, generatedPrompt }, { extra, dispatch }) => {
     const { articleApi, promptApi } = extra;
 
     if (generatedPrompt) {
@@ -66,7 +67,16 @@ const createArticle = createAsyncThunk<
       });
     }
 
-    return await articleApi.create(articlePayload);
+    const createdArticle = await articleApi.create(articlePayload);
+
+    const wasPublished = Boolean(createdArticle.publishedAt);
+    const routeToNavigate = wasPublished
+      ? AppRoute.ARTICLES
+      : ArticleSubRoute.MY_ARTICLES;
+
+    dispatch(appActions.navigate(routeToNavigate));
+
+    return createdArticle;
   },
 );
 
@@ -74,10 +84,14 @@ const updateArticle = createAsyncThunk<
   ArticleWithCommentCountResponseDto,
   ArticleUpdateRequestPayload,
   AsyncThunkConfig
->(`${sliceName}/update`, async (payload, { extra }) => {
+>(`${sliceName}/update`, async (payload, { extra, dispatch }) => {
   const { articleApi } = extra;
 
-  return await articleApi.update(payload);
+  const updatedArticle = await articleApi.update(payload);
+
+  dispatch(appActions.navigate(ArticleSubRoute.MY_ARTICLES));
+
+  return updatedArticle;
 });
 
 const getArticle = createAsyncThunk<
