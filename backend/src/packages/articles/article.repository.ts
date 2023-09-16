@@ -6,8 +6,8 @@ import { type CommentModel } from '~/packages/comments/comment.model.js';
 import { ArticleEntity } from './article.entity.js';
 import { type ArticleModel } from './article.model.js';
 import { EMPTY_COMMENT_COUNT } from './libs/constants/constants.js';
-import { SortingOrder } from './libs/enums/enums.js';
 import {
+  getSortingCondition,
   getWhereAuthorIdQuery,
   getWhereGenreIdQuery,
   getWherePublishedOnlyQuery,
@@ -74,7 +74,7 @@ class ArticleRepository implements IArticleRepository {
       .where(getWhereTitleLikeQuery(titleFilter))
       .where(getWherePublishedOnlyQuery(hasPublishedOnly))
       .whereNull('deletedAt')
-      .orderBy('articles.publishedAt', SortingOrder.DESCENDING)
+      .orderBy(getSortingCondition(hasPublishedOnly))
       .page(skip / take, take)
       .modify(this.joinArticleRelations)
       .castTo<Page<ArticleModel & ArticleCommentCount>>();
