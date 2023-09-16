@@ -64,7 +64,7 @@ const ArticleCard: React.FC<Properties> = ({
   const { pathname } = useLocation();
 
   const isMyArticles = matchPath(
-    { path: `${AppRoute.ARTICLES}/${ArticleSubRoute.MY_ARTICLES}` },
+    { path: ArticleSubRoute.MY_ARTICLES },
     pathname,
   );
   const {
