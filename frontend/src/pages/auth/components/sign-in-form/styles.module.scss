@@ -54,10 +54,29 @@
 }
 
 .or {
-  align-self: center;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   margin-top: 20px;
-  color: #b6b6b6;
-  font-weight: 500;
+  color: var(--light-gray-text);
   font-size: 18px;
   font-family: Raleway, sans-serif;
+}
+
+.or::before,
+.or::after {
+  flex: 1 1;
+  height: 1px;
+  margin-block-start: 2px;
+  background-color: var(--light-gray-text);
+  opacity: 0.5;
+  content: "";
+}
+
+.or::before {
+  margin-inline-end: 10px;
+}
+
+.or::after {
+  margin-inline-start: 10px;
 }
