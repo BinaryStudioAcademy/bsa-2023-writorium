@@ -1,7 +1,6 @@
-import { Link as RouterLink } from 'react-router-dom';
-
 import {
   IconButton,
+  Link,
   ShareOnFacebookButton,
   Tags,
 } from '~/libs/components/components.js';
@@ -84,8 +83,13 @@ const ArticleView: React.FC<Properties> = ({
                   iconClassName={styles.icon}
                   onClick={handleDeleteArticle}
                 />
-                <RouterLink
-                  to={AppRoute.EDIT_ARTICLE.replace(':id', id as string)}
+                <Link
+                  to={
+                    AppRoute.EDIT_ARTICLE.replace(
+                      ':id',
+                      id as string,
+                    ) as typeof AppRoute.EDIT_ARTICLE
+                  }
                   state={article}
                 >
                   <IconButton
@@ -94,7 +98,7 @@ const ArticleView: React.FC<Properties> = ({
                     iconClassName={styles.icon}
                     onClick={onButtonClick}
                   />
-                </RouterLink>
+                </Link>
               </>
             )}
             <IconButton
@@ -118,7 +122,7 @@ const ArticleView: React.FC<Properties> = ({
             <ShareOnFacebookButton
               title={title}
               articleUrl={articleUrl}
-              iconStyle={styles.iconButton}
+              iconStyle={getValidClassNames(styles.iconButton, styles.facebookIconButton)}
             />
           </div>
         )}
