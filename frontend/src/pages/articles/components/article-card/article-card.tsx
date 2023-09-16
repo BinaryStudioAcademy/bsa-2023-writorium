@@ -1,4 +1,4 @@
-import { Link as RouterLink, matchPath } from 'react-router-dom';
+import { matchPath } from 'react-router-dom';
 
 import {
   Avatar,
@@ -162,10 +162,12 @@ const ArticleCard: React.FC<Properties> = ({
                 )}
                 onClick={handleDeleteArticle}
               />
-              <RouterLink
-                to={configureString(AppRoute.ARTICLES_EDIT_$ID, {
-                  id: String(id),
-                })}
+              <Link
+                to={
+                  configureString(AppRoute.ARTICLES_EDIT_$ID, {
+                    id: String(id),
+                  }) as typeof AppRoute.ARTICLES_EDIT_$ID
+                }
                 state={article}
               >
                 <Icon
@@ -175,7 +177,7 @@ const ArticleCard: React.FC<Properties> = ({
                     styles.pointerIcon,
                   )}
                 />
-              </RouterLink>
+              </Link>
             </>
           )}
           <Icon iconName="favorite" className={styles.pointerIcon} />
