@@ -32,8 +32,7 @@ const ArticleImprovementSuggestions: React.FC<Properties> = ({ id }) => {
   };
 
   const showSuggestImprovementButton =
-    (!improvementSuggestions || improvementSuggestions.length <= 0) &&
-    dataStatus !== DataStatus.PENDING;
+    !improvementSuggestions?.length && dataStatus !== DataStatus.PENDING;
 
   return (
     <div className={styles.wrapper}>
