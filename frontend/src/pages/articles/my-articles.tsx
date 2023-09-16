@@ -67,7 +67,7 @@ const MyArticles: React.FC = () => {
 
   const handleDeleteArticle = useCallback(
     (id: number): void => {
-      void dispatch(articlesActions.deleteArticle(id));
+      void dispatch(articlesActions.deleteArticle({ id }));
     },
     [dispatch],
   );

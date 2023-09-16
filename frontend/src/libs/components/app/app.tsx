@@ -1,3 +1,5 @@
+import { type To as RedirectTo } from 'react-router-dom';
+
 import {
   Header,
   Loader,
@@ -33,7 +35,7 @@ const App: React.FC = () => {
 
   useEffect(() => {
     if (redirectTo) {
-      navigate(redirectTo);
+      navigate(redirectTo as RedirectTo);
 
       dispatch(appActions.navigate(null));
     }

@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
+import { PREVIOUS_PAGE_INDEX } from '~/libs/constants/constants.js';
 import { AppRoute } from '~/libs/enums/enums.js';
 import { type AsyncThunkConfig } from '~/libs/types/types.js';
 import {
@@ -210,13 +211,22 @@ const updateComment = createAsyncThunk<
 
 const deleteArticle = createAsyncThunk<
   ArticleWithCommentCountResponseDto,
-  number,
+  { id: number; hasRedirect?: boolean },
   AsyncThunkConfig
->(`${sliceName}/delete`, (id, { extra }) => {
-  const { articleApi } = extra;
+>(
+  `${sliceName}/delete`,
+  async ({ id, hasRedirect = false }, { extra, dispatch }) => {
+    const { articleApi } = extra;
 
-  return articleApi.delete(id);
-});
+    const deletedArticle = await articleApi.delete(id);
+
+    if (hasRedirect) {
+      dispatch(appActions.navigate(PREVIOUS_PAGE_INDEX));
+    }
+
+    return deletedArticle;
+  },
+);
 
 export {
   createArticle,
