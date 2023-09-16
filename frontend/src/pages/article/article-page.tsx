@@ -104,7 +104,7 @@ const ArticlePage: React.FC = () => {
                   article.author.firstName,
                   article.author.lastName,
                 )}
-                publishedAt={article.publishedAt ?? ''}
+                publishedAt={article.publishedAt}
                 genre={article.genre}
                 avatarUrl={article.author.avatarUrl}
               />
