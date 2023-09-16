@@ -5,7 +5,7 @@ import { type ValueOf } from '~/libs/types/types.js';
 import {
   type UserActivityResponseDto,
   type UserArticlesGenreStatsItem,
-  type UserDetailsDto,
+  type UserDetailsAuthorResponseDto,
   type UserGetAllItemResponseDto,
 } from '~/packages/users/users.js';
 
@@ -20,7 +20,7 @@ type State = {
   users: UserGetAllItemResponseDto[];
   userActivity: UserActivityResponseDto[];
   dataStatus: ValueOf<typeof DataStatus>;
-  authors: UserDetailsDto[];
+  authors: UserDetailsAuthorResponseDto[];
   userArticlesGenresStats: UserArticlesGenreStatsItem[];
   userArticlesGenresStatsStatus: ValueOf<typeof DataStatus>;
 };
