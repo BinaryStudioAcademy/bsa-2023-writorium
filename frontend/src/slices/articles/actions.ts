@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-import { AppRoute, ArticleSubRoute } from '~/libs/enums/enums.js';
+import { AppRoute } from '~/libs/enums/enums.js';
 import { type AsyncThunkConfig } from '~/libs/types/types.js';
 import {
   type ArticleGetAllResponseDto,
@@ -72,7 +72,7 @@ const createArticle = createAsyncThunk<
     const wasPublished = Boolean(createdArticle.publishedAt);
     const routeToNavigate = wasPublished
       ? AppRoute.ARTICLES
-      : ArticleSubRoute.MY_ARTICLES;
+      : AppRoute.ARTICLES_MY_ARTICLES;
 
     dispatch(appActions.navigate(routeToNavigate));
 
@@ -89,7 +89,7 @@ const updateArticle = createAsyncThunk<
 
   const updatedArticle = await articleApi.update(payload);
 
-  dispatch(appActions.navigate(ArticleSubRoute.MY_ARTICLES));
+  dispatch(appActions.navigate(AppRoute.ARTICLES_MY_ARTICLES));
 
   return updatedArticle;
 });

@@ -1,12 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { type AppRoute, type ArticleSubRoute } from '~/libs/enums/enums.js';
+import { type AppRoute } from '~/libs/enums/enums.js';
 import { type ValueOf } from '~/libs/types/types.js';
 
 import { navigate } from './actions.js';
 
 type State = {
-  navigateTo: ValueOf<typeof AppRoute> | ValueOf<typeof ArticleSubRoute> | null;
+  navigateTo: ValueOf<typeof AppRoute> | null;
 };
 
 const initialState: State = {
