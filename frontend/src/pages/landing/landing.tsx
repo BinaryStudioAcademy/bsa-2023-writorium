@@ -9,7 +9,7 @@ import {
   useCallback,
   useMemo,
   useMousePosition,
-  useRef,
+  useReference,
 } from '~/libs/hooks/hooks.js';
 
 import styles from './styles.module.scss';
@@ -17,8 +17,10 @@ import styles from './styles.module.scss';
 const Landing: FC = () => {
   const { x, y } = useMousePosition();
 
-  const lettersElementReference = useRef<HTMLImageElement | null>(null);
-  const typewriterElementReference = useRef<HTMLImageElement | null>(null);
+  const lettersElementReference = useReference<HTMLImageElement | null>(null);
+  const typewriterElementReference = useReference<HTMLImageElement | null>(
+    null,
+  );
 
   const offsetX = useMemo(
     () =>

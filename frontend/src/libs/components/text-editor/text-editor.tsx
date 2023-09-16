@@ -8,7 +8,11 @@ import {
 } from 'react-hook-form';
 
 import { getValidClassNames, sanitizeHtml } from '~/libs/helpers/helpers.js';
-import { useEffect, useFormController, useRef } from '~/libs/hooks/hooks.js';
+import {
+  useEffect,
+  useFormController,
+  useReference,
+} from '~/libs/hooks/hooks.js';
 
 import { ErrorMessage } from '../components.js';
 import { Toolbar } from './libs/components/components.js';
@@ -51,7 +55,7 @@ const TextEditor = <T extends FieldValues>({
   const { field } = useFormController({ name, control });
   const error = errors[name]?.message;
   const hasError = Boolean(error);
-  const initialFieldValue = useRef<string>(field.value);
+  const initialFieldValue = useReference<string>(field.value);
 
   const handleEditorUpdate: EditorOptions['onUpdate'] = ({ editor }): void => {
     field.onChange(editor.getHTML());

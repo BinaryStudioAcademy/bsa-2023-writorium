@@ -1,6 +1,6 @@
 import { Icon, Portal } from '~/libs/components/components.js';
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
-import { useCallback, useEffect, useRef } from '~/libs/hooks/hooks.js';
+import { useCallback, useEffect, useReference } from '~/libs/hooks/hooks.js';
 
 import styles from './styles.module.scss';
 
@@ -17,7 +17,7 @@ const Modal: React.FC<Properties> = ({
   children,
   className,
 }) => {
-  const overlayReference = useRef<HTMLDivElement>(null);
+  const overlayReference = useReference<HTMLDivElement>(null);
 
   const handleClickOnOverlay = useCallback(
     (event: MouseEvent): void => {

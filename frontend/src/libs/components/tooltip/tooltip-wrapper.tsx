@@ -5,7 +5,7 @@ import { Tooltip as ReactTooltip } from 'react-tooltip';
 
 import { type TooltipPosition } from '~/libs/enums/enums.js';
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
-import { useCallback, useEffect, useRef } from '~/libs/hooks/hooks.js';
+import { useCallback, useEffect, useReference } from '~/libs/hooks/hooks.js';
 import { type ValueOf } from '~/libs/types/types.js';
 
 import styles from './styles.module.scss';
@@ -39,7 +39,7 @@ const TooltipWrapper: FC<Properties> = ({
   onClose,
   isScrollable,
 }) => {
-  const tooltipReference = useRef<HTMLDivElement>(null);
+  const tooltipReference = useReference<HTMLDivElement>(null);
 
   const handleClickOutside = useCallback(
     (event: MouseEvent): void => {
