@@ -19,4 +19,9 @@
 .editLink:hover,
 .buttonsGroup button:hover {
   background-color: var(--pale-gray);
+  border-color: var(--light-green);
+}
+
+.editLink:hover > button {
+  color: var(--light-green);
 }

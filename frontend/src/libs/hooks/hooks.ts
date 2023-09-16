@@ -5,6 +5,7 @@ export { useDeepCompareEffect } from './use-deep-compare-effect/use-deep-compare
 export { useModal } from './use-modal/use-modal.hook.js';
 export { useMousePosition } from './use-mouse-position/use-mouse-position.hook.js';
 export { usePagination } from './use-pagination/use-pagination.hook.js';
+export { useTooltip } from './use-tooltip/use-tooltip.hook.js';
 export {
   type DependencyList,
   type EffectCallback,

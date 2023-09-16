@@ -2,6 +2,7 @@ import { Link as RouterLink } from 'react-router-dom';
 
 import { Button, Icon } from '~/libs/components/components.js';
 import { AppRoute } from '~/libs/enums/enums.js';
+import { useCallback } from '~/libs/hooks/hooks.js';
 import { type ArticleResponseDto } from '~/packages/articles/articles.js';
 
 import styles from './styles.module.scss';
@@ -9,13 +10,19 @@ import styles from './styles.module.scss';
 type Properties = {
   isOwnArticle: boolean;
   article: ArticleResponseDto;
+  onDeleteArticle: (id: number) => void;
 };
 
 const PopoverButtonsGroup: React.FC<Properties> = ({
   isOwnArticle,
   article,
+  onDeleteArticle,
 }) => {
   const { id } = article;
+
+  const handleDeleteArticle = useCallback(() => {
+    onDeleteArticle(id);
+  }, [id, onDeleteArticle]);
 
   return (
     <div className={styles.buttonsGroup}>
@@ -50,6 +57,7 @@ const PopoverButtonsGroup: React.FC<Properties> = ({
                 <span>Delete</span>
               </>
             }
+            onClick={handleDeleteArticle}
           />
         </>
       )}

@@ -26,6 +26,7 @@ import {
   useAppDispatch,
   useAppSelector,
   useCallback,
+  useTooltip,
 } from '~/libs/hooks/hooks.js';
 import { type TagType, type ValueOf } from '~/libs/types/types.js';
 import {
@@ -58,23 +59,8 @@ const ArticleCard: React.FC<Properties> = ({
   reactions,
 }) => {
   const dispatch = useAppDispatch();
+  const { handleToggleTooltipOpen, isOpen } = useTooltip();
   const user = useAppSelector(({ auth }) => auth.user) as UserAuthResponseDto;
-  // const [isTooltipHidden, setIsTooltipHidden] = useState(true);
-  // console.log(isTooltipHidden);
-
-  // const handleToggleTooltipOpen = (): void => {
-  //   setIsTooltipHidden((previousOpen) => !previousOpen);
-  //   if (isTooltipHidden) {
-  //     setIsTooltipHidden(false);
-  //   } else {
-  //     setIsTooltipHidden(true);
-  //   }
-  //   setIsTooltipHidden(!isTooltipHidden);
-  // };
-
-  // const handleTooltipClose = ():void => {
-  //   setIsTooltipHidden(false);
-  // };
 
   const {
     publishedAt,
@@ -130,7 +116,12 @@ const ArticleCard: React.FC<Properties> = ({
     void dispatch(articlesActions.shareArticle({ id: id.toString() }));
   }, [dispatch, id]);
 
-  // console.log(isTooltipHidden);
+  const handleDeleteArticle = useCallback(
+    (id: number): void => {
+      void dispatch(articlesActions.deleteArticle(id));
+    },
+    [dispatch],
+  );
 
   return (
     <article className={styles.article}>
@@ -158,20 +149,27 @@ const ArticleCard: React.FC<Properties> = ({
         </div>
 
         <Tooltip
-          id={String(id)}
+          id={`tooltip-${id}`}
           className={styles.moreActionsTooltip}
           place={TooltipPosition.BOTTOM_END}
           clickable
-          openOnClick
           shouldHideArrow
+          isOpen={isOpen}
+          onClose={handleToggleTooltipOpen}
+          isScrollable={false}
           anchorElement={
             <Button
               label={<Icon iconName="threeDotsVertical" />}
               className={styles.moreActionsButton}
+              onClick={handleToggleTooltipOpen}
             />
           }
         >
-          <PopoverButtonsGroup isOwnArticle={isOwnArticle} article={article} />
+          <PopoverButtonsGroup
+            isOwnArticle={isOwnArticle}
+            article={article}
+            onDeleteArticle={handleDeleteArticle}
+          />
         </Tooltip>
       </div>
       <div
