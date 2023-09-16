@@ -199,12 +199,6 @@
   background-color: transparent;
 }
 
-.moreActionsButton {
-  background-color: transparent;
-  border: none;
-  outline: none;
-}
-
 .facebookIconButton {
   width: 18px;
   height: 18px;
@@ -212,7 +206,7 @@
   border-radius: 50%;
 }
 
-.header .moreActionsTooltip {
+.moreActions {
   z-index: 0;
   width: 200px;
   padding: 0;
@@ -220,4 +214,16 @@
   border-radius: 7px;
   box-shadow: 0 0 6px -2px var(--shadow-color);
   opacity: 1;
+}
+
+.moreActionsIcon {
+  width: 35px;
+  height: 35px;
+  padding: 5px;
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+}
+
+.moreActionsIcon:hover {
+  background-color: var(--light-gray);
 }

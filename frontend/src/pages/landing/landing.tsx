@@ -49,7 +49,7 @@ const Landing: FC = () => {
       typewriterElementReference.current.style.top = `calc(50% - ${offsetY}px)`;
       typewriterElementReference.current.style.left = `calc(50% - ${offsetX}px)`;
     }
-  }, [offsetX, offsetY]);
+  }, [lettersElementReference, typewriterElementReference, offsetX, offsetY]);
 
   return (
     <div className={styles.parallaxContainer} onMouseMove={parallaxHandler}>

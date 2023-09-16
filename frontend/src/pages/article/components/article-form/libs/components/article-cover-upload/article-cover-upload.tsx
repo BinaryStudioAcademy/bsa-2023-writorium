@@ -100,7 +100,7 @@ const ArticleCoverUpload = <T extends FieldValues>({
     if (!field.value) {
       setPreviewUrl(null);
     }
-  }, [field, initialPreviewUrl]);
+  }, [field, initialPreviewUrl, initialWrapperId]);
 
   return (
     <>

@@ -89,7 +89,7 @@ const TextEditor = <T extends FieldValues>({
     if (!wasEdited && editor) {
       editor.commands.setContent(initialFieldValue.current);
     }
-  }, [wasEdited, editor]);
+  }, [wasEdited, initialFieldValue, editor]);
 
   return (
     <div className={styles.textEditorWrapper}>

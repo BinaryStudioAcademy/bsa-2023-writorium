@@ -34,7 +34,7 @@ const usePagination = ({
         paginationParameters.current.skip = skip + take;
       }
     },
-    [],
+    [paginationParameters],
   );
 
   return { hasMore, loadMore, resetSkip };

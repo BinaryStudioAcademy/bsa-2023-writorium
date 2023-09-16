@@ -1,19 +1,17 @@
 import {
   Avatar,
-  Button,
   Icon,
   IconButton,
   Link,
+  Popover,
   ShareOnFacebookButton,
   Tags,
-  Tooltip,
 } from '~/libs/components/components.js';
 import {
   AppRoute,
   DateFormat,
   LinkHash,
   Reaction,
-  TooltipPosition,
 } from '~/libs/enums/enums.js';
 import {
   getFormattedDate,
@@ -26,7 +24,6 @@ import {
   useAppDispatch,
   useAppSelector,
   useCallback,
-  useTooltip,
 } from '~/libs/hooks/hooks.js';
 import { type TagType, type ValueOf } from '~/libs/types/types.js';
 import {
@@ -59,7 +56,6 @@ const ArticleCard: React.FC<Properties> = ({
   reactions,
 }) => {
   const dispatch = useAppDispatch();
-  const { handleToggleTooltipOpen, isOpen } = useTooltip();
   const user = useAppSelector(({ auth }) => auth.user) as UserAuthResponseDto;
 
   const {
@@ -148,29 +144,21 @@ const ArticleCard: React.FC<Properties> = ({
           )}
         </div>
 
-        <Tooltip
-          id={`tooltip-${id}`}
-          className={styles.moreActionsTooltip}
-          place={TooltipPosition.BOTTOM_END}
-          clickable
-          shouldHideArrow
-          isOpen={isOpen}
-          onClose={handleToggleTooltipOpen}
-          isScrollable={false}
-          anchorElement={
-            <Button
-              label={<Icon iconName="threeDotsVertical" />}
-              className={styles.moreActionsButton}
-              onClick={handleToggleTooltipOpen}
+        <Popover
+          className={styles.moreActions}
+          content={
+            <PopoverButtonsGroup
+              isOwnArticle={isOwnArticle}
+              article={article}
+              onDeleteArticle={handleDeleteArticle}
             />
           }
         >
-          <PopoverButtonsGroup
-            isOwnArticle={isOwnArticle}
-            article={article}
-            onDeleteArticle={handleDeleteArticle}
+          <Icon
+            className={styles.moreActionsIcon}
+            iconName="threeDotsVertical"
           />
-        </Tooltip>
+        </Popover>
       </div>
       <div
         className={getValidClassNames(styles.body, coverUrl && styles.hasCover)}
