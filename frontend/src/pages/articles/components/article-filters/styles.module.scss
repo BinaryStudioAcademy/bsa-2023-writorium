@@ -32,18 +32,20 @@
   font-size: 16px;
 }
 
+.clearFilters {
+  color: var(--dark-gray);
+  font-weight: 500;
+  font-size: 12px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
 .filterInput {
   height: 45px;
 }
 
 .filterInput:hover {
   border: 2px solid var(--light-green);
-  cursor: pointer;
-}
-
-.clearFilters {
-  font-weight: 500;
-  font-size: 12px;
-  border: none;
   cursor: pointer;
 }

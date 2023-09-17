@@ -1,6 +1,6 @@
 import { matchPath } from 'react-router-dom';
 
-import { Input } from '~/libs/components/components.js';
+import { Button, Input } from '~/libs/components/components.js';
 import { Select } from '~/libs/components/select/select.js';
 import { AppRoute } from '~/libs/enums/enums.js';
 import {
@@ -55,9 +55,11 @@ const ArticleFilters: React.FC<Properties> = ({
     <div className={styles.wrapper}>
       <div className={styles.title}>
         <span className={styles.filterTitle}>Filter</span>
-        <button className={styles.clearFilters} onClick={formReset}>
-          Clear filters
-        </button>
+        <Button
+          className={styles.clearFilters}
+          label="Clear filters"
+          onClick={formReset}
+        />
       </div>
       <form className={styles.form} name="FiltersForm">
         <div className={styles.filterGroup}>

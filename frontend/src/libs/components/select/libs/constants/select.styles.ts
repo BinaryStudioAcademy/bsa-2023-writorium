@@ -21,7 +21,9 @@ const getDefaultStyles = <
       width: '100%',
       height: '45px',
       marginTop: '5px',
-      padding: '14px 0 14px 16px',
+      paddingLeft: '16px',
+      display: 'flex',
+      alignItems: 'center',
       color:
         state.isFocused || state.hasValue || state.menuIsOpen
           ? Color.BLACK
