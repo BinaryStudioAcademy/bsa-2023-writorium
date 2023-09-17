@@ -12,7 +12,6 @@ const getReactionsInfo = (
   userId: number,
   reactions: ReactionResponseDto[],
 ): ReactionsInfo => {
-  // eslint-disable-next-line unicorn/no-array-reduce
   return reactions.reduce<ReactionsInfo>(
     (reactionsInfo, reaction) => {
       const reactionType: ValueOf<typeof Reaction> = reaction.isLike

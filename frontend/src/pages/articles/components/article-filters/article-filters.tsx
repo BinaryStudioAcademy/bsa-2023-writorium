@@ -2,7 +2,7 @@ import { matchPath } from 'react-router-dom';
 
 import { Input } from '~/libs/components/components.js';
 import { Select } from '~/libs/components/select/select.js';
-import { AppRoute, ArticleSubRoute } from '~/libs/enums/enums.js';
+import { AppRoute } from '~/libs/enums/enums.js';
 import {
   useAppForm,
   useCallback,
@@ -33,7 +33,7 @@ const ArticleFilters: React.FC<Properties> = ({
   });
   const { pathname } = useLocation();
   const isMyArticlesPage = matchPath(
-    { path: `${AppRoute.ARTICLES}/${ArticleSubRoute.MY_ARTICLES}` },
+    { path: `${AppRoute.ARTICLES}/${AppRoute.ARTICLES_MY_ARTICLES}` },
     pathname,
   );
   const data: FilterFormValues = watch();

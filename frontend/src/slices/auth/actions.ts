@@ -15,7 +15,7 @@ import {
   type UserSignUpRequestDto,
 } from '~/packages/users/users.js';
 
-import { appActions } from '../app/app.js';
+import { actions as appActions } from '../app/app.js';
 import { name as sliceName } from './auth.slice.js';
 
 const signUp = createAsyncThunk<

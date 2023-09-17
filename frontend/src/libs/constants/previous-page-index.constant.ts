@@ -1,0 +1,3 @@
+const PREVIOUS_PAGE_INDEX = -1;
+
+export { PREVIOUS_PAGE_INDEX };

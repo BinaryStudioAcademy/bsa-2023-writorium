@@ -1,17 +1,13 @@
 import { NavLink } from 'react-router-dom';
 
-import {
-  type AppRoute,
-  type ArticleSubRoute,
-  type LinkHash,
-} from '~/libs/enums/enums.js';
+import { type AppRoute, type LinkHash } from '~/libs/enums/enums.js';
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
 import { useCallback } from '~/libs/hooks/hooks.js';
 import { type ValueOf } from '~/libs/types/types.js';
 
 import styles from './styles.module.scss';
 
-type PathName = ValueOf<typeof AppRoute> | ValueOf<typeof ArticleSubRoute>;
+type PathName = ValueOf<typeof AppRoute>;
 
 type Path = {
   pathname: PathName;
@@ -24,6 +20,7 @@ type Properties = {
   className?: string;
   activeClassName?: string;
   children: React.ReactNode;
+  state?: unknown;
 };
 
 const Link: React.FC<Properties> = ({
@@ -31,6 +28,7 @@ const Link: React.FC<Properties> = ({
   className,
   activeClassName,
   to,
+  state,
 }) => {
   const handleGetClassesByLinkState = useCallback(
     ({ isActive }: { isActive: boolean }): string => {
@@ -44,7 +42,7 @@ const Link: React.FC<Properties> = ({
   );
 
   return (
-    <NavLink to={to} className={handleGetClassesByLinkState} end>
+    <NavLink to={to} className={handleGetClassesByLinkState} state={state} end>
       {children}
     </NavLink>
   );
