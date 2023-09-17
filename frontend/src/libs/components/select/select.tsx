@@ -15,10 +15,7 @@ import {
   DropdownIndicator,
   IndicatorSeparator,
 } from './libs/components/components.js';
-import {
-  getDefaultStyles,
-  INITIAL_SELECT_VALUE,
-} from './libs/constants/constants.js';
+import { getDefaultStyles } from './libs/constants/constants.js';
 import cssStyles from './styles.module.scss';
 
 type Properties<
@@ -81,10 +78,7 @@ const Select = <
         options={options}
         isMulti={isMulti}
         isClearable={isClearable}
-        value={
-          handleSelectValue(field.value) ??
-          ({ value: INITIAL_SELECT_VALUE, label: placeholder } as SelectOption)
-        }
+        value={handleSelectValue(field.value) ?? null}
       />
       <ErrorMessage error={error as string} />
     </label>
