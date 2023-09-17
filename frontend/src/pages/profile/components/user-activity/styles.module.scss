@@ -7,6 +7,7 @@
   justify-content: center;
   align-items: center;
   padding: 20px 40px;
+  overflow-x: auto;
 }
 
 .title {
@@ -15,7 +16,7 @@
 
 .activityWrapper {
   display: flex;
-  max-width: 710px;
+  width: 710px;
 }
 
 .days .monday {
@@ -32,6 +33,10 @@
 
 .days .sunday {
   grid-area: sun;
+}
+
+.innerWrapper {
+  width: 100%;
 }
 
 .months {
@@ -128,7 +133,6 @@
 
 @media only screen and (max-width: breakpoints.$extra-large) {
   .wrapper {
-    align-items: start;
-    overflow-x: auto;
+    align-items: flex-start;
   }
 }
