@@ -105,11 +105,13 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
     (event_: React.BaseSyntheticEvent<SubmitEvent>): void => {
       const button = event_.nativeEvent.submitter as HTMLButtonElement;
       const submitType = button.name as ValueOf<typeof ArticleSubmitType>;
-      const handleFunction = articleForUpdate
-        ? handleArticleUpdate
-        : handleArticleSubmit;
 
-      void handleSubmit(handleFunction(submitType))(event_);
+      if (articleForUpdate) {
+        void handleSubmit(handleArticleUpdate(submitType))(event_);
+        return;
+      }
+
+      void handleSubmit(handleArticleSubmit(submitType))(event_);
     },
     [handleSubmit, handleArticleSubmit, articleForUpdate, handleArticleUpdate],
   );
