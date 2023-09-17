@@ -42,6 +42,7 @@ const Select = <
   label,
   options,
   isMulti,
+  isClearable = true,
   ...restProperties
 }: Properties<T, IsMulti, Group>): JSX.Element => {
   const { field } = useFormController({ name, control });
@@ -49,7 +50,8 @@ const Select = <
 
   const handleChange = useCallback(
     (option: unknown) => {
-      field.onChange((option as SelectOption).value);
+      const fieldValue = (option as SelectOption)?.value ?? null;
+      field.onChange(fieldValue);
     },
     [field],
   );
@@ -61,7 +63,7 @@ const Select = <
       ? (options as SelectOption[])?.filter((option) => {
           return (value as Array<string | number>).includes(option.value);
         })
-      : (options as SelectOption[])?.find((opt) => opt.value === value);
+      : (options as SelectOption[])?.find((option) => option.value === value);
   };
 
   return (
@@ -75,10 +77,8 @@ const Select = <
         components={{ DropdownIndicator, IndicatorSeparator }}
         options={options}
         isMulti={isMulti}
-        value={
-          handleSelectValue(field.value) ??
-          ({ value: '', label: placeholder } as SelectOption)
-        }
+        isClearable={isClearable}
+        value={handleSelectValue(field.value) ?? null}
       />
       <ErrorMessage error={error as string} />
     </label>
