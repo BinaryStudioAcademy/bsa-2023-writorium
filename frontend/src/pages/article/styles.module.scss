@@ -1,3 +1,5 @@
+@use "src/assets/css/breakpoints.scss";
+
 .articlePageWrapper {
   display: grid;
   grid-template-columns: 1fr min-content;
@@ -30,4 +32,15 @@
 
 .anchor {
   top: -105px;
+}
+
+@media only screen and (max-width: breakpoints.$extra-large) {
+  .articlePageWrapper {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .commentsBlockWrapper {
+    width: 100%;
+  }
 }

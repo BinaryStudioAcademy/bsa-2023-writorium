@@ -1,3 +1,5 @@
+@use "src/assets/css/breakpoints.scss";
+
 .container {
   max-width: 466px;
   background: var(--light-gray);
@@ -6,16 +8,24 @@
 }
 
 .authorWrapper {
-  display: flex;
+  display: grid;
+  grid-template: repeat(2, max-content) / repeat(2, max-content);
+  grid-template-areas:
+    "avatar authorName"
+    "avatar authorInfo";
   align-items: center;
   padding: 30px 41px 21px;
+  column-gap: 16px;
   border-bottom: 2px solid rgba(172 186 215 / 20%);
 }
 
 .avatarWrapper {
+  display: flex;
+  grid-area: avatar;
+  justify-content: center;
+  align-items: center;
   width: 78px;
   height: 78px;
-  margin-right: 16px;
 }
 
 .avatarWrapper > span {
@@ -32,7 +42,7 @@
 }
 
 .authorName {
-  margin-bottom: 10px;
+  grid-area: authorName;
   color: var(--dark-gray);
   font-weight: 700;
   font-size: 24px;
@@ -43,6 +53,7 @@
 
 .authorInfoWrapper {
   display: flex;
+  grid-area: authorInfo;
   align-items: center;
   padding: 0;
   list-style: none;
@@ -102,4 +113,10 @@
   font-weight: 700;
   font-size: 18px;
   line-height: normal;
+}
+
+@media only screen and (max-width: breakpoints.$extra-large) {
+  .container {
+    display: none;
+  }
 }

@@ -14,6 +14,7 @@ type Properties = {
   readTime: number | null;
   genre: string | null;
   avatarUrl: string | null;
+  customStyles?: CSSModuleClasses;
 };
 
 const ArticleDetails: FC<Properties> = ({
@@ -24,48 +25,51 @@ const ArticleDetails: FC<Properties> = ({
   readTime,
   genre,
   avatarUrl = null,
+  customStyles = styles,
 }) => {
   return (
-    <div className={styles.container}>
-      <div className={styles.authorWrapper}>
-        <div className={styles.avatarWrapper}>
+    <div className={customStyles.container}>
+      <div className={customStyles.authorWrapper}>
+        <div className={customStyles.avatarWrapper}>
           <Avatar username={authorName} avatarUrl={avatarUrl} />
         </div>
-        <div>
-          <h2 className={styles.authorName}>{authorName}</h2>
-          <ul className={styles.authorInfoWrapper}>
-            <li className={styles.authorInfo}>
-              <Icon iconName="renew" />
-              <span className={styles.authorInfoValue}>{authorFollowers}</span>
-              following
-            </li>
-            <li className={styles.authorInfo}>
-              <Icon iconName="star" />
-              <span className={styles.authorInfoValue}>{authorRating}</span>
-              rating
-            </li>
-          </ul>
-        </div>
+        <h2 className={customStyles.authorName}>{authorName}</h2>
+        <ul className={customStyles.authorInfoWrapper}>
+          <li className={customStyles.authorInfo}>
+            <Icon iconName="renew" />
+            <span className={customStyles.authorInfoValue}>
+              {authorFollowers}
+            </span>
+            following
+          </li>
+          <li className={customStyles.authorInfo}>
+            <Icon iconName="star" />
+            <span className={customStyles.authorInfoValue}>{authorRating}</span>
+            rating
+          </li>
+        </ul>
       </div>
-      <div className={styles.articleInfoWrapper}>
-        <div className={styles.articleInfoListWrapper}>
+      <div className={customStyles.articleInfoWrapper}>
+        <div className={customStyles.articleInfoListWrapper}>
           <Icon iconName="notes" />
-          <ul className={styles.articleInfoList}>
-            <li className={styles.articleInfoItem}>
+          <ul className={customStyles.articleInfoList}>
+            <li className={customStyles.articleInfoItem}>
               <span>
                 {getFormattedDate(publishedAt, DateFormat.MONTH_DATE_YEAR)}
               </span>
             </li>
             {readTime && (
-              <li className={styles.articleInfoItem}>
-                <span className={styles.articleReadTimeValue}>{readTime}</span>
+              <li className={customStyles.articleInfoItem}>
+                <span className={customStyles.articleReadTimeValue}>
+                  {readTime}
+                </span>
                 min read
               </li>
             )}
           </ul>
         </div>
         <Icon iconName="sparkles" />
-        <span className={styles.articleGenre}>{genre}</span>
+        <span className={customStyles.articleGenre}>{genre}</span>
       </div>
     </div>
   );

@@ -94,9 +94,7 @@ const ArticlePage: React.FC = () => {
             <>
               <ArticleView
                 tags={getArticleViewTags(article)}
-                text={article.text}
-                title={article.title}
-                coverUrl={article.coverUrl}
+                article={article}
               />
               <ArticleDetails
                 readTime={article.readTime}

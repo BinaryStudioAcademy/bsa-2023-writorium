@@ -1,3 +1,5 @@
+@use "src/assets/css/breakpoints.scss";
+
 .header {
   position: sticky;
   top: 0;
@@ -56,7 +58,7 @@
   width: 150px;
   padding: 0;
   border-radius: 7px;
-  box-shadow: 0 4px 8px -2px rgb(16 24 40 / 16%);
+  box-shadow: 0 4px 8px -2px var(--translucent-dark-blue-gray);
 }
 
 .dropdown button {
@@ -82,6 +84,16 @@
 
 .avatarButton:hover img {
   opacity: 0.8;
+}
+
+@media only screen and (max-width: breakpoints.$medium) {
+  .header {
+    justify-content: flex-start;
+  }
+
+  .logo {
+    display: none;
+  }
 }
 
 @keyframes fade {

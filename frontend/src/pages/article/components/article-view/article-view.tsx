@@ -1,21 +1,31 @@
 import {
   IconButton,
+  Popover,
   ShareOnFacebookButton,
   Tags,
 } from '~/libs/components/components.js';
-import { getValidClassNames, sanitizeHtml } from '~/libs/helpers/helpers.js';
-import { useAppDispatch, useCallback, useParams } from '~/libs/hooks/hooks.js';
+import {
+  getFullName,
+  getValidClassNames,
+  sanitizeHtml,
+} from '~/libs/helpers/helpers.js';
+import {
+  useAppDispatch,
+  useCallback,
+  useModal,
+  useParams,
+} from '~/libs/hooks/hooks.js';
 import { type TagType } from '~/libs/types/types.js';
+import { type ArticleWithRelationsType } from '~/packages/articles/articles.js';
 import { actions as articlesActions } from '~/slices/articles/articles.js';
 
+import { ArticleDetails } from '../components.js';
 import styles from './styles.module.scss';
 
 type Properties = {
-  title: string;
-  text: string;
   tags: TagType[] | null;
-  coverUrl: string | null;
   isShared?: boolean;
+  article: Required<ArticleWithRelationsType>;
 };
 
 const onButtonClick = (): void => {
@@ -25,17 +35,21 @@ const onButtonClick = (): void => {
 };
 
 const ArticleView: React.FC<Properties> = ({
-  title,
-  text,
   tags,
-  coverUrl,
   isShared = false,
+  article,
 }) => {
+  const { text, title, coverUrl, author, readTime, genre, publishedAt } =
+    article;
+  const { firstName, lastName, avatarUrl } = author;
+  const authorFullName = getFullName(firstName, lastName);
   const articleUrl = window.location.href;
 
   const { id } = useParams();
 
   const dispatch = useAppDispatch();
+
+  const { handleToggleModalOpen, isOpen } = useModal();
 
   const handleShareButtonClick = useCallback((): void => {
     if (id) {
@@ -82,6 +96,31 @@ const ArticleView: React.FC<Properties> = ({
           </div>
         )}
       </div>
+      <h5
+        role="presentation"
+        className={styles.presentationAuthorName}
+        onClick={handleToggleModalOpen}
+      >
+        {authorFullName}
+      </h5>
+      <Popover
+        trigger={{ handleToggleModalOpen, isOpen }}
+        content={
+          <ArticleDetails
+            readTime={readTime}
+            authorName={authorFullName}
+            publishedAt={publishedAt ?? ''}
+            genre={genre}
+            avatarUrl={avatarUrl}
+            customStyles={styles}
+          />
+        }
+        className={getValidClassNames(
+          styles.authorDetails,
+          styles.authorDetailsModal,
+          isOpen && styles.open,
+        )}
+      />
       <div className={styles.textWrapper}>
         <h4 className={styles.title}>{title}</h4>
         {tags && <Tags tags={tags} />}
