@@ -16,8 +16,6 @@ const up = async (knex: Knex): Promise<void> => {
     });
 };
 
-const down = (knex: Knex): Promise<void> => {
-  return knex(TABLE_NAME).where({ key: UNKNOWN_GENRE.key }).del();
-};
+const down = (): void => {};
 
 export { down, up };
