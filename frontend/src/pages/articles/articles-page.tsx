@@ -1,5 +1,5 @@
 import { Layout, Link, RouterOutlet } from '~/libs/components/components.js';
-import { AppRoute, ArticleSubRoute } from '~/libs/enums/enums.js';
+import { AppRoute } from '~/libs/enums/enums.js';
 
 import styles from './styles.module.scss';
 
@@ -16,7 +16,7 @@ const ArticlesPage: React.FC = () => {
             Feed
           </Link>
           <Link
-            to={ArticleSubRoute.MY_ARTICLES}
+            to={AppRoute.ARTICLES_MY_ARTICLES}
             className={styles.tab}
             activeClassName={styles.activeTab}
           >

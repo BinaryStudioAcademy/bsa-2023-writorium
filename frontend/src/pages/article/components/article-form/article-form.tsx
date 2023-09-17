@@ -1,5 +1,5 @@
 import { Button, Input, TextEditor } from '~/libs/components/components.js';
-import { AppRoute, ArticleSubRoute, ButtonType } from '~/libs/enums/enums.js';
+import { ButtonType } from '~/libs/enums/enums.js';
 import {
   useAppDispatch,
   useAppForm,
@@ -70,18 +70,9 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
             articlePayload: updatedPayload,
             generatedPrompt: getGeneratedPromptPayload(generatedPrompt),
           }),
-        )
-          .unwrap()
-          .then(() => {
-            navigate(
-              isArticlePublished
-                ? AppRoute.ARTICLES
-                : ArticleSubRoute.MY_ARTICLES,
-            );
-          })
-          .catch(() => {});
+        );
       },
-    [dispatch, generatedPrompt, navigate],
+    [dispatch, generatedPrompt],
   );
 
   const handleArticleUpdate = useCallback(
@@ -104,13 +95,10 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
           },
         };
 
-        void dispatch(articlesActions.updateArticle(updatePayload))
-          .unwrap()
-          .then(() => navigate(ArticleSubRoute.MY_ARTICLES))
-          .catch(() => {});
+        void dispatch(articlesActions.updateArticle(updatePayload));
       },
 
-    [dispatch, articleForUpdate, navigate],
+    [dispatch, articleForUpdate],
   );
 
   const handleFormSubmit = useCallback(

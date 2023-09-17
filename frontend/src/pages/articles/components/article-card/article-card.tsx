@@ -10,12 +10,12 @@ import {
 } from '~/libs/components/components.js';
 import {
   AppRoute,
-  ArticleSubRoute,
   DateFormat,
   LinkHash,
   Reaction,
 } from '~/libs/enums/enums.js';
 import {
+  configureString,
   getFormattedDate,
   getFullName,
   getReactionsInfo,
@@ -64,7 +64,7 @@ const ArticleCard: React.FC<Properties> = ({
   const { pathname } = useLocation();
 
   const isMyArticles = matchPath(
-    { path: ArticleSubRoute.MY_ARTICLES },
+    { path: AppRoute.ARTICLES_MY_ARTICLES },
     pathname,
   );
   const {
@@ -83,7 +83,9 @@ const ArticleCard: React.FC<Properties> = ({
   );
   const { firstName, lastName, avatarUrl } = author;
   const articleUrl = window.location.href;
-  const articleRouteById = AppRoute.ARTICLE.replace(':id', String(id));
+  const articleRouteById = configureString(AppRoute.ARTICLES_$ID, {
+    id: String(id),
+  }) as typeof AppRoute.ARTICLES_$ID;
 
   const handleDeleteArticle = useCallback(() => {
     onDeleteArticle?.(id);
@@ -162,10 +164,9 @@ const ArticleCard: React.FC<Properties> = ({
               />
               <Link
                 to={
-                  AppRoute.EDIT_ARTICLE.replace(
-                    ':id',
-                    id.toString(),
-                  ) as typeof AppRoute.EDIT_ARTICLE
+                  configureString(AppRoute.ARTICLES_EDIT_$ID, {
+                    id: String(id),
+                  }) as typeof AppRoute.ARTICLES_EDIT_$ID
                 }
                 state={article}
               >
@@ -204,7 +205,7 @@ const ArticleCard: React.FC<Properties> = ({
           <li className={styles.reaction}>
             <Link
               to={{
-                pathname: articleRouteById as typeof AppRoute.ARTICLE,
+                pathname: articleRouteById,
                 hash: LinkHash.COMMENTS,
               }}
               className={styles.reaction}
@@ -256,10 +257,7 @@ const ArticleCard: React.FC<Properties> = ({
           articleUrl={articleUrl}
           iconStyle={styles.facebookIconButton}
         />
-        <Link
-          to={articleRouteById as typeof AppRoute.ARTICLE}
-          className={styles.readMore}
-        >
+        <Link to={articleRouteById} className={styles.readMore}>
           Read more
         </Link>
       </div>

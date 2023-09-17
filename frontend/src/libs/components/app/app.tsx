@@ -1,3 +1,5 @@
+import { type To as RedirectTo } from 'react-router-dom';
+
 import {
   Header,
   Loader,
@@ -9,17 +11,22 @@ import {
   useAppDispatch,
   useAppSelector,
   useEffect,
+  useNavigate,
 } from '~/libs/hooks/hooks.js';
-import { actions } from '~/slices/auth/auth.js';
+import { actions as appActions } from '~/slices/app/app.js';
+import { actions as authActions } from '~/slices/auth/auth.js';
 
 import styles from './styles.module.scss';
 
 const App: React.FC = () => {
-  const { user, dataStatus } = useAppSelector(({ auth }) => ({
+  const { redirectTo, user, dataStatus } = useAppSelector(({ app, auth }) => ({
+    redirectTo: app.navigateTo,
     user: auth.user,
     dataStatus: auth.dataStatus,
   }));
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
   const hasUser = Boolean(user);
 
   const isLoading = !(
@@ -27,8 +34,16 @@ const App: React.FC = () => {
   );
 
   useEffect(() => {
+    if (redirectTo) {
+      navigate(redirectTo as RedirectTo);
+
+      dispatch(appActions.navigate(null));
+    }
+  }, [redirectTo, navigate, dispatch]);
+
+  useEffect(() => {
     if (!hasUser) {
-      void dispatch(actions.getCurrentUser());
+      void dispatch(authActions.getCurrentUser());
     }
   }, [hasUser, dispatch]);
 

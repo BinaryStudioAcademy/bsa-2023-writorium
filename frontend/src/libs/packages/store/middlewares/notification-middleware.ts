@@ -3,7 +3,7 @@ import { createListenerMiddleware, isRejected } from '@reduxjs/toolkit';
 
 import { type AsyncThunkConfig } from '~/libs/types/types.js';
 import { NotificationType } from '~/packages/notification/notification.js';
-import { appActions } from '~/slices/app/app.js';
+import { actions as appActions } from '~/slices/app/app.js';
 
 const notificationMiddleware = createListenerMiddleware();
 

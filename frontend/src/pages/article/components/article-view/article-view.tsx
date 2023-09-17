@@ -5,18 +5,16 @@ import {
   Tags,
 } from '~/libs/components/components.js';
 import { AppRoute } from '~/libs/enums/enums.js';
-import { getValidClassNames, sanitizeHtml } from '~/libs/helpers/helpers.js';
 import {
-  useAppDispatch,
-  useCallback,
-  useNavigate,
-  useParams,
-} from '~/libs/hooks/hooks.js';
+  configureString,
+  getValidClassNames,
+  sanitizeHtml,
+} from '~/libs/helpers/helpers.js';
+import { useAppDispatch, useCallback, useParams } from '~/libs/hooks/hooks.js';
 import { type TagType } from '~/libs/types/types.js';
 import { type ArticleWithCommentCountResponseDto } from '~/packages/articles/articles.js';
 import { actions as articlesActions } from '~/slices/articles/articles.js';
 
-import { PREVIOUS_PAGE_INDEX } from '../../libs/constants/constants.js';
 import styles from './styles.module.scss';
 
 type Properties = {
@@ -49,7 +47,6 @@ const ArticleView: React.FC<Properties> = ({
   const { id } = useParams();
 
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
 
   const handleShareButtonClick = useCallback((): void => {
     if (id) {
@@ -58,12 +55,10 @@ const ArticleView: React.FC<Properties> = ({
   }, [dispatch, id]);
 
   const handleDeleteArticle = useCallback((): void => {
-    void dispatch(articlesActions.deleteArticle(Number(id)))
-      .unwrap()
-      .then(() => {
-        navigate(PREVIOUS_PAGE_INDEX);
-      });
-  }, [dispatch, id, navigate]);
+    void dispatch(
+      articlesActions.deleteArticle({ id: Number(id), hasRedirect: true }),
+    );
+  }, [dispatch, id]);
 
   return (
     <div
@@ -85,10 +80,9 @@ const ArticleView: React.FC<Properties> = ({
                 />
                 <Link
                   to={
-                    AppRoute.EDIT_ARTICLE.replace(
-                      ':id',
-                      id as string,
-                    ) as typeof AppRoute.EDIT_ARTICLE
+                    configureString(AppRoute.ARTICLES_EDIT_$ID, {
+                      id: String(id),
+                    }) as typeof AppRoute.ARTICLES_EDIT_$ID
                   }
                   state={article}
                 >
