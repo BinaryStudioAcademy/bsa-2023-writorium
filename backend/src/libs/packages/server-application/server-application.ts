@@ -1,7 +1,14 @@
 import { config } from '~/libs/packages/config/config.js';
 import { database } from '~/libs/packages/database/database.js';
 import { logger } from '~/libs/packages/logger/logger.js';
+import { achievementController } from '~/packages/achievements/achievements.js';
+import { articleReactionController } from '~/packages/article-reactions/article-reactions.js';
+import { articleController } from '~/packages/articles/articles.js';
 import { authController } from '~/packages/auth/auth.js';
+import { commentController } from '~/packages/comments/comments.js';
+import { fileController } from '~/packages/files/files.js';
+import { genreController } from '~/packages/genres/genre.js';
+import { promptController } from '~/packages/prompts/prompts.js';
 import { userController } from '~/packages/users/users.js';
 
 import { ServerApp } from './server-app.js';
@@ -12,6 +19,13 @@ const apiV1 = new ServerAppApi(
   config,
   ...authController.routes,
   ...userController.routes,
+  ...genreController.routes,
+  ...fileController.routes,
+  ...articleController.routes,
+  ...articleReactionController.routes,
+  ...commentController.routes,
+  ...promptController.routes,
+  ...achievementController.routes,
 );
 const serverApp = new ServerApp({
   config,
@@ -21,4 +35,7 @@ const serverApp = new ServerApp({
 });
 
 export { serverApp };
-export { type ServerAppRouteParameters } from './libs/types/types.js';
+export {
+  type ServerAppRouteParameters,
+  type WhiteRoute,
+} from './libs/types/types.js';

@@ -1,0 +1,103 @@
+.imageGroup {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 10px;
+}
+
+.imageGroupInner {
+  width: 80%;
+}
+
+.imageWrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.imageWrapper::after {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  background-color: var(--overlay-alpha-50);
+  opacity: 0;
+  transition: opacity 0.3s ease-in;
+  content: "";
+}
+
+.imageGroupInner:hover .imageWrapper::after {
+  opacity: 1;
+}
+
+.avatar {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  height: auto;
+}
+
+.iconButton {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  fill: currentcolor;
+}
+
+.iconButtonEdit {
+  z-index: 1;
+  width: 50px;
+  height: 50px;
+  color: var(--light-gray-text);
+  background-color: var(--dark-gray-80);
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.3s ease-in;
+}
+
+.imageGroupInner:hover .iconButtonEdit {
+  opacity: 1;
+}
+
+.iconButtonRemove {
+  top: 10px;
+  right: 30px;
+  z-index: var(--z-index-level-one);
+  color: var(--red);
+  background-color: var(--light-red);
+  border: 1px solid currentcolor;
+  border-radius: 50%;
+  visibility: hidden;
+  opacity: 0;
+  transition:
+    opacity 0.3s ease-in,
+    visibility 0.3s ease-in,
+    transform 0.3s ease-in;
+}
+
+.iconButtonRemove:hover {
+  transform: scale(1.1);
+}
+
+.imageGroupInner:hover .iconButtonRemove {
+  visibility: visible;
+  opacity: 1;
+}
+
+.iconRemove {
+  width: 15px;
+  height: 15px;
+}
+
+.iconEdit {
+  width: 30px;
+  height: 30px;
+}

@@ -1,0 +1,32 @@
+.buttonsGroup {
+  display: inline-flex;
+  overflow: hidden;
+  border: 1px solid var(--light-gray-text);
+  border-radius: 3px;
+}
+
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 32px;
+  height: 32px;
+  transition: background-color 0.2s ease;
+}
+
+.button:not(:last-child) {
+  border-right: 1px solid var(--light-gray-text);
+}
+
+.button:hover {
+  background-color: var(--white-50);
+}
+
+.button.buttonActive {
+  background-color: var(--white);
+}
+
+.button svg {
+  width: 24px;
+  height: 24px;
+}

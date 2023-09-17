@@ -1,6 +1,9 @@
 import reactPlugin from '@vitejs/plugin-react';
 import { type ConfigEnv, defineConfig, loadEnv } from 'vite';
 import tsconfigPathsPlugin from 'vite-tsconfig-paths';
+import svgr from 'vite-plugin-svgr';
+import path from 'path';
+import pluginRewriteAll from 'vite-plugin-rewrite-all';
 
 const config = ({ mode }: ConfigEnv): ReturnType<typeof defineConfig> => {
   const {
@@ -13,7 +16,7 @@ const config = ({ mode }: ConfigEnv): ReturnType<typeof defineConfig> => {
     build: {
       outDir: 'build',
     },
-    plugins: [tsconfigPathsPlugin(), reactPlugin()],
+    plugins: [tsconfigPathsPlugin(), reactPlugin(), svgr(), pluginRewriteAll()],
     server: {
       port: Number(VITE_APP_DEVELOPMENT_PORT),
       proxy: {
@@ -21,6 +24,11 @@ const config = ({ mode }: ConfigEnv): ReturnType<typeof defineConfig> => {
           target: VITE_APP_PROXY_SERVER_URL,
           changeOrigin: true,
         },
+      },
+    },
+    resolve: {
+      alias: {
+        '@assets': path.resolve(__dirname, './src/assets'),
       },
     },
   });

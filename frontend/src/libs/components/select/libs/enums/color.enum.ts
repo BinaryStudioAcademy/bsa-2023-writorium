@@ -1,0 +1,12 @@
+const Color = {
+  LIGHT_GREEN: '#44996B',
+  LIGHT_GREY: '#EBECE7',
+  DARK_GREEN: '#2E453B',
+  BLACK: 'BLACK',
+  INPUT_TEXT: 'RGB(40 40 40 / 50%)',
+  INPUT_BG: '#F8F8F8',
+  INPUT_SHADOW_COLOR: 'RGBA(53 53 53 / 20%)',
+  INPUT_PLACEHOLDER_COLOR: 'RGB(157 164 174 / 40%)',
+} as const;
+
+export { Color };

@@ -1,0 +1,79 @@
+@import url("../../../assets/css/styles.scss");
+
+.overlayContainer {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+}
+
+.circular {
+  width: 60px;
+  height: 60px;
+  margin: auto;
+  border: 4px solid var(--dark-green);
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: rotate 1.2s infinite linear;
+}
+
+.notOverlayContainer {
+  display: flex;
+  justify-content: center;
+  padding-top: 10px;
+}
+
+.dots {
+  position: relative;
+  animation: dot-flashing 1s infinite linear alternate;
+  animation-delay: 0.5s;
+}
+
+.dots,
+.dots::before,
+.dots::after {
+  width: 10px;
+  height: 10px;
+  color: var(--light-green);
+  background-color: var(--light-green);
+  border-radius: 5px;
+}
+
+.dots::before,
+.dots::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  display: inline-block;
+  animation: dot-flashing 1s infinite alternate;
+}
+
+.dots::before {
+  left: -15px;
+  animation-delay: 0s;
+}
+
+.dots::after {
+  left: 15px;
+  animation-delay: 1s;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes dot-flashing {
+  0% {
+    background-color: var(--light-green);
+  }
+
+  50%,
+  100% {
+    background-color: var(--light-gray-40);
+  }
+}

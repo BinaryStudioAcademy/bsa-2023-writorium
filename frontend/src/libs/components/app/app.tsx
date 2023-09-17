@@ -1,61 +1,61 @@
-import reactLogo from '~/assets/img/react.svg';
-import { Link, RouterOutlet } from '~/libs/components/components.js';
-import { AppRoute } from '~/libs/enums/enums.js';
+import { type To as RedirectTo } from 'react-router-dom';
+
+import {
+  Header,
+  Loader,
+  Notification,
+  RouterOutlet,
+} from '~/libs/components/components.js';
+import { DataStatus } from '~/libs/enums/enums.js';
 import {
   useAppDispatch,
   useAppSelector,
   useEffect,
-  useLocation,
+  useNavigate,
 } from '~/libs/hooks/hooks.js';
-import { actions as userActions } from '~/slices/users/users.js';
+import { actions as appActions } from '~/slices/app/app.js';
+import { actions as authActions } from '~/slices/auth/auth.js';
+
+import styles from './styles.module.scss';
 
 const App: React.FC = () => {
-  const { pathname } = useLocation();
-  const dispatch = useAppDispatch();
-  const { users, dataStatus } = useAppSelector(({ users }) => ({
-    users: users.users,
-    dataStatus: users.dataStatus,
+  const { redirectTo, user, dataStatus } = useAppSelector(({ app, auth }) => ({
+    redirectTo: app.navigateTo,
+    user: auth.user,
+    dataStatus: auth.dataStatus,
   }));
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
-  const isRoot = pathname === AppRoute.ROOT;
+  const hasUser = Boolean(user);
+
+  const isLoading = !(
+    dataStatus === DataStatus.FULFILLED || dataStatus == DataStatus.REJECTED
+  );
 
   useEffect(() => {
-    if (isRoot) {
-      void dispatch(userActions.loadAll());
+    if (redirectTo) {
+      navigate(redirectTo as RedirectTo);
+
+      dispatch(appActions.navigate(null));
     }
-  }, [isRoot, dispatch]);
+  }, [redirectTo, navigate, dispatch]);
+
+  useEffect(() => {
+    if (!hasUser) {
+      void dispatch(authActions.getCurrentUser());
+    }
+  }, [hasUser, dispatch]);
 
   return (
     <>
-      <img src={reactLogo} className="App-logo" width="30" alt="logo" />
-
-      <ul className="App-navigation-list">
-        <li>
-          <Link to={AppRoute.ROOT}>Root</Link>
-        </li>
-        <li>
-          <Link to={AppRoute.SIGN_IN}>Sign in</Link>
-        </li>
-        <li>
-          <Link to={AppRoute.SIGN_UP}>Sign up</Link>
-        </li>
-      </ul>
-      <p>Current path: {pathname}</p>
-
-      <div>
-        <RouterOutlet />
-      </div>
-      {isRoot && (
-        <>
-          <h2>Users:</h2>
-          <h3>Status: {dataStatus}</h3>
-          <ul>
-            {users.map((it) => (
-              <li key={it.id}>{it.email}</li>
-            ))}
-          </ul>
-        </>
-      )}
+      <Loader isLoading={isLoading} hasOverlay type="circular">
+        <Header user={user} />
+        <div className={styles.container}>
+          <RouterOutlet />
+        </div>
+      </Loader>
+      <Notification />
     </>
   );
 };

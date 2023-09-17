@@ -5,15 +5,25 @@ import {
   type FieldValues,
 } from 'react-hook-form';
 
+import { ErrorMessage } from '~/libs/components/components.js';
+import { InputType } from '~/libs/enums/input-type.enum';
+import { getValidClassNames } from '~/libs/helpers/helpers.js';
 import { useFormController } from '~/libs/hooks/hooks.js';
+import { type ValueOf } from '~/libs/types/types.js';
+
+import styles from './styles.module.scss';
 
 type Properties<T extends FieldValues> = {
   control: Control<T, null>;
   errors: FieldErrors<T>;
-  label: string;
+  label?: string;
   name: FieldPath<T>;
   placeholder?: string;
-  type?: 'text' | 'email';
+  type?: ValueOf<typeof InputType>;
+  className?: string;
+  labelClassName?: string;
+  required?: boolean;
+  rows?: number;
 };
 
 const Input = <T extends FieldValues>({
@@ -22,20 +32,53 @@ const Input = <T extends FieldValues>({
   label,
   name,
   placeholder = '',
-  type = 'text',
+  type = InputType.TEXT,
+  className,
+  labelClassName,
+  required,
+  rows,
 }: Properties<T>): JSX.Element => {
   const { field } = useFormController({ name, control });
 
   const error = errors[name]?.message;
   const hasError = Boolean(error);
 
+  const classNames = getValidClassNames(
+    styles.input,
+    hasError && styles.error,
+    className,
+    rows && styles.textarea,
+  );
+
   return (
-    <label>
-      <span>{label}</span>
-      <input {...field} type={type} placeholder={placeholder} />
-      {hasError && <span>{error as string}</span>}
+    <label className={styles.label}>
+      <span
+        className={getValidClassNames(
+          styles.text,
+          labelClassName,
+          required && styles.required,
+        )}
+      >
+        {label}
+      </span>
+      {rows ? (
+        <textarea
+          {...field}
+          className={classNames}
+          placeholder={placeholder}
+          rows={rows}
+        />
+      ) : (
+        <input
+          {...field}
+          className={classNames}
+          placeholder={placeholder}
+          type={type}
+        />
+      )}
+      <ErrorMessage error={error as string} />
     </label>
   );
 };
 
-export { Input };
+export { Input, type Properties as InputProperties };

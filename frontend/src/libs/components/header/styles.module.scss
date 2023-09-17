@@ -1,0 +1,95 @@
+.header {
+  position: sticky;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: var(--z-index-level-one);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 105px;
+  padding: 30px 60px;
+  background: var(--light-gray);
+  border-bottom: 2px solid var(--light-gray-15);
+}
+
+.logo {
+  width: 184px;
+  height: 27px;
+  color: var(--dark-green);
+}
+
+.rightSide {
+  display: inline-flex;
+  align-items: center;
+}
+
+.writeLink {
+  margin-right: 35px;
+  padding: 12px 26px;
+  color: var(--white);
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 19px;
+  background-color: var(--dark-green);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.writeLink:hover {
+  background-color: var(--light-green);
+}
+
+.dropdown.dropdownModal {
+  background-color: var(--light-gray-15);
+}
+
+.dropdown .dropdownModal.open {
+  animation: fade 0.3s ease-in-out;
+}
+
+.dropdown .dropdownModal {
+  position: absolute;
+  top: 102px;
+  right: 60px;
+  width: 150px;
+  padding: 0;
+  border-radius: 7px;
+  box-shadow: 0 4px 8px -2px rgb(16 24 40 / 16%);
+}
+
+.dropdown button {
+  background-color: transparent;
+}
+
+.avatarButton {
+  background-color: transparent;
+  border: none;
+}
+
+.avatarButton > span {
+  transition: background-color 0.3s ease;
+}
+
+.avatarButton:hover > span {
+  background-color: var(--light-green-80);
+}
+
+.avatarButton img {
+  transition: opacity 0.3s ease;
+}
+
+.avatarButton:hover img {
+  opacity: 0.8;
+}
+
+@keyframes fade {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}

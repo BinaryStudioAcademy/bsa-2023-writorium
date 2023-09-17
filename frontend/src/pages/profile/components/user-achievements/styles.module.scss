@@ -1,0 +1,54 @@
+.achievementBlock {
+  display: flex;
+  grid-area: achievements;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  max-width: 270px;
+  padding: 30px;
+  text-align: center;
+}
+
+.achievementList {
+  grid-template-columns: repeat(var(--achievement-columns), minmax(75px, 1fr));
+  font-size: 12px;
+  column-gap: 5px;
+}
+
+.achievementItem {
+  cursor: pointer;
+}
+
+.title {
+  margin-bottom: 30px;
+}
+
+.buttonShow {
+  width: 100%;
+  padding: 13px 20px;
+  color: var(--white);
+  background-color: var(--dark-green);
+}
+
+.modal {
+  overflow: hidden;
+  box-shadow: 0 0 6px rgb(16 24 40 / 16%);
+}
+
+.achievementListModal {
+  --achievement-columns: 4;
+
+  gap: 40px;
+  max-height: 410px;
+  padding: 20px 40px;
+  overflow: auto;
+}
+
+.modal .achievementTooltip {
+  max-width: 150px;
+  color: var(--pale-gray);
+  background-color: var(--dark-green);
+  border-radius: 7px;
+  opacity: 1;
+}

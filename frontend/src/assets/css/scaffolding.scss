@@ -1,5 +1,12 @@
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scrollbar-color: var(--light-gray-40) transparent;
+  scrollbar-width: auto;
 }
 
 body {
@@ -9,8 +16,9 @@ body {
   min-height: 100vh;
   margin: 0;
   font-size: 14px;
-  font-family: Arial, sans-serif;
+  font-family: Lato, Arial, sans-serif;
   line-height: 1.5;
+  background-color: var(--light-gray);
 }
 
 #root {
@@ -30,4 +38,35 @@ body {
   border: 0;
   clip: rect(0 0 0 0);
   clip-path: inset(100%);
+}
+
+.text-overflow {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+a {
+  text-decoration: none;
+}
+
+button {
+  cursor: pointer;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--light-gray-40);
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--medium-brightness-gray);
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
 }

@@ -1,0 +1,25 @@
+.avatar {
+  display: flex;
+  flex: 0 0 auto;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.image {
+  display: block;
+  object-fit: cover;
+}
+
+.defaultAvatar {
+  background-color: var(--light-green);
+}
+
+.initials {
+  color: var(--dark-green);
+  font-weight: 500;
+  font-size: inherit;
+  text-transform: uppercase;
+}

@@ -1,0 +1,64 @@
+.textEditorWrapper {
+  display: flex;
+  flex-direction: column;
+  row-gap: 14px;
+  max-width: 828px;
+  min-height: 410px;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+}
+
+.textEditor {
+  height: 360px;
+  max-height: 360px;
+  padding: 50px 23px;
+  overflow: auto;
+  background-color: var(--pale-gray);
+  border: 2px solid transparent;
+  border-radius: 5px;
+}
+
+.textEditor:focus {
+  outline: none;
+}
+
+.textEditor::-webkit-scrollbar {
+  width: 5px;
+}
+
+.textEditor::-webkit-scrollbar-thumb {
+  background: var(--light-gray-40);
+  border-radius: 2px;
+}
+
+.textEditor::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.placeholder:first-child::before {
+  float: left;
+  height: 0;
+  color: var(--dark-blue-40);
+  content: attr(data-placeholder);
+  pointer-events: none;
+}
+
+.buttonsGroup {
+  display: inline-flex;
+  overflow: hidden;
+  border: 1px solid var(--light-gray-text);
+  border-radius: 3px;
+}
+
+.textEditor ul,
+ol {
+  padding-left: 40px;
+}
+
+.textEditor.hasError {
+  border-color: var(--red);
+}

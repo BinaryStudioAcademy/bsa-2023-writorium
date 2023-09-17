@@ -1,0 +1,30 @@
+.dropdown {
+  display: flex;
+  flex-direction: column;
+  background: var(--light-gray);
+  border-radius: 7px;
+}
+
+.profileLink {
+  padding: 14px 10px;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: normal;
+  text-align: center;
+  border-bottom: 2px solid var(--light-gray-15);
+  border-radius: 7px 7px 0 0;
+}
+
+.profileLink:hover {
+  background-color: var(--light-gray-15);
+}
+
+.logoutBtn {
+  padding: 14px 10px;
+  background: none;
+  border-radius: 0 0 7px 7px;
+}
+
+.logoutBtn:hover {
+  background-color: var(--light-gray-15);
+}

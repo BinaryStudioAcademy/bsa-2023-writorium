@@ -1,9 +1,9 @@
 interface IRepository<T = unknown> {
-  find(): Promise<T>;
-  findAll(): Promise<T[]>;
+  find(id: number): Promise<T | null>;
+  findAll(filters: unknown): Promise<T[]>;
   create(payload: unknown): Promise<T>;
-  update(): Promise<T>;
-  delete(): Promise<boolean>;
+  update(payload: unknown): Promise<T>;
+  delete(id: number): Promise<T>;
 }
 
 export { type IRepository };

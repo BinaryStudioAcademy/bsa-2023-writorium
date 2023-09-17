@@ -1,0 +1,43 @@
+.container {
+  min-width: 224px;
+}
+
+.prompt {
+  height: 73px;
+  padding: 30px 5px 21px;
+  overflow: auto;
+  text-align: center;
+  background-color: var(--white);
+  border-radius: 5px;
+}
+
+.category {
+  width: fit-content;
+  height: 29px;
+  margin: 0 auto;
+  padding: 5px 9px;
+  text-align: center;
+  background-color: var(--light-green);
+  border-radius: 5px;
+  transform: translateY(15px);
+}
+
+.categoryText {
+  display: inline-block;
+  color: var(--white);
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 0;
+}
+
+.categoryText::first-letter {
+  text-transform: capitalize;
+}
+
+.promptText {
+  max-height: 22px;
+  margin: 0;
+  color: var(--dark-gray);
+  font-weight: 700;
+  font-size: 18px;
+}

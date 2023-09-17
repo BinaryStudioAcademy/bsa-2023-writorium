@@ -1,0 +1,46 @@
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 830px;
+}
+
+.titleInput {
+  height: 85px;
+  line-height: 17px;
+}
+
+.buttonWrapper {
+  display: flex;
+  gap: 20px;
+  height: 45px;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 19px;
+  border-radius: 5px;
+}
+
+.cancelBtn,
+.saveDraftBtn,
+.publishBtn {
+  width: 100%;
+  max-width: 160px;
+  color: var(--dark-green);
+  font-family: Lato, sans-serif;
+  background-color: var(--light-gray);
+  border: 2px solid var(--dark-green);
+}
+
+.publishBtn {
+  color: var(--white);
+  background-color: var(--dark-green);
+  border: 1px solid var(--dark-blue);
+  transition:
+    color 0.3s ease,
+    background-color 0.3s ease;
+}
+
+.publishBtn:hover {
+  color: var(--white);
+  background-color: var(--light-green);
+}
