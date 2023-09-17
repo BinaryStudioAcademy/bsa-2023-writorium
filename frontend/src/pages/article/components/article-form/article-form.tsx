@@ -85,26 +85,30 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
   );
 
   const handleArticleUpdate = useCallback(
-    (payload: ArticleRequestDto): void => {
-      if (!articleForUpdate) {
-        return;
-      }
+    (articleSubmitType: ValueOf<typeof ArticleSubmitType>) =>
+      (payload: ArticleRequestDto): void => {
+        if (!articleForUpdate) {
+          return;
+        }
+        const isArticleDrafted = articleSubmitType === ArticleSubmitType.DRAFT;
 
-      const updatePayload = {
-        articleId: articleForUpdate.id,
-        articleForUpdate: {
-          text: payload.text,
-          title: payload.title,
-          publishedAt: articleForUpdate.publishedAt ?? new Date().toISOString(),
-          coverId: payload.coverId,
-        },
-      };
+        const updatePayload = {
+          articleId: articleForUpdate.id,
+          articleForUpdate: {
+            text: payload.text,
+            title: payload.title,
+            publishedAt: isArticleDrafted
+              ? null
+              : articleForUpdate.publishedAt ?? new Date().toISOString(),
+            coverId: payload.coverId,
+          },
+        };
 
-      void dispatch(articlesActions.updateArticle(updatePayload))
-        .unwrap()
-        .then(() => navigate(ArticleSubRoute.MY_ARTICLES))
-        .catch(() => {});
-    },
+        void dispatch(articlesActions.updateArticle(updatePayload))
+          .unwrap()
+          .then(() => navigate(ArticleSubRoute.MY_ARTICLES))
+          .catch(() => {});
+      },
 
     [dispatch, articleForUpdate, navigate],
   );
@@ -115,7 +119,9 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
 
       void handleSubmit(
         articleForUpdate
-          ? handleArticleUpdate
+          ? handleArticleUpdate(
+              button.name as ValueOf<typeof ArticleSubmitType>,
+            )
           : handleArticleSubmit(
               button.name as ValueOf<typeof ArticleSubmitType>,
             ),
@@ -181,15 +187,13 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
             label="Cancel"
             className={styles.cancelBtn}
           />
-          {!articleForUpdate && (
-            <Button
-              type={ButtonType.SUBMIT}
-              label="Save draft"
-              name="draft"
-              className={styles.saveDraftBtn}
-              disabled={!isDirty || isSubmitting}
-            />
-          )}
+          <Button
+            type={ButtonType.SUBMIT}
+            label="Save draft"
+            name="draft"
+            className={styles.saveDraftBtn}
+            disabled={!isDirty || isSubmitting}
+          />
           <Button
             type={ButtonType.SUBMIT}
             label="Publish"
