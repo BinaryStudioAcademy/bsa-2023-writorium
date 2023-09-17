@@ -15,7 +15,10 @@ import {
   DropdownIndicator,
   IndicatorSeparator,
 } from './libs/components/components.js';
-import { getDefaultStyles } from './libs/constants/constants.js';
+import {
+  getDefaultStyles,
+  INITIAL_SELECT_VALUE,
+} from './libs/constants/constants.js';
 import cssStyles from './styles.module.scss';
 
 type Properties<
@@ -42,6 +45,7 @@ const Select = <
   label,
   options,
   isMulti,
+  isClearable = true,
   ...restProperties
 }: Properties<T, IsMulti, Group>): JSX.Element => {
   const { field } = useFormController({ name, control });
@@ -49,7 +53,8 @@ const Select = <
 
   const handleChange = useCallback(
     (option: unknown) => {
-      field.onChange((option as SelectOption).value);
+      const fieldValue = (option as SelectOption)?.value ?? null;
+      field.onChange(fieldValue);
     },
     [field],
   );
@@ -61,7 +66,7 @@ const Select = <
       ? (options as SelectOption[])?.filter((option) => {
           return (value as Array<string | number>).includes(option.value);
         })
-      : (options as SelectOption[])?.find((opt) => opt.value === value);
+      : (options as SelectOption[])?.find((option) => option.value === value);
   };
 
   return (
@@ -75,9 +80,10 @@ const Select = <
         components={{ DropdownIndicator, IndicatorSeparator }}
         options={options}
         isMulti={isMulti}
+        isClearable={isClearable}
         value={
           handleSelectValue(field.value) ??
-          ({ value: '', label: placeholder } as SelectOption)
+          ({ value: INITIAL_SELECT_VALUE, label: placeholder } as SelectOption)
         }
       />
       <ErrorMessage error={error as string} />
