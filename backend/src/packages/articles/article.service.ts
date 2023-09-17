@@ -101,7 +101,8 @@ class ArticleService implements IService {
     const detectedGenre = await this.detectArticleGenreFromText(articleText);
 
     if (!detectedGenre) {
-      return null;
+      const unknownGenre = await this.genreRepository.getUnknownGenre();
+      return unknownGenre.toObject().id;
     }
 
     const existingGenre = await this.genreRepository.findByKey(
