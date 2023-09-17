@@ -6,16 +6,15 @@ const GENRE_KEY_COLUMN_NAME = 'key';
 
 const UNKNOWN_GENRE = { key: 'unknown', name: 'Unknown' } as const;
 
-const up = async (knex: Knex): Promise<void> => {
+const up = async (knex: Knex): Promise<number[]> => {
   return await knex(TABLE_NAME)
-    .where(GENRE_KEY_COLUMN_NAME, UNKNOWN_GENRE.key)
-    .then(async (rows) => {
-      if (!rows.length) {
-        await knex(TABLE_NAME).insert(UNKNOWN_GENRE);
-      }
-    });
+    .insert(UNKNOWN_GENRE)
+    .onConflict(GENRE_KEY_COLUMN_NAME)
+    .ignore();
 };
 
-const down = (): void => {};
+const down = (): Promise<void> => {
+  return Promise.resolve();
+};
 
 export { down, up };
