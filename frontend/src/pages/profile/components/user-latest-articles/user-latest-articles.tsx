@@ -1,6 +1,6 @@
 import { Link } from '~/libs/components/components.js';
 import { AppRoute } from '~/libs/enums/enums.js';
-import { getValidClassNames } from '~/libs/helpers/helpers.js';
+import { configureString, getValidClassNames } from '~/libs/helpers/helpers.js';
 import {
   useAppDispatch,
   useAppSelector,
@@ -38,10 +38,9 @@ const UserLatestArticles: React.FC<Properties> = ({ className }) => {
           <li key={article.id} className={styles.articleTitle}>
             <Link
               to={
-                AppRoute.ARTICLES_$ID.replace(
-                  ':id',
-                  article.id.toString(),
-                ) as typeof AppRoute.ARTICLES_$ID
+                configureString(AppRoute.ARTICLES_$ID, {
+                  id: String(article.id),
+                }) as typeof AppRoute.ARTICLES_$ID
               }
               className={styles.articleLink}
             >
@@ -50,10 +49,7 @@ const UserLatestArticles: React.FC<Properties> = ({ className }) => {
           </li>
         ))}
       </ol>
-      <Link
-        to={AppRoute.ARTICLES_MY_ARTICLES as typeof AppRoute.ARTICLES_$ID}
-        className={styles.showAll}
-      >
+      <Link to={AppRoute.ARTICLES_MY_ARTICLES} className={styles.showAll}>
         Show all
       </Link>
     </div>
