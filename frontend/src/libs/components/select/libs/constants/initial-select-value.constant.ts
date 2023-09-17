@@ -1,0 +1,3 @@
+const INITIAL_SELECT_VALUE = '';
+
+export { INITIAL_SELECT_VALUE };
