@@ -1,5 +1,5 @@
 import { Layout, Navigate } from '~/libs/components/components.js';
-import { AppRoute, ArticleSubRoute } from '~/libs/enums/enums.js';
+import { AppRoute } from '~/libs/enums/enums.js';
 import { useLocation } from '~/libs/hooks/hooks.js';
 import { type ArticleResponseDto } from '~/packages/articles/articles.js';
 
@@ -14,9 +14,7 @@ const EditArticlePage: React.FC = () => {
   const article = location.state as ArticleResponseDto;
 
   if (!article) {
-    return (
-      <Navigate to={`${AppRoute.ARTICLES}/${ArticleSubRoute.MY_ARTICLES}`} />
-    );
+    return <Navigate to={AppRoute.ARTICLES_MY_ARTICLES} />;
   }
 
   return (

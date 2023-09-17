@@ -1,5 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
+import { PREVIOUS_PAGE_INDEX } from '~/libs/constants/constants.js';
+import { AppRoute } from '~/libs/enums/enums.js';
 import { StorageKey } from '~/libs/packages/storage/storage.js';
 import { type AsyncThunkConfig } from '~/libs/types/types.js';
 import {
@@ -23,7 +25,7 @@ import { type GenreGetAllResponseDto } from '~/packages/genres/genres.js';
 import { NotificationType } from '~/packages/notification/notification.js';
 import { type PromptRequestDto } from '~/packages/prompts/prompts.js';
 
-import { appActions } from '../app/app.js';
+import { actions as appActions } from '../app/app.js';
 import { name as sliceName } from './articles.slice.js';
 import { parseImprovementSuggestionsJSON } from './libs/helpers/helpers.js';
 
@@ -56,7 +58,7 @@ const createArticle = createAsyncThunk<
   AsyncThunkConfig
 >(
   `${sliceName}/create`,
-  async ({ articlePayload, generatedPrompt }, { extra }) => {
+  async ({ articlePayload, generatedPrompt }, { extra, dispatch }) => {
     const { articleApi, promptApi } = extra;
 
     if (generatedPrompt) {
@@ -69,7 +71,16 @@ const createArticle = createAsyncThunk<
       });
     }
 
-    return await articleApi.create(articlePayload);
+    const createdArticle = await articleApi.create(articlePayload);
+
+    const wasPublished = Boolean(createdArticle.publishedAt);
+    const routeToNavigate = wasPublished
+      ? AppRoute.ARTICLES
+      : AppRoute.ARTICLES_MY_ARTICLES;
+
+    dispatch(appActions.navigate(routeToNavigate));
+
+    return createdArticle;
   },
 );
 
@@ -77,7 +88,7 @@ const updateArticle = createAsyncThunk<
   ArticleWithCommentCountResponseDto,
   ArticleUpdateRequestPayload,
   AsyncThunkConfig
->(`${sliceName}/update`, async (payload, { extra }) => {
+>(`${sliceName}/update`, async (payload, { extra, dispatch }) => {
   const { articleApi, sessionStorage } = extra;
 
   const updatedArticle = await articleApi.update(payload);
@@ -97,6 +108,8 @@ const updateArticle = createAsyncThunk<
       [payload.articleId]: null,
     }),
   );
+
+  dispatch(appActions.navigate(AppRoute.ARTICLES_MY_ARTICLES));
 
   return updatedArticle;
 });
@@ -217,13 +230,22 @@ const updateComment = createAsyncThunk<
 
 const deleteArticle = createAsyncThunk<
   ArticleWithCommentCountResponseDto,
-  number,
+  { id: number; hasRedirect?: boolean },
   AsyncThunkConfig
->(`${sliceName}/delete`, (id, { extra }) => {
-  const { articleApi } = extra;
+>(
+  `${sliceName}/delete`,
+  async ({ id, hasRedirect = false }, { extra, dispatch }) => {
+    const { articleApi } = extra;
 
-  return articleApi.delete(id);
-});
+    const deletedArticle = await articleApi.delete(id);
+
+    if (hasRedirect) {
+      dispatch(appActions.navigate(PREVIOUS_PAGE_INDEX));
+    }
+
+    return deletedArticle;
+  },
+);
 
 const getImprovementSuggestionsBySession = createAsyncThunk<
   ArticleImprovementSuggestion[] | null,

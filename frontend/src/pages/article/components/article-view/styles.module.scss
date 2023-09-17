@@ -11,12 +11,14 @@
 
 .buttonsWrapper {
   position: absolute;
-  bottom: 5%;
+  top: 5%;
   left: 28px;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
   gap: 11px;
+  height: 90%;
 }
 
 .articleContent {
@@ -35,6 +37,7 @@
 
 .body:not(.hasCover) .buttonsWrapper {
   position: static;
+  justify-content: flex-start;
 }
 
 .cover {
@@ -45,12 +48,23 @@
   border-radius: 10px;
 }
 
+.icon {
+  width: 20px;
+  height: 20px;
+}
+
+.body.hasCover .icon {
+  width: 15px;
+  height: 15px;
+}
+
 .iconButton {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 54px;
-  height: 54px;
+  width: 30px;
+  height: 30px;
+  color: var(--light-green);
   background-color: var(--white-90);
   border-radius: 50%;
   transition: background-color 0.2s ease;
@@ -60,9 +74,12 @@
   background-color: var(--light-gray);
 }
 
-.icon {
-  width: 20px;
-  height: 20px;
+.facebookIconButton {
+  padding: 5px;
+}
+
+.body:not(.hasCover) .facebookIconButton {
+  padding: 0;
 }
 
 .title {
@@ -82,13 +99,4 @@
   font-size: 18px;
   line-height: 145%;
   word-break: break-word;
-}
-
-.facebookIconButton {
-  width: 54px;
-  height: 54px;
-  padding: 15px;
-  color: var(--light-green);
-  background-color: var(--white-90);
-  border-radius: 50%;
 }

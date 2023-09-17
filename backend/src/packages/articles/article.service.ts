@@ -6,6 +6,7 @@ import {
   ExceptionMessage,
 } from '~/libs/enums/enums.js';
 import { ApplicationError } from '~/libs/exceptions/exceptions.js';
+import { configureString } from '~/libs/helpers/helpers.js';
 import { type IService } from '~/libs/interfaces/service.interface.js';
 import {
   BadRequestError,
@@ -364,13 +365,17 @@ class ArticleService implements IService {
       articleId: id,
     });
 
-    const refererOrigin = getOriginFromRefererHeader(referer);
+    const refererOrigin = getOriginFromRefererHeader(referer) ?? '';
+
+    const link = configureString(
+      refererOrigin,
+      ApiPath.ARTICLES,
+      SHARED_$TOKEN,
+      { token },
+    );
 
     return {
-      link: `${refererOrigin}${ApiPath.ARTICLES}${SHARED_$TOKEN.replace(
-        ':token',
-        token,
-      )}`,
+      link,
     };
   }
 

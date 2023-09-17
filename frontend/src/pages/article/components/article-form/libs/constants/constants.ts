@@ -9,6 +9,5 @@ const DEFAULT_ARTICLE_FORM_PAYLOAD: ArticleRequestDto = {
   coverId: null,
 };
 
-const PREVIOUS_PAGE_INDEX = -1;
-
-export { DEFAULT_ARTICLE_FORM_PAYLOAD, PREVIOUS_PAGE_INDEX };
+export { DEFAULT_ARTICLE_FORM_PAYLOAD };
+export { PREVIOUS_PAGE_INDEX } from '~/libs/constants/constants.js';

@@ -18,6 +18,7 @@ import { notification } from '~/packages/notification/notification.js';
 import { promptApi } from '~/packages/prompts/prompts.js';
 import { userApi } from '~/packages/users/users.js';
 import { reducer as achievementsReducer } from '~/slices/achievements/achievements.js';
+import { reducer as appReducer } from '~/slices/app/app.js';
 import { reducer as articlesReducer } from '~/slices/articles/articles.js';
 import { reducer as authReducer } from '~/slices/auth/auth.js';
 import { reducer as promptsReducer } from '~/slices/prompts/prompts.js';
@@ -26,6 +27,7 @@ import { reducer as usersReducer } from '~/slices/users/users.js';
 import { notificationMiddleware } from './middlewares/notification-middleware.js';
 
 type RootReducer = {
+  app: ReturnType<typeof appReducer>;
   auth: ReturnType<typeof authReducer>;
   users: ReturnType<typeof usersReducer>;
   articles: ReturnType<typeof articlesReducer>;
@@ -65,6 +67,7 @@ class Store {
     this.instance = configureStore({
       devTools: config.ENV.APP.ENVIRONMENT !== AppEnvironment.PRODUCTION,
       reducer: {
+        app: appReducer,
         auth: authReducer,
         users: usersReducer,
         articles: articlesReducer,
