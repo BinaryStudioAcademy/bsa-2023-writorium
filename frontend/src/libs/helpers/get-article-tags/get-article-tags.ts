@@ -11,7 +11,7 @@ const getArticleTags = (article: ArticleResponseDto): TagType[] => {
       text: genre,
     });
   }
-  // eslint-disable-next-line unicorn/no-array-reduce
+
   return Object.entries(prompt ?? {}).reduce((resultingTags, [key, value]) => {
     if (value) {
       // eslint-disable-next-line unicorn/prefer-spread
