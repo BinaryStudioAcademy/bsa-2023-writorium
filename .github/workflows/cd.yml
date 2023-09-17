@@ -22,11 +22,11 @@ jobs:
             {
               "development": {
                 "HEROKU_APP_NAME": "writorium-development",
-                "APP_URL": "https://writorium-development.herokuapp.com/"
+                "APP_URL": "https://dev.writorium.site/"
               },
               "production": {
                 "HEROKU_APP_NAME": "writorium-production",
-                "APP_URL": "https://writorium-production.herokuapp.com/"
+                "APP_URL": "https://app.writorium.site/"
               }
             }
 
