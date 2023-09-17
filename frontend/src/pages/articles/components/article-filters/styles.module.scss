@@ -27,8 +27,18 @@
 }
 
 .filterTitle {
+  color: var(--dark-gray);
   font-weight: 700;
   font-size: 16px;
+}
+
+.filterInput {
+  height: 45px;
+}
+
+.filterInput:hover {
+  border: 2px solid var(--light-green);
+  cursor: pointer;
 }
 
 .clearFilters {

@@ -66,6 +66,7 @@ const ArticleFilters: React.FC<Properties> = ({
             type="text"
             placeholder="Search..."
             label="Title"
+            className={styles.filterInput}
             labelClassName={styles.filterTitle}
             control={control}
             errors={errors}
