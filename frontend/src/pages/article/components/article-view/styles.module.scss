@@ -100,3 +100,23 @@
   line-height: 145%;
   word-break: break-word;
 }
+
+.footerIcon {
+  display: flex;
+  align-items: center;
+  color: var(--dark-gray-50);
+  font-weight: 400;
+  font-size: 12px;
+}
+
+.disabled {
+  cursor: default;
+}
+
+.disabled svg {
+  color: var(--light-green);
+}
+
+.pressed svg {
+  color: var(--light-green);
+}
