@@ -71,13 +71,6 @@ const MyArticles: React.FC = () => {
     [filters, resetSkip, dispatch],
   );
 
-  const handleDeleteArticle = useCallback(
-    (id: number): void => {
-      void dispatch(articlesActions.deleteArticle({ id }));
-    },
-    [dispatch],
-  );
-
   useEffect(() => {
     handleLoadArticles();
     handleLoadAuthors();
@@ -104,7 +97,6 @@ const MyArticles: React.FC = () => {
               author={article.author}
               tags={getArticleTags(article)}
               reactions={article.reactions}
-              onDeleteArticle={handleDeleteArticle}
             />
           ))}
       </InfiniteScroll>
