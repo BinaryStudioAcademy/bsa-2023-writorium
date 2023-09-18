@@ -114,6 +114,11 @@
     padding-top: 18px;
   }
 
+  .buttonsWrapper > button {
+    width: 20px;
+    height: 20px;
+  }
+
   .title {
     font-size: 20px;
   }
@@ -265,7 +270,7 @@
     bottom: 5%;
     left: 28px;
     flex-direction: row;
-    gap: 0;
+    gap: 15px;
   }
 
   .body:not(.hasCover) {
