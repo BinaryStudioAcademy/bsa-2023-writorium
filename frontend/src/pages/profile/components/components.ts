@@ -6,3 +6,4 @@ export { UserAchievements } from './user-achievements/user-achievements.js';
 export { UserActivity } from './user-activity/user-activity.js';
 export { UserArticlesGenresStats } from './user-articles-genres-stats/user-articles-genres-stats.js';
 export { UserInfo } from './user-info/user-info.js';
+export { UserLatestArticles } from './user-latest-articles/user-latest-articles.js';
