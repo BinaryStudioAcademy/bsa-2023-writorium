@@ -1,5 +1,4 @@
-import { useCallback, useRef, useState } from 'react';
-
+import { useCallback, useReference, useState } from '../react/react.js';
 import {
   DEFAULT_PAGINATION_SKIP,
   DEFAULT_PAGINATION_TAKE,
@@ -14,7 +13,10 @@ const usePagination = ({
   defaultTake = DEFAULT_PAGINATION_TAKE,
 }: UsePaginationProperties = {}): UsePaginationReturn => {
   const [hasMore, setHasMore] = useState(false);
-  const paginationParameters = useRef({ skip: defaultSkip, take: defaultTake });
+  const paginationParameters = useReference({
+    skip: defaultSkip,
+    take: defaultTake,
+  });
   const resetSkip = (): void => {
     paginationParameters.current.skip = 0;
   };
@@ -32,7 +34,7 @@ const usePagination = ({
         paginationParameters.current.skip = skip + take;
       }
     },
-    [],
+    [paginationParameters],
   );
 
   return { hasMore, loadMore, resetSkip };
