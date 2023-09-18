@@ -58,10 +58,11 @@ const ArticleCard: React.FC<Properties> = ({
   reactions,
 }) => {
   const dispatch = useAppDispatch();
-  const user = useAppSelector(({ auth }) => auth.user) as UserAuthResponseDto;
-  const isLoading =
-    useAppSelector(({ articles }) => articles.dataStatus) ===
-    DataStatus.PENDING;
+  const { user, articlesDatastatus } = useAppSelector(({ auth, articles }) => ({
+    user: auth.user as UserAuthResponseDto,
+    articlesDatastatus: articles.dataStatus,
+  }));
+  const isLoading = articlesDatastatus === DataStatus.PENDING;
   const {
     publishedAt,
     title,
