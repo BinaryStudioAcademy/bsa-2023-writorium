@@ -3,6 +3,10 @@
   flex-direction: column;
 }
 
+.buttonsGroup svg {
+  color: var(--light-green);
+}
+
 .editLink,
 .buttonsGroup button {
   display: flex;
