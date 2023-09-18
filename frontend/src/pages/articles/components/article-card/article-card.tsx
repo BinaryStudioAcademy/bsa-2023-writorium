@@ -76,6 +76,7 @@ const ArticleCard: React.FC<Properties> = ({
     coverUrl,
     readTime,
     commentCount,
+    isFavourite,
   } = article;
   const { likesCount, dislikesCount, hasAlreadyReactedWith } = getReactionsInfo(
     user.id,
@@ -88,6 +89,11 @@ const ArticleCard: React.FC<Properties> = ({
   const handleDeleteArticle = useCallback(() => {
     onDeleteArticle?.(id);
   }, [id, onDeleteArticle]);
+
+  const handleToggleIsFavourite = useCallback(() => {
+    void dispatch(articlesActions.toggleIsFavourite(id));
+  }, [dispatch, id]);
+
   const isOwnArticle = user.id === userId;
 
   const handleReaction = (reaction: ValueOf<typeof Reaction>): void => {
@@ -172,7 +178,12 @@ const ArticleCard: React.FC<Properties> = ({
               </RouterLink>
             </>
           )}
-          <Icon iconName="favorite" className={styles.pointerIcon} />
+          <IconButton
+            className={styles.iconButton}
+            iconName={isFavourite ? 'favoriteFilled' : 'favorite'}
+            iconClassName={styles.pointerIcon}
+            onClick={handleToggleIsFavourite}
+          />
         </div>
       </div>
       <div
