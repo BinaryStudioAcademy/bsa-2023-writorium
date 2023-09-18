@@ -28,6 +28,7 @@ import {
   MAX_FILE_SIZE_MB,
   SUPPORTED_FILE_TYPES,
 } from '../file/file.package.js';
+import { socketService } from '../socket/socket.js';
 import { WHITE_ROUTES } from './libs/constants/constants.js';
 import {
   type IServerApp,
@@ -59,7 +60,10 @@ class ServerApp implements IServerApp {
     this.database = database;
     this.apis = apis;
 
-    this.app = Fastify();
+    const app = Fastify();
+
+    this.app = app;
+    socketService.initializeIo(app.server);
   }
 
   public addRoute(parameters: ServerAppRouteParameters): void {
