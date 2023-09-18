@@ -11,8 +11,6 @@ class OpenAIService {
   private DEFAULT_COMPLETION_MODEL: CompletionCreateParamsBase['model'] =
     'gpt-3.5-turbo';
   private DEFAULT_TEMPERATURE = 0;
-  private DEFAULT_MAX_TOKENS = 256;
-  private DEFAULT_FREQUENCY_PENALTY = 0.5;
 
   public constructor(config: IConfig) {
     this.config = config;
@@ -24,10 +22,10 @@ class OpenAIService {
 
   public async createCompletion({
     prompt,
+    maxTokens,
+    frequencyPenalty,
     model = this.DEFAULT_COMPLETION_MODEL,
     temperature = this.DEFAULT_TEMPERATURE,
-    maxTokens = this.DEFAULT_MAX_TOKENS,
-    frequencyPenalty = this.DEFAULT_FREQUENCY_PENALTY,
   }: CompletionConfig): Promise<string | null> {
     const modelResponse = await this.openAIClient.chat.completions.create({
       model,

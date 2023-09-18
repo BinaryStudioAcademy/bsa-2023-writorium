@@ -7,7 +7,9 @@ const CreateArticlePage: React.FC = () => (
   <Layout>
     <div className={styles.articleCreatePageWrapper}>
       <PromptGeneration />
-      <ArticleForm />
+      <div className={styles.articleFormWrapper}>
+        <ArticleForm />
+      </div>
     </div>
   </Layout>
 );
