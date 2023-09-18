@@ -12,12 +12,7 @@ import {
   getValidClassNames,
   sanitizeHtml,
 } from '~/libs/helpers/helpers.js';
-import {
-  useAppDispatch,
-  useCallback,
-  useModal,
-  useParams,
-} from '~/libs/hooks/hooks.js';
+import { useAppDispatch, useCallback, useParams } from '~/libs/hooks/hooks.js';
 import { type TagType } from '~/libs/types/types.js';
 import {
   type ArticleWithCommentCountResponseDto,
@@ -25,7 +20,7 @@ import {
 } from '~/packages/articles/articles.js';
 import { actions as articlesActions } from '~/slices/articles/articles.js';
 
-import { ArticleDetails } from '../components.js';
+import { ArticleDetails } from '../article-details/article-details.js';
 import styles from './styles.module.scss';
 
 type Properties = {
@@ -58,8 +53,6 @@ const ArticleView: React.FC<Properties> = ({
   const { id } = useParams();
 
   const dispatch = useAppDispatch();
-
-  const { handleToggleModalOpen, isOpen } = useModal();
 
   const handleShareButtonClick = useCallback((): void => {
     if (id) {
@@ -145,20 +138,15 @@ const ArticleView: React.FC<Properties> = ({
             publishedAt={publishedAt ?? ''}
             genre={genre}
             avatarUrl={avatarUrl}
-            customStyles={styles}
+            containerStyle={styles.articleDetailsContainer}
           />
         }
         className={getValidClassNames(
           styles.authorDetails,
           styles.authorDetailsModal,
-          isOpen && styles.open,
         )}
       >
-        <h5
-          role="presentation"
-          className={styles.presentationAuthorName}
-          onClick={handleToggleModalOpen}
-        >
+        <h5 role="presentation" className={styles.presentationAuthorName}>
           {authorFullName}
         </h5>
       </Popover>

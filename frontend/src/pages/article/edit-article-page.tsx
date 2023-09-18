@@ -11,9 +11,6 @@ import styles from './styles.module.scss';
 
 const EditArticlePage: React.FC = () => {
   const location = useLocation();
-  if (!location.state) {
-    return <Navigate to={AppRoute.ARTICLES_MY_ARTICLES} />;
-  }
   const article = location.state as ArticleResponseDto;
 
   if (!article) {

@@ -2,7 +2,10 @@ import { type FC } from 'react';
 
 import { Avatar, Icon } from '~/libs/components/components.js';
 import { DateFormat } from '~/libs/enums/enums.js';
-import { getFormattedDate } from '~/libs/helpers/helpers.js';
+import {
+  getFormattedDate,
+  getValidClassNames,
+} from '~/libs/helpers/helpers.js';
 
 import styles from './styles.module.scss';
 
@@ -14,7 +17,7 @@ type Properties = {
   readTime: number | null;
   genre: string | null;
   avatarUrl: string | null;
-  customStyles?: CSSModuleClasses;
+  containerStyle?: string;
 };
 
 const ArticleDetails: FC<Properties> = ({
@@ -25,35 +28,33 @@ const ArticleDetails: FC<Properties> = ({
   readTime,
   genre,
   avatarUrl = null,
-  customStyles = styles,
+  containerStyle,
 }) => {
   return (
-    <div className={customStyles.container}>
-      <div className={customStyles.authorWrapper}>
-        <div className={customStyles.avatarWrapper}>
+    <div className={getValidClassNames(styles.container, containerStyle)}>
+      <div className={styles.authorWrapper}>
+        <div className={styles.avatarWrapper}>
           <Avatar username={authorName} avatarUrl={avatarUrl} />
         </div>
-        <h2 className={customStyles.authorName}>{authorName}</h2>
-        <ul className={customStyles.authorInfoWrapper}>
-          <li className={customStyles.authorInfo}>
+        <h2 className={styles.authorName}>{authorName}</h2>
+        <ul className={styles.authorInfoWrapper}>
+          <li className={styles.authorInfo}>
             <Icon iconName="renew" />
-            <span className={customStyles.authorInfoValue}>
-              {authorFollowers}
-            </span>
+            <span className={styles.authorInfoValue}>{authorFollowers}</span>
             following
           </li>
-          <li className={customStyles.authorInfo}>
+          <li className={styles.authorInfo}>
             <Icon iconName="star" />
-            <span className={customStyles.authorInfoValue}>{authorRating}</span>
+            <span className={styles.authorInfoValue}>{authorRating}</span>
             rating
           </li>
         </ul>
       </div>
-      <div className={customStyles.articleInfoWrapper}>
-        <div className={customStyles.articleInfoListWrapper}>
+      <div className={styles.articleInfoWrapper}>
+        <div className={styles.articleInfoListWrapper}>
           <Icon iconName="notes" />
-          <ul className={customStyles.articleInfoList}>
-            <li className={customStyles.articleInfoItem}>
+          <ul className={styles.articleInfoList}>
+            <li className={styles.articleInfoItem}>
               <span>
                 {publishedAt
                   ? getFormattedDate(publishedAt, DateFormat.MONTH_DATE_YEAR)
@@ -61,17 +62,15 @@ const ArticleDetails: FC<Properties> = ({
               </span>
             </li>
             {readTime && (
-              <li className={customStyles.articleInfoItem}>
-                <span className={customStyles.articleReadTimeValue}>
-                  {readTime}
-                </span>
+              <li className={styles.articleInfoItem}>
+                <span className={styles.articleReadTimeValue}>{readTime}</span>
                 min read
               </li>
             )}
           </ul>
         </div>
         <Icon iconName="sparkles" />
-        <span className={customStyles.articleGenre}>{genre}</span>
+        <span className={styles.articleGenre}>{genre}</span>
       </div>
     </div>
   );

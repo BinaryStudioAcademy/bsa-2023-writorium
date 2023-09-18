@@ -105,7 +105,7 @@
 
 .presentationAuthorName {
   display: none;
-  padding: 10px 33px 0;
+  padding: 20px 33px 0;
   font-size: 16px;
 }
 
@@ -126,63 +126,6 @@
   .text {
     margin-top: 10px;
     font-size: 16px;
-  }
-
-  .authorWrapper {
-    row-gap: 10px;
-    padding: 8px;
-    column-gap: 8px;
-  }
-
-  .authorName {
-    font-size: 14px;
-  }
-
-  .authorInfo {
-    font-size: 12px;
-  }
-
-  .authorInfoValue {
-    margin-right: 2px;
-    margin-left: 8px;
-  }
-
-  .authorInfo:last-child::before {
-    margin-left: 8px;
-    padding-right: 4px;
-  }
-
-  .articleInfoWrapper {
-    padding: 0 8px 8px;
-  }
-
-  .articleInfoListWrapper {
-    margin-bottom: 8px;
-    column-gap: 8px;
-  }
-
-  .articleInfoListWrapper > svg {
-    width: 15px;
-    height: 15px;
-  }
-
-  .articleInfoListWrapper + svg {
-    width: 15px;
-    height: 15px;
-  }
-
-  .articleInfoList {
-    font-size: 12px;
-    column-gap: 8px;
-  }
-
-  .articleInfoItem::before {
-    margin-right: 4px;
-  }
-
-  .articleGenre {
-    margin-left: 8px;
-    font-size: 12px;
   }
 
   .authorDetails.authorDetailsModal {
@@ -208,52 +151,6 @@
     margin-top: 18px;
   }
 
-  .authorWrapper {
-    row-gap: 15px;
-    padding: 15px 15px 10px;
-    column-gap: 10px;
-  }
-
-  .authorName {
-    font-size: 20px;
-  }
-
-  .authorInfo {
-    font-size: inherit;
-  }
-
-  .authorInfoValue {
-    margin-right: 4px;
-    margin-left: 10px;
-  }
-
-  .authorInfo:last-child::before {
-    margin-left: 10px;
-    padding-right: 8px;
-  }
-
-  .articleInfoWrapper {
-    padding: 0 15px 15px;
-  }
-
-  .articleInfoListWrapper {
-    margin-bottom: 10px;
-    column-gap: 10px;
-  }
-
-  .articleInfoList {
-    column-gap: 10px;
-  }
-
-  .articleInfoItem::before {
-    margin-right: 8px;
-  }
-
-  .articleGenre {
-    margin-left: 10px;
-    font-size: 14px;
-  }
-
   .authorDetails.authorDetailsModal {
     left: 15px;
     width: 293px;
@@ -262,9 +159,7 @@
 
 @media only screen and (max-width: breakpoints.$extra-large) {
   .buttonsWrapper {
-    position: absolute;
     bottom: 5%;
-    left: 28px;
     flex-direction: row;
     gap: 15px;
   }
@@ -282,7 +177,7 @@
     display: block;
   }
 
-  .container {
+  .articleDetailsContainer {
     position: absolute;
     display: block;
     background: var(--light-gray);
@@ -290,91 +185,8 @@
     border-radius: 10px;
   }
 
-  .authorWrapper {
-    display: grid;
-    grid-template: repeat(2, max-content) / max-content 1fr;
-    grid-template-areas:
-      "avatar authorName"
-      "authorInfo authorInfo";
-    align-items: center;
-  }
-
-  .avatarWrapper {
-    display: flex;
-    grid-area: avatar;
-  }
-
-  .authorName {
-    grid-area: authorName;
-    color: var(--dark-gray);
-    font-weight: 700;
-    font-family: Raleway, sans-serif;
-    font-style: normal;
-    line-height: normal;
-    text-align: left;
-  }
-
-  .authorInfoWrapper {
-    display: flex;
-    grid-area: authorInfo;
-    align-items: center;
-    list-style: none;
-  }
-
-  .authorInfo {
-    display: flex;
-    align-items: center;
-    color: var(--dark-gray-40);
-    line-height: normal;
-  }
-
-  .authorInfo:last-child::before {
-    content: "●";
-    color: var(--light-green);
-  }
-
-  .articleInfoWrapper {
-    text-align: initial;
-  }
-
-  .articleInfoListWrapper {
-    display: flex;
-    align-items: flex-end;
-  }
-
-  .articleInfoList {
-    display: flex;
-    color: var(--dark-gray-40);
-    line-height: normal;
-    list-style: none;
-  }
-
-  .articleReadTimeValue {
-    padding-right: 4px;
-  }
-
-  .articleInfoItem::before {
-    content: "●";
-    color: var(--light-green);
-  }
-
-  .articleGenre {
-    color: var(--dark-gray-40);
-    line-height: normal;
-  }
-
   .authorDetails.authorDetailsModal {
     display: flex;
     background-color: var(--light-gray-15);
-  }
-}
-
-@keyframes fade {
-  0% {
-    opacity: 0;
-  }
-
-  100% {
-    opacity: 1;
   }
 }

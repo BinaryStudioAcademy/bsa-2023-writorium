@@ -47,24 +47,6 @@
   background-color: var(--light-gray-15);
 }
 
-.dropdown .dropdownModal.open {
-  animation: fade 0.3s ease-in-out;
-}
-
-.dropdown .dropdownModal {
-  position: absolute;
-  top: 102px;
-  right: 60px;
-  width: 150px;
-  padding: 0;
-  border-radius: 7px;
-  box-shadow: 0 4px 8px -2px var(--translucent-dark-blue-gray);
-}
-
-.dropdown button {
-  background-color: transparent;
-}
-
 .avatarButton {
   background-color: transparent;
   border: none;
