@@ -134,9 +134,7 @@ class HttpApi implements IHttpApi {
         parsedException.message === ExceptionMessage.DO_NOT_HAVE_AUTHORIZATION)
     ) {
       await this.storage.drop(StorageKey.TOKEN);
-      setTimeout(() => {
-        window.location.assign(AppRoute.SIGN_IN);
-      }, 3000);
+      window.location.assign(AppRoute.SIGN_IN);
     }
 
     const isCustomException = Boolean(parsedException.errorType);
