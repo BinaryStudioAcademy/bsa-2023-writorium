@@ -12,6 +12,7 @@ import {
   UserActivity,
   UserArticlesGenresStats,
   UserInfo,
+  UserLatestArticles,
 } from './components/components.js';
 import styles from './styles.module.scss';
 
@@ -34,6 +35,7 @@ const ProfilePage: React.FC = () => {
           userActivity={userActivity}
           className={styles.profileBlock}
         />
+        <UserLatestArticles className={styles.profileBlock} />
         <UserAchievements className={styles.profileBlock} />
         <UserArticlesGenresStats className={styles.profileBlock} />
       </div>
