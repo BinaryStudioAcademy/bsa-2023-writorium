@@ -110,6 +110,10 @@
 }
 
 @media only screen and (max-width: breakpoints.$medium) {
+  .body:not(.hasCover) .textWrapper {
+    padding-top: 18px;
+  }
+
   .title {
     font-size: 20px;
   }
@@ -185,6 +189,10 @@
 }
 
 @media only screen and (min-width: breakpoints.$medium) and (max-width: breakpoints.$extra-large) {
+  .body:not(.hasCover) .textWrapper {
+    padding-top: 18px;
+  }
+
   .presentationAuthorName {
     font-size: 18px;
   }
