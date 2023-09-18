@@ -25,4 +25,8 @@ export { Tags } from './tags/tags.js';
 export { TextEditor } from './text-editor/text-editor.js';
 export { BlockWithTooltip, Tooltip } from './tooltip/tooltip.js';
 export { Provider as StoreProvider } from 'react-redux';
-export { Navigate, Outlet as RouterOutlet } from 'react-router-dom';
+export {
+  Navigate,
+  Outlet as RouterOutlet,
+  ScrollRestoration,
+} from 'react-router-dom';
