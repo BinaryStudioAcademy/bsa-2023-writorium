@@ -1,5 +1,6 @@
 import { matchPath } from 'react-router-dom';
 
+import { Checkbox } from '~/libs/components/checkbox/checkbox.js';
 import { Input } from '~/libs/components/components.js';
 import { Select } from '~/libs/components/select/select.js';
 import { AppRoute, ArticleSubRoute } from '~/libs/enums/enums.js';
@@ -88,6 +89,12 @@ const ArticleFilters: React.FC<Properties> = ({
             options={genreSelectOptions}
             control={control}
             errors={errors}
+          />
+          <Checkbox
+            name="showFavourites"
+            control={control}
+            errors={errors}
+            label="Show only favourite articles"
           />
         </div>
       </form>
