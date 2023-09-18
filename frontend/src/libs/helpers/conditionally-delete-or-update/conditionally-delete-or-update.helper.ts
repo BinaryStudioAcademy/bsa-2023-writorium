@@ -3,15 +3,15 @@ type ItemType = {
 };
 
 const conditionallyDeleteOrUpdate = <T extends ItemType>(
-  condition: boolean,
-  dataArray: T[],
-  newItem: T,
+  items: T[],
+  itemToDeleteOrUpdate: T,
+  hasToDelete: boolean,
 ): T[] => {
-  return condition
-    ? dataArray.filter((item) => item.id !== newItem.id)
-    : dataArray.map((item) => {
-        if (newItem.id === item.id) {
-          return newItem;
+  return hasToDelete
+    ? items.filter((item) => item.id !== itemToDeleteOrUpdate.id)
+    : items.map((item) => {
+        if (itemToDeleteOrUpdate.id === item.id) {
+          return itemToDeleteOrUpdate;
         }
         return item;
       });
