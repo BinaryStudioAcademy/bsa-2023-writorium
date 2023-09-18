@@ -1,6 +1,4 @@
-import { Link as RouterLink } from 'react-router-dom';
-
-import { Button, Icon } from '~/libs/components/components.js';
+import { Button, Icon, Link } from '~/libs/components/components.js';
 import { AppRoute } from '~/libs/enums/enums.js';
 import { configureString } from '~/libs/helpers/helpers.js';
 import { useCallback } from '~/libs/hooks/hooks.js';
@@ -37,7 +35,7 @@ const PopoverButtonsGroup: React.FC<Properties> = ({
       />
       {isOwnArticle && (
         <>
-          <RouterLink
+          <Link
             to={
               configureString(AppRoute.ARTICLES_EDIT_$ID, {
                 id: String(id),
@@ -54,7 +52,7 @@ const PopoverButtonsGroup: React.FC<Properties> = ({
                 </>
               }
             />
-          </RouterLink>
+          </Link>
           <Button
             label={
               <>
