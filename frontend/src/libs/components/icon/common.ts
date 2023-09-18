@@ -6,6 +6,7 @@ import { ReactComponent as CrossMark } from '~/assets/img/icons/cross-mark-icon.
 import { ReactComponent as Dislike } from '~/assets/img/icons/dislike-icon.svg';
 import { ReactComponent as Facebook } from '~/assets/img/icons/facebook-icon.svg';
 import { ReactComponent as Favorite } from '~/assets/img/icons/favorite-icon.svg';
+import { ReactComponent as FavoriteFilled } from '~/assets/img/icons/favourite-filled-icon.svg';
 import { ReactComponent as Header1 } from '~/assets/img/icons/format-header-1-icon.svg';
 import { ReactComponent as Header2 } from '~/assets/img/icons/format-header-2-icon.svg';
 import { ReactComponent as Header3 } from '~/assets/img/icons/format-header-3-icon.svg';
@@ -48,6 +49,7 @@ type IconName =
   | 'like'
   | 'dislike'
   | 'favorite'
+  | 'favoriteFilled'
   | 'textAlignLeft'
   | 'textAlignCenter'
   | 'textAlignRight'
@@ -93,6 +95,7 @@ const iconNameToIcon: Record<
   like: Like,
   dislike: Dislike,
   favorite: Favorite,
+  favoriteFilled: FavoriteFilled,
   textAlignLeft: TextAlignLeft,
   textAlignCenter: TextAlignCenter,
   textAlignRight: TextAlignRight,
