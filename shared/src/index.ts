@@ -37,6 +37,13 @@ export {
   type IHttp,
 } from './libs/packages/http/http.js';
 export { type SendEmailResponse } from './libs/packages/mailer/mailer.js';
+export {
+  ArticlesSocketEvent,
+  CommentsSocketEvent,
+  ReactionsSocketEvent,
+  SocketEvent,
+  SocketNamespace,
+} from './libs/packages/socket/socket.js';
 export { type IStorage } from './libs/packages/storage/storage.js';
 export {
   type PaginationParameters,
