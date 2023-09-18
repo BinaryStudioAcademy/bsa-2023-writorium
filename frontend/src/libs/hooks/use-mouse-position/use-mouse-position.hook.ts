@@ -1,4 +1,4 @@
-import { useEffect, useState } from '~/libs/hooks/hooks.js';
+import { useEffect, useState } from '../react/react.js';
 
 type ReturnValue = { x: number; y: number };
 

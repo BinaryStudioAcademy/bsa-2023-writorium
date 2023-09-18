@@ -5,6 +5,7 @@ import { ReactComponent as Bell } from '~/assets/img/icons/bell-icon.svg';
 import { ReactComponent as Comment } from '~/assets/img/icons/comment-icon.svg';
 import { ReactComponent as CrossMark } from '~/assets/img/icons/cross-mark-icon.svg';
 import { ReactComponent as Dislike } from '~/assets/img/icons/dislike-icon.svg';
+import { ReactComponent as ellipsisVertical } from '~/assets/img/icons/ellipsis-vertical-icon.svg';
 import { ReactComponent as Facebook } from '~/assets/img/icons/facebook-icon.svg';
 import { ReactComponent as Favorite } from '~/assets/img/icons/favorite-icon.svg';
 import { ReactComponent as Header1 } from '~/assets/img/icons/format-header-1-icon.svg';
@@ -81,7 +82,8 @@ type IconName =
   | 'header6'
   | 'trashBin'
   | 'facebook'
-  | 'autoFix';
+  | 'autoFix'
+  | 'ellipsisVertical';
 
 const iconNameToIcon: Record<
   IconName,
@@ -128,6 +130,7 @@ const iconNameToIcon: Record<
   trashBin: TrashBinIcon,
   facebook: Facebook,
   autoFix: AutoFix,
+  ellipsisVertical: ellipsisVertical,
 };
 
 export { type IconName, iconNameToIcon };

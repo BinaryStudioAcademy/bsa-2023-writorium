@@ -1,10 +1,9 @@
-import { matchPath } from 'react-router-dom';
-
 import {
   Avatar,
   Icon,
   IconButton,
   Link,
+  Popover,
   ShareOnFacebookButton,
   Tags,
 } from '~/libs/components/components.js';
@@ -26,7 +25,6 @@ import {
   useAppDispatch,
   useAppSelector,
   useCallback,
-  useLocation,
 } from '~/libs/hooks/hooks.js';
 import { type TagType, type ValueOf } from '~/libs/types/types.js';
 import {
@@ -42,6 +40,7 @@ import { actions as articlesActions } from '~/slices/articles/articles.js';
 
 import { MOCKED_REACTIONS } from '../../libs/constants.js';
 import { getReactionConvertedToBoolean } from '../../libs/helpers/helpers.js';
+import { PopoverButtonsGroup } from './libs/components/components.js';
 import styles from './styles.module.scss';
 
 type Properties = {
@@ -49,7 +48,6 @@ type Properties = {
   author: UserDetailsResponseDto;
   tags: TagType[];
   reactions: ReactionResponseDto[];
-  onDeleteArticle?: (id: number) => void;
 };
 
 const ArticleCard: React.FC<Properties> = ({
@@ -57,16 +55,10 @@ const ArticleCard: React.FC<Properties> = ({
   author,
   tags,
   reactions,
-  onDeleteArticle,
 }) => {
   const dispatch = useAppDispatch();
   const user = useAppSelector(({ auth }) => auth.user) as UserAuthResponseDto;
-  const { pathname } = useLocation();
 
-  const isMyArticles = matchPath(
-    { path: AppRoute.ARTICLES_MY_ARTICLES },
-    pathname,
-  );
   const {
     publishedAt,
     title,
@@ -87,9 +79,6 @@ const ArticleCard: React.FC<Properties> = ({
     id: String(id),
   }) as typeof AppRoute.ARTICLES_$ID;
 
-  const handleDeleteArticle = useCallback(() => {
-    onDeleteArticle?.(id);
-  }, [id, onDeleteArticle]);
   const isOwnArticle = user.id === userId;
 
   const handleReaction = (reaction: ValueOf<typeof Reaction>): void => {
@@ -126,6 +115,13 @@ const ArticleCard: React.FC<Properties> = ({
     void dispatch(articlesActions.shareArticle({ id: id.toString() }));
   }, [dispatch, id]);
 
+  const handleDeleteArticle = useCallback(
+    (id: number): void => {
+      void dispatch(articlesActions.deleteArticle({ id }));
+    },
+    [dispatch],
+  );
+
   return (
     <article className={styles.article}>
       <div className={styles.header}>
@@ -150,38 +146,22 @@ const ArticleCard: React.FC<Properties> = ({
             </span>
           )}
         </div>
-        <div className={styles.iconWrapper}>
-          {isMyArticles && (
-            <>
-              <IconButton
-                className={styles.iconButton}
-                iconName="trashBin"
-                iconClassName={getValidClassNames(
-                  styles.deleteIcon,
-                  styles.pointerIcon,
-                )}
-                onClick={handleDeleteArticle}
-              />
-              <Link
-                to={
-                  configureString(AppRoute.ARTICLES_EDIT_$ID, {
-                    id: String(id),
-                  }) as typeof AppRoute.ARTICLES_EDIT_$ID
-                }
-                state={article}
-              >
-                <Icon
-                  iconName="edit"
-                  className={getValidClassNames(
-                    styles.editIcon,
-                    styles.pointerIcon,
-                  )}
-                />
-              </Link>
-            </>
-          )}
-          <Icon iconName="favorite" className={styles.pointerIcon} />
-        </div>
+
+        <Popover
+          className={styles.moreActions}
+          content={
+            <PopoverButtonsGroup
+              isOwnArticle={isOwnArticle}
+              article={article}
+              onDeleteArticle={handleDeleteArticle}
+            />
+          }
+        >
+          <Icon
+            className={styles.moreActionsIcon}
+            iconName="ellipsisVertical"
+          />
+        </Popover>
       </div>
       <div
         className={getValidClassNames(styles.body, coverUrl && styles.hasCover)}
