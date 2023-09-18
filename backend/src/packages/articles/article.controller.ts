@@ -26,6 +26,15 @@ import {
  * @swagger
  * components:
  *    schemas:
+ *      ImprovementSuggestion:
+ *        type: object
+ *        properties:
+ *          title:
+ *            type: string
+ *          description:
+ *            type: string
+ *          priority:
+ *            type: number
  *      Article:
  *        type: object
  *        properties:
@@ -158,6 +167,7 @@ class ArticleController extends Controller {
           }>,
         ),
     });
+
     this.addRoute({
       path: ArticlesApiPath.EDIT,
       method: 'PUT',
@@ -217,6 +227,18 @@ class ArticleController extends Controller {
           options as ApiHandlerOptions<{
             params: { id: number };
             user: UserAuthResponseDto;
+          }>,
+        );
+      },
+    });
+
+    this.addRoute({
+      path: ArticlesApiPath.$ID_IMPROVEMENT_SUGGESTIONS,
+      method: 'GET',
+      handler: (options) => {
+        return this.getImprovementSuggestions(
+          options as ApiHandlerOptions<{
+            params: { id: number };
           }>,
         );
       },
@@ -510,6 +532,33 @@ class ArticleController extends Controller {
       payload: await this.articleService.delete(
         options.params.id,
         options.user.id,
+      ),
+    };
+  }
+
+  /**
+   * @swagger
+   * /articles/:id/improvement-suggestions:
+   *    get:
+   *      summary: Get improvement suggestions for article
+   *      description: Get improvement suggestions for article
+   *      responses:
+   *        200:
+   *          description: Successful operation
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: array
+   *                items:
+   *                  $ref: '#/components/schemas/ImprovementSuggestion'
+   */
+  private async getImprovementSuggestions(
+    options: ApiHandlerOptions<{ params: { id: number } }>,
+  ): Promise<ApiHandlerResponse> {
+    return {
+      status: HttpCode.OK,
+      payload: await this.articleService.getImprovementSuggestions(
+        options.params.id,
       ),
     };
   }
