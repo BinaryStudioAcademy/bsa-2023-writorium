@@ -71,6 +71,7 @@ const ArticleCard: React.FC<Properties> = ({
     coverUrl,
     readTime,
     commentCount,
+    isFavourite,
   } = article;
   const { likesCount, dislikesCount, hasAlreadyReactedWith } = getReactionsInfo(
     user.id,
@@ -154,23 +155,32 @@ const ArticleCard: React.FC<Properties> = ({
           )}
         </div>
 
-        <Popover
-          className={styles.moreActions}
-          content={
-            <PopoverButtonsGroup
-              isOwnArticle={isOwnArticle}
-              article={article}
-              onDeleteArticle={handleDeleteArticle}
-              onToggleFavouriteClick={handleToggleIsFavourite}
-              isToggleFavouriteLoading={isLoading}
-            />
-          }
-        >
-          <Icon
-            className={styles.moreActionsIcon}
-            iconName="ellipsisVertical"
+        <div className={styles.toolbar}>
+          <IconButton
+            className={styles.iconButton}
+            iconName={isFavourite ? 'favoriteFilled' : 'favorite'}
+            iconClassName={styles.pointerIcon}
+            onClick={handleToggleIsFavourite}
+            isLoading={isLoading}
           />
-        </Popover>
+          <Popover
+            className={styles.moreActions}
+            content={
+              <PopoverButtonsGroup
+                isOwnArticle={isOwnArticle}
+                article={article}
+                onDeleteArticle={handleDeleteArticle}
+                onToggleFavouriteClick={handleToggleIsFavourite}
+                isToggleFavouriteLoading={isLoading}
+              />
+            }
+          >
+            <Icon
+              className={styles.moreActionsIcon}
+              iconName="ellipsisVertical"
+            />
+          </Popover>
+        </div>
       </div>
       <div
         className={getValidClassNames(styles.body, coverUrl && styles.hasCover)}
