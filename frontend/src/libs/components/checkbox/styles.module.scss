@@ -1,0 +1,49 @@
+.container {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.switch {
+  position: relative;
+  width: 56px;
+  height: 24px;
+  margin-right: 15px;
+  background-color: rgba(0 0 0 / 5%);
+  border: none;
+  border-radius: 80px;
+  outline: none;
+  appearance: none;
+  transition: 0.3s;
+}
+
+.switch:hover {
+  background-color: rgba(0 0 0 / 10%);
+}
+
+.switch::after {
+  content: "";
+  position: absolute;
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  background: #ffffff linear-gradient(transparent, rgba(0 0 0 / 5%));
+  border-radius: 50%;
+  box-shadow:
+    0 1px 2px 0 rgb(34 36 38 / 15%),
+    0 0 0 1px rgb(34 36 38 / 15%) inset;
+  transform: translateX(0);
+  transition: 0.3s;
+}
+
+.switch:checked {
+  background-color: var(--light-green);
+}
+
+.switch:checked::after {
+  transform: translateX(calc(100% + 9.6px));
+}
