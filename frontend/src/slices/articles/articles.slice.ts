@@ -195,9 +195,9 @@ const { reducer, actions, name } = createSlice({
       const article = action.payload;
       if (article) {
         state.articles = conditionallyDeleteOrUpdate(
-          !article.isFavourite && state.showFavourites,
           state.articles,
           article,
+          !article.isFavourite && state.showFavourites,
         );
         state.dataStatus = DataStatus.FULFILLED;
       }
