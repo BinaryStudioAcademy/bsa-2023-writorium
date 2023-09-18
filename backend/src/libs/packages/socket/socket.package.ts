@@ -16,45 +16,25 @@ class SocketService {
   ): void => {
     this._io = new SocketServer(server);
 
-    this.io
-      .of(SocketNamespace.ARTICLES)
-      .on(SocketEvent.CONNECTION, this.articlesHandler);
+    const appNamespaces = [
+      SocketNamespace.ARTICLES,
+      SocketNamespace.COMMENTS,
+      SocketNamespace.REACTIONS,
+    ];
 
-    this.io
-      .of(SocketNamespace.COMMENTS)
-      .on(SocketEvent.CONNECTION, this.commentsHandler);
-
-    this.io
-      .of(SocketNamespace.REACTIONS)
-      .on(SocketEvent.CONNECTION, this.reactionsHandler);
+    for (const namespace of appNamespaces) {
+      this.io
+        .of(namespace)
+        .on(SocketEvent.CONNECTION, this.handleNamespaceConnection);
+    }
   };
 
-  private articlesHandler = (socket: Socket): void => {
-    socket.on(SocketEvent.ARTICLES_JOIN_ROOM, (roomId: string) => {
+  private handleNamespaceConnection = (socket: Socket): void => {
+    socket.on(SocketEvent.JOIN_ROOM, (roomId: string) => {
       void socket.join(roomId);
     });
 
-    socket.on(SocketEvent.ARTICLES_LEAVE_ROOM, (roomId: string) => {
-      void socket.leave(roomId);
-    });
-  };
-
-  private commentsHandler = (socket: Socket): void => {
-    socket.on(SocketEvent.COMMENTS_JOIN_ROOM, (roomId: string) => {
-      void socket.join(roomId);
-    });
-
-    socket.on(SocketEvent.COMMENTS_LEAVE_ROOM, (roomId: string) => {
-      void socket.leave(roomId);
-    });
-  };
-
-  private reactionsHandler = (socket: Socket): void => {
-    socket.on(SocketEvent.REACTIONS_JOIN_ROOM, (roomId: string) => {
-      void socket.join(roomId);
-    });
-
-    socket.on(SocketEvent.REACTIONS_LEAVE_ROOM, (roomId: string) => {
+    socket.on(SocketEvent.LEAVE_ROOM, (roomId: string) => {
       void socket.leave(roomId);
     });
   };
