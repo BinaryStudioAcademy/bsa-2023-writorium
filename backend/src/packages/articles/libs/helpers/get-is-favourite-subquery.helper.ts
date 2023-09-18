@@ -1,6 +1,6 @@
 import { type QueryBuilder, raw } from 'objection';
 
-import { DatabaseTableName } from '~/libs/packages/database/database.package.js';
+import { DatabaseTableName } from '~/libs/packages/database/database.js';
 
 import { type ArticleModel } from '../../article.model.js';
 

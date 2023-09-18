@@ -1,5 +1,7 @@
 import { type QueryBuilder } from 'objection';
 
+import { DatabaseTableName } from '~/libs/packages/database/database.js';
+
 import { type ArticleModel } from '../../article.model.js';
 
 const getShowFavouritesQuery = (
@@ -13,7 +15,7 @@ const getShowFavouritesQuery = (
           .select(1)
           .from('favoured_user_articles')
           .where({ userId })
-          .whereRaw('article_id=articles.id');
+          .whereRaw(`article_id=${DatabaseTableName.ARTICLES}.id`);
       });
     }
   };
