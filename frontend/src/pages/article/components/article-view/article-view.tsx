@@ -10,12 +10,7 @@ import {
   getValidClassNames,
   sanitizeHtml,
 } from '~/libs/helpers/helpers.js';
-import {
-  useAppDispatch,
-  useCallback,
-  useEffect,
-  useParams,
-} from '~/libs/hooks/hooks.js';
+import { useAppDispatch, useCallback, useParams } from '~/libs/hooks/hooks.js';
 import { type TagType } from '~/libs/types/types.js';
 import { type ArticleWithCommentCountResponseDto } from '~/packages/articles/articles.js';
 import { actions as articlesActions } from '~/slices/articles/articles.js';
@@ -64,10 +59,6 @@ const ArticleView: React.FC<Properties> = ({
       articlesActions.deleteArticle({ id: Number(id), hasRedirect: true }),
     );
   }, [dispatch, id]);
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
 
   return (
     <div

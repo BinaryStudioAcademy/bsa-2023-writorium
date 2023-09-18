@@ -5,6 +5,7 @@ import {
   Loader,
   Notification,
   RouterOutlet,
+  ScrollRestoration,
 } from '~/libs/components/components.js';
 import { DataStatus } from '~/libs/enums/enums.js';
 import {
@@ -56,6 +57,7 @@ const App: React.FC = () => {
         </div>
       </Loader>
       <Notification />
+      <ScrollRestoration />
     </>
   );
 };
