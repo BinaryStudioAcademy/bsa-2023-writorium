@@ -14,6 +14,5 @@ export { useHandleClickOutside } from './use-handle-click-outside/use-handle-cli
 export { useModal } from './use-modal/use-modal.hook.js';
 export { useMousePosition } from './use-mouse-position/use-mouse-position.hook.js';
 export { usePagination } from './use-pagination/use-pagination.hook.js';
-export { useTooltip } from './use-tooltip/use-tooltip.hook.js';
 export { useController as useFormController } from 'react-hook-form';
 export { useLocation, useNavigate, useParams } from 'react-router-dom';

@@ -31,8 +31,8 @@ const Popover: React.FC<Properties> = ({
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>): void => {
-    if (event.key === 'Enter') {
-      handleClose;
+    if (event.key === 'Escape') {
+      handleClose();
     }
   };
 

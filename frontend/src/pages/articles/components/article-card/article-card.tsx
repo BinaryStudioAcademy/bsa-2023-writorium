@@ -156,7 +156,7 @@ const ArticleCard: React.FC<Properties> = ({
         >
           <Icon
             className={styles.moreActionsIcon}
-            iconName="threeDotsVertical"
+            iconName="ellipsisVertical"
           />
         </Popover>
       </div>
