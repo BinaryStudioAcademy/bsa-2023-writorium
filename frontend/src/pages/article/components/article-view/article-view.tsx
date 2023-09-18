@@ -146,9 +146,7 @@ const ArticleView: React.FC<Properties> = ({
           styles.authorDetailsModal,
         )}
       >
-        <h5 role="presentation" className={styles.presentationAuthorName}>
-          {authorFullName}
-        </h5>
+        <h5 className={styles.presentationAuthorName}>{authorFullName}</h5>
       </Popover>
       <div className={styles.textWrapper}>
         <h4 className={styles.title}>{title}</h4>

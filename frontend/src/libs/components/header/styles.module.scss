@@ -43,10 +43,6 @@
   background-color: var(--light-green);
 }
 
-.dropdown.dropdownModal {
-  background-color: var(--light-gray-15);
-}
-
 .avatarButton {
   background-color: transparent;
   border: none;
@@ -66,6 +62,10 @@
 
 .avatarButton:hover img {
   opacity: 0.8;
+}
+
+.popoverWriteLink {
+  display: none;
 }
 
 .profileLink {
@@ -96,21 +96,24 @@
 }
 
 @media only screen and (max-width: breakpoints.$medium) {
-  .header {
-    justify-content: flex-start;
-  }
-
-  .logo {
+  .writeLink{
     display: none;
   }
-}
 
-@keyframes fade {
-  0% {
-    opacity: 0;
+  .popoverWriteLink {
+    display: block;
+    padding: 14px 10px;
+    color: var(--light-green);
+    font-weight: 700;
+    font-size: 16px;
+    line-height: normal;
+    text-align: center;
+    border-bottom: 2px solid var(--light-gray-15);
+    border-radius: 7px 7px 0 0;
   }
 
-  100% {
-    opacity: 1;
+  .popoverWriteLink:hover {
+    background-color: var(--light-gray-15);
+    border-color: var(--light-green);
   }
 }
