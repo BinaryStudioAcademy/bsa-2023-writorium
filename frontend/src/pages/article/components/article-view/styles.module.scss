@@ -101,12 +101,22 @@
   word-break: break-word;
 }
 
-.footerIcon {
+.reactionIcon {
   display: flex;
+  flex-direction: column;
   align-items: center;
+  width: 30px;
+  padding-top: 6px;
   color: var(--dark-gray-50);
   font-weight: 400;
   font-size: 12px;
+  background-color: var(--white-90);
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+}
+
+.reactionIcon:hover {
+  background-color: var(--light-gray);
 }
 
 .disabled {

@@ -174,8 +174,7 @@ const ArticleView: React.FC<Properties> = ({
               iconName="like"
               iconClassName={styles.icon}
               className={getValidClassNames(
-                styles.footerIcon,
-                styles.iconButton,
+                styles.reactionIcon,
                 isArticleOwner && styles.disabled,
                 hasAlreadyReactedWith === Reaction.LIKE && styles.pressed,
               )}
@@ -186,8 +185,7 @@ const ArticleView: React.FC<Properties> = ({
               iconName="dislike"
               iconClassName={styles.icon}
               className={getValidClassNames(
-                styles.footerIcon,
-                styles.iconButton,
+                styles.reactionIcon,
                 isArticleOwner && styles.disabled,
                 hasAlreadyReactedWith === Reaction.DISLIKE && styles.pressed,
               )}
