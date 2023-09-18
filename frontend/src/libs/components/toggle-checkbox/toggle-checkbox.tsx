@@ -17,7 +17,7 @@ type Properties<T extends FieldValues> = {
   labelClassName?: string;
 };
 
-const Checkbox = <T extends FieldValues>({
+const ToggleCheckbox = <T extends FieldValues>({
   name,
   label,
   control,
@@ -41,4 +41,4 @@ const Checkbox = <T extends FieldValues>({
   );
 };
 
-export { Checkbox };
+export { ToggleCheckbox };

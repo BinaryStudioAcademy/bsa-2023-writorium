@@ -1,7 +1,6 @@
 import { matchPath } from 'react-router-dom';
 
-import { Checkbox } from '~/libs/components/checkbox/checkbox.js';
-import { Button, Input } from '~/libs/components/components.js';
+import { Button, Input, ToggleCheckbox } from '~/libs/components/components.js';
 import { Select } from '~/libs/components/select/select.js';
 import { AppRoute } from '~/libs/enums/enums.js';
 import {
@@ -93,7 +92,7 @@ const ArticleFilters: React.FC<Properties> = ({
             control={control}
             errors={errors}
           />
-          <Checkbox
+          <ToggleCheckbox
             name="showFavourites"
             control={control}
             errors={errors}
