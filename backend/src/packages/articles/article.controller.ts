@@ -107,7 +107,10 @@ class ArticleController extends Controller {
       },
       handler: (options) => {
         return this.findAll(
-          options as ApiHandlerOptions<{ query: ArticlesFilters }>,
+          options as ApiHandlerOptions<{
+            query: ArticlesFilters;
+            user: UserAuthResponseDto;
+          }>,
         );
       },
     });
@@ -221,6 +224,19 @@ class ArticleController extends Controller {
         );
       },
     });
+
+    this.addRoute({
+      path: ArticlesApiPath.FAVORITES,
+      method: 'POST',
+      handler: (options) => {
+        return this.toggleIsFavourite(
+          options as ApiHandlerOptions<{
+            params: { id: number };
+            user: UserAuthResponseDto;
+          }>,
+        );
+      },
+    });
   }
 
   /**
@@ -254,11 +270,17 @@ class ArticleController extends Controller {
    */
 
   private async findAll(
-    options: ApiHandlerOptions<{ query: ArticlesFilters }>,
+    options: ApiHandlerOptions<{
+      query: ArticlesFilters;
+      user: UserAuthResponseDto;
+    }>,
   ): Promise<ApiHandlerResponse> {
     return {
       status: HttpCode.OK,
-      payload: await this.articleService.findAll(options.query),
+      payload: await this.articleService.findAll({
+        ...options.query,
+        requestUserId: options.user.id,
+      }),
     };
   }
 
@@ -510,6 +532,45 @@ class ArticleController extends Controller {
       payload: await this.articleService.delete(
         options.params.id,
         options.user.id,
+      ),
+    };
+  }
+
+  /**
+   * @swagger
+   * /articles/favourites:
+   *    post:
+   *      summary: Toggle article's isFavourite status
+   *      description: Delete record if in favourites and insert if not
+   *      security:
+   *        - bearerAuth: []
+   *      parameters:
+   *        - in: path
+   *          name: id
+   *          schema:
+   *            type: integer
+   *          required: true
+   *          description: The ID of the article to toggle
+   *      responses:
+   *        200:
+   *          description: Successful operation
+   *          content:
+   *            application/json:
+   *              schema:
+   *                $ref: '#/components/schemas/Article'
+   */
+
+  private async toggleIsFavourite(
+    options: ApiHandlerOptions<{
+      params: { id: number };
+      user: UserAuthResponseDto;
+    }>,
+  ): Promise<ApiHandlerResponse> {
+    return {
+      status: HttpCode.OK,
+      payload: await this.articleService.toggleIsFavourite(
+        options.user.id,
+        options.params.id,
       ),
     };
   }
