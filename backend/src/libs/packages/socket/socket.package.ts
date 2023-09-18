@@ -1,5 +1,6 @@
 import { type default as Fastify } from 'fastify';
-import { Server as SocketServer } from 'socket.io';
+
+import { SocketServer } from './libs/types/types.js';
 
 class SocketService {
   private '_io': SocketServer;

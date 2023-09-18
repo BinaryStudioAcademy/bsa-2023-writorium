@@ -1,5 +1,6 @@
 import { type IncomingHttpHeaders } from 'node:http';
 
+import { type SocketServer } from '~/libs/packages/socket/socket.js';
 import { type FileToUpload } from '~/libs/plugins/file-upload/libs/types/types.js';
 import { type UserAuthResponseDto } from '~/packages/users/users.js';
 
@@ -11,6 +12,7 @@ type DefaultApiHandlerOptions = {
   user?: UserAuthResponseDto | null;
   origin?: string;
   headers?: IncomingHttpHeaders;
+  io?: SocketServer;
 };
 
 type ApiHandlerOptions<
@@ -23,6 +25,7 @@ type ApiHandlerOptions<
   user: T['user'];
   origin: T['origin'];
   headers: T['headers'];
+  io: T['io'];
 };
 
 export { type ApiHandlerOptions };
