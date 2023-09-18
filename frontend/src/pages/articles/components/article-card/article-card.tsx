@@ -1,5 +1,7 @@
 import {
   Avatar,
+  Button,
+  ConfirmDialog,
   Icon,
   IconButton,
   Link,
@@ -9,6 +11,7 @@ import {
 } from '~/libs/components/components.js';
 import {
   AppRoute,
+  ButtonType,
   DateFormat,
   LinkHash,
   Reaction,
@@ -25,6 +28,7 @@ import {
   useAppDispatch,
   useAppSelector,
   useCallback,
+  useModal,
 } from '~/libs/hooks/hooks.js';
 import { type TagType, type ValueOf } from '~/libs/types/types.js';
 import {
@@ -57,6 +61,7 @@ const ArticleCard: React.FC<Properties> = ({
   reactions,
 }) => {
   const dispatch = useAppDispatch();
+  const { handleToggleModalOpen, isOpen } = useModal();
   const user = useAppSelector(({ auth }) => auth.user) as UserAuthResponseDto;
 
   const {
@@ -115,12 +120,15 @@ const ArticleCard: React.FC<Properties> = ({
     void dispatch(articlesActions.shareArticle({ id: id.toString() }));
   }, [dispatch, id]);
 
-  const handleDeleteArticle = useCallback(
-    (id: number): void => {
-      void dispatch(articlesActions.deleteArticle({ id }));
-    },
-    [dispatch],
-  );
+  const handleDeleteArticle = useCallback((): void => {
+    void dispatch(articlesActions.deleteArticle({ id }));
+  }, [dispatch, id]);
+
+  const handleDeleteButtonClick = useCallback((): void => {
+    if (!isOpen) {
+      handleToggleModalOpen();
+    }
+  }, [handleToggleModalOpen, isOpen]);
 
   return (
     <article className={styles.article}>
@@ -153,7 +161,7 @@ const ArticleCard: React.FC<Properties> = ({
             <PopoverButtonsGroup
               isOwnArticle={isOwnArticle}
               article={article}
-              onDeleteArticle={handleDeleteArticle}
+              handleDeleteButtonClick={handleDeleteButtonClick}
             />
           }
         >
@@ -241,6 +249,18 @@ const ArticleCard: React.FC<Properties> = ({
           Read more
         </Link>
       </div>
+      <ConfirmDialog
+        trigger={{ handleToggleModalOpen, isOpen }}
+        message="Are you sure you want to delete this article? This action cannot be undone."
+        confirmButton={
+          <Button
+            type={ButtonType.BUTTON}
+            label="Delete"
+            onClick={handleDeleteArticle}
+            className={styles.buttonDelete}
+          />
+        }
+      />
     </article>
   );
 };

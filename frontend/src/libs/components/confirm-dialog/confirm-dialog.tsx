@@ -1,6 +1,5 @@
 import { Button, Modal } from '~/libs/components/components.js';
 import { ButtonType } from '~/libs/enums/enums.js';
-import { getValidClassNames } from '~/libs/helpers/helpers.js';
 import { useCallback } from '~/libs/hooks/hooks.js';
 
 import styles from './styles.module.scss';
@@ -15,7 +14,12 @@ type Properties = {
   className?: string;
 };
 
-const ConfirmDialog: React.FC<Properties> = ({ trigger, message, confirmButton, className }) => {
+const ConfirmDialog: React.FC<Properties> = ({
+  trigger,
+  message,
+  confirmButton,
+  className,
+}) => {
   const { isOpen, handleToggleModalOpen } = trigger;
 
   const handleClose = useCallback((): void => {
@@ -27,19 +31,18 @@ const ConfirmDialog: React.FC<Properties> = ({ trigger, message, confirmButton, 
   return (
     <>
       {isOpen && (
-        <Modal
-          isOpen
-          onClose={handleClose}
-          className={getValidClassNames(styles.popover, className)}
-        >
-          <div className={getValidClassNames(styles.confirmDialog, className)}>
-            <p>{message}</p>
-            <Button
-              type={ButtonType.BUTTON}
-              label="Cancel"
-              onClick={handleClose}
-            />
-            {confirmButton}
+        <Modal isOpen onClose={handleClose} className={styles.confirmModal}>
+          <div className={className}>
+            <p className={styles.message}>{message}</p>
+            <div className={styles.buttonWrapper}>
+              <Button
+                type={ButtonType.BUTTON}
+                label="Cancel"
+                onClick={handleClose}
+                className={styles.buttonCancel}
+              />
+              {confirmButton}
+            </div>
           </div>
         </Modal>
       )}
