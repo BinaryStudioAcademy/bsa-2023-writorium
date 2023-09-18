@@ -323,26 +323,25 @@ class ArticleRepository implements IArticleRepository {
   public async toggleIsFavourite(
     userId: number,
     articleId: number,
-  ): Promise<number | FavouredUserArticlesModel | null> {
+  ): Promise<FavouredUserArticlesModel | FavouredUserArticlesModel[]> {
     return await this.favouriteArticlesModel.transaction(async () => {
       const currentData = await this.favouriteArticlesModel
         .query()
-        .where({ userId })
-        .where({ articleId });
+        .where({ articleId, userId })
+        .first();
 
-      if (currentData.length === 0) {
+      if (!currentData) {
         return await this.favouriteArticlesModel
           .query()
-          .returning(['article_id', 'user_id'])
-          .insert({ userId, articleId });
-      } else if (currentData.length === 1) {
-        return await this.favouriteArticlesModel
-          .query()
-          .delete()
-          .where({ articleId, userId });
+          .insert({ userId, articleId })
+          .returning(['article_id', 'user_id']);
       }
 
-      return null;
+      return await this.favouriteArticlesModel
+        .query()
+        .delete()
+        .where({ articleId, userId })
+        .returning(['article_id', 'user_id']);
     });
   }
 }
