@@ -7,10 +7,11 @@
 .wrapper {
   position: sticky;
   top: 115px;
+  flex-grow: 1;
   flex-shrink: 0;
   align-self: flex-start;
   min-width: 389px;
-  margin-left: auto;
+  max-width: 500px;
 }
 
 .filterGroup {
@@ -21,7 +22,7 @@
 }
 
 .form {
-  padding: 20px;
+  padding: 27px 35px 20px;
   border: 1px solid var(--light-gray-border);
   border-radius: 10px;
 }
@@ -35,8 +36,8 @@
 .clearFilters {
   color: var(--dark-gray);
   font-weight: 500;
-  font-size: 12px;
-  background: transparent;
+  font-size: 14px;
+  background-color: var(--input-bg);
   border: none;
   cursor: pointer;
 }

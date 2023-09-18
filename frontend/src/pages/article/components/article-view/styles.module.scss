@@ -23,7 +23,7 @@
   height: 90%;
 }
 
-.articleContent {
+.textWrapper {
   flex-grow: 1;
   padding: 18px 33px 62px;
 }
@@ -33,7 +33,7 @@
   flex-direction: row-reverse;
 }
 
-.body:not(.hasCover) .articleContent {
+.body:not(.hasCover) .textWrapper {
   padding-top: 40px;
 }
 
