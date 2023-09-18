@@ -6,8 +6,26 @@
   padding-bottom: 100px;
 }
 
-.articleCreatePageWrapper {
-  padding-bottom: 126px;
+.articleCreatePageWrapper,
+.editArticlePage {
+  padding-bottom: 38px;
+}
+
+.articleCreatePageWrapper .articleFormWrapper {
+  max-width: 830px;
+}
+
+.editArticlePage .leftColumn {
+  flex: 60%;
+}
+
+.editArticlePage .rightColumn {
+  flex: 40%;
+}
+
+.editArticlePage {
+  display: flex;
+  gap: 21px;
 }
 
 .commentCount {

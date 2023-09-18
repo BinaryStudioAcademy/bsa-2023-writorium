@@ -5,6 +5,8 @@ export {
   type ArticleCreateDto,
   type ArticleEntityType,
   type ArticleGetAllResponseDto,
+  type ArticleGetImprovementSuggestionsResponseDto,
+  type ArticleImprovementSuggestion,
   type ArticleRequestDto,
   type ArticleResponseDto,
   type ArticlesFilters,

@@ -24,6 +24,7 @@ import { type ArticleRepository } from './article.repository.js';
 import { INDEX_INCREMENT, SHARED_$TOKEN } from './libs/constants/constants.js';
 import { DateFormat } from './libs/enums/enums.js';
 import {
+  getArticleImprovementSuggestionsCompletionConfig,
   getArticleReadTimeCompletionConfig,
   getDetectArticleGenreCompletionConfig,
   getDifferenceBetweenDates,
@@ -35,6 +36,8 @@ import {
 import {
   type ArticleCreateDto,
   type ArticleGetAllResponseDto,
+  type ArticleGetImprovementSuggestionsResponseDto,
+  type ArticleImprovementSuggestion,
   type ArticleResponseDto,
   type ArticlesFilters,
   type ArticleUpdateRequestDto,
@@ -74,10 +77,15 @@ class ArticleService implements IService {
       return null;
     }
 
-    const [firstParsedGenre] =
-      safeJSONParse<DetectedArticleGenre[]>(genresJSON) ?? [];
+    const parsedGenres = safeJSONParse<DetectedArticleGenre[]>(genresJSON);
 
-    return firstParsedGenre ?? null;
+    const FIRST_ITEM_INDEX = 0;
+
+    if (Array.isArray(parsedGenres) && parsedGenres[FIRST_ITEM_INDEX]) {
+      return parsedGenres[FIRST_ITEM_INDEX];
+    }
+
+    return null;
   }
 
   private async getArticleReadTime(text: string): Promise<number | null> {
@@ -89,10 +97,17 @@ class ArticleService implements IService {
       return null;
     }
 
-    const { readTime = null } =
+    const readTimeData =
       safeJSONParse<{ readTime: number }>(readTimeJSON) ?? {};
 
-    return readTime;
+    if (
+      'readTime' in readTimeData &&
+      typeof readTimeData.readTime === 'number'
+    ) {
+      return readTimeData.readTime;
+    }
+
+    return null;
   }
 
   private async getGenreIdForArticle(
@@ -101,7 +116,8 @@ class ArticleService implements IService {
     const detectedGenre = await this.detectArticleGenreFromText(articleText);
 
     if (!detectedGenre) {
-      return null;
+      const unknownGenre = await this.genreRepository.getUnknownGenre();
+      return unknownGenre.toObject().id;
     }
 
     const existingGenre = await this.genreRepository.findByKey(
@@ -171,6 +187,49 @@ class ArticleService implements IService {
     }
 
     return article.toObjectWithRelations();
+  }
+
+  private async generateImprovementSuggestions(
+    text: string,
+  ): Promise<ArticleImprovementSuggestion[] | null> {
+    const suggestionsJSON = await this.openAIService.createCompletion(
+      getArticleImprovementSuggestionsCompletionConfig(text),
+    );
+
+    if (!suggestionsJSON) {
+      return null;
+    }
+
+    const parsedSuggestions =
+      safeJSONParse<ArticleImprovementSuggestion[]>(suggestionsJSON);
+
+    if (Array.isArray(parsedSuggestions)) {
+      return parsedSuggestions;
+    }
+
+    return null;
+  }
+
+  public async getImprovementSuggestions(
+    id: number,
+  ): Promise<ArticleGetImprovementSuggestionsResponseDto> {
+    const article = await this.find(id);
+
+    if (!article) {
+      throw new ApplicationError({
+        message: `Article with id ${id} not found`,
+      });
+    }
+
+    const suggestions = await this.generateImprovementSuggestions(article.text);
+
+    if (!suggestions) {
+      throw new ApplicationError({
+        message: 'Failed to generate improvement suggestions for article',
+      });
+    }
+
+    return { items: suggestions };
   }
 
   public async getUserActivity(

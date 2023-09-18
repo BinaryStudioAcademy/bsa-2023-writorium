@@ -17,7 +17,7 @@ const PromptCard: React.FC<Properties> = ({ category, text, isGenerating }) => (
     </div>
     <div className={styles.prompt}>
       <Loader isLoading={isGenerating} type="dots">
-        <p className={styles.promptText}>{text}</p>
+        <p className={styles.promptText}>{text.toLowerCase()}</p>
       </Loader>
     </div>
   </li>
