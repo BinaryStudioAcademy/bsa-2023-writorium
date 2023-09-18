@@ -1,6 +1,9 @@
 export {
   type ArticleCreateDto,
   type ArticleGetAllResponseDto,
+  type ArticleGetImprovementSuggestionsResponseDto,
+  type ArticleImprovementSuggestion,
+  ArticleImprovementSuggestionPriority,
   type ArticleReactionRequestDto,
   type ArticleReactionResponseDto,
   type ArticleRequestDto,

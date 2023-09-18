@@ -7,10 +7,10 @@ import { ArticleEntity } from './article.entity.js';
 import { type ArticleModel } from './article.model.js';
 import { type FavouredUserArticlesModel } from './favoured-user-articles.model.js';
 import { EMPTY_COMMENT_COUNT } from './libs/constants/constants.js';
-import { SortingOrder } from './libs/enums/enums.js';
 import {
   getIsFavouriteSubQuery,
   getShowFavouritesQuery,
+  getSortingCondition,
   getWhereAuthorIdQuery,
   getWhereGenreIdQuery,
   getWherePublishedOnlyQuery,
@@ -90,7 +90,7 @@ class ArticleRepository implements IArticleRepository {
       .where(getShowFavouritesQuery(Boolean(showFavourites), requestUserId))
       .where(getWherePublishedOnlyQuery(hasPublishedOnly))
       .whereNull('deletedAt')
-      .orderBy('articles.publishedAt', SortingOrder.DESCENDING)
+      .orderBy(getSortingCondition(hasPublishedOnly))
       .page(skip / take, take)
       .modify(this.joinArticleRelations)
       .castTo<Page<ArticleModel & ArticleCommentCount>>();

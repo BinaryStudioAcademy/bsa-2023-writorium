@@ -28,6 +28,11 @@
   background-color: var(--light-green);
   border: 0;
   border-radius: 50%;
+  transition: background-color 0.3s ease;
+}
+
+.shuffleButton:hover {
+  background-color: var(--light-green-80);
 }
 
 .spin {

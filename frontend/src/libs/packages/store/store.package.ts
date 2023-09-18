@@ -8,7 +8,7 @@ import {
 import { AppEnvironment } from '~/libs/enums/enums.js';
 import { type IConfig } from '~/libs/packages/config/config.js';
 import { fileApi } from '~/libs/packages/file/file-api.js';
-import { storage } from '~/libs/packages/storage/storage.js';
+import { sessionStorage, storage } from '~/libs/packages/storage/storage.js';
 import { achievementsApi } from '~/packages/achievements/achievements.js';
 import { articleApi } from '~/packages/articles/articles.js';
 import { authApi } from '~/packages/auth/auth.js';
@@ -18,6 +18,7 @@ import { notification } from '~/packages/notification/notification.js';
 import { promptApi } from '~/packages/prompts/prompts.js';
 import { userApi } from '~/packages/users/users.js';
 import { reducer as achievementsReducer } from '~/slices/achievements/achievements.js';
+import { reducer as appReducer } from '~/slices/app/app.js';
 import { reducer as articlesReducer } from '~/slices/articles/articles.js';
 import { reducer as authReducer } from '~/slices/auth/auth.js';
 import { reducer as promptsReducer } from '~/slices/prompts/prompts.js';
@@ -26,6 +27,7 @@ import { reducer as usersReducer } from '~/slices/users/users.js';
 import { notificationMiddleware } from './middlewares/notification-middleware.js';
 
 type RootReducer = {
+  app: ReturnType<typeof appReducer>;
   auth: ReturnType<typeof authReducer>;
   users: ReturnType<typeof usersReducer>;
   articles: ReturnType<typeof articlesReducer>;
@@ -44,6 +46,7 @@ type ExtraArguments = {
   achievementsApi: typeof achievementsApi;
   genresApi: typeof genresApi;
   commentsApi: typeof commentsApi;
+  sessionStorage: typeof sessionStorage;
 };
 
 class Store {
@@ -64,6 +67,7 @@ class Store {
     this.instance = configureStore({
       devTools: config.ENV.APP.ENVIRONMENT !== AppEnvironment.PRODUCTION,
       reducer: {
+        app: appReducer,
         auth: authReducer,
         users: usersReducer,
         articles: articlesReducer,
@@ -92,6 +96,7 @@ class Store {
       achievementsApi,
       genresApi,
       commentsApi,
+      sessionStorage,
     };
   }
 }

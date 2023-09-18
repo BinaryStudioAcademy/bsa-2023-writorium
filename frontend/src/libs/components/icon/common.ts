@@ -1,5 +1,6 @@
 import { ReactComponent as ArrowDown } from '~/assets/img/icons/arrow-down-icon.svg';
 import { ReactComponent as ArrowUp } from '~/assets/img/icons/arrow-up-icon.svg';
+import { ReactComponent as AutoFix } from '~/assets/img/icons/auto-fix-icon.svg';
 import { ReactComponent as Bell } from '~/assets/img/icons/bell-icon.svg';
 import { ReactComponent as Comment } from '~/assets/img/icons/comment-icon.svg';
 import { ReactComponent as CrossMark } from '~/assets/img/icons/cross-mark-icon.svg';
@@ -81,7 +82,8 @@ type IconName =
   | 'header5'
   | 'header6'
   | 'trashBin'
-  | 'facebook';
+  | 'facebook'
+  | 'autoFix';
 
 const iconNameToIcon: Record<
   IconName,
@@ -128,6 +130,7 @@ const iconNameToIcon: Record<
   header6: Header6,
   trashBin: TrashBinIcon,
   facebook: Facebook,
+  autoFix: AutoFix,
 };
 
 export { type IconName, iconNameToIcon };

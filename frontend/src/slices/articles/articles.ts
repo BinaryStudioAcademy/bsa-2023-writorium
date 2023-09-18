@@ -9,6 +9,8 @@ import {
   fetchSharedArticle,
   getAllGenres,
   getArticle,
+  getImprovementSuggestions,
+  getImprovementSuggestionsBySession,
   reactToArticle,
   setShowFavourites,
   shareArticle,
@@ -36,6 +38,8 @@ const allActions = {
   fetchSharedArticle,
   toggleIsFavourite,
   setShowFavourites,
+  getImprovementSuggestions,
+  getImprovementSuggestionsBySession,
 };
 
 export { allActions as actions };

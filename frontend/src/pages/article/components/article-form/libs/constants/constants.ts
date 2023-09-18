@@ -10,3 +10,4 @@ const DEFAULT_ARTICLE_FORM_PAYLOAD: ArticleRequestDto = {
 };
 
 export { DEFAULT_ARTICLE_FORM_PAYLOAD };
+export { PREVIOUS_PAGE_INDEX } from '~/libs/constants/constants.js';

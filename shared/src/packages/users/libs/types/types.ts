@@ -2,6 +2,7 @@ export { type UserActivityResponseDto } from './user-activity-response-dto.type.
 export { type UserArticlesGenreStatsItem } from './user-articles-genre-stats-item.type.js';
 export { type UserArticlesGenreStatsResponseDto } from './user-articles-genre-stats-response-dto.type.js';
 export { type UserAuthResponseDto } from './user-auth-response-dto.type.js';
+export { type UserDetailsAuthorResponseDto } from './user-details-author-response-dto.type.js';
 export { type UserDetailsDto } from './user-details-dto.type.js';
 export { type UserDetailsResponseDto } from './user-details-response-dto.type.js';
 export { type UserGetAllItemResponseDto } from './user-get-all-item-response-dto.type.js';

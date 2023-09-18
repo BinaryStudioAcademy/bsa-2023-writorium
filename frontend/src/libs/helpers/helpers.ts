@@ -16,4 +16,5 @@ export {
   getFormattedDate,
   getShuffledArray,
   makePluralOrSingular,
+  safeJSONParse,
 } from 'shared/build/index.js';

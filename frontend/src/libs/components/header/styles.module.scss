@@ -7,7 +7,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 105px;
+  height: var(--header-height);
   padding: 30px 60px;
   background: var(--light-gray);
   border-bottom: 2px solid var(--light-gray-15);
@@ -34,6 +34,11 @@
   background-color: var(--dark-green);
   border-radius: 5px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.writeLink:hover {
+  background-color: var(--light-green);
 }
 
 .dropdown.dropdownModal {
@@ -59,7 +64,24 @@
 }
 
 .avatarButton {
+  background-color: transparent;
   border: none;
+}
+
+.avatarButton > span {
+  transition: background-color 0.3s ease;
+}
+
+.avatarButton:hover > span {
+  background-color: var(--light-green-80);
+}
+
+.avatarButton img {
+  transition: opacity 0.3s ease;
+}
+
+.avatarButton:hover img {
+  opacity: 0.8;
 }
 
 @keyframes fade {
