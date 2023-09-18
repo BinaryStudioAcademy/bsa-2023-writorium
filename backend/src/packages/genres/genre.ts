@@ -12,3 +12,4 @@ const genreController = new GenreController(logger, genreService);
 export { GenreEntity } from './genre.entity.js';
 export { GenreModel } from './genre.model.js';
 export { genreController, genreRepository, genreService };
+export { UNKNOWN_GENRE_KEY } from './lib/constants/constants.js';

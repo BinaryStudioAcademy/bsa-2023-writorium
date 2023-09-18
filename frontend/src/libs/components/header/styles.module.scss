@@ -9,7 +9,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 105px;
+  height: var(--header-height);
   padding: 30px 60px;
   background: var(--light-gray);
   border-bottom: 2px solid var(--light-gray-15);

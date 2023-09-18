@@ -1,0 +1,84 @@
+.wrapper {
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid var(--pastel-gray);
+}
+
+.wrapper,
+.wrapperInner {
+  padding: 12px;
+  border-radius: 10px;
+}
+
+.suggestImprovementsButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 20px;
+  color: var(--white);
+  font-weight: 700;
+  font-size: 18px;
+  font-family: inherit;
+  letter-spacing: 1px;
+  background-color: var(--light-green);
+  border-radius: 10px;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease-in;
+}
+
+.suggestImprovementsButton:hover {
+  background-color: var(--light-green-85);
+}
+
+.suggestImprovementsButton:active {
+  transform: scale(0.98);
+}
+
+.suggestImprovementsButton svg {
+  width: 32px;
+  height: 32px;
+  padding: 5px;
+  background-color: var(--white-50);
+  border-radius: 6px;
+}
+
+.ctaText {
+  margin-bottom: 10px;
+  color: var(--dark-blue-40);
+}
+
+.suggestionsList {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-height: 740px;
+  overflow: auto;
+  list-style: none;
+}
+
+.suggestionsListTitle {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.suggestionsCount {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  color: var(--white);
+  font-weight: 600;
+  background-color: var(--light-green);
+  border-radius: 50%;
+}
+
+.loadingDescription {
+  margin-top: 25px;
+  color: var(--dark-blue-40);
+  text-align: center;
+}

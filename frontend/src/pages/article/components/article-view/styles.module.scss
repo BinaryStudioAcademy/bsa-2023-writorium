@@ -23,9 +23,18 @@
   height: 90%;
 }
 
+.articleContent {
+  flex-grow: 1;
+  padding: 18px 33px 62px;
+}
+
 .body:not(.hasCover) {
   display: flex;
   flex-direction: row-reverse;
+}
+
+.body:not(.hasCover) .articleContent {
+  padding-top: 40px;
 }
 
 .body:not(.hasCover) .buttonsWrapper {
@@ -82,11 +91,6 @@
   font-size: 40px;
   font-family: "Libre Baskerville", serif;
   line-height: normal;
-}
-
-.textWrapper {
-  flex-grow: 1;
-  padding: 18px 33px 62px;
 }
 
 .text {
