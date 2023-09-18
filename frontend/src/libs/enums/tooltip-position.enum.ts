@@ -3,6 +3,7 @@ const TooltipPosition = {
   RIGHT: 'right',
   BOTTOM: 'bottom',
   LEFT: 'left',
+  BOTTOM_END: 'bottom-end',
 } as const;
 
 export { TooltipPosition };
