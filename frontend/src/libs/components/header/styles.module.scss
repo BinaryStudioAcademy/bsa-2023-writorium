@@ -86,6 +86,33 @@
   opacity: 0.8;
 }
 
+.profileLink {
+  padding: 14px 10px;
+  color: inherit;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: normal;
+  text-align: center;
+  border-bottom: 2px solid var(--light-gray-15);
+  border-radius: 7px 7px 0 0;
+}
+
+.profileLink:hover {
+  color: var(--light-green);
+  background-color: var(--light-gray-15);
+  border-color: var(--light-green);
+}
+
+.logoutBtn {
+  padding: 14px 10px;
+  background: none;
+  border-radius: 0 0 7px 7px;
+}
+
+.logoutBtn:hover {
+  background-color: var(--light-gray-15);
+}
+
 @media only screen and (max-width: breakpoints.$medium) {
   .header {
     justify-content: flex-start;

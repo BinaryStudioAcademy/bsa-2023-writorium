@@ -128,13 +128,6 @@
     font-size: 16px;
   }
 
-  .authorDetails .authorDetailsModal {
-    position: absolute;
-    top: 243px;
-    left: 63px;
-    display: block;
-  }
-
   .authorWrapper {
     row-gap: 10px;
     padding: 8px;
@@ -191,6 +184,11 @@
     margin-left: 8px;
     font-size: 12px;
   }
+
+  .authorDetails.authorDetailsModal {
+    left: 15px;
+    width: 235px;
+  }
 }
 
 @media only screen and (min-width: breakpoints.$medium) and (max-width: breakpoints.$extra-large) {
@@ -208,13 +206,6 @@
 
   .text {
     margin-top: 18px;
-  }
-
-  .authorDetails .authorDetailsModal {
-    position: absolute;
-    top: 243px;
-    left: 90px;
-    display: block;
   }
 
   .authorWrapper {
@@ -261,6 +252,11 @@
   .articleGenre {
     margin-left: 10px;
     font-size: 14px;
+  }
+
+  .authorDetails.authorDetailsModal {
+    left: 15px;
+    width: 293px;
   }
 }
 
@@ -368,16 +364,8 @@
   }
 
   .authorDetails.authorDetailsModal {
+    display: flex;
     background-color: var(--light-gray-15);
-  }
-
-  .authorDetails .authorDetailsModal.open {
-    animation: fade 0.3s ease-in-out;
-  }
-
-  .authorDetails .authorDetailsModal {
-    padding: 0;
-    box-shadow: 0 4px 8px -2px var(--translucent-dark-blue-gray);
   }
 }
 

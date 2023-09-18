@@ -137,15 +137,7 @@ const ArticleView: React.FC<Properties> = ({
           </div>
         )}
       </div>
-      <h5
-        role="presentation"
-        className={styles.presentationAuthorName}
-        onClick={handleToggleModalOpen}
-      >
-        {authorFullName}
-      </h5>
       <Popover
-        trigger={{ handleToggleModalOpen, isOpen }}
         content={
           <ArticleDetails
             readTime={readTime}
@@ -161,7 +153,15 @@ const ArticleView: React.FC<Properties> = ({
           styles.authorDetailsModal,
           isOpen && styles.open,
         )}
-      />
+      >
+        <h5
+          role="presentation"
+          className={styles.presentationAuthorName}
+          onClick={handleToggleModalOpen}
+        >
+          {authorFullName}
+        </h5>
+      </Popover>
       <div className={styles.textWrapper}>
         <h4 className={styles.title}>{title}</h4>
         {tags && <Tags tags={tags} />}

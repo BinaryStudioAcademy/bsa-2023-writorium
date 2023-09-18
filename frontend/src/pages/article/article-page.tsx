@@ -78,14 +78,17 @@ const ArticlePage: React.FC = () => {
     [article, dispatch],
   );
 
-  const isLoading = !(
+  const isLoading =
+    getArticleStatus === DataStatus.PENDING ||
+    commentsDataStatus === DataStatus.PENDING;
+
+  const isLoaded =
     getArticleStatus === DataStatus.FULFILLED ||
     getArticleStatus === DataStatus.REJECTED ||
     commentsDataStatus === DataStatus.FULFILLED ||
-    commentsDataStatus === DataStatus.REJECTED
-  );
+    commentsDataStatus === DataStatus.REJECTED;
 
-  if (!article && !isLoading) {
+  if (!article && !isLoading && isLoaded) {
     return <Navigate to={AppRoute.ARTICLES} />;
   }
 

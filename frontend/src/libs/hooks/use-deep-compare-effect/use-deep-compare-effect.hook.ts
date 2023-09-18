@@ -1,11 +1,10 @@
 import { checkIsEqual, cloneDeep } from '~/libs/helpers/helpers.js';
-
 import {
   type DependencyList,
   type EffectCallback,
-  useEffect,
-  useRef as useReference,
-} from '../hooks.js';
+} from '~/libs/types/types.js';
+
+import { useEffect, useReference } from '../react/react.js';
 
 const useDeepCompareMemoize = <T>(value: T): T => {
   const reference = useReference<T>(value);
