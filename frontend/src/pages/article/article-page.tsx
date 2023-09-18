@@ -104,9 +104,6 @@ const ArticlePage: React.FC = () => {
             <>
               <ArticleView
                 tags={getArticleViewTags(article)}
-                text={article.text}
-                title={article.title}
-                coverUrl={article.coverUrl}
                 isArticleOwner={isArticleOwner}
                 article={article}
               />
