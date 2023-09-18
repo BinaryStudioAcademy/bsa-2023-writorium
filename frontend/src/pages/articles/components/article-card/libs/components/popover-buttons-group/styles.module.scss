@@ -3,12 +3,24 @@
   flex-direction: column;
 }
 
+.editLink,
 .buttonsGroup button {
   display: flex;
   gap: 15px;
   padding: 10px 15px;
+  color: var(--dark-gray);
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.buttonsGroup button {
+  font-family: inherit;
   background-color: transparent;
   border-radius: 0;
+}
+
+.editLink {
+  line-height: normal;
 }
 
 .editLink,
@@ -20,8 +32,4 @@
 .buttonsGroup button:hover {
   background-color: var(--pale-gray);
   border-color: var(--light-green);
-}
-
-.editLink:hover > button {
-  color: var(--light-green);
 }

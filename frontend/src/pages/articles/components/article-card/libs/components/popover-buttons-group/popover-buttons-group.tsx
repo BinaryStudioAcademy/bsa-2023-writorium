@@ -1,4 +1,4 @@
-import { Button, Icon, Link } from '~/libs/components/components.js';
+import { Icon, IconButton, Link } from '~/libs/components/components.js';
 import { AppRoute } from '~/libs/enums/enums.js';
 import { configureString } from '~/libs/helpers/helpers.js';
 import { useCallback } from '~/libs/hooks/hooks.js';
@@ -25,14 +25,7 @@ const PopoverButtonsGroup: React.FC<Properties> = ({
 
   return (
     <div className={styles.buttonsGroup}>
-      <Button
-        label={
-          <>
-            <Icon iconName="favorite" />
-            <span>Add to favorites</span>
-          </>
-        }
-      />
+      <IconButton iconName="favorite" label="Add to favorites" />
       {isOwnArticle && (
         <>
           <Link
@@ -44,22 +37,12 @@ const PopoverButtonsGroup: React.FC<Properties> = ({
             state={article}
             className={styles.editLink}
           >
-            <Button
-              label={
-                <>
-                  <Icon iconName="edit" />
-                  <span>Edit</span>
-                </>
-              }
-            />
+            <Icon iconName="edit" />
+            Edit
           </Link>
-          <Button
-            label={
-              <>
-                <Icon iconName="trashBin" />
-                <span>Delete</span>
-              </>
-            }
+          <IconButton
+            iconName="trashBin"
+            label="Delete"
             onClick={handleDeleteArticle}
           />
         </>
