@@ -3,6 +3,7 @@ import { createSlice, isAnyOf } from '@reduxjs/toolkit';
 import { DataStatus } from '~/libs/enums/enums.js';
 import { type ValueOf } from '~/libs/types/types.js';
 import {
+  type ArticleImprovementSuggestion,
   type ArticleResponseDto,
   type ArticleWithCommentCountResponseDto,
 } from '~/packages/articles/articles.js';
@@ -20,6 +21,8 @@ import {
   fetchSharedArticle,
   getAllGenres,
   getArticle,
+  getImprovementSuggestions,
+  getImprovementSuggestionsBySession,
   reactToArticle,
   updateArticle,
   updateComment,
@@ -34,6 +37,8 @@ type State = {
   articleCommentsDataStatus: ValueOf<typeof DataStatus>;
   articleReactionDataStatus: ValueOf<typeof DataStatus>;
   getArticleStatus: ValueOf<typeof DataStatus>;
+  improvementSuggestions: ArticleImprovementSuggestion[] | null;
+  improvementSuggestionsDataStatus: ValueOf<typeof DataStatus>;
 };
 
 const initialState: State = {
@@ -41,10 +46,12 @@ const initialState: State = {
   articleComments: [],
   articles: [],
   genres: [],
+  improvementSuggestions: null,
   dataStatus: DataStatus.IDLE,
   articleCommentsDataStatus: DataStatus.IDLE,
   articleReactionDataStatus: DataStatus.IDLE,
   getArticleStatus: DataStatus.IDLE,
+  improvementSuggestionsDataStatus: DataStatus.IDLE,
 };
 
 const { reducer, actions, name } = createSlice({
@@ -182,6 +189,34 @@ const { reducer, actions, name } = createSlice({
       });
       state.articleCommentsDataStatus = DataStatus.FULFILLED;
     });
+    builder.addMatcher(
+      isAnyOf(
+        getImprovementSuggestions.fulfilled,
+        getImprovementSuggestionsBySession.fulfilled,
+      ),
+      (state, action) => {
+        state.improvementSuggestions = action.payload;
+        state.improvementSuggestionsDataStatus = DataStatus.FULFILLED;
+      },
+    );
+    builder.addMatcher(
+      isAnyOf(
+        getImprovementSuggestions.pending,
+        getImprovementSuggestionsBySession.pending,
+      ),
+      (state) => {
+        state.improvementSuggestionsDataStatus = DataStatus.PENDING;
+      },
+    );
+    builder.addMatcher(
+      isAnyOf(
+        getImprovementSuggestions.rejected,
+        getImprovementSuggestionsBySession.rejected,
+      ),
+      (state) => {
+        state.improvementSuggestionsDataStatus = DataStatus.REJECTED;
+      },
+    );
     builder.addMatcher(
       isAnyOf(
         createComment.pending,

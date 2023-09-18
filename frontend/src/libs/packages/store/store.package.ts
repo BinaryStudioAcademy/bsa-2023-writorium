@@ -8,7 +8,7 @@ import {
 import { AppEnvironment } from '~/libs/enums/enums.js';
 import { type IConfig } from '~/libs/packages/config/config.js';
 import { fileApi } from '~/libs/packages/file/file-api.js';
-import { storage } from '~/libs/packages/storage/storage.js';
+import { sessionStorage, storage } from '~/libs/packages/storage/storage.js';
 import { achievementsApi } from '~/packages/achievements/achievements.js';
 import { articleApi } from '~/packages/articles/articles.js';
 import { authApi } from '~/packages/auth/auth.js';
@@ -46,6 +46,7 @@ type ExtraArguments = {
   achievementsApi: typeof achievementsApi;
   genresApi: typeof genresApi;
   commentsApi: typeof commentsApi;
+  sessionStorage: typeof sessionStorage;
 };
 
 class Store {
@@ -95,6 +96,7 @@ class Store {
       achievementsApi,
       genresApi,
       commentsApi,
+      sessionStorage,
     };
   }
 }
