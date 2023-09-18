@@ -12,13 +12,28 @@
 }
 
 .promptsContainer {
+  display: flex;
+  gap: 20px;
+}
+
+.prompts {
+  position: relative;
   display: grid;
-  grid-template-columns: repeat(6, auto);
+  grid-template-columns: repeat(5, auto);
+  flex: 1 1 auto;
   gap: 20px;
   list-style: none;
 }
 
+.resetPromptButton {
+  position: absolute;
+  top: -20px;
+  right: 0;
+  background: transparent;
+}
+
 .shuffleButton {
+  flex: none;
   align-self: end;
   width: 78px;
   height: 78px;
