@@ -2,6 +2,7 @@ import { Link as RouterLink } from 'react-router-dom';
 
 import { Button, Icon } from '~/libs/components/components.js';
 import { AppRoute } from '~/libs/enums/enums.js';
+import { configureString } from '~/libs/helpers/helpers.js';
 import { useCallback } from '~/libs/hooks/hooks.js';
 import { type ArticleResponseDto } from '~/packages/articles/articles.js';
 
@@ -37,7 +38,11 @@ const PopoverButtonsGroup: React.FC<Properties> = ({
       {isOwnArticle && (
         <>
           <RouterLink
-            to={AppRoute.ARTICLES_EDIT_$ID.replace(':id', id.toString())}
+            to={
+              configureString(AppRoute.ARTICLES_EDIT_$ID, {
+                id: String(id),
+              }) as typeof AppRoute.ARTICLES_EDIT_$ID
+            }
             state={article}
             className={styles.editLink}
           >
