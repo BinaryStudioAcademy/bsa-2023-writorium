@@ -21,6 +21,8 @@ import {
   getAllGenres,
   getArticle,
   reactToArticle,
+  setShowFavourites,
+  toggleIsFavourite,
   updateArticle,
   updateComment,
 } from './actions.js';
@@ -34,6 +36,7 @@ type State = {
   articleCommentsDataStatus: ValueOf<typeof DataStatus>;
   articleReactionDataStatus: ValueOf<typeof DataStatus>;
   getArticleStatus: ValueOf<typeof DataStatus>;
+  showFavourites: boolean;
 };
 
 const initialState: State = {
@@ -41,6 +44,7 @@ const initialState: State = {
   articleComments: [],
   articles: [],
   genres: [],
+  showFavourites: false,
   dataStatus: DataStatus.IDLE,
   articleCommentsDataStatus: DataStatus.IDLE,
   articleReactionDataStatus: DataStatus.IDLE,
@@ -65,6 +69,7 @@ const { reducer, actions, name } = createSlice({
       state.articles = [...state.articles, action.payload];
       state.dataStatus = DataStatus.FULFILLED;
     });
+
     builder.addCase(updateArticle.fulfilled, (state, action) => {
       const article = action.payload;
       if (article) {
@@ -77,9 +82,13 @@ const { reducer, actions, name } = createSlice({
       }
       state.dataStatus = DataStatus.FULFILLED;
     });
+
     builder.addCase(getArticle.fulfilled, (state, action) => {
       state.getArticleStatus = DataStatus.FULFILLED;
       state.article = action.payload;
+    });
+    builder.addCase(setShowFavourites, (state, action) => {
+      state.showFavourites = action.payload;
     });
     builder.addCase(deleteArticle.fulfilled, (state, action) => {
       const article = action.payload;
@@ -174,6 +183,23 @@ const { reducer, actions, name } = createSlice({
       state.articleComments = action.payload.items;
       state.articleCommentsDataStatus = DataStatus.FULFILLED;
     });
+    builder.addCase(toggleIsFavourite.fulfilled, (state, action) => {
+      const article = action.payload;
+      if (article) {
+        state.articles =
+          !article.isFavourite && state.showFavourites
+            ? state.articles.filter((item) => item.id !== article.id)
+            : state.articles.map((item) => {
+                if (article.id === item.id) {
+                  return article;
+                }
+                return item;
+              });
+
+        state.dataStatus = DataStatus.FULFILLED;
+      }
+    });
+
     builder.addCase(updateComment.fulfilled, (state, action) => {
       const updatedComment = action.payload;
 
@@ -182,6 +208,7 @@ const { reducer, actions, name } = createSlice({
       });
       state.articleCommentsDataStatus = DataStatus.FULFILLED;
     });
+
     builder.addMatcher(
       isAnyOf(
         createComment.pending,
@@ -225,6 +252,7 @@ const { reducer, actions, name } = createSlice({
         getAllGenres.pending,
         fetchSharedArticle.pending,
         deleteArticle.pending,
+        toggleIsFavourite.pending,
       ),
       (state) => {
         state.dataStatus = DataStatus.PENDING;
@@ -244,6 +272,7 @@ const { reducer, actions, name } = createSlice({
         updateArticle.rejected,
         fetchSharedArticle.rejected,
         deleteArticle.rejected,
+        toggleIsFavourite.rejected,
       ),
       (state) => {
         state.dataStatus = DataStatus.REJECTED;

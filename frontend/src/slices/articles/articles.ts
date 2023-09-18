@@ -10,7 +10,9 @@ import {
   getAllGenres,
   getArticle,
   reactToArticle,
+  setShowFavourites,
   shareArticle,
+  toggleIsFavourite,
   updateArticle,
   updateComment,
 } from './actions.js';
@@ -32,6 +34,8 @@ const allActions = {
   deleteArticleReaction,
   shareArticle,
   fetchSharedArticle,
+  toggleIsFavourite,
+  setShowFavourites,
 };
 
 export { allActions as actions };

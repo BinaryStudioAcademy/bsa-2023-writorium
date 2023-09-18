@@ -1,4 +1,4 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
+import { createAction,createAsyncThunk } from '@reduxjs/toolkit';
 
 import { type AsyncThunkConfig } from '~/libs/types/types.js';
 import {
@@ -204,6 +204,20 @@ const deleteArticle = createAsyncThunk<
   return articleApi.delete(id);
 });
 
+const toggleIsFavourite = createAsyncThunk<
+  ArticleWithCommentCountResponseDto,
+  number,
+  AsyncThunkConfig
+>(`${sliceName}/toggleIsFavourite`, (id, { extra }) => {
+  const { articleApi } = extra;
+
+  return articleApi.toggleIsFavourite(id);
+});
+
+const setShowFavourites = createAction<boolean>(
+  `${sliceName}/toggleIsFavourite`,
+);
+
 export {
   createArticle,
   createComment,
@@ -216,7 +230,9 @@ export {
   getAllGenres,
   getArticle,
   reactToArticle,
+  setShowFavourites,
   shareArticle,
+  toggleIsFavourite,
   updateArticle,
   updateComment,
 };
