@@ -13,7 +13,7 @@ const getShowFavouritesQuery = (
       void builder.whereExists((qb) => {
         void qb
           .select(1)
-          .from('favoured_user_articles')
+          .from(DatabaseTableName.FAVOURED_USER_ARTICLES)
           .where({ userId })
           .whereRaw(`article_id=${DatabaseTableName.ARTICLES}.id`);
       });

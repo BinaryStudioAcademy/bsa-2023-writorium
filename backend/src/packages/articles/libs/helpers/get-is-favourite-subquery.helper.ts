@@ -11,7 +11,7 @@ const getIsFavouriteSubQuery = (
   const query = showFavourites
     ? raw('true')
     : raw(
-        'coalesce((SELECT true FROM favoured_user_articles fa WHERE fa.article_id=?? AND fa.user_id=??), false)',
+        `coalesce((SELECT true FROM ${DatabaseTableName.FAVOURED_USER_ARTICLES} fa WHERE fa.article_id=?? AND fa.user_id=??), false)`,
         `${DatabaseTableName.ARTICLES}.id`,
         userId,
       );
