@@ -1,9 +1,4 @@
-import {
-  AppRoute,
-  ContentType,
-  ExceptionMessage,
-  ServerErrorType,
-} from '~/libs/enums/enums.js';
+import { AppRoute, ContentType, ServerErrorType } from '~/libs/enums/enums.js';
 import { configureString, constructUrl } from '~/libs/helpers/helpers.js';
 import {
   type CustomHttpHeader,
@@ -13,6 +8,7 @@ import { HttpCode, HttpError, HttpHeader } from '~/libs/packages/http/http.js';
 import { type IStorage, StorageKey } from '~/libs/packages/storage/storage.js';
 import { type ServerErrorResponse, type ValueOf } from '~/libs/types/types.js';
 
+import { UNAUTHORIZED_ACTION_ERRORS } from './libs/constants/constants.js';
 import { type IHttpApi } from './libs/interfaces/interfaces.js';
 import {
   type HttpApiOptions,
@@ -129,9 +125,7 @@ class HttpApi implements IHttpApi {
 
     if (
       response.status === HttpCode.UNAUTHORIZED &&
-      (parsedException.message === ExceptionMessage.INVALID_TOKEN ||
-        parsedException.message === ExceptionMessage.AUTHORIZATION_HEADER ||
-        parsedException.message === ExceptionMessage.DO_NOT_HAVE_AUTHORIZATION)
+      UNAUTHORIZED_ACTION_ERRORS.includes(parsedException.message)
     ) {
       await this.storage.drop(StorageKey.TOKEN);
       window.location.assign(AppRoute.SIGN_IN);
