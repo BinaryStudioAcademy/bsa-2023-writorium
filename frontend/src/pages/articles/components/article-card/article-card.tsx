@@ -10,6 +10,7 @@ import {
 } from '~/libs/components/components.js';
 import {
   AppRoute,
+  DataStatus,
   DateFormat,
   LinkHash,
   Reaction,
@@ -61,8 +62,10 @@ const ArticleCard: React.FC<Properties> = ({
 }) => {
   const dispatch = useAppDispatch();
   const user = useAppSelector(({ auth }) => auth.user) as UserAuthResponseDto;
+  const isLoading =
+    useAppSelector(({ articles }) => articles.dataStatus) ===
+    DataStatus.PENDING;
   const { pathname } = useLocation();
-
   const isMyArticles = matchPath(
     { path: AppRoute.ARTICLES_MY_ARTICLES },
     pathname,
@@ -191,6 +194,7 @@ const ArticleCard: React.FC<Properties> = ({
             iconName={isFavourite ? 'favoriteFilled' : 'favorite'}
             iconClassName={styles.pointerIcon}
             onClick={handleToggleIsFavourite}
+            isLoading={isLoading}
           />
         </div>
       </div>
