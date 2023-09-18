@@ -18,10 +18,8 @@ const PopoverButtonsGroup: React.FC<Properties> = ({
   isOwnArticle,
   article,
   onDeleteArticle,
-  onToggleFavouriteClick,
-  isToggleFavouriteLoading,
 }) => {
-  const { id, isFavourite } = article;
+  const { id } = article;
 
   const handleDeleteArticle = useCallback(() => {
     onDeleteArticle(id);
@@ -29,7 +27,6 @@ const PopoverButtonsGroup: React.FC<Properties> = ({
 
   return (
     <div className={styles.buttonsGroup}>
-      <IconButton iconName="favorite" label="Add to favorites" />
       {isOwnArticle && (
         <>
           <Link
@@ -48,13 +45,6 @@ const PopoverButtonsGroup: React.FC<Properties> = ({
             iconName="trashBin"
             label="Delete"
             onClick={handleDeleteArticle}
-          />
-          <IconButton
-            className={styles.iconButton}
-            iconName={isFavourite ? 'favoriteFilled' : 'favorite'}
-            iconClassName={styles.pointerIcon}
-            onClick={onToggleFavouriteClick}
-            isLoading={isToggleFavouriteLoading}
           />
         </>
       )}
