@@ -1,8 +1,12 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
+import { PREVIOUS_PAGE_INDEX } from '~/libs/constants/constants.js';
+import { AppRoute } from '~/libs/enums/enums.js';
+import { StorageKey } from '~/libs/packages/storage/storage.js';
 import { type AsyncThunkConfig } from '~/libs/types/types.js';
 import {
   type ArticleGetAllResponseDto,
+  type ArticleImprovementSuggestion,
   type ArticleReactionRequestDto,
   type ArticleRequestDto,
   type ArticleResponseDto,
@@ -21,8 +25,9 @@ import { type GenreGetAllResponseDto } from '~/packages/genres/genres.js';
 import { NotificationType } from '~/packages/notification/notification.js';
 import { type PromptRequestDto } from '~/packages/prompts/prompts.js';
 
-import { appActions } from '../app/app.js';
+import { actions as appActions } from '../app/app.js';
 import { name as sliceName } from './articles.slice.js';
+import { parseImprovementSuggestionsJSON } from './libs/helpers/helpers.js';
 
 const fetchAll = createAsyncThunk<
   ArticleGetAllResponseDto,
@@ -53,7 +58,7 @@ const createArticle = createAsyncThunk<
   AsyncThunkConfig
 >(
   `${sliceName}/create`,
-  async ({ articlePayload, generatedPrompt }, { extra }) => {
+  async ({ articlePayload, generatedPrompt }, { extra, dispatch }) => {
     const { articleApi, promptApi } = extra;
 
     if (generatedPrompt) {
@@ -66,7 +71,16 @@ const createArticle = createAsyncThunk<
       });
     }
 
-    return await articleApi.create(articlePayload);
+    const createdArticle = await articleApi.create(articlePayload);
+
+    const wasPublished = Boolean(createdArticle.publishedAt);
+    const routeToNavigate = wasPublished
+      ? AppRoute.ARTICLES
+      : AppRoute.ARTICLES_MY_ARTICLES;
+
+    dispatch(appActions.navigate(routeToNavigate));
+
+    return createdArticle;
   },
 );
 
@@ -74,10 +88,30 @@ const updateArticle = createAsyncThunk<
   ArticleWithCommentCountResponseDto,
   ArticleUpdateRequestPayload,
   AsyncThunkConfig
->(`${sliceName}/update`, async (payload, { extra }) => {
-  const { articleApi } = extra;
+>(`${sliceName}/update`, async (payload, { extra, dispatch }) => {
+  const { articleApi, sessionStorage } = extra;
 
-  return await articleApi.update(payload);
+  const updatedArticle = await articleApi.update(payload);
+
+  const existingSuggestionsJSON = await sessionStorage.get(
+    StorageKey.ARTICLES_IMPROVEMENT_SUGGESTIONS,
+  );
+
+  const existingSuggestionsByArticles = parseImprovementSuggestionsJSON(
+    existingSuggestionsJSON,
+  );
+
+  await sessionStorage.set(
+    StorageKey.ARTICLES_IMPROVEMENT_SUGGESTIONS,
+    JSON.stringify({
+      ...existingSuggestionsByArticles,
+      [payload.articleId]: null,
+    }),
+  );
+
+  dispatch(appActions.navigate(AppRoute.ARTICLES_MY_ARTICLES));
+
+  return updatedArticle;
 });
 
 const getArticle = createAsyncThunk<
@@ -196,12 +230,72 @@ const updateComment = createAsyncThunk<
 
 const deleteArticle = createAsyncThunk<
   ArticleWithCommentCountResponseDto,
+  { id: number; hasRedirect?: boolean },
+  AsyncThunkConfig
+>(
+  `${sliceName}/delete`,
+  async ({ id, hasRedirect = false }, { extra, dispatch }) => {
+    const { articleApi } = extra;
+
+    const deletedArticle = await articleApi.delete(id);
+
+    if (hasRedirect) {
+      dispatch(appActions.navigate(PREVIOUS_PAGE_INDEX));
+    }
+
+    return deletedArticle;
+  },
+);
+
+const getImprovementSuggestionsBySession = createAsyncThunk<
+  ArticleImprovementSuggestion[] | null,
   number,
   AsyncThunkConfig
->(`${sliceName}/delete`, (id, { extra }) => {
-  const { articleApi } = extra;
+>(
+  `${sliceName}/get-improvement-suggestions-by-session`,
+  async (id, { extra }) => {
+    const { sessionStorage } = extra;
+    const suggestionsJSON = await sessionStorage.get(
+      StorageKey.ARTICLES_IMPROVEMENT_SUGGESTIONS,
+    );
 
-  return articleApi.delete(id);
+    const existingSuggestionsByArticles =
+      parseImprovementSuggestionsJSON(suggestionsJSON);
+
+    if (existingSuggestionsByArticles[id]) {
+      return existingSuggestionsByArticles[id];
+    }
+
+    return null;
+  },
+);
+
+const getImprovementSuggestions = createAsyncThunk<
+  ArticleImprovementSuggestion[],
+  number,
+  AsyncThunkConfig
+>(`${sliceName}/get-improvement-suggestions`, async (id, { extra }) => {
+  const { articleApi, sessionStorage } = extra;
+
+  const newSuggestions = await articleApi.getImprovementSuggestions(id);
+
+  const existingSuggestionsJSON = await sessionStorage.get(
+    StorageKey.ARTICLES_IMPROVEMENT_SUGGESTIONS,
+  );
+
+  const existingSuggestionsByArticles = parseImprovementSuggestionsJSON(
+    existingSuggestionsJSON,
+  );
+
+  await sessionStorage.set(
+    StorageKey.ARTICLES_IMPROVEMENT_SUGGESTIONS,
+    JSON.stringify({
+      ...existingSuggestionsByArticles,
+      [id]: newSuggestions.items,
+    }),
+  );
+
+  return newSuggestions.items;
 });
 
 export {
@@ -215,6 +309,8 @@ export {
   fetchSharedArticle,
   getAllGenres,
   getArticle,
+  getImprovementSuggestions,
+  getImprovementSuggestionsBySession,
   reactToArticle,
   shareArticle,
   updateArticle,

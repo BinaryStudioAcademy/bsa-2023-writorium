@@ -14,6 +14,7 @@ import {
   Reaction,
 } from '~/libs/enums/enums.js';
 import {
+  configureString,
   getFormattedDate,
   getFullName,
   getReactionsInfo,
@@ -74,7 +75,9 @@ const ArticleCard: React.FC<Properties> = ({
   );
   const { firstName, lastName, avatarUrl } = author;
   const articleUrl = window.location.href;
-  const articleRouteById = AppRoute.ARTICLE.replace(':id', String(id));
+  const articleRouteById = configureString(AppRoute.ARTICLES_$ID, {
+    id: String(id),
+  }) as typeof AppRoute.ARTICLES_$ID;
 
   const isOwnArticle = user.id === userId;
 
@@ -114,7 +117,7 @@ const ArticleCard: React.FC<Properties> = ({
 
   const handleDeleteArticle = useCallback(
     (id: number): void => {
-      void dispatch(articlesActions.deleteArticle(id));
+      void dispatch(articlesActions.deleteArticle({ id }));
     },
     [dispatch],
   );
@@ -182,7 +185,7 @@ const ArticleCard: React.FC<Properties> = ({
           <li className={styles.reaction}>
             <Link
               to={{
-                pathname: articleRouteById as typeof AppRoute.ARTICLE,
+                pathname: articleRouteById,
                 hash: LinkHash.COMMENTS,
               }}
               className={styles.reaction}
@@ -234,10 +237,7 @@ const ArticleCard: React.FC<Properties> = ({
           articleUrl={articleUrl}
           iconStyle={styles.facebookIconButton}
         />
-        <Link
-          to={articleRouteById as typeof AppRoute.ARTICLE}
-          className={styles.readMore}
-        >
+        <Link to={articleRouteById} className={styles.readMore}>
           Read more
         </Link>
       </div>

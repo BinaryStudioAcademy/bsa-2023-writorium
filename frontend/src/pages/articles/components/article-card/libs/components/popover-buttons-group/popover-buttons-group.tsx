@@ -37,7 +37,7 @@ const PopoverButtonsGroup: React.FC<Properties> = ({
       {isOwnArticle && (
         <>
           <RouterLink
-            to={AppRoute.EDIT_ARTICLE.replace(':id', id.toString())}
+            to={AppRoute.ARTICLES_EDIT_$ID.replace(':id', id.toString())}
             state={article}
             className={styles.editLink}
           >

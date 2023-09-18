@@ -1,10 +1,11 @@
 import { Button, Input, TextEditor } from '~/libs/components/components.js';
-import { AppRoute, ArticleSubRoute, ButtonType } from '~/libs/enums/enums.js';
+import { ButtonType } from '~/libs/enums/enums.js';
 import {
   useAppDispatch,
   useAppForm,
   useAppSelector,
   useCallback,
+  useEffect,
   useNavigate,
 } from '~/libs/hooks/hooks.js';
 import { type ValueOf } from '~/libs/types/types.js';
@@ -16,6 +17,7 @@ import {
 } from '~/packages/articles/articles.js';
 import { getGeneratedPromptPayload } from '~/packages/prompts/prompts.js';
 import { actions as articlesActions } from '~/slices/articles/articles.js';
+import { actions as promptActions } from '~/slices/prompts/prompts.js';
 
 import { ArticleCoverUpload } from './libs/components/components.js';
 import {
@@ -30,11 +32,11 @@ type Properties = {
 };
 
 const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const { generatedPrompt } = useAppSelector(({ prompts }) => ({
     generatedPrompt: prompts.generatedPrompt,
   }));
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
   const { control, errors, handleSubmit, handleReset, isDirty, isSubmitting } =
     useAppForm<ArticleRequestDto>({
       defaultValues: articleForUpdate
@@ -55,12 +57,12 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
   const handleArticleSubmit = useCallback(
     (articleSubmitType: ValueOf<typeof ArticleSubmitType>) =>
       (payload: ArticleRequestDto): void => {
+        const isArticlePublished =
+          articleSubmitType === ArticleSubmitType.PUBLISH;
+
         const updatedPayload = {
           ...payload,
-          publishedAt:
-            articleSubmitType === ArticleSubmitType.PUBLISH
-              ? new Date().toISOString()
-              : null,
+          publishedAt: isArticlePublished ? new Date().toISOString() : null,
         };
 
         void dispatch(
@@ -89,15 +91,10 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
         },
       };
 
-      void dispatch(articlesActions.updateArticle(updatePayload))
-        .unwrap()
-        .then(() =>
-          navigate(`${AppRoute.ARTICLES}/${ArticleSubRoute.MY_ARTICLES}`),
-        )
-        .catch(() => {});
+      void dispatch(articlesActions.updateArticle(updatePayload));
     },
 
-    [dispatch, articleForUpdate, navigate],
+    [dispatch, articleForUpdate],
   );
 
   const handleFormSubmit = useCallback(
@@ -132,59 +129,63 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
     );
   }, [handleReset, navigate, isDirty, articleForUpdate]);
 
+  useEffect(() => {
+    return () => {
+      dispatch(promptActions.resetPrompts());
+    };
+  }, [dispatch]);
+
   return (
-    <div>
-      <form
-        method="POST"
-        onSubmit={handleFormSubmit}
-        onReset={handleCancel}
-        className={styles.formContainer}
-      >
-        <ArticleCoverUpload
-          name="coverId"
-          control={control}
-          errors={errors}
-          initialPreviewUrl={articleForUpdate?.coverUrl}
+    <form
+      method="POST"
+      onSubmit={handleFormSubmit}
+      onReset={handleCancel}
+      className={styles.formContainer}
+    >
+      <ArticleCoverUpload
+        name="coverId"
+        control={control}
+        errors={errors}
+        initialPreviewUrl={articleForUpdate?.coverUrl}
+      />
+      <Input
+        type="text"
+        placeholder="Enter the title of the article"
+        name="title"
+        control={control}
+        errors={errors}
+        className={styles.titleInput}
+      />
+      <TextEditor
+        control={control}
+        name="text"
+        errors={errors}
+        wasEdited={isDirty}
+      />
+      <div className={styles.buttonWrapper}>
+        <Button
+          type={ButtonType.RESET}
+          label="Cancel"
+          className={styles.cancelBtn}
         />
-        <Input
-          type="text"
-          placeholder="Enter the title of the article"
-          name="title"
-          control={control}
-          errors={errors}
-          className={styles.titleInput}
-        />
-        <TextEditor
-          control={control}
-          name="text"
-          errors={errors}
-          wasEdited={isDirty}
-        />
-        <div className={styles.buttonWrapper}>
-          <Button
-            type={ButtonType.RESET}
-            label="Cancel"
-            className={styles.cancelBtn}
-          />
-          {!articleForUpdate && (
-            <Button
-              type={ButtonType.SUBMIT}
-              label="Save draft"
-              name="draft"
-              className={styles.saveDraftBtn}
-              disabled={!isDirty || isSubmitting}
-            />
-          )}
+        {!articleForUpdate && (
           <Button
             type={ButtonType.SUBMIT}
-            label="Publish"
-            name="publish"
-            className={styles.publishBtn}
-            disabled={(!isDirty && !isDraft) || isSubmitting}
+            label="Save draft"
+            name="draft"
+            className={styles.saveDraftBtn}
+            disabled={!isDirty || isSubmitting}
           />
-        </div>
-      </form>
-    </div>
+        )}
+        <Button
+          type={ButtonType.SUBMIT}
+          label="Publish"
+          name="publish"
+          className={styles.publishBtn}
+          disabled={(!isDirty && !isDraft) || isSubmitting}
+        />
+      </div>
+    </form>
   );
 };
 

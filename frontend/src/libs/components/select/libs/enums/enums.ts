@@ -1,1 +1,1 @@
-export { Colors } from './colors.enum.js';
+export { Color } from './color.enum.js';

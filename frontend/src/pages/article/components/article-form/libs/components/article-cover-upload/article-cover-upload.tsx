@@ -21,7 +21,7 @@ import {
   useState,
 } from '~/libs/hooks/hooks.js';
 import { SUPPORTED_FILE_TYPES_STRING } from '~/pages/profile/libs/constants/constants.js';
-import { appActions } from '~/slices/app/app.js';
+import { actions as appActions } from '~/slices/app/app.js';
 import { actions as filesActions } from '~/slices/file/file.js';
 
 import styles from './styles.module.scss';
