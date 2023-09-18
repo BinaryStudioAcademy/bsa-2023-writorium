@@ -1,7 +1,9 @@
-import { notify } from './actions.js';
+import { navigate, notify } from './actions.js';
 
 const actions = {
+  navigate,
   notify,
 };
 
-export { actions as appActions };
+export { actions };
+export { reducer } from './app.slice.js';

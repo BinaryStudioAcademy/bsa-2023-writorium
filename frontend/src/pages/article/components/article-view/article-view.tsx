@@ -1,10 +1,13 @@
 import {
   IconButton,
+  Link,
   Popover,
   ShareOnFacebookButton,
   Tags,
 } from '~/libs/components/components.js';
+import { AppRoute } from '~/libs/enums/enums.js';
 import {
+  configureString,
   getFullName,
   getValidClassNames,
   sanitizeHtml,
@@ -16,7 +19,10 @@ import {
   useParams,
 } from '~/libs/hooks/hooks.js';
 import { type TagType } from '~/libs/types/types.js';
-import { type ArticleWithRelationsType } from '~/packages/articles/articles.js';
+import {
+  type ArticleWithCommentCountResponseDto,
+  type ArticleWithRelationsType,
+} from '~/packages/articles/articles.js';
 import { actions as articlesActions } from '~/slices/articles/articles.js';
 
 import { ArticleDetails } from '../components.js';
@@ -25,7 +31,10 @@ import styles from './styles.module.scss';
 type Properties = {
   tags: TagType[] | null;
   isShared?: boolean;
-  article: Required<ArticleWithRelationsType>;
+  article:
+    | Required<ArticleWithRelationsType>
+    | ArticleWithCommentCountResponseDto;
+  isArticleOwner?: boolean;
 };
 
 const onButtonClick = (): void => {
@@ -37,6 +46,7 @@ const onButtonClick = (): void => {
 const ArticleView: React.FC<Properties> = ({
   tags,
   isShared = false,
+  isArticleOwner,
   article,
 }) => {
   const { text, title, coverUrl, author, readTime, genre, publishedAt } =
@@ -57,6 +67,12 @@ const ArticleView: React.FC<Properties> = ({
     }
   }, [dispatch, id]);
 
+  const handleDeleteArticle = useCallback((): void => {
+    void dispatch(
+      articlesActions.deleteArticle({ id: Number(id), hasRedirect: true }),
+    );
+  }, [dispatch, id]);
+
   return (
     <div
       className={getValidClassNames(styles.body, coverUrl && styles.hasCover)}
@@ -67,6 +83,31 @@ const ArticleView: React.FC<Properties> = ({
         )}
         {!isShared && (
           <div className={styles.buttonsWrapper}>
+            {isArticleOwner && (
+              <>
+                <IconButton
+                  iconName="trashBin"
+                  className={styles.iconButton}
+                  iconClassName={styles.icon}
+                  onClick={handleDeleteArticle}
+                />
+                <Link
+                  to={
+                    configureString(AppRoute.ARTICLES_EDIT_$ID, {
+                      id: String(id),
+                    }) as typeof AppRoute.ARTICLES_EDIT_$ID
+                  }
+                  state={article}
+                >
+                  <IconButton
+                    iconName="edit"
+                    className={styles.iconButton}
+                    iconClassName={styles.icon}
+                    onClick={onButtonClick}
+                  />
+                </Link>
+              </>
+            )}
             <IconButton
               iconName="favorite"
               className={styles.iconButton}

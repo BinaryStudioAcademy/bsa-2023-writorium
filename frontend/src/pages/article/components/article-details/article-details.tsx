@@ -10,7 +10,7 @@ type Properties = {
   authorName: string;
   authorFollowers?: number;
   authorRating?: number;
-  publishedAt: string;
+  publishedAt: string | null;
   readTime: number | null;
   genre: string | null;
   avatarUrl: string | null;
@@ -55,7 +55,9 @@ const ArticleDetails: FC<Properties> = ({
           <ul className={customStyles.articleInfoList}>
             <li className={customStyles.articleInfoItem}>
               <span>
-                {getFormattedDate(publishedAt, DateFormat.MONTH_DATE_YEAR)}
+                {publishedAt
+                  ? getFormattedDate(publishedAt, DateFormat.MONTH_DATE_YEAR)
+                  : 'draft'}
               </span>
             </li>
             {readTime && (

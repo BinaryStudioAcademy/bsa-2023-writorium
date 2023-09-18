@@ -14,7 +14,7 @@ import {
   useLocation,
   useParams,
 } from '~/libs/hooks/hooks.js';
-import { type ArticleResponseDto } from '~/packages/articles/articles.js';
+import { type ArticleWithCommentCountResponseDto } from '~/packages/articles/articles.js';
 import { type CommentBaseRequestDto } from '~/packages/comments/comments.js';
 import { actions as articleActions } from '~/slices/articles/articles.js';
 
@@ -29,15 +29,22 @@ import styles from './styles.module.scss';
 const ArticlePage: React.FC = () => {
   const location = useLocation();
   const dispatch = useAppDispatch();
-  const { article, getArticleStatus, articleComments, commentsDataStatus } =
-    useAppSelector(({ articles }) => ({
-      article: articles.article as ArticleResponseDto,
-      getArticleStatus: articles.getArticleStatus,
-      articleComments: articles.articleComments,
-      commentsDataStatus: articles.articleCommentsDataStatus,
-    }));
+  const {
+    article,
+    getArticleStatus,
+    articleComments,
+    commentsDataStatus,
+    user,
+  } = useAppSelector(({ articles, auth }) => ({
+    article: articles.article as ArticleWithCommentCountResponseDto,
+    getArticleStatus: articles.getArticleStatus,
+    articleComments: articles.articleComments,
+    commentsDataStatus: articles.articleCommentsDataStatus,
+    user: auth.user,
+  }));
 
   const hasComments = Boolean(articleComments.length);
+  const isArticleOwner = user?.id === article?.userId;
 
   const { id } = useParams();
 
@@ -94,6 +101,7 @@ const ArticlePage: React.FC = () => {
             <>
               <ArticleView
                 tags={getArticleViewTags(article)}
+                isArticleOwner={isArticleOwner}
                 article={article}
               />
               <ArticleDetails
@@ -102,7 +110,7 @@ const ArticlePage: React.FC = () => {
                   article.author.firstName,
                   article.author.lastName,
                 )}
-                publishedAt={article.publishedAt ?? ''}
+                publishedAt={article.publishedAt}
                 genre={article.genre}
                 avatarUrl={article.author.avatarUrl}
               />

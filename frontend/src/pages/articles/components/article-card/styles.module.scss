@@ -93,6 +93,7 @@
   font-family: Lato, sans-serif;
   font-style: normal;
   line-height: calc(var(--height) / var(--max-lines));
+  word-break: break-word;
   overflow-wrap: break-word;
 }
 
