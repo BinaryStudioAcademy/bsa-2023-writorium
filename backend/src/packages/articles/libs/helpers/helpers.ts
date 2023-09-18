@@ -1,6 +1,8 @@
 export { getArticleReadTimeCompletionConfig } from './get-article-read-time-completion-config.helper.js';
 export { getDetectArticleGenreCompletionConfig } from './get-detect-article-genre-completion-config.helper.js';
+export { getIsFavouriteSubQuery } from './get-is-favourite-subquery.helper.js';
 export { getOriginFromRefererHeader } from './get-origin-from-referer-header.helper.js';
+export { getShowFavouritesQuery } from './get-show-favourites-query.helper.js';
 export { getWhereAuthorIdQuery } from './get-where-author-id-query.helper.js';
 export { getWhereGenreIdQuery } from './get-where-genre-id-query.helper.js';
 export { getWherePublishedOnlyQuery } from './get-where-published-only-query.helper.js';
