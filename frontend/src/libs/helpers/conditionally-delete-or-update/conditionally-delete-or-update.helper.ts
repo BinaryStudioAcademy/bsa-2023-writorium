@@ -2,11 +2,17 @@ type ItemType = {
   id: number;
 };
 
-const conditionallyDeleteOrUpdate = <T extends ItemType>(
-  items: T[],
-  itemToDeleteOrUpdate: T,
-  hasToDelete: boolean,
-): T[] => {
+type Arguments<T> = {
+  items: T[];
+  itemToDeleteOrUpdate: T;
+  hasToDelete: boolean;
+};
+
+const conditionallyDeleteOrUpdate = <T extends ItemType>({
+  items,
+  itemToDeleteOrUpdate,
+  hasToDelete,
+}: Arguments<T>): T[] => {
   return hasToDelete
     ? items.filter((item) => item.id !== itemToDeleteOrUpdate.id)
     : items.map((item) => {

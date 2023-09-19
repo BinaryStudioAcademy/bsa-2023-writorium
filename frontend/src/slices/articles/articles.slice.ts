@@ -194,11 +194,11 @@ const { reducer, actions, name } = createSlice({
     builder.addCase(toggleIsFavourite.fulfilled, (state, action) => {
       const article = action.payload;
       if (article) {
-        state.articles = conditionallyDeleteOrUpdate(
-          state.articles,
-          article,
-          !article.isFavourite && state.showFavourites,
-        );
+        state.articles = conditionallyDeleteOrUpdate({
+          items: state.articles,
+          itemToDeleteOrUpdate: article,
+          hasToDelete: !article.isFavourite && state.showFavourites,
+        });
         state.dataStatus = DataStatus.FULFILLED;
       }
     });
