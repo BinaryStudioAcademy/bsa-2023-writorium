@@ -1,4 +1,5 @@
 import {
+  Icon,
   IconButton,
   Link,
   Popover,
@@ -106,16 +107,15 @@ const ArticleView: React.FC<Properties> = ({
               iconClassName={styles.icon}
               onClick={onButtonClick}
             />
+
             <Link
-              to={`#${LinkHash.COMMENTS}` as typeof AppRoute.ARTICLES_$ID}
+              to={{ hash: LinkHash.COMMENTS }}
               state={article}
+              className={styles.iconButton}
             >
-              <IconButton
-                iconName="comment"
-                className={styles.iconButton}
-                iconClassName={styles.icon}
-              />
+              <Icon iconName="comment" className={styles.icon} />
             </Link>
+
             <IconButton
               iconName="share"
               className={styles.iconButton}
