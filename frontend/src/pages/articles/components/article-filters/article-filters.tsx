@@ -62,7 +62,7 @@ const ArticleFilters: React.FC<Properties> = ({
         />
       </div>
       <form className={styles.filterGroup} name="FiltersForm">
-        <div className={styles.inputContainer}>
+        <div className={styles.inputWrapper}>
           <Input
             name="titleFilter"
             type="text"

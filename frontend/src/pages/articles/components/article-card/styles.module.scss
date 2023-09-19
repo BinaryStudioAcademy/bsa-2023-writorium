@@ -1,7 +1,7 @@
 .article {
   width: 100%;
-  max-width: 830px;
-  padding: 31px 24px 0 31px;
+  max-width: 832px;
+  padding: 31px 24px 20px 31px;
   background: var(--white);
   border: 2px solid var(--pale-gray);
   border-radius: 10px;
@@ -127,7 +127,7 @@
   display: flex;
   align-items: center;
   gap: 20px;
-  padding: 12px 33px 20px 4px;
+  padding: 12px 33px 0 4px;
 }
 
 .footer::before {
@@ -220,6 +220,7 @@
 .moreActionsIcon {
   width: 35px;
   height: 35px;
+  margin: -10px -10px 0 0;
   padding: 5px;
   border-radius: 50%;
   transition: background-color 0.2s ease;
