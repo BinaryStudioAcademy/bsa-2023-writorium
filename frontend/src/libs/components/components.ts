@@ -20,6 +20,7 @@ export { PromptGeneration } from './prompt-generation/prompt-generation.js';
 export { ProtectedRoute } from './protected-route/protected-route.js';
 export { PublicRoute } from './public-route/public-route.js';
 export { RouterProvider } from './router-provider/router-provider.js';
+export { ScrollToTop } from './scroll-to-top-button/scroll-to-top-button.js';
 export { ShareOnFacebookButton } from './share-on-facebook-button/share-on-facebook-button.js';
 export { Tags } from './tags/tags.js';
 export { TextEditor } from './text-editor/text-editor.js';

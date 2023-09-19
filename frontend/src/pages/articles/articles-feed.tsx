@@ -1,4 +1,4 @@
-import { InfiniteScroll } from '~/libs/components/components.js';
+import { InfiniteScroll, ScrollToTop } from '~/libs/components/components.js';
 import { checkIsEqual, getArticleTags } from '~/libs/helpers/helpers.js';
 import {
   useAppDispatch,
@@ -75,31 +75,34 @@ const ArticlesFeed: React.FC = () => {
   }, [dispatch, handleLoadArticles, handleLoadAuthors, handleLoadGenres]);
 
   return (
-    <div className={styles.articlesWrapper}>
-      <InfiniteScroll
-        hasMore={hasMore}
-        className={styles.articles}
-        dataLength={articles.length}
-        fetchData={handleLoadArticles}
-      >
-        {Boolean(articles.length) &&
-          articles.map((article) => (
-            <ArticleCard
-              key={article.id}
-              article={article}
-              author={article.author}
-              tags={getArticleTags(article)}
-              reactions={article.reactions}
-            />
-          ))}
-      </InfiniteScroll>
+    <>
+      <div className={styles.articlesWrapper}>
+        <InfiniteScroll
+          hasMore={hasMore}
+          className={styles.articles}
+          dataLength={articles.length}
+          fetchData={handleLoadArticles}
+        >
+          {Boolean(articles.length) &&
+            articles.map((article) => (
+              <ArticleCard
+                key={article.id}
+                article={article}
+                author={article.author}
+                tags={getArticleTags(article)}
+                reactions={article.reactions}
+              />
+            ))}
+        </InfiniteScroll>
 
-      <ArticleFilters
-        genreSelectOptions={getSelectGenresOptions(genres)}
-        authorsSelectOptions={getSelectAuthorsOptions(authors)}
-        onSubmit={handleFiltersSubmit}
-      />
-    </div>
+        <ArticleFilters
+          genreSelectOptions={getSelectGenresOptions(genres)}
+          authorsSelectOptions={getSelectAuthorsOptions(authors)}
+          onSubmit={handleFiltersSubmit}
+        />
+      </div>
+      <ScrollToTop />
+    </>
   );
 };
 

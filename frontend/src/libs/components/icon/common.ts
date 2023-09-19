@@ -33,6 +33,7 @@ import { ReactComponent as Notes } from '~/assets/img/icons/notes-icon.svg';
 import { ReactComponent as Edit } from '~/assets/img/icons/pencil-edit-icon.svg';
 import { ReactComponent as Refresh } from '~/assets/img/icons/refresh-icon.svg';
 import { ReactComponent as Renew } from '~/assets/img/icons/renew-icon.svg';
+import { ReactComponent as ScrollArrowUp } from '~/assets/img/icons/scroll-arrow-up-icon.svg';
 import { ReactComponent as Search } from '~/assets/img/icons/search-icon.svg';
 import { ReactComponent as Share } from '~/assets/img/icons/share-icon.svg';
 import { ReactComponent as Sparkles } from '~/assets/img/icons/sparkles-icon.svg';
@@ -83,6 +84,7 @@ type IconName =
   | 'trashBin'
   | 'facebook'
   | 'autoFix'
+  | 'scrollArrowUp'
   | 'ellipsisVertical';
 
 const iconNameToIcon: Record<
@@ -131,6 +133,7 @@ const iconNameToIcon: Record<
   facebook: Facebook,
   autoFix: AutoFix,
   ellipsisVertical: ellipsisVertical,
+  scrollArrowUp: ScrollArrowUp,
 };
 
 export { type IconName, iconNameToIcon };
