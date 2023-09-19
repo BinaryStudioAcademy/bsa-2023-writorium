@@ -89,6 +89,8 @@ erDiagram
     varchar key "inner usage key value"
     varchar name "readable name value"
     text description "achivement description"
+    int breakpoint
+    text reference_table
   }
 
   achievements_to_users ||--|| achievements : achievement_id
