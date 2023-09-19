@@ -9,6 +9,7 @@ import {
   type UserArticlesGenreStatsResponseDto,
   type UserAuthResponseDto,
   type UserDetailsAuthorResponseDto,
+  type UserFollowResponseDto,
   type UserGetAllResponseDto,
   type UserUpdateRequestDto,
 } from './libs/types/types.js';
@@ -82,6 +83,34 @@ class UserApi extends HttpApi {
     );
 
     return await response.json<UserDetailsAuthorResponseDto[]>();
+  }
+
+  public async toggleFollowAuthor(
+    authorId: number,
+  ): Promise<UserFollowResponseDto> {
+    const response = await this.load(
+      this.getFullEndpoint(UsersApiPath.FOLLOW, { id: authorId.toString() }),
+      {
+        method: 'POST',
+        hasAuth: true,
+      },
+    );
+
+    return await response.json<UserFollowResponseDto>();
+  }
+
+  public async getAuthorFollowersCountAndStatus(
+    authorId: number,
+  ): Promise<UserFollowResponseDto> {
+    const response = await this.load(
+      this.getFullEndpoint(UsersApiPath.FOLLOW, { id: authorId.toString() }),
+      {
+        method: 'GET',
+        hasAuth: true,
+      },
+    );
+
+    return await response.json<UserFollowResponseDto>();
   }
 }
 

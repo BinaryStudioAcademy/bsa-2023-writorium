@@ -6,6 +6,7 @@ import {
 } from '~/libs/packages/controller/controller.js';
 import { HttpCode } from '~/libs/packages/http/http.js';
 import { type ILogger } from '~/libs/packages/logger/logger.js';
+import { type FollowService } from '~/packages/follow/follow.js';
 import { type UserService } from '~/packages/users/user.service.js';
 
 import { UsersApiPath } from './libs/enums/enums.js';
@@ -116,11 +117,17 @@ import { userUpdateWithAvatarIdValidationSchema } from './libs/validation-schema
 
 class UserController extends Controller {
   private userService: UserService;
+  private followService: FollowService;
 
-  public constructor(logger: ILogger, userService: UserService) {
+  public constructor(
+    logger: ILogger,
+    userService: UserService,
+    followService: FollowService,
+  ) {
     super(logger, ApiPath.USERS);
 
     this.userService = userService;
+    this.followService = followService;
 
     this.addRoute({
       path: UsersApiPath.ROOT,
@@ -168,6 +175,30 @@ class UserController extends Controller {
         this.update(
           options as ApiHandlerOptions<{
             body: UserUpdateRequestDto;
+            user: UserAuthResponseDto;
+          }>,
+        ),
+    });
+
+    this.addRoute({
+      path: UsersApiPath.FOLLOW,
+      method: 'POST',
+      handler: (options) =>
+        this.toggleFollowAuthor(
+          options as ApiHandlerOptions<{
+            params: { id: number };
+            user: UserAuthResponseDto;
+          }>,
+        ),
+    });
+
+    this.addRoute({
+      path: UsersApiPath.FOLLOW,
+      method: 'GET',
+      handler: (options) =>
+        this.getAuthorFollowersAndStatus(
+          options as ApiHandlerOptions<{
+            params: { id: number };
             user: UserAuthResponseDto;
           }>,
         ),
@@ -302,6 +333,36 @@ class UserController extends Controller {
     return {
       status: HttpCode.OK,
       payload: await this.userService.getAllAuthors(),
+    };
+  }
+
+  private async toggleFollowAuthor(
+    options: ApiHandlerOptions<{
+      params: { id: number };
+      user: UserAuthResponseDto;
+    }>,
+  ): Promise<ApiHandlerResponse> {
+    return {
+      status: HttpCode.OK,
+      payload: await this.followService.toggleFollowAuthor({
+        userId: options.user.id,
+        authorId: options.params.id,
+      }),
+    };
+  }
+
+  private async getAuthorFollowersAndStatus(
+    options: ApiHandlerOptions<{
+      params: { id: number };
+      user: UserAuthResponseDto;
+    }>,
+  ): Promise<ApiHandlerResponse> {
+    return {
+      status: HttpCode.OK,
+      payload: await this.followService.getAuthorFollowersCountAndStatus({
+        userId: options.user.id,
+        authorId: options.params.id,
+      }),
     };
   }
 }
