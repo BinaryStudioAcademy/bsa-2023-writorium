@@ -52,6 +52,9 @@ export {
   type AchievementBaseResponseDto,
   type AchievementGetAllResponseDto,
   AchievementsApiPath,
+  type AchievementWithProgressResponseDto,
+  PercentageProgress,
+  type UserAchievement,
 } from './packages/achievements/achievements.js';
 export {
   type ArticleReactionCreateDto,
