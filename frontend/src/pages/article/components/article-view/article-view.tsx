@@ -14,10 +14,7 @@ import {
 } from '~/libs/helpers/helpers.js';
 import { useAppDispatch, useCallback, useParams } from '~/libs/hooks/hooks.js';
 import { type TagType } from '~/libs/types/types.js';
-import {
-  type ArticleWithCommentCountResponseDto,
-  type ArticleWithRelationsType,
-} from '~/packages/articles/articles.js';
+import { type ArticleWithFollowResponseDto } from '~/packages/articles/articles.js';
 import { actions as articlesActions } from '~/slices/articles/articles.js';
 
 import { ArticleDetails } from '../article-details/article-details.js';
@@ -26,10 +23,9 @@ import styles from './styles.module.scss';
 type Properties = {
   tags: TagType[] | null;
   isShared?: boolean;
-  article:
-    | Required<ArticleWithRelationsType>
-    | ArticleWithCommentCountResponseDto;
+  article: ArticleWithFollowResponseDto;
   isArticleOwner?: boolean;
+  onFollow?: () => void;
 };
 
 const onButtonClick = (): void => {
@@ -43,10 +39,11 @@ const ArticleView: React.FC<Properties> = ({
   isShared = false,
   isArticleOwner,
   article,
+  onFollow,
 }) => {
   const { text, title, coverUrl, author, readTime, genre, publishedAt } =
     article;
-  const { firstName, lastName, avatarUrl } = author;
+  const { firstName, lastName, avatarUrl, followersCount, isFollowed } = author;
   const authorFullName = getFullName(firstName, lastName);
   const articleUrl = window.location.href;
 
@@ -139,6 +136,10 @@ const ArticleView: React.FC<Properties> = ({
             genre={genre}
             avatarUrl={avatarUrl}
             containerStyle={styles.articleDetailsContainer}
+            isArticleOwner={isArticleOwner}
+            onFollow={onFollow}
+            authorFollowers={followersCount}
+            isFollowed={isFollowed}
           />
         }
         className={getValidClassNames(
