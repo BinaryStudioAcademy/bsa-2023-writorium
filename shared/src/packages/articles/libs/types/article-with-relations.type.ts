@@ -14,6 +14,7 @@ type ArticleWithRelationsType = ArticleEntityType & {
   } | null;
   genre: string | null;
   coverUrl: string | null;
+  isFavourite: boolean;
 };
 
 export { type ArticleWithRelationsType };
