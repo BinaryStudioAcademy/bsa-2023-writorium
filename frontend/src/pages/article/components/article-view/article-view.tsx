@@ -9,6 +9,7 @@ import { AppRoute, Reaction } from '~/libs/enums/enums.js';
 import {
   configureString,
   getFullName,
+  getReactionConvertedToBoolean,
   getReactionsInfo,
   getValidClassNames,
   sanitizeHtml,
@@ -28,7 +29,6 @@ import {
 import { type UserAuthResponseDto } from '~/packages/users/users.js';
 import { actions as articlesActions } from '~/slices/articles/articles.js';
 
-import { getReactionConvertedToBoolean } from '../../../articles/libs/helpers/helpers.js';
 import { ArticleDetails } from '../article-details/article-details.js';
 import styles from './styles.module.scss';
 
