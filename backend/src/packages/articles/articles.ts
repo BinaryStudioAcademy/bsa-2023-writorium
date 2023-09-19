@@ -1,5 +1,6 @@
 import { logger } from '~/libs/packages/logger/logger.js';
 import { openAIService } from '~/libs/packages/openai/openai.js';
+import { socketService } from '~/libs/packages/socket/socket.js';
 
 import { genreRepository } from '../genres/genre.js';
 import { ArticleController } from './article.controller.js';
@@ -12,6 +13,7 @@ const articleService = new ArticleService({
   articleRepository,
   openAIService,
   genreRepository,
+  socketService,
 });
 const articleController = new ArticleController(logger, articleService);
 

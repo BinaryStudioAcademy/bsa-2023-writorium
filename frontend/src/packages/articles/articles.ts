@@ -11,7 +11,10 @@ const articleApi = new ArticleApi({
 });
 
 export { articleApi };
-export { ArticleImprovementSuggestionPriority } from './libs/enums/enums.js';
+export {
+  ArticleImprovementSuggestionPriority,
+  ArticleSocketEvent,
+} from './libs/enums/enums.js';
 export { getReadTimeString } from './libs/helpers/helpers.js';
 export {
   type ArticleGetAllResponseDto,
@@ -22,6 +25,7 @@ export {
   type ArticleRequestDto,
   type ArticleResponseDto,
   type ArticlesFilters,
+  type ArticleSocketEventPayload,
   type ArticleUpdateRequestDto,
   type ArticleUpdateRequestPayload,
   type ArticleWithCommentCountResponseDto,

@@ -24,6 +24,7 @@ import { reducer as authReducer } from '~/slices/auth/auth.js';
 import { reducer as promptsReducer } from '~/slices/prompts/prompts.js';
 import { reducer as usersReducer } from '~/slices/users/users.js';
 
+import { articlesSocketMiddleware } from './middlewares/articles-socket.middleware.js';
 import { notificationMiddleware } from './middlewares/notification-middleware.js';
 
 type RootReducer = {
@@ -58,6 +59,7 @@ class Store {
         [
           typeof notificationMiddleware.middleware,
           ThunkMiddleware<RootReducer, AnyAction, ExtraArguments>,
+          typeof articlesSocketMiddleware,
         ]
       >
     >
@@ -75,11 +77,16 @@ class Store {
         achievements: achievementsReducer,
       },
       middleware: (getDefaultMiddleware) => {
-        return getDefaultMiddleware({
-          thunk: {
-            extraArgument: this.extraArguments,
-          },
-        }).prepend(notificationMiddleware.middleware);
+        return (
+          getDefaultMiddleware({
+            thunk: {
+              extraArgument: this.extraArguments,
+            },
+          })
+            .prepend(notificationMiddleware.middleware)
+            // eslint-disable-next-line unicorn/prefer-spread
+            .concat(articlesSocketMiddleware)
+        );
       },
     });
   }
@@ -101,5 +108,5 @@ class Store {
   }
 }
 
-export { type ExtraArguments };
+export { type ExtraArguments, type RootReducer };
 export { Store };

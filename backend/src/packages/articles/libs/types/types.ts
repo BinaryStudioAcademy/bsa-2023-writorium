@@ -10,6 +10,7 @@ export {
   type ArticleRequestDto,
   type ArticleResponseDto,
   type ArticlesFilters,
+  type ArticleSocketEventPayload,
   type ArticleUpdateRequestDto,
   type ArticleWithCommentCountResponseDto,
   type ArticleWithRelationsType,

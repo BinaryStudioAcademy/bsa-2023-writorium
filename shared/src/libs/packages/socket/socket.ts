@@ -1,5 +1,4 @@
 export {
-  ArticlesSocketEvent,
   CommentsSocketEvent,
   ReactionsSocketEvent,
   SocketEvent,

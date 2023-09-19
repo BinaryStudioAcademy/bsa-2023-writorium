@@ -38,7 +38,6 @@ export {
 } from './libs/packages/http/http.js';
 export { type SendEmailResponse } from './libs/packages/mailer/mailer.js';
 export {
-  ArticlesSocketEvent,
   CommentsSocketEvent,
   ReactionsSocketEvent,
   SocketEvent,
@@ -84,6 +83,8 @@ export {
   type ArticlesFilters,
   articlesFiltersValidationSchema,
   articlesFormFiltersValidationSchema,
+  ArticleSocketEvent,
+  type ArticleSocketEventPayload,
   type ArticleUpdateRequestDto,
   type ArticleUpdateRequestPayload,
   articleUpdateValidationSchema,

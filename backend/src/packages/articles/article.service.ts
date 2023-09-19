@@ -14,6 +14,8 @@ import {
   NotFoundError,
 } from '~/libs/packages/exceptions/exceptions.js';
 import { type OpenAIService } from '~/libs/packages/openai/openai.package.js';
+import { SocketNamespace } from '~/libs/packages/socket/socket.js';
+import { type SocketService } from '~/libs/packages/socket/socket.package.js';
 import { token as articleToken } from '~/libs/packages/token/token.js';
 
 import { GenreEntity } from '../genres/genre.entity.js';
@@ -22,7 +24,7 @@ import { type UserAuthResponseDto } from '../users/users.js';
 import { ArticleEntity } from './article.entity.js';
 import { type ArticleRepository } from './article.repository.js';
 import { INDEX_INCREMENT, SHARED_$TOKEN } from './libs/constants/constants.js';
-import { DateFormat } from './libs/enums/enums.js';
+import { ArticleSocketEvent, DateFormat } from './libs/enums/enums.js';
 import {
   getArticleImprovementSuggestionsCompletionConfig,
   getArticleReadTimeCompletionConfig,
@@ -40,6 +42,7 @@ import {
   type ArticleImprovementSuggestion,
   type ArticleResponseDto,
   type ArticlesFilters,
+  type ArticleSocketEventPayload,
   type ArticleUpdateRequestDto,
   type ArticleWithCommentCountResponseDto,
   type DetectedArticleGenre,
@@ -47,23 +50,29 @@ import {
   type UserArticlesGenreStatsResponseDto,
 } from './libs/types/types.js';
 
+type Constructor = {
+  articleRepository: ArticleRepository;
+  openAIService: OpenAIService;
+  genreRepository: GenreRepository;
+  socketService: SocketService;
+};
+
 class ArticleService implements IService {
   private articleRepository: ArticleRepository;
   private openAIService: OpenAIService;
   private genreRepository: GenreRepository;
+  private socketService: SocketService;
 
   public constructor({
     articleRepository,
     openAIService,
     genreRepository,
-  }: {
-    articleRepository: ArticleRepository;
-    openAIService: OpenAIService;
-    genreRepository: GenreRepository;
-  }) {
+    socketService,
+  }: Constructor) {
     this.articleRepository = articleRepository;
     this.openAIService = openAIService;
     this.genreRepository = genreRepository;
+    this.socketService = socketService;
   }
 
   private async detectArticleGenreFromText(
@@ -318,6 +327,13 @@ class ArticleService implements IService {
         publishedAt: payload?.publishedAt ?? null,
       }),
     );
+
+    const socketEventPayload: ArticleSocketEventPayload[typeof ArticleSocketEvent.NEW_ARTICLE] =
+      article.toObjectWithRelationsAndCommentCount();
+
+    this.socketService.io
+      .of(SocketNamespace.ARTICLES)
+      .emit(ArticleSocketEvent.NEW_ARTICLE, socketEventPayload);
 
     return article.toObjectWithRelationsAndCommentCount();
   }

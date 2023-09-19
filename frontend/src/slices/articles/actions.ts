@@ -2,6 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { PREVIOUS_PAGE_INDEX } from '~/libs/constants/constants.js';
 import { AppRoute } from '~/libs/enums/enums.js';
+import { getFullName } from '~/libs/helpers/helpers.js';
 import { StorageKey } from '~/libs/packages/storage/storage.js';
 import { type AsyncThunkConfig } from '~/libs/types/types.js';
 import {
@@ -11,6 +12,8 @@ import {
   type ArticleRequestDto,
   type ArticleResponseDto,
   type ArticlesFilters,
+  type ArticleSocketEvent,
+  type ArticleSocketEventPayload,
   type ArticleUpdateRequestPayload,
   type ArticleWithCommentCountResponseDto,
   type ReactionResponseDto,
@@ -33,20 +36,66 @@ const fetchAll = createAsyncThunk<
   ArticleGetAllResponseDto,
   ArticlesFilters,
   AsyncThunkConfig
->(`${sliceName}/get-all`, (filters, { extra }) => {
+>(`${sliceName}/get-all`, async (filters, { extra, getState }) => {
   const { articleApi } = extra;
+  const newArticles = await articleApi.getAll(filters);
+  const existingArticlesIds = new Set(
+    getState().articles.articles.map((article) => article.id),
+  );
 
-  return articleApi.getAll(filters);
+  return {
+    total: newArticles.total,
+    items: newArticles.items.filter(
+      (article) => !existingArticlesIds.has(article.id),
+    ),
+  };
 });
 
 const fetchOwn = createAsyncThunk<
   ArticleGetAllResponseDto,
   ArticlesFilters,
   AsyncThunkConfig
->(`${sliceName}/get-own`, (filters, { extra }) => {
+>(`${sliceName}/get-own`, async (filters, { extra, getState }) => {
   const { articleApi } = extra;
+  const newArticles = await articleApi.getOwn(filters);
+  const existingArticlesIds = new Set(
+    getState().articles.articles.map((article) => article.id),
+  );
 
-  return articleApi.getOwn(filters);
+  return {
+    total: newArticles.total,
+    items: newArticles.items.filter(
+      (article) => !existingArticlesIds.has(article.id),
+    ),
+  };
+});
+
+const addArticle = createAsyncThunk<
+  ArticleSocketEventPayload[typeof ArticleSocketEvent.NEW_ARTICLE] | null,
+  ArticleSocketEventPayload[typeof ArticleSocketEvent.NEW_ARTICLE],
+  AsyncThunkConfig
+>(`${sliceName}/add-article`, (article, { getState, dispatch }) => {
+  const {
+    auth: { user },
+  } = getState();
+
+  if (user?.id !== article.userId) {
+    const { author } = article;
+
+    void dispatch(
+      appActions.notify({
+        type: 'info',
+        message: `New article from ${getFullName(
+          author.firstName,
+          author.lastName,
+        )}`,
+      }),
+    );
+
+    return article;
+  }
+
+  return null;
 });
 
 const createArticle = createAsyncThunk<
@@ -299,6 +348,7 @@ const getImprovementSuggestions = createAsyncThunk<
 });
 
 export {
+  addArticle,
   createArticle,
   createComment,
   deleteArticle,

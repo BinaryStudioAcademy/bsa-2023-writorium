@@ -11,6 +11,7 @@ import { type CommentWithRelationsResponseDto } from '~/packages/comments/commen
 import { type GenreGetAllResponseDto } from '~/packages/genres/genres.js';
 
 import {
+  addArticle,
   createArticle,
   createComment,
   deleteArticle,
@@ -68,6 +69,11 @@ const { reducer, actions, name } = createSlice({
     },
   },
   extraReducers(builder) {
+    builder.addCase(addArticle.fulfilled, (state, action) => {
+      if (action.payload) {
+        state.articles = [action.payload, ...state.articles];
+      }
+    });
     builder.addCase(createArticle.fulfilled, (state, action) => {
       state.articles = [...state.articles, action.payload];
       state.dataStatus = DataStatus.FULFILLED;

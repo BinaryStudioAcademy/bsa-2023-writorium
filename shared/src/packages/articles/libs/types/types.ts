@@ -6,6 +6,7 @@ export { type ArticleGetImprovementSuggestionsResponseDto } from './article-get-
 export { type ArticleImprovementSuggestion } from './article-improvement-suggestion.type.js';
 export { type ArticleRequestDto } from './article-request-dto.type.js';
 export { type ArticleResponseDto } from './article-response-dto.type.js';
+export { type ArticleSocketEventPayload } from './article-socket-event-payload.type.js';
 export { type ArticleUpdateRequestDto } from './article-update-request-dto.type.js';
 export { type ArticleUpdateRequestPayload } from './article-update-request-payload.type.js';
 export { type ArticleWithCommentCountResponseDto } from './article-with-comment-count-response-dto.type.js';

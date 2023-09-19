@@ -3,7 +3,6 @@ import { Socket } from './socket.package.js';
 const socket = new Socket();
 
 export {
-  ArticlesSocketEvent,
   CommentsSocketEvent,
   ReactionsSocketEvent,
   SocketEvent,

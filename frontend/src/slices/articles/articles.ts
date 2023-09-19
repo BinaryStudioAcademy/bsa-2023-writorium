@@ -1,4 +1,5 @@
 import {
+  addArticle,
   createArticle,
   createComment,
   deleteArticle,
@@ -36,6 +37,7 @@ const allActions = {
   fetchSharedArticle,
   getImprovementSuggestions,
   getImprovementSuggestionsBySession,
+  addArticle,
 };
 
 export { allActions as actions };
