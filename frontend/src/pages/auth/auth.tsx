@@ -72,7 +72,7 @@ const Auth: React.FC = () => {
   );
 
   const getScreen = (screen: string): React.ReactNode => {
-    if (matchPath({ path: AppRoute.RESET_PASSWORD }, pathname)) {
+    if (matchPath({ path: AppRoute.RESET_PASSWORD_$TOKEN }, pathname)) {
       return <ResetPasswordForm onSubmit={handleResetPasswordSubmit} />;
     }
 

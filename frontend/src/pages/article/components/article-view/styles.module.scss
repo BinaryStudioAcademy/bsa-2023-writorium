@@ -1,3 +1,5 @@
+@use "src/assets/css/breakpoints.scss";
+
 .body {
   width: 100%;
   background: var(--white);
@@ -11,13 +13,19 @@
 
 .buttonsWrapper {
   position: absolute;
-  top: 100px;
-  bottom: 5%;
+  top: 5%;
   left: 28px;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
   gap: 11px;
+  height: 90%;
+}
+
+.textWrapper {
+  flex-grow: 1;
+  padding: 18px 33px 62px;
 }
 
 .body:not(.hasCover) {
@@ -25,8 +33,13 @@
   flex-direction: row-reverse;
 }
 
+.body:not(.hasCover) .textWrapper {
+  padding-top: 40px;
+}
+
 .body:not(.hasCover) .buttonsWrapper {
   position: static;
+  justify-content: flex-start;
 }
 
 .cover {
@@ -37,12 +50,23 @@
   border-radius: 10px;
 }
 
+.icon {
+  width: 20px;
+  height: 20px;
+}
+
+.body.hasCover .icon {
+  width: 15px;
+  height: 15px;
+}
+
 .iconButton {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 54px;
-  height: 54px;
+  width: 30px;
+  height: 30px;
+  color: var(--light-green);
   background-color: var(--white-90);
   border-radius: 50%;
   transition: background-color 0.2s ease;
@@ -52,9 +76,12 @@
   background-color: var(--light-gray);
 }
 
-.icon {
-  width: 20px;
-  height: 20px;
+.facebookIconButton {
+  padding: 5px;
+}
+
+.body:not(.hasCover) .facebookIconButton {
+  padding: 0;
 }
 
 .title {
@@ -64,11 +91,6 @@
   font-size: 40px;
   font-family: "Libre Baskerville", serif;
   line-height: normal;
-}
-
-.textWrapper {
-  flex-grow: 1;
-  padding: 18px 33px 62px;
 }
 
 .text {
@@ -81,11 +103,89 @@
   word-break: break-word;
 }
 
-.facebookIconButton {
-  width: 54px;
-  height: 54px;
-  padding: 15px;
-  color: var(--light-green);
-  background-color: var(--white-90);
-  border-radius: 50%;
+.presentationAuthorName {
+  display: none;
+  padding: 20px 33px 0;
+  font-size: 16px;
+}
+
+@media only screen and (max-width: breakpoints.$medium) {
+  .body:not(.hasCover) .textWrapper {
+    padding-top: 18px;
+  }
+
+  .buttonsWrapper > button {
+    width: 20px;
+    height: 20px;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  .text {
+    margin-top: 10px;
+    font-size: 16px;
+  }
+
+  .authorDetails.authorDetailsModal {
+    left: 15px;
+    width: 235px;
+  }
+}
+
+@media only screen and (min-width: breakpoints.$medium) and (max-width: breakpoints.$extra-large) {
+  .body:not(.hasCover) .textWrapper {
+    padding-top: 18px;
+  }
+
+  .presentationAuthorName {
+    font-size: 18px;
+  }
+
+  .title {
+    font-size: 30px;
+  }
+
+  .text {
+    margin-top: 18px;
+  }
+
+  .authorDetails.authorDetailsModal {
+    left: 15px;
+    width: 293px;
+  }
+}
+
+@media only screen and (max-width: breakpoints.$extra-large) {
+  .buttonsWrapper {
+    bottom: 5%;
+    flex-direction: row;
+    gap: 15px;
+  }
+
+  .body:not(.hasCover) {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .title {
+    margin-bottom: 5px;
+  }
+
+  .presentationAuthorName {
+    display: block;
+  }
+
+  .articleDetailsContainer {
+    display: block;
+    background: var(--light-gray);
+    border: 1px solid var(--light-gray-border);
+    border-radius: 10px;
+  }
+
+  .authorDetails.authorDetailsModal {
+    display: flex;
+    background-color: var(--light-gray-15);
+  }
 }

@@ -7,6 +7,7 @@ import { type IStorage } from '~/libs/packages/storage/storage.js';
 import { ArticlesApiPath } from './libs/enums/enums.js';
 import {
   type ArticleGetAllResponseDto,
+  type ArticleGetImprovementSuggestionsResponseDto,
   type ArticleReactionRequestDto,
   type ArticleReactionResponseDto,
   type ArticleRequestDto,
@@ -165,6 +166,39 @@ class ArticleApi extends HttpApi {
     );
 
     return await response.json<ArticleWithCommentCountResponseDto>();
+  }
+
+  public async toggleIsFavourite(
+    articleId: number,
+  ): Promise<ArticleWithCommentCountResponseDto> {
+    const response = await this.load(
+      this.getFullEndpoint(ArticlesApiPath.FAVORITES, {
+        id: String(articleId),
+      }),
+      {
+        method: 'POST',
+        hasAuth: true,
+      },
+    );
+
+    return await response.json<ArticleWithCommentCountResponseDto>();
+  }
+
+  public async getImprovementSuggestions(
+    id: number,
+  ): Promise<ArticleGetImprovementSuggestionsResponseDto> {
+    const response = await this.load(
+      this.getFullEndpoint(ArticlesApiPath.$ID_IMPROVEMENT_SUGGESTIONS, {
+        id: String(id),
+      }),
+      {
+        method: 'GET',
+        contentType: ContentType.JSON,
+        hasAuth: true,
+      },
+    );
+
+    return await response.json<ArticleGetImprovementSuggestionsResponseDto>();
   }
 }
 

@@ -1,11 +1,14 @@
 import { ReactComponent as ArrowDown } from '~/assets/img/icons/arrow-down-icon.svg';
 import { ReactComponent as ArrowUp } from '~/assets/img/icons/arrow-up-icon.svg';
+import { ReactComponent as AutoFix } from '~/assets/img/icons/auto-fix-icon.svg';
 import { ReactComponent as Bell } from '~/assets/img/icons/bell-icon.svg';
 import { ReactComponent as Comment } from '~/assets/img/icons/comment-icon.svg';
 import { ReactComponent as CrossMark } from '~/assets/img/icons/cross-mark-icon.svg';
 import { ReactComponent as Dislike } from '~/assets/img/icons/dislike-icon.svg';
+import { ReactComponent as ellipsisVertical } from '~/assets/img/icons/ellipsis-vertical-icon.svg';
 import { ReactComponent as Facebook } from '~/assets/img/icons/facebook-icon.svg';
 import { ReactComponent as Favorite } from '~/assets/img/icons/favorite-icon.svg';
+import { ReactComponent as FavoriteFilled } from '~/assets/img/icons/favourite-filled-icon.svg';
 import { ReactComponent as Header1 } from '~/assets/img/icons/format-header-1-icon.svg';
 import { ReactComponent as Header2 } from '~/assets/img/icons/format-header-2-icon.svg';
 import { ReactComponent as Header3 } from '~/assets/img/icons/format-header-3-icon.svg';
@@ -48,6 +51,7 @@ type IconName =
   | 'like'
   | 'dislike'
   | 'favorite'
+  | 'favoriteFilled'
   | 'textAlignLeft'
   | 'textAlignCenter'
   | 'textAlignRight'
@@ -79,7 +83,9 @@ type IconName =
   | 'header5'
   | 'header6'
   | 'trashBin'
-  | 'facebook';
+  | 'facebook'
+  | 'autoFix'
+  | 'ellipsisVertical';
 
 const iconNameToIcon: Record<
   IconName,
@@ -93,6 +99,7 @@ const iconNameToIcon: Record<
   like: Like,
   dislike: Dislike,
   favorite: Favorite,
+  favoriteFilled: FavoriteFilled,
   textAlignLeft: TextAlignLeft,
   textAlignCenter: TextAlignCenter,
   textAlignRight: TextAlignRight,
@@ -125,6 +132,8 @@ const iconNameToIcon: Record<
   header6: Header6,
   trashBin: TrashBinIcon,
   facebook: Facebook,
+  autoFix: AutoFix,
+  ellipsisVertical: ellipsisVertical,
 };
 
 export { type IconName, iconNameToIcon };

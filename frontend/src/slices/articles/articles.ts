@@ -9,8 +9,12 @@ import {
   fetchSharedArticle,
   getAllGenres,
   getArticle,
+  getImprovementSuggestions,
+  getImprovementSuggestionsBySession,
   reactToArticle,
+  setShowFavourites,
   shareArticle,
+  toggleIsFavourite,
   updateArticle,
   updateComment,
 } from './actions.js';
@@ -32,6 +36,10 @@ const allActions = {
   deleteArticleReaction,
   shareArticle,
   fetchSharedArticle,
+  toggleIsFavourite,
+  setShowFavourites,
+  getImprovementSuggestions,
+  getImprovementSuggestionsBySession,
 };
 
 export { allActions as actions };

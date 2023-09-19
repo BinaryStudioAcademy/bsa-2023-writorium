@@ -6,6 +6,7 @@ import {
   ExceptionMessage,
 } from '~/libs/enums/enums.js';
 import { ApplicationError } from '~/libs/exceptions/exceptions.js';
+import { configureString } from '~/libs/helpers/helpers.js';
 import { type IService } from '~/libs/interfaces/service.interface.js';
 import {
   BadRequestError,
@@ -23,6 +24,7 @@ import { type ArticleRepository } from './article.repository.js';
 import { INDEX_INCREMENT, SHARED_$TOKEN } from './libs/constants/constants.js';
 import { DateFormat } from './libs/enums/enums.js';
 import {
+  getArticleImprovementSuggestionsCompletionConfig,
   getArticleReadTimeCompletionConfig,
   getDetectArticleGenreCompletionConfig,
   getDifferenceBetweenDates,
@@ -34,6 +36,8 @@ import {
 import {
   type ArticleCreateDto,
   type ArticleGetAllResponseDto,
+  type ArticleGetImprovementSuggestionsResponseDto,
+  type ArticleImprovementSuggestion,
   type ArticleResponseDto,
   type ArticlesFilters,
   type ArticleUpdateRequestDto,
@@ -73,10 +77,15 @@ class ArticleService implements IService {
       return null;
     }
 
-    const [firstParsedGenre] =
-      safeJSONParse<DetectedArticleGenre[]>(genresJSON) ?? [];
+    const parsedGenres = safeJSONParse<DetectedArticleGenre[]>(genresJSON);
 
-    return firstParsedGenre ?? null;
+    const FIRST_ITEM_INDEX = 0;
+
+    if (Array.isArray(parsedGenres) && parsedGenres[FIRST_ITEM_INDEX]) {
+      return parsedGenres[FIRST_ITEM_INDEX];
+    }
+
+    return null;
   }
 
   private async getArticleReadTime(text: string): Promise<number | null> {
@@ -88,10 +97,17 @@ class ArticleService implements IService {
       return null;
     }
 
-    const { readTime = null } =
+    const readTimeData =
       safeJSONParse<{ readTime: number }>(readTimeJSON) ?? {};
 
-    return readTime;
+    if (
+      'readTime' in readTimeData &&
+      typeof readTimeData.readTime === 'number'
+    ) {
+      return readTimeData.readTime;
+    }
+
+    return null;
   }
 
   private async getGenreIdForArticle(
@@ -100,7 +116,8 @@ class ArticleService implements IService {
     const detectedGenre = await this.detectArticleGenreFromText(articleText);
 
     if (!detectedGenre) {
-      return null;
+      const unknownGenre = await this.genreRepository.getUnknownGenre();
+      return unknownGenre.toObject().id;
     }
 
     const existingGenre = await this.genreRepository.findByKey(
@@ -130,7 +147,7 @@ class ArticleService implements IService {
   }
 
   public async findAll(
-    filters: ArticlesFilters,
+    filters: ArticlesFilters & { requestUserId: number },
   ): Promise<ArticleGetAllResponseDto> {
     const { items, total } = await this.articleRepository.findAll({
       ...filters,
@@ -151,6 +168,7 @@ class ArticleService implements IService {
   ): Promise<ArticleGetAllResponseDto> {
     const { items, total } = await this.articleRepository.findAll({
       userId,
+      requestUserId: userId,
       ...filters,
     });
 
@@ -170,6 +188,49 @@ class ArticleService implements IService {
     }
 
     return article.toObjectWithRelations();
+  }
+
+  private async generateImprovementSuggestions(
+    text: string,
+  ): Promise<ArticleImprovementSuggestion[] | null> {
+    const suggestionsJSON = await this.openAIService.createCompletion(
+      getArticleImprovementSuggestionsCompletionConfig(text),
+    );
+
+    if (!suggestionsJSON) {
+      return null;
+    }
+
+    const parsedSuggestions =
+      safeJSONParse<ArticleImprovementSuggestion[]>(suggestionsJSON);
+
+    if (Array.isArray(parsedSuggestions)) {
+      return parsedSuggestions;
+    }
+
+    return null;
+  }
+
+  public async getImprovementSuggestions(
+    id: number,
+  ): Promise<ArticleGetImprovementSuggestionsResponseDto> {
+    const article = await this.find(id);
+
+    if (!article) {
+      throw new ApplicationError({
+        message: `Article with id ${id} not found`,
+      });
+    }
+
+    const suggestions = await this.generateImprovementSuggestions(article.text);
+
+    if (!suggestions) {
+      throw new ApplicationError({
+        message: 'Failed to generate improvement suggestions for article',
+      });
+    }
+
+    return { items: suggestions };
   }
 
   public async getUserActivity(
@@ -306,13 +367,17 @@ class ArticleService implements IService {
       articleId: id,
     });
 
-    const refererOrigin = getOriginFromRefererHeader(referer);
+    const refererOrigin = getOriginFromRefererHeader(referer) ?? '';
+
+    const link = configureString(
+      refererOrigin,
+      ApiPath.ARTICLES,
+      SHARED_$TOKEN,
+      { token },
+    );
 
     return {
-      link: `${refererOrigin}${ApiPath.ARTICLES}${SHARED_$TOKEN.replace(
-        ':token',
-        token,
-      )}`,
+      link,
     };
   }
 
@@ -363,6 +428,30 @@ class ArticleService implements IService {
     const deletedArticle = await this.articleRepository.delete(id);
 
     return deletedArticle.toObjectWithRelationsAndCommentCount();
+  }
+
+  public async toggleIsFavourite(
+    userId: number,
+    articleId: number,
+  ): Promise<ArticleResponseDto | null> {
+    const toggleResult = await this.articleRepository.toggleIsFavourite(
+      userId,
+      articleId,
+    );
+    if (!toggleResult) {
+      throw new ApplicationError({
+        message: 'Unable to update article status',
+      });
+    }
+
+    const article = await this.articleRepository.findWithIsFavourite(
+      articleId,
+      userId,
+    );
+    if (!article) {
+      return null;
+    }
+    return article.toObjectWithRelationsAndCommentCount();
   }
 }
 

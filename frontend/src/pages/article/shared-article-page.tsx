@@ -45,25 +45,26 @@ const SharedArticlePage: React.FC = () => {
     <Loader isLoading={isLoading} hasOverlay type="circular">
       <Layout>
         <div className={styles.articlePageWrapper}>
-          <ArticleView
-            tags={article ? getArticleViewTags(article) : null}
-            text={article?.text ?? ''}
-            title={article?.title ?? ''}
-            coverUrl={article?.coverUrl ?? ''}
-            isShared
-          />
-
-          {article?.author && (
-            <ArticleDetails
-              readTime={article.readTime}
-              authorName={getFullName(
-                article.author.firstName,
-                article.author.lastName,
+          {article && (
+            <>
+              <ArticleView
+                tags={article ? getArticleViewTags(article) : null}
+                article={article}
+                isShared
+              />
+              {article.author && (
+                <ArticleDetails
+                  readTime={article.readTime}
+                  authorName={getFullName(
+                    article.author.firstName,
+                    article.author.lastName,
+                  )}
+                  publishedAt={article.publishedAt ?? ''}
+                  genre={article.genre ?? ''}
+                  avatarUrl={article.author.avatarUrl}
+                />
               )}
-              publishedAt={article.publishedAt ?? ''}
-              genre={article.genre ?? ''}
-              avatarUrl={article.author.avatarUrl}
-            />
+            </>
           )}
         </div>
       </Layout>

@@ -26,18 +26,29 @@ const PromptGeneration: React.FC = () => {
     void dispatch(promptsActions.generatePrompt());
   }, [dispatch]);
 
+  const handleResetPrompt = useCallback(() => {
+    dispatch(promptsActions.resetPrompts());
+  }, [dispatch]);
+
   return (
-    <div className={styles.container}>
+    <section className={styles.container}>
       <h1 className={styles.header}>Write your own story</h1>
-      <ul className={styles.promptsContainer}>
-        {Object.values(PromptCategory).map((category) => (
-          <PromptCard
-            key={category}
-            category={category}
-            text={generatedPrompt?.[category] ?? ''}
-            isGenerating={isGenerating}
+      <div className={styles.promptsContainer}>
+        <ul className={styles.prompts}>
+          {Object.values(PromptCategory).map((category) => (
+            <PromptCard
+              key={category}
+              category={category}
+              text={generatedPrompt?.[category] ?? ''}
+              isGenerating={isGenerating}
+            />
+          ))}
+          <Button
+            label="Reset prompt"
+            className={styles.resetPromptButton}
+            onClick={handleResetPrompt}
           />
-        ))}
+        </ul>
         <Button
           className={styles.shuffleButton}
           label={
@@ -48,8 +59,8 @@ const PromptGeneration: React.FC = () => {
           }
           onClick={handlePromptGenerate}
         />
-      </ul>
-    </div>
+      </div>
+    </section>
   );
 };
 

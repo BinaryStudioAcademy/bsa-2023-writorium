@@ -17,11 +17,11 @@ import {
   useAppDispatch,
   useEffect,
   useFormController,
-  useRef,
+  useReference,
   useState,
 } from '~/libs/hooks/hooks.js';
 import { SUPPORTED_FILE_TYPES_STRING } from '~/pages/profile/libs/constants/constants.js';
-import { appActions } from '~/slices/app/app.js';
+import { actions as appActions } from '~/slices/app/app.js';
 import { actions as filesActions } from '~/slices/file/file.js';
 
 import styles from './styles.module.scss';
@@ -47,7 +47,7 @@ const ArticleCoverUpload = <T extends FieldValues>({
   const [isDragActive, setIsDragActive] = useState(false);
   const [isUploadFileLoading, setIsUploadFileLoading] = useState(false);
   const error = errors[name]?.message;
-  const initialWrapperId = useRef<number | null>(field.value);
+  const initialWrapperId = useReference<number | null>(field.value);
 
   const handleUploadArticleCover = (
     event_: ChangeEvent<HTMLInputElement>,
@@ -100,7 +100,7 @@ const ArticleCoverUpload = <T extends FieldValues>({
     if (!field.value) {
       setPreviewUrl(null);
     }
-  }, [field, initialPreviewUrl]);
+  }, [field, initialPreviewUrl, initialWrapperId]);
 
   return (
     <>

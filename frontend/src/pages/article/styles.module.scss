@@ -1,3 +1,5 @@
+@use "src/assets/css/breakpoints.scss";
+
 .articlePageWrapper {
   display: grid;
   grid-template-columns: 1fr min-content;
@@ -6,8 +8,26 @@
   padding-bottom: 100px;
 }
 
-.articleCreatePageWrapper {
-  padding-bottom: 126px;
+.articleCreatePageWrapper,
+.editArticlePage {
+  padding-bottom: 38px;
+}
+
+.articleCreatePageWrapper .articleFormWrapper {
+  max-width: 830px;
+}
+
+.editArticlePage .leftColumn {
+  flex: 60%;
+}
+
+.editArticlePage .rightColumn {
+  flex: 40%;
+}
+
+.editArticlePage {
+  display: flex;
+  gap: 21px;
 }
 
 .commentCount {
@@ -30,4 +50,15 @@
 
 .anchor {
   top: -105px;
+}
+
+@media only screen and (max-width: breakpoints.$extra-large) {
+  .articlePageWrapper {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .commentsBlockWrapper {
+    width: 100%;
+  }
 }

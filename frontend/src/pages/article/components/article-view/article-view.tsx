@@ -1,21 +1,35 @@
 import {
   IconButton,
+  Link,
+  Popover,
   ShareOnFacebookButton,
   Tags,
 } from '~/libs/components/components.js';
-import { getValidClassNames, sanitizeHtml } from '~/libs/helpers/helpers.js';
+import { AppRoute } from '~/libs/enums/enums.js';
+import {
+  configureString,
+  getFullName,
+  getValidClassNames,
+  sanitizeHtml,
+} from '~/libs/helpers/helpers.js';
 import { useAppDispatch, useCallback, useParams } from '~/libs/hooks/hooks.js';
 import { type TagType } from '~/libs/types/types.js';
+import {
+  type ArticleWithCommentCountResponseDto,
+  type ArticleWithRelationsType,
+} from '~/packages/articles/articles.js';
 import { actions as articlesActions } from '~/slices/articles/articles.js';
 
+import { ArticleDetails } from '../article-details/article-details.js';
 import styles from './styles.module.scss';
 
 type Properties = {
-  title: string;
-  text: string;
   tags: TagType[] | null;
-  coverUrl: string | null;
   isShared?: boolean;
+  article:
+    | Required<ArticleWithRelationsType>
+    | ArticleWithCommentCountResponseDto;
+  isArticleOwner?: boolean;
 };
 
 const onButtonClick = (): void => {
@@ -25,12 +39,15 @@ const onButtonClick = (): void => {
 };
 
 const ArticleView: React.FC<Properties> = ({
-  title,
-  text,
   tags,
-  coverUrl,
   isShared = false,
+  isArticleOwner,
+  article,
 }) => {
+  const { text, title, coverUrl, author, readTime, genre, publishedAt } =
+    article;
+  const { firstName, lastName, avatarUrl } = author;
+  const authorFullName = getFullName(firstName, lastName);
   const articleUrl = window.location.href;
 
   const { id } = useParams();
@@ -43,6 +60,12 @@ const ArticleView: React.FC<Properties> = ({
     }
   }, [dispatch, id]);
 
+  const handleDeleteArticle = useCallback((): void => {
+    void dispatch(
+      articlesActions.deleteArticle({ id: Number(id), hasRedirect: true }),
+    );
+  }, [dispatch, id]);
+
   return (
     <div
       className={getValidClassNames(styles.body, coverUrl && styles.hasCover)}
@@ -53,6 +76,31 @@ const ArticleView: React.FC<Properties> = ({
         )}
         {!isShared && (
           <div className={styles.buttonsWrapper}>
+            {isArticleOwner && (
+              <>
+                <IconButton
+                  iconName="trashBin"
+                  className={styles.iconButton}
+                  iconClassName={styles.icon}
+                  onClick={handleDeleteArticle}
+                />
+                <Link
+                  to={
+                    configureString(AppRoute.ARTICLES_EDIT_$ID, {
+                      id: String(id),
+                    }) as typeof AppRoute.ARTICLES_EDIT_$ID
+                  }
+                  state={article}
+                >
+                  <IconButton
+                    iconName="edit"
+                    className={styles.iconButton}
+                    iconClassName={styles.icon}
+                    onClick={onButtonClick}
+                  />
+                </Link>
+              </>
+            )}
             <IconButton
               iconName="favorite"
               className={styles.iconButton}
@@ -82,6 +130,24 @@ const ArticleView: React.FC<Properties> = ({
           </div>
         )}
       </div>
+      <Popover
+        content={
+          <ArticleDetails
+            readTime={readTime}
+            authorName={authorFullName}
+            publishedAt={publishedAt ?? ''}
+            genre={genre}
+            avatarUrl={avatarUrl}
+            containerStyle={styles.articleDetailsContainer}
+          />
+        }
+        className={getValidClassNames(
+          styles.authorDetails,
+          styles.authorDetailsModal,
+        )}
+      >
+        <h5 className={styles.presentationAuthorName}>{authorFullName}</h5>
+      </Popover>
       <div className={styles.textWrapper}>
         <h4 className={styles.title}>{title}</h4>
         {tags && <Tags tags={tags} />}

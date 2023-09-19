@@ -1,21 +1,21 @@
-import { Link as RouterLink, matchPath } from 'react-router-dom';
-
 import {
   Avatar,
   Icon,
   IconButton,
   Link,
+  Popover,
   ShareOnFacebookButton,
   Tags,
 } from '~/libs/components/components.js';
 import {
   AppRoute,
-  ArticleSubRoute,
+  DataStatus,
   DateFormat,
   LinkHash,
   Reaction,
 } from '~/libs/enums/enums.js';
 import {
+  configureString,
   getFormattedDate,
   getFullName,
   getReactionsInfo,
@@ -26,7 +26,6 @@ import {
   useAppDispatch,
   useAppSelector,
   useCallback,
-  useLocation,
 } from '~/libs/hooks/hooks.js';
 import { type TagType, type ValueOf } from '~/libs/types/types.js';
 import {
@@ -42,6 +41,7 @@ import { actions as articlesActions } from '~/slices/articles/articles.js';
 
 import { MOCKED_REACTIONS } from '../../libs/constants.js';
 import { getReactionConvertedToBoolean } from '../../libs/helpers/helpers.js';
+import { PopoverButtonsGroup } from './libs/components/components.js';
 import styles from './styles.module.scss';
 
 type Properties = {
@@ -49,7 +49,6 @@ type Properties = {
   author: UserDetailsResponseDto;
   tags: TagType[];
   reactions: ReactionResponseDto[];
-  onDeleteArticle?: (id: number) => void;
 };
 
 const ArticleCard: React.FC<Properties> = ({
@@ -57,16 +56,13 @@ const ArticleCard: React.FC<Properties> = ({
   author,
   tags,
   reactions,
-  onDeleteArticle,
 }) => {
   const dispatch = useAppDispatch();
-  const user = useAppSelector(({ auth }) => auth.user) as UserAuthResponseDto;
-  const { pathname } = useLocation();
-
-  const isMyArticles = matchPath(
-    { path: `${AppRoute.ARTICLES}/${ArticleSubRoute.MY_ARTICLES}` },
-    pathname,
-  );
+  const { user, articlesDataStatus } = useAppSelector(({ auth, articles }) => ({
+    user: auth.user as UserAuthResponseDto,
+    articlesDataStatus: articles.dataStatus,
+  }));
+  const isLoading = articlesDataStatus === DataStatus.PENDING;
   const {
     publishedAt,
     title,
@@ -76,6 +72,7 @@ const ArticleCard: React.FC<Properties> = ({
     coverUrl,
     readTime,
     commentCount,
+    isFavourite,
   } = article;
   const { likesCount, dislikesCount, hasAlreadyReactedWith } = getReactionsInfo(
     user.id,
@@ -83,11 +80,14 @@ const ArticleCard: React.FC<Properties> = ({
   );
   const { firstName, lastName, avatarUrl } = author;
   const articleUrl = window.location.href;
-  const articleRouteById = AppRoute.ARTICLE.replace(':id', String(id));
+  const articleRouteById = configureString(AppRoute.ARTICLES_$ID, {
+    id: String(id),
+  }) as typeof AppRoute.ARTICLES_$ID;
 
-  const handleDeleteArticle = useCallback(() => {
-    onDeleteArticle?.(id);
-  }, [id, onDeleteArticle]);
+  const handleToggleIsFavourite = useCallback(() => {
+    void dispatch(articlesActions.toggleIsFavourite(id));
+  }, [dispatch, id]);
+
   const isOwnArticle = user.id === userId;
 
   const handleReaction = (reaction: ValueOf<typeof Reaction>): void => {
@@ -124,6 +124,13 @@ const ArticleCard: React.FC<Properties> = ({
     void dispatch(articlesActions.shareArticle({ id: id.toString() }));
   }, [dispatch, id]);
 
+  const handleDeleteArticle = useCallback(
+    (id: number): void => {
+      void dispatch(articlesActions.deleteArticle({ id }));
+    },
+    [dispatch],
+  );
+
   return (
     <article className={styles.article}>
       <div className={styles.header}>
@@ -148,33 +155,32 @@ const ArticleCard: React.FC<Properties> = ({
             </span>
           )}
         </div>
-        <div className={styles.iconWrapper}>
-          {isMyArticles && (
-            <>
-              <IconButton
-                className={styles.iconButton}
-                iconName="trashBin"
-                iconClassName={getValidClassNames(
-                  styles.deleteIcon,
-                  styles.pointerIcon,
-                )}
-                onClick={handleDeleteArticle}
+
+        <div className={styles.toolbar}>
+          <IconButton
+            className={styles.iconButton}
+            iconName={isFavourite ? 'favoriteFilled' : 'favorite'}
+            iconClassName={styles.pointerIcon}
+            onClick={handleToggleIsFavourite}
+            isLoading={isLoading}
+          />
+          <Popover
+            className={styles.moreActions}
+            content={
+              <PopoverButtonsGroup
+                isOwnArticle={isOwnArticle}
+                article={article}
+                onDeleteArticle={handleDeleteArticle}
+                onToggleFavouriteClick={handleToggleIsFavourite}
+                isToggleFavouriteLoading={isLoading}
               />
-              <RouterLink
-                to={AppRoute.EDIT_ARTICLE.replace(':id', id.toString())}
-                state={article}
-              >
-                <Icon
-                  iconName="edit"
-                  className={getValidClassNames(
-                    styles.editIcon,
-                    styles.pointerIcon,
-                  )}
-                />
-              </RouterLink>
-            </>
-          )}
-          <Icon iconName="favorite" className={styles.pointerIcon} />
+            }
+          >
+            <Icon
+              className={styles.moreActionsIcon}
+              iconName="ellipsisVertical"
+            />
+          </Popover>
         </div>
       </div>
       <div
@@ -199,7 +205,7 @@ const ArticleCard: React.FC<Properties> = ({
           <li className={styles.reaction}>
             <Link
               to={{
-                pathname: articleRouteById as typeof AppRoute.ARTICLE,
+                pathname: articleRouteById,
                 hash: LinkHash.COMMENTS,
               }}
               className={styles.reaction}
@@ -251,10 +257,7 @@ const ArticleCard: React.FC<Properties> = ({
           articleUrl={articleUrl}
           iconStyle={styles.facebookIconButton}
         />
-        <Link
-          to={articleRouteById as typeof AppRoute.ARTICLE}
-          className={styles.readMore}
-        >
+        <Link to={articleRouteById} className={styles.readMore}>
           Read more
         </Link>
       </div>

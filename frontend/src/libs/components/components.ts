@@ -23,6 +23,11 @@ export { RouterProvider } from './router-provider/router-provider.js';
 export { ShareOnFacebookButton } from './share-on-facebook-button/share-on-facebook-button.js';
 export { Tags } from './tags/tags.js';
 export { TextEditor } from './text-editor/text-editor.js';
+export { ToggleCheckbox } from './toggle-checkbox/toggle-checkbox.js';
 export { BlockWithTooltip, Tooltip } from './tooltip/tooltip.js';
 export { Provider as StoreProvider } from 'react-redux';
-export { Navigate, Outlet as RouterOutlet } from 'react-router-dom';
+export {
+  Navigate,
+  Outlet as RouterOutlet,
+  ScrollRestoration,
+} from 'react-router-dom';

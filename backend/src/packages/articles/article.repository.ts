@@ -5,9 +5,12 @@ import { type CommentModel } from '~/packages/comments/comment.model.js';
 
 import { ArticleEntity } from './article.entity.js';
 import { type ArticleModel } from './article.model.js';
+import { type FavouredUserArticlesModel } from './favoured-user-articles.model.js';
 import { EMPTY_COMMENT_COUNT } from './libs/constants/constants.js';
-import { SortingOrder } from './libs/enums/enums.js';
 import {
+  getIsFavouriteSubQuery,
+  getShowFavouritesQuery,
+  getSortingCondition,
   getWhereAuthorIdQuery,
   getWhereGenreIdQuery,
   getWherePublishedOnlyQuery,
@@ -24,12 +27,17 @@ import {
 
 class ArticleRepository implements IArticleRepository {
   private articleModel: typeof ArticleModel;
+  private favouriteArticlesModel: typeof FavouredUserArticlesModel;
 
   private defaultRelationExpression =
     '[author.avatar, prompt, genre, reactions, cover]';
 
-  public constructor(articleModel: typeof ArticleModel) {
+  public constructor(
+    articleModel: typeof ArticleModel,
+    favouriteArticlesModel: typeof FavouredUserArticlesModel,
+  ) {
     this.articleModel = articleModel;
+    this.favouriteArticlesModel = favouriteArticlesModel;
   }
 
   private joinArticleRelations = <T>(
@@ -61,20 +69,28 @@ class ArticleRepository implements IArticleRepository {
     genreId,
     titleFilter,
     authorId,
+    showFavourites,
+    requestUserId,
   }: {
     userId?: number;
     hasPublishedOnly?: boolean;
+    requestUserId: number;
   } & ArticlesFilters): Promise<{ items: ArticleEntity[]; total: number }> {
     const articles = await this.articleModel
       .query()
-      .select(`${DatabaseTableName.ARTICLES}.*`, this.getCommentsCountQuery())
+      .select(
+        `${DatabaseTableName.ARTICLES}.*`,
+        this.getCommentsCountQuery(),
+        getIsFavouriteSubQuery(Boolean(showFavourites), requestUserId),
+      )
       .where(getWhereUserIdQuery(userId))
       .where(getWhereGenreIdQuery(genreId))
       .where(getWhereAuthorIdQuery(authorId))
       .where(getWhereTitleLikeQuery(titleFilter))
+      .where(getShowFavouritesQuery(Boolean(showFavourites), requestUserId))
       .where(getWherePublishedOnlyQuery(hasPublishedOnly))
       .whereNull('deletedAt')
-      .orderBy('articles.publishedAt', SortingOrder.DESCENDING)
+      .orderBy(getSortingCondition(hasPublishedOnly))
       .page(skip / take, take)
       .modify(this.joinArticleRelations)
       .castTo<Page<ArticleModel & ArticleCommentCount>>();
@@ -99,6 +115,7 @@ class ArticleRepository implements IArticleRepository {
                 prop: article.prompt.prop,
               }
             : null,
+          isFavourite: article.isFavourite,
         }),
       ),
     };
@@ -132,6 +149,46 @@ class ArticleRepository implements IArticleRepository {
           }
         : null,
       commentCount: null,
+    });
+  }
+
+  public async findWithIsFavourite(
+    id: number,
+    userId: number,
+  ): Promise<ArticleEntity | null> {
+    const article = await this.articleModel
+      .query()
+      .select(
+        `${DatabaseTableName.ARTICLES}.*`,
+        getIsFavouriteSubQuery(false, userId),
+      )
+      .where({ 'articles.id': id })
+      .first()
+      .modify(this.joinArticleRelations);
+
+    if (!article) {
+      return null;
+    }
+
+    return ArticleEntity.initialize({
+      ...article,
+      author: {
+        firstName: article.author.firstName,
+        lastName: article.author.lastName,
+        avatarUrl: article.author.avatar?.url ?? null,
+      },
+      genre: article.genre?.name ?? null,
+      coverUrl: article.cover?.url ?? null,
+      prompt: article.prompt
+        ? {
+            character: article.prompt.character,
+            setting: article.prompt.setting,
+            situation: article.prompt.situation,
+            prop: article.prompt.prop,
+          }
+        : null,
+      commentCount: null,
+      isFavourite: article.isFavourite,
     });
   }
 
@@ -260,6 +317,31 @@ class ArticleRepository implements IArticleRepository {
         avatarUrl: article.author.avatar?.url ?? null,
       },
       coverUrl: article.cover?.url ?? null,
+    });
+  }
+
+  public async toggleIsFavourite(
+    userId: number,
+    articleId: number,
+  ): Promise<FavouredUserArticlesModel | FavouredUserArticlesModel[]> {
+    return await this.favouriteArticlesModel.transaction(async () => {
+      const currentData = await this.favouriteArticlesModel
+        .query()
+        .where({ articleId, userId })
+        .first();
+
+      if (!currentData) {
+        return await this.favouriteArticlesModel
+          .query()
+          .insert({ userId, articleId })
+          .returning(['article_id', 'user_id']);
+      }
+
+      return await this.favouriteArticlesModel
+        .query()
+        .delete()
+        .where({ articleId, userId })
+        .returning(['article_id', 'user_id']);
     });
   }
 }
