@@ -39,7 +39,7 @@ const ScrollToTop: React.FC = () => {
         [styles.containerVisibility]: showButton,
       })}
       style={{
-        background: `conic-gradient(var(--light-gray-border) ${scrollValue}%, var(--white-50) ${scrollValue}%)`,
+        background: `conic-gradient(var(--light-green) ${scrollValue}%, var(--light-gray-border) ${scrollValue}%)`,
       }}
     >
       <div className={styles.backgroundCircle}>
