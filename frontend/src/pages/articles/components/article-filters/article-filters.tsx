@@ -1,6 +1,6 @@
 import { matchPath } from 'react-router-dom';
 
-import { Button, Input } from '~/libs/components/components.js';
+import { Button, Icon, Input } from '~/libs/components/components.js';
 import { Select } from '~/libs/components/select/select.js';
 import { AppRoute } from '~/libs/enums/enums.js';
 import {
@@ -61,8 +61,8 @@ const ArticleFilters: React.FC<Properties> = ({
           onClick={formReset}
         />
       </div>
-      <form className={styles.form} name="FiltersForm">
-        <div className={styles.filterGroup}>
+      <form className={styles.filterGroup} name="FiltersForm">
+        <div className={styles.inputContainer}>
           <Input
             name="titleFilter"
             type="text"
@@ -73,26 +73,26 @@ const ArticleFilters: React.FC<Properties> = ({
             control={control}
             errors={errors}
           />
-          {!isMyArticlesPage && (
-            <Select
-              name="authorId"
-              placeholder="Search..."
-              label="Author"
-              control={control}
-              errors={errors}
-              options={authorsSelectOptions}
-            />
-          )}
-
+          <Icon iconName="search" className={styles.searchIcon} />
+        </div>
+        {!isMyArticlesPage && (
           <Select
-            name="genreId"
+            name="authorId"
             placeholder="Search..."
-            label="Genre"
-            options={genreSelectOptions}
+            label="Author"
             control={control}
             errors={errors}
+            options={authorsSelectOptions}
           />
-        </div>
+        )}
+        <Select
+          name="genreId"
+          placeholder="Search..."
+          label="Genre"
+          options={genreSelectOptions}
+          control={control}
+          errors={errors}
+        />
       </form>
     </div>
   );
