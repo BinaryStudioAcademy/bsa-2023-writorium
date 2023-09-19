@@ -3,7 +3,7 @@ import {
   type ReactionResponseDto,
 } from '~/packages/articles/articles.js';
 
-const setReactionToState = (
+const updateReaction = (
   article: ArticleWithCommentCountResponseDto,
   updatedReaction: ReactionResponseDto,
 ): ArticleWithCommentCountResponseDto => {
@@ -32,4 +32,4 @@ const setReactionToState = (
   };
 };
 
-export { setReactionToState };
+export { updateReaction };

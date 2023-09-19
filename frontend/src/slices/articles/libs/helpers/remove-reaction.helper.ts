@@ -1,6 +1,6 @@
 import { type ArticleWithCommentCountResponseDto } from '~/packages/articles/articles.js';
 
-const removeReactionFromState = (
+const removeReaction = (
   article: ArticleWithCommentCountResponseDto,
   reactionId: number,
 ): ArticleWithCommentCountResponseDto => {
@@ -17,4 +17,4 @@ const removeReactionFromState = (
   };
 };
 
-export { removeReactionFromState };
+export { removeReaction };

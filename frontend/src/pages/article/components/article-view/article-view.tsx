@@ -79,9 +79,9 @@ const ArticleView: React.FC<Properties> = ({
     );
   }, [dispatch, id]);
 
-  const { likesCount, dislikesCount, hasAlreadyReactedWith } = user?.id
-    ? getReactionsInfo(user.id, reactions)
-    : { likesCount: null, dislikesCount: null, hasAlreadyReactedWith: null };
+  const { likesCount, dislikesCount, hasAlreadyReactedWith } = isShared
+    ? { likesCount: null, dislikesCount: null, hasAlreadyReactedWith: null }
+    : getReactionsInfo(user.id, reactions);
 
   const handleReaction = (reaction: ValueOf<typeof Reaction>): void => {
     if (isArticleOwner) {
