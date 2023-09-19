@@ -9,6 +9,7 @@ const DatabaseTableName = {
   ACHIEVEMENTS: 'achievements',
   GENRES: 'genres',
   PROMPTS: 'prompts',
+  USERS_ACHIEVEMENTS: 'users_achievements',
 } as const;
 
 export { DatabaseTableName };
