@@ -1,15 +1,16 @@
 import { type ColumnRefOrOrderByDescriptor } from 'objection';
 
-import { ArticleSortingKey, SortingOrder } from '../enums/enums.js';
+import {
+  DRAFTED_ARTICLES_CONDITION,
+  PUBLISHED_ARTICLES_CONDITION,
+} from '../constants/constants.js';
 
 const getSortingCondition = (
   hasPublishedOnly?: boolean,
 ): ColumnRefOrOrderByDescriptor[] => {
-  const orderBy = hasPublishedOnly
-    ? ArticleSortingKey.PUBLISHED
-    : ArticleSortingKey.DRAFTED;
-
-  return [{ column: orderBy, order: SortingOrder.DESCENDING }];
+  return hasPublishedOnly
+    ? PUBLISHED_ARTICLES_CONDITION
+    : DRAFTED_ARTICLES_CONDITION;
 };
 
 export { getSortingCondition };
