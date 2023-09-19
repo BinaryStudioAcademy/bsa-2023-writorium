@@ -228,3 +228,8 @@
 .moreActionsIcon:hover {
   background-color: var(--light-gray);
 }
+
+.toolbar {
+  display: flex;
+  gap: 5px;
+}

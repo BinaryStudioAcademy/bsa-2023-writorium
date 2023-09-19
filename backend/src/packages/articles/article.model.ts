@@ -29,6 +29,7 @@ class ArticleModel extends AbstractModel {
   public 'cover': FileModel | null;
   public 'deletedAt': string | null;
   public 'author': UserDetailsModel;
+  public 'isFavourite': boolean;
 
   public static override get tableName(): string {
     return DatabaseTableName.ARTICLES;

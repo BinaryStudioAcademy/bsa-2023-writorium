@@ -147,7 +147,7 @@ class ArticleService implements IService {
   }
 
   public async findAll(
-    filters: ArticlesFilters,
+    filters: ArticlesFilters & { requestUserId: number },
   ): Promise<ArticleGetAllResponseDto> {
     const { items, total } = await this.articleRepository.findAll({
       ...filters,
@@ -168,6 +168,7 @@ class ArticleService implements IService {
   ): Promise<ArticleGetAllResponseDto> {
     const { items, total } = await this.articleRepository.findAll({
       userId,
+      requestUserId: userId,
       ...filters,
     });
 
@@ -427,6 +428,30 @@ class ArticleService implements IService {
     const deletedArticle = await this.articleRepository.delete(id);
 
     return deletedArticle.toObjectWithRelationsAndCommentCount();
+  }
+
+  public async toggleIsFavourite(
+    userId: number,
+    articleId: number,
+  ): Promise<ArticleResponseDto | null> {
+    const toggleResult = await this.articleRepository.toggleIsFavourite(
+      userId,
+      articleId,
+    );
+    if (!toggleResult) {
+      throw new ApplicationError({
+        message: 'Unable to update article status',
+      });
+    }
+
+    const article = await this.articleRepository.findWithIsFavourite(
+      articleId,
+      userId,
+    );
+    if (!article) {
+      return null;
+    }
+    return article.toObjectWithRelationsAndCommentCount();
   }
 }
 
