@@ -27,7 +27,10 @@ import {
   updateArticle,
   updateComment,
 } from './actions.js';
-import { setReactionToState } from './libs/helpers/helpers.js';
+import {
+  removeReactionFromState,
+  setReactionToState,
+} from './libs/helpers/helpers.js';
 
 type State = {
   article: ArticleResponseDto | null;
@@ -120,19 +123,16 @@ const { reducer, actions, name } = createSlice({
     builder.addCase(deleteArticleReaction.fulfilled, (state, action) => {
       const { articleId, reactionId } = action.payload;
 
+      state.article =
+        state.article &&
+        removeReactionFromState(
+          state.article as ArticleWithCommentCountResponseDto,
+          reactionId,
+        );
+
       state.articles = state.articles.map((article) => {
         if (article.id === articleId) {
-          const reactionIndex = article.reactions.findIndex(
-            ({ id }) => id === reactionId,
-          );
-
-          const reactionsToUpdate = [...article.reactions];
-          reactionsToUpdate.splice(reactionIndex, 1);
-
-          return {
-            ...article,
-            reactions: reactionsToUpdate,
-          };
+          return removeReactionFromState(article, reactionId);
         }
         return article;
       });
