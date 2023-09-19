@@ -27,8 +27,6 @@
   --light-gray-40: rgb(174 174 174 / 40%);
   --medium-brightness-gray: #919191;
   --light-gray-text: #b6b6b6;
-  --light-gray-border: var(--pastel-gray);
-  --light-gray-dashed-border: #c6c8cd;
   --red: #df1c3d;
   --light-red: #d88184;
   --shadow-color: rgba(53 53 53 / 20%);
@@ -38,6 +36,10 @@
   --pastel-gray: #dbdbdb;
   --translucent-dark-blue-gray: rgb(16 24 40 / 16%);
   --header-height: 105px;
+
+  /* border colors */
+  --light-gray-border: var(--pastel-gray);
+  --light-gray-dashed-border: #c6c8cd;
 
   /* z-index */
   --z-index-level-one: 100;
