@@ -1,7 +1,9 @@
 import { ApplicationError } from '~/libs/exceptions/exceptions.js';
 import { type IService } from '~/libs/interfaces/service.interface.js';
+import { DatabaseTableName } from '~/libs/packages/database/database.js';
 import { ForbiddenError } from '~/libs/packages/exceptions/exceptions.js';
 
+import { type AchievementService } from '../achievements/achievement.service.js';
 import { CommentEntity } from './comment.entity.js';
 import { type CommentRepository } from './comment.repository.js';
 import {
@@ -13,9 +15,14 @@ import {
 
 class CommentService implements IService {
   private commentRepository: CommentRepository;
+  private achievementService: AchievementService;
 
-  public constructor(commentRepository: CommentRepository) {
+  public constructor(
+    commentRepository: CommentRepository,
+    achievementService: AchievementService,
+  ) {
     this.commentRepository = commentRepository;
+    this.achievementService = achievementService;
   }
 
   public findAll(): Promise<{ items: unknown[] }> {
@@ -52,6 +59,16 @@ class CommentService implements IService {
         articleId: payload.articleId,
       }),
     );
+
+    const countOfComments = await this.commentRepository.countCommentsByUserId(
+      payload.userId,
+    );
+
+    await this.achievementService.checkAchievement({
+      userId: payload.userId,
+      countOfItems: countOfComments,
+      referenceTable: DatabaseTableName.COMMENTS,
+    });
 
     return comment.toObject();
   }

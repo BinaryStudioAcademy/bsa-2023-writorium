@@ -1,8 +1,10 @@
 import { ApplicationError } from '~/libs/exceptions/exceptions.js';
 import { type IService } from '~/libs/interfaces/service.interface.js';
+import { DatabaseTableName } from '~/libs/packages/database/database.js';
 import { ForbiddenError } from '~/libs/packages/exceptions/exceptions.js';
 import { type OpenAIService } from '~/libs/packages/openai/openai.package.js';
 
+import { type AchievementService } from '../achievements/achievement.service.js';
 import { GenreEntity } from '../genres/genre.entity.js';
 import { type GenreRepository } from '../genres/genre.repository.js';
 import { type UserAuthResponseDto } from '../users/users.js';
@@ -28,19 +30,29 @@ import {
   type UserActivityResponseDto,
 } from './libs/types/types.js';
 
+type Parameters = {
+  articleRepository: ArticleRepository;
+  openAIService: OpenAIService;
+  genreRepository: GenreRepository;
+  achievementService: AchievementService;
+};
+
 class ArticleService implements IService {
   private articleRepository: ArticleRepository;
   private openAIService: OpenAIService;
   private genreRepository: GenreRepository;
+  private achievementService: AchievementService;
 
-  public constructor(
-    articleRepository: ArticleRepository,
-    openAIService: OpenAIService,
-    genreRepository: GenreRepository,
-  ) {
+  public constructor({
+    articleRepository,
+    openAIService,
+    genreRepository,
+    achievementService,
+  }: Parameters) {
     this.articleRepository = articleRepository;
     this.openAIService = openAIService;
     this.genreRepository = genreRepository;
+    this.achievementService = achievementService;
   }
 
   private async detectArticleGenreFromText(
@@ -218,6 +230,15 @@ class ArticleService implements IService {
         publishedAt: payload?.publishedAt ?? null,
       }),
     );
+
+    const countOfOwnArticles =
+      await this.articleRepository.countArticlesByUserId(payload.userId);
+
+    await this.achievementService.checkAchievement({
+      userId: payload.userId,
+      countOfItems: countOfOwnArticles,
+      referenceTable: DatabaseTableName.ARTICLES,
+    });
 
     return article.toObjectWithRelations();
   }

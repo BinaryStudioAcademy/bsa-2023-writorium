@@ -93,7 +93,7 @@ class AchievementService implements IService {
     referenceTable: ValueOf<typeof DatabaseTableName>;
   }): Promise<void> {
     const achievementEntity = await this.achievementRepository.findBy({
-      referenceTable: referenceTable,
+      referenceTable,
       breakpoint: countOfItems,
     });
 

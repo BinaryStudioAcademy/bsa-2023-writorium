@@ -205,6 +205,10 @@ class ArticleRepository implements IArticleRepository {
     });
   }
 
+  public countArticlesByUserId(userId: number): Promise<number> {
+    return this.articleModel.query().where({ userId }).resultSize();
+  }
+
   public delete(): Promise<boolean> {
     return Promise.resolve(false);
   }
