@@ -66,15 +66,6 @@ const ArticleView: React.FC<Properties> = ({
     );
   }, [dispatch, id]);
 
-  const handleCommentIconClick = useCallback(() => {
-    const element = document.querySelector(`#${LinkHash.COMMENTS}`);
-
-    element?.scrollIntoView({
-      block: 'start',
-      behavior: 'smooth',
-    });
-  }, []);
-
   return (
     <div
       className={getValidClassNames(styles.body, coverUrl && styles.hasCover)}
@@ -115,12 +106,16 @@ const ArticleView: React.FC<Properties> = ({
               iconClassName={styles.icon}
               onClick={onButtonClick}
             />
-            <IconButton
-              iconName="comment"
-              className={styles.iconButton}
-              iconClassName={styles.icon}
-              onClick={handleCommentIconClick}
-            />
+            <Link
+              to={`#${LinkHash.COMMENTS}` as typeof AppRoute.ARTICLES_$ID}
+              state={article}
+            >
+              <IconButton
+                iconName="comment"
+                className={styles.iconButton}
+                iconClassName={styles.icon}
+              />
+            </Link>
             <IconButton
               iconName="share"
               className={styles.iconButton}
