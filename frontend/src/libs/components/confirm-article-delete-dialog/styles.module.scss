@@ -26,3 +26,13 @@ div.confirmModal {
   background-color: var(--light-gray);
   border: 2px solid var(--dark-green);
 }
+
+.buttonDelete {
+  color: var(--white);
+  background-color: var(--button-delete-bg);
+}
+
+.buttonDelete:hover {
+  color: var(--white);
+  background-color: var(--button-delete-hover);
+}

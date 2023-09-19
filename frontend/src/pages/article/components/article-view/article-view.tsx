@@ -1,13 +1,12 @@
 import {
-  Button,
-  ConfirmDialog,
+  ConfirmArticleDeleteDialog,
   IconButton,
   Link,
   Popover,
   ShareOnFacebookButton,
   Tags,
 } from '~/libs/components/components.js';
-import { AppRoute, ButtonType } from '~/libs/enums/enums.js';
+import { AppRoute } from '~/libs/enums/enums.js';
 import {
   configureString,
   getFullName,
@@ -67,12 +66,6 @@ const ArticleView: React.FC<Properties> = ({
     if (id) {
       void dispatch(articlesActions.shareArticle({ id }));
     }
-  }, [dispatch, id]);
-
-  const handleDeleteArticle = useCallback((): void => {
-    void dispatch(
-      articlesActions.deleteArticle({ id: Number(id), hasRedirect: true }),
-    );
   }, [dispatch, id]);
 
   const handleDeleteButtonClick = useCallback((): void => {
@@ -171,17 +164,10 @@ const ArticleView: React.FC<Properties> = ({
           dangerouslySetInnerHTML={{ __html: sanitizeHtml(text) }}
         />
       </div>
-      <ConfirmDialog
+      <ConfirmArticleDeleteDialog
+        id={Number(id)}
+        hasRedirect
         trigger={{ handleToggleModalOpen, isOpen }}
-        message="Are you sure you want to delete this article? This action cannot be undone."
-        confirmButton={
-          <Button
-            type={ButtonType.BUTTON}
-            label="Delete"
-            onClick={handleDeleteArticle}
-            className={styles.buttonDelete}
-          />
-        }
       />
     </div>
   );

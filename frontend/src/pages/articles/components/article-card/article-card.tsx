@@ -1,7 +1,6 @@
 import {
   Avatar,
-  Button,
-  ConfirmDialog,
+  ConfirmArticleDeleteDialog,
   Icon,
   IconButton,
   Link,
@@ -11,7 +10,6 @@ import {
 } from '~/libs/components/components.js';
 import {
   AppRoute,
-  ButtonType,
   DateFormat,
   LinkHash,
   Reaction,
@@ -118,10 +116,6 @@ const ArticleCard: React.FC<Properties> = ({
 
   const handleSharedButtonClick = useCallback((): void => {
     void dispatch(articlesActions.shareArticle({ id: id.toString() }));
-  }, [dispatch, id]);
-
-  const handleDeleteArticle = useCallback((): void => {
-    void dispatch(articlesActions.deleteArticle({ id }));
   }, [dispatch, id]);
 
   const handleDeleteButtonClick = useCallback((): void => {
@@ -249,17 +243,9 @@ const ArticleCard: React.FC<Properties> = ({
           Read more
         </Link>
       </div>
-      <ConfirmDialog
+      <ConfirmArticleDeleteDialog
+        id={id}
         trigger={{ handleToggleModalOpen, isOpen }}
-        message="Are you sure you want to delete this article? This action cannot be undone."
-        confirmButton={
-          <Button
-            type={ButtonType.BUTTON}
-            label="Delete"
-            onClick={handleDeleteArticle}
-            className={styles.buttonDelete}
-          />
-        }
       />
     </article>
   );
