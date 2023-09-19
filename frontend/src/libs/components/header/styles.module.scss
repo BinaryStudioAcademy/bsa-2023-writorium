@@ -1,3 +1,5 @@
+@use "src/assets/css/breakpoints.scss";
+
 .header {
   position: sticky;
   top: 0;
@@ -62,6 +64,10 @@
   opacity: 0.8;
 }
 
+.popoverWriteLink {
+  display: none;
+}
+
 .profileLink {
   padding: 14px 10px;
   color: inherit;
@@ -87,4 +93,27 @@
 
 .logoutBtn:hover {
   background-color: var(--light-gray-15);
+}
+
+@media only screen and (max-width: breakpoints.$medium) {
+  .writeLink {
+    display: none;
+  }
+
+  .popoverWriteLink {
+    display: block;
+    padding: 14px 10px;
+    color: var(--light-green);
+    font-weight: 700;
+    font-size: 16px;
+    line-height: normal;
+    text-align: center;
+    border-bottom: 2px solid var(--light-gray-15);
+    border-radius: 7px 7px 0 0;
+  }
+
+  .popoverWriteLink:hover {
+    background-color: var(--light-gray-15);
+    border-color: var(--light-green);
+  }
 }

@@ -1,12 +1,14 @@
 import {
   IconButton,
   Link,
+  Popover,
   ShareOnFacebookButton,
   Tags,
 } from '~/libs/components/components.js';
 import { AppRoute, Reaction } from '~/libs/enums/enums.js';
 import {
   configureString,
+  getFullName,
   getReactionsInfo,
   getValidClassNames,
   sanitizeHtml,
@@ -20,22 +22,23 @@ import {
 import { type TagType, type ValueOf } from '~/libs/types/types.js';
 import {
   type ArticleWithCommentCountResponseDto,
+  type ArticleWithRelationsType,
   type ReactionResponseDto,
 } from '~/packages/articles/articles.js';
 import { type UserAuthResponseDto } from '~/packages/users/users.js';
 import { actions as articlesActions } from '~/slices/articles/articles.js';
 
 import { getReactionConvertedToBoolean } from '../../../articles/libs/helpers/helpers.js';
+import { ArticleDetails } from '../article-details/article-details.js';
 import styles from './styles.module.scss';
 
 type Properties = {
-  title: string;
-  text: string;
   tags: TagType[] | null;
-  coverUrl: string | null;
   isShared?: boolean;
+  article:
+    | Required<ArticleWithRelationsType>
+    | ArticleWithCommentCountResponseDto;
   isArticleOwner?: boolean;
-  article?: ArticleWithCommentCountResponseDto;
   reactions?: ReactionResponseDto[];
 };
 
@@ -46,15 +49,16 @@ const onButtonClick = (): void => {
 };
 
 const ArticleView: React.FC<Properties> = ({
-  title,
-  text,
   tags,
-  coverUrl,
   isShared = false,
   isArticleOwner,
   article,
   reactions = [],
 }) => {
+  const { text, title, coverUrl, author, readTime, genre, publishedAt } =
+    article;
+  const { firstName, lastName, avatarUrl } = author;
+  const authorFullName = getFullName(firstName, lastName);
   const articleUrl = window.location.href;
 
   const { id } = useParams();
@@ -195,7 +199,25 @@ const ArticleView: React.FC<Properties> = ({
           </div>
         )}
       </div>
-      <div className={styles.articleContent}>
+      <Popover
+        content={
+          <ArticleDetails
+            readTime={readTime}
+            authorName={authorFullName}
+            publishedAt={publishedAt ?? ''}
+            genre={genre}
+            avatarUrl={avatarUrl}
+            containerStyle={styles.articleDetailsContainer}
+          />
+        }
+        className={getValidClassNames(
+          styles.authorDetails,
+          styles.authorDetailsModal,
+        )}
+      >
+        <h5 className={styles.presentationAuthorName}>{authorFullName}</h5>
+      </Popover>
+      <div className={styles.textWrapper}>
         <h4 className={styles.title}>{title}</h4>
         {tags && <Tags tags={tags} />}
         <p
