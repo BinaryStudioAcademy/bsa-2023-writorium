@@ -33,7 +33,7 @@ const ArticleFilters: React.FC<Properties> = ({
   });
   const { pathname } = useLocation();
   const isMyArticlesPage = matchPath(
-    { path: `${AppRoute.ARTICLES_MY_ARTICLES}` },
+    { path: AppRoute.ARTICLES_MY_ARTICLES },
     pathname,
   );
   const data: FilterFormValues = watch();
