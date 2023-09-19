@@ -93,6 +93,7 @@
   font-family: Lato, sans-serif;
   font-style: normal;
   line-height: calc(var(--height) / var(--max-lines));
+  word-break: break-word;
   overflow-wrap: break-word;
 }
 
@@ -114,6 +115,7 @@
 
 .body:not(.hasCover) .articleInfo {
   flex: 1;
+  min-width: 0;
 }
 
 .body:not(.hasCover) .text {
@@ -177,7 +179,7 @@
   color: var(--light-green);
 }
 
-.footer .readMore {
+.readMore {
   margin-left: auto;
   color: var(--light-green);
   font-weight: 700;
@@ -185,22 +187,17 @@
   font-family: Lato, sans-serif;
   font-style: normal;
   line-height: normal;
+  transition: color 0.3s ease;
 }
 
-.pointerIcon {
-  cursor: pointer;
+.readMore:hover {
+  color: var(--dark-green);
 }
 
 .iconWrapper {
   display: flex;
   gap: 10px;
-}
-
-.editIcon {
-  width: 20px;
-  height: 20px;
-  color: var(--light-green);
-  cursor: pointer;
+  background-color: transparent;
 }
 
 .facebookIconButton {
@@ -208,4 +205,31 @@
   height: 18px;
   color: var(--light-green);
   border-radius: 50%;
+}
+
+.moreActions {
+  z-index: 0;
+  width: 200px;
+  padding: 0;
+  background-color: var(--white);
+  border-radius: 7px;
+  box-shadow: 0 0 6px -2px var(--shadow-color);
+  opacity: 1;
+}
+
+.moreActionsIcon {
+  width: 35px;
+  height: 35px;
+  padding: 5px;
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+}
+
+.moreActionsIcon:hover {
+  background-color: var(--light-gray);
+}
+
+.toolbar {
+  display: flex;
+  gap: 5px;
 }

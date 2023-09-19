@@ -1,0 +1,20 @@
+.popoverWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.popoverContentWrapper {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: var(--z-index-level-one);
+  display: flex;
+  flex-direction: column;
+  width: 150px;
+  background-color: var(--light-gray);
+  border-radius: 7px;
+  box-shadow: 0 4px 8px -2px rgb(16 24 40 / 16%);
+  transform: translateY(5px);
+}

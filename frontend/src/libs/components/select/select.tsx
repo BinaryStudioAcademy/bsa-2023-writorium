@@ -40,6 +40,9 @@ const Select = <
   control,
   errors,
   label,
+  options,
+  isMulti,
+  isClearable = true,
   ...restProperties
 }: Properties<T, IsMulti, Group>): JSX.Element => {
   const { field } = useFormController({ name, control });
@@ -47,13 +50,24 @@ const Select = <
 
   const handleChange = useCallback(
     (option: unknown) => {
-      field.onChange((option as SelectOption).value);
+      const fieldValue = (option as SelectOption)?.value ?? null;
+      field.onChange(fieldValue);
     },
     [field],
   );
 
+  const handleSelectValue = (
+    value: string | number | (string | number)[],
+  ): SelectOption | SelectOption[] | undefined => {
+    return isMulti
+      ? (options as SelectOption[])?.filter((option) => {
+          return (value as Array<string | number>).includes(option.value);
+        })
+      : (options as SelectOption[])?.find((option) => option.value === value);
+  };
+
   return (
-    <label>
+    <label className={cssStyles.label}>
       <span className={cssStyles.title}>{label}</span>
       <ReactSelect
         {...restProperties}
@@ -61,6 +75,10 @@ const Select = <
         placeholder={placeholder}
         styles={{ ...getDefaultStyles<IsMulti, Group>(), ...styles }}
         components={{ DropdownIndicator, IndicatorSeparator }}
+        options={options}
+        isMulti={isMulti}
+        isClearable={isClearable}
+        value={handleSelectValue(field.value) ?? null}
       />
       <ErrorMessage error={error as string} />
     </label>

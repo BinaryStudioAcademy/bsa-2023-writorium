@@ -15,6 +15,7 @@ const ExceptionMessage = {
     'Authorization header should be in format: Bearer <token>',
   FAILED_TO_SEND_EMAIL: 'Failed to send email',
   FILE_NOT_PROVIDED: 'File not provided',
+  ARTICLE_NOT_FOUND: 'Article not found',
 } as const;
 
 export { ExceptionMessage };

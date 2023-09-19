@@ -2,15 +2,16 @@ import { ApplicationError } from '~/libs/exceptions/exceptions.js';
 import { type IService } from '~/libs/interfaces/service.interface.js';
 import { DatabaseTableName } from '~/libs/packages/database/database.js';
 import { ForbiddenError } from '~/libs/packages/exceptions/exceptions.js';
+import { type UserAuthResponseDto } from '~/packages/users/users.js';
 
 import { type AchievementService } from '../achievements/achievement.service.js';
 import { CommentEntity } from './comment.entity.js';
 import { type CommentRepository } from './comment.repository.js';
 import {
-  type CommentBaseResponseDto,
   type CommentCreateDto,
   type CommentGetAllResponseDto,
-  type CommentUpdateDto,
+  type CommentUpdateRequestDto,
+  type CommentWithRelationsResponseDto,
 } from './libs/types/types.js';
 
 class CommentService implements IService {
@@ -35,23 +36,25 @@ class CommentService implements IService {
     const items = await this.commentRepository.findAllByArticleId(articleId);
 
     return {
-      items: items.map((it) => it.toObject()),
+      items: items.map((it) => it.toObjectWithRelations()),
     };
   }
 
-  public async find(id: number): Promise<CommentBaseResponseDto | null> {
+  public async find(
+    id: number,
+  ): Promise<CommentWithRelationsResponseDto | null> {
     const comment = await this.commentRepository.find(id);
 
     if (!comment) {
       return null;
     }
 
-    return comment.toObject();
+    return comment.toObjectWithRelations();
   }
 
   public async create(
     payload: CommentCreateDto,
-  ): Promise<CommentBaseResponseDto> {
+  ): Promise<CommentWithRelationsResponseDto> {
     const comment = await this.commentRepository.create(
       CommentEntity.initializeNew({
         text: payload.text,
@@ -60,23 +63,26 @@ class CommentService implements IService {
       }),
     );
 
-    const countOfComments = await this.commentRepository.countCommentsByUserId(
+    const countOfOwnComments = await this.commentRepository.countCommentsByUserId(
       payload.userId,
     );
 
     await this.achievementService.checkAchievement({
       userId: payload.userId,
-      countOfItems: countOfComments,
+      countOfItems: countOfOwnComments,
       referenceTable: DatabaseTableName.COMMENTS,
     });
 
-    return comment.toObject();
+    return comment.toObjectWithRelations();
   }
 
   public async update(
     id: number,
-    payload: CommentUpdateDto,
-  ): Promise<CommentBaseResponseDto> {
+    {
+      payload,
+      userId,
+    }: { payload: CommentUpdateRequestDto; userId: UserAuthResponseDto['id'] },
+  ): Promise<CommentWithRelationsResponseDto> {
     const comment = await this.find(id);
 
     if (!comment) {
@@ -85,9 +91,9 @@ class CommentService implements IService {
       });
     }
 
-    if (comment.userId !== payload.userId) {
+    if (comment.userId !== userId) {
       throw new ForbiddenError(
-        `User with id "${payload.userId}" has no rights to update this comment`,
+        `User with id "${userId}" has no rights to update this comment`,
       );
     }
 
@@ -98,7 +104,7 @@ class CommentService implements IService {
       }),
     );
 
-    return updatedComment.toObject();
+    return updatedComment.toObjectWithRelations();
   }
 
   public delete(): Promise<boolean> {

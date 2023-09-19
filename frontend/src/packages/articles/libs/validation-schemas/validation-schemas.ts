@@ -1,2 +1,5 @@
-export { articleCreateValidationSchema } from 'shared/build/index.js';
-export { articleUpdateValidationSchema } from 'shared/build/index.js';
+export {
+  articleCreateValidationSchema,
+  articlesFormFiltersValidationSchema,
+  articleUpdateValidationSchema,
+} from 'shared/build/index.js';

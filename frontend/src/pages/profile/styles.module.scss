@@ -10,10 +10,11 @@
   width: 100%;
   max-width: 1590px;
   margin: 0 auto;
+  padding-bottom: 20px;
 }
 
 .profileBlock {
   background-color: var(--white);
   border-radius: 7px;
-  box-shadow: 0 0 6px rgb(16 24 40 / 16%);
+  box-shadow: 0 0 6px var(--translucent-dark-blue-gray);
 }

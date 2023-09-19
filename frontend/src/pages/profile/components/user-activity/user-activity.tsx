@@ -58,7 +58,7 @@ const UserActivity: React.FC<Properties> = ({ userActivity, className }) => {
               <span className={styles.friday}>Fri</span>
               <span className={styles.sunday}>Sun</span>
             </div>
-            <div>
+            <div className={styles.innerWrapper}>
               <div className={styles.months}>
                 {uniqueMonths.map((month) => (
                   <span key={month}>{month}</span>

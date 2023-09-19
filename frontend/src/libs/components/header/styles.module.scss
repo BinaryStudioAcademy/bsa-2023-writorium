@@ -1,3 +1,5 @@
+@use "src/assets/css/breakpoints.scss";
+
 .header {
   position: sticky;
   top: 0;
@@ -7,7 +9,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 105px;
+  height: var(--header-height);
   padding: 30px 60px;
   background: var(--light-gray);
   border-bottom: 2px solid var(--light-gray-15);
@@ -34,40 +36,84 @@
   background-color: var(--dark-green);
   border-radius: 5px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.dropdown.dropdownModal {
-  background-color: var(--light-gray-15);
-}
-
-.dropdown .dropdownModal.open {
-  animation: fade 0.3s ease-in-out;
-}
-
-.dropdown .dropdownModal {
-  position: absolute;
-  top: 102px;
-  right: 60px;
-  width: 150px;
-  padding: 0;
-  border-radius: 7px;
-  box-shadow: 0 4px 8px -2px rgb(16 24 40 / 16%);
-}
-
-.dropdown button {
-  background-color: transparent;
+.writeLink:hover {
+  background-color: var(--light-green);
 }
 
 .avatarButton {
+  background-color: transparent;
   border: none;
 }
 
-@keyframes fade {
-  0% {
-    opacity: 0;
+.avatarButton > span {
+  transition: background-color 0.3s ease;
+}
+
+.avatarButton:hover > span {
+  background-color: var(--light-green-80);
+}
+
+.avatarButton img {
+  transition: opacity 0.3s ease;
+}
+
+.avatarButton:hover img {
+  opacity: 0.8;
+}
+
+.popoverWriteLink {
+  display: none;
+}
+
+.profileLink {
+  padding: 14px 10px;
+  color: inherit;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: normal;
+  text-align: center;
+  border-bottom: 2px solid var(--light-gray-15);
+  border-radius: 7px 7px 0 0;
+}
+
+.profileLink:hover {
+  color: var(--light-green);
+  background-color: var(--light-gray-15);
+  border-color: var(--light-green);
+}
+
+.logoutBtn {
+  padding: 14px 10px;
+  background: none;
+  border-radius: 0 0 7px 7px;
+}
+
+.logoutBtn:hover {
+  background-color: var(--light-gray-15);
+}
+
+@media only screen and (max-width: breakpoints.$medium) {
+  .writeLink {
+    display: none;
   }
 
-  100% {
-    opacity: 1;
+  .popoverWriteLink {
+    display: block;
+    padding: 14px 10px;
+    color: var(--light-green);
+    font-weight: 700;
+    font-size: 16px;
+    line-height: normal;
+    text-align: center;
+    border-bottom: 2px solid var(--light-gray-15);
+    border-radius: 7px 7px 0 0;
+  }
+
+  .popoverWriteLink:hover {
+    background-color: var(--light-gray-15);
+    border-color: var(--light-green);
   }
 }

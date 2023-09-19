@@ -1,18 +1,35 @@
 import {
   IconButton,
+  Link,
+  Popover,
   ShareOnFacebookButton,
-  Tag,
+  Tags,
 } from '~/libs/components/components.js';
-import { getValidClassNames, sanitizeHtml } from '~/libs/helpers/helpers.js';
+import { AppRoute } from '~/libs/enums/enums.js';
+import {
+  configureString,
+  getFullName,
+  getValidClassNames,
+  sanitizeHtml,
+} from '~/libs/helpers/helpers.js';
+import { useAppDispatch, useCallback, useParams } from '~/libs/hooks/hooks.js';
 import { type TagType } from '~/libs/types/types.js';
+import {
+  type ArticleWithCommentCountResponseDto,
+  type ArticleWithRelationsType,
+} from '~/packages/articles/articles.js';
+import { actions as articlesActions } from '~/slices/articles/articles.js';
 
+import { ArticleDetails } from '../article-details/article-details.js';
 import styles from './styles.module.scss';
 
 type Properties = {
-  title: string;
-  text: string;
-  tags: TagType[];
-  coverUrl?: string;
+  tags: TagType[] | null;
+  isShared?: boolean;
+  article:
+    | Required<ArticleWithRelationsType>
+    | ArticleWithCommentCountResponseDto;
+  isArticleOwner?: boolean;
 };
 
 const onButtonClick = (): void => {
@@ -21,8 +38,33 @@ const onButtonClick = (): void => {
    */
 };
 
-const ArticleView: React.FC<Properties> = ({ title, text, tags, coverUrl }) => {
+const ArticleView: React.FC<Properties> = ({
+  tags,
+  isShared = false,
+  isArticleOwner,
+  article,
+}) => {
+  const { text, title, coverUrl, author, readTime, genre, publishedAt } =
+    article;
+  const { firstName, lastName, avatarUrl } = author;
+  const authorFullName = getFullName(firstName, lastName);
   const articleUrl = window.location.href;
+
+  const { id } = useParams();
+
+  const dispatch = useAppDispatch();
+
+  const handleShareButtonClick = useCallback((): void => {
+    if (id) {
+      void dispatch(articlesActions.shareArticle({ id }));
+    }
+  }, [dispatch, id]);
+
+  const handleDeleteArticle = useCallback((): void => {
+    void dispatch(
+      articlesActions.deleteArticle({ id: Number(id), hasRedirect: true }),
+    );
+  }, [dispatch, id]);
 
   return (
     <div
@@ -32,42 +74,83 @@ const ArticleView: React.FC<Properties> = ({ title, text, tags, coverUrl }) => {
         {coverUrl && (
           <img alt="article cover" className={styles.cover} src={coverUrl} />
         )}
-        <div className={styles.buttonsWrapper}>
-          <IconButton
-            iconName="favorite"
-            className={styles.iconButton}
-            iconClassName={styles.icon}
-            onClick={onButtonClick}
-          />
-          <IconButton
-            iconName="comment"
-            className={styles.iconButton}
-            iconClassName={styles.icon}
-            onClick={onButtonClick}
-          />
-          <IconButton
-            iconName="share"
-            className={styles.iconButton}
-            iconClassName={styles.icon}
-            onClick={onButtonClick}
-          />
-          <ShareOnFacebookButton
-            title={title}
-            articleUrl={articleUrl}
-            iconStyle={getValidClassNames(
-              styles.iconButton,
-              styles.facebookIconButton,
+        {!isShared && (
+          <div className={styles.buttonsWrapper}>
+            {isArticleOwner && (
+              <>
+                <IconButton
+                  iconName="trashBin"
+                  className={styles.iconButton}
+                  iconClassName={styles.icon}
+                  onClick={handleDeleteArticle}
+                />
+                <Link
+                  to={
+                    configureString(AppRoute.ARTICLES_EDIT_$ID, {
+                      id: String(id),
+                    }) as typeof AppRoute.ARTICLES_EDIT_$ID
+                  }
+                  state={article}
+                >
+                  <IconButton
+                    iconName="edit"
+                    className={styles.iconButton}
+                    iconClassName={styles.icon}
+                    onClick={onButtonClick}
+                  />
+                </Link>
+              </>
             )}
-          />
-        </div>
+            <IconButton
+              iconName="favorite"
+              className={styles.iconButton}
+              iconClassName={styles.icon}
+              onClick={onButtonClick}
+            />
+            <IconButton
+              iconName="comment"
+              className={styles.iconButton}
+              iconClassName={styles.icon}
+              onClick={onButtonClick}
+            />
+            <IconButton
+              iconName="share"
+              className={styles.iconButton}
+              iconClassName={styles.icon}
+              onClick={handleShareButtonClick}
+            />
+            <ShareOnFacebookButton
+              title={title}
+              articleUrl={articleUrl}
+              iconStyle={getValidClassNames(
+                styles.iconButton,
+                styles.facebookIconButton,
+              )}
+            />
+          </div>
+        )}
       </div>
-      <div>
+      <Popover
+        content={
+          <ArticleDetails
+            readTime={readTime}
+            authorName={authorFullName}
+            publishedAt={publishedAt ?? ''}
+            genre={genre}
+            avatarUrl={avatarUrl}
+            containerStyle={styles.articleDetailsContainer}
+          />
+        }
+        className={getValidClassNames(
+          styles.authorDetails,
+          styles.authorDetailsModal,
+        )}
+      >
+        <h5 className={styles.presentationAuthorName}>{authorFullName}</h5>
+      </Popover>
+      <div className={styles.textWrapper}>
         <h4 className={styles.title}>{title}</h4>
-        <div className={styles.tags}>
-          {tags.map((tag) => (
-            <Tag key={tag.id} name={tag.name} />
-          ))}
-        </div>
+        {tags && <Tags tags={tags} />}
         <p
           className={styles.text}
           dangerouslySetInnerHTML={{ __html: sanitizeHtml(text) }}

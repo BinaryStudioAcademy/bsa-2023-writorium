@@ -2,11 +2,12 @@ import { type IEntity } from '~/libs/interfaces/interfaces.js';
 import { type WithNullableKeys } from '~/libs/types/types.js';
 
 import {
+  type ArticleCommentCount,
   type ArticleEntityType,
   type ArticleResponseDto,
+  type ArticleWithCommentCountResponseDto,
   type ArticleWithRelationsType,
   type ReactionResponseDto,
-  type UserDetailsResponseDto,
 } from './libs/types/types.js';
 
 class ArticleEntity implements IEntity {
@@ -19,11 +20,14 @@ class ArticleEntity implements IEntity {
   private 'coverId': number | null;
   private 'coverUrl'?: string | null;
   private 'publishedAt': string | null;
-  private 'author'?: UserDetailsResponseDto;
-  private 'prompt'?: ArticleWithRelationsType['prompt'];
-  private 'genre'?: ArticleWithRelationsType['genre'];
-  private 'reactions'?: ReactionResponseDto[];
+  private 'author': ArticleWithRelationsType['author'] | null;
+  private 'prompt': ArticleWithRelationsType['prompt'];
+  private 'genre': ArticleWithRelationsType['genre'];
+  private 'commentCount': number | null;
+  private 'reactions': ReactionResponseDto[] | null;
   private 'readTime': number | null;
+  private 'deletedAt': string | null;
+  private 'isFavourite': boolean;
 
   private constructor({
     id,
@@ -39,8 +43,14 @@ class ArticleEntity implements IEntity {
     reactions,
     prompt,
     genre,
+    deletedAt,
     readTime,
-  }: WithNullableKeys<ArticleWithRelationsType, 'id'>) {
+    commentCount,
+    isFavourite,
+  }: WithNullableKeys<
+    ArticleWithRelationsType & ArticleCommentCount,
+    'id' | 'author' | 'commentCount' | 'reactions' | 'deletedAt'
+  >) {
     this.id = id;
     this.title = title;
     this.text = text;
@@ -49,12 +59,15 @@ class ArticleEntity implements IEntity {
     this.genreId = genreId;
     this.publishedAt = publishedAt;
     this.author = author;
-    this.reactions = reactions;
     this.prompt = prompt;
     this.genre = genre;
+    this.commentCount = commentCount;
+    this.reactions = reactions;
     this.readTime = readTime;
     this.coverId = coverId;
     this.coverUrl = coverUrl;
+    this.deletedAt = deletedAt;
+    this.isFavourite = isFavourite;
   }
 
   public static initialize({
@@ -62,32 +75,39 @@ class ArticleEntity implements IEntity {
     title,
     text,
     userId,
-    coverId,
-    coverUrl,
     promptId,
     genreId,
     publishedAt,
     author,
-    reactions,
     prompt,
     genre,
+    commentCount,
+    coverId,
+    coverUrl,
+    reactions,
+    deletedAt,
     readTime,
-  }: ArticleWithRelationsType): ArticleEntity {
+    isFavourite,
+  }: ArticleWithRelationsType &
+    WithNullableKeys<ArticleCommentCount, 'commentCount'>): ArticleEntity {
     return new ArticleEntity({
       id,
       title,
       text,
       userId,
-      coverId,
-      coverUrl,
       promptId,
       genreId,
       publishedAt,
       author,
-      reactions,
       prompt,
       genre,
+      commentCount,
+      coverId,
+      coverUrl,
+      reactions,
+      deletedAt,
       readTime,
+      isFavourite,
     });
   }
 
@@ -95,22 +115,40 @@ class ArticleEntity implements IEntity {
     title,
     text,
     userId,
-    coverId,
     promptId,
     genreId,
-    readTime,
     publishedAt,
-  }: Omit<ArticleEntityType, 'id'>): ArticleEntity {
+    coverId,
+    readTime,
+  }: Omit<
+    ArticleWithRelationsType,
+    | 'id'
+    | 'author'
+    | 'prompt'
+    | 'genre'
+    | 'reactions'
+    | 'coverUrl'
+    | 'deletedAt'
+    | 'isFavourite'
+  >): ArticleEntity {
     return new ArticleEntity({
       id: null,
       title,
       text,
       userId,
       promptId,
-      coverId,
       genreId,
+      coverId,
       publishedAt,
+      commentCount: null,
+      author: null,
+      prompt: null,
+      genre: null,
+      coverUrl: null,
+      reactions: null,
+      deletedAt: null,
       readTime,
+      isFavourite: false,
     });
   }
 
@@ -125,6 +163,7 @@ class ArticleEntity implements IEntity {
       genreId: this.genreId,
       readTime: this.readTime,
       publishedAt: this.publishedAt,
+      deletedAt: this.deletedAt,
     };
   }
 
@@ -139,11 +178,35 @@ class ArticleEntity implements IEntity {
       coverId: this.coverId,
       coverUrl: this.coverUrl as ArticleResponseDto['coverUrl'],
       publishedAt: this.publishedAt,
-      author: this.author as UserDetailsResponseDto,
+      author: this.author as ArticleWithRelationsType['author'],
       reactions: this.reactions as ReactionResponseDto[],
-      prompt: this.prompt as ArticleResponseDto['prompt'],
-      genre: this.genre as ArticleResponseDto['genre'],
+      prompt: this.prompt,
+      genre: this.genre,
       readTime: this.readTime,
+      deletedAt: this.deletedAt,
+      isFavourite: this.isFavourite,
+    };
+  }
+
+  public toObjectWithRelationsAndCommentCount(): ArticleWithCommentCountResponseDto {
+    return {
+      id: this.id as number,
+      title: this.title,
+      text: this.text,
+      userId: this.userId,
+      promptId: this.promptId,
+      genreId: this.genreId,
+      coverId: this.coverId,
+      coverUrl: this.coverUrl as ArticleResponseDto['coverUrl'],
+      publishedAt: this.publishedAt,
+      author: this.author as ArticleWithRelationsType['author'],
+      prompt: this.prompt,
+      genre: this.genre,
+      readTime: this.readTime,
+      reactions: this.reactions as ReactionResponseDto[],
+      commentCount: Number(this.commentCount as number),
+      deletedAt: this.deletedAt,
+      isFavourite: this.isFavourite,
     };
   }
 
@@ -157,6 +220,7 @@ class ArticleEntity implements IEntity {
       genreId: this.genreId,
       readTime: this.readTime,
       publishedAt: this.publishedAt,
+      deletedAt: this.deletedAt,
     };
   }
 }

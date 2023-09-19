@@ -20,6 +20,10 @@
   cursor: pointer;
 }
 
+.title {
+  margin-bottom: 30px;
+}
+
 .buttonShow {
   width: 100%;
   padding: 13px 20px;
@@ -28,7 +32,8 @@
 }
 
 .modal {
-  box-shadow: 0 0 6px rgb(16 24 40 / 16%);
+  overflow: hidden;
+  box-shadow: 0 0 6px var(--translucent-dark-blue-gray);
 }
 
 .achievementListModal {
@@ -40,9 +45,10 @@
   overflow: auto;
 }
 
-.achievementBlock .achievementTooltip {
+.modal .achievementTooltip {
   max-width: 150px;
   color: var(--pale-gray);
-  background-color: var(--light-green);
+  background-color: var(--dark-green);
   border-radius: 7px;
+  opacity: 1;
 }

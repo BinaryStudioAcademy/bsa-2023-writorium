@@ -1,3 +1,5 @@
+@use "src/assets/css/breakpoints.scss";
+
 .container {
   max-width: 466px;
   background: var(--light-gray);
@@ -6,20 +8,41 @@
 }
 
 .authorWrapper {
-  display: flex;
+  display: grid;
+  grid-template: repeat(2, max-content) / repeat(2, max-content);
+  grid-template-areas:
+    "avatar authorName"
+    "avatar authorInfo";
   align-items: center;
   padding: 30px 41px 21px;
+  column-gap: 16px;
   border-bottom: 2px solid rgba(172 186 215 / 20%);
 }
 
 .avatarWrapper {
+  display: flex;
+  grid-area: avatar;
+  justify-content: center;
+  align-items: center;
   width: 78px;
   height: 78px;
-  margin-right: 16px;
+}
+
+.avatarWrapper > span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.avatarWrapper img {
+  width: 100%;
+  height: 100%;
 }
 
 .authorName {
-  margin-bottom: 10px;
+  grid-area: authorName;
   color: var(--dark-gray);
   font-weight: 700;
   font-size: 24px;
@@ -30,6 +53,7 @@
 
 .authorInfoWrapper {
   display: flex;
+  grid-area: authorInfo;
   align-items: center;
   padding: 0;
   list-style: none;
@@ -89,4 +113,189 @@
   font-weight: 700;
   font-size: 18px;
   line-height: normal;
+}
+
+@media only screen and (max-width: breakpoints.$medium) {
+  .authorWrapper {
+    row-gap: 10px;
+    padding: 8px;
+    column-gap: 8px;
+  }
+
+  .authorName {
+    font-size: 14px;
+  }
+
+  .authorInfo {
+    font-size: 12px;
+  }
+
+  .authorInfoValue {
+    margin-right: 2px;
+    margin-left: 8px;
+  }
+
+  .authorInfo:last-child::before {
+    margin-left: 8px;
+    padding-right: 4px;
+  }
+
+  .articleInfoWrapper {
+    padding: 0 8px 8px;
+  }
+
+  .articleInfoListWrapper {
+    margin-bottom: 8px;
+    column-gap: 8px;
+  }
+
+  .articleInfoListWrapper > svg {
+    width: 15px;
+    height: 15px;
+  }
+
+  .articleInfoListWrapper + svg {
+    width: 15px;
+    height: 15px;
+  }
+
+  .articleInfoList {
+    font-size: 12px;
+    column-gap: 8px;
+  }
+
+  .articleInfoItem::before {
+    margin-right: 4px;
+  }
+
+  .articleGenre {
+    margin-left: 8px;
+    font-size: 12px;
+  }
+}
+
+@media only screen and (min-width: breakpoints.$medium) and (max-width: breakpoints.$extra-large) {
+  .authorWrapper {
+    row-gap: 15px;
+    padding: 15px 15px 10px;
+    column-gap: 10px;
+  }
+
+  .authorName {
+    font-size: 20px;
+  }
+
+  .authorInfo {
+    font-size: inherit;
+  }
+
+  .authorInfoValue {
+    margin-right: 4px;
+    margin-left: 10px;
+  }
+
+  .authorInfo:last-child::before {
+    margin-left: 10px;
+    padding-right: 8px;
+  }
+
+  .articleInfoWrapper {
+    padding: 0 15px 15px;
+  }
+
+  .articleInfoListWrapper {
+    margin-bottom: 10px;
+    column-gap: 10px;
+  }
+
+  .articleInfoList {
+    column-gap: 10px;
+  }
+
+  .articleInfoItem::before {
+    margin-right: 8px;
+  }
+
+  .articleGenre {
+    margin-left: 10px;
+    font-size: 14px;
+  }
+}
+
+@media only screen and (max-width: breakpoints.$extra-large) {
+  .container {
+    display: none;
+  }
+
+  .authorWrapper {
+    display: grid;
+    grid-template: repeat(2, max-content) / max-content 1fr;
+    grid-template-areas:
+      "avatar authorName"
+      "authorInfo authorInfo";
+    align-items: center;
+    border-bottom: none;
+  }
+
+  .avatarWrapper {
+    display: flex;
+    grid-area: avatar;
+    width: 40px;
+    height: 40px;
+  }
+
+  .authorName {
+    grid-area: authorName;
+    color: var(--dark-gray);
+    font-weight: 700;
+    font-family: Raleway, sans-serif;
+    font-style: normal;
+    line-height: normal;
+    text-align: left;
+  }
+
+  .authorInfoWrapper {
+    display: flex;
+    grid-area: authorInfo;
+    align-items: center;
+    list-style: none;
+  }
+
+  .authorInfo {
+    display: flex;
+    align-items: center;
+    color: var(--dark-gray-40);
+    line-height: normal;
+  }
+
+  .articleInfoWrapper {
+    text-align: initial;
+  }
+
+  .articleInfoListWrapper {
+    display: flex;
+    align-items: flex-end;
+  }
+
+  .articleInfoList {
+    display: flex;
+    color: var(--dark-gray-40);
+    line-height: normal;
+    list-style: none;
+  }
+
+  .articleReadTimeValue {
+    padding-right: 4px;
+  }
+
+  .articleGenre {
+    color: var(--dark-gray-40);
+    font-weight: 500;
+    line-height: normal;
+  }
+
+  .authorDetails.authorDetailsModal {
+    display: flex;
+    background-color: var(--light-gray-15);
+  }
 }

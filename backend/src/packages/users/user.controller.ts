@@ -140,6 +140,25 @@ class UserController extends Controller {
     });
 
     this.addRoute({
+      path: UsersApiPath.AUTHORS,
+      method: 'GET',
+      handler: () => {
+        return this.getAllAuthors();
+      },
+    });
+
+    this.addRoute({
+      path: UsersApiPath.ARTICLES_GENRE_STATS,
+      method: 'GET',
+      handler: (options) =>
+        this.getUserArticlesGenreStats(
+          options as ApiHandlerOptions<{
+            user: UserAuthResponseDto;
+          }>,
+        ),
+    });
+
+    this.addRoute({
       path: UsersApiPath.ROOT,
       method: 'PUT',
       validation: {
@@ -179,7 +198,7 @@ class UserController extends Controller {
 
   /**
    * @swagger
-   * /articles/activity:
+   * /users/activity:
    *    get:
    *      summary: Get user activity statistic
    *      description: Get user activity statistic
@@ -197,6 +216,27 @@ class UserController extends Controller {
     return {
       status: HttpCode.OK,
       payload: await this.userService.getUserActivity(options.user.id),
+    };
+  }
+
+  /**
+   * @swagger
+   * /users/articles-genre-stats:
+   *    get:
+   *      summary: Get articles genres stats for current user
+   *      description: Get articles genres stats for current user
+   *      responses:
+   *        200:
+   *          description: Successful operation
+   */
+  private async getUserArticlesGenreStats(
+    options: ApiHandlerOptions<{ user: UserAuthResponseDto }>,
+  ): Promise<ApiHandlerResponse> {
+    return {
+      status: HttpCode.OK,
+      payload: await this.userService.getUserArticlesGenreStats(
+        options.user.id,
+      ),
     };
   }
 
@@ -233,6 +273,35 @@ class UserController extends Controller {
     return {
       status: HttpCode.OK,
       payload: await this.userService.update(options.user.id, options.body),
+    };
+  }
+
+  /**
+   * @swagger
+   *  /users/authors:
+   *    post:
+   *      summary: Get list of authors
+   *      description: Get list of users with at least one written article
+   *      security:
+   *        - bearerAuth: []
+   *      requestBody:
+   *        required: true
+   *      responses:
+   *        200:
+   *          description: Successful operation
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: object
+   *                properties:
+   *                  link:
+   *                    type: string
+   */
+
+  private async getAllAuthors(): Promise<ApiHandlerResponse> {
+    return {
+      status: HttpCode.OK,
+      payload: await this.userService.getAllAuthors(),
     };
   }
 }

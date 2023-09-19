@@ -1,19 +1,14 @@
-import {
-  AppRoute,
-  ContentType,
-  ExceptionMessage,
-  ServerErrorType,
-} from '~/libs/enums/enums.js';
+import { AppRoute, ContentType, ServerErrorType } from '~/libs/enums/enums.js';
 import { configureString, constructUrl } from '~/libs/helpers/helpers.js';
 import {
-  HttpCode,
-  HttpError,
-  HttpHeader,
+  type CustomHttpHeader,
   type IHttp,
 } from '~/libs/packages/http/http.js';
+import { HttpCode, HttpError, HttpHeader } from '~/libs/packages/http/http.js';
 import { type IStorage, StorageKey } from '~/libs/packages/storage/storage.js';
 import { type ServerErrorResponse, type ValueOf } from '~/libs/types/types.js';
 
+import { UNAUTHORIZED_ACTION_ERRORS } from './libs/constants/constants.js';
 import { type IHttpApi } from './libs/interfaces/interfaces.js';
 import {
   type HttpApiOptions,
@@ -51,9 +46,16 @@ class HttpApi implements IHttpApi {
     path: string,
     options: HttpApiOptions,
   ): Promise<HttpApiResponse> {
-    const { method, contentType, payload = null, hasAuth, query } = options;
+    const {
+      method,
+      contentType,
+      payload = null,
+      hasAuth,
+      query,
+      customHeaders = null,
+    } = options;
 
-    const headers = await this.getHeaders(contentType, hasAuth);
+    const headers = await this.getHeaders(hasAuth, customHeaders, contentType);
 
     const response = await this.http.load(this.getUrl(path, query), {
       method,
@@ -80,13 +82,20 @@ class HttpApi implements IHttpApi {
   }
 
   private async getHeaders(
-    contentType: ValueOf<typeof ContentType>,
     hasAuth: boolean,
+    customHeaders: Record<ValueOf<typeof CustomHttpHeader>, string> | null,
+    contentType?: ValueOf<typeof ContentType>,
   ): Promise<Headers> {
     const headers = new Headers();
 
-    if (contentType !== ContentType.FORM_DATA) {
+    if (contentType && contentType !== ContentType.FORM_DATA) {
       headers.append(HttpHeader.CONTENT_TYPE, contentType);
+    }
+
+    if (customHeaders) {
+      for (const [headerKey, headerValue] of Object.entries(customHeaders)) {
+        headers.append(headerKey, headerValue);
+      }
     }
 
     if (hasAuth) {
@@ -116,7 +125,7 @@ class HttpApi implements IHttpApi {
 
     if (
       response.status === HttpCode.UNAUTHORIZED &&
-      parsedException.message === ExceptionMessage.INVALID_TOKEN
+      UNAUTHORIZED_ACTION_ERRORS.includes(parsedException.message)
     ) {
       await this.storage.drop(StorageKey.TOKEN);
       window.location.assign(AppRoute.SIGN_IN);

@@ -1,32 +1,67 @@
-import { Modal } from '~/libs/components/components.js';
-import { useCallback } from '~/libs/hooks/hooks.js';
+import { getValidClassNames } from '~/libs/helpers/helpers.js';
+import {
+  useCallback,
+  useHandleClickOutside,
+  useReference,
+  useState,
+} from '~/libs/hooks/hooks.js';
+
+import styles from './styles.module.scss';
 
 type Properties = {
+  className?: string;
   content: React.ReactNode;
-  trigger: {
-    handleToggleModalOpen: () => void;
-    isOpen: boolean;
-  };
-  className: string;
+  children: React.ReactNode;
 };
 
-const Popover: React.FC<Properties> = ({ content, trigger, className }) => {
-  const { isOpen, handleToggleModalOpen } = trigger;
+const Popover: React.FC<Properties> = ({
+  className,
+  content,
+  children,
+}: Properties): JSX.Element => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const popupReference = useReference<HTMLDivElement>(null);
 
-  const handleClose = useCallback((): void => {
-    if (isOpen) {
-      handleToggleModalOpen();
+  const handleClick = useCallback((): void => {
+    setIsOpen(!isOpen);
+  }, [isOpen]);
+
+  const handleClose = (): void => {
+    setIsOpen(false);
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>): void => {
+    if (event.key === 'Escape') {
+      handleClose();
     }
-  }, [handleToggleModalOpen, isOpen]);
+  };
+
+  useHandleClickOutside({
+    ref: popupReference,
+    onClick: handleClose,
+  });
 
   return (
-    <>
+    <div
+      className={styles.popoverWrapper}
+      role="button"
+      tabIndex={0}
+      onClick={handleClick}
+      onKeyDown={handleKeyDown}
+      ref={popupReference}
+    >
+      {children}
       {isOpen && (
-        <Modal isOpen onClose={handleClose} className={className}>
+        <div
+          className={getValidClassNames(
+            styles.popoverContentWrapper,
+            className,
+          )}
+        >
           {content}
-        </Modal>
+        </div>
       )}
-    </>
+    </div>
   );
 };
 

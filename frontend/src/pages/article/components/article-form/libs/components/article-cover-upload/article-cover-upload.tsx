@@ -15,11 +15,13 @@ import {
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
 import {
   useAppDispatch,
+  useEffect,
   useFormController,
+  useReference,
   useState,
 } from '~/libs/hooks/hooks.js';
 import { SUPPORTED_FILE_TYPES_STRING } from '~/pages/profile/libs/constants/constants.js';
-import { appActions } from '~/slices/app/app.js';
+import { actions as appActions } from '~/slices/app/app.js';
 import { actions as filesActions } from '~/slices/file/file.js';
 
 import styles from './styles.module.scss';
@@ -28,7 +30,7 @@ type Properties<T extends FieldValues> = {
   control: Control<T, null>;
   errors: FieldErrors<T>;
   name: FieldPath<T>;
-  initialPreviewUrl?: string;
+  initialPreviewUrl?: string | null;
 };
 
 const ArticleCoverUpload = <T extends FieldValues>({
@@ -44,8 +46,8 @@ const ArticleCoverUpload = <T extends FieldValues>({
   );
   const [isDragActive, setIsDragActive] = useState(false);
   const [isUploadFileLoading, setIsUploadFileLoading] = useState(false);
-
   const error = errors[name]?.message;
+  const initialWrapperId = useReference<number | null>(field.value);
 
   const handleUploadArticleCover = (
     event_: ChangeEvent<HTMLInputElement>,
@@ -89,6 +91,16 @@ const ArticleCoverUpload = <T extends FieldValues>({
   const handleDrop = (): void => {
     setIsDragActive(false);
   };
+
+  useEffect(() => {
+    if (field.value === initialWrapperId.current) {
+      setPreviewUrl(initialPreviewUrl as string | null);
+    }
+
+    if (!field.value) {
+      setPreviewUrl(null);
+    }
+  }, [field, initialPreviewUrl, initialWrapperId]);
 
   return (
     <>

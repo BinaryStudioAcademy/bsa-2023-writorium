@@ -1,17 +1,20 @@
 import { ApiPath, ContentType } from '~/libs/enums/enums.js';
+import { writeTextInClipboard } from '~/libs/helpers/helpers.js';
 import { HttpApi } from '~/libs/packages/api/api.js';
-import { type IHttp } from '~/libs/packages/http/http.js';
+import { CustomHttpHeader, type IHttp } from '~/libs/packages/http/http.js';
 import { type IStorage } from '~/libs/packages/storage/storage.js';
 
 import { ArticlesApiPath } from './libs/enums/enums.js';
 import {
   type ArticleGetAllResponseDto,
+  type ArticleGetImprovementSuggestionsResponseDto,
   type ArticleReactionRequestDto,
   type ArticleReactionResponseDto,
   type ArticleRequestDto,
   type ArticleResponseDto,
   type ArticlesFilters,
   type ArticleUpdateRequestPayload,
+  type ArticleWithCommentCountResponseDto,
 } from './libs/types/types.js';
 
 type Constructor = {
@@ -57,7 +60,9 @@ class ArticleApi extends HttpApi {
     return await response.json<ArticleGetAllResponseDto>();
   }
 
-  public async create(payload: ArticleRequestDto): Promise<ArticleResponseDto> {
+  public async create(
+    payload: ArticleRequestDto,
+  ): Promise<ArticleWithCommentCountResponseDto> {
     const response = await this.load(
       this.getFullEndpoint(ArticlesApiPath.ROOT, {}),
       {
@@ -68,11 +73,12 @@ class ArticleApi extends HttpApi {
       },
     );
 
-    return await response.json<ArticleResponseDto>();
+    return await response.json<ArticleWithCommentCountResponseDto>();
   }
+
   public async update(
     payload: ArticleUpdateRequestPayload,
-  ): Promise<ArticleResponseDto> {
+  ): Promise<ArticleWithCommentCountResponseDto> {
     const response = await this.load(
       this.getFullEndpoint(ArticlesApiPath.EDIT, {
         id: payload.articleId.toString(),
@@ -82,6 +88,39 @@ class ArticleApi extends HttpApi {
         contentType: ContentType.JSON,
         payload: JSON.stringify(payload.articleForUpdate),
         hasAuth: true,
+      },
+    );
+
+    return await response.json<ArticleWithCommentCountResponseDto>();
+  }
+
+  public async share(id: string): Promise<{ link: string }> {
+    const response = await this.load(
+      this.getFullEndpoint(ArticlesApiPath.$ID_SHARE, { id }),
+      {
+        method: 'GET',
+        contentType: ContentType.JSON,
+        hasAuth: true,
+      },
+    );
+
+    const { link } = await response.json<{ link: string }>();
+
+    await writeTextInClipboard(link);
+
+    return { link };
+  }
+
+  public async getByToken(token: string): Promise<ArticleResponseDto> {
+    const response = await this.load(
+      this.getFullEndpoint(ArticlesApiPath.SHARED_BASE, {}),
+      {
+        method: 'GET',
+        contentType: ContentType.JSON,
+        hasAuth: false,
+        customHeaders: {
+          [CustomHttpHeader.SHARED_ARTICLE_TOKEN]: token,
+        },
       },
     );
 
@@ -115,6 +154,51 @@ class ArticleApi extends HttpApi {
     );
 
     return await response.json<ArticleReactionResponseDto>();
+  }
+
+  public async delete(id: number): Promise<ArticleWithCommentCountResponseDto> {
+    const response = await this.load(
+      this.getFullEndpoint(ArticlesApiPath.$ID, { id: String(id) }),
+      {
+        method: 'DELETE',
+        hasAuth: true,
+      },
+    );
+
+    return await response.json<ArticleWithCommentCountResponseDto>();
+  }
+
+  public async toggleIsFavourite(
+    articleId: number,
+  ): Promise<ArticleWithCommentCountResponseDto> {
+    const response = await this.load(
+      this.getFullEndpoint(ArticlesApiPath.FAVORITES, {
+        id: String(articleId),
+      }),
+      {
+        method: 'POST',
+        hasAuth: true,
+      },
+    );
+
+    return await response.json<ArticleWithCommentCountResponseDto>();
+  }
+
+  public async getImprovementSuggestions(
+    id: number,
+  ): Promise<ArticleGetImprovementSuggestionsResponseDto> {
+    const response = await this.load(
+      this.getFullEndpoint(ArticlesApiPath.$ID_IMPROVEMENT_SUGGESTIONS, {
+        id: String(id),
+      }),
+      {
+        method: 'GET',
+        contentType: ContentType.JSON,
+        hasAuth: true,
+      },
+    );
+
+    return await response.json<ArticleGetImprovementSuggestionsResponseDto>();
   }
 }
 

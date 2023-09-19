@@ -3,6 +3,7 @@ export {
   DEFAULT_PAGINATION_TAKE,
   INDEX_INCREMENT,
   RESET_PASSWORD_ROUTE,
+  SHARED_$TOKEN,
 } from './libs/constants/constants.js';
 export {
   ApiPath,
@@ -28,6 +29,7 @@ export {
 } from './libs/helpers/helpers.js';
 export { type IConfig } from './libs/packages/config/config.js';
 export {
+  CustomHttpHeader,
   HttpCode,
   HttpHeader,
   type HttpMethod,
@@ -64,18 +66,24 @@ export {
   articleReactionValidationSchema,
 } from './packages/article-reactions/article-reactions.js';
 export {
+  type ArticleCommentCount,
   type ArticleCreateDto,
   articleCreateValidationSchema,
   type ArticleEntityType,
   type ArticleGetAllResponseDto,
+  type ArticleGetImprovementSuggestionsResponseDto,
+  type ArticleImprovementSuggestion,
+  ArticleImprovementSuggestionPriority,
   type ArticleRequestDto,
   type ArticleResponseDto,
   ArticlesApiPath,
   type ArticlesFilters,
   articlesFiltersValidationSchema,
+  articlesFormFiltersValidationSchema,
   type ArticleUpdateRequestDto,
   type ArticleUpdateRequestPayload,
   articleUpdateValidationSchema,
+  type ArticleWithCommentCountResponseDto,
   type ArticleWithRelationsType,
   type ReactionResponseDto,
 } from './packages/articles/articles.js';
@@ -100,6 +108,7 @@ export {
   type CommentUpdateDto,
   type CommentUpdateRequestDto,
   commentUpdateValidationSchema,
+  type CommentWithRelationsResponseDto,
 } from './packages/comments/comments.js';
 export {
   FilesApiPath,
@@ -126,7 +135,10 @@ export {
 } from './packages/prompts/prompts.js';
 export {
   type UserActivityResponseDto,
+  type UserArticlesGenreStatsItem,
+  type UserArticlesGenreStatsResponseDto,
   type UserAuthResponseDto,
+  type UserDetailsAuthorResponseDto,
   type UserDetailsDto,
   type UserDetailsResponseDto,
   type UserGetAllItemResponseDto,

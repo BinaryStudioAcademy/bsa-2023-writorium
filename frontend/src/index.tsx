@@ -12,17 +12,14 @@ import {
   StoreProvider,
   Tooltip,
 } from '~/libs/components/components.js';
-import {
-  AppRoute,
-  ArticleSubRoute,
-  DataTooltipId,
-} from '~/libs/enums/enums.js';
+import { AppRoute, DataTooltipId } from '~/libs/enums/enums.js';
 import { config } from '~/libs/packages/config/config.js';
 import { store } from '~/libs/packages/store/store.js';
 import {
   ArticlePage,
   CreateArticlePage,
   EditArticlePage,
+  SharedArticlePage,
 } from '~/pages/article/article.js';
 import { Auth } from '~/pages/auth/auth.js';
 import { Landing } from '~/pages/landing/landing.js';
@@ -89,17 +86,25 @@ createRoot(document.querySelector('#root') as HTMLElement).render(
                       element: <ArticlesFeed />,
                     },
                     {
-                      path: ArticleSubRoute.MY_ARTICLES,
+                      path: AppRoute.ARTICLES_MY_ARTICLES,
                       element: <MyArticles />,
                     },
                   ],
                 },
                 {
-                  path: AppRoute.ARTICLE,
+                  path: AppRoute.ARTICLES_$ID,
                   element: (
                     <ProtectedRoute>
                       <ArticlePage />
                     </ProtectedRoute>
+                  ),
+                },
+                {
+                  path: AppRoute.ARTICLES_SHARED_$TOKEN,
+                  element: (
+                    <PublicRoute>
+                      <SharedArticlePage />
+                    </PublicRoute>
                   ),
                 },
                 {
@@ -111,7 +116,7 @@ createRoot(document.querySelector('#root') as HTMLElement).render(
                   ),
                 },
                 {
-                  path: AppRoute.EDIT_ARTICLE,
+                  path: AppRoute.ARTICLES_EDIT_$ID,
                   element: (
                     <ProtectedRoute>
                       <EditArticlePage />
@@ -127,7 +132,7 @@ createRoot(document.querySelector('#root') as HTMLElement).render(
                   ),
                 },
                 {
-                  path: AppRoute.RESET_PASSWORD,
+                  path: AppRoute.RESET_PASSWORD_$TOKEN,
                   element: (
                     <PublicRoute>
                       <Auth />
