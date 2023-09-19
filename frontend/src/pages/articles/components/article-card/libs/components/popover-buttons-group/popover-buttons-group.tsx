@@ -10,6 +10,8 @@ type Properties = {
   isOwnArticle: boolean;
   article: ArticleResponseDto;
   onDeleteArticle: (id: number) => void;
+  onToggleFavouriteClick: () => void;
+  isToggleFavouriteLoading: boolean;
 };
 
 const PopoverButtonsGroup: React.FC<Properties> = ({
@@ -25,7 +27,6 @@ const PopoverButtonsGroup: React.FC<Properties> = ({
 
   return (
     <div className={styles.buttonsGroup}>
-      <IconButton iconName="favorite" label="Add to favorites" />
       {isOwnArticle && (
         <>
           <Link

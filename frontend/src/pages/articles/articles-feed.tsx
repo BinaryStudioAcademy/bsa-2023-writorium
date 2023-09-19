@@ -28,6 +28,7 @@ const ArticlesFeed: React.FC = () => {
     titleFilter: '',
     authorId: null,
     genreId: null,
+    showFavourites: false,
   });
 
   const { hasMore, loadMore, resetSkip } = usePagination();
@@ -59,9 +60,14 @@ const ArticlesFeed: React.FC = () => {
       if (!checkIsEqual(filters, payload)) {
         setFilters(payload);
         resetSkip();
+        if (filters.showFavourites !== payload.showFavourites) {
+          void dispatch(
+            articlesActions.setShowFavourites(payload.showFavourites),
+          );
+        }
       }
     },
-    [filters, resetSkip],
+    [filters, resetSkip, dispatch],
   );
 
   useEffect(() => {
