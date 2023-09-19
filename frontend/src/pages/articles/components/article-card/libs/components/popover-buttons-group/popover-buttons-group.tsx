@@ -8,19 +8,20 @@ import styles from './styles.module.scss';
 type Properties = {
   isOwnArticle: boolean;
   article: ArticleResponseDto;
-  handleDeleteButtonClick: () => void;
+  onDeleteButtonClick: () => void;
+  onToggleFavouriteClick: () => void;
+  isToggleFavouriteLoading: boolean;
 };
 
 const PopoverButtonsGroup: React.FC<Properties> = ({
   isOwnArticle,
   article,
-  handleDeleteButtonClick,
+  onDeleteButtonClick,
 }) => {
   const { id } = article;
 
   return (
     <div className={styles.buttonsGroup}>
-      <IconButton iconName="favorite" label="Add to favorites" />
       {isOwnArticle && (
         <>
           <Link
@@ -38,7 +39,7 @@ const PopoverButtonsGroup: React.FC<Properties> = ({
           <IconButton
             iconName="trashBin"
             label="Delete"
-            onClick={handleDeleteButtonClick}
+            onClick={onDeleteButtonClick}
           />
         </>
       )}

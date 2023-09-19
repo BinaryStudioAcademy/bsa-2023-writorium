@@ -12,7 +12,9 @@ import {
   getImprovementSuggestions,
   getImprovementSuggestionsBySession,
   reactToArticle,
+  setShowFavourites,
   shareArticle,
+  toggleIsFavourite,
   updateArticle,
   updateComment,
 } from './actions.js';
@@ -34,6 +36,8 @@ const allActions = {
   deleteArticleReaction,
   shareArticle,
   fetchSharedArticle,
+  toggleIsFavourite,
+  setShowFavourites,
   getImprovementSuggestions,
   getImprovementSuggestionsBySession,
 };
