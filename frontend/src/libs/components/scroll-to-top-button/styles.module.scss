@@ -1,19 +1,25 @@
-.scrollToTop {
+.scrollProgress {
   position: fixed;
   right: 61px;
   bottom: 51px;
-  z-index: var(--z-index-level-one);
+  padding: 4px;
+  border-radius: 50%;
+  visibility: hidden;
+  opacity: 0;
+  transition: all 0.3s linear;
+}
+
+.backgroundCircle {
+  background: var(--light-gray);
+  border-radius: 50%;
+}
+
+.scrollToTop {
   display: flex;
   align-items: center;
   padding: 15px 10px;
   background-color: var(--white);
-  border: 3px solid var(--light-gray-border);
   border-radius: 50%;
-  visibility: hidden;
-  opacity: 0;
-  transition:
-    opacity 0.3s ease-in-out,
-    visibility 0.3s ease-in-out;
 }
 
 .scrollToTop:hover {

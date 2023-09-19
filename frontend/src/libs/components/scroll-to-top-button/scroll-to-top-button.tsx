@@ -5,14 +5,23 @@ import { IconButton } from '../components.js';
 import styles from './styles.module.scss';
 
 const ScrollToTop: React.FC = () => {
-  const [showButton, setІhowButton] = useState(false);
+  const [showButton, setShowButton] = useState(false);
+  const [scrollValue, setScrollValue] = useState(0);
 
   useEffect(() => {
     window.addEventListener('scroll', () => {
       if (window.scrollY > 200) {
-        setІhowButton(true);
+        setShowButton(true);
+
+        const position = window.scrollY;
+        const height =
+          document.documentElement.scrollHeight -
+          document.documentElement.clientHeight;
+
+        setScrollValue(Math.round((position / height) * 100));
       } else {
-        setІhowButton(false);
+        setShowButton(false);
+        setScrollValue(0);
       }
     });
   }, []);
@@ -25,13 +34,22 @@ const ScrollToTop: React.FC = () => {
   }, []);
 
   return (
-    <IconButton
-      iconName="scrollArrowUp"
-      className={getValidClassNames(styles.scrollToTop, {
+    <div
+      className={getValidClassNames(styles.scrollProgress, {
         [styles.containerVisibility]: showButton,
       })}
-      onClick={handleClick}
-    />
+      style={{
+        background: `conic-gradient(var(--light-gray-border) ${scrollValue}%, var(--white-50) ${scrollValue}%)`,
+      }}
+    >
+      <div className={styles.backgroundCircle}>
+        <IconButton
+          iconName="scrollArrowUp"
+          className={styles.scrollToTop}
+          onClick={handleClick}
+        />
+      </div>
+    </div>
   );
 };
 
