@@ -6,6 +6,8 @@ import {
   useController,
 } from 'react-hook-form';
 
+import { getValidClassNames } from '~/libs/helpers/helpers.js';
+
 import styles from './styles.module.scss';
 
 type Properties<T extends FieldValues> = {
@@ -32,7 +34,7 @@ const ToggleCheckbox = <T extends FieldValues>({
         type="checkbox"
         id="toggle-checkbox"
         checked={field.value}
-        className={`${styles.switch} ${styles.pointer}`}
+        className={getValidClassNames(styles.switch, styles.pointer)}
       />
       <label className={styles.pointer} htmlFor="toggle-checkbox">
         {label}
