@@ -5,7 +5,7 @@ import {
   ShareOnFacebookButton,
   Tags,
 } from '~/libs/components/components.js';
-import { AppRoute } from '~/libs/enums/enums.js';
+import { AppRoute, LinkHash } from '~/libs/enums/enums.js';
 import {
   configureString,
   getFullName,
@@ -66,6 +66,15 @@ const ArticleView: React.FC<Properties> = ({
     );
   }, [dispatch, id]);
 
+  const handleCommentIconClick = useCallback(() => {
+    const element = document.querySelector(`#${LinkHash.COMMENTS}`);
+
+    element?.scrollIntoView({
+      block: 'start',
+      behavior: 'smooth',
+    });
+  }, []);
+
   return (
     <div
       className={getValidClassNames(styles.body, coverUrl && styles.hasCover)}
@@ -96,7 +105,6 @@ const ArticleView: React.FC<Properties> = ({
                     iconName="edit"
                     className={styles.iconButton}
                     iconClassName={styles.icon}
-                    onClick={onButtonClick}
                   />
                 </Link>
               </>
@@ -111,7 +119,7 @@ const ArticleView: React.FC<Properties> = ({
               iconName="comment"
               className={styles.iconButton}
               iconClassName={styles.icon}
-              onClick={onButtonClick}
+              onClick={handleCommentIconClick}
             />
             <IconButton
               iconName="share"
