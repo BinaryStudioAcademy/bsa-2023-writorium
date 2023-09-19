@@ -67,7 +67,7 @@ const ArticleView: React.FC<Properties> = ({
   }, [dispatch, id]);
 
   return (
-    <div
+    <article
       className={getValidClassNames(styles.body, coverUrl && styles.hasCover)}
     >
       <div className={styles.coverWrapper}>
@@ -146,7 +146,7 @@ const ArticleView: React.FC<Properties> = ({
           styles.authorDetailsModal,
         )}
       >
-        <h5 className={styles.presentationAuthorName}>{authorFullName}</h5>
+        <h5 className={styles.authorName}>{authorFullName}</h5>
       </Popover>
       <div className={styles.textWrapper}>
         <h4 className={styles.title}>{title}</h4>
@@ -156,7 +156,7 @@ const ArticleView: React.FC<Properties> = ({
           dangerouslySetInnerHTML={{ __html: sanitizeHtml(text) }}
         />
       </div>
-    </div>
+    </article>
   );
 };
 
