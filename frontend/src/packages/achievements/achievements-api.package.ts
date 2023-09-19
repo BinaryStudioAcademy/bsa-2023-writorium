@@ -4,7 +4,10 @@ import { type IHttp } from '~/libs/packages/http/http.js';
 import { type IStorage } from '~/libs/packages/storage/storage.js';
 
 import { AchievementsApiPath } from './libs/enums/enums.js';
-import { type AchievementGetAllResponseDto } from './libs/types/types.js';
+import {
+  type AchievementGetAllResponseDto,
+  type AchievementWithProgressResponseDto,
+} from './libs/types/types.js';
 
 type Constructor = {
   baseUrl: string;
@@ -24,6 +27,17 @@ class AchievementsApi extends HttpApi {
     );
 
     return await response.json<AchievementGetAllResponseDto>();
+  }
+
+  public async fetchOwnWithProgress(): Promise<
+    AchievementWithProgressResponseDto[]
+  > {
+    const response = await this.load(
+      this.getFullEndpoint(AchievementsApiPath.OWN, {}),
+      { method: 'GET', contentType: ContentType.JSON, hasAuth: true },
+    );
+
+    return await response.json<AchievementWithProgressResponseDto[]>();
   }
 }
 

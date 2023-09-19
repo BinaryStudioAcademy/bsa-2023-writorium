@@ -1,7 +1,10 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { type AsyncThunkConfig } from '~/libs/types/types.js';
-import { type AchievementGetAllResponseDto } from '~/packages/achievements/achievements.js';
+import {
+  type AchievementGetAllResponseDto,
+  type AchievementWithProgressResponseDto,
+} from '~/packages/achievements/achievements.js';
 
 import { name as sliceName } from './achievements.slice.js';
 
@@ -15,4 +18,14 @@ const fetchAll = createAsyncThunk<
   return achievementsApi.fetchAll();
 });
 
-export { fetchAll };
+const fetchOwnWithProgress = createAsyncThunk<
+  AchievementWithProgressResponseDto[],
+  undefined,
+  AsyncThunkConfig
+>(`${sliceName}/get-own-with-progress`, (_, { extra }) => {
+  const { achievementsApi } = extra;
+
+  return achievementsApi.fetchOwnWithProgress();
+});
+
+export { fetchAll, fetchOwnWithProgress };
