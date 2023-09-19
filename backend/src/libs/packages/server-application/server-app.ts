@@ -15,7 +15,6 @@ import { type ILogger } from '~/libs/packages/logger/logger.js';
 import { token } from '~/libs/packages/token/token.js';
 import { authorization } from '~/libs/plugins/authorization/authorization.js';
 import { fileUploadPlugin } from '~/libs/plugins/file-upload/file-upload.js';
-import { socketInjectorPlugin } from '~/libs/plugins/socket-injector/socket-injector.plugin.js';
 import {
   type ServerCommonErrorResponse,
   type ServerValidationErrorResponse,
@@ -111,8 +110,6 @@ class ServerApp implements IServerApp {
     await this.app.register(fileUploadPlugin, {
       supportedFileTypes: SUPPORTED_FILE_TYPES,
     });
-
-    await this.app.register(socketInjectorPlugin, { io: socketService.io });
   }
 
   public async initMiddlewares(): Promise<void> {
