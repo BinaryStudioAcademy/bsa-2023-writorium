@@ -27,6 +27,7 @@ class ArticleEntity implements IEntity {
   private 'reactions': ReactionResponseDto[] | null;
   private 'readTime': number | null;
   private 'deletedAt': string | null;
+  private 'isFavourite': boolean;
 
   private constructor({
     id,
@@ -45,6 +46,7 @@ class ArticleEntity implements IEntity {
     deletedAt,
     readTime,
     commentCount,
+    isFavourite,
   }: WithNullableKeys<
     ArticleWithRelationsType & ArticleCommentCount,
     'id' | 'author' | 'commentCount' | 'reactions' | 'deletedAt'
@@ -65,6 +67,7 @@ class ArticleEntity implements IEntity {
     this.coverId = coverId;
     this.coverUrl = coverUrl;
     this.deletedAt = deletedAt;
+    this.isFavourite = isFavourite;
   }
 
   public static initialize({
@@ -84,6 +87,7 @@ class ArticleEntity implements IEntity {
     reactions,
     deletedAt,
     readTime,
+    isFavourite,
   }: ArticleWithRelationsType &
     WithNullableKeys<ArticleCommentCount, 'commentCount'>): ArticleEntity {
     return new ArticleEntity({
@@ -103,6 +107,7 @@ class ArticleEntity implements IEntity {
       reactions,
       deletedAt,
       readTime,
+      isFavourite,
     });
   }
 
@@ -124,6 +129,7 @@ class ArticleEntity implements IEntity {
     | 'reactions'
     | 'coverUrl'
     | 'deletedAt'
+    | 'isFavourite'
   >): ArticleEntity {
     return new ArticleEntity({
       id: null,
@@ -142,6 +148,7 @@ class ArticleEntity implements IEntity {
       reactions: null,
       deletedAt: null,
       readTime,
+      isFavourite: false,
     });
   }
 
@@ -177,6 +184,7 @@ class ArticleEntity implements IEntity {
       genre: this.genre,
       readTime: this.readTime,
       deletedAt: this.deletedAt,
+      isFavourite: this.isFavourite,
     };
   }
 
@@ -198,6 +206,7 @@ class ArticleEntity implements IEntity {
       reactions: this.reactions as ReactionResponseDto[],
       commentCount: Number(this.commentCount as number),
       deletedAt: this.deletedAt,
+      isFavourite: this.isFavourite,
     };
   }
 
