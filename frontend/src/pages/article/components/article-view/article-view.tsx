@@ -1,5 +1,4 @@
 import {
-  ConfirmArticleDeleteDialog,
   IconButton,
   Link,
   Popover,
@@ -24,6 +23,7 @@ import {
   type ArticleWithCommentCountResponseDto,
   type ArticleWithRelationsType,
 } from '~/packages/articles/articles.js';
+import { ConfirmArticleDeleteDialog } from '~/pages/libs/components/components.js';
 import { actions as articlesActions } from '~/slices/articles/articles.js';
 
 import { ArticleDetails } from '../article-details/article-details.js';
@@ -66,6 +66,12 @@ const ArticleView: React.FC<Properties> = ({
     if (id) {
       void dispatch(articlesActions.shareArticle({ id }));
     }
+  }, [dispatch, id]);
+
+  const handleDeleteArticle = useCallback((): void => {
+    void dispatch(
+      articlesActions.deleteArticle({ id: Number(id), hasRedirect: true }),
+    );
   }, [dispatch, id]);
 
   const handleDeleteButtonClick = useCallback((): void => {
@@ -165,9 +171,8 @@ const ArticleView: React.FC<Properties> = ({
         />
       </div>
       <ConfirmArticleDeleteDialog
-        id={Number(id)}
-        hasRedirect
-        trigger={{ handleToggleModalOpen, isOpen }}
+        onDeleteArticle={handleDeleteArticle}
+        trigger={{ onDeleteButtonClick: handleToggleModalOpen, isOpen }}
       />
     </div>
   );

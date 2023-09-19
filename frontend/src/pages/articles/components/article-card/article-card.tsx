@@ -1,6 +1,5 @@
 import {
   Avatar,
-  ConfirmArticleDeleteDialog,
   Icon,
   IconButton,
   Link,
@@ -38,6 +37,7 @@ import {
   type UserAuthResponseDto,
   type UserDetailsResponseDto,
 } from '~/packages/users/users.js';
+import { ConfirmArticleDeleteDialog } from '~/pages/libs/components/components.js';
 import { actions as articlesActions } from '~/slices/articles/articles.js';
 
 import { MOCKED_REACTIONS } from '../../libs/constants.js';
@@ -116,6 +116,10 @@ const ArticleCard: React.FC<Properties> = ({
 
   const handleSharedButtonClick = useCallback((): void => {
     void dispatch(articlesActions.shareArticle({ id: id.toString() }));
+  }, [dispatch, id]);
+
+  const handleDeleteArticle = useCallback((): void => {
+    void dispatch(articlesActions.deleteArticle({ id }));
   }, [dispatch, id]);
 
   const handleDeleteButtonClick = useCallback((): void => {
@@ -244,8 +248,8 @@ const ArticleCard: React.FC<Properties> = ({
         </Link>
       </div>
       <ConfirmArticleDeleteDialog
-        id={id}
-        trigger={{ handleToggleModalOpen, isOpen }}
+        onDeleteArticle={handleDeleteArticle}
+        trigger={{ onDeleteButtonClick: handleToggleModalOpen, isOpen }}
       />
     </article>
   );

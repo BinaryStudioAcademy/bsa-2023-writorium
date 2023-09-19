@@ -1,37 +1,28 @@
 import { Button, Modal } from '~/libs/components/components.js';
 import { ButtonType } from '~/libs/enums/enums.js';
-import { useAppDispatch, useCallback } from '~/libs/hooks/hooks.js';
-import { actions as articlesActions } from '~/slices/articles/articles.js';
+import { useCallback } from '~/libs/hooks/hooks.js';
 
 import styles from './styles.module.scss';
 
 type Properties = {
-  id: number;
+  onDeleteArticle: () => void;
   trigger: {
-    handleToggleModalOpen: () => void;
+    onDeleteButtonClick: () => void;
     isOpen: boolean;
   };
-  hasRedirect?: boolean;
 };
 
 const ConfirmArticleDeleteDialog: React.FC<Properties> = ({
+  onDeleteArticle,
   trigger,
-  id,
-  hasRedirect,
 }) => {
-  const dispatch = useAppDispatch();
-
-  const { isOpen, handleToggleModalOpen } = trigger;
-
-  const handleDeleteArticle = useCallback((): void => {
-    void dispatch(articlesActions.deleteArticle({ id, hasRedirect }));
-  }, [dispatch, id, hasRedirect]);
+  const { isOpen, onDeleteButtonClick } = trigger;
 
   const handleClose = useCallback((): void => {
     if (isOpen) {
-      handleToggleModalOpen();
+      onDeleteButtonClick();
     }
-  }, [handleToggleModalOpen, isOpen]);
+  }, [onDeleteButtonClick, isOpen]);
 
   return (
     <>
@@ -51,7 +42,7 @@ const ConfirmArticleDeleteDialog: React.FC<Properties> = ({
             <Button
               type={ButtonType.BUTTON}
               label="Delete"
-              onClick={handleDeleteArticle}
+              onClick={onDeleteArticle}
               className={styles.buttonDelete}
             />
           </div>
