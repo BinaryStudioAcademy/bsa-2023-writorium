@@ -1,7 +1,7 @@
 import { type Knex } from 'knex';
 
 const TableName = {
-  ACHEVEMENTS: 'achievements',
+  ACHIEVEMENTS: 'achievements',
   ARTICLES: 'articles',
   COMMENTS: 'comments',
 } as const;
@@ -11,7 +11,7 @@ const ColumnName = {
   REFERENCE_TABLE: 'reference_table',
 } as const;
 
-const DataToUpdate = [
+const DATA_TO_UPDATE = [
   {
     key: 'write_first_article',
     [ColumnName.BREAKPOINT]: 1,
@@ -75,23 +75,23 @@ const DataToUpdate = [
 ];
 
 const up = async (knex: Knex): Promise<void> => {
-  await knex.schema.alterTable(TableName.ACHEVEMENTS, (table) => {
+  await knex.schema.alterTable(TableName.ACHIEVEMENTS, (table) => {
     table.integer(ColumnName.BREAKPOINT).unsigned();
     table.string(ColumnName.REFERENCE_TABLE);
   });
 
-  for (const { key, ...data } of DataToUpdate) {
-    await knex(TableName.ACHEVEMENTS).where('key', key).update(data);
+  for (const { key, ...data } of DATA_TO_UPDATE) {
+    await knex(TableName.ACHIEVEMENTS).where('key', key).update(data);
   }
 
-  return await knex.schema.alterTable(TableName.ACHEVEMENTS, (table) => {
+  return await knex.schema.alterTable(TableName.ACHIEVEMENTS, (table) => {
     table.integer(ColumnName.BREAKPOINT).unsigned().notNullable().alter();
     table.string(ColumnName.REFERENCE_TABLE).notNullable().alter();
   });
 };
 
 const down = (knex: Knex): Promise<void> => {
-  return knex.schema.alterTable(TableName.ACHEVEMENTS, (table) => {
+  return knex.schema.alterTable(TableName.ACHIEVEMENTS, (table) => {
     table.dropColumns(ColumnName.BREAKPOINT, ColumnName.REFERENCE_TABLE);
   });
 };
