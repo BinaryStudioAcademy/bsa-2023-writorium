@@ -27,6 +27,7 @@ import {
   updateArticle,
   updateComment,
 } from './actions.js';
+import { setReactionToState } from './libs/helpers/helpers.js';
 
 type State = {
   article: ArticleResponseDto | null;
@@ -100,34 +101,18 @@ const { reducer, actions, name } = createSlice({
     builder.addCase(reactToArticle.fulfilled, (state, action) => {
       const { articleId, reaction: updatedReaction } = action.payload;
 
+      state.article =
+        state.article &&
+        setReactionToState(
+          state.article as ArticleWithCommentCountResponseDto,
+          updatedReaction,
+        );
+
       state.articles = state.articles.map((article) => {
         if (article.id !== articleId) {
           return article;
         }
-
-        let reactionIndex: number;
-
-        const existingReaction = article.reactions.find(({ id }, index) => {
-          if (id === updatedReaction.id) {
-            reactionIndex = index;
-            return true;
-          }
-        });
-
-        if (!existingReaction) {
-          return {
-            ...article,
-            reactions: [...article.reactions, updatedReaction],
-          };
-        }
-
-        const reactionsToUpdate = [...article.reactions];
-        reactionsToUpdate[reactionIndex!] = updatedReaction;
-
-        return {
-          ...article,
-          reactions: reactionsToUpdate,
-        };
+        return setReactionToState(article, updatedReaction);
       });
 
       state.articleReactionDataStatus = DataStatus.FULFILLED;
