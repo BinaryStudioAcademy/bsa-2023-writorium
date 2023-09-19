@@ -25,30 +25,30 @@ const ConfirmArticleDeleteDialog: React.FC<Properties> = ({
   }, [onToggleModalOpen, isOpen]);
 
   return (
-    <>
-      {isOpen && (
-        <Modal isOpen onClose={handleClose} className={styles.confirmModal}>
-          <p className={styles.message}>
-            Are you sure you want to delete this article? This action cannot be
-            undone.
-          </p>
-          <div className={styles.buttonWrapper}>
-            <Button
-              type={ButtonType.BUTTON}
-              label="Cancel"
-              onClick={handleClose}
-              className={styles.buttonCancel}
-            />
-            <Button
-              type={ButtonType.BUTTON}
-              label="Delete"
-              onClick={onDeleteArticle}
-              className={styles.buttonDelete}
-            />
-          </div>
-        </Modal>
-      )}
-    </>
+    <Modal
+      isOpen={isOpen}
+      onClose={handleClose}
+      className={styles.confirmModal}
+    >
+      <p className={styles.message}>
+        Are you sure you want to delete this article? This action cannot be
+        undone.
+      </p>
+      <div className={styles.buttonWrapper}>
+        <Button
+          type={ButtonType.BUTTON}
+          label="Cancel"
+          onClick={handleClose}
+          className={styles.buttonCancel}
+        />
+        <Button
+          type={ButtonType.BUTTON}
+          label="Delete"
+          onClick={onDeleteArticle}
+          className={styles.buttonDelete}
+        />
+      </div>
+    </Modal>
   );
 };
 
