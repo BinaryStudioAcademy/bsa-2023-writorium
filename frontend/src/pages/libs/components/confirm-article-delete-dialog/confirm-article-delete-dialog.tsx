@@ -7,7 +7,7 @@ import styles from './styles.module.scss';
 type Properties = {
   onDeleteArticle: () => void;
   trigger: {
-    onDeleteButtonClick: () => void;
+    onToggleModalOpen: () => void;
     isOpen: boolean;
   };
 };
@@ -16,13 +16,13 @@ const ConfirmArticleDeleteDialog: React.FC<Properties> = ({
   onDeleteArticle,
   trigger,
 }) => {
-  const { isOpen, onDeleteButtonClick } = trigger;
+  const { isOpen, onToggleModalOpen } = trigger;
 
   const handleClose = useCallback((): void => {
     if (isOpen) {
-      onDeleteButtonClick();
+      onToggleModalOpen();
     }
-  }, [onDeleteButtonClick, isOpen]);
+  }, [onToggleModalOpen, isOpen]);
 
   return (
     <>

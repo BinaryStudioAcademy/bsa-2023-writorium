@@ -172,7 +172,7 @@ const ArticleView: React.FC<Properties> = ({
       </div>
       <ConfirmArticleDeleteDialog
         onDeleteArticle={handleDeleteArticle}
-        trigger={{ onDeleteButtonClick: handleToggleModalOpen, isOpen }}
+        trigger={{ onToggleModalOpen: handleToggleModalOpen, isOpen }}
       />
     </div>
   );
