@@ -4,10 +4,7 @@ import { type ValueOf } from '~/libs/types/types.js';
 
 import { AchievementEntity } from './achievement.entity.js';
 import { type AchievementModel } from './achievement.model.js';
-import {
-  type Achievement,
-  type UserAchievement,
-} from './libs/types/types.js';
+import { type Achievement, type UserAchievement } from './libs/types/types.js';
 import { type UserAchievementModel } from './user-achievements.model.js';
 
 type referenceTableType = ValueOf<typeof DatabaseTableName>;

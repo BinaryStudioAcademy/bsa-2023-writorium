@@ -63,9 +63,8 @@ class CommentService implements IService {
       }),
     );
 
-    const countOfOwnComments = await this.commentRepository.countCommentsByUserId(
-      payload.userId,
-    );
+    const countOfOwnComments =
+      await this.commentRepository.countCommentsByUserId(payload.userId);
 
     await this.achievementService.checkAchievement({
       userId: payload.userId,
