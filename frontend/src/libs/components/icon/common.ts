@@ -2,6 +2,7 @@ import { ReactComponent as ArrowDown } from '~/assets/img/icons/arrow-down-icon.
 import { ReactComponent as ArrowUp } from '~/assets/img/icons/arrow-up-icon.svg';
 import { ReactComponent as AutoFix } from '~/assets/img/icons/auto-fix-icon.svg';
 import { ReactComponent as Bell } from '~/assets/img/icons/bell-icon.svg';
+import { ReactComponent as Book } from '~/assets/img/icons/book-icon.svg';
 import { ReactComponent as Comment } from '~/assets/img/icons/comment-icon.svg';
 import { ReactComponent as CrossMark } from '~/assets/img/icons/cross-mark-icon.svg';
 import { ReactComponent as Dislike } from '~/assets/img/icons/dislike-icon.svg';
@@ -49,6 +50,7 @@ type IconName =
   | 'arrowDown'
   | 'arrowUp'
   | 'bell'
+  | 'book'
   | 'comment'
   | 'crossMark'
   | 'like'
@@ -100,6 +102,7 @@ const iconNameToIcon: Record<
   arrowDown: ArrowDown,
   arrowUp: ArrowUp,
   bell: Bell,
+  book: Book,
   comment: Comment,
   crossMark: CrossMark,
   like: Like,
