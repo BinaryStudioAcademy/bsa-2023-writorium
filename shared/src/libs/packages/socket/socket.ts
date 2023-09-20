@@ -1,5 +1,4 @@
 export {
-  CommentsSocketEvent,
   ReactionsSocketEvent,
   SocketEvent,
   SocketNamespace,

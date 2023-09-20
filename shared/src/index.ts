@@ -38,7 +38,6 @@ export {
 } from './libs/packages/http/http.js';
 export { type SendEmailResponse } from './libs/packages/mailer/mailer.js';
 export {
-  CommentsSocketEvent,
   ReactionsSocketEvent,
   SocketEvent,
   SocketNamespace,
@@ -111,6 +110,8 @@ export {
   type CommentGetAllRequestDto,
   type CommentGetAllResponseDto,
   CommentsApiPath,
+  CommentsSocketEvent,
+  type CommentsSocketEventPayload,
   type CommentUpdateDto,
   type CommentUpdateRequestDto,
   commentUpdateValidationSchema,
