@@ -5,14 +5,14 @@ import { IconButton } from '../icon-button/icon-button.js';
 import { ScrollValue } from './libs/enums.js';
 import styles from './styles.module.scss';
 
-const maxPercentageValue = 100;
+const MAX_PERCENTAGE_VALUE = 100;
 
 const ScrollToTop: React.FC = () => {
   const [hasScrollToTopButton, setHasScrollToTopButton] = useState(false);
   const [scrollValue, setScrollValue] = useState(ScrollValue.TOP as number);
 
   useEffect(() => {
-    window.addEventListener('scroll', () => {
+    const handleScroll = (): void => {
       if (window.scrollY > ScrollValue.MIN_SCROLLED_VALUE) {
         setHasScrollToTopButton(true);
 
@@ -21,7 +21,7 @@ const ScrollToTop: React.FC = () => {
           document.documentElement.scrollHeight -
           document.documentElement.clientHeight;
         const scrollProgress = Math.round(
-          (position / height) * maxPercentageValue,
+          (position / height) * MAX_PERCENTAGE_VALUE,
         );
 
         setScrollValue(scrollProgress);
@@ -29,7 +29,13 @@ const ScrollToTop: React.FC = () => {
         setHasScrollToTopButton(false);
         setScrollValue(ScrollValue.TOP);
       }
-    });
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
   const handleClick = useCallback(() => {
