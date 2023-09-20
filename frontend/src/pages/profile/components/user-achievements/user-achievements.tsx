@@ -27,6 +27,8 @@ type Properties = {
 };
 
 const UserAchievements: FC<Properties> = ({ className }) => {
+  const FIRST_ITEM_INDEX = 0;
+
   const { handleToggleModalOpen, isOpen } = useModal();
   const dispatch = useAppDispatch();
   const { ownAchievements, ownAchievementsDataStatus } = useAppSelector(
@@ -49,7 +51,7 @@ const UserAchievements: FC<Properties> = ({ className }) => {
       <Loader isLoading={isLoading} type="dots">
         <AchievementList
           achievements={achievementsList.slice(
-            0,
+            FIRST_ITEM_INDEX,
             NUMBER_OF_ACHIEVEMENTS_TO_DISPLAY,
           )}
           className={styles.achievementList}
