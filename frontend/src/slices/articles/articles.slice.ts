@@ -1,6 +1,7 @@
 import { createSlice, isAnyOf } from '@reduxjs/toolkit';
 
 import { DataStatus } from '~/libs/enums/enums.js';
+import { conditionallyDeleteOrUpdate } from '~/libs/helpers/helpers.js';
 import { type ValueOf } from '~/libs/types/types.js';
 import {
   type ArticleImprovementSuggestion,
@@ -24,9 +25,12 @@ import {
   getImprovementSuggestions,
   getImprovementSuggestionsBySession,
   reactToArticle,
+  setShowFavourites,
+  toggleIsFavourite,
   updateArticle,
   updateComment,
 } from './actions.js';
+import { removeReaction, updateReaction } from './libs/helpers/helpers.js';
 
 type State = {
   article: ArticleResponseDto | null;
@@ -37,6 +41,7 @@ type State = {
   articleCommentsDataStatus: ValueOf<typeof DataStatus>;
   articleReactionDataStatus: ValueOf<typeof DataStatus>;
   getArticleStatus: ValueOf<typeof DataStatus>;
+  showFavourites: boolean;
   improvementSuggestions: ArticleImprovementSuggestion[] | null;
   improvementSuggestionsDataStatus: ValueOf<typeof DataStatus>;
 };
@@ -46,6 +51,7 @@ const initialState: State = {
   articleComments: [],
   articles: [],
   genres: [],
+  showFavourites: false,
   improvementSuggestions: null,
   dataStatus: DataStatus.IDLE,
   articleCommentsDataStatus: DataStatus.IDLE,
@@ -72,6 +78,7 @@ const { reducer, actions, name } = createSlice({
       state.articles = [...state.articles, action.payload];
       state.dataStatus = DataStatus.FULFILLED;
     });
+
     builder.addCase(updateArticle.fulfilled, (state, action) => {
       const article = action.payload;
       if (article) {
@@ -84,9 +91,13 @@ const { reducer, actions, name } = createSlice({
       }
       state.dataStatus = DataStatus.FULFILLED;
     });
+
     builder.addCase(getArticle.fulfilled, (state, action) => {
       state.getArticleStatus = DataStatus.FULFILLED;
       state.article = action.payload;
+    });
+    builder.addCase(setShowFavourites, (state, action) => {
+      state.showFavourites = action.payload;
     });
     builder.addCase(deleteArticle.fulfilled, (state, action) => {
       const article = action.payload;
@@ -100,34 +111,18 @@ const { reducer, actions, name } = createSlice({
     builder.addCase(reactToArticle.fulfilled, (state, action) => {
       const { articleId, reaction: updatedReaction } = action.payload;
 
+      if (state.article) {
+        state.article = updateReaction(
+          state.article as ArticleWithCommentCountResponseDto,
+          updatedReaction,
+        );
+      }
+
       state.articles = state.articles.map((article) => {
         if (article.id !== articleId) {
           return article;
         }
-
-        let reactionIndex: number;
-
-        const existingReaction = article.reactions.find(({ id }, index) => {
-          if (id === updatedReaction.id) {
-            reactionIndex = index;
-            return true;
-          }
-        });
-
-        if (!existingReaction) {
-          return {
-            ...article,
-            reactions: [...article.reactions, updatedReaction],
-          };
-        }
-
-        const reactionsToUpdate = [...article.reactions];
-        reactionsToUpdate[reactionIndex!] = updatedReaction;
-
-        return {
-          ...article,
-          reactions: reactionsToUpdate,
-        };
+        return updateReaction(article, updatedReaction);
       });
 
       state.articleReactionDataStatus = DataStatus.FULFILLED;
@@ -135,19 +130,16 @@ const { reducer, actions, name } = createSlice({
     builder.addCase(deleteArticleReaction.fulfilled, (state, action) => {
       const { articleId, reactionId } = action.payload;
 
+      if (state.article) {
+        state.article = removeReaction(
+          state.article as ArticleWithCommentCountResponseDto,
+          reactionId,
+        );
+      }
+
       state.articles = state.articles.map((article) => {
         if (article.id === articleId) {
-          const reactionIndex = article.reactions.findIndex(
-            ({ id }) => id === reactionId,
-          );
-
-          const reactionsToUpdate = [...article.reactions];
-          reactionsToUpdate.splice(reactionIndex, 1);
-
-          return {
-            ...article,
-            reactions: reactionsToUpdate,
-          };
+          return removeReaction(article, reactionId);
         }
         return article;
       });
@@ -181,6 +173,18 @@ const { reducer, actions, name } = createSlice({
       state.articleComments = action.payload.items;
       state.articleCommentsDataStatus = DataStatus.FULFILLED;
     });
+    builder.addCase(toggleIsFavourite.fulfilled, (state, action) => {
+      const article = action.payload;
+      if (article) {
+        state.articles = conditionallyDeleteOrUpdate({
+          items: state.articles,
+          itemToDeleteOrUpdate: article,
+          hasToDelete: !article.isFavourite && state.showFavourites,
+        });
+        state.dataStatus = DataStatus.FULFILLED;
+      }
+    });
+
     builder.addCase(updateComment.fulfilled, (state, action) => {
       const updatedComment = action.payload;
 
@@ -189,6 +193,7 @@ const { reducer, actions, name } = createSlice({
       });
       state.articleCommentsDataStatus = DataStatus.FULFILLED;
     });
+
     builder.addMatcher(
       isAnyOf(
         getImprovementSuggestions.fulfilled,
@@ -260,6 +265,7 @@ const { reducer, actions, name } = createSlice({
         getAllGenres.pending,
         fetchSharedArticle.pending,
         deleteArticle.pending,
+        toggleIsFavourite.pending,
       ),
       (state) => {
         state.dataStatus = DataStatus.PENDING;
@@ -279,6 +285,7 @@ const { reducer, actions, name } = createSlice({
         updateArticle.rejected,
         fetchSharedArticle.rejected,
         deleteArticle.rejected,
+        toggleIsFavourite.rejected,
       ),
       (state) => {
         state.dataStatus = DataStatus.REJECTED;

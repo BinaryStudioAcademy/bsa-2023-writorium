@@ -109,7 +109,44 @@
   word-break: break-word;
 }
 
+.reactionIcon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 30px;
+  padding-top: 6px;
+  color: var(--dark-gray-50);
+  font-weight: 400;
+  font-size: 12px;
+  background-color: var(--white-90);
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+}
+
+.reactionIcon:hover {
+  background-color: var(--light-gray);
+}
+
+.disabled {
+  cursor: default;
+}
+
+.disabled svg {
+  color: var(--light-green);
+}
+
+.pressed svg {
+  color: var(--light-green);
+}
+
 @media only screen and (max-width: breakpoints.$medium) {
+  .buttonsWrapper {
+    top: 25px;
+    flex-direction: row;
+    align-items: start;
+    gap: 10px;
+  }
+
   .body:not(.hasCover) .textWrapper {
     padding-top: 18px;
   }
@@ -135,6 +172,11 @@
 }
 
 @media only screen and (min-width: breakpoints.$medium) and (max-width: breakpoints.$extra-large) {
+  .buttonsWrapper {
+    bottom: 5%;
+    gap: 15px;
+  }
+
   .body:not(.hasCover) .textWrapper {
     padding-top: 18px;
   }
@@ -159,9 +201,7 @@
 
 @media only screen and (max-width: breakpoints.$extra-large) {
   .body:not(.hasCover) .buttonsWrapper {
-    bottom: 5%;
     flex-direction: row;
-    gap: 15px;
   }
 
   .body:not(.hasCover) {

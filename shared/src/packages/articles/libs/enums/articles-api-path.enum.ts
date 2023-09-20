@@ -9,6 +9,7 @@ const ArticlesApiPath = {
   SHARED_BASE: '/shared',
   SHARED_$TOKEN: SHARED_$TOKEN,
   EDIT: '/edit/:id',
+  FAVORITES: '/favorites/:id',
   $ID_IMPROVEMENT_SUGGESTIONS: '/:id/improvement-suggestions',
 } as const;
 

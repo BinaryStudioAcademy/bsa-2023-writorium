@@ -8,6 +8,7 @@ import { ReactComponent as Dislike } from '~/assets/img/icons/dislike-icon.svg';
 import { ReactComponent as ellipsisVertical } from '~/assets/img/icons/ellipsis-vertical-icon.svg';
 import { ReactComponent as Facebook } from '~/assets/img/icons/facebook-icon.svg';
 import { ReactComponent as Favorite } from '~/assets/img/icons/favorite-icon.svg';
+import { ReactComponent as FavoriteFilled } from '~/assets/img/icons/favourite-filled-icon.svg';
 import { ReactComponent as Filter } from '~/assets/img/icons/filter-icon.svg';
 import { ReactComponent as Header1 } from '~/assets/img/icons/format-header-1-icon.svg';
 import { ReactComponent as Header2 } from '~/assets/img/icons/format-header-2-icon.svg';
@@ -38,6 +39,8 @@ import { ReactComponent as Search } from '~/assets/img/icons/search-icon.svg';
 import { ReactComponent as Share } from '~/assets/img/icons/share-icon.svg';
 import { ReactComponent as Sparkles } from '~/assets/img/icons/sparkles-icon.svg';
 import { ReactComponent as Star } from '~/assets/img/icons/star-icon.svg';
+import { ReactComponent as TextSizeDecrease } from '~/assets/img/icons/text-decrease-icon.svg';
+import { ReactComponent as TextSizeIncrease } from '~/assets/img/icons/text-increase-icon.svg';
 import { ReactComponent as TrashBinIcon } from '~/assets/img/icons/trash-bin-icon.svg';
 import { ReactComponent as View } from '~/assets/img/icons/view-icon.svg';
 import { ReactComponent as WritoriumLogo } from '~/assets/img/icons/writorium-logo-icon.svg';
@@ -51,6 +54,7 @@ type IconName =
   | 'like'
   | 'dislike'
   | 'favorite'
+  | 'favoriteFilled'
   | 'filter'
   | 'textAlignLeft'
   | 'textAlignCenter'
@@ -85,6 +89,8 @@ type IconName =
   | 'trashBin'
   | 'facebook'
   | 'autoFix'
+  | 'textSizeIncrease'
+  | 'textSizeDecrease'
   | 'ellipsisVertical';
 
 const iconNameToIcon: Record<
@@ -99,6 +105,7 @@ const iconNameToIcon: Record<
   like: Like,
   dislike: Dislike,
   favorite: Favorite,
+  favoriteFilled: FavoriteFilled,
   filter: Filter,
   textAlignLeft: TextAlignLeft,
   textAlignCenter: TextAlignCenter,
@@ -134,6 +141,8 @@ const iconNameToIcon: Record<
   facebook: Facebook,
   autoFix: AutoFix,
   ellipsisVertical: ellipsisVertical,
+  textSizeDecrease: TextSizeDecrease,
+  textSizeIncrease: TextSizeIncrease,
 };
 
 export { type IconName, iconNameToIcon };

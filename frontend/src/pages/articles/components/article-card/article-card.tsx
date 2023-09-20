@@ -9,6 +9,7 @@ import {
 } from '~/libs/components/components.js';
 import {
   AppRoute,
+  DataStatus,
   DateFormat,
   LinkHash,
   Reaction,
@@ -17,6 +18,7 @@ import {
   configureString,
   getFormattedDate,
   getFullName,
+  getReactionConvertedToBoolean,
   getReactionsInfo,
   getValidClassNames,
   sanitizeHtml,
@@ -25,6 +27,7 @@ import {
   useAppDispatch,
   useAppSelector,
   useCallback,
+  useModal,
 } from '~/libs/hooks/hooks.js';
 import { type TagType, type ValueOf } from '~/libs/types/types.js';
 import {
@@ -36,10 +39,10 @@ import {
   type UserAuthResponseDto,
   type UserDetailsResponseDto,
 } from '~/packages/users/users.js';
+import { ConfirmArticleDeleteDialog } from '~/pages/libs/components/components.js';
 import { actions as articlesActions } from '~/slices/articles/articles.js';
 
 import { MOCKED_REACTIONS } from '../../libs/constants/constants.js';
-import { getReactionConvertedToBoolean } from '../../libs/helpers/helpers.js';
 import { PopoverButtonsGroup } from './libs/components/components.js';
 import styles from './styles.module.scss';
 
@@ -57,8 +60,12 @@ const ArticleCard: React.FC<Properties> = ({
   reactions,
 }) => {
   const dispatch = useAppDispatch();
-  const user = useAppSelector(({ auth }) => auth.user) as UserAuthResponseDto;
-
+  const { handleToggleModalOpen, isOpen } = useModal();
+  const { user, articlesDataStatus } = useAppSelector(({ auth, articles }) => ({
+    user: auth.user as UserAuthResponseDto,
+    articlesDataStatus: articles.dataStatus,
+  }));
+  const isLoading = articlesDataStatus === DataStatus.PENDING;
   const {
     publishedAt,
     title,
@@ -68,6 +75,7 @@ const ArticleCard: React.FC<Properties> = ({
     coverUrl,
     readTime,
     commentCount,
+    isFavourite,
   } = article;
   const { likesCount, dislikesCount, hasAlreadyReactedWith } = getReactionsInfo(
     user.id,
@@ -78,6 +86,10 @@ const ArticleCard: React.FC<Properties> = ({
   const articleRouteById = configureString(AppRoute.ARTICLES_$ID, {
     id: String(id),
   }) as typeof AppRoute.ARTICLES_$ID;
+
+  const handleToggleIsFavourite = useCallback(() => {
+    void dispatch(articlesActions.toggleIsFavourite(id));
+  }, [dispatch, id]);
 
   const isOwnArticle = user.id === userId;
 
@@ -115,12 +127,15 @@ const ArticleCard: React.FC<Properties> = ({
     void dispatch(articlesActions.shareArticle({ id: id.toString() }));
   }, [dispatch, id]);
 
-  const handleDeleteArticle = useCallback(
-    (id: number): void => {
-      void dispatch(articlesActions.deleteArticle({ id }));
-    },
-    [dispatch],
-  );
+  const handleDeleteArticle = useCallback((): void => {
+    void dispatch(articlesActions.deleteArticle({ id }));
+  }, [dispatch, id]);
+
+  const handleDeleteButtonClick = useCallback((): void => {
+    if (!isOpen) {
+      handleToggleModalOpen();
+    }
+  }, [handleToggleModalOpen, isOpen]);
 
   return (
     <article className={styles.article}>
@@ -147,21 +162,32 @@ const ArticleCard: React.FC<Properties> = ({
           )}
         </div>
 
-        <Popover
-          className={styles.moreActions}
-          content={
-            <PopoverButtonsGroup
-              isOwnArticle={isOwnArticle}
-              article={article}
-              onDeleteArticle={handleDeleteArticle}
-            />
-          }
-        >
-          <Icon
-            className={styles.moreActionsIcon}
-            iconName="ellipsisVertical"
+        <div className={styles.toolbar}>
+          <IconButton
+            className={styles.iconButton}
+            iconName={isFavourite ? 'favoriteFilled' : 'favorite'}
+            iconClassName={styles.pointerIcon}
+            onClick={handleToggleIsFavourite}
+            isLoading={isLoading}
           />
-        </Popover>
+          <Popover
+            className={styles.moreActions}
+            content={
+              <PopoverButtonsGroup
+                isOwnArticle={isOwnArticle}
+                article={article}
+                onDeleteButtonClick={handleDeleteButtonClick}
+                onToggleFavouriteClick={handleToggleIsFavourite}
+                isToggleFavouriteLoading={isLoading}
+              />
+            }
+          >
+            <Icon
+              className={styles.moreActionsIcon}
+              iconName="ellipsisVertical"
+            />
+          </Popover>
+        </div>
       </div>
       <div
         className={getValidClassNames(styles.body, coverUrl && styles.hasCover)}
@@ -241,6 +267,10 @@ const ArticleCard: React.FC<Properties> = ({
           Read more
         </Link>
       </div>
+      <ConfirmArticleDeleteDialog
+        onDeleteArticle={handleDeleteArticle}
+        trigger={{ onToggleModalOpen: handleToggleModalOpen, isOpen }}
+      />
     </article>
   );
 };

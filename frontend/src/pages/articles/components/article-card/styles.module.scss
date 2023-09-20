@@ -220,7 +220,7 @@
 .moreActionsIcon {
   width: 35px;
   height: 35px;
-  margin: -10px -10px 0 0;
+  margin: -5px -5px 0 0;
   padding: 5px;
   border-radius: 50%;
   transition: background-color 0.2s ease;
@@ -228,4 +228,9 @@
 
 .moreActionsIcon:hover {
   background-color: var(--light-gray);
+}
+
+.toolbar {
+  display: flex;
+  gap: 5px;
 }

@@ -5,19 +5,30 @@ import {
   ShareOnFacebookButton,
   Tags,
 } from '~/libs/components/components.js';
-import { AppRoute } from '~/libs/enums/enums.js';
+import { AppRoute, Reaction } from '~/libs/enums/enums.js';
 import {
   configureString,
   getFullName,
+  getReactionConvertedToBoolean,
+  getReactionsInfo,
   getValidClassNames,
   sanitizeHtml,
 } from '~/libs/helpers/helpers.js';
-import { useAppDispatch, useCallback, useParams } from '~/libs/hooks/hooks.js';
-import { type TagType } from '~/libs/types/types.js';
+import {
+  useAppDispatch,
+  useAppSelector,
+  useCallback,
+  useModal,
+  useParams,
+} from '~/libs/hooks/hooks.js';
+import { type TagType, type ValueOf } from '~/libs/types/types.js';
 import {
   type ArticleWithCommentCountResponseDto,
   type ArticleWithRelationsType,
+  type ReactionResponseDto,
 } from '~/packages/articles/articles.js';
+import { type UserAuthResponseDto } from '~/packages/users/users.js';
+import { ConfirmArticleDeleteDialog } from '~/pages/libs/components/components.js';
 import { actions as articlesActions } from '~/slices/articles/articles.js';
 
 import { ArticleDetails } from '../article-details/article-details.js';
@@ -30,6 +41,7 @@ type Properties = {
     | Required<ArticleWithRelationsType>
     | ArticleWithCommentCountResponseDto;
   isArticleOwner?: boolean;
+  reactions?: ReactionResponseDto[];
 };
 
 const onButtonClick = (): void => {
@@ -43,6 +55,7 @@ const ArticleView: React.FC<Properties> = ({
   isShared = false,
   isArticleOwner,
   article,
+  reactions = [],
 }) => {
   const { text, title, coverUrl, author, readTime, genre, publishedAt } =
     article;
@@ -52,7 +65,11 @@ const ArticleView: React.FC<Properties> = ({
 
   const { id } = useParams();
 
+  const user = useAppSelector(({ auth }) => auth.user) as UserAuthResponseDto;
+
   const dispatch = useAppDispatch();
+
+  const { handleToggleModalOpen, isOpen } = useModal();
 
   const handleShareButtonClick = useCallback((): void => {
     if (id) {
@@ -65,6 +82,46 @@ const ArticleView: React.FC<Properties> = ({
       articlesActions.deleteArticle({ id: Number(id), hasRedirect: true }),
     );
   }, [dispatch, id]);
+
+  const { likesCount, dislikesCount, hasAlreadyReactedWith } = isShared
+    ? { likesCount: null, dislikesCount: null, hasAlreadyReactedWith: null }
+    : getReactionsInfo(user.id, reactions);
+
+  const handleReaction = (reaction: ValueOf<typeof Reaction>): void => {
+    if (isArticleOwner) {
+      return;
+    }
+
+    if (hasAlreadyReactedWith === reaction) {
+      return void dispatch(
+        articlesActions.deleteArticleReaction({
+          isLike: getReactionConvertedToBoolean(reaction),
+          articleId: Number(id),
+        }),
+      );
+    }
+
+    void dispatch(
+      articlesActions.reactToArticle({
+        isLike: getReactionConvertedToBoolean(reaction),
+        articleId: Number(id),
+      }),
+    );
+  };
+
+  const handleLikeReaction = (): void => {
+    handleReaction(Reaction.LIKE);
+  };
+
+  const handleDislikeReaction = (): void => {
+    handleReaction(Reaction.DISLIKE);
+  };
+
+  const handleDeleteButtonClick = useCallback((): void => {
+    if (!isOpen) {
+      handleToggleModalOpen();
+    }
+  }, [handleToggleModalOpen, isOpen]);
 
   return (
     <article
@@ -82,7 +139,7 @@ const ArticleView: React.FC<Properties> = ({
                   iconName="trashBin"
                   className={styles.iconButton}
                   iconClassName={styles.icon}
-                  onClick={handleDeleteArticle}
+                  onClick={handleDeleteButtonClick}
                 />
                 <Link
                   to={
@@ -127,6 +184,28 @@ const ArticleView: React.FC<Properties> = ({
                 styles.facebookIconButton,
               )}
             />
+            <IconButton
+              iconName="like"
+              iconClassName={styles.icon}
+              className={getValidClassNames(
+                styles.reactionIcon,
+                isArticleOwner && styles.disabled,
+                hasAlreadyReactedWith === Reaction.LIKE && styles.pressed,
+              )}
+              label={String(likesCount)}
+              onClick={handleLikeReaction}
+            />
+            <IconButton
+              iconName="dislike"
+              iconClassName={styles.icon}
+              className={getValidClassNames(
+                styles.reactionIcon,
+                isArticleOwner && styles.disabled,
+                hasAlreadyReactedWith === Reaction.DISLIKE && styles.pressed,
+              )}
+              label={String(dislikesCount)}
+              onClick={handleDislikeReaction}
+            />
           </div>
         )}
       </div>
@@ -156,6 +235,10 @@ const ArticleView: React.FC<Properties> = ({
           dangerouslySetInnerHTML={{ __html: sanitizeHtml(text) }}
         />
       </div>
+      <ConfirmArticleDeleteDialog
+        onDeleteArticle={handleDeleteArticle}
+        trigger={{ onToggleModalOpen: handleToggleModalOpen, isOpen }}
+      />
     </article>
   );
 };

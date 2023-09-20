@@ -1,6 +1,11 @@
 import { matchPath } from 'react-router-dom';
 
-import { Button, Icon, Input } from '~/libs/components/components.js';
+import {
+  Button,
+  Icon,
+  Input,
+  ToggleCheckbox,
+} from '~/libs/components/components.js';
 import { Select } from '~/libs/components/select/select.js';
 import { AppRoute } from '~/libs/enums/enums.js';
 import {
@@ -33,7 +38,7 @@ const ArticleFilters: React.FC<Properties> = ({
   });
   const { pathname } = useLocation();
   const isMyArticlesPage = matchPath(
-    { path: `${AppRoute.ARTICLES}/${AppRoute.ARTICLES_MY_ARTICLES}` },
+    { path: AppRoute.ARTICLES_MY_ARTICLES },
     pathname,
   );
   const data: FilterFormValues = watch();
@@ -91,6 +96,12 @@ const ArticleFilters: React.FC<Properties> = ({
           options={genreSelectOptions}
           control={control}
           errors={errors}
+        />
+        <ToggleCheckbox
+          name="showFavourites"
+          control={control}
+          errors={errors}
+          label="Show only favorite articles"
         />
       </form>
     </div>
