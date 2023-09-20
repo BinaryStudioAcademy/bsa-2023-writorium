@@ -1,7 +1,6 @@
 import { Icon, IconButton, Link } from '~/libs/components/components.js';
 import { AppRoute } from '~/libs/enums/enums.js';
 import { configureString } from '~/libs/helpers/helpers.js';
-import { useCallback } from '~/libs/hooks/hooks.js';
 import { type ArticleResponseDto } from '~/packages/articles/articles.js';
 
 import styles from './styles.module.scss';
@@ -9,7 +8,7 @@ import styles from './styles.module.scss';
 type Properties = {
   isOwnArticle: boolean;
   article: ArticleResponseDto;
-  onDeleteArticle: (id: number) => void;
+  onDeleteButtonClick: () => void;
   onToggleFavouriteClick: () => void;
   isToggleFavouriteLoading: boolean;
 };
@@ -17,13 +16,9 @@ type Properties = {
 const PopoverButtonsGroup: React.FC<Properties> = ({
   isOwnArticle,
   article,
-  onDeleteArticle,
+  onDeleteButtonClick,
 }) => {
   const { id } = article;
-
-  const handleDeleteArticle = useCallback(() => {
-    onDeleteArticle(id);
-  }, [id, onDeleteArticle]);
 
   return (
     <div className={styles.buttonsGroup}>
@@ -44,7 +39,7 @@ const PopoverButtonsGroup: React.FC<Properties> = ({
           <IconButton
             iconName="trashBin"
             label="Delete"
-            onClick={handleDeleteArticle}
+            onClick={onDeleteButtonClick}
           />
         </>
       )}
