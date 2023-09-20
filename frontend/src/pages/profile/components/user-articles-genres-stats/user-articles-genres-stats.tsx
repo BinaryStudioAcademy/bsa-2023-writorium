@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import {
   Cell,
   Legend,
@@ -11,7 +10,11 @@ import {
 import { Loader } from '~/libs/components/components.js';
 import { DataStatus } from '~/libs/enums/data-status.enum.js';
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
-import { useAppDispatch, useAppSelector } from '~/libs/hooks/hooks.js';
+import {
+  useAppDispatch,
+  useAppSelector,
+  useEffect,
+} from '~/libs/hooks/hooks.js';
 import { actions as usersActions } from '~/slices/users/users.js';
 
 import { GENRES_CHART_COLORS } from './libs/constants/constants.js';

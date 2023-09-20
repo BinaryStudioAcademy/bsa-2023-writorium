@@ -9,7 +9,7 @@ import {
   useDeepCompareEffect,
   useLocation,
 } from '~/libs/hooks/hooks.js';
-import { type SelectOption } from '~/libs/types/select-option.type.js';
+import { type SelectOption } from '~/libs/types/types.js';
 
 import { type FilterFormValues } from '../../libs/types/types.js';
 import { DEFAULT_FILTER_PAYLOAD } from './libs/constants/constants.js';
@@ -37,7 +37,6 @@ const ArticleFilters: React.FC<Properties> = ({
     pathname,
   );
   const data: FilterFormValues = watch();
-
   useDeepCompareEffect(() => {
     const handler = setTimeout(() => {
       onSubmit(data);
