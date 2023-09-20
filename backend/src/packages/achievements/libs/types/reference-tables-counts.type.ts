@@ -1,4 +1,4 @@
-import  { type ReferenceTable } from './reference-table.type.js';
+import { type ReferenceTable } from './reference-table.type.js';
 
 type ReferenceTablesCounts = Record<ReferenceTable, number>;
 
