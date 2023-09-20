@@ -38,7 +38,6 @@ export {
 } from './libs/packages/http/http.js';
 export { type SendEmailResponse } from './libs/packages/mailer/mailer.js';
 export {
-  ReactionsSocketEvent,
   SocketEvent,
   SocketNamespace,
   SocketRoom,
@@ -66,6 +65,8 @@ export {
   type ArticleReactionEntityType,
   type ArticleReactionRequestDto,
   type ArticleReactionResponseDto,
+  ArticleReactionsSocketEvent,
+  type ArticleReactionsSocketEventPayload,
   articleReactionValidationSchema,
 } from './packages/article-reactions/article-reactions.js';
 export {

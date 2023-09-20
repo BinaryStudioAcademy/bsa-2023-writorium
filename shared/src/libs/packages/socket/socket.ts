@@ -1,5 +1,4 @@
 export {
-  ReactionsSocketEvent,
   SocketEvent,
   SocketNamespace,
   SocketRoom,

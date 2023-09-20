@@ -18,3 +18,5 @@ const articleReactionController = new ArticleReactionController(
 
 export { articleReactionController, articleReactionService };
 export { ArticleReactionModel } from './article-reaction.model.js';
+export { ArticleReactionsSocketEvent } from './libs/enums/enums.js';
+export { type ArticleReactionsSocketEventPayload } from './libs/types/types.js';

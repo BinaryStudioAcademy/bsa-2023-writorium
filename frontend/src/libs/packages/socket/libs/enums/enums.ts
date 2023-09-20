@@ -1,6 +1,4 @@
 export {
-  CommentsSocketEvent,
-  ReactionsSocketEvent,
   SocketEvent,
   SocketNamespace,
   SocketRoom,

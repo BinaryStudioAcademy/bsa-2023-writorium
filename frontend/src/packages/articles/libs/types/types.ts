@@ -5,6 +5,7 @@ export {
   type ArticleImprovementSuggestion,
   type ArticleReactionRequestDto,
   type ArticleReactionResponseDto,
+  type ArticleReactionsSocketEventPayload,
   type ArticleRequestDto,
   type ArticleResponseDto,
   type ArticlesFilters,
