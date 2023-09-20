@@ -63,7 +63,7 @@ const SharedArticlePage: React.FC = () => {
                   genre={article.genre ?? ''}
                   avatarUrl={article.author.avatarUrl}
                   authorFollowers={article.author.followersCount}
-                  isShared={true}
+                  isShared
                 />
               )}
             </>
