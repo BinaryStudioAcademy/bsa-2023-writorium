@@ -16,6 +16,7 @@ const ColumnName = {
 
 const up = (knex: Knex): Promise<void> => {
   return knex.schema.createTable(TableName.ARTICLE_VIEWS, (table) => {
+    table.increments(ColumnName.ID).primary();
     table
       .integer(ColumnName.ARTICLE_ID)
       .unsigned()
@@ -34,7 +35,7 @@ const up = (knex: Knex): Promise<void> => {
       .dateTime(ColumnName.UPDATED_AT)
       .notNullable()
       .defaultTo(knex.fn.now());
-    table.primary([ColumnName.ARTICLE_ID, ColumnName.VIEWED_BY_ID]);
+    table.unique([ColumnName.ARTICLE_ID, ColumnName.VIEWED_BY_ID]);
   });
 };
 

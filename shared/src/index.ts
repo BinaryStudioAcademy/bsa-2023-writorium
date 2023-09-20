@@ -62,6 +62,7 @@ export {
   type ArticleReactionResponseDto,
   articleReactionValidationSchema,
 } from './packages/article-reactions/article-reactions.js';
+export { type ArticleView, type ArticleViewCreateDto, type ArticleViewResponseDto } from './packages/article-views/article-views.js';
 export {
   type ArticleCommentCount,
   type ArticleCreateDto,

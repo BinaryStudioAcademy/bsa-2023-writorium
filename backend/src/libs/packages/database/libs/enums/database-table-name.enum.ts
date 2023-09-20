@@ -2,6 +2,7 @@ const DatabaseTableName = {
   MIGRATIONS: 'migrations',
   ARTICLES: 'articles',
   ARTICLE_REACTIONS: 'article_reactions',
+  ARTICLE_VIEWS: 'article_views',
   USERS: 'users',
   FILES: 'files',
   USER_DETAILS: 'user_details',
