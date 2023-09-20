@@ -89,7 +89,9 @@ class UserApi extends HttpApi {
     authorId: number,
   ): Promise<UserFollowResponseDto> {
     const response = await this.load(
-      this.getFullEndpoint(UsersApiPath.FOLLOW, { id: authorId.toString() }),
+      this.getFullEndpoint(UsersApiPath.$ID_FOLLOW, {
+        id: authorId.toString(),
+      }),
       {
         method: 'POST',
         hasAuth: true,
@@ -103,7 +105,9 @@ class UserApi extends HttpApi {
     authorId: number,
   ): Promise<UserFollowResponseDto> {
     const response = await this.load(
-      this.getFullEndpoint(UsersApiPath.FOLLOW, { id: authorId.toString() }),
+      this.getFullEndpoint(UsersApiPath.$ID_FOLLOW, {
+        id: authorId.toString(),
+      }),
       {
         method: 'GET',
         hasAuth: true,

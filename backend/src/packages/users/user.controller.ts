@@ -181,7 +181,7 @@ class UserController extends Controller {
     });
 
     this.addRoute({
-      path: UsersApiPath.FOLLOW,
+      path: UsersApiPath.$ID_FOLLOW,
       method: 'POST',
       handler: (options) =>
         this.toggleFollowAuthor(
@@ -193,7 +193,7 @@ class UserController extends Controller {
     });
 
     this.addRoute({
-      path: UsersApiPath.FOLLOW,
+      path: UsersApiPath.$ID_FOLLOW,
       method: 'GET',
       handler: (options) =>
         this.getAuthorFollowersAndStatus(
