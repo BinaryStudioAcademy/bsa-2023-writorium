@@ -14,7 +14,7 @@ import {
   NotFoundError,
 } from '~/libs/packages/exceptions/exceptions.js';
 import { type OpenAIService } from '~/libs/packages/openai/openai.package.js';
-import { SocketNamespace } from '~/libs/packages/socket/socket.js';
+import { SocketNamespace, SocketRoom } from '~/libs/packages/socket/socket.js';
 import { type SocketService } from '~/libs/packages/socket/socket.package.js';
 import { token as articleToken } from '~/libs/packages/token/token.js';
 
@@ -334,6 +334,7 @@ class ArticleService implements IService {
 
     this.socketService.io
       .of(SocketNamespace.ARTICLES)
+      .to(SocketRoom.ARTICLES_FEED)
       .emit(ArticleSocketEvent.NEW_ARTICLE, socketEventPayload);
 
     return article.toObjectWithRelationsAndCommentCount();

@@ -1,1 +1,5 @@
-export { SocketEvent, SocketNamespace } from 'shared/build/index.js';
+export {
+  SocketEvent,
+  SocketNamespace,
+  SocketRoom,
+} from 'shared/build/index.js';
