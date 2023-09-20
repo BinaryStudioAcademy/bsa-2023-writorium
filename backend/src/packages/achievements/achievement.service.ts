@@ -69,7 +69,7 @@ class AchievementService implements IService {
 
       return {
         ...achievement,
-        progress: Math.min(progress, PercentageProgress.MAX),
+        progress: progress,
       };
     });
   }
