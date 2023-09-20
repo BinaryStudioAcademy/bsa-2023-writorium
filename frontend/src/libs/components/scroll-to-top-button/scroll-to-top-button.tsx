@@ -5,6 +5,8 @@ import { IconButton } from '../icon-button/icon-button.js';
 import { ScrollValue } from './libs/enums.js';
 import styles from './styles.module.scss';
 
+const maxPercentageValue = 100;
+
 const ScrollToTop: React.FC = () => {
   const [hasScrollToTopButton, setHasScrollToTopButton] = useState(false);
   const [scrollValue, setScrollValue] = useState(ScrollValue.TOP as number);
@@ -18,7 +20,6 @@ const ScrollToTop: React.FC = () => {
         const height =
           document.documentElement.scrollHeight -
           document.documentElement.clientHeight;
-        const maxPercentageValue = 100;
         const scrollProgress = Math.round(
           (position / height) * maxPercentageValue,
         );
