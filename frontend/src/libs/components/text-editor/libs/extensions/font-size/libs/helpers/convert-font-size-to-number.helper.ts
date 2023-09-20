@@ -10,7 +10,9 @@ const convertFontSizeToNumber = (
   if (!matches) {
     return null;
   }
-  const value = Number(matches[1]);
+  const [, fontSizeDigit] = matches;
+  const value = Number(fontSizeDigit);
+
   if (!value) {
     return null;
   }
