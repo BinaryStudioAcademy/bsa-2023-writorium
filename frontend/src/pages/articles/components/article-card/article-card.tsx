@@ -18,6 +18,7 @@ import {
   configureString,
   getFormattedDate,
   getFullName,
+  getReactionConvertedToBoolean,
   getReactionsInfo,
   getValidClassNames,
   sanitizeHtml,
@@ -42,7 +43,6 @@ import { ConfirmArticleDeleteDialog } from '~/pages/libs/components/components.j
 import { actions as articlesActions } from '~/slices/articles/articles.js';
 
 import { MOCKED_REACTIONS } from '../../libs/constants.js';
-import { getReactionConvertedToBoolean } from '../../libs/helpers/helpers.js';
 import { PopoverButtonsGroup } from './libs/components/components.js';
 import styles from './styles.module.scss';
 
@@ -164,9 +164,7 @@ const ArticleCard: React.FC<Properties> = ({
 
         <div className={styles.toolbar}>
           <IconButton
-            className={styles.iconButton}
             iconName={isFavourite ? 'favoriteFilled' : 'favorite'}
-            iconClassName={styles.pointerIcon}
             onClick={handleToggleIsFavourite}
             isLoading={isLoading}
           />
@@ -177,8 +175,6 @@ const ArticleCard: React.FC<Properties> = ({
                 isOwnArticle={isOwnArticle}
                 article={article}
                 onDeleteButtonClick={handleDeleteButtonClick}
-                onToggleFavouriteClick={handleToggleIsFavourite}
-                isToggleFavouriteLoading={isLoading}
               />
             }
           >

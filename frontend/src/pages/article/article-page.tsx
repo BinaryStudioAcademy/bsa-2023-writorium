@@ -112,6 +112,7 @@ const ArticlePage: React.FC = () => {
                 isArticleOwner={isArticleOwner}
                 article={article}
                 onFollow={handleFollow}
+                reactions={article.reactions}
               />
               <ArticleDetails
                 readTime={article.readTime}

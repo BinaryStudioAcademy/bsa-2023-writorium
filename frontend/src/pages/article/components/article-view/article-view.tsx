@@ -5,21 +5,28 @@ import {
   ShareOnFacebookButton,
   Tags,
 } from '~/libs/components/components.js';
-import { AppRoute } from '~/libs/enums/enums.js';
+import { AppRoute, Reaction } from '~/libs/enums/enums.js';
 import {
   configureString,
   getFullName,
+  getReactionConvertedToBoolean,
+  getReactionsInfo,
   getValidClassNames,
   sanitizeHtml,
 } from '~/libs/helpers/helpers.js';
 import {
   useAppDispatch,
+  useAppSelector,
   useCallback,
   useModal,
   useParams,
 } from '~/libs/hooks/hooks.js';
-import { type TagType } from '~/libs/types/types.js';
-import { type ArticleWithFollowResponseDto } from '~/packages/articles/articles.js';
+import { type TagType, type ValueOf } from '~/libs/types/types.js';
+import {
+  type ArticleWithFollowResponseDto,
+  type ReactionResponseDto,
+} from '~/packages/articles/articles.js';
+import { type UserAuthResponseDto } from '~/packages/users/users.js';
 import { ConfirmArticleDeleteDialog } from '~/pages/libs/components/components.js';
 import { actions as articlesActions } from '~/slices/articles/articles.js';
 
@@ -32,6 +39,7 @@ type Properties = {
   article: ArticleWithFollowResponseDto;
   isArticleOwner?: boolean;
   onFollow?: () => void;
+  reactions?: ReactionResponseDto[];
 };
 
 const onButtonClick = (): void => {
@@ -46,6 +54,7 @@ const ArticleView: React.FC<Properties> = ({
   isArticleOwner,
   article,
   onFollow,
+  reactions = [],
 }) => {
   const { text, title, coverUrl, author, readTime, genre, publishedAt } =
     article;
@@ -54,6 +63,8 @@ const ArticleView: React.FC<Properties> = ({
   const articleUrl = window.location.href;
 
   const { id } = useParams();
+
+  const user = useAppSelector(({ auth }) => auth.user) as UserAuthResponseDto;
 
   const dispatch = useAppDispatch();
 
@@ -70,6 +81,40 @@ const ArticleView: React.FC<Properties> = ({
       articlesActions.deleteArticle({ id: Number(id), hasRedirect: true }),
     );
   }, [dispatch, id]);
+
+  const { likesCount, dislikesCount, hasAlreadyReactedWith } = isShared
+    ? { likesCount: null, dislikesCount: null, hasAlreadyReactedWith: null }
+    : getReactionsInfo(user.id, reactions);
+
+  const handleReaction = (reaction: ValueOf<typeof Reaction>): void => {
+    if (isArticleOwner) {
+      return;
+    }
+
+    if (hasAlreadyReactedWith === reaction) {
+      return void dispatch(
+        articlesActions.deleteArticleReaction({
+          isLike: getReactionConvertedToBoolean(reaction),
+          articleId: Number(id),
+        }),
+      );
+    }
+
+    void dispatch(
+      articlesActions.reactToArticle({
+        isLike: getReactionConvertedToBoolean(reaction),
+        articleId: Number(id),
+      }),
+    );
+  };
+
+  const handleLikeReaction = (): void => {
+    handleReaction(Reaction.LIKE);
+  };
+
+  const handleDislikeReaction = (): void => {
+    handleReaction(Reaction.DISLIKE);
+  };
 
   const handleDeleteButtonClick = useCallback((): void => {
     if (!isOpen) {
@@ -137,6 +182,28 @@ const ArticleView: React.FC<Properties> = ({
                 styles.iconButton,
                 styles.facebookIconButton,
               )}
+            />
+            <IconButton
+              iconName="like"
+              iconClassName={styles.icon}
+              className={getValidClassNames(
+                styles.reactionIcon,
+                isArticleOwner && styles.disabled,
+                hasAlreadyReactedWith === Reaction.LIKE && styles.pressed,
+              )}
+              label={String(likesCount)}
+              onClick={handleLikeReaction}
+            />
+            <IconButton
+              iconName="dislike"
+              iconClassName={styles.icon}
+              className={getValidClassNames(
+                styles.reactionIcon,
+                isArticleOwner && styles.disabled,
+                hasAlreadyReactedWith === Reaction.DISLIKE && styles.pressed,
+              )}
+              label={String(dislikesCount)}
+              onClick={handleDislikeReaction}
             />
           </div>
         )}
