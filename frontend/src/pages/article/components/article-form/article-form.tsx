@@ -8,6 +8,7 @@ import {
   useEffect,
   useNavigate,
 } from '~/libs/hooks/hooks.js';
+import { storage, StorageKey } from '~/libs/packages/storage/storage.js';
 import { type ValueOf } from '~/libs/types/types.js';
 import {
   articleCreateValidationSchema,
@@ -37,6 +38,20 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
   const { generatedPrompt } = useAppSelector(({ prompts }) => ({
     generatedPrompt: prompts.generatedPrompt,
   }));
+
+  useEffect(() => {
+    const getUnsavedArticleFromLocalStorage = async (): Promise<void> => {
+      const unsavedArticleTitle =
+        (await storage.get(StorageKey.ARTICLE_TITLE)) ?? '';
+      const unsavedArticleText =
+        (await storage.get(StorageKey.ARTICLE_TEXT)) ?? '';
+
+      DEFAULT_ARTICLE_FORM_PAYLOAD.title = unsavedArticleTitle;
+      DEFAULT_ARTICLE_FORM_PAYLOAD.text = unsavedArticleText;
+    };
+    void getUnsavedArticleFromLocalStorage();
+  }, []);
+
   const { control, errors, handleSubmit, handleReset, isDirty, isSubmitting } =
     useAppForm<ArticleRequestDto>({
       defaultValues: articleForUpdate
@@ -56,7 +71,7 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
 
   const handleArticleSubmit = useCallback(
     (articleSubmitType: ValueOf<typeof ArticleSubmitType>) =>
-      (payload: ArticleRequestDto): void => {
+      async (payload: ArticleRequestDto): Promise<Promise<void>> => {
         const isArticlePublished =
           articleSubmitType === ArticleSubmitType.PUBLISH;
 
@@ -65,10 +80,21 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
           publishedAt: isArticlePublished ? new Date().toISOString() : null,
         };
 
+        const generatedPromptPayload =
+          getGeneratedPromptPayload(generatedPrompt);
+
+        await storage.set(StorageKey.ARTICLE_TITLE, payload.title);
+        await storage.set(StorageKey.ARTICLE_TEXT, payload.text);
+        generatedPromptPayload &&
+          (await storage.set(
+            StorageKey.PROMPTS,
+            JSON.stringify(generatedPromptPayload),
+          ));
+
         void dispatch(
           articlesActions.createArticle({
             articlePayload: updatedPayload,
-            generatedPrompt: getGeneratedPromptPayload(generatedPrompt),
+            generatedPrompt: generatedPromptPayload,
           }),
         );
       },
