@@ -1,6 +1,6 @@
-const SCROLL_VALUE = {
+const ScrollValue = {
   TOP: 0,
   MIN_SCROLLED_VALUE: 200,
 } as const;
 
-export { SCROLL_VALUE };
+export { ScrollValue };

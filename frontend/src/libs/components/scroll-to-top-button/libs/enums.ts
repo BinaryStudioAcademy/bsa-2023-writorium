@@ -1,1 +1,1 @@
-export { SCROLL_VALUE } from './scroll-value.enum.js';
+export { ScrollValue } from './scroll-value.enum.js';
