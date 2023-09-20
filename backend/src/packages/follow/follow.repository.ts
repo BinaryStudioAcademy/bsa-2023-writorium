@@ -56,7 +56,7 @@ class FollowRepository {
       return {
         authorId,
         followersCount: Number.parseInt(followersCount?.count, 10),
-        isFollowed: !!isFollowed,
+        isFollowed: Boolean(isFollowed),
       };
     });
   }
