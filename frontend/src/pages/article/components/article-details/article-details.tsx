@@ -1,7 +1,7 @@
 import { type FC } from 'react';
 
 import { Avatar, Button, Icon } from '~/libs/components/components.js';
-import { DateFormat } from '~/libs/enums/enums.js';
+import { DateFormat, FollowStatus } from '~/libs/enums/enums.js';
 import {
   getFormattedDate,
   getValidClassNames,
@@ -60,7 +60,7 @@ const ArticleDetails: FC<Properties> = ({
         {!isArticleOwner && !isShared && (
           <Button
             className={styles.followButton}
-            label={isFollowed ? 'Unfollow' : 'Follow'}
+            label={isFollowed ? FollowStatus.UNFOLLOW : FollowStatus.FOLLOW}
             onClick={onFollow}
           />
         )}
