@@ -1,10 +1,21 @@
-import { InfiniteScroll } from '~/libs/components/components.js';
-import { checkIsEqual, getArticleTags } from '~/libs/helpers/helpers.js';
+import {
+  IconButton,
+  InfiniteScroll,
+  Modal,
+} from '~/libs/components/components.js';
+import { WindowBreakpoint } from '~/libs/enums/enums.js';
+import {
+  checkIsEqual,
+  getArticleTags,
+  getWindowBreakpoint,
+} from '~/libs/helpers/helpers.js';
 import {
   useAppDispatch,
   useAppSelector,
   useCallback,
   useEffect,
+  useGetWindowDimensions,
+  useModal,
   usePagination,
   useState,
 } from '~/libs/hooks/hooks.js';
@@ -21,9 +32,17 @@ import { type FilterFormValues } from './libs/types/types.js';
 import styles from './styles.module.scss';
 
 const ArticlesFeed: React.FC = () => {
+  const { handleToggleModalOpen, isOpen } = useModal();
   const dispatch = useAppDispatch();
   const { articles, genres } = useAppSelector(({ articles }) => articles);
   const { authors } = useAppSelector(({ users }) => users);
+
+  const { width } = useGetWindowDimensions();
+  const shouldHideFilters = getWindowBreakpoint(
+    WindowBreakpoint.EXTRA_LARGE,
+    width,
+  );
+
   const [filters, setFilters] = useState<FilterFormValues>({
     titleFilter: '',
     authorId: null,
@@ -74,6 +93,13 @@ const ArticlesFeed: React.FC = () => {
     };
   }, [dispatch, handleLoadArticles, handleLoadAuthors, handleLoadGenres]);
 
+  const handleModalClose = useCallback(() => {
+    if (isOpen) {
+      handleToggleModalOpen();
+    }
+    return false;
+  }, [handleToggleModalOpen, isOpen]);
+
   return (
     <div className={styles.articlesWrapper}>
       <InfiniteScroll
@@ -93,12 +119,30 @@ const ArticlesFeed: React.FC = () => {
             />
           ))}
       </InfiniteScroll>
-
-      <ArticleFilters
-        genreSelectOptions={getSelectGenresOptions(genres)}
-        authorsSelectOptions={getSelectAuthorsOptions(authors)}
-        onSubmit={handleFiltersSubmit}
-      />
+      {shouldHideFilters ? (
+        <IconButton
+          iconName="filter"
+          className={styles.filterButton}
+          onClick={handleToggleModalOpen}
+        />
+      ) : (
+        <ArticleFilters
+          genreSelectOptions={getSelectGenresOptions(genres)}
+          authorsSelectOptions={getSelectAuthorsOptions(authors)}
+          onSubmit={handleFiltersSubmit}
+        />
+      )}
+      <Modal
+        contentClassName={styles.modalContent}
+        isOpen={shouldHideFilters ? isOpen : handleModalClose()}
+        onClose={handleToggleModalOpen}
+      >
+        <ArticleFilters
+          genreSelectOptions={getSelectGenresOptions(genres)}
+          authorsSelectOptions={getSelectAuthorsOptions(authors)}
+          onSubmit={handleFiltersSubmit}
+        />
+      </Modal>
     </div>
   );
 };

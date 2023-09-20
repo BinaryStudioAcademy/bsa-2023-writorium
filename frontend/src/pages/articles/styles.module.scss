@@ -65,3 +65,17 @@
 .articlesWrapper > div:first-child {
   min-width: 0;
 }
+
+.filterButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  color: var(--light-green);
+  background: transparent;
+}
+
+.modalContent {
+  width: max-content;
+}
