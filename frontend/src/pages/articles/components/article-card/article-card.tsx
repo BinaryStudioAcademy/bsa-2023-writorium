@@ -38,7 +38,7 @@ import {
 } from '~/packages/users/users.js';
 import { actions as articlesActions } from '~/slices/articles/articles.js';
 
-import { MOCKED_REACTIONS } from '../../libs/constants.js';
+import { MOCKED_REACTIONS } from '../../libs/constants/constants.js';
 import { getReactionConvertedToBoolean } from '../../libs/helpers/helpers.js';
 import { PopoverButtonsGroup } from './libs/components/components.js';
 import styles from './styles.module.scss';
