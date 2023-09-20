@@ -1,0 +1,38 @@
+div.confirmModal {
+  padding: 0;
+}
+
+.buttonWrapper {
+  margin-bottom: 20px;
+}
+
+.buttonWrapper button {
+  width: 100%;
+  max-width: 160px;
+  height: 45px;
+  transition: background-color 0.3s ease-in;
+}
+
+.message {
+  margin-bottom: 20px;
+  padding: 24px 16px;
+  font-size: 20px;
+  border-bottom: 2px solid var(--light-gray-15);
+}
+
+.buttonCancel {
+  margin-right: 16px;
+  color: var(--dark-green);
+  background-color: var(--light-gray);
+  border: 2px solid var(--dark-green);
+}
+
+.buttonDelete {
+  color: var(--white);
+  background-color: var(--button-delete-bg);
+}
+
+.buttonDelete:hover {
+  color: var(--white);
+  background-color: var(--button-delete-hover);
+}
