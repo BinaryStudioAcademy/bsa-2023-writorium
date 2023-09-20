@@ -4,10 +4,7 @@ import { type IHttp } from '~/libs/packages/http/http.js';
 import { type IStorage } from '~/libs/packages/storage/storage.js';
 
 import { AchievementsApiPath } from './libs/enums/enums.js';
-import {
-  type AchievementGetAllResponseDto,
-  type AchievementWithProgressResponseDto,
-} from './libs/types/types.js';
+import { type AchievementWithProgressResponseDto } from './libs/types/types.js';
 
 type Constructor = {
   baseUrl: string;
@@ -18,15 +15,6 @@ type Constructor = {
 class AchievementsApi extends HttpApi {
   public constructor({ baseUrl, http, storage }: Constructor) {
     super({ path: ApiPath.ACHIEVEMENTS, baseUrl, http, storage });
-  }
-
-  public async fetchAll(): Promise<AchievementGetAllResponseDto> {
-    const response = await this.load(
-      this.getFullEndpoint(AchievementsApiPath.ROOT, {}),
-      { method: 'GET', contentType: ContentType.JSON, hasAuth: true },
-    );
-
-    return await response.json<AchievementGetAllResponseDto>();
   }
 
   public async fetchOwnWithProgress(): Promise<
