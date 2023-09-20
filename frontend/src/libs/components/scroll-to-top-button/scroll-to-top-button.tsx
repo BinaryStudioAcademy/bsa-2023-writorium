@@ -18,7 +18,10 @@ const ScrollToTop: React.FC = () => {
         const height =
           document.documentElement.scrollHeight -
           document.documentElement.clientHeight;
-        const scrollProgress = Math.round((position / height) * 100);
+        const maxPercentageValue = 100;
+        const scrollProgress = Math.round(
+          (position / height) * maxPercentageValue,
+        );
 
         setScrollValue(scrollProgress);
       } else {
