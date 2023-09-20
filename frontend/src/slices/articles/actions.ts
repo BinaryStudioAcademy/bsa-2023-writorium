@@ -1,4 +1,4 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
+import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
 
 import { PREVIOUS_PAGE_INDEX } from '~/libs/constants/constants.js';
 import { AppRoute } from '~/libs/enums/enums.js';
@@ -292,6 +292,13 @@ const deleteArticle = createAsyncThunk<
       dispatch(appActions.navigate(PREVIOUS_PAGE_INDEX));
     }
 
+    void dispatch(
+      appActions.notify({
+        type: NotificationType.SUCCESS,
+        message: 'The article has been deleted successfully.',
+      }),
+    );
+
     return deletedArticle;
   },
 );
@@ -347,6 +354,20 @@ const getImprovementSuggestions = createAsyncThunk<
   return newSuggestions.items;
 });
 
+const toggleIsFavourite = createAsyncThunk<
+  ArticleWithCommentCountResponseDto,
+  number,
+  AsyncThunkConfig
+>(`${sliceName}/toggleIsFavourite`, (id, { extra }) => {
+  const { articleApi } = extra;
+
+  return articleApi.toggleIsFavourite(id);
+});
+
+const setShowFavourites = createAction<boolean>(
+  `${sliceName}/toggleIsFavourite`,
+);
+
 export {
   addArticle,
   createArticle,
@@ -362,7 +383,9 @@ export {
   getImprovementSuggestions,
   getImprovementSuggestionsBySession,
   reactToArticle,
+  setShowFavourites,
   shareArticle,
+  toggleIsFavourite,
   updateArticle,
   updateComment,
 };

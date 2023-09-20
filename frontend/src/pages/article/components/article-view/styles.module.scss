@@ -1,3 +1,5 @@
+@use "src/assets/css/breakpoints.scss";
+
 .body {
   width: 100%;
   background: var(--white);
@@ -21,7 +23,7 @@
   height: 90%;
 }
 
-.articleContent {
+.textWrapper {
   flex-grow: 1;
   padding: 18px 33px 62px;
 }
@@ -31,7 +33,7 @@
   flex-direction: row-reverse;
 }
 
-.body:not(.hasCover) .articleContent {
+.body:not(.hasCover) .textWrapper {
   padding-top: 40px;
 }
 
@@ -99,4 +101,126 @@
   font-size: 18px;
   line-height: 145%;
   word-break: break-word;
+}
+
+.reactionIcon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 30px;
+  padding-top: 6px;
+  color: var(--dark-gray-50);
+  font-weight: 400;
+  font-size: 12px;
+  background-color: var(--white-90);
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+}
+
+.reactionIcon:hover {
+  background-color: var(--light-gray);
+}
+
+.disabled {
+  cursor: default;
+}
+
+.disabled svg {
+  color: var(--light-green);
+}
+
+.pressed svg {
+  color: var(--light-green);
+}
+
+.presentationAuthorName {
+  display: none;
+  padding: 20px 33px 0;
+  font-size: 16px;
+}
+
+@media only screen and (max-width: breakpoints.$medium) {
+  .buttonsWrapper {
+    top: 25px;
+    flex-direction: row;
+    align-items: start;
+    gap: 10px;
+  }
+
+  .body:not(.hasCover) .textWrapper {
+    padding-top: 18px;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  .text {
+    margin-top: 10px;
+    font-size: 16px;
+  }
+
+  .authorDetails.authorDetailsModal {
+    left: 15px;
+    width: 235px;
+  }
+}
+
+@media only screen and (min-width: breakpoints.$medium) and (max-width: breakpoints.$extra-large) {
+  .buttonsWrapper {
+    bottom: 5%;
+    gap: 15px;
+  }
+
+  .body:not(.hasCover) .textWrapper {
+    padding-top: 18px;
+  }
+
+  .presentationAuthorName {
+    font-size: 18px;
+  }
+
+  .title {
+    font-size: 30px;
+  }
+
+  .text {
+    margin-top: 18px;
+  }
+
+  .authorDetails.authorDetailsModal {
+    left: 15px;
+    width: 293px;
+  }
+}
+
+@media only screen and (max-width: breakpoints.$extra-large) {
+  .body:not(.hasCover) .buttonsWrapper {
+    flex-direction: row;
+  }
+
+  .body:not(.hasCover) {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .title {
+    margin-bottom: 5px;
+  }
+
+  .presentationAuthorName {
+    display: block;
+  }
+
+  .articleDetailsContainer {
+    display: block;
+    background: var(--light-gray);
+    border: 1px solid var(--light-gray-border);
+    border-radius: 10px;
+  }
+
+  .authorDetails.authorDetailsModal {
+    display: flex;
+    background-color: var(--light-gray-15);
+  }
 }

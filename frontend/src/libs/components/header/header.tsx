@@ -40,6 +40,12 @@ const Header: React.FC<Properties> = ({ user }) => {
             <Popover
               content={
                 <>
+                  <Link
+                    to={AppRoute.CREATE_ARTICLE}
+                    className={styles.popoverWriteLink}
+                  >
+                    Write
+                  </Link>
                   <Link className={styles.profileLink} to={AppRoute.PROFILE}>
                     Profile
                   </Link>

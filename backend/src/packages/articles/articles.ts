@@ -7,8 +7,12 @@ import { ArticleController } from './article.controller.js';
 import { ArticleModel } from './article.model.js';
 import { ArticleRepository } from './article.repository.js';
 import { ArticleService } from './article.service.js';
+import { FavouredUserArticlesModel } from './favoured-user-articles.model.js';
 
-const articleRepository = new ArticleRepository(ArticleModel);
+const articleRepository = new ArticleRepository(
+  ArticleModel,
+  FavouredUserArticlesModel,
+);
 const articleService = new ArticleService({
   articleRepository,
   openAIService,
