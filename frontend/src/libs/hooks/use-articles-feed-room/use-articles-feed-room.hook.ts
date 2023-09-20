@@ -13,12 +13,12 @@ import { useSocketNamespace } from '../use-socket-namespace/use-socket-namespace
 const { NEW_ARTICLE } = ArticleSocketEvent;
 
 const useArticlesFeedRoom = (): void => {
+  const dispatch = useAppDispatch();
+
   const socketReference = useSocketNamespace(
     SocketNamespace.ARTICLES,
     SocketRoom.ARTICLES_FEED,
   );
-
-  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const socket = socketReference.current;
