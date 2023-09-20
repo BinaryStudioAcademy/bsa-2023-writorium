@@ -19,7 +19,7 @@ type User = {
   updatedAt: string;
 };
 
-type ACHIEVEMENT = {
+type Achievement = {
   id: number;
   key: string;
   name: string;
@@ -32,7 +32,7 @@ type ACHIEVEMENT = {
 
 const up = async (knex: Knex): Promise<void> => {
   const users = await knex<User>(TableName.USERS).select('*');
-  const achievements = await knex<ACHIEVEMENT>(TableName.ACHIEVEMENTS).select(
+  const achievements = await knex<Achievement>(TableName.ACHIEVEMENTS).select(
     '*',
   );
 
