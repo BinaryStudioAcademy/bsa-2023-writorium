@@ -135,6 +135,63 @@ class ArticleService implements IService {
     return newGenreEntity.toObject().id;
   }
 
+  private async genreCheck(
+    genreId: number | null,
+    articleText: string,
+  ): Promise<number | null> {
+    if (!genreId) {
+      return genreId;
+    }
+    const currentGenre = await this.genreRepository.find(genreId);
+
+    if (!currentGenre) {
+      throw new ApplicationError({
+        message: `Genre with id:${genreId} doesn't exist! `,
+      });
+    }
+
+    const genresJSON = await this.openAIService.createCompletion(
+      getDetectArticleGenreCompletionConfig(articleText),
+    );
+
+    if (!genresJSON) {
+      return genreId;
+    }
+
+    const parsedGenres = safeJSONParse<DetectedArticleGenre[]>(genresJSON);
+    if (
+      !parsedGenres ||
+      !Array.isArray(parsedGenres) ||
+      parsedGenres.length === 0
+    ) {
+      return genreId;
+    }
+
+    const currentGenreInSuggestions =
+      parsedGenres.some((item) => item.key === currentGenre.toObject().key) &&
+      currentGenre.toObject().key !== 'unknown';
+
+    if (currentGenreInSuggestions) {
+      return genreId;
+    }
+
+    const suggestedGenre = parsedGenres[0];
+
+    const existingGenre = await this.genreRepository.findByKey(
+      suggestedGenre.key,
+    );
+
+    if (existingGenre) {
+      return existingGenre.toObject().id;
+    }
+
+    const newGenreEntity = await this.genreRepository.create(
+      GenreEntity.initializeNew(suggestedGenre),
+    );
+
+    return newGenreEntity.toObject().id;
+  }
+
   private async getGenreIdToSet({
     genreId,
     text,
@@ -304,12 +361,16 @@ class ArticleService implements IService {
   public async create(
     payload: ArticleCreateDto,
   ): Promise<ArticleWithCommentCountResponseDto> {
+    const withPrompt = Boolean(payload.promptId);
     const genreId = await this.getGenreIdToSet(payload);
+
     const readTime = await this.getArticleReadTime(payload.text);
 
     const article = await this.articleRepository.create(
       ArticleEntity.initializeNew({
-        genreId,
+        genreId: withPrompt
+          ? await this.genreCheck(genreId, payload.text)
+          : genreId,
         readTime,
         title: payload.title,
         text: payload.text,
@@ -342,6 +403,12 @@ class ArticleService implements IService {
       throw new ForbiddenError('Article can be edited only by author!');
     }
 
+    let updatedGenreId = payload.genreId ?? article.genreId;
+
+    if (payload.text && (article.promptId || payload.promptId)) {
+      updatedGenreId = await this.genreCheck(updatedGenreId, payload.text);
+    }
+
     const updatedReadTime =
       payload.text && payload.text !== article.text
         ? await this.getArticleReadTime(payload.text)
@@ -351,6 +418,7 @@ class ArticleService implements IService {
       ArticleEntity.initialize({
         ...article,
         ...payload,
+        genreId: updatedGenreId,
         readTime: updatedReadTime,
         commentCount: null,
       }),
