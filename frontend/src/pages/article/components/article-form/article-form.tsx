@@ -45,7 +45,7 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
       saveArticleStatus: articles.saveArticleStatus,
     }),
   );
-  const { control, errors, handleSubmit, handleReset, isDirty, isSubmitting } =
+  const { control, errors, handleSubmit, handleReset, isDirty } =
     useAppForm<ArticleRequestDto>({
       defaultValues: articleForUpdate
         ? {
@@ -150,7 +150,12 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
   }, [dispatch]);
 
   return (
-    <Loader isLoading={isLoading} hasOverlay type="circular">
+    <Loader
+      isLoading={isLoading}
+      hasOverlay
+      type="circular"
+      className={styles.loader}
+    >
       <form
         method="POST"
         onSubmit={handleFormSubmit}
@@ -188,14 +193,14 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
             label="Save draft"
             name="draft"
             className={styles.saveDraftBtn}
-            disabled={!isDirty || isSubmitting || isLoading}
+            disabled={!isDirty || isLoading}
           />
           <Button
             type={ButtonType.SUBMIT}
             label="Publish"
             name="publish"
             className={styles.publishBtn}
-            disabled={(!isDirty && !isDraft) || isSubmitting || isLoading}
+            disabled={(!isDirty && !isDraft) || isLoading}
           />
         </div>
       </form>
