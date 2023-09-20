@@ -2,7 +2,10 @@ import { type IService } from '~/libs/interfaces/service.interface.js';
 
 import { ArticleViewEntity } from './article-view.entity.js';
 import { type ArticleViewRepository } from './article-view.repository.js';
-import { type ArticleViewCreateDto, type ArticleViewResponseDto } from './libs/types/types.js';
+import {
+  type ArticleViewCreateDto,
+  type ArticleViewResponseDto,
+} from './libs/types/types.js';
 
 class ArticleViewService implements IService {
   private articleViewRepository: ArticleViewRepository;

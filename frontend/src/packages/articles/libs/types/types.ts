@@ -11,7 +11,7 @@ export {
   type ArticlesFilters,
   type ArticleUpdateRequestDto,
   type ArticleUpdateRequestPayload,
-  type ArticleWithCommentCountResponseDto,
+  type ArticleWithCountsResponseDto,
   type ArticleWithRelationsType,
   type ReactionResponseDto,
 } from 'shared/build/index.js';

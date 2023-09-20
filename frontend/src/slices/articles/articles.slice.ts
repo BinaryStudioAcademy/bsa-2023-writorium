@@ -6,7 +6,7 @@ import { type ValueOf } from '~/libs/types/types.js';
 import {
   type ArticleImprovementSuggestion,
   type ArticleResponseDto,
-  type ArticleWithCommentCountResponseDto,
+  type ArticleWithCountsResponseDto,
 } from '~/packages/articles/articles.js';
 import { type CommentWithRelationsResponseDto } from '~/packages/comments/comments.js';
 import { type GenreGetAllResponseDto } from '~/packages/genres/genres.js';
@@ -34,7 +34,7 @@ import {
 type State = {
   article: ArticleResponseDto | null;
   articleComments: CommentWithRelationsResponseDto[];
-  articles: ArticleWithCommentCountResponseDto[];
+  articles: ArticleWithCountsResponseDto[];
   dataStatus: ValueOf<typeof DataStatus>;
   genres: GenreGetAllResponseDto['items'];
   articleCommentsDataStatus: ValueOf<typeof DataStatus>;

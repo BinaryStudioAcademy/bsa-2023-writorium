@@ -4,7 +4,6 @@ import {
 } from '~/libs/packages/database/database.js';
 
 class ArticleViewModel extends AbstractModel {
-
   public 'articleId': number;
 
   public 'viewedById': number;

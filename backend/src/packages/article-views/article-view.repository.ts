@@ -12,15 +12,13 @@ class ArticleViewRepository implements IRepository {
 
   public find(): ReturnType<IRepository['find']> {
     return Promise.resolve(null);
-  } 
+  }
 
   public findAll(): ReturnType<IRepository['findAll']> {
     return Promise.resolve([]);
   }
 
-  public async create(
-    entity: ArticleViewEntity,
-  ): Promise<ArticleViewEntity> {
+  public async create(entity: ArticleViewEntity): Promise<ArticleViewEntity> {
     const { articleId, viewedById } = entity.toNewObject();
 
     const view = await this.articleViewModel

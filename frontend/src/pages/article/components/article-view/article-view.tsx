@@ -15,7 +15,7 @@ import {
 import { useAppDispatch, useCallback, useParams } from '~/libs/hooks/hooks.js';
 import { type TagType } from '~/libs/types/types.js';
 import {
-  type ArticleWithCommentCountResponseDto,
+  type ArticleWithCountsResponseDto,
   type ArticleWithRelationsType,
 } from '~/packages/articles/articles.js';
 import { actions as articlesActions } from '~/slices/articles/articles.js';
@@ -26,9 +26,7 @@ import styles from './styles.module.scss';
 type Properties = {
   tags: TagType[] | null;
   isShared?: boolean;
-  article:
-    | Required<ArticleWithRelationsType>
-    | ArticleWithCommentCountResponseDto;
+  article: Required<ArticleWithRelationsType> | ArticleWithCountsResponseDto;
   isArticleOwner?: boolean;
 };
 

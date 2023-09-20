@@ -62,9 +62,13 @@ export {
   type ArticleReactionResponseDto,
   articleReactionValidationSchema,
 } from './packages/article-reactions/article-reactions.js';
-export { type ArticleView, type ArticleViewCreateDto, type ArticleViewResponseDto } from './packages/article-views/article-views.js';
 export {
-  type ArticleCommentCount,
+  type ArticleView,
+  type ArticleViewCreateDto,
+  type ArticleViewResponseDto,
+} from './packages/article-views/article-views.js';
+export {
+  type ArticleCounts,
   type ArticleCreateDto,
   articleCreateValidationSchema,
   type ArticleEntityType,
@@ -81,7 +85,7 @@ export {
   type ArticleUpdateRequestDto,
   type ArticleUpdateRequestPayload,
   articleUpdateValidationSchema,
-  type ArticleWithCommentCountResponseDto,
+  type ArticleWithCountsResponseDto,
   type ArticleWithRelationsType,
   type ReactionResponseDto,
 } from './packages/articles/articles.js';

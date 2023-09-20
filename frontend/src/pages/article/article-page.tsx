@@ -14,7 +14,7 @@ import {
   useLocation,
   useParams,
 } from '~/libs/hooks/hooks.js';
-import { type ArticleWithCommentCountResponseDto } from '~/packages/articles/articles.js';
+import { type ArticleWithCountsResponseDto } from '~/packages/articles/articles.js';
 import { type CommentBaseRequestDto } from '~/packages/comments/comments.js';
 import { actions as articleActions } from '~/slices/articles/articles.js';
 
@@ -36,7 +36,7 @@ const ArticlePage: React.FC = () => {
     commentsDataStatus,
     user,
   } = useAppSelector(({ articles, auth }) => ({
-    article: articles.article as ArticleWithCommentCountResponseDto,
+    article: articles.article as ArticleWithCountsResponseDto,
     getArticleStatus: articles.getArticleStatus,
     articleComments: articles.articleComments,
     commentsDataStatus: articles.articleCommentsDataStatus,
