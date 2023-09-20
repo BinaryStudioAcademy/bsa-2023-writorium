@@ -1,7 +1,7 @@
 import { type IEntity } from '~/libs/interfaces/interfaces.js';
 import { type WithNullableKeys } from '~/libs/types/types.js';
 
-import { type Achievement } from './libs/types/types.js';
+import { type Achievement, type ReferenceTable } from './libs/types/types.js';
 
 type AchievementEntityPayload = Omit<Achievement, 'id'>;
 
@@ -16,7 +16,7 @@ class AchievementEntity implements IEntity {
 
   private 'breakpoint': number;
 
-  private 'referenceTable': string;
+  private 'referenceTable': ReferenceTable;
 
   private constructor({
     id,
@@ -31,7 +31,7 @@ class AchievementEntity implements IEntity {
     this.name = name;
     this.description = description;
     this.breakpoint = breakpoint;
-    this.referenceTable = referenceTable;
+    this.referenceTable = referenceTable as ReferenceTable;
   }
 
   public static initialize({

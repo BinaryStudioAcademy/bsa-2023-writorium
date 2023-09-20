@@ -1,3 +1,4 @@
+export { type ReferenceTable } from './reference-table.type.js';
 export {
   type Achievement,
   type AchievementBaseResponseDto,
