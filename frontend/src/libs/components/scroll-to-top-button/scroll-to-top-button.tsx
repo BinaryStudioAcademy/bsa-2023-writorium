@@ -11,15 +11,16 @@ const ScrollToTop: React.FC = () => {
 
   useEffect(() => {
     window.addEventListener('scroll', () => {
-      if (window.scrollY > SCROLL_VALUE.SCROLLED_BELOW_200) {
+      if (window.scrollY > SCROLL_VALUE.MIN_SCROLLED_VALUE) {
         setHasScrollToTopButton(true);
 
         const position = window.scrollY;
         const height =
           document.documentElement.scrollHeight -
           document.documentElement.clientHeight;
+        const scrollProgres = Math.round((position / height) * 100);
 
-        setScrollValue(Math.round((position / height) * 100));
+        setScrollValue(scrollProgres);
       } else {
         setHasScrollToTopButton(false);
         setScrollValue(SCROLL_VALUE.TOP);
