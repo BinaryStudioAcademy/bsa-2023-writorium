@@ -5,6 +5,7 @@ import {
   ListType,
   TextAlignment,
   TextDecoration,
+  TextSize,
   TextStyle,
 } from '../enums/enums.js';
 import { type ToolbarButtonProperties } from '../types/types.js';
@@ -46,10 +47,16 @@ const HEADER_BUTTONS: ToolbarButtonProperties<ValueOf<typeof HeaderLevel>>[] = [
   { iconName: 'header6', key: HeaderLevel.SIX },
 ];
 
+const TEXT_SIZE_BUTTONS: ToolbarButtonProperties<ValueOf<typeof TextSize>>[] = [
+  { iconName: 'textSizeIncrease', key: TextSize.INCREASE },
+  { iconName: 'textSizeDecrease', key: TextSize.DECREASE },
+];
+
 export {
   HEADER_BUTTONS,
   LIST_BUTTONS,
   TEXT_ALIGNMENT_BUTTONS,
   TEXT_DECORATION_BUTTONS,
+  TEXT_SIZE_BUTTONS,
   TEXT_STYLE_BUTTONS,
 };
