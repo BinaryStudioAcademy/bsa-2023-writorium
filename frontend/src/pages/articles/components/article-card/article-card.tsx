@@ -18,6 +18,7 @@ import {
   configureString,
   getFormattedDate,
   getFullName,
+  getReactionConvertedToBoolean,
   getReactionsInfo,
   getValidClassNames,
   sanitizeHtml,
@@ -26,6 +27,7 @@ import {
   useAppDispatch,
   useAppSelector,
   useCallback,
+  useModal,
 } from '~/libs/hooks/hooks.js';
 import { type TagType, type ValueOf } from '~/libs/types/types.js';
 import {
@@ -37,9 +39,9 @@ import {
   type UserAuthResponseDto,
   type UserDetailsResponseDto,
 } from '~/packages/users/users.js';
+import { ConfirmArticleDeleteDialog } from '~/pages/libs/components/components.js';
 import { actions as articlesActions } from '~/slices/articles/articles.js';
 
-import { getReactionConvertedToBoolean } from '../../libs/helpers/helpers.js';
 import { PopoverButtonsGroup } from './libs/components/components.js';
 import styles from './styles.module.scss';
 
@@ -57,6 +59,7 @@ const ArticleCard: React.FC<Properties> = ({
   reactions,
 }) => {
   const dispatch = useAppDispatch();
+  const { handleToggleModalOpen, isOpen } = useModal();
   const { user, articlesDataStatus } = useAppSelector(({ auth, articles }) => ({
     user: auth.user as UserAuthResponseDto,
     articlesDataStatus: articles.dataStatus,
@@ -124,12 +127,15 @@ const ArticleCard: React.FC<Properties> = ({
     void dispatch(articlesActions.shareArticle({ id: id.toString() }));
   }, [dispatch, id]);
 
-  const handleDeleteArticle = useCallback(
-    (id: number): void => {
-      void dispatch(articlesActions.deleteArticle({ id }));
-    },
-    [dispatch],
-  );
+  const handleDeleteArticle = useCallback((): void => {
+    void dispatch(articlesActions.deleteArticle({ id }));
+  }, [dispatch, id]);
+
+  const handleDeleteButtonClick = useCallback((): void => {
+    if (!isOpen) {
+      handleToggleModalOpen();
+    }
+  }, [handleToggleModalOpen, isOpen]);
 
   return (
     <article className={styles.article}>
@@ -170,7 +176,7 @@ const ArticleCard: React.FC<Properties> = ({
               <PopoverButtonsGroup
                 isOwnArticle={isOwnArticle}
                 article={article}
-                onDeleteArticle={handleDeleteArticle}
+                onDeleteButtonClick={handleDeleteButtonClick}
                 onToggleFavouriteClick={handleToggleIsFavourite}
                 isToggleFavouriteLoading={isLoading}
               />
@@ -261,6 +267,10 @@ const ArticleCard: React.FC<Properties> = ({
           Read more
         </Link>
       </div>
+      <ConfirmArticleDeleteDialog
+        onDeleteArticle={handleDeleteArticle}
+        trigger={{ onToggleModalOpen: handleToggleModalOpen, isOpen }}
+      />
     </article>
   );
 };
