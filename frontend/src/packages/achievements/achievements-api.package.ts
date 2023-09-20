@@ -1,4 +1,4 @@
-import { ApiPath, ContentType } from '~/libs/enums/enums.js';
+import { ApiPath } from '~/libs/enums/enums.js';
 import { HttpApi } from '~/libs/packages/api/api.js';
 import { type IHttp } from '~/libs/packages/http/http.js';
 import { type IStorage } from '~/libs/packages/storage/storage.js';
@@ -22,7 +22,10 @@ class AchievementsApi extends HttpApi {
   > {
     const response = await this.load(
       this.getFullEndpoint(AchievementsApiPath.OWN, {}),
-      { method: 'GET', contentType: ContentType.JSON, hasAuth: true },
+      {
+        method: 'GET',
+        hasAuth: true,
+      },
     );
 
     return await response.json<AchievementWithProgressResponseDto[]>();
