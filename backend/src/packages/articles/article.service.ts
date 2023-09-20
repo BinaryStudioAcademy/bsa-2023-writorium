@@ -17,6 +17,7 @@ import { type OpenAIService } from '~/libs/packages/openai/openai.package.js';
 import { token as articleToken } from '~/libs/packages/token/token.js';
 
 import { GenreEntity } from '../genres/genre.entity.js';
+import { UNKNOWN_GENRE_KEY } from '../genres/genre.js';
 import { type GenreRepository } from '../genres/genre.repository.js';
 import { type UserAuthResponseDto } from '../users/users.js';
 import { ArticleEntity } from './article.entity.js';
@@ -169,7 +170,7 @@ class ArticleService implements IService {
 
     const currentGenreInSuggestions =
       parsedGenres.some((item) => item.key === currentGenre.toObject().key) &&
-      currentGenre.toObject().key !== 'unknown';
+      currentGenre.toObject().key !== UNKNOWN_GENRE_KEY;
 
     if (currentGenreInSuggestions) {
       return genreId;
