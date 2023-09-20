@@ -12,12 +12,18 @@ import {
   getValidClassNames,
   sanitizeHtml,
 } from '~/libs/helpers/helpers.js';
-import { useAppDispatch, useCallback, useParams } from '~/libs/hooks/hooks.js';
+import {
+  useAppDispatch,
+  useCallback,
+  useModal,
+  useParams,
+} from '~/libs/hooks/hooks.js';
 import { type TagType } from '~/libs/types/types.js';
 import {
   type ArticleWithCommentCountResponseDto,
   type ArticleWithRelationsType,
 } from '~/packages/articles/articles.js';
+import { ConfirmArticleDeleteDialog } from '~/pages/libs/components/components.js';
 import { actions as articlesActions } from '~/slices/articles/articles.js';
 
 import { ArticleDetails } from '../article-details/article-details.js';
@@ -54,6 +60,8 @@ const ArticleView: React.FC<Properties> = ({
 
   const dispatch = useAppDispatch();
 
+  const { handleToggleModalOpen, isOpen } = useModal();
+
   const handleShareButtonClick = useCallback((): void => {
     if (id) {
       void dispatch(articlesActions.shareArticle({ id }));
@@ -65,6 +73,12 @@ const ArticleView: React.FC<Properties> = ({
       articlesActions.deleteArticle({ id: Number(id), hasRedirect: true }),
     );
   }, [dispatch, id]);
+
+  const handleDeleteButtonClick = useCallback((): void => {
+    if (!isOpen) {
+      handleToggleModalOpen();
+    }
+  }, [handleToggleModalOpen, isOpen]);
 
   return (
     <div
@@ -82,7 +96,7 @@ const ArticleView: React.FC<Properties> = ({
                   iconName="trashBin"
                   className={styles.iconButton}
                   iconClassName={styles.icon}
-                  onClick={handleDeleteArticle}
+                  onClick={handleDeleteButtonClick}
                 />
                 <Link
                   to={
@@ -156,6 +170,10 @@ const ArticleView: React.FC<Properties> = ({
           dangerouslySetInnerHTML={{ __html: sanitizeHtml(text) }}
         />
       </div>
+      <ConfirmArticleDeleteDialog
+        onDeleteArticle={handleDeleteArticle}
+        trigger={{ onToggleModalOpen: handleToggleModalOpen, isOpen }}
+      />
     </div>
   );
 };
