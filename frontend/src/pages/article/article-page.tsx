@@ -106,6 +106,7 @@ const ArticlePage: React.FC = () => {
                 tags={getArticleViewTags(article)}
                 isArticleOwner={isArticleOwner}
                 article={article}
+                reactions={article.reactions}
               />
               <ArticleDetails
                 readTime={article.readTime}

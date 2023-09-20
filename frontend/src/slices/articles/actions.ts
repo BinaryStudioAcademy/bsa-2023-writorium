@@ -243,6 +243,13 @@ const deleteArticle = createAsyncThunk<
       dispatch(appActions.navigate(PREVIOUS_PAGE_INDEX));
     }
 
+    void dispatch(
+      appActions.notify({
+        type: NotificationType.SUCCESS,
+        message: 'The article has been deleted successfully.',
+      }),
+    );
+
     return deletedArticle;
   },
 );
