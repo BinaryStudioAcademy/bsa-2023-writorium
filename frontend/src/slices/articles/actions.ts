@@ -21,6 +21,8 @@ import {
 import {
   type CommentBaseRequestDto,
   type CommentGetAllResponseDto,
+  type CommentsSocketEvent,
+  type CommentsSocketEventPayload,
   type CommentUpdateDto,
   type CommentWithRelationsResponseDto,
 } from '~/packages/comments/comments.js';
@@ -257,6 +259,34 @@ const fetchAllCommentsToArticle = createAsyncThunk<
   return commentsApi.fetchAllByArticleId(articleId);
 });
 
+const addComment = createAsyncThunk<
+  CommentsSocketEventPayload[typeof CommentsSocketEvent.NEW_COMMENT] | null,
+  CommentsSocketEventPayload[typeof CommentsSocketEvent.NEW_COMMENT],
+  AsyncThunkConfig
+>(`${sliceName}/add-comment`, (comment, { getState, dispatch }) => {
+  const {
+    auth: { user },
+  } = getState();
+
+  if (user?.id !== comment.userId) {
+    const { author } = comment;
+
+    void dispatch(
+      appActions.notify({
+        type: 'info',
+        message: `New comment from ${getFullName(
+          author.firstName,
+          author.lastName,
+        )}`,
+      }),
+    );
+
+    return comment;
+  }
+
+  return null;
+});
+
 const createComment = createAsyncThunk<
   CommentWithRelationsResponseDto,
   CommentBaseRequestDto,
@@ -370,6 +400,7 @@ const setShowFavourites = createAction<boolean>(
 
 export {
   addArticle,
+  addComment,
   createArticle,
   createComment,
   deleteArticle,

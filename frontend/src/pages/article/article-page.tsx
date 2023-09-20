@@ -9,6 +9,7 @@ import { getFullName, getValidClassNames } from '~/libs/helpers/helpers.js';
 import {
   useAppDispatch,
   useAppSelector,
+  useArticleRoom,
   useCallback,
   useEffect,
   useLocation,
@@ -47,6 +48,8 @@ const ArticlePage: React.FC = () => {
   const isArticleOwner = user?.id === article?.userId;
 
   const { id } = useParams();
+
+  useArticleRoom(Number(id));
 
   useEffect(() => {
     const { hash } = location;

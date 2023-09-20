@@ -1,10 +1,7 @@
 import { type MutableRefObject } from 'react';
 import { type Socket } from 'socket.io-client';
 
-import {
-  type SocketNamespace,
-  type SocketRoom,
-} from '~/libs/packages/socket/socket.js';
+import { type SocketNamespace } from '~/libs/packages/socket/socket.js';
 import { socket, SocketEvent } from '~/libs/packages/socket/socket.js';
 import { type ValueOf } from '~/libs/types/types.js';
 
@@ -12,7 +9,7 @@ import { useAppSelector, useEffect, useReference } from '../hooks.js';
 
 const useSocketNamespace = (
   namespace: ValueOf<typeof SocketNamespace>,
-  roomId: ValueOf<typeof SocketRoom>,
+  roomId: string,
 ): MutableRefObject<Socket | null> => {
   const userId = useAppSelector((state) => state.auth.user?.id);
   const socketInstanceReference = useReference<Socket | null>(null);

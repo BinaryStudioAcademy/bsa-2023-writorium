@@ -9,6 +9,7 @@ export {
 export { useAppDispatch } from './use-app-dispatch/use-app-dispatch.hook.js';
 export { useAppForm } from './use-app-form/use-app-form.hook.js';
 export { useAppSelector } from './use-app-selector/use-app-selector.hook.js';
+export { useArticleRoom } from './use-article-room/use-article-room.hook.js';
 export { useArticlesFeedRoom } from './use-articles-feed-room/use-articles-feed-room.hook.js';
 export { useDeepCompareEffect } from './use-deep-compare-effect/use-deep-compare-effect.hook.js';
 export { useHandleClickOutside } from './use-handle-click-outside/use-handle-click-outside.hook.js';

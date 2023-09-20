@@ -13,6 +13,7 @@ import { type GenreGetAllResponseDto } from '~/packages/genres/genres.js';
 
 import {
   addArticle,
+  addComment,
   createArticle,
   createComment,
   deleteArticle,
@@ -178,6 +179,11 @@ const { reducer, actions, name } = createSlice({
     builder.addCase(fetchAllCommentsToArticle.fulfilled, (state, action) => {
       state.articleComments = action.payload.items;
       state.articleCommentsDataStatus = DataStatus.FULFILLED;
+    });
+    builder.addCase(addComment.fulfilled, (state, action) => {
+      if (action.payload) {
+        state.articleComments = [action.payload, ...state.articleComments];
+      }
     });
     builder.addCase(toggleIsFavourite.fulfilled, (state, action) => {
       const article = action.payload;
