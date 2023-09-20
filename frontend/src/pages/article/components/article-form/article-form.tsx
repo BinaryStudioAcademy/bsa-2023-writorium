@@ -1,5 +1,10 @@
-import { Button, Input, TextEditor } from '~/libs/components/components.js';
-import { ButtonType } from '~/libs/enums/enums.js';
+import {
+  Button,
+  Input,
+  Loader,
+  TextEditor,
+} from '~/libs/components/components.js';
+import { ButtonType, DataStatus } from '~/libs/enums/enums.js';
 import {
   useAppDispatch,
   useAppForm,
@@ -34,9 +39,12 @@ type Properties = {
 const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { generatedPrompt } = useAppSelector(({ prompts }) => ({
-    generatedPrompt: prompts.generatedPrompt,
-  }));
+  const { generatedPrompt, saveArticleStatus } = useAppSelector(
+    ({ prompts, articles }) => ({
+      generatedPrompt: prompts.generatedPrompt,
+      saveArticleStatus: articles.saveArticleStatus,
+    }),
+  );
   const { control, errors, handleSubmit, handleReset, isDirty, isSubmitting } =
     useAppForm<ArticleRequestDto>({
       defaultValues: articleForUpdate
@@ -53,6 +61,8 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
     });
 
   const isDraft = !articleForUpdate?.publishedAt;
+
+  const isLoading = saveArticleStatus === DataStatus.PENDING;
 
   const handleArticleSubmit = useCallback(
     (articleSubmitType: ValueOf<typeof ArticleSubmitType>) =>
@@ -140,54 +150,56 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
   }, [dispatch]);
 
   return (
-    <form
-      method="POST"
-      onSubmit={handleFormSubmit}
-      onReset={handleCancel}
-      className={styles.formContainer}
-    >
-      <ArticleCoverUpload
-        name="coverId"
-        control={control}
-        errors={errors}
-        initialPreviewUrl={articleForUpdate?.coverUrl}
-      />
-      <Input
-        type="text"
-        placeholder="Enter the title of the article"
-        name="title"
-        control={control}
-        errors={errors}
-        className={styles.titleInput}
-      />
-      <TextEditor
-        control={control}
-        name="text"
-        errors={errors}
-        wasEdited={isDirty}
-      />
-      <div className={styles.buttonWrapper}>
-        <Button
-          type={ButtonType.RESET}
-          label="Cancel"
-          className={styles.cancelBtn}
+    <Loader isLoading={isLoading} hasOverlay type="circular">
+      <form
+        method="POST"
+        onSubmit={handleFormSubmit}
+        onReset={handleCancel}
+        className={styles.formContainer}
+      >
+        <ArticleCoverUpload
+          name="coverId"
+          control={control}
+          errors={errors}
+          initialPreviewUrl={articleForUpdate?.coverUrl}
         />
-        <Button
-          type={ButtonType.SUBMIT}
-          label="Save draft"
-          name="draft"
-          className={styles.saveDraftBtn}
-          disabled={!isDirty || isSubmitting}
+        <Input
+          type="text"
+          placeholder="Enter the title of the article"
+          name="title"
+          control={control}
+          errors={errors}
+          className={styles.titleInput}
         />
-        <Button
-          type={ButtonType.SUBMIT}
-          label="Publish"
-          name="publish"
-          className={styles.publishBtn}
-          disabled={(!isDirty && !isDraft) || isSubmitting}
+        <TextEditor
+          control={control}
+          name="text"
+          errors={errors}
+          wasEdited={isDirty}
         />
-      </div>
-    </form>
+        <div className={styles.buttonWrapper}>
+          <Button
+            type={ButtonType.RESET}
+            label="Cancel"
+            className={styles.cancelBtn}
+          />
+          <Button
+            type={ButtonType.SUBMIT}
+            label="Save draft"
+            name="draft"
+            className={styles.saveDraftBtn}
+            disabled={!isDirty || isSubmitting || isLoading}
+          />
+          <Button
+            type={ButtonType.SUBMIT}
+            label="Publish"
+            name="publish"
+            className={styles.publishBtn}
+            disabled={(!isDirty && !isDraft) || isSubmitting || isLoading}
+          />
+        </div>
+      </form>
+    </Loader>
   );
 };
 
