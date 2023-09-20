@@ -1,9 +1,9 @@
 import { type ArticleWithCountsResponseDto } from '~/packages/articles/articles.js';
 
 const removeReaction = (
-  article:  ArticleWithCountsResponseDto,
+  article: ArticleWithCountsResponseDto,
   reactionId: number,
-):  ArticleWithCountsResponseDto => {
+): ArticleWithCountsResponseDto => {
   const reactionIndex = article.reactions.findIndex(
     ({ id }) => id === reactionId,
   );
