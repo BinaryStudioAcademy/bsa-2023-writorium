@@ -1,17 +1,18 @@
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
 import { useCallback, useEffect, useState } from '~/libs/hooks/hooks.js';
 
-import { IconButton } from '../components.js';
+import { IconButton } from '../icon-button/icon-button.js';
+import { SCROLL_VALUE } from './libs/enums.js';
 import styles from './styles.module.scss';
 
 const ScrollToTop: React.FC = () => {
-  const [showButton, setShowButton] = useState(false);
-  const [scrollValue, setScrollValue] = useState(0);
+  const [hasScrollToTopButton, setHasScrollToTopButton] = useState(false);
+  const [scrollValue, setScrollValue] = useState(SCROLL_VALUE.TOP as number);
 
   useEffect(() => {
     window.addEventListener('scroll', () => {
-      if (window.scrollY > 200) {
-        setShowButton(true);
+      if (window.scrollY > SCROLL_VALUE.SCROLLED_BELOW_200) {
+        setHasScrollToTopButton(true);
 
         const position = window.scrollY;
         const height =
@@ -20,24 +21,25 @@ const ScrollToTop: React.FC = () => {
 
         setScrollValue(Math.round((position / height) * 100));
       } else {
-        setShowButton(false);
-        setScrollValue(0);
+        setHasScrollToTopButton(false);
+        setScrollValue(SCROLL_VALUE.TOP);
       }
     });
   }, []);
 
   const handleClick = useCallback(() => {
     window.scrollTo({
-      top: 0,
+      top: SCROLL_VALUE.TOP,
       behavior: 'smooth',
     });
   }, []);
 
   return (
     <div
-      className={getValidClassNames(styles.scrollProgress, {
-        [styles.containerVisibility]: showButton,
-      })}
+      className={getValidClassNames(
+        styles.scrollProgress,
+        hasScrollToTopButton && styles.visible,
+      )}
       style={{
         background: `conic-gradient(var(--light-green) ${scrollValue}%, var(--light-gray-border) ${scrollValue}%)`,
       }}
