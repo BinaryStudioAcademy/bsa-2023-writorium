@@ -1,13 +1,14 @@
 import { type IRepository } from '~/libs/interfaces/repository.interface.js';
-import { type DatabaseTableName } from '~/libs/packages/database/database.js';
-import { type ValueOf } from '~/libs/types/types.js';
 
 import { AchievementEntity } from './achievement.entity.js';
 import { type AchievementModel } from './achievement.model.js';
-import { type Achievement, type UserAchievement } from './libs/types/types.js';
+import {
+  type Achievement,
+  type ReferenceTable,
+  type ReferenceTablesCounts,
+  type UserAchievement,
+} from './libs/types/types.js';
 import { type UserAchievementModel } from './user-achievements.model.js';
-
-type referenceTableType = ValueOf<typeof DatabaseTableName>;
 
 class AchievementRepository implements IRepository {
   private achievementModel: typeof AchievementModel;
@@ -56,7 +57,7 @@ class AchievementRepository implements IRepository {
   }
 
   public async findBy(
-    filters: Partial<Achievement> = {},
+    filters: Pick<Achievement, 'breakpoint' | 'referenceTable'>,
   ): Promise<AchievementEntity | null> {
     const achievement = await this.achievementModel
       .query()
@@ -98,27 +99,38 @@ class AchievementRepository implements IRepository {
 
   public async getCountsInReferenceTables(
     userId: number,
-  ): Promise<{ [key: string]: number }[]> {
-    const relatedTableNames = await this.achievementModel
+  ): Promise<ReferenceTablesCounts> {
+    const referenceTablesNames = await this.achievementModel
       .query()
       .select('referenceTable')
-      .groupBy('referenceTable')
-      .castTo<{ referenceTable: referenceTableType }[]>()
+      .distinctOn('referenceTable')
+      .castTo<{ referenceTable: ReferenceTable }[]>()
       .execute();
 
     const knex = this.achievementModel.knex();
 
-    return await Promise.all(
-      relatedTableNames.map(async ({ referenceTable }) => {
-        const count = (await knex
+    const referenceTablesCounts = await Promise.all<
+      Record<ReferenceTable, string>
+    >(
+      referenceTablesNames.map(({ referenceTable }) => {
+        return knex
           .select()
-          .count(`* as ${referenceTable}`)
+          .count('*', { as: referenceTable })
           .from(referenceTable)
           .where('userId', userId)
-          .first()) as { [key in referenceTableType]: string };
-
-        return { [referenceTable]: Number(count[referenceTable]) };
+          .first();
       }),
+    );
+
+    return referenceTablesCounts.reduce<ReferenceTablesCounts>(
+      (groupedCount, referenceTableToCount) => {
+        const [[tableName, count]] = Object.entries(referenceTableToCount);
+        return {
+          ...groupedCount,
+          [tableName]: Number(count),
+        };
+      },
+      {} as ReferenceTablesCounts,
     );
   }
 

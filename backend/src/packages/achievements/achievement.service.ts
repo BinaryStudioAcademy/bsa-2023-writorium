@@ -8,6 +8,7 @@ import {
   type AchievementBaseResponseDto,
   type AchievementGetAllResponseDto,
   type AchievementWithProgressResponseDto,
+  type ReferenceTable,
 } from './libs/types/types.js';
 
 class AchievementService implements IService {
@@ -43,9 +44,8 @@ class AchievementService implements IService {
     const userAchievements =
       await this.achievementRepository.findAllUserAchievements(userId);
 
-    const counts = await this.achievementRepository.getCountsInReferenceTables(
-      userId,
-    );
+    const referenceTableToCount =
+      await this.achievementRepository.getCountsInReferenceTables(userId);
 
     return achievements.items.map((achievement) => {
       const isAchieved = userAchievements.find(
@@ -59,14 +59,13 @@ class AchievementService implements IService {
         };
       }
 
-      const referenceNameAndCount = counts.find(
-        (count) => Object.keys(count)[0] === achievement.referenceTable,
-      );
-      const count = referenceNameAndCount
-        ? referenceNameAndCount[achievement.referenceTable]
-        : 0;
+      const countByAchievementReference =
+        referenceTableToCount[achievement.referenceTable as ReferenceTable];
 
-      const progress = Math.round((count / achievement.breakpoint) * 100);
+      const progress = Math.round(
+        (countByAchievementReference / achievement.breakpoint) *
+          PercentageProgress.MAX,
+      );
 
       return {
         ...achievement,
