@@ -26,6 +26,14 @@
   align-items: center;
 }
 
+.rightSide div > span:hover {
+  background-color: var(--light-green-80);
+}
+
+.rightSide div:hover img {
+  opacity: 0.8;
+}
+
 .writeLink {
   margin-right: 35px;
   padding: 12px 26px;
@@ -43,26 +51,18 @@
   background-color: var(--light-green);
 }
 
-.avatarButton {
-  background-color: transparent;
-  border: none;
-}
+// .avatarButton {
+//   background-color: transparent;
+//   border: none;
+// }
 
-.avatarButton > span {
-  transition: background-color 0.3s ease;
-}
+// .avatarButton img {
+//   transition: opacity 0.3s ease;
+// }
 
-.avatarButton:hover > span {
-  background-color: var(--light-green-80);
-}
-
-.avatarButton img {
-  transition: opacity 0.3s ease;
-}
-
-.avatarButton:hover img {
-  opacity: 0.8;
-}
+// .avatarButton:hover img {
+//   opacity: 0.8;
+// }
 
 .popoverWriteLink {
   display: none;
