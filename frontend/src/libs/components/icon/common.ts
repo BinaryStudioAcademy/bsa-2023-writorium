@@ -38,6 +38,8 @@ import { ReactComponent as Search } from '~/assets/img/icons/search-icon.svg';
 import { ReactComponent as Share } from '~/assets/img/icons/share-icon.svg';
 import { ReactComponent as Sparkles } from '~/assets/img/icons/sparkles-icon.svg';
 import { ReactComponent as Star } from '~/assets/img/icons/star-icon.svg';
+import { ReactComponent as TextSizeDecrease } from '~/assets/img/icons/text-decrease-icon.svg';
+import { ReactComponent as TextSizeIncrease } from '~/assets/img/icons/text-increase-icon.svg';
 import { ReactComponent as TrashBinIcon } from '~/assets/img/icons/trash-bin-icon.svg';
 import { ReactComponent as View } from '~/assets/img/icons/view-icon.svg';
 import { ReactComponent as WritoriumLogo } from '~/assets/img/icons/writorium-logo-icon.svg';
@@ -85,6 +87,8 @@ type IconName =
   | 'trashBin'
   | 'facebook'
   | 'autoFix'
+  | 'textSizeIncrease'
+  | 'textSizeDecrease'
   | 'ellipsisVertical';
 
 const iconNameToIcon: Record<
@@ -134,6 +138,8 @@ const iconNameToIcon: Record<
   facebook: Facebook,
   autoFix: AutoFix,
   ellipsisVertical: ellipsisVertical,
+  textSizeDecrease: TextSizeDecrease,
+  textSizeIncrease: TextSizeIncrease,
 };
 
 export { type IconName, iconNameToIcon };
