@@ -18,6 +18,7 @@ import {
   useAppDispatch,
   useAppSelector,
   useCallback,
+  useModal,
   useParams,
 } from '~/libs/hooks/hooks.js';
 import { type TagType, type ValueOf } from '~/libs/types/types.js';
@@ -27,6 +28,7 @@ import {
   type ReactionResponseDto,
 } from '~/packages/articles/articles.js';
 import { type UserAuthResponseDto } from '~/packages/users/users.js';
+import { ConfirmArticleDeleteDialog } from '~/pages/libs/components/components.js';
 import { actions as articlesActions } from '~/slices/articles/articles.js';
 
 import { ArticleDetails } from '../article-details/article-details.js';
@@ -66,6 +68,8 @@ const ArticleView: React.FC<Properties> = ({
   const user = useAppSelector(({ auth }) => auth.user) as UserAuthResponseDto;
 
   const dispatch = useAppDispatch();
+
+  const { handleToggleModalOpen, isOpen } = useModal();
 
   const handleShareButtonClick = useCallback((): void => {
     if (id) {
@@ -113,6 +117,12 @@ const ArticleView: React.FC<Properties> = ({
     handleReaction(Reaction.DISLIKE);
   };
 
+  const handleDeleteButtonClick = useCallback((): void => {
+    if (!isOpen) {
+      handleToggleModalOpen();
+    }
+  }, [handleToggleModalOpen, isOpen]);
+
   return (
     <div
       className={getValidClassNames(styles.body, coverUrl && styles.hasCover)}
@@ -129,7 +139,7 @@ const ArticleView: React.FC<Properties> = ({
                   iconName="trashBin"
                   className={styles.iconButton}
                   iconClassName={styles.icon}
-                  onClick={handleDeleteArticle}
+                  onClick={handleDeleteButtonClick}
                 />
                 <Link
                   to={
@@ -225,6 +235,10 @@ const ArticleView: React.FC<Properties> = ({
           dangerouslySetInnerHTML={{ __html: sanitizeHtml(text) }}
         />
       </div>
+      <ConfirmArticleDeleteDialog
+        onDeleteArticle={handleDeleteArticle}
+        trigger={{ onToggleModalOpen: handleToggleModalOpen, isOpen }}
+      />
     </div>
   );
 };
