@@ -9,7 +9,6 @@ const ColumnName = {
   ID: 'id',
   USER_ID: 'user_id',
   AUTHOR_ID: 'author_id',
-  GENRE_ID: 'genre_id',
   CREATED_AT: 'created_at',
   UPDATED_AT: 'updated_at',
 } as const;
