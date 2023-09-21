@@ -1,6 +1,7 @@
 import {
   addArticle,
   addComment,
+  addReactionToArticlesFeed,
   addReactionToArticleView,
   createArticle,
   createComment,
@@ -46,6 +47,7 @@ const allActions = {
   getImprovementSuggestions,
   getImprovementSuggestionsBySession,
   addArticle,
+  addReactionToArticlesFeed,
 };
 
 export { allActions as actions };

@@ -251,6 +251,22 @@ const addReactionToArticleView = createAsyncThunk<
   return null;
 });
 
+const addReactionToArticlesFeed = createAsyncThunk<
+  ArticleReactionResponseDto | null,
+  ArticleReactionsSocketEventPayload[typeof ArticleReactionsSocketEvent.NEW_REACTION],
+  AsyncThunkConfig
+>(`${sliceName}/add-reaction-to-articles-feed`, (reaction, { getState }) => {
+  const {
+    auth: { user },
+  } = getState();
+
+  if (user?.id !== reaction.userId) {
+    return reaction;
+  }
+
+  return null;
+});
+
 const deleteArticleReaction = createAsyncThunk<
   {
     articleId: number;
@@ -420,6 +436,7 @@ const setShowFavourites = createAction<boolean>(
 export {
   addArticle,
   addComment,
+  addReactionToArticlesFeed,
   addReactionToArticleView,
   createArticle,
   createComment,

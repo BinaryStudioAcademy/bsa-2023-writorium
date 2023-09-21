@@ -14,6 +14,7 @@ import { type GenreGetAllResponseDto } from '~/packages/genres/genres.js';
 import {
   addArticle,
   addComment,
+  addReactionToArticlesFeed,
   addReactionToArticleView,
   createArticle,
   createComment,
@@ -33,7 +34,11 @@ import {
   updateArticle,
   updateComment,
 } from './actions.js';
-import { removeReaction, updateReaction } from './libs/helpers/helpers.js';
+import {
+  applyReaction,
+  removeReaction,
+  updateReaction,
+} from './libs/helpers/helpers.js';
 
 type State = {
   article: ArticleResponseDto | null;
@@ -82,6 +87,7 @@ const { reducer, actions, name } = createSlice({
         state.articles = [action.payload, ...state.articles];
       }
     });
+
     builder.addCase(createArticle.fulfilled, (state, action) => {
       state.articles = [...state.articles, action.payload];
       state.dataStatus = DataStatus.FULFILLED;
@@ -104,9 +110,11 @@ const { reducer, actions, name } = createSlice({
       state.getArticleStatus = DataStatus.FULFILLED;
       state.article = action.payload;
     });
+
     builder.addCase(setShowFavourites, (state, action) => {
       state.showFavourites = action.payload;
     });
+
     builder.addCase(deleteArticle.fulfilled, (state, action) => {
       const article = action.payload;
       if (article) {
@@ -117,6 +125,18 @@ const { reducer, actions, name } = createSlice({
       state.dataStatus = DataStatus.FULFILLED;
     });
 
+    builder.addCase(addReactionToArticlesFeed.fulfilled, (state, action) => {
+      const reaction = action.payload;
+
+      state.articles = state.articles.map((article) => {
+        if (article.id !== reaction?.articleId) {
+          return article;
+        }
+
+        return applyReaction(article, reaction);
+      });
+    });
+
     builder.addCase(addReactionToArticleView.fulfilled, (state, action) => {
       const reaction = action.payload;
 
@@ -124,20 +144,10 @@ const { reducer, actions, name } = createSlice({
         return;
       }
 
-      const existingReaction = state.article.reactions.find(
-        (item) => item.id === reaction.id,
+      state.article = applyReaction(
+        state.article as ArticleWithCommentCountResponseDto,
+        reaction,
       );
-
-      state.article =
-        existingReaction && existingReaction.isLike === reaction.isLike
-          ? removeReaction(
-              state.article as ArticleWithCommentCountResponseDto,
-              reaction.id,
-            )
-          : updateReaction(
-              state.article as ArticleWithCommentCountResponseDto,
-              reaction,
-            );
     });
 
     builder.addCase(reactToArticle.fulfilled, (state, action) => {
