@@ -10,7 +10,10 @@ type Properties = {
   type?: ValueOf<typeof ButtonType>;
   name?: string;
   className?: string;
-  onClick?: (() => void) | (() => Promise<void>);
+  onClick?:
+    | (() => void)
+    | (() => Promise<void>)
+    | ((event: React.MouseEvent<HTMLButtonElement>) => void);
 };
 
 const Button: React.FC<Properties> = ({
