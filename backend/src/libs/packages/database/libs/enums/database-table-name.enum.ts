@@ -6,6 +6,7 @@ const DatabaseTableName = {
   USERS: 'users',
   FILES: 'files',
   USER_DETAILS: 'user_details',
+  USER_FOLLOWING_AUTHORS: 'user_following_authors',
   COMMENTS: 'comments',
   ACHIEVEMENTS: 'achievements',
   GENRES: 'genres',

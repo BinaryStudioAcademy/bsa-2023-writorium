@@ -86,6 +86,7 @@ export {
   type ArticleUpdateRequestPayload,
   articleUpdateValidationSchema,
   type ArticleWithCountsResponseDto,
+  type ArticleWithFollowResponseDto,
   type ArticleWithRelationsType,
   type ReactionResponseDto,
 } from './packages/articles/articles.js';
@@ -143,6 +144,7 @@ export {
   type UserDetailsAuthorResponseDto,
   type UserDetailsDto,
   type UserDetailsResponseDto,
+  type UserFollowResponseDto,
   type UserGetAllItemResponseDto,
   type UserGetAllResponseDto,
   UsersApiPath,

@@ -25,6 +25,7 @@ export {
   type ArticleUpdateRequestDto,
   type ArticleUpdateRequestPayload,
   type ArticleWithCountsResponseDto,
+  type ArticleWithFollowResponseDto,
   type ArticleWithRelationsType,
   type ReactionResponseDto,
 } from './libs/types/types.js';

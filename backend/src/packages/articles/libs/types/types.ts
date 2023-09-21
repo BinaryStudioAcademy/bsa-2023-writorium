@@ -12,6 +12,7 @@ export {
   type ArticlesFilters,
   type ArticleUpdateRequestDto,
   type ArticleWithCountsResponseDto,
+  type ArticleWithFollowResponseDto,
   type ArticleWithRelationsType,
   type ReactionResponseDto,
   type UserActivityResponseDto,

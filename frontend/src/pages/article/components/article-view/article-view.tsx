@@ -23,8 +23,7 @@ import {
 } from '~/libs/hooks/hooks.js';
 import { type TagType, type ValueOf } from '~/libs/types/types.js';
 import {
-  type ArticleWithCountsResponseDto,
-  type ArticleWithRelationsType,
+  type ArticleWithFollowResponseDto,
   type ReactionResponseDto,
 } from '~/packages/articles/articles.js';
 import { type UserAuthResponseDto } from '~/packages/users/users.js';
@@ -37,9 +36,11 @@ import styles from './styles.module.scss';
 type Properties = {
   tags: TagType[] | null;
   isShared?: boolean;
-  article: Required<ArticleWithRelationsType> | ArticleWithCountsResponseDto;
+  article: ArticleWithFollowResponseDto;
   isArticleOwner?: boolean;
+  onFollow?: () => void;
   reactions?: ReactionResponseDto[];
+  authorName: string;
 };
 
 const onButtonClick = (): void => {
@@ -53,11 +54,13 @@ const ArticleView: React.FC<Properties> = ({
   isShared = false,
   isArticleOwner,
   article,
+  onFollow,
   reactions = [],
+  authorName,
 }) => {
   const { text, title, coverUrl, author, readTime, genre, publishedAt } =
     article;
-  const { firstName, lastName, avatarUrl } = author;
+  const { firstName, lastName, avatarUrl, followersCount, isFollowed } = author;
   const authorFullName = getFullName(firstName, lastName);
   const articleUrl = window.location.href;
 
@@ -216,6 +219,10 @@ const ArticleView: React.FC<Properties> = ({
             genre={genre}
             avatarUrl={avatarUrl}
             containerStyle={styles.articleDetailsContainer}
+            isArticleOwner={isArticleOwner}
+            onFollow={onFollow}
+            authorFollowers={followersCount}
+            isFollowed={isFollowed}
           />
         }
         className={getValidClassNames(
@@ -225,7 +232,10 @@ const ArticleView: React.FC<Properties> = ({
       >
         <h5 className={styles.presentationAuthorName}>{authorFullName}</h5>
       </Popover>
+
       <div className={styles.textWrapper}>
+        <h2 className={styles.onlyForPrint}>{authorName}</h2>
+
         <h4 className={styles.title}>{title}</h4>
         {tags && <Tags tags={tags} />}
         <p

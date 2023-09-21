@@ -1,12 +1,15 @@
 import {
   type ArticleWithCountsResponseDto,
+  type ArticleWithFollowResponseDto,
   type ReactionResponseDto,
 } from '~/packages/articles/articles.js';
 
-const updateReaction = (
-  article: ArticleWithCountsResponseDto,
+const updateReaction = <
+  T extends ArticleWithFollowResponseDto | ArticleWithCountsResponseDto,
+>(
+  article: T,
   updatedReaction: ReactionResponseDto,
-): ArticleWithCountsResponseDto => {
+): T => {
   let reactionIndex: number;
 
   const existingReaction = article.reactions.find(({ id }, index) => {

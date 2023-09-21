@@ -14,9 +14,10 @@ import {
   useLocation,
   useParams,
 } from '~/libs/hooks/hooks.js';
-import { type ArticleWithCountsResponseDto } from '~/packages/articles/articles.js';
+import { type ArticleWithFollowResponseDto } from '~/packages/articles/articles.js';
 import { type CommentBaseRequestDto } from '~/packages/comments/comments.js';
 import { actions as articleActions } from '~/slices/articles/articles.js';
+import { actions as userActions } from '~/slices/users/users.js';
 
 import {
   ArticleDetails,
@@ -36,7 +37,7 @@ const ArticlePage: React.FC = () => {
     commentsDataStatus,
     user,
   } = useAppSelector(({ articles, auth }) => ({
-    article: articles.article as ArticleWithCountsResponseDto,
+    article: articles.article as ArticleWithFollowResponseDto,
     getArticleStatus: articles.getArticleStatus,
     articleComments: articles.articleComments,
     commentsDataStatus: articles.articleCommentsDataStatus,
@@ -78,6 +79,10 @@ const ArticlePage: React.FC = () => {
     [article, dispatch],
   );
 
+  const handleFollow = useCallback((): void => {
+    void dispatch(userActions.toggleFollowAuthor(article.userId));
+  }, [article, dispatch]);
+
   const isLoading =
     getArticleStatus === DataStatus.PENDING ||
     commentsDataStatus === DataStatus.PENDING;
@@ -106,7 +111,12 @@ const ArticlePage: React.FC = () => {
                 tags={getArticleViewTags(article)}
                 isArticleOwner={isArticleOwner}
                 article={article}
+                onFollow={handleFollow}
                 reactions={article.reactions}
+                authorName={getFullName(
+                  article.author.firstName,
+                  article.author.lastName,
+                )}
               />
               <ArticleDetails
                 readTime={article.readTime}
@@ -117,6 +127,10 @@ const ArticlePage: React.FC = () => {
                 publishedAt={article.publishedAt}
                 genre={article.genre}
                 avatarUrl={article.author.avatarUrl}
+                isArticleOwner={isArticleOwner}
+                onFollow={handleFollow}
+                authorFollowers={article.author.followersCount}
+                isFollowed={article.author.isFollowed}
               />
             </>
           )}
