@@ -17,8 +17,11 @@ import { type OpenAIService } from '~/libs/packages/openai/openai.package.js';
 import { SocketNamespace, SocketRoom } from '~/libs/packages/socket/socket.js';
 import { type SocketService } from '~/libs/packages/socket/socket.package.js';
 import { token as articleToken } from '~/libs/packages/token/token.js';
+import { type ArticleViewService } from '~/packages/article-views/article-view.service.js';
+import { type FollowRepository } from '~/packages/follow/follow.js';
 
 import { GenreEntity } from '../genres/genre.entity.js';
+import { UNKNOWN_GENRE_KEY } from '../genres/genre.js';
 import { type GenreRepository } from '../genres/genre.repository.js';
 import { type UserAuthResponseDto } from '../users/users.js';
 import { ArticleEntity } from './article.entity.js';
@@ -44,7 +47,8 @@ import {
   type ArticlesFilters,
   type ArticleSocketEventPayload,
   type ArticleUpdateRequestDto,
-  type ArticleWithCommentCountResponseDto,
+  type ArticleWithCountsResponseDto,
+  type ArticleWithFollowResponseDto,
   type DetectedArticleGenre,
   type UserActivityResponseDto,
   type UserArticlesGenreStatsResponseDto,
@@ -55,6 +59,8 @@ type Constructor = {
   openAIService: OpenAIService;
   genreRepository: GenreRepository;
   socketService: SocketService;
+  articleViewService: ArticleViewService;
+  followRepository: FollowRepository;
 };
 
 class ArticleService implements IService {
@@ -62,17 +68,23 @@ class ArticleService implements IService {
   private openAIService: OpenAIService;
   private genreRepository: GenreRepository;
   private socketService: SocketService;
+  private articleViewService: ArticleViewService;
+  private followRepository: FollowRepository;
 
   public constructor({
     articleRepository,
     openAIService,
     genreRepository,
     socketService,
+    articleViewService,
+    followRepository,
   }: Constructor) {
     this.articleRepository = articleRepository;
     this.openAIService = openAIService;
     this.genreRepository = genreRepository;
     this.socketService = socketService;
+    this.followRepository = followRepository;
+    this.articleViewService = articleViewService;
   }
 
   private async detectArticleGenreFromText(
@@ -144,6 +156,59 @@ class ArticleService implements IService {
     return newGenreEntity.toObject().id;
   }
 
+  private async checkActualGenre(
+    genreId: number | null,
+    articleText: string,
+  ): Promise<number | null> {
+    if (!genreId) {
+      return genreId;
+    }
+    const currentGenre = await this.genreRepository.find(genreId);
+
+    if (!currentGenre) {
+      throw new ApplicationError({
+        message: `Genre with id:${genreId} doesn't exist! `,
+      });
+    }
+
+    const genresJSON = await this.openAIService.createCompletion(
+      getDetectArticleGenreCompletionConfig(articleText),
+    );
+
+    if (!genresJSON) {
+      return genreId;
+    }
+
+    const parsedGenres = safeJSONParse<DetectedArticleGenre[]>(genresJSON);
+    if (!parsedGenres || !Array.isArray(parsedGenres) || !parsedGenres.length) {
+      return genreId;
+    }
+
+    const currentGenreInSuggestions =
+      parsedGenres.some((item) => item.key === currentGenre.toObject().key) &&
+      currentGenre.toObject().key !== UNKNOWN_GENRE_KEY;
+
+    if (currentGenreInSuggestions) {
+      return genreId;
+    }
+
+    const [suggestedGenre] = parsedGenres;
+
+    const existingGenre = await this.genreRepository.findByKey(
+      suggestedGenre.key,
+    );
+
+    if (existingGenre) {
+      return existingGenre.toObject().id;
+    }
+
+    const newGenreEntity = await this.genreRepository.create(
+      GenreEntity.initializeNew(suggestedGenre),
+    );
+
+    return newGenreEntity.toObject().id;
+  }
+
   private async getGenreIdToSet({
     genreId,
     text,
@@ -165,9 +230,7 @@ class ArticleService implements IService {
 
     return {
       total,
-      items: items.map((article) =>
-        article.toObjectWithRelationsAndCommentCount(),
-      ),
+      items: items.map((article) => article.toObjectWithRelationsAndCounts()),
     };
   }
 
@@ -183,9 +246,7 @@ class ArticleService implements IService {
 
     return {
       total,
-      items: items.map((article) =>
-        article.toObjectWithRelationsAndCommentCount(),
-      ),
+      items: items.map((article) => article.toObjectWithRelationsAndCounts()),
     };
   }
 
@@ -197,6 +258,35 @@ class ArticleService implements IService {
     }
 
     return article.toObjectWithRelations();
+  }
+
+  public async findArticleWithFollow(
+    id: number,
+    userId?: number,
+  ): Promise<ArticleWithFollowResponseDto | null> {
+    const article = await this.articleRepository.find(id);
+
+    if (!article) {
+      return null;
+    }
+
+    const articleObject = article.toObjectWithRelations();
+
+    const { isFollowed, followersCount } =
+      await this.followRepository.getAuthorFollowersCountAndStatus({
+        userId,
+        authorId: articleObject.userId,
+      });
+
+    await this.articleViewService.create({
+      articleId: id,
+      viewedById: userId as number,
+    });
+
+    return {
+      ...articleObject,
+      author: { ...articleObject.author, isFollowed, followersCount },
+    };
   }
 
   private async generateImprovementSuggestions(
@@ -312,13 +402,17 @@ class ArticleService implements IService {
 
   public async create(
     payload: ArticleCreateDto,
-  ): Promise<ArticleWithCommentCountResponseDto> {
+  ): Promise<ArticleWithCountsResponseDto> {
+    const withPrompt = Boolean(payload.promptId);
     const genreId = await this.getGenreIdToSet(payload);
+
     const readTime = await this.getArticleReadTime(payload.text);
 
     const article = await this.articleRepository.create(
       ArticleEntity.initializeNew({
-        genreId,
+        genreId: withPrompt
+          ? await this.checkActualGenre(genreId, payload.text)
+          : genreId,
         readTime,
         title: payload.title,
         text: payload.text,
@@ -330,14 +424,14 @@ class ArticleService implements IService {
     );
 
     const socketEventPayload: ArticleSocketEventPayload[typeof ArticleSocketEvent.NEW_ARTICLE] =
-      article.toObjectWithRelationsAndCommentCount();
+      article.toObjectWithRelationsAndCounts();
 
     this.socketService.io
       .of(SocketNamespace.ARTICLES)
       .to(SocketRoom.ARTICLES_FEED)
       .emit(ArticleSocketEvent.NEW_ARTICLE, socketEventPayload);
 
-    return article.toObjectWithRelationsAndCommentCount();
+    return article.toObjectWithRelationsAndCounts();
   }
 
   public async update(
@@ -346,7 +440,7 @@ class ArticleService implements IService {
       payload,
       user,
     }: { payload: ArticleUpdateRequestDto; user: UserAuthResponseDto },
-  ): Promise<ArticleWithCommentCountResponseDto> {
+  ): Promise<ArticleWithCountsResponseDto> {
     const article = await this.find(id);
 
     if (!article) {
@@ -359,6 +453,15 @@ class ArticleService implements IService {
       throw new ForbiddenError('Article can be edited only by author!');
     }
 
+    let updatedGenreId = payload.genreId ?? article.genreId;
+
+    if (payload.text && (article.promptId || payload.promptId)) {
+      updatedGenreId = await this.checkActualGenre(
+        updatedGenreId,
+        payload.text,
+      );
+    }
+
     const updatedReadTime =
       payload.text && payload.text !== article.text
         ? await this.getArticleReadTime(payload.text)
@@ -368,12 +471,14 @@ class ArticleService implements IService {
       ArticleEntity.initialize({
         ...article,
         ...payload,
+        genreId: updatedGenreId,
         readTime: updatedReadTime,
         commentCount: null,
+        viewCount: null,
       }),
     );
 
-    return updatedArticle.toObjectWithRelationsAndCommentCount();
+    return updatedArticle.toObjectWithRelationsAndCounts();
   }
 
   public async getArticleSharingLink(
@@ -400,7 +505,7 @@ class ArticleService implements IService {
 
   public async findShared(
     headers: IncomingHttpHeaders,
-  ): Promise<ArticleResponseDto> {
+  ): Promise<ArticleWithFollowResponseDto> {
     const token = headers[CustomHttpHeader.SHARED_ARTICLE_TOKEN] as string;
 
     if (!token) {
@@ -409,7 +514,9 @@ class ArticleService implements IService {
 
     const encoded = await articleToken.verifyToken(token);
 
-    const articleFound = await this.find(Number(encoded.articleId));
+    const articleFound = await this.findArticleWithFollow(
+      Number(encoded.articleId),
+    );
 
     if (!articleFound) {
       throw new NotFoundError(ExceptionMessage.ARTICLE_NOT_FOUND);
@@ -421,7 +528,7 @@ class ArticleService implements IService {
   public async delete(
     id: number,
     userId: number,
-  ): Promise<ArticleWithCommentCountResponseDto> {
+  ): Promise<ArticleWithCountsResponseDto> {
     const article = await this.find(id);
 
     if (!article) {
@@ -444,7 +551,7 @@ class ArticleService implements IService {
 
     const deletedArticle = await this.articleRepository.delete(id);
 
-    return deletedArticle.toObjectWithRelationsAndCommentCount();
+    return deletedArticle.toObjectWithRelationsAndCounts();
   }
 
   public async toggleIsFavourite(
@@ -468,7 +575,7 @@ class ArticleService implements IService {
     if (!article) {
       return null;
     }
-    return article.toObjectWithRelationsAndCommentCount();
+    return article.toObjectWithRelationsAndCounts();
   }
 }
 

@@ -20,6 +20,7 @@ import {
   shareArticle,
   toggleIsFavourite,
   updateArticle,
+  updateArticleAuthorFollowInfo,
   updateComment,
 } from './actions.js';
 import { actions } from './articles.slice.js';
@@ -48,6 +49,7 @@ const allActions = {
   getImprovementSuggestionsBySession,
   addArticle,
   addReactionToArticlesFeed,
+  updateArticleAuthorFollowInfo,
 };
 
 export { allActions as actions };

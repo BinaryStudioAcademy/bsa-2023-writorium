@@ -1,15 +1,18 @@
 import {
   type ArticleReactionResponseDto,
-  type ArticleWithCommentCountResponseDto,
+  type ArticleWithCountsResponseDto,
+  type ArticleWithFollowResponseDto,
 } from '~/packages/articles/articles.js';
 
 import { removeReaction } from './remove-reaction.helper.js';
 import { updateReaction } from './update-reaction.helper.js';
 
-const applyReaction = (
-  article: ArticleWithCommentCountResponseDto,
+const applyReaction = <
+  T extends ArticleWithFollowResponseDto | ArticleWithCountsResponseDto,
+>(
+  article: T,
   reaction: ArticleReactionResponseDto,
-): ArticleWithCommentCountResponseDto => {
+): T => {
   const existingReaction = article.reactions.find(
     (item) => item.id === reaction.id,
   );
