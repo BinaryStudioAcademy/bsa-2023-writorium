@@ -1,11 +1,11 @@
 import {
-  type ArticleWithCommentCountResponseDto,
+  type ArticleWithCountsResponseDto,
   type ArticleWithFollowResponseDto,
   type ReactionResponseDto,
 } from '~/packages/articles/articles.js';
 
 const updateReaction = <
-  T extends ArticleWithFollowResponseDto | ArticleWithCommentCountResponseDto,
+  T extends ArticleWithFollowResponseDto | ArticleWithCountsResponseDto,
 >(
   article: T,
   updatedReaction: ReactionResponseDto,
