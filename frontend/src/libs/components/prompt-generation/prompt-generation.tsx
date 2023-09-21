@@ -5,7 +5,11 @@ import {
   useAppDispatch,
   useAppSelector,
   useCallback,
+  useEffect,
+  useState,
 } from '~/libs/hooks/hooks.js';
+import { storage, StorageKey } from '~/libs/packages/storage/storage.js';
+import { type GeneratedArticlePrompt } from '~/libs/types/types.js';
 import { PromptCategory } from '~/packages/prompts/libs/enums/enums.js';
 import { actions as promptsActions } from '~/slices/prompts/prompts.js';
 
@@ -17,6 +21,9 @@ const PromptGeneration: React.FC = () => {
     generatedPrompt: prompts.generatedPrompt,
     dataStatus: prompts.dataStatus,
   }));
+
+  const [promptFromLocalStorage, setPromptFromLocalStorage] =
+    useState(generatedPrompt);
 
   const isGenerating = dataStatus === DataStatus.PENDING;
 
@@ -30,6 +37,21 @@ const PromptGeneration: React.FC = () => {
     dispatch(promptsActions.resetPrompts());
   }, [dispatch]);
 
+  useEffect(() => {
+    void (async (): Promise<void> => {
+      const promptFromLocalStorage =
+        (await storage.get(StorageKey.PROMPT)) ?? null;
+
+      await storage.drop(StorageKey.PROMPT);
+
+      if (promptFromLocalStorage) {
+        setPromptFromLocalStorage(
+          JSON.parse(promptFromLocalStorage) as GeneratedArticlePrompt,
+        );
+      }
+    })();
+  }, [generatedPrompt]);
+
   return (
     <section className={styles.container}>
       <h1 className={styles.header}>Write your own story</h1>
@@ -39,7 +61,11 @@ const PromptGeneration: React.FC = () => {
             <PromptCard
               key={category}
               category={category}
-              text={generatedPrompt?.[category] ?? ''}
+              text={
+                generatedPrompt?.[category] ??
+                promptFromLocalStorage?.[category] ??
+                ''
+              }
               isGenerating={isGenerating}
             />
           ))}

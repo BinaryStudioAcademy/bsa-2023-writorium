@@ -60,7 +60,7 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
         : articleCreateValidationSchema,
     });
 
-  const useArticleContentFromLocalStorage = useCallback(() => {
+  useEffect(() => {
     void (async (): Promise<void> => {
       if (articleForUpdate) {
         setInitialText(articleForUpdate.text);
@@ -87,10 +87,6 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
     })();
   }, [articleForUpdate, handleReset]);
 
-  useEffect(useArticleContentFromLocalStorage, [
-    useArticleContentFromLocalStorage,
-  ]);
-
   const isDraft = !articleForUpdate?.publishedAt;
 
   const handleArticleSubmit = useCallback(
@@ -104,21 +100,18 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
           publishedAt: isArticlePublished ? new Date().toISOString() : null,
         };
 
-        const generatedPromptPayload =
-          getGeneratedPromptPayload(generatedPrompt);
-
         await storage.set(StorageKey.ARTICLE_TITLE, payload.title);
         await storage.set(StorageKey.ARTICLE_TEXT, payload.text);
-        generatedPromptPayload &&
+        generatedPrompt &&
           (await storage.set(
-            StorageKey.PROMPTS,
-            JSON.stringify(generatedPromptPayload),
+            StorageKey.PROMPT,
+            JSON.stringify(generatedPrompt),
           ));
 
         void dispatch(
           articlesActions.createArticle({
             articlePayload: updatedPayload,
-            generatedPrompt: generatedPromptPayload,
+            generatedPrompt: getGeneratedPromptPayload(generatedPrompt),
           }),
         );
       },

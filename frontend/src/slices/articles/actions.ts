@@ -82,6 +82,7 @@ const createArticle = createAsyncThunk<
 
     await storage.drop(StorageKey.ARTICLE_TITLE);
     await storage.drop(StorageKey.ARTICLE_TEXT);
+    await storage.drop(StorageKey.PROMPT);
 
     return createdArticle;
   },
