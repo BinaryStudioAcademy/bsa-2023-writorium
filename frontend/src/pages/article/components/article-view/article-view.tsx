@@ -42,6 +42,7 @@ type Properties = {
     | ArticleWithCommentCountResponseDto;
   isArticleOwner?: boolean;
   reactions?: ReactionResponseDto[];
+  authorName: string;
 };
 
 const onButtonClick = (): void => {
@@ -56,6 +57,7 @@ const ArticleView: React.FC<Properties> = ({
   isArticleOwner,
   article,
   reactions = [],
+  authorName,
 }) => {
   const { text, title, coverUrl, author, readTime, genre, publishedAt } =
     article;
@@ -227,7 +229,10 @@ const ArticleView: React.FC<Properties> = ({
       >
         <h5 className={styles.presentationAuthorName}>{authorFullName}</h5>
       </Popover>
+
       <div className={styles.textWrapper}>
+        <h2 className={styles.onlyForPrint}>{authorName}</h2>
+
         <h4 className={styles.title}>{title}</h4>
         {tags && <Tags tags={tags} />}
         <p

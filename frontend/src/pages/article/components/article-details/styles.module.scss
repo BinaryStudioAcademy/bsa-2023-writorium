@@ -299,3 +299,9 @@
     background-color: var(--light-gray-15);
   }
 }
+
+@media print {
+  .container {
+    display: none;
+  }
+}

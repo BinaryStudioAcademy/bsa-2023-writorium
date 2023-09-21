@@ -107,6 +107,10 @@ const ArticlePage: React.FC = () => {
                 isArticleOwner={isArticleOwner}
                 article={article}
                 reactions={article.reactions}
+                authorName={getFullName(
+                  article.author.firstName,
+                  article.author.lastName,
+                )}
               />
               <ArticleDetails
                 readTime={article.readTime}
