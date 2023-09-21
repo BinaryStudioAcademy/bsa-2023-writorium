@@ -99,3 +99,9 @@
     display: block;
   }
 }
+
+@media print {
+  .commentsBlockWrapper {
+    display: none;
+  }
+}

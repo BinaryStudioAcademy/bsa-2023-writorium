@@ -1,0 +1,32 @@
+.scrollProgress {
+  position: fixed;
+  right: 61px;
+  bottom: 51px;
+  padding: 4px;
+  border-radius: 50%;
+  visibility: hidden;
+  opacity: 0;
+  transition: all 0.3s linear;
+}
+
+.backgroundCircle {
+  background: var(--light-gray);
+  border-radius: 50%;
+}
+
+.scrollToTop {
+  display: flex;
+  align-items: center;
+  padding: 15px 10px;
+  background-color: var(--white);
+  border-radius: 50%;
+}
+
+.scrollToTop:hover {
+  background-color: var(--white-50);
+}
+
+.visible {
+  visibility: visible;
+  opacity: 1;
+}

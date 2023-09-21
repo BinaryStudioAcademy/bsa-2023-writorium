@@ -139,6 +139,10 @@
   font-size: 16px;
 }
 
+.onlyForPrint {
+  display: none;
+}
+
 @media only screen and (max-width: breakpoints.$medium) {
   .buttonsWrapper {
     top: 25px;
@@ -222,5 +226,22 @@
   .authorDetails.authorDetailsModal {
     display: flex;
     background-color: var(--light-gray-15);
+  }
+}
+
+@media print {
+  .buttonsWrapper {
+    display: none;
+  }
+
+  .onlyForPrint {
+    display: block;
+    padding: 16px 0;
+    color: var(--dark-gray);
+    font-weight: 700;
+    font-size: 24px;
+    font-family: Raleway, sans-serif;
+    font-style: normal;
+    line-height: normal;
   }
 }
