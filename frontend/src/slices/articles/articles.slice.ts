@@ -14,6 +14,7 @@ import { type GenreGetAllResponseDto } from '~/packages/genres/genres.js';
 import {
   addArticle,
   addComment,
+  addReactionToArticleView,
   createArticle,
   createComment,
   deleteArticle,
@@ -115,6 +116,30 @@ const { reducer, actions, name } = createSlice({
       }
       state.dataStatus = DataStatus.FULFILLED;
     });
+
+    builder.addCase(addReactionToArticleView.fulfilled, (state, action) => {
+      const reaction = action.payload;
+
+      if (!reaction || !state.article) {
+        return;
+      }
+
+      const existingReaction = state.article.reactions.find(
+        (item) => item.id === reaction.id,
+      );
+
+      state.article =
+        existingReaction && existingReaction.isLike === reaction.isLike
+          ? removeReaction(
+              state.article as ArticleWithCommentCountResponseDto,
+              reaction.id,
+            )
+          : updateReaction(
+              state.article as ArticleWithCommentCountResponseDto,
+              reaction,
+            );
+    });
+
     builder.addCase(reactToArticle.fulfilled, (state, action) => {
       const { articleId, reaction: updatedReaction } = action.payload;
 

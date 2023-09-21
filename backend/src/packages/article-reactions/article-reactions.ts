@@ -1,4 +1,5 @@
 import { logger } from '~/libs/packages/logger/logger.js';
+import { socketService } from '~/libs/packages/socket/socket.js';
 
 import { ArticleReactionController } from './article-reaction.controller.js';
 import { ArticleReactionModel } from './article-reaction.model.js';
@@ -11,10 +12,11 @@ const articleReactionRepository = new ArticleReactionRepository(
 const articleReactionService = new ArticleReactionService(
   articleReactionRepository,
 );
-const articleReactionController = new ArticleReactionController(
+const articleReactionController = new ArticleReactionController({
   logger,
   articleReactionService,
-);
+  socketService,
+});
 
 export { articleReactionController, articleReactionService };
 export { ArticleReactionModel } from './article-reaction.model.js';

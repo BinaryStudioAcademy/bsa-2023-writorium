@@ -6,11 +6,17 @@ import {
 } from '~/libs/packages/controller/controller.js';
 import { HttpCode } from '~/libs/packages/http/http.js';
 import { type ILogger } from '~/libs/packages/logger/logger.js';
+import { SocketNamespace, SocketRoom } from '~/libs/packages/socket/socket.js';
+import { type SocketService } from '~/libs/packages/socket/socket.package.js';
 
 import { ArticlesApiPath } from '../articles/libs/enums/enums.js';
 import { type UserAuthResponseDto } from '../users/users.js';
 import { type ArticleReactionService } from './article-reaction.service.js';
-import { type ArticleReactionRequestDto } from './libs/types/types.js';
+import { ArticleReactionsSocketEvent } from './libs/enums/enums.js';
+import {
+  type ArticleReactionRequestDto,
+  type ArticleReactionsSocketEventPayload,
+} from './libs/types/types.js';
 import { articleReactionValidationSchema } from './libs/validation-schemas/validation-schemas.js';
 /**
  * @swagger
@@ -39,17 +45,25 @@ import { articleReactionValidationSchema } from './libs/validation-schemas/valid
  *            minimum: 1
  *            example: 10
  */
+type Constructor = {
+  logger: ILogger;
+  articleReactionService: ArticleReactionService;
+  socketService: SocketService;
+};
 
 class ArticleReactionController extends Controller {
   private articleReactionService: ArticleReactionService;
+  private socketService: SocketService;
 
-  public constructor(
-    logger: ILogger,
-    articleReactionService: ArticleReactionService,
-  ) {
+  public constructor({
+    logger,
+    articleReactionService,
+    socketService,
+  }: Constructor) {
     super(logger, ApiPath.ARTICLES);
 
     this.articleReactionService = articleReactionService;
+    this.socketService = socketService;
 
     this.addRoute({
       path: ArticlesApiPath.REACT,
@@ -149,12 +163,28 @@ class ArticleReactionController extends Controller {
       body: ArticleReactionRequestDto;
     }>,
   ): Promise<ApiHandlerResponse> {
+    const reaction = await this.articleReactionService.update(
+      options.user.id,
+      options.body,
+    );
+
+    const socketEventPayload: ArticleReactionsSocketEventPayload[typeof ArticleReactionsSocketEvent.NEW_REACTION] =
+      reaction;
+
+    this.socketService.io
+      .of(SocketNamespace.REACTIONS)
+      .to([
+        SocketRoom.ARTICLES_FEED,
+        SocketRoom.ARTICLE_$ID.replace(
+          ':id',
+          options.body.articleId.toString(),
+        ),
+      ])
+      .emit(ArticleReactionsSocketEvent.NEW_REACTION, socketEventPayload);
+
     return {
       status: HttpCode.OK,
-      payload: await this.articleReactionService.update(
-        options.user.id,
-        options.body,
-      ),
+      payload: reaction,
     };
   }
 }

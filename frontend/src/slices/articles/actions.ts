@@ -9,6 +9,9 @@ import {
   type ArticleGetAllResponseDto,
   type ArticleImprovementSuggestion,
   type ArticleReactionRequestDto,
+  type ArticleReactionResponseDto,
+  type ArticleReactionsSocketEvent,
+  type ArticleReactionsSocketEventPayload,
   type ArticleRequestDto,
   type ArticleResponseDto,
   type ArticlesFilters,
@@ -232,6 +235,22 @@ const reactToArticle = createAsyncThunk<
   };
 });
 
+const addReactionToArticleView = createAsyncThunk<
+  ArticleReactionResponseDto | null,
+  ArticleReactionsSocketEventPayload[typeof ArticleReactionsSocketEvent.NEW_REACTION],
+  AsyncThunkConfig
+>(`${sliceName}/add-reaction-to-article-view`, (reaction, { getState }) => {
+  const {
+    auth: { user },
+  } = getState();
+
+  if (user?.id !== reaction.userId) {
+    return reaction;
+  }
+
+  return null;
+});
+
 const deleteArticleReaction = createAsyncThunk<
   {
     articleId: number;
@@ -401,6 +420,7 @@ const setShowFavourites = createAction<boolean>(
 export {
   addArticle,
   addComment,
+  addReactionToArticleView,
   createArticle,
   createComment,
   deleteArticle,

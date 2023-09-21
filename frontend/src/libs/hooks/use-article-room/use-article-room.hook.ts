@@ -1,5 +1,9 @@
 import { SocketNamespace, SocketRoom } from '~/libs/packages/socket/socket.js';
 import {
+  ArticleReactionsSocketEvent,
+  type ArticleReactionsSocketEventPayload,
+} from '~/packages/articles/articles.js';
+import {
   CommentsSocketEvent,
   type CommentsSocketEventPayload,
 } from '~/packages/comments/comments.js';
@@ -10,24 +14,37 @@ import { useAppDispatch } from '../use-app-dispatch/use-app-dispatch.hook.js';
 import { useSocketNamespace } from '../use-socket-namespace/use-socket-namespace.hook.js';
 
 const { NEW_COMMENT } = CommentsSocketEvent;
+const { NEW_REACTION } = ArticleReactionsSocketEvent;
 
 const useArticleRoom = (articleId: number): void => {
   const dispatch = useAppDispatch();
-  const socketReference = useSocketNamespace(
+  const commentsSocketReference = useSocketNamespace(
     SocketNamespace.COMMENTS,
+    SocketRoom.ARTICLE_$ID.replace(':id', articleId.toString()),
+  );
+  const reactionsSocketReference = useSocketNamespace(
+    SocketNamespace.REACTIONS,
     SocketRoom.ARTICLE_$ID.replace(':id', articleId.toString()),
   );
 
   useEffect(() => {
-    const socket = socketReference.current;
+    const commentsSocket = commentsSocketReference.current;
+    const reactionsSocket = reactionsSocketReference.current;
 
-    socket?.on(
+    commentsSocket?.on(
       NEW_COMMENT,
-      (newComment: CommentsSocketEventPayload[typeof NEW_COMMENT]) => {
-        void dispatch(articleActions.addComment(newComment));
+      (comment: CommentsSocketEventPayload[typeof NEW_COMMENT]) => {
+        void dispatch(articleActions.addComment(comment));
       },
     );
-  }, [dispatch, socketReference]);
+
+    reactionsSocket?.on(
+      NEW_REACTION,
+      (reaction: ArticleReactionsSocketEventPayload[typeof NEW_REACTION]) => {
+        void dispatch(articleActions.addReactionToArticleView(reaction));
+      },
+    );
+  }, [dispatch, commentsSocketReference, reactionsSocketReference]);
 };
 
 export { useArticleRoom };
