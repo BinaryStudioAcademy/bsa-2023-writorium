@@ -11,10 +11,10 @@ import {
   type ArticleReactionRequestDto,
   type ArticleReactionResponseDto,
   type ArticleRequestDto,
-  type ArticleResponseDto,
   type ArticlesFilters,
   type ArticleUpdateRequestPayload,
   type ArticleWithCommentCountResponseDto,
+  type ArticleWithFollowResponseDto,
 } from './libs/types/types.js';
 
 type Constructor = {
@@ -111,7 +111,9 @@ class ArticleApi extends HttpApi {
     return { link };
   }
 
-  public async getByToken(token: string): Promise<ArticleResponseDto> {
+  public async getByToken(
+    token: string,
+  ): Promise<ArticleWithFollowResponseDto> {
     const response = await this.load(
       this.getFullEndpoint(ArticlesApiPath.SHARED_BASE, {}),
       {
@@ -124,10 +126,10 @@ class ArticleApi extends HttpApi {
       },
     );
 
-    return await response.json<ArticleResponseDto>();
+    return await response.json<ArticleWithFollowResponseDto>();
   }
 
-  public async getArticle(id: number): Promise<ArticleResponseDto> {
+  public async getArticle(id: number): Promise<ArticleWithFollowResponseDto> {
     const response = await this.load(
       this.getFullEndpoint(ArticlesApiPath.$ID, { id: String(id) }),
       {
@@ -137,7 +139,7 @@ class ArticleApi extends HttpApi {
       },
     );
 
-    return await response.json<ArticleResponseDto>();
+    return await response.json<ArticleWithFollowResponseDto>();
   }
 
   public async updateArticleReaction(

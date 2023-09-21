@@ -5,8 +5,8 @@ import { conditionallyDeleteOrUpdate } from '~/libs/helpers/helpers.js';
 import { type ValueOf } from '~/libs/types/types.js';
 import {
   type ArticleImprovementSuggestion,
-  type ArticleResponseDto,
   type ArticleWithCommentCountResponseDto,
+  type ArticleWithFollowResponseDto,
 } from '~/packages/articles/articles.js';
 import { type CommentWithRelationsResponseDto } from '~/packages/comments/comments.js';
 import { type GenreGetAllResponseDto } from '~/packages/genres/genres.js';
@@ -28,12 +28,13 @@ import {
   setShowFavourites,
   toggleIsFavourite,
   updateArticle,
+  updateArticleAuthorFollowInfo,
   updateComment,
 } from './actions.js';
 import { removeReaction, updateReaction } from './libs/helpers/helpers.js';
 
 type State = {
-  article: ArticleResponseDto | null;
+  article: ArticleWithFollowResponseDto | null;
   articleComments: CommentWithRelationsResponseDto[];
   articles: ArticleWithCommentCountResponseDto[];
   dataStatus: ValueOf<typeof DataStatus>;
@@ -41,6 +42,7 @@ type State = {
   articleCommentsDataStatus: ValueOf<typeof DataStatus>;
   articleReactionDataStatus: ValueOf<typeof DataStatus>;
   getArticleStatus: ValueOf<typeof DataStatus>;
+  saveArticleStatus: ValueOf<typeof DataStatus>;
   showFavourites: boolean;
   improvementSuggestions: ArticleImprovementSuggestion[] | null;
   improvementSuggestionsDataStatus: ValueOf<typeof DataStatus>;
@@ -55,6 +57,7 @@ const initialState: State = {
   improvementSuggestions: null,
   dataStatus: DataStatus.IDLE,
   articleCommentsDataStatus: DataStatus.IDLE,
+  saveArticleStatus: DataStatus.IDLE,
   articleReactionDataStatus: DataStatus.IDLE,
   getArticleStatus: DataStatus.IDLE,
   improvementSuggestionsDataStatus: DataStatus.IDLE,
@@ -74,22 +77,12 @@ const { reducer, actions, name } = createSlice({
     },
   },
   extraReducers(builder) {
-    builder.addCase(createArticle.fulfilled, (state, action) => {
-      state.articles = [...state.articles, action.payload];
-      state.dataStatus = DataStatus.FULFILLED;
+    builder.addCase(createArticle.fulfilled, (state) => {
+      state.saveArticleStatus = DataStatus.FULFILLED;
     });
 
-    builder.addCase(updateArticle.fulfilled, (state, action) => {
-      const article = action.payload;
-      if (article) {
-        state.articles = state.articles.map((item) => {
-          if (article.id === item.id) {
-            return article;
-          }
-          return item;
-        });
-      }
-      state.dataStatus = DataStatus.FULFILLED;
+    builder.addCase(updateArticle.fulfilled, (state) => {
+      state.saveArticleStatus = DataStatus.FULFILLED;
     });
 
     builder.addCase(getArticle.fulfilled, (state, action) => {
@@ -108,12 +101,26 @@ const { reducer, actions, name } = createSlice({
       }
       state.dataStatus = DataStatus.FULFILLED;
     });
+    builder.addCase(updateArticleAuthorFollowInfo, (state, { payload }) => {
+      const { isFollowed, followersCount } = payload;
+
+      if (state.article) {
+        state.article = {
+          ...state.article,
+          author: {
+            ...state.article.author,
+            isFollowed,
+            followersCount,
+          },
+        };
+      }
+    });
     builder.addCase(reactToArticle.fulfilled, (state, action) => {
       const { articleId, reaction: updatedReaction } = action.payload;
 
       if (state.article) {
         state.article = updateReaction(
-          state.article as ArticleWithCommentCountResponseDto,
+          state.article as ArticleWithFollowResponseDto,
           updatedReaction,
         );
       }
@@ -132,7 +139,7 @@ const { reducer, actions, name } = createSlice({
 
       if (state.article) {
         state.article = removeReaction(
-          state.article as ArticleWithCommentCountResponseDto,
+          state.article as ArticleWithFollowResponseDto,
           reactionId,
         );
       }
@@ -259,8 +266,6 @@ const { reducer, actions, name } = createSlice({
       isAnyOf(
         fetchAll.pending,
         fetchOwn.pending,
-        createArticle.pending,
-        updateArticle.pending,
         getArticle.pending,
         getAllGenres.pending,
         fetchSharedArticle.pending,
@@ -269,6 +274,12 @@ const { reducer, actions, name } = createSlice({
       ),
       (state) => {
         state.dataStatus = DataStatus.PENDING;
+      },
+    );
+    builder.addMatcher(
+      isAnyOf(createArticle.pending, updateArticle.pending),
+      (state) => {
+        state.saveArticleStatus = DataStatus.PENDING;
       },
     );
     builder.addMatcher(
@@ -281,14 +292,18 @@ const { reducer, actions, name } = createSlice({
       isAnyOf(
         fetchAll.rejected,
         fetchOwn.rejected,
-        createArticle.rejected,
-        updateArticle.rejected,
         fetchSharedArticle.rejected,
         deleteArticle.rejected,
         toggleIsFavourite.rejected,
       ),
       (state) => {
         state.dataStatus = DataStatus.REJECTED;
+      },
+    );
+    builder.addMatcher(
+      isAnyOf(createArticle.rejected, updateArticle.rejected),
+      (state) => {
+        state.saveArticleStatus = DataStatus.REJECTED;
       },
     );
   },

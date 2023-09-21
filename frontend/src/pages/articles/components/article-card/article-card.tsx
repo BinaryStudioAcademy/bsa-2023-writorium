@@ -164,9 +164,7 @@ const ArticleCard: React.FC<Properties> = ({
 
         <div className={styles.toolbar}>
           <IconButton
-            className={styles.iconButton}
             iconName={isFavourite ? 'favoriteFilled' : 'favorite'}
-            iconClassName={styles.pointerIcon}
             onClick={handleToggleIsFavourite}
             isLoading={isLoading}
           />
@@ -177,8 +175,6 @@ const ArticleCard: React.FC<Properties> = ({
                 isOwnArticle={isOwnArticle}
                 article={article}
                 onDeleteButtonClick={handleDeleteButtonClick}
-                onToggleFavouriteClick={handleToggleIsFavourite}
-                isToggleFavouriteLoading={isLoading}
               />
             }
           >

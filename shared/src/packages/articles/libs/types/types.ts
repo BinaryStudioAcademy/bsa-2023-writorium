@@ -9,6 +9,7 @@ export { type ArticleResponseDto } from './article-response-dto.type.js';
 export { type ArticleUpdateRequestDto } from './article-update-request-dto.type.js';
 export { type ArticleUpdateRequestPayload } from './article-update-request-payload.type.js';
 export { type ArticleWithCommentCountResponseDto } from './article-with-comment-count-response-dto.type.js';
+export { type ArticleWithFollowResponseDto } from './article-with-follow-response-dto.type.js';
 export { type ArticleWithRelationsType } from './article-with-relations.type.js';
 export { type ArticlesFilters } from './articles-filters.type.js';
 export { type ReactionResponseDto } from './reaction-response-dto.type.js';
