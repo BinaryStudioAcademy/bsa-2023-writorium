@@ -11,7 +11,7 @@ import {
   type ArticleRequestDto,
   type ArticlesFilters,
   type ArticleUpdateRequestPayload,
-  type ArticleWithCommentCountResponseDto,
+  type ArticleWithCountsResponseDto,
   type ArticleWithFollowResponseDto,
   type ReactionResponseDto,
 } from '~/packages/articles/articles.js';
@@ -51,7 +51,7 @@ const fetchOwn = createAsyncThunk<
 });
 
 const createArticle = createAsyncThunk<
-  ArticleWithCommentCountResponseDto,
+  ArticleWithCountsResponseDto,
   {
     articlePayload: ArticleRequestDto;
     generatedPrompt: PromptRequestDto | null;
@@ -86,7 +86,7 @@ const createArticle = createAsyncThunk<
 );
 
 const updateArticle = createAsyncThunk<
-  ArticleWithCommentCountResponseDto,
+  ArticleWithCountsResponseDto,
   ArticleUpdateRequestPayload,
   AsyncThunkConfig
 >(`${sliceName}/update`, async (payload, { extra, dispatch }) => {
@@ -230,7 +230,7 @@ const updateComment = createAsyncThunk<
 });
 
 const deleteArticle = createAsyncThunk<
-  ArticleWithCommentCountResponseDto,
+  ArticleWithCountsResponseDto,
   { id: number; hasRedirect?: boolean },
   AsyncThunkConfig
 >(
@@ -307,7 +307,7 @@ const getImprovementSuggestions = createAsyncThunk<
 });
 
 const toggleIsFavourite = createAsyncThunk<
-  ArticleWithCommentCountResponseDto,
+  ArticleWithCountsResponseDto,
   number,
   AsyncThunkConfig
 >(`${sliceName}/toggleIsFavourite`, (id, { extra }) => {

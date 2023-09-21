@@ -1,10 +1,10 @@
 import {
-  type ArticleWithCommentCountResponseDto,
+  type ArticleWithCountsResponseDto,
   type ArticleWithFollowResponseDto,
 } from '~/packages/articles/articles.js';
 
 const removeReaction = <
-  T extends ArticleWithFollowResponseDto | ArticleWithCommentCountResponseDto,
+  T extends ArticleWithFollowResponseDto | ArticleWithCountsResponseDto,
 >(
   article: T,
   reactionId: number,
