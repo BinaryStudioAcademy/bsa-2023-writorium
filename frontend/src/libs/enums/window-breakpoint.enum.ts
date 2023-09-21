@@ -1,4 +1,5 @@
 const WindowBreakpoint = {
+  SMALL: 'small',
   MEDIUM: 'medium',
   LARGE: 'large',
   EXTRA_LARGE: 'extra-large',
@@ -6,6 +7,7 @@ const WindowBreakpoint = {
 } as const;
 
 const WindowBreakpointThreshold = {
+  SMALL: 576,
   MEDIUM: 768,
   LARGE: 992,
   EXTRA_LARGE: 1200,

@@ -4,19 +4,22 @@ import {
 } from '~/libs/enums/enums.js';
 import { type ValueOf } from '~/libs/types/types.js';
 
-const getWindowBreakpoint = (
+const checkWindowBreakpoint = (
   breakpoint: ValueOf<typeof WindowBreakpoint>,
   width: number,
 ): boolean => {
   switch (breakpoint) {
+    case WindowBreakpoint.SMALL: {
+      return width < WindowBreakpointThreshold.MEDIUM;
+    }
     case WindowBreakpoint.MEDIUM: {
-      return width <= WindowBreakpointThreshold.MEDIUM;
+      return width < WindowBreakpointThreshold.LARGE;
     }
     case WindowBreakpoint.LARGE: {
-      return width <= WindowBreakpointThreshold.LARGE;
+      return width < WindowBreakpointThreshold.EXTRA_LARGE;
     }
     case WindowBreakpoint.EXTRA_LARGE: {
-      return width <= WindowBreakpointThreshold.EXTRA_LARGE;
+      return width < WindowBreakpointThreshold.EXTRA_EXTRA_LARGE;
     }
     case WindowBreakpoint.EXTRA_EXTRA_LARGE: {
       return width >= WindowBreakpointThreshold.EXTRA_EXTRA_LARGE;
@@ -27,4 +30,4 @@ const getWindowBreakpoint = (
   }
 };
 
-export { getWindowBreakpoint };
+export { checkWindowBreakpoint };
