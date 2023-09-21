@@ -9,10 +9,10 @@ import {
   type ArticleImprovementSuggestion,
   type ArticleReactionRequestDto,
   type ArticleRequestDto,
-  type ArticleResponseDto,
   type ArticlesFilters,
   type ArticleUpdateRequestPayload,
-  type ArticleWithCommentCountResponseDto,
+  type ArticleWithCountsResponseDto,
+  type ArticleWithFollowResponseDto,
   type ReactionResponseDto,
 } from '~/packages/articles/articles.js';
 import {
@@ -24,6 +24,7 @@ import {
 import { type GenreGetAllResponseDto } from '~/packages/genres/genres.js';
 import { NotificationType } from '~/packages/notification/notification.js';
 import { type PromptRequestDto } from '~/packages/prompts/prompts.js';
+import { type UserFollowResponseDto } from '~/packages/users/users.js';
 
 import { actions as appActions } from '../app/app.js';
 import { name as sliceName } from './articles.slice.js';
@@ -50,7 +51,7 @@ const fetchOwn = createAsyncThunk<
 });
 
 const createArticle = createAsyncThunk<
-  ArticleWithCommentCountResponseDto,
+  ArticleWithCountsResponseDto,
   {
     articlePayload: ArticleRequestDto;
     generatedPrompt: PromptRequestDto | null;
@@ -85,7 +86,7 @@ const createArticle = createAsyncThunk<
 );
 
 const updateArticle = createAsyncThunk<
-  ArticleWithCommentCountResponseDto,
+  ArticleWithCountsResponseDto,
   ArticleUpdateRequestPayload,
   AsyncThunkConfig
 >(`${sliceName}/update`, async (payload, { extra, dispatch }) => {
@@ -115,7 +116,7 @@ const updateArticle = createAsyncThunk<
 });
 
 const getArticle = createAsyncThunk<
-  ArticleResponseDto,
+  ArticleWithFollowResponseDto,
   number,
   AsyncThunkConfig
 >(`${sliceName}/getArticle`, (id, { extra }) => {
@@ -153,7 +154,7 @@ const shareArticle = createAsyncThunk<
 });
 
 const fetchSharedArticle = createAsyncThunk<
-  ArticleResponseDto,
+  ArticleWithFollowResponseDto,
   { token: string },
   AsyncThunkConfig
 >(`${sliceName}/shared`, (articlePayload, { extra }) => {
@@ -229,7 +230,7 @@ const updateComment = createAsyncThunk<
 });
 
 const deleteArticle = createAsyncThunk<
-  ArticleWithCommentCountResponseDto,
+  ArticleWithCountsResponseDto,
   { id: number; hasRedirect?: boolean },
   AsyncThunkConfig
 >(
@@ -306,7 +307,7 @@ const getImprovementSuggestions = createAsyncThunk<
 });
 
 const toggleIsFavourite = createAsyncThunk<
-  ArticleWithCommentCountResponseDto,
+  ArticleWithCountsResponseDto,
   number,
   AsyncThunkConfig
 >(`${sliceName}/toggleIsFavourite`, (id, { extra }) => {
@@ -317,6 +318,10 @@ const toggleIsFavourite = createAsyncThunk<
 
 const setShowFavourites = createAction<boolean>(
   `${sliceName}/toggleIsFavourite`,
+);
+
+const updateArticleAuthorFollowInfo = createAction<UserFollowResponseDto>(
+  `${sliceName}/update-article-author-follow-info`,
 );
 
 export {
@@ -337,5 +342,6 @@ export {
   shareArticle,
   toggleIsFavourite,
   updateArticle,
+  updateArticleAuthorFollowInfo,
   updateComment,
 };

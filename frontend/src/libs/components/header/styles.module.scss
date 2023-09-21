@@ -104,3 +104,9 @@ img.avatar:hover {
     border-color: var(--light-green);
   }
 }
+
+@media print {
+  .header {
+    display: none;
+  }
+}

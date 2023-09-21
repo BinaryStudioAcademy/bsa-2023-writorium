@@ -2,10 +2,10 @@ import { type IEntity } from '~/libs/interfaces/interfaces.js';
 import { type WithNullableKeys } from '~/libs/types/types.js';
 
 import {
-  type ArticleCommentCount,
+  type ArticleCounts,
   type ArticleEntityType,
   type ArticleResponseDto,
-  type ArticleWithCommentCountResponseDto,
+  type ArticleWithCountsResponseDto,
   type ArticleWithRelationsType,
   type ReactionResponseDto,
 } from './libs/types/types.js';
@@ -28,6 +28,7 @@ class ArticleEntity implements IEntity {
   private 'readTime': number | null;
   private 'deletedAt': string | null;
   private 'isFavourite': boolean;
+  private 'viewCount': number | null;
 
   private constructor({
     id,
@@ -47,9 +48,10 @@ class ArticleEntity implements IEntity {
     readTime,
     commentCount,
     isFavourite,
+    viewCount,
   }: WithNullableKeys<
-    ArticleWithRelationsType & ArticleCommentCount,
-    'id' | 'author' | 'commentCount' | 'reactions' | 'deletedAt'
+    ArticleWithRelationsType & ArticleCounts,
+    'id' | 'author' | 'commentCount' | 'reactions' | 'deletedAt' | 'viewCount'
   >) {
     this.id = id;
     this.title = title;
@@ -68,6 +70,7 @@ class ArticleEntity implements IEntity {
     this.coverUrl = coverUrl;
     this.deletedAt = deletedAt;
     this.isFavourite = isFavourite;
+    this.viewCount = viewCount;
   }
 
   public static initialize({
@@ -88,8 +91,12 @@ class ArticleEntity implements IEntity {
     deletedAt,
     readTime,
     isFavourite,
+    viewCount,
   }: ArticleWithRelationsType &
-    WithNullableKeys<ArticleCommentCount, 'commentCount'>): ArticleEntity {
+    WithNullableKeys<
+      ArticleCounts,
+      'commentCount' | 'viewCount'
+    >): ArticleEntity {
     return new ArticleEntity({
       id,
       title,
@@ -108,6 +115,7 @@ class ArticleEntity implements IEntity {
       deletedAt,
       readTime,
       isFavourite,
+      viewCount,
     });
   }
 
@@ -149,6 +157,7 @@ class ArticleEntity implements IEntity {
       deletedAt: null,
       readTime,
       isFavourite: false,
+      viewCount: null,
     });
   }
 
@@ -188,7 +197,7 @@ class ArticleEntity implements IEntity {
     };
   }
 
-  public toObjectWithRelationsAndCommentCount(): ArticleWithCommentCountResponseDto {
+  public toObjectWithRelationsAndCounts(): ArticleWithCountsResponseDto {
     return {
       id: this.id as number,
       title: this.title,
@@ -207,6 +216,7 @@ class ArticleEntity implements IEntity {
       commentCount: Number(this.commentCount as number),
       deletedAt: this.deletedAt,
       isFavourite: this.isFavourite,
+      viewCount: Number(this.viewCount as number),
     };
   }
 

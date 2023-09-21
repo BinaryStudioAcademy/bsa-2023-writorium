@@ -11,10 +11,10 @@ import {
   type ArticleReactionRequestDto,
   type ArticleReactionResponseDto,
   type ArticleRequestDto,
-  type ArticleResponseDto,
   type ArticlesFilters,
   type ArticleUpdateRequestPayload,
-  type ArticleWithCommentCountResponseDto,
+  type ArticleWithCountsResponseDto,
+  type ArticleWithFollowResponseDto,
 } from './libs/types/types.js';
 
 type Constructor = {
@@ -62,7 +62,7 @@ class ArticleApi extends HttpApi {
 
   public async create(
     payload: ArticleRequestDto,
-  ): Promise<ArticleWithCommentCountResponseDto> {
+  ): Promise<ArticleWithCountsResponseDto> {
     const response = await this.load(
       this.getFullEndpoint(ArticlesApiPath.ROOT, {}),
       {
@@ -73,12 +73,12 @@ class ArticleApi extends HttpApi {
       },
     );
 
-    return await response.json<ArticleWithCommentCountResponseDto>();
+    return await response.json<ArticleWithCountsResponseDto>();
   }
 
   public async update(
     payload: ArticleUpdateRequestPayload,
-  ): Promise<ArticleWithCommentCountResponseDto> {
+  ): Promise<ArticleWithCountsResponseDto> {
     const response = await this.load(
       this.getFullEndpoint(ArticlesApiPath.EDIT, {
         id: payload.articleId.toString(),
@@ -91,7 +91,7 @@ class ArticleApi extends HttpApi {
       },
     );
 
-    return await response.json<ArticleWithCommentCountResponseDto>();
+    return await response.json<ArticleWithCountsResponseDto>();
   }
 
   public async share(id: string): Promise<{ link: string }> {
@@ -111,7 +111,9 @@ class ArticleApi extends HttpApi {
     return { link };
   }
 
-  public async getByToken(token: string): Promise<ArticleResponseDto> {
+  public async getByToken(
+    token: string,
+  ): Promise<ArticleWithFollowResponseDto> {
     const response = await this.load(
       this.getFullEndpoint(ArticlesApiPath.SHARED_BASE, {}),
       {
@@ -124,10 +126,10 @@ class ArticleApi extends HttpApi {
       },
     );
 
-    return await response.json<ArticleResponseDto>();
+    return await response.json<ArticleWithFollowResponseDto>();
   }
 
-  public async getArticle(id: number): Promise<ArticleResponseDto> {
+  public async getArticle(id: number): Promise<ArticleWithFollowResponseDto> {
     const response = await this.load(
       this.getFullEndpoint(ArticlesApiPath.$ID, { id: String(id) }),
       {
@@ -137,7 +139,7 @@ class ArticleApi extends HttpApi {
       },
     );
 
-    return await response.json<ArticleResponseDto>();
+    return await response.json<ArticleWithFollowResponseDto>();
   }
 
   public async updateArticleReaction(
@@ -156,7 +158,7 @@ class ArticleApi extends HttpApi {
     return await response.json<ArticleReactionResponseDto>();
   }
 
-  public async delete(id: number): Promise<ArticleWithCommentCountResponseDto> {
+  public async delete(id: number): Promise<ArticleWithCountsResponseDto> {
     const response = await this.load(
       this.getFullEndpoint(ArticlesApiPath.$ID, { id: String(id) }),
       {
@@ -165,12 +167,12 @@ class ArticleApi extends HttpApi {
       },
     );
 
-    return await response.json<ArticleWithCommentCountResponseDto>();
+    return await response.json<ArticleWithCountsResponseDto>();
   }
 
   public async toggleIsFavourite(
     articleId: number,
-  ): Promise<ArticleWithCommentCountResponseDto> {
+  ): Promise<ArticleWithCountsResponseDto> {
     const response = await this.load(
       this.getFullEndpoint(ArticlesApiPath.FAVORITES, {
         id: String(articleId),
@@ -181,7 +183,7 @@ class ArticleApi extends HttpApi {
       },
     );
 
-    return await response.json<ArticleWithCommentCountResponseDto>();
+    return await response.json<ArticleWithCountsResponseDto>();
   }
 
   public async getImprovementSuggestions(

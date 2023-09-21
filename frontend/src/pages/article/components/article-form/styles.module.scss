@@ -68,3 +68,10 @@
   background-color: var(--dark-green);
   border-color: var(--dark-green);
 }
+
+.loader {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

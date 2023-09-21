@@ -12,7 +12,8 @@
   grid-template: repeat(2, max-content) / repeat(2, max-content);
   grid-template-areas:
     "avatar authorName"
-    "avatar authorInfo";
+    "avatar authorInfo"
+    "avatar followButton";
   align-items: center;
   padding: 30px 41px 21px;
   column-gap: 16px;
@@ -113,6 +114,24 @@
   font-weight: 700;
   font-size: 18px;
   line-height: normal;
+}
+
+.followButton {
+  grid-area: followButton;
+  justify-self: flex-start;
+  margin-top: 10px;
+  padding: 6px 12px;
+  color: var(--white);
+  font-weight: 700;
+  font-size: 14px;
+  background-color: var(--dark-green);
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.followButton:hover {
+  color: var(--white);
+  background-color: var(--light-green);
 }
 
 @media only screen and (max-width: breakpoints.$medium) {
@@ -232,7 +251,8 @@
     grid-template: repeat(2, max-content) / max-content 1fr;
     grid-template-areas:
       "avatar authorName"
-      "authorInfo authorInfo";
+      "authorInfo authorInfo"
+      "followButton followButton";
     align-items: center;
     border-bottom: none;
   }
@@ -297,5 +317,15 @@
   .authorDetails.authorDetailsModal {
     display: flex;
     background-color: var(--light-gray-15);
+  }
+
+  .followButton {
+    margin-top: 0;
+  }
+}
+
+@media print {
+  .container {
+    display: none;
   }
 }

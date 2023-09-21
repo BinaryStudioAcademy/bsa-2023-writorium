@@ -2,6 +2,7 @@ import { config } from '~/libs/packages/config/config.js';
 import { encrypt } from '~/libs/packages/encrypt/encrypt.js';
 import { logger } from '~/libs/packages/logger/logger.js';
 import { articleService } from '~/packages/articles/articles.js';
+import { followService } from '~/packages/follow/follow.js';
 
 import { UserController } from './user.controller.js';
 import { UserModel } from './user.model.js';
@@ -15,7 +16,7 @@ const userService = new UserService({
   userRepository,
   articleService,
 });
-const userController = new UserController(logger, userService);
+const userController = new UserController(logger, userService, followService);
 
 export { userController, userService };
 export {

@@ -50,6 +50,10 @@ const SharedArticlePage: React.FC = () => {
               <ArticleView
                 tags={article ? getArticleViewTags(article) : null}
                 article={article}
+                authorName={getFullName(
+                  article.author.firstName,
+                  article.author.lastName,
+                )}
                 isShared
               />
               {article.author && (
@@ -62,6 +66,8 @@ const SharedArticlePage: React.FC = () => {
                   publishedAt={article.publishedAt ?? ''}
                   genre={article.genre ?? ''}
                   avatarUrl={article.author.avatarUrl}
+                  authorFollowers={article.author.followersCount}
+                  isShared
                 />
               )}
             </>
