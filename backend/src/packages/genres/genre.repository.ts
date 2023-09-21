@@ -16,8 +16,13 @@ class GenreRepository implements IRepository {
     return genres.map((it) => GenreEntity.initialize(it));
   }
 
-  public find(id: number): Promise<unknown> {
-    return Promise.resolve(id);
+  public async find(id: number): Promise<GenreEntity | null> {
+    const genre = await this.genreModel.query().findById(id);
+    if (!genre) {
+      return null;
+    }
+
+    return GenreEntity.initialize(genre);
   }
 
   public async findByKey(key: string): Promise<GenreEntity | null> {
