@@ -90,4 +90,10 @@
   .wrapperInner {
     padding: 6px;
   }
+
+  .wrapperInner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 }
