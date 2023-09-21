@@ -60,3 +60,9 @@
   background-color: var(--dark-green);
   border-radius: 7px;
 }
+
+@media print {
+  .tags {
+    display: none;
+  }
+}
