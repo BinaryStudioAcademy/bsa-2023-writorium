@@ -52,6 +52,12 @@
   top: -105px;
 }
 
+@media only screen and (max-width: breakpoints.$medium) {
+  .editArticlePage {
+    flex-direction: column;
+  }
+}
+
 @media only screen and (max-width: breakpoints.$extra-large) {
   .articlePageWrapper {
     display: flex;

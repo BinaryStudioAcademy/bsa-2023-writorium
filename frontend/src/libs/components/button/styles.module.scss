@@ -1,3 +1,5 @@
+@use "src/assets/css/breakpoints.scss";
+
 .button {
   font-weight: 700;
   font-size: 16px;
@@ -18,4 +20,10 @@
 .button:hover {
   color: var(--light-green);
   border-color: var(--light-green);
+}
+
+@media only screen and (max-width: breakpoints.$medium) {
+  .button {
+    font-size: 14px;
+  }
 }

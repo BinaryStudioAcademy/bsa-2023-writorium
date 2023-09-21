@@ -1,3 +1,5 @@
+@use "src/assets/css/breakpoints.scss";
+
 .wrapper {
   width: 100%;
   overflow: hidden;
@@ -81,4 +83,11 @@
   margin-top: 25px;
   color: var(--dark-blue-40);
   text-align: center;
+}
+
+@media only screen and (max-width: breakpoints.$medium) {
+  .wrapper,
+  .wrapperInner {
+    padding: 6px;
+  }
 }
