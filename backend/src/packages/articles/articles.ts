@@ -23,3 +23,4 @@ const articleController = new ArticleController(logger, articleService);
 
 export { articleController, articleService };
 export { ArticleModel } from './article.model.js';
+export { type ArticleGenreStatsFilters } from './libs/types/types.js';
