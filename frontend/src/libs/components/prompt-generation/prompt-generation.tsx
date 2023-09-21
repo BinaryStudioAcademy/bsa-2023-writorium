@@ -12,7 +12,11 @@ import { actions as promptsActions } from '~/slices/prompts/prompts.js';
 import { PromptCard } from './libs/components/components.js';
 import styles from './styles.module.scss';
 
-const PromptGeneration: React.FC = () => {
+type Properties = {
+  containerStyle?: string;
+};
+
+const PromptGeneration: React.FC<Properties> = ({ containerStyle }) => {
   const { generatedPrompt, dataStatus } = useAppSelector(({ prompts }) => ({
     generatedPrompt: prompts.generatedPrompt,
     dataStatus: prompts.dataStatus,
@@ -31,10 +35,26 @@ const PromptGeneration: React.FC = () => {
   }, [dispatch]);
 
   return (
-    <section className={styles.container}>
-      <h1 className={styles.header}>Write your own story</h1>
+    <section className={getValidClassNames(styles.container, containerStyle)}>
       <div className={styles.promptsContainer}>
         <ul className={styles.prompts}>
+          {/* <div className={styles.buttonsWrapper}>
+                <Button
+                // className={styles.shuffleButton}
+                label="Generate prompt"
+                onClick={handlePromptGenerate}
+              />
+              <Button
+                label="Reset prompt"
+                // className={styles.resetPromptButton}
+                onClick={handleResetPrompt}
+              />
+            </div> */}
+          {/* <Button
+                className={styles.generatePromptButton}
+                label="Generate prompt"
+                onClick={handlePromptGenerate}
+              /> */}
           {Object.values(PromptCategory).map((category) => (
             <PromptCard
               key={category}
@@ -43,6 +63,11 @@ const PromptGeneration: React.FC = () => {
               isGenerating={isGenerating}
             />
           ))}
+          <Button
+            className={styles.generatePromptButton}
+            label="Generate prompt"
+            onClick={handlePromptGenerate}
+          />
           <Button
             label="Reset prompt"
             className={styles.resetPromptButton}
