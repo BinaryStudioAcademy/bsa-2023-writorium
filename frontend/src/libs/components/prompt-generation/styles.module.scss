@@ -18,11 +18,20 @@
   list-style: none;
 }
 
-.resetPromptButton {
+.resetPromptButton,
+.generatePromptButton {
   position: absolute;
   top: -20px;
-  right: 0;
   background: transparent;
+}
+
+.resetPromptButton {
+  right: 0;
+}
+
+.generatePromptButton {
+  display: none;
+  color: var(--light-green);
 }
 
 .shuffleButton {
@@ -47,15 +56,6 @@
   animation: spin 0.5s linear infinite;
 }
 
-.buttonsWrapper {
-  display: none;
-}
-
-.generatePromptButton {
-  position: absolute;
-  display: none;
-}
-
 @keyframes spin {
   from {
     transform: rotate(0deg);
@@ -71,10 +71,6 @@
     display: none;
   }
 
-  // .promptGenerationContainer {
-  //   display: flex;
-  //   flex-direction: column;
-  // }
   .shuffleButton {
     display: none;
   }
@@ -85,15 +81,7 @@
     margin-top: 20px;
   }
 
-  .resetPromptButton {
-    top: 0;
-  }
-
   .generatePromptButton {
-    display: block;
-  }
-
-  .buttonsWrapper {
     display: block;
   }
 }

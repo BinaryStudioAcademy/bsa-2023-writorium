@@ -1,4 +1,4 @@
-import { Button, Icon } from '~/libs/components/components.js';
+import { Button, IconButton } from '~/libs/components/components.js';
 import { DataStatus } from '~/libs/enums/data-status.enum.js';
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
 import {
@@ -26,35 +26,26 @@ const PromptGeneration: React.FC<Properties> = ({ containerStyle }) => {
 
   const dispatch = useAppDispatch();
 
-  const handlePromptGenerate = useCallback(() => {
-    void dispatch(promptsActions.generatePrompt());
-  }, [dispatch]);
+  const handlePromptGenerate = useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>) => {
+      event.stopPropagation();
+      void dispatch(promptsActions.generatePrompt());
+    },
+    [dispatch],
+  );
 
-  const handleResetPrompt = useCallback(() => {
-    dispatch(promptsActions.resetPrompts());
-  }, [dispatch]);
+  const handleResetPrompt = useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>) => {
+      event.stopPropagation();
+      dispatch(promptsActions.resetPrompts());
+    },
+    [dispatch],
+  );
 
   return (
     <section className={getValidClassNames(styles.container, containerStyle)}>
       <div className={styles.promptsContainer}>
         <ul className={styles.prompts}>
-          {/* <div className={styles.buttonsWrapper}>
-                <Button
-                // className={styles.shuffleButton}
-                label="Generate prompt"
-                onClick={handlePromptGenerate}
-              />
-              <Button
-                label="Reset prompt"
-                // className={styles.resetPromptButton}
-                onClick={handleResetPrompt}
-              />
-            </div> */}
-          {/* <Button
-                className={styles.generatePromptButton}
-                label="Generate prompt"
-                onClick={handlePromptGenerate}
-              /> */}
           {Object.values(PromptCategory).map((category) => (
             <PromptCard
               key={category}
@@ -74,14 +65,10 @@ const PromptGeneration: React.FC<Properties> = ({ containerStyle }) => {
             onClick={handleResetPrompt}
           />
         </ul>
-        <Button
+        <IconButton
+          iconName="refresh"
           className={styles.shuffleButton}
-          label={
-            <Icon
-              iconName="refresh"
-              className={getValidClassNames(isGenerating && styles.spin)}
-            />
-          }
+          iconClassName={getValidClassNames(isGenerating && styles.spin)}
           onClick={handlePromptGenerate}
         />
       </div>

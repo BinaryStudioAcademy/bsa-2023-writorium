@@ -3,7 +3,6 @@ import {
   Popover,
   PromptGeneration,
 } from '~/libs/components/components.js';
-import { getValidClassNames } from '~/libs/helpers/helpers.js';
 
 import { ArticleForm } from './components/components.js';
 import styles from './styles.module.scss';
@@ -17,10 +16,7 @@ const CreateArticlePage: React.FC = () => (
         content={
           <PromptGeneration containerStyle={styles.promptGenerationContainer} />
         }
-        className={getValidClassNames(
-          styles.authorDetails,
-          styles.authorDetailsModal,
-        )}
+        className={styles.promptGenerationModal}
       >
         <p className={styles.showPrompt}>Show prompt</p>
       </Popover>
