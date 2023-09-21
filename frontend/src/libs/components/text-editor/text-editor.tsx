@@ -8,11 +8,7 @@ import {
 } from 'react-hook-form';
 
 import { getValidClassNames, sanitizeHtml } from '~/libs/helpers/helpers.js';
-import {
-  useEffect,
-  useFormController,
-  useReference,
-} from '~/libs/hooks/hooks.js';
+import { useEffect, useFormController } from '~/libs/hooks/hooks.js';
 
 import { ErrorMessage } from '../components.js';
 import { Toolbar } from './libs/components/components.js';
@@ -31,6 +27,7 @@ type Properties<T extends FieldValues> = {
   errors: FieldErrors<T>;
   name: FieldPath<T>;
   wasEdited: boolean;
+  initialValue: string;
 };
 
 const extensions = [
@@ -51,11 +48,11 @@ const TextEditor = <T extends FieldValues>({
   errors,
   control,
   wasEdited,
+  initialValue,
 }: Properties<T>): React.ReactNode => {
   const { field } = useFormController({ name, control });
   const error = errors[name]?.message;
   const hasError = Boolean(error);
-  const initialFieldValue = useReference<string>(field.value);
 
   const handleEditorUpdate: EditorOptions['onUpdate'] = ({ editor }): void => {
     field.onChange(editor.getHTML());
@@ -87,9 +84,9 @@ const TextEditor = <T extends FieldValues>({
 
   useEffect(() => {
     if (!wasEdited && editor) {
-      editor.commands.setContent(initialFieldValue.current);
+      editor.commands.setContent(initialValue);
     }
-  }, [wasEdited, initialFieldValue, editor]);
+  }, [wasEdited, initialValue, editor]);
 
   return (
     <div className={styles.textEditorWrapper}>

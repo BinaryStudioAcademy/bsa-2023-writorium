@@ -59,7 +59,7 @@ const createArticle = createAsyncThunk<
 >(
   `${sliceName}/create`,
   async ({ articlePayload, generatedPrompt }, { extra, dispatch }) => {
-    const { articleApi, promptApi } = extra;
+    const { articleApi, promptApi, storage } = extra;
 
     if (generatedPrompt) {
       const { id: promptId, genreId } = await promptApi.create(generatedPrompt);
@@ -79,6 +79,9 @@ const createArticle = createAsyncThunk<
       : AppRoute.ARTICLES_MY_ARTICLES;
 
     dispatch(appActions.navigate(routeToNavigate));
+
+    await storage.drop(StorageKey.ARTICLE_TITLE);
+    await storage.drop(StorageKey.ARTICLE_TEXT);
 
     return createdArticle;
   },

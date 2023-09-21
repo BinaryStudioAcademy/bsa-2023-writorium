@@ -7,6 +7,7 @@ import {
   useCallback,
   useEffect,
   useNavigate,
+  useState,
 } from '~/libs/hooks/hooks.js';
 import { storage, StorageKey } from '~/libs/packages/storage/storage.js';
 import { type ValueOf } from '~/libs/types/types.js';
@@ -38,19 +39,11 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
   const { generatedPrompt } = useAppSelector(({ prompts }) => ({
     generatedPrompt: prompts.generatedPrompt,
   }));
-
-  useEffect(() => {
-    const getUnsavedArticleFromLocalStorage = async (): Promise<void> => {
-      const unsavedArticleTitle =
-        (await storage.get(StorageKey.ARTICLE_TITLE)) ?? '';
-      const unsavedArticleText =
-        (await storage.get(StorageKey.ARTICLE_TEXT)) ?? '';
-
-      DEFAULT_ARTICLE_FORM_PAYLOAD.title = unsavedArticleTitle;
-      DEFAULT_ARTICLE_FORM_PAYLOAD.text = unsavedArticleText;
-    };
-    void getUnsavedArticleFromLocalStorage();
-  }, []);
+  const [initialText, setInitialText] = useState(
+    DEFAULT_ARTICLE_FORM_PAYLOAD.text,
+  );
+  const [isContentFromLocalStorage, setIsContentFromLocalStorage] =
+    useState(false);
 
   const { control, errors, handleSubmit, handleReset, isDirty, isSubmitting } =
     useAppForm<ArticleRequestDto>({
@@ -66,6 +59,37 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
         ? articleUpdateValidationSchema
         : articleCreateValidationSchema,
     });
+
+  const useArticleContentFromLocalStorage = useCallback(() => {
+    void (async (): Promise<void> => {
+      if (articleForUpdate) {
+        setInitialText(articleForUpdate.text);
+      } else {
+        const articleTitleFromLocalStorage =
+          (await storage.get(StorageKey.ARTICLE_TITLE)) ??
+          DEFAULT_ARTICLE_FORM_PAYLOAD.title;
+        const articleTextFromLocalStorage =
+          (await storage.get(StorageKey.ARTICLE_TEXT)) ??
+          DEFAULT_ARTICLE_FORM_PAYLOAD.text;
+
+        await storage.drop(StorageKey.ARTICLE_TEXT);
+        await storage.drop(StorageKey.ARTICLE_TITLE);
+
+        setInitialText(articleTextFromLocalStorage);
+        setIsContentFromLocalStorage(true);
+
+        handleReset({
+          ...DEFAULT_ARTICLE_FORM_PAYLOAD,
+          title: articleTitleFromLocalStorage,
+          text: articleTextFromLocalStorage,
+        });
+      }
+    })();
+  }, [articleForUpdate, handleReset]);
+
+  useEffect(useArticleContentFromLocalStorage, [
+    useArticleContentFromLocalStorage,
+  ]);
 
   const isDraft = !articleForUpdate?.publishedAt;
 
@@ -143,10 +167,16 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
   );
 
   const handleCancel = useCallback(() => {
-    if (!isDirty) {
+    if (!isDirty && !isContentFromLocalStorage) {
       navigate(PREVIOUS_PAGE_INDEX);
       return;
     }
+
+    articleForUpdate
+      ? setInitialText(articleForUpdate.text)
+      : setInitialText(DEFAULT_ARTICLE_FORM_PAYLOAD.text);
+
+    setIsContentFromLocalStorage(false);
 
     handleReset(
       articleForUpdate
@@ -157,7 +187,13 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
           }
         : DEFAULT_ARTICLE_FORM_PAYLOAD,
     );
-  }, [handleReset, navigate, isDirty, articleForUpdate]);
+  }, [
+    handleReset,
+    navigate,
+    isDirty,
+    articleForUpdate,
+    isContentFromLocalStorage,
+  ]);
 
   useEffect(() => {
     return () => {
@@ -191,6 +227,7 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
         name="text"
         errors={errors}
         wasEdited={isDirty}
+        initialValue={initialText}
       />
       <div className={styles.buttonWrapper}>
         <Button
@@ -203,7 +240,7 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
           label="Save draft"
           name="draft"
           className={styles.saveDraftBtn}
-          disabled={!isDirty || isSubmitting}
+          disabled={(!isDirty && !isContentFromLocalStorage) || isSubmitting}
         />
         <Button
           type={ButtonType.SUBMIT}
