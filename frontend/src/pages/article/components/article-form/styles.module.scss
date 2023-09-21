@@ -43,3 +43,10 @@
   color: var(--white);
   background-color: var(--light-green);
 }
+
+.loader {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
