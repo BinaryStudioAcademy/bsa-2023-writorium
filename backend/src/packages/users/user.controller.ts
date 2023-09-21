@@ -9,7 +9,10 @@ import { type ILogger } from '~/libs/packages/logger/logger.js';
 import { type FollowService } from '~/packages/follow/follow.js';
 import { type UserService } from '~/packages/users/user.service.js';
 
-import { type ArticleGenreStatsFilters } from '../articles/articles.js';
+import {
+  type ArticleGenreStatsFilters,
+  articleGenreStatsFiltersValidationSchema,
+} from '../articles/articles.js';
 import { UsersApiPath } from './libs/enums/enums.js';
 import {
   type UserAuthResponseDto,
@@ -158,6 +161,9 @@ class UserController extends Controller {
     this.addRoute({
       path: UsersApiPath.ARTICLES_GENRE_STATS,
       method: 'GET',
+      validation: {
+        query: articleGenreStatsFiltersValidationSchema,
+      },
       handler: (options) =>
         this.getUserArticlesGenreStats(
           options as ApiHandlerOptions<{

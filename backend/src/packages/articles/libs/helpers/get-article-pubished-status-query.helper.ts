@@ -1,6 +1,7 @@
 import { type QueryBuilder } from 'objection';
 
 import { type ArticleModel } from '../../article.model.js';
+import { ArticlePublishStatus } from '../enums/enums.js';
 import { type ArticleGenreStatsFilters } from '../types/types.js';
 
 const getArticlePublishedStatusQuery = (
@@ -8,7 +9,7 @@ const getArticlePublishedStatusQuery = (
 ): ((builder: QueryBuilder<ArticleModel, ArticleModel[]>) => void) => {
   return (builder: QueryBuilder<ArticleModel, ArticleModel[]>): void => {
     if (articleStatus) {
-      articleStatus === 'draft'
+      articleStatus === ArticlePublishStatus.DRAFT
         ? void builder.whereNull('articles.publishedAt')
         : void builder.whereNotNull('articles.publishedAt');
     }
