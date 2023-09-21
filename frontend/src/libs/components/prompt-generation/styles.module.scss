@@ -30,6 +30,12 @@
   top: -20px;
   right: 0;
   background: transparent;
+  transition: color 0.3 ease;
+}
+
+.resetPromptButton:hover {
+  color: var(--light-green);
+  background: transparent;
 }
 
 .shuffleButton {

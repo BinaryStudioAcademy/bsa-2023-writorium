@@ -182,10 +182,6 @@
   color: var(--light-green);
 }
 
-.footer button:not(.disabled):hover svg {
-  color: var(--dark-green);
-}
-
 .readMore {
   margin-left: auto;
   color: var(--light-green);
@@ -207,11 +203,28 @@
   background-color: transparent;
 }
 
+.disabled:hover svg {
+  color: var(--light-green);
+}
+
+.footerIcon:hover svg {
+  color: var(--light-green);
+}
+
+.iconWrapper:hover svg {
+  color: var(--dark-green);
+}
+
 .facebookIconButton {
   width: 18px;
   height: 18px;
   color: var(--light-green);
   border-radius: 50%;
+  transition: color 0.3s ease;
+}
+
+.facebookIconButton:hover {
+  color: var(--dark-green);
 }
 
 .moreActions {

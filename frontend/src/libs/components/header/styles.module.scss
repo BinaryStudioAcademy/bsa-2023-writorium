@@ -26,11 +26,11 @@
   align-items: center;
 }
 
-.rightSide div > span:hover {
+span.avatar:hover {
   background-color: var(--light-green-80);
 }
 
-.rightSide div:hover img {
+img.avatar:hover {
   opacity: 0.8;
 }
 
@@ -50,19 +50,6 @@
 .writeLink:hover {
   background-color: var(--light-green);
 }
-
-// .avatarButton {
-//   background-color: transparent;
-//   border: none;
-// }
-
-// .avatarButton img {
-//   transition: opacity 0.3s ease;
-// }
-
-// .avatarButton:hover img {
-//   opacity: 0.8;
-// }
 
 .popoverWriteLink {
   display: none;
