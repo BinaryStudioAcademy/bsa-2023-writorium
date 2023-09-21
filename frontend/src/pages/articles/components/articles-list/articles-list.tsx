@@ -1,6 +1,6 @@
 import { InfiniteScroll } from '~/libs/components/components.js';
 import { getArticleTags } from '~/libs/helpers/helpers.js';
-import { type ArticleWithCommentCountResponseDto } from '~/packages/articles/articles.js';
+import { type ArticleWithCountsResponseDto } from '~/packages/articles/articles.js';
 
 import { ArticleCard } from '../components.js';
 import styles from './styles.module.scss';
@@ -9,7 +9,7 @@ type Properties = {
   hasMore: boolean;
   articlesLength: number;
   onFetchData: () => void;
-  articles: ArticleWithCommentCountResponseDto[];
+  articles: ArticleWithCountsResponseDto[];
 };
 
 const ArticlesList: React.FC<Properties> = ({

@@ -31,7 +31,7 @@ import {
 } from '~/libs/hooks/hooks.js';
 import { type TagType, type ValueOf } from '~/libs/types/types.js';
 import {
-  type ArticleWithCommentCountResponseDto,
+  type ArticleWithCountsResponseDto,
   getReadTimeString,
   type ReactionResponseDto,
 } from '~/packages/articles/articles.js';
@@ -42,12 +42,11 @@ import {
 import { ConfirmArticleDeleteDialog } from '~/pages/libs/components/components.js';
 import { actions as articlesActions } from '~/slices/articles/articles.js';
 
-import { MOCKED_REACTIONS } from '../../libs/constants/constants.js';
 import { PopoverButtonsGroup } from './libs/components/components.js';
 import styles from './styles.module.scss';
 
 type Properties = {
-  article: ArticleWithCommentCountResponseDto;
+  article: ArticleWithCountsResponseDto;
   author: UserDetailsResponseDto;
   tags: TagType[];
   reactions: ReactionResponseDto[];
@@ -76,6 +75,7 @@ const ArticleCard: React.FC<Properties> = ({
     readTime,
     commentCount,
     isFavourite,
+    viewCount,
   } = article;
   const { likesCount, dislikesCount, hasAlreadyReactedWith } = getReactionsInfo(
     user.id,
@@ -221,7 +221,7 @@ const ArticleCard: React.FC<Properties> = ({
           </li>
           <li className={styles.footerIcon}>
             <Icon iconName="view" />
-            <span>{MOCKED_REACTIONS.views}</span>
+            <span>{viewCount}</span>
           </li>
           <li>
             <IconButton
