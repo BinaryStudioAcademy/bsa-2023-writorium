@@ -52,6 +52,7 @@
   display: flex;
   flex-direction: column;
   gap: 15px;
+  padding-top: 15px;
   padding-bottom: 15px;
   border-top: 1px solid var(--gray);
 }
@@ -59,7 +60,6 @@
 .articlesWrapper {
   display: flex;
   gap: 50px;
-  padding-top: 15px;
 }
 
 .articlesWrapper > div:first-child {
