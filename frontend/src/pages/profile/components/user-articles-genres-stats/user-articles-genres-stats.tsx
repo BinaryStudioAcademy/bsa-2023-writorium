@@ -8,7 +8,7 @@ import {
 } from 'recharts';
 
 import { Loader } from '~/libs/components/components.js';
-import { DataStatus } from '~/libs/enums/data-status.enum.js';
+import { DataStatus } from '~/libs/enums/enums.js';
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
 import {
   useAppDispatch,
@@ -17,8 +17,9 @@ import {
 } from '~/libs/hooks/hooks.js';
 import { actions as usersActions } from '~/slices/users/users.js';
 
+import { GenresList } from './libs/components/components.js';
 import { GENRES_CHART_COLORS } from './libs/constants/constants.js';
-import { GenresChartConfig } from './libs/enums/genres-chart-config.enum.js';
+import { GenresChartConfig } from './libs/enums/enums.js';
 import { normalizeGenresStats } from './libs/helpers/helpers.js';
 import styles from './styles.module.scss';
 
@@ -72,7 +73,12 @@ const UserArticlesGenresStats: React.FC<Properties> = ({ className }) => {
                   />
                 ))}
               </Pie>
-              <Legend layout="vertical" align="right" verticalAlign="middle" />
+              <Legend
+                layout="vertical"
+                align="center"
+                verticalAlign="bottom"
+                content={<GenresList chartData={chartData} />}
+              />
               <Tooltip />
             </RechartsPieChart>
           </ResponsiveContainer>
