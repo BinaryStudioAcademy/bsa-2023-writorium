@@ -11,7 +11,7 @@ type Properties = {
 };
 
 const PromptCard: React.FC<Properties> = ({ category, text, isGenerating }) => (
-  <li className={styles.container}>
+  <li>
     <div className={styles.category}>
       <span className={styles.categoryText}>{category}</span>
     </div>

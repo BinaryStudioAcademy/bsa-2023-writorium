@@ -15,6 +15,7 @@ import {
 } from '~/libs/packages/exceptions/exceptions.js';
 import { type OpenAIService } from '~/libs/packages/openai/openai.package.js';
 import { token as articleToken } from '~/libs/packages/token/token.js';
+import { type ArticleViewService } from '~/packages/article-views/article-view.service.js';
 import { type FollowRepository } from '~/packages/follow/follow.js';
 
 import { GenreEntity } from '../genres/genre.entity.js';
@@ -43,7 +44,7 @@ import {
   type ArticleResponseDto,
   type ArticlesFilters,
   type ArticleUpdateRequestDto,
-  type ArticleWithCommentCountResponseDto,
+  type ArticleWithCountsResponseDto,
   type ArticleWithFollowResponseDto,
   type DetectedArticleGenre,
   type UserActivityResponseDto,
@@ -54,22 +55,26 @@ class ArticleService implements IService {
   private articleRepository: ArticleRepository;
   private openAIService: OpenAIService;
   private genreRepository: GenreRepository;
+  private articleViewService: ArticleViewService;
   private followRepository: FollowRepository;
 
   public constructor({
     articleRepository,
     openAIService,
     genreRepository,
+    articleViewService,
     followRepository,
   }: {
     articleRepository: ArticleRepository;
     openAIService: OpenAIService;
     genreRepository: GenreRepository;
+    articleViewService: ArticleViewService;
     followRepository: FollowRepository;
   }) {
     this.articleRepository = articleRepository;
     this.openAIService = openAIService;
     this.genreRepository = genreRepository;
+    this.articleViewService = articleViewService;
     this.followRepository = followRepository;
   }
 
@@ -216,9 +221,7 @@ class ArticleService implements IService {
 
     return {
       total,
-      items: items.map((article) =>
-        article.toObjectWithRelationsAndCommentCount(),
-      ),
+      items: items.map((article) => article.toObjectWithRelationsAndCounts()),
     };
   }
 
@@ -234,9 +237,7 @@ class ArticleService implements IService {
 
     return {
       total,
-      items: items.map((article) =>
-        article.toObjectWithRelationsAndCommentCount(),
-      ),
+      items: items.map((article) => article.toObjectWithRelationsAndCounts()),
     };
   }
 
@@ -267,6 +268,11 @@ class ArticleService implements IService {
         userId,
         authorId: articleObject.userId,
       });
+
+    await this.articleViewService.create({
+      articleId: id,
+      viewedById: userId as number,
+    });
 
     return {
       ...articleObject,
@@ -387,7 +393,7 @@ class ArticleService implements IService {
 
   public async create(
     payload: ArticleCreateDto,
-  ): Promise<ArticleWithCommentCountResponseDto> {
+  ): Promise<ArticleWithCountsResponseDto> {
     const withPrompt = Boolean(payload.promptId);
     const genreId = await this.getGenreIdToSet(payload);
 
@@ -408,7 +414,7 @@ class ArticleService implements IService {
       }),
     );
 
-    return article.toObjectWithRelationsAndCommentCount();
+    return article.toObjectWithRelationsAndCounts();
   }
 
   public async update(
@@ -417,7 +423,7 @@ class ArticleService implements IService {
       payload,
       user,
     }: { payload: ArticleUpdateRequestDto; user: UserAuthResponseDto },
-  ): Promise<ArticleWithCommentCountResponseDto> {
+  ): Promise<ArticleWithCountsResponseDto> {
     const article = await this.find(id);
 
     if (!article) {
@@ -451,10 +457,11 @@ class ArticleService implements IService {
         genreId: updatedGenreId,
         readTime: updatedReadTime,
         commentCount: null,
+        viewCount: null,
       }),
     );
 
-    return updatedArticle.toObjectWithRelationsAndCommentCount();
+    return updatedArticle.toObjectWithRelationsAndCounts();
   }
 
   public async getArticleSharingLink(
@@ -520,7 +527,7 @@ class ArticleService implements IService {
   public async delete(
     id: number,
     userId: number,
-  ): Promise<ArticleWithCommentCountResponseDto> {
+  ): Promise<ArticleWithCountsResponseDto> {
     const article = await this.find(id);
 
     if (!article) {
@@ -543,7 +550,7 @@ class ArticleService implements IService {
 
     const deletedArticle = await this.articleRepository.delete(id);
 
-    return deletedArticle.toObjectWithRelationsAndCommentCount();
+    return deletedArticle.toObjectWithRelationsAndCounts();
   }
 
   public async toggleIsFavourite(
@@ -567,7 +574,7 @@ class ArticleService implements IService {
     if (!article) {
       return null;
     }
-    return article.toObjectWithRelationsAndCommentCount();
+    return article.toObjectWithRelationsAndCounts();
   }
 }
 

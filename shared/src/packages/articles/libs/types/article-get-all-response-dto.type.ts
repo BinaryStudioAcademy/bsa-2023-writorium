@@ -1,7 +1,7 @@
-import { type ArticleWithCommentCountResponseDto } from './article-with-comment-count-response-dto.type.js';
+import { type ArticleWithCountsResponseDto } from './article-with-counts-response-dto.type.js';
 
 type ArticleGetAllResponseDto = {
-  items: ArticleWithCommentCountResponseDto[];
+  items: ArticleWithCountsResponseDto[];
   total: number;
 };
 

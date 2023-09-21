@@ -5,7 +5,7 @@ import { conditionallyDeleteOrUpdate } from '~/libs/helpers/helpers.js';
 import { type ValueOf } from '~/libs/types/types.js';
 import {
   type ArticleImprovementSuggestion,
-  type ArticleWithCommentCountResponseDto,
+  type ArticleWithCountsResponseDto,
   type ArticleWithFollowResponseDto,
 } from '~/packages/articles/articles.js';
 import { type CommentWithRelationsResponseDto } from '~/packages/comments/comments.js';
@@ -37,7 +37,7 @@ import { removeReaction, updateReaction } from './libs/helpers/helpers.js';
 type State = {
   article: ArticleWithFollowResponseDto | null;
   articleComments: CommentWithRelationsResponseDto[];
-  articles: ArticleWithCommentCountResponseDto[];
+  articles: ArticleWithCountsResponseDto[];
   dataStatus: ValueOf<typeof DataStatus>;
   genres: GenreGetAllResponseDto['items'];
   articleCommentsDataStatus: ValueOf<typeof DataStatus>;
