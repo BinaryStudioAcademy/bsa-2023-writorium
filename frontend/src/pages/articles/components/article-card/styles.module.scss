@@ -139,6 +139,10 @@
   border-top: 2px solid var(--pale-gray);
 }
 
+.footer svg {
+  color: var(--light-green);
+}
+
 .footer .reactions {
   display: flex;
   align-items: center;
@@ -174,9 +178,12 @@
   color: var(--light-green);
 }
 
-.pressed svg,
-.reaction:hover svg {
+.pressed svg {
   color: var(--light-green);
+}
+
+.footer button:not(.disabled):hover svg {
+  color: var(--dark-green);
 }
 
 .readMore {
@@ -217,7 +224,7 @@
   opacity: 1;
 }
 
-.moreActionsIcon {
+.topActionsIcon {
   width: 35px;
   height: 35px;
   padding: 5px;
@@ -225,7 +232,7 @@
   transition: background-color 0.2s ease;
 }
 
-.moreActionsIcon:hover {
+.topActionsIcon:hover {
   background-color: var(--light-gray);
 }
 
