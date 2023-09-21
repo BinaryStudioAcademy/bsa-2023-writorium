@@ -323,3 +323,9 @@
     margin-top: 0;
   }
 }
+
+@media print {
+  .container {
+    display: none;
+  }
+}
