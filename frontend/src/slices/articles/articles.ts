@@ -7,6 +7,7 @@ import {
   fetchAllCommentsToArticle,
   fetchOwn,
   fetchSharedArticle,
+  geArticleIdByToken,
   getAllGenres,
   getArticle,
   getImprovementSuggestions,
@@ -42,6 +43,7 @@ const allActions = {
   getImprovementSuggestions,
   getImprovementSuggestionsBySession,
   updateArticleAuthorFollowInfo,
+  geArticleIdByToken,
 };
 
 export { allActions as actions };
