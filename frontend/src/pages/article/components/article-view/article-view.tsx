@@ -1,11 +1,12 @@
 import {
+  Icon,
   IconButton,
   Link,
   Popover,
   ShareOnFacebookButton,
   Tags,
 } from '~/libs/components/components.js';
-import { AppRoute, Reaction } from '~/libs/enums/enums.js';
+import { AppRoute, LinkHash, Reaction } from '~/libs/enums/enums.js';
 import {
   configureString,
   getFullName,
@@ -154,7 +155,6 @@ const ArticleView: React.FC<Properties> = ({
                     iconName="edit"
                     className={styles.iconButton}
                     iconClassName={styles.icon}
-                    onClick={onButtonClick}
                   />
                 </Link>
               </>
@@ -165,12 +165,15 @@ const ArticleView: React.FC<Properties> = ({
               iconClassName={styles.icon}
               onClick={onButtonClick}
             />
-            <IconButton
-              iconName="comment"
+
+            <Link
+              to={{ hash: LinkHash.COMMENTS }}
+              state={article}
               className={styles.iconButton}
-              iconClassName={styles.icon}
-              onClick={onButtonClick}
-            />
+            >
+              <Icon iconName="comment" className={styles.icon} />
+            </Link>
+
             <IconButton
               iconName="share"
               className={styles.iconButton}
