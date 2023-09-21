@@ -1,5 +1,6 @@
 export {
   type ArticleCreateDto,
+  type ArticleGenreStatsFilters,
   type ArticleGetAllResponseDto,
   type ArticleGetImprovementSuggestionsResponseDto,
   type ArticleImprovementSuggestion,
