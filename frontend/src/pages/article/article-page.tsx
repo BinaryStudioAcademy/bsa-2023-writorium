@@ -113,6 +113,10 @@ const ArticlePage: React.FC = () => {
                 article={article}
                 onFollow={handleFollow}
                 reactions={article.reactions}
+                authorName={getFullName(
+                  article.author.firstName,
+                  article.author.lastName,
+                )}
               />
               <ArticleDetails
                 readTime={article.readTime}
