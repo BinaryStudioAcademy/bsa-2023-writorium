@@ -52,12 +52,6 @@
   top: -105px;
 }
 
-@media only screen and (max-width: breakpoints.$medium) {
-  .editArticlePage {
-    flex-direction: column;
-  }
-}
-
 .header {
   margin-bottom: 21px;
   color: var(--dark-gray);
@@ -73,6 +67,12 @@
   color: var(--light-green);
   font-weight: 700;
   font-size: 16px;
+}
+
+@media only screen and (max-width: breakpoints.$medium) {
+  .editArticlePage {
+    flex-direction: column;
+  }
 }
 
 @media only screen and (max-width: breakpoints.$extra-large) {
