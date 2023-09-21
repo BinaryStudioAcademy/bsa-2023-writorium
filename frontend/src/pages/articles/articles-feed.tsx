@@ -100,7 +100,6 @@ const ArticlesFeed: React.FC = () => {
               />
             ))}
         </InfiniteScroll>
-
         <ArticleFilters
           genreSelectOptions={getSelectGenresOptions(genres)}
           authorsSelectOptions={getSelectAuthorsOptions(authors)}
