@@ -9,6 +9,7 @@ import { type ILogger } from '~/libs/packages/logger/logger.js';
 import { type FollowService } from '~/packages/follow/follow.js';
 import { type UserService } from '~/packages/users/user.service.js';
 
+import { type ArticleGenreStatsFilters } from '../articles/articles.js';
 import { UsersApiPath } from './libs/enums/enums.js';
 import {
   type UserAuthResponseDto,
@@ -161,6 +162,7 @@ class UserController extends Controller {
         this.getUserArticlesGenreStats(
           options as ApiHandlerOptions<{
             user: UserAuthResponseDto;
+            query: ArticleGenreStatsFilters;
           }>,
         ),
     });
@@ -261,12 +263,16 @@ class UserController extends Controller {
    *          description: Successful operation
    */
   private async getUserArticlesGenreStats(
-    options: ApiHandlerOptions<{ user: UserAuthResponseDto }>,
+    options: ApiHandlerOptions<{
+      user: UserAuthResponseDto;
+      query: ArticleGenreStatsFilters;
+    }>,
   ): Promise<ApiHandlerResponse> {
     return {
       status: HttpCode.OK,
       payload: await this.userService.getUserArticlesGenreStats(
         options.user.id,
+        options.query,
       ),
     };
   }
