@@ -1,14 +1,6 @@
-import {
-  IconButton,
-  InfiniteScroll,
-  Modal,
-} from '~/libs/components/components.js';
+import { IconButton, Modal } from '~/libs/components/components.js';
 import { WindowBreakpoint } from '~/libs/enums/enums.js';
-import {
-  checkIsEqual,
-  getArticleTags,
-  getWindowBreakpoint,
-} from '~/libs/helpers/helpers.js';
+import { checkIsEqual, getWindowBreakpoint } from '~/libs/helpers/helpers.js';
 import {
   useAppDispatch,
   useAppSelector,
@@ -22,7 +14,11 @@ import {
 import { actions as articlesActions } from '~/slices/articles/articles.js';
 import { actions as userActions } from '~/slices/users/users.js';
 
-import { ArticleCard, ArticleFilters } from './components/components.js';
+import {
+  ArticleFilters,
+  ArticlesList,
+  EmptyArticlesPlaceholder,
+} from './components/components.js';
 import {
   getActiveFilters,
   getSelectAuthorsOptions,
@@ -108,23 +104,17 @@ const ArticlesFeed: React.FC = () => {
 
   return (
     <div className={styles.articlesWrapper}>
-      <InfiniteScroll
-        hasMore={hasMore}
-        className={styles.articles}
-        dataLength={articles.length}
-        fetchData={handleLoadArticles}
-      >
-        {Boolean(articles.length) &&
-          articles.map((article) => (
-            <ArticleCard
-              key={article.id}
-              article={article}
-              author={article.author}
-              tags={getArticleTags(article)}
-              reactions={article.reactions}
-            />
-          ))}
-      </InfiniteScroll>
+      {articles.length ? (
+        <ArticlesList
+          hasMore={hasMore}
+          articlesLength={articles.length}
+          onFetchData={handleLoadArticles}
+          articles={articles}
+        />
+      ) : (
+        <EmptyArticlesPlaceholder />
+      )}
+
       {shouldHideFilters ? (
         <IconButton
           iconName="filter"
