@@ -6,9 +6,11 @@ import {
   type UserArticlesGenreStatsResponseDto,
   type UserAuthResponseDto,
   type UserDetailsAuthorResponseDto,
+  type UserFollowResponseDto,
   type UserGetAllResponseDto,
   type UserUpdateRequestDto,
 } from '~/packages/users/users.js';
+import { actions as articleActions } from '~/slices/articles/articles.js';
 
 import { name as sliceName } from './users.slice.js';
 
@@ -61,10 +63,46 @@ const getAllAuthors = createAsyncThunk<
   return await userApi.getAllAuthors();
 });
 
+const toggleFollowAuthor = createAsyncThunk<
+  UserFollowResponseDto,
+  number,
+  AsyncThunkConfig
+>(`${sliceName}/follow`, async (authorId, { extra, dispatch }) => {
+  const { userApi } = extra;
+  const articleAuthorFollowInfo = await userApi.toggleFollowAuthor(authorId);
+
+  dispatch(
+    articleActions.updateArticleAuthorFollowInfo(articleAuthorFollowInfo),
+  );
+
+  return articleAuthorFollowInfo;
+});
+
+const getAuthorFollowersCountAndStatus = createAsyncThunk<
+  UserFollowResponseDto,
+  number,
+  AsyncThunkConfig
+>(
+  `${sliceName}/get-author-followers-count-and-status`,
+  async (authorId, { extra, dispatch }) => {
+    const { userApi } = extra;
+    const articleAuthorFollowInfo =
+      await userApi.getAuthorFollowersCountAndStatus(authorId);
+
+    dispatch(
+      articleActions.updateArticleAuthorFollowInfo(articleAuthorFollowInfo),
+    );
+
+    return articleAuthorFollowInfo;
+  },
+);
+
 export {
   getAllAuthors,
+  getAuthorFollowersCountAndStatus,
   getUserActivity,
   getUserArticlesGenresStats,
   loadAll,
+  toggleFollowAuthor,
   updateUser,
 };
