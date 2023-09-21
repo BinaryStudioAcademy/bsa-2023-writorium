@@ -58,7 +58,28 @@
   }
 }
 
+.header {
+  margin-bottom: 21px;
+  color: var(--dark-gray);
+  font-weight: 700;
+  font-size: 24px;
+  font-family: "Libre Baskerville", serif;
+  line-height: 30px;
+}
+
+.showPrompt {
+  display: none;
+  padding: 0 0 21px 6px;
+  color: var(--light-green);
+  font-weight: 700;
+  font-size: 16px;
+}
+
 @media only screen and (max-width: breakpoints.$extra-large) {
+  .articleCreatePageWrapper .articleFormWrapper {
+    max-width: none;
+  }
+
   .articlePageWrapper {
     display: flex;
     flex-direction: column;
@@ -66,6 +87,22 @@
 
   .commentsBlockWrapper {
     width: 100%;
+  }
+
+  .promptGenerationModal {
+    top: 25px;
+    width: 100%;
+    border: 1px solid var(--dark-gray-40);
+    border-radius: 15px;
+  }
+
+  .promptGenerationContainer {
+    display: block;
+    padding: 10px;
+  }
+
+  .showPrompt {
+    display: block;
   }
 }
 
