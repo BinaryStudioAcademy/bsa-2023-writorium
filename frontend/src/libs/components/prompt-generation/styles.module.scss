@@ -26,13 +26,13 @@
   transition: color 0.3 ease;
 }
 
+.resetPromptButton {
+  right: 0;
+}
+
 .resetPromptButton:hover {
   color: var(--light-green);
   background: transparent;
-}
-
-.resetPromptButton {
-  right: 0;
 }
 
 .generatePromptButton {
