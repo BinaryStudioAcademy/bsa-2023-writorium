@@ -41,6 +41,7 @@ type State = {
   articleCommentsDataStatus: ValueOf<typeof DataStatus>;
   articleReactionDataStatus: ValueOf<typeof DataStatus>;
   getArticleStatus: ValueOf<typeof DataStatus>;
+  saveArticleStatus: ValueOf<typeof DataStatus>;
   showFavourites: boolean;
   improvementSuggestions: ArticleImprovementSuggestion[] | null;
   improvementSuggestionsDataStatus: ValueOf<typeof DataStatus>;
@@ -55,6 +56,7 @@ const initialState: State = {
   improvementSuggestions: null,
   dataStatus: DataStatus.IDLE,
   articleCommentsDataStatus: DataStatus.IDLE,
+  saveArticleStatus: DataStatus.IDLE,
   articleReactionDataStatus: DataStatus.IDLE,
   getArticleStatus: DataStatus.IDLE,
   improvementSuggestionsDataStatus: DataStatus.IDLE,
@@ -74,22 +76,12 @@ const { reducer, actions, name } = createSlice({
     },
   },
   extraReducers(builder) {
-    builder.addCase(createArticle.fulfilled, (state, action) => {
-      state.articles = [...state.articles, action.payload];
-      state.dataStatus = DataStatus.FULFILLED;
+    builder.addCase(createArticle.fulfilled, (state) => {
+      state.saveArticleStatus = DataStatus.FULFILLED;
     });
 
-    builder.addCase(updateArticle.fulfilled, (state, action) => {
-      const article = action.payload;
-      if (article) {
-        state.articles = state.articles.map((item) => {
-          if (article.id === item.id) {
-            return article;
-          }
-          return item;
-        });
-      }
-      state.dataStatus = DataStatus.FULFILLED;
+    builder.addCase(updateArticle.fulfilled, (state) => {
+      state.saveArticleStatus = DataStatus.FULFILLED;
     });
 
     builder.addCase(getArticle.fulfilled, (state, action) => {
@@ -259,8 +251,6 @@ const { reducer, actions, name } = createSlice({
       isAnyOf(
         fetchAll.pending,
         fetchOwn.pending,
-        createArticle.pending,
-        updateArticle.pending,
         getArticle.pending,
         getAllGenres.pending,
         fetchSharedArticle.pending,
@@ -269,6 +259,12 @@ const { reducer, actions, name } = createSlice({
       ),
       (state) => {
         state.dataStatus = DataStatus.PENDING;
+      },
+    );
+    builder.addMatcher(
+      isAnyOf(createArticle.pending, updateArticle.pending),
+      (state) => {
+        state.saveArticleStatus = DataStatus.PENDING;
       },
     );
     builder.addMatcher(
@@ -281,14 +277,18 @@ const { reducer, actions, name } = createSlice({
       isAnyOf(
         fetchAll.rejected,
         fetchOwn.rejected,
-        createArticle.rejected,
-        updateArticle.rejected,
         fetchSharedArticle.rejected,
         deleteArticle.rejected,
         toggleIsFavourite.rejected,
       ),
       (state) => {
         state.dataStatus = DataStatus.REJECTED;
+      },
+    );
+    builder.addMatcher(
+      isAnyOf(createArticle.rejected, updateArticle.rejected),
+      (state) => {
+        state.saveArticleStatus = DataStatus.REJECTED;
       },
     );
   },
