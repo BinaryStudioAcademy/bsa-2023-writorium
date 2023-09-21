@@ -136,7 +136,7 @@ class ArticleService implements IService {
     return newGenreEntity.toObject().id;
   }
 
-  private async genreCheck(
+  private async checkActualGenre(
     genreId: number | null,
     articleText: string,
   ): Promise<number | null> {
@@ -160,11 +160,7 @@ class ArticleService implements IService {
     }
 
     const parsedGenres = safeJSONParse<DetectedArticleGenre[]>(genresJSON);
-    if (
-      !parsedGenres ||
-      !Array.isArray(parsedGenres) ||
-      parsedGenres.length === 0
-    ) {
+    if (!parsedGenres || !Array.isArray(parsedGenres) || !parsedGenres.length) {
       return genreId;
     }
 
@@ -176,7 +172,7 @@ class ArticleService implements IService {
       return genreId;
     }
 
-    const suggestedGenre = parsedGenres[0];
+    const [suggestedGenre] = parsedGenres;
 
     const existingGenre = await this.genreRepository.findByKey(
       suggestedGenre.key,
@@ -370,7 +366,7 @@ class ArticleService implements IService {
     const article = await this.articleRepository.create(
       ArticleEntity.initializeNew({
         genreId: withPrompt
-          ? await this.genreCheck(genreId, payload.text)
+          ? await this.checkActualGenre(genreId, payload.text)
           : genreId,
         readTime,
         title: payload.title,
@@ -407,7 +403,10 @@ class ArticleService implements IService {
     let updatedGenreId = payload.genreId ?? article.genreId;
 
     if (payload.text && (article.promptId || payload.promptId)) {
-      updatedGenreId = await this.genreCheck(updatedGenreId, payload.text);
+      updatedGenreId = await this.checkActualGenre(
+        updatedGenreId,
+        payload.text,
+      );
     }
 
     const updatedReadTime =
