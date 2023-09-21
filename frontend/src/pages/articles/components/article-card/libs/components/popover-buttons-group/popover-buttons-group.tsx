@@ -9,8 +9,6 @@ type Properties = {
   isOwnArticle: boolean;
   article: ArticleResponseDto;
   onDeleteButtonClick: () => void;
-  onToggleFavouriteClick: () => void;
-  isToggleFavouriteLoading: boolean;
 };
 
 const PopoverButtonsGroup: React.FC<Properties> = ({
