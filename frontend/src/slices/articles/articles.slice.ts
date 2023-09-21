@@ -5,8 +5,8 @@ import { conditionallyDeleteOrUpdate } from '~/libs/helpers/helpers.js';
 import { type ValueOf } from '~/libs/types/types.js';
 import {
   type ArticleImprovementSuggestion,
-  type ArticleResponseDto,
   type ArticleWithCommentCountResponseDto,
+  type ArticleWithFollowResponseDto,
 } from '~/packages/articles/articles.js';
 import { type CommentWithRelationsResponseDto } from '~/packages/comments/comments.js';
 import { type GenreGetAllResponseDto } from '~/packages/genres/genres.js';
@@ -28,12 +28,13 @@ import {
   setShowFavourites,
   toggleIsFavourite,
   updateArticle,
+  updateArticleAuthorFollowInfo,
   updateComment,
 } from './actions.js';
 import { removeReaction, updateReaction } from './libs/helpers/helpers.js';
 
 type State = {
-  article: ArticleResponseDto | null;
+  article: ArticleWithFollowResponseDto | null;
   articleComments: CommentWithRelationsResponseDto[];
   articles: ArticleWithCommentCountResponseDto[];
   dataStatus: ValueOf<typeof DataStatus>;
@@ -100,12 +101,26 @@ const { reducer, actions, name } = createSlice({
       }
       state.dataStatus = DataStatus.FULFILLED;
     });
+    builder.addCase(updateArticleAuthorFollowInfo, (state, { payload }) => {
+      const { isFollowed, followersCount } = payload;
+
+      if (state.article) {
+        state.article = {
+          ...state.article,
+          author: {
+            ...state.article.author,
+            isFollowed,
+            followersCount,
+          },
+        };
+      }
+    });
     builder.addCase(reactToArticle.fulfilled, (state, action) => {
       const { articleId, reaction: updatedReaction } = action.payload;
 
       if (state.article) {
         state.article = updateReaction(
-          state.article as ArticleWithCommentCountResponseDto,
+          state.article as ArticleWithFollowResponseDto,
           updatedReaction,
         );
       }
@@ -124,7 +139,7 @@ const { reducer, actions, name } = createSlice({
 
       if (state.article) {
         state.article = removeReaction(
-          state.article as ArticleWithCommentCountResponseDto,
+          state.article as ArticleWithFollowResponseDto,
           reactionId,
         );
       }

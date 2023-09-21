@@ -194,6 +194,7 @@ class ArticleController extends Controller {
         return this.find(
           options as ApiHandlerOptions<{
             params: { id: number };
+            user: UserAuthResponseDto;
           }>,
         );
       },
@@ -443,14 +444,19 @@ class ArticleController extends Controller {
    *              schema:
    *                $ref: '#/components/schemas/Article'
    */
+
   private async find(
     options: ApiHandlerOptions<{
       params: { id: number };
+      user: UserAuthResponseDto;
     }>,
   ): Promise<ApiHandlerResponse> {
     return {
       status: HttpCode.OK,
-      payload: await this.articleService.find(options.params.id),
+      payload: await this.articleService.findArticleWithFollow(
+        options.params.id,
+        options.user.id,
+      ),
     };
   }
 

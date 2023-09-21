@@ -16,6 +16,7 @@ import {
   shareArticle,
   toggleIsFavourite,
   updateArticle,
+  updateArticleAuthorFollowInfo,
   updateComment,
 } from './actions.js';
 import { actions } from './articles.slice.js';
@@ -40,6 +41,7 @@ const allActions = {
   setShowFavourites,
   getImprovementSuggestions,
   getImprovementSuggestionsBySession,
+  updateArticleAuthorFollowInfo,
 };
 
 export { allActions as actions };
