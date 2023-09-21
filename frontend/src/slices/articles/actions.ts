@@ -42,38 +42,20 @@ const fetchAll = createAsyncThunk<
   ArticleGetAllResponseDto,
   ArticlesFilters,
   AsyncThunkConfig
->(`${sliceName}/get-all`, async (filters, { extra, getState }) => {
+>(`${sliceName}/get-all`, (filters, { extra }) => {
   const { articleApi } = extra;
-  const newArticles = await articleApi.getAll(filters);
-  const existingArticlesIds = new Set(
-    getState().articles.articles.map((article) => article.id),
-  );
 
-  return {
-    total: newArticles.total,
-    items: newArticles.items.filter(
-      (article) => !existingArticlesIds.has(article.id),
-    ),
-  };
+  return articleApi.getAll(filters);
 });
 
 const fetchOwn = createAsyncThunk<
   ArticleGetAllResponseDto,
   ArticlesFilters,
   AsyncThunkConfig
->(`${sliceName}/get-own`, async (filters, { extra, getState }) => {
+>(`${sliceName}/get-own`, (filters, { extra }) => {
   const { articleApi } = extra;
-  const newArticles = await articleApi.getOwn(filters);
-  const existingArticlesIds = new Set(
-    getState().articles.articles.map((article) => article.id),
-  );
 
-  return {
-    total: newArticles.total,
-    items: newArticles.items.filter(
-      (article) => !existingArticlesIds.has(article.id),
-    ),
-  };
+  return articleApi.getOwn(filters);
 });
 
 const addArticle = createAsyncThunk<
