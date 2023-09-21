@@ -21,7 +21,7 @@ type Properties = {
 };
 
 const ArticleDetails: FC<Properties> = ({
-  authorName = 'Charlie Culhane',
+  authorName,
   authorFollowers = 10,
   authorRating = 700,
   publishedAt,
