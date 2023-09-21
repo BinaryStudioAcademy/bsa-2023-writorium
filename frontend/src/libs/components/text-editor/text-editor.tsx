@@ -8,15 +8,21 @@ import {
 } from 'react-hook-form';
 
 import { getValidClassNames, sanitizeHtml } from '~/libs/helpers/helpers.js';
-import { useEffect, useFormController } from '~/libs/hooks/hooks.js';
+import {
+  useEffect,
+  useFormController,
+  useReference,
+} from '~/libs/hooks/hooks.js';
 
 import { ErrorMessage } from '../components.js';
 import { Toolbar } from './libs/components/components.js';
 import { TEXT_EDITOR_PLACEHOLDER_TEXT } from './libs/constants/constants.js';
 import {
+  FontSize,
   Placeholder,
   StarterKit,
   TextAlign,
+  TextStyle,
   Underline,
   Upperline,
 } from './libs/extensions/extensions.js';
@@ -29,19 +35,6 @@ type Properties<T extends FieldValues> = {
   wasEdited: boolean;
   initialValue: string;
 };
-
-const extensions = [
-  Underline,
-  Upperline,
-  StarterKit,
-  Placeholder.configure({
-    placeholder: TEXT_EDITOR_PLACEHOLDER_TEXT,
-    emptyNodeClass: styles.placeholder,
-  }),
-  TextAlign.configure({
-    types: ['heading', 'paragraph'],
-  }),
-];
 
 const TextEditor = <T extends FieldValues>({
   name,
@@ -57,6 +50,34 @@ const TextEditor = <T extends FieldValues>({
   const handleEditorUpdate: EditorOptions['onUpdate'] = ({ editor }): void => {
     field.onChange(editor.getHTML());
   };
+
+  const wrapperReference = useReference<HTMLDivElement>(null);
+
+  const getWrapperFontSize = (
+    wrapper: HTMLDivElement | null,
+  ): string | null => {
+    if (!wrapper) {
+      return null;
+    }
+    return window.getComputedStyle(wrapper).getPropertyValue('font-size');
+  };
+
+  const extensions = [
+    Underline,
+    Upperline,
+    StarterKit,
+    TextStyle,
+    FontSize.configure({
+      baseFontSize: getWrapperFontSize(wrapperReference.current),
+    }),
+    Placeholder.configure({
+      placeholder: TEXT_EDITOR_PLACEHOLDER_TEXT,
+      emptyNodeClass: styles.placeholder,
+    }),
+    TextAlign.configure({
+      types: ['heading', 'paragraph'],
+    }),
+  ];
 
   const editor = useEditor({
     extensions,
@@ -89,7 +110,7 @@ const TextEditor = <T extends FieldValues>({
   }, [wasEdited, initialValue, editor]);
 
   return (
-    <div className={styles.textEditorWrapper}>
+    <div className={styles.textEditorWrapper} ref={wrapperReference}>
       {editor && <Toolbar editor={editor} />}
       <EditorContent editor={editor} />
       <ErrorMessage error={error as string} />

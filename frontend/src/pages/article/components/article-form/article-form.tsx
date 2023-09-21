@@ -1,5 +1,10 @@
-import { Button, Input, TextEditor } from '~/libs/components/components.js';
-import { ButtonType } from '~/libs/enums/enums.js';
+import {
+  Button,
+  Input,
+  Loader,
+  TextEditor,
+} from '~/libs/components/components.js';
+import { ButtonType, DataStatus } from '~/libs/enums/enums.js';
 import {
   useAppDispatch,
   useAppForm,
@@ -36,16 +41,18 @@ type Properties = {
 const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { generatedPrompt } = useAppSelector(({ prompts }) => ({
-    generatedPrompt: prompts.generatedPrompt,
-  }));
+  const { generatedPrompt, saveArticleStatus } = useAppSelector(
+    ({ prompts, articles }) => ({
+      generatedPrompt: prompts.generatedPrompt,
+      saveArticleStatus: articles.saveArticleStatus,
+    }),
+  );
   const [initialText, setInitialText] = useState(
     DEFAULT_ARTICLE_FORM_PAYLOAD.text,
   );
   const [isContentFromLocalStorage, setIsContentFromLocalStorage] =
     useState(false);
-
-  const { control, errors, handleSubmit, handleReset, isDirty, isSubmitting } =
+  const { control, errors, handleSubmit, handleReset, isDirty } =
     useAppForm<ArticleRequestDto>({
       defaultValues: articleForUpdate
         ? {
@@ -88,6 +95,8 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
   }, [articleForUpdate, handleReset]);
 
   const isDraft = !articleForUpdate?.publishedAt;
+
+  const isLoading = saveArticleStatus === DataStatus.PENDING;
 
   const handleArticleSubmit = useCallback(
     (articleSubmitType: ValueOf<typeof ArticleSubmitType>) =>
@@ -195,55 +204,62 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
   }, [dispatch]);
 
   return (
-    <form
-      method="POST"
-      onSubmit={handleFormSubmit}
-      onReset={handleCancel}
-      className={styles.formContainer}
+    <Loader
+      isLoading={isLoading}
+      hasOverlay
+      type="circular"
+      className={styles.loader}
     >
-      <ArticleCoverUpload
-        name="coverId"
-        control={control}
-        errors={errors}
-        initialPreviewUrl={articleForUpdate?.coverUrl}
-      />
-      <Input
-        type="text"
-        placeholder="Enter the title of the article"
-        name="title"
-        control={control}
-        errors={errors}
-        className={styles.titleInput}
-      />
-      <TextEditor
-        control={control}
-        name="text"
-        errors={errors}
-        wasEdited={isDirty}
-        initialValue={initialText}
-      />
-      <div className={styles.buttonWrapper}>
-        <Button
-          type={ButtonType.RESET}
-          label="Cancel"
-          className={styles.cancelBtn}
+      <form
+        method="POST"
+        onSubmit={handleFormSubmit}
+        onReset={handleCancel}
+        className={styles.formContainer}
+      >
+        <ArticleCoverUpload
+          name="coverId"
+          control={control}
+          errors={errors}
+          initialPreviewUrl={articleForUpdate?.coverUrl}
         />
-        <Button
-          type={ButtonType.SUBMIT}
-          label="Save draft"
-          name="draft"
-          className={styles.saveDraftBtn}
-          disabled={(!isDirty && !isContentFromLocalStorage) || isSubmitting}
+        <Input
+          type="text"
+          placeholder="Enter the title of the article"
+          name="title"
+          control={control}
+          errors={errors}
+          className={styles.titleInput}
         />
-        <Button
-          type={ButtonType.SUBMIT}
-          label="Publish"
-          name="publish"
-          className={styles.publishBtn}
-          disabled={(!isDirty && !isDraft) || isSubmitting}
+        <TextEditor
+          control={control}
+          name="text"
+          errors={errors}
+          wasEdited={isDirty}
+          initialValue={initialText}
         />
-      </div>
-    </form>
+        <div className={styles.buttonWrapper}>
+          <Button
+            type={ButtonType.RESET}
+            label="Cancel"
+            className={styles.cancelBtn}
+          />
+          <Button
+            type={ButtonType.SUBMIT}
+            label="Save draft"
+            name="draft"
+            className={styles.saveDraftBtn}
+            disabled={(!isDirty && !isContentFromLocalStorage) || isLoading}
+          />
+          <Button
+            type={ButtonType.SUBMIT}
+            label="Publish"
+            name="publish"
+            className={styles.publishBtn}
+            disabled={(!isDirty && !isDraft) || isLoading}
+          />
+        </div>
+      </form>
+    </Loader>
   );
 };
 
