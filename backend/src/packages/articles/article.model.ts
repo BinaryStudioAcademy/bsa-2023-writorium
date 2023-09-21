@@ -7,6 +7,7 @@ import {
 import { composeDatabaseRelationPath } from '~/libs/packages/database/libs/helpers/helpers.js';
 
 import { ArticleReactionModel } from '../article-reactions/article-reaction.model.js';
+import { ArticleViewModel } from '../article-views/article-view.model.js';
 import { CommentModel } from '../comments/comments.js';
 import { FileModel } from '../files/file.model.js';
 import { GenreModel } from '../genres/genre.model.js';
@@ -29,6 +30,7 @@ class ArticleModel extends AbstractModel {
   public 'cover': FileModel | null;
   public 'deletedAt': string | null;
   public 'author': UserDetailsModel;
+  public 'isFavourite': boolean;
 
   public static override get tableName(): string {
     return DatabaseTableName.ARTICLES;
@@ -117,6 +119,20 @@ class ArticleModel extends AbstractModel {
           to: composeDatabaseRelationPath<FileModel>(
             DatabaseTableName.FILES,
             'id',
+          ),
+        },
+      },
+      articleViews: {
+        relation: Model.HasManyRelation,
+        modelClass: ArticleViewModel,
+        join: {
+          from: composeDatabaseRelationPath<ArticleModel>(
+            DatabaseTableName.ARTICLES,
+            'id',
+          ),
+          to: composeDatabaseRelationPath<ArticleViewModel>(
+            DatabaseTableName.ARTICLE_VIEWS,
+            'articleId',
           ),
         },
       },

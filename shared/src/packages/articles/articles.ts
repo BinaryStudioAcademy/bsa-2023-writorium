@@ -1,15 +1,21 @@
-export { ArticlesApiPath } from './libs/enums/enums.js';
 export {
-  type ArticleCommentCount,
+  ArticleImprovementSuggestionPriority,
+  ArticlesApiPath,
+} from './libs/enums/enums.js';
+export {
+  type ArticleCounts,
   type ArticleCreateDto,
   type ArticleEntityType,
   type ArticleGetAllResponseDto,
+  type ArticleGetImprovementSuggestionsResponseDto,
+  type ArticleImprovementSuggestion,
   type ArticleRequestDto,
   type ArticleResponseDto,
   type ArticlesFilters,
   type ArticleUpdateRequestDto,
   type ArticleUpdateRequestPayload,
-  type ArticleWithCommentCountResponseDto,
+  type ArticleWithCountsResponseDto,
+  type ArticleWithFollowResponseDto,
   type ArticleWithRelationsType,
   type ReactionResponseDto,
 } from './libs/types/types.js';

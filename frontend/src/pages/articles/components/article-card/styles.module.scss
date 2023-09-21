@@ -194,26 +194,10 @@
   color: var(--dark-green);
 }
 
-.pointerIcon {
-  cursor: pointer;
-}
-
 .iconWrapper {
   display: flex;
   gap: 10px;
   background-color: transparent;
-}
-
-.editIcon,
-.deleteIcon {
-  width: 20px;
-  height: 20px;
-  color: var(--light-green);
-}
-
-.iconButton {
-  align-self: flex-start;
-  background-color: var(--white);
 }
 
 .facebookIconButton {
@@ -221,4 +205,31 @@
   height: 18px;
   color: var(--light-green);
   border-radius: 50%;
+}
+
+.moreActions {
+  z-index: 0;
+  width: 200px;
+  padding: 0;
+  background-color: var(--white);
+  border-radius: 7px;
+  box-shadow: 0 0 6px -2px var(--shadow-color);
+  opacity: 1;
+}
+
+.moreActionsIcon {
+  width: 35px;
+  height: 35px;
+  padding: 5px;
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+}
+
+.moreActionsIcon:hover {
+  background-color: var(--light-gray);
+}
+
+.toolbar {
+  display: flex;
+  gap: 5px;
 }

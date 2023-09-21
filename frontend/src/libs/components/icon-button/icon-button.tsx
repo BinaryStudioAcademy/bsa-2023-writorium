@@ -7,10 +7,13 @@ import styles from './styles.module.scss';
 
 type Properties = {
   iconName: IconName;
-  onClick?: () => void;
+  onClick?:
+    | (() => void)
+    | ((event: React.MouseEvent<HTMLButtonElement>) => void);
   label?: string;
   className?: string;
   iconClassName?: string;
+  isLoading?: boolean;
 };
 
 const IconButton: React.FC<Properties> = ({
@@ -19,11 +22,13 @@ const IconButton: React.FC<Properties> = ({
   label = '',
   className = '',
   iconClassName = '',
+  isLoading,
 }) => (
   <button
     className={getValidClassNames(styles.iconButton, className)}
     type={ButtonType.BUTTON}
     onClick={onClick}
+    disabled={isLoading}
   >
     <Icon iconName={iconName} className={iconClassName} />
     {label}

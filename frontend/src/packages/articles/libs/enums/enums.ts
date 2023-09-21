@@ -1,1 +1,4 @@
-export { ArticlesApiPath } from 'shared/build/index.js';
+export {
+  ArticleImprovementSuggestionPriority,
+  ArticlesApiPath,
+} from 'shared/build/index.js';

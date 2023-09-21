@@ -1,6 +1,8 @@
 import { type IRepository } from '~/libs/interfaces/interfaces.js';
 import { GenreEntity, type GenreModel } from '~/packages/genres/genre.js';
 
+import { UNKNOWN_GENRE_KEY } from './lib/constants/constants.js';
+
 class GenreRepository implements IRepository {
   private genreModel: typeof GenreModel;
 
@@ -14,8 +16,13 @@ class GenreRepository implements IRepository {
     return genres.map((it) => GenreEntity.initialize(it));
   }
 
-  public find(id: number): Promise<unknown> {
-    return Promise.resolve(id);
+  public async find(id: number): Promise<GenreEntity | null> {
+    const genre = await this.genreModel.query().findById(id);
+    if (!genre) {
+      return null;
+    }
+
+    return GenreEntity.initialize(genre);
   }
 
   public async findByKey(key: string): Promise<GenreEntity | null> {
@@ -41,6 +48,10 @@ class GenreRepository implements IRepository {
       .execute();
 
     return GenreEntity.initialize(item);
+  }
+
+  public async getUnknownGenre(): Promise<GenreEntity> {
+    return (await this.findByKey(UNKNOWN_GENRE_KEY)) as GenreEntity;
   }
 
   public update(): Promise<unknown> {

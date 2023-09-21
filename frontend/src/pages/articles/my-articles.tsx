@@ -1,4 +1,4 @@
-import { InfiniteScroll } from '~/libs/components/components.js';
+import { InfiniteScroll, ScrollToTop } from '~/libs/components/components.js';
 import { checkIsEqual, getArticleTags } from '~/libs/helpers/helpers.js';
 import {
   useAppDispatch,
@@ -29,6 +29,7 @@ const MyArticles: React.FC = () => {
     titleFilter: '',
     authorId: null,
     genreId: null,
+    showFavourites: false,
   });
 
   const { hasMore, loadMore, resetSkip } = usePagination();
@@ -60,16 +61,14 @@ const MyArticles: React.FC = () => {
       if (!checkIsEqual(filters, payload)) {
         setFilters(payload);
         resetSkip();
+        if (filters.showFavourites !== payload.showFavourites) {
+          void dispatch(
+            articlesActions.setShowFavourites(payload.showFavourites),
+          );
+        }
       }
     },
-    [filters, resetSkip],
-  );
-
-  const handleDeleteArticle = useCallback(
-    (id: number): void => {
-      void dispatch(articlesActions.deleteArticle({ id }));
-    },
-    [dispatch],
+    [filters, resetSkip, dispatch],
   );
 
   useEffect(() => {
@@ -83,31 +82,33 @@ const MyArticles: React.FC = () => {
   }, [dispatch, handleLoadArticles, handleLoadAuthors, handleLoadGenres]);
 
   return (
-    <div className={styles.articlesWrapper}>
-      <InfiniteScroll
-        hasMore={hasMore}
-        className={styles.articles}
-        dataLength={articles.length}
-        fetchData={handleLoadArticles}
-      >
-        {Boolean(articles.length) &&
-          articles.map((article) => (
-            <ArticleCard
-              key={article.id}
-              article={article}
-              author={article.author}
-              tags={getArticleTags(article)}
-              reactions={article.reactions}
-              onDeleteArticle={handleDeleteArticle}
-            />
-          ))}
-      </InfiniteScroll>
-      <ArticleFilters
-        genreSelectOptions={getSelectGenresOptions(genres)}
-        authorsSelectOptions={getSelectAuthorsOptions(authors)}
-        onSubmit={handleFiltersSubmit}
-      />
-    </div>
+    <>
+      <div className={styles.articlesWrapper}>
+        <InfiniteScroll
+          hasMore={hasMore}
+          className={styles.articles}
+          dataLength={articles.length}
+          fetchData={handleLoadArticles}
+        >
+          {Boolean(articles.length) &&
+            articles.map((article) => (
+              <ArticleCard
+                key={article.id}
+                article={article}
+                author={article.author}
+                tags={getArticleTags(article)}
+                reactions={article.reactions}
+              />
+            ))}
+        </InfiniteScroll>
+        <ArticleFilters
+          genreSelectOptions={getSelectGenresOptions(genres)}
+          authorsSelectOptions={getSelectAuthorsOptions(authors)}
+          onSubmit={handleFiltersSubmit}
+        />
+      </div>
+      <ScrollToTop />
+    </>
   );
 };
 

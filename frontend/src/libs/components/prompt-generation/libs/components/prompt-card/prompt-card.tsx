@@ -11,13 +11,13 @@ type Properties = {
 };
 
 const PromptCard: React.FC<Properties> = ({ category, text, isGenerating }) => (
-  <li className={styles.container}>
+  <li>
     <div className={styles.category}>
       <span className={styles.categoryText}>{category}</span>
     </div>
     <div className={styles.prompt}>
       <Loader isLoading={isGenerating} type="dots">
-        <p className={styles.promptText}>{text}</p>
+        <p className={styles.promptText}>{text.toLowerCase()}</p>
       </Loader>
     </div>
   </li>

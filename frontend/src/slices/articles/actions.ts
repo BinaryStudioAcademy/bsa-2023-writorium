@@ -1,16 +1,18 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
+import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
 
 import { PREVIOUS_PAGE_INDEX } from '~/libs/constants/constants.js';
 import { AppRoute } from '~/libs/enums/enums.js';
+import { StorageKey } from '~/libs/packages/storage/storage.js';
 import { type AsyncThunkConfig } from '~/libs/types/types.js';
 import {
   type ArticleGetAllResponseDto,
+  type ArticleImprovementSuggestion,
   type ArticleReactionRequestDto,
   type ArticleRequestDto,
-  type ArticleResponseDto,
   type ArticlesFilters,
   type ArticleUpdateRequestPayload,
-  type ArticleWithCommentCountResponseDto,
+  type ArticleWithCountsResponseDto,
+  type ArticleWithFollowResponseDto,
   type ReactionResponseDto,
 } from '~/packages/articles/articles.js';
 import {
@@ -22,9 +24,11 @@ import {
 import { type GenreGetAllResponseDto } from '~/packages/genres/genres.js';
 import { NotificationType } from '~/packages/notification/notification.js';
 import { type PromptRequestDto } from '~/packages/prompts/prompts.js';
+import { type UserFollowResponseDto } from '~/packages/users/users.js';
 
 import { actions as appActions } from '../app/app.js';
 import { name as sliceName } from './articles.slice.js';
+import { parseImprovementSuggestionsJSON } from './libs/helpers/helpers.js';
 
 const fetchAll = createAsyncThunk<
   ArticleGetAllResponseDto,
@@ -47,7 +51,7 @@ const fetchOwn = createAsyncThunk<
 });
 
 const createArticle = createAsyncThunk<
-  ArticleWithCommentCountResponseDto,
+  ArticleWithCountsResponseDto,
   {
     articlePayload: ArticleRequestDto;
     generatedPrompt: PromptRequestDto | null;
@@ -82,13 +86,29 @@ const createArticle = createAsyncThunk<
 );
 
 const updateArticle = createAsyncThunk<
-  ArticleWithCommentCountResponseDto,
+  ArticleWithCountsResponseDto,
   ArticleUpdateRequestPayload,
   AsyncThunkConfig
 >(`${sliceName}/update`, async (payload, { extra, dispatch }) => {
-  const { articleApi } = extra;
+  const { articleApi, sessionStorage } = extra;
 
   const updatedArticle = await articleApi.update(payload);
+
+  const existingSuggestionsJSON = await sessionStorage.get(
+    StorageKey.ARTICLES_IMPROVEMENT_SUGGESTIONS,
+  );
+
+  const existingSuggestionsByArticles = parseImprovementSuggestionsJSON(
+    existingSuggestionsJSON,
+  );
+
+  await sessionStorage.set(
+    StorageKey.ARTICLES_IMPROVEMENT_SUGGESTIONS,
+    JSON.stringify({
+      ...existingSuggestionsByArticles,
+      [payload.articleId]: null,
+    }),
+  );
 
   dispatch(appActions.navigate(AppRoute.ARTICLES_MY_ARTICLES));
 
@@ -96,7 +116,7 @@ const updateArticle = createAsyncThunk<
 });
 
 const getArticle = createAsyncThunk<
-  ArticleResponseDto,
+  ArticleWithFollowResponseDto,
   number,
   AsyncThunkConfig
 >(`${sliceName}/getArticle`, (id, { extra }) => {
@@ -134,7 +154,7 @@ const shareArticle = createAsyncThunk<
 });
 
 const fetchSharedArticle = createAsyncThunk<
-  ArticleResponseDto,
+  ArticleWithFollowResponseDto,
   { token: string },
   AsyncThunkConfig
 >(`${sliceName}/shared`, (articlePayload, { extra }) => {
@@ -210,7 +230,7 @@ const updateComment = createAsyncThunk<
 });
 
 const deleteArticle = createAsyncThunk<
-  ArticleWithCommentCountResponseDto,
+  ArticleWithCountsResponseDto,
   { id: number; hasRedirect?: boolean },
   AsyncThunkConfig
 >(
@@ -224,8 +244,84 @@ const deleteArticle = createAsyncThunk<
       dispatch(appActions.navigate(PREVIOUS_PAGE_INDEX));
     }
 
+    void dispatch(
+      appActions.notify({
+        type: NotificationType.SUCCESS,
+        message: 'The article has been deleted successfully.',
+      }),
+    );
+
     return deletedArticle;
   },
+);
+
+const getImprovementSuggestionsBySession = createAsyncThunk<
+  ArticleImprovementSuggestion[] | null,
+  number,
+  AsyncThunkConfig
+>(
+  `${sliceName}/get-improvement-suggestions-by-session`,
+  async (id, { extra }) => {
+    const { sessionStorage } = extra;
+    const suggestionsJSON = await sessionStorage.get(
+      StorageKey.ARTICLES_IMPROVEMENT_SUGGESTIONS,
+    );
+
+    const existingSuggestionsByArticles =
+      parseImprovementSuggestionsJSON(suggestionsJSON);
+
+    if (existingSuggestionsByArticles[id]) {
+      return existingSuggestionsByArticles[id];
+    }
+
+    return null;
+  },
+);
+
+const getImprovementSuggestions = createAsyncThunk<
+  ArticleImprovementSuggestion[],
+  number,
+  AsyncThunkConfig
+>(`${sliceName}/get-improvement-suggestions`, async (id, { extra }) => {
+  const { articleApi, sessionStorage } = extra;
+
+  const newSuggestions = await articleApi.getImprovementSuggestions(id);
+
+  const existingSuggestionsJSON = await sessionStorage.get(
+    StorageKey.ARTICLES_IMPROVEMENT_SUGGESTIONS,
+  );
+
+  const existingSuggestionsByArticles = parseImprovementSuggestionsJSON(
+    existingSuggestionsJSON,
+  );
+
+  await sessionStorage.set(
+    StorageKey.ARTICLES_IMPROVEMENT_SUGGESTIONS,
+    JSON.stringify({
+      ...existingSuggestionsByArticles,
+      [id]: newSuggestions.items,
+    }),
+  );
+
+  return newSuggestions.items;
+});
+
+const toggleIsFavourite = createAsyncThunk<
+  ArticleWithCountsResponseDto,
+  number,
+  AsyncThunkConfig
+>(`${sliceName}/toggleIsFavourite`, (id, { extra }) => {
+  const { articleApi } = extra;
+
+  return articleApi.toggleIsFavourite(id);
+});
+
+const setShowFavourites = createAction<boolean>(
+  `${sliceName}/toggleIsFavourite`,
+);
+
+const updateArticleAuthorFollowInfo = createAction<UserFollowResponseDto>(
+  `${sliceName}/update-article-author-follow-info`,
 );
 
 export {
@@ -239,8 +335,13 @@ export {
   fetchSharedArticle,
   getAllGenres,
   getArticle,
+  getImprovementSuggestions,
+  getImprovementSuggestionsBySession,
   reactToArticle,
+  setShowFavourites,
   shareArticle,
+  toggleIsFavourite,
   updateArticle,
+  updateArticleAuthorFollowInfo,
   updateComment,
 };

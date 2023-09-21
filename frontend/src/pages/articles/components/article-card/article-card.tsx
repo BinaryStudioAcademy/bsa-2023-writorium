@@ -1,15 +1,15 @@
-import { matchPath } from 'react-router-dom';
-
 import {
   Avatar,
   Icon,
   IconButton,
   Link,
+  Popover,
   ShareOnFacebookButton,
   Tags,
 } from '~/libs/components/components.js';
 import {
   AppRoute,
+  DataStatus,
   DateFormat,
   LinkHash,
   Reaction,
@@ -18,6 +18,7 @@ import {
   configureString,
   getFormattedDate,
   getFullName,
+  getReactionConvertedToBoolean,
   getReactionsInfo,
   getValidClassNames,
   sanitizeHtml,
@@ -26,11 +27,11 @@ import {
   useAppDispatch,
   useAppSelector,
   useCallback,
-  useLocation,
+  useModal,
 } from '~/libs/hooks/hooks.js';
 import { type TagType, type ValueOf } from '~/libs/types/types.js';
 import {
-  type ArticleWithCommentCountResponseDto,
+  type ArticleWithCountsResponseDto,
   getReadTimeString,
   type ReactionResponseDto,
 } from '~/packages/articles/articles.js';
@@ -38,18 +39,17 @@ import {
   type UserAuthResponseDto,
   type UserDetailsResponseDto,
 } from '~/packages/users/users.js';
+import { ConfirmArticleDeleteDialog } from '~/pages/libs/components/components.js';
 import { actions as articlesActions } from '~/slices/articles/articles.js';
 
-import { MOCKED_REACTIONS } from '../../libs/constants.js';
-import { getReactionConvertedToBoolean } from '../../libs/helpers/helpers.js';
+import { PopoverButtonsGroup } from './libs/components/components.js';
 import styles from './styles.module.scss';
 
 type Properties = {
-  article: ArticleWithCommentCountResponseDto;
+  article: ArticleWithCountsResponseDto;
   author: UserDetailsResponseDto;
   tags: TagType[];
   reactions: ReactionResponseDto[];
-  onDeleteArticle?: (id: number) => void;
 };
 
 const ArticleCard: React.FC<Properties> = ({
@@ -57,16 +57,14 @@ const ArticleCard: React.FC<Properties> = ({
   author,
   tags,
   reactions,
-  onDeleteArticle,
 }) => {
   const dispatch = useAppDispatch();
-  const user = useAppSelector(({ auth }) => auth.user) as UserAuthResponseDto;
-  const { pathname } = useLocation();
-
-  const isMyArticles = matchPath(
-    { path: AppRoute.ARTICLES_MY_ARTICLES },
-    pathname,
-  );
+  const { handleToggleModalOpen, isOpen } = useModal();
+  const { user, articlesDataStatus } = useAppSelector(({ auth, articles }) => ({
+    user: auth.user as UserAuthResponseDto,
+    articlesDataStatus: articles.dataStatus,
+  }));
+  const isLoading = articlesDataStatus === DataStatus.PENDING;
   const {
     publishedAt,
     title,
@@ -76,6 +74,8 @@ const ArticleCard: React.FC<Properties> = ({
     coverUrl,
     readTime,
     commentCount,
+    isFavourite,
+    viewCount,
   } = article;
   const { likesCount, dislikesCount, hasAlreadyReactedWith } = getReactionsInfo(
     user.id,
@@ -87,9 +87,10 @@ const ArticleCard: React.FC<Properties> = ({
     id: String(id),
   }) as typeof AppRoute.ARTICLES_$ID;
 
-  const handleDeleteArticle = useCallback(() => {
-    onDeleteArticle?.(id);
-  }, [id, onDeleteArticle]);
+  const handleToggleIsFavourite = useCallback(() => {
+    void dispatch(articlesActions.toggleIsFavourite(id));
+  }, [dispatch, id]);
+
   const isOwnArticle = user.id === userId;
 
   const handleReaction = (reaction: ValueOf<typeof Reaction>): void => {
@@ -126,6 +127,16 @@ const ArticleCard: React.FC<Properties> = ({
     void dispatch(articlesActions.shareArticle({ id: id.toString() }));
   }, [dispatch, id]);
 
+  const handleDeleteArticle = useCallback((): void => {
+    void dispatch(articlesActions.deleteArticle({ id }));
+  }, [dispatch, id]);
+
+  const handleDeleteButtonClick = useCallback((): void => {
+    if (!isOpen) {
+      handleToggleModalOpen();
+    }
+  }, [handleToggleModalOpen, isOpen]);
+
   return (
     <article className={styles.article}>
       <div className={styles.header}>
@@ -150,37 +161,28 @@ const ArticleCard: React.FC<Properties> = ({
             </span>
           )}
         </div>
-        <div className={styles.iconWrapper}>
-          {isMyArticles && (
-            <>
-              <IconButton
-                className={styles.iconButton}
-                iconName="trashBin"
-                iconClassName={getValidClassNames(
-                  styles.deleteIcon,
-                  styles.pointerIcon,
-                )}
-                onClick={handleDeleteArticle}
+
+        <div className={styles.toolbar}>
+          <IconButton
+            iconName={isFavourite ? 'favoriteFilled' : 'favorite'}
+            onClick={handleToggleIsFavourite}
+            isLoading={isLoading}
+          />
+          <Popover
+            className={styles.moreActions}
+            content={
+              <PopoverButtonsGroup
+                isOwnArticle={isOwnArticle}
+                article={article}
+                onDeleteButtonClick={handleDeleteButtonClick}
               />
-              <Link
-                to={
-                  configureString(AppRoute.ARTICLES_EDIT_$ID, {
-                    id: String(id),
-                  }) as typeof AppRoute.ARTICLES_EDIT_$ID
-                }
-                state={article}
-              >
-                <Icon
-                  iconName="edit"
-                  className={getValidClassNames(
-                    styles.editIcon,
-                    styles.pointerIcon,
-                  )}
-                />
-              </Link>
-            </>
-          )}
-          <Icon iconName="favorite" className={styles.pointerIcon} />
+            }
+          >
+            <Icon
+              className={styles.moreActionsIcon}
+              iconName="ellipsisVertical"
+            />
+          </Popover>
         </div>
       </div>
       <div
@@ -219,7 +221,7 @@ const ArticleCard: React.FC<Properties> = ({
           </li>
           <li className={styles.footerIcon}>
             <Icon iconName="view" />
-            <span>{MOCKED_REACTIONS.views}</span>
+            <span>{viewCount}</span>
           </li>
           <li>
             <IconButton
@@ -261,6 +263,10 @@ const ArticleCard: React.FC<Properties> = ({
           Read more
         </Link>
       </div>
+      <ConfirmArticleDeleteDialog
+        onDeleteArticle={handleDeleteArticle}
+        trigger={{ onToggleModalOpen: handleToggleModalOpen, isOpen }}
+      />
     </article>
   );
 };

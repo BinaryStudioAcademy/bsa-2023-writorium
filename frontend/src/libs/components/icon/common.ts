@@ -1,11 +1,14 @@
 import { ReactComponent as ArrowDown } from '~/assets/img/icons/arrow-down-icon.svg';
 import { ReactComponent as ArrowUp } from '~/assets/img/icons/arrow-up-icon.svg';
+import { ReactComponent as AutoFix } from '~/assets/img/icons/auto-fix-icon.svg';
 import { ReactComponent as Bell } from '~/assets/img/icons/bell-icon.svg';
 import { ReactComponent as Comment } from '~/assets/img/icons/comment-icon.svg';
 import { ReactComponent as CrossMark } from '~/assets/img/icons/cross-mark-icon.svg';
 import { ReactComponent as Dislike } from '~/assets/img/icons/dislike-icon.svg';
+import { ReactComponent as ellipsisVertical } from '~/assets/img/icons/ellipsis-vertical-icon.svg';
 import { ReactComponent as Facebook } from '~/assets/img/icons/facebook-icon.svg';
 import { ReactComponent as Favorite } from '~/assets/img/icons/favorite-icon.svg';
+import { ReactComponent as FavoriteFilled } from '~/assets/img/icons/favourite-filled-icon.svg';
 import { ReactComponent as Header1 } from '~/assets/img/icons/format-header-1-icon.svg';
 import { ReactComponent as Header2 } from '~/assets/img/icons/format-header-2-icon.svg';
 import { ReactComponent as Header3 } from '~/assets/img/icons/format-header-3-icon.svg';
@@ -31,10 +34,13 @@ import { ReactComponent as Notes } from '~/assets/img/icons/notes-icon.svg';
 import { ReactComponent as Edit } from '~/assets/img/icons/pencil-edit-icon.svg';
 import { ReactComponent as Refresh } from '~/assets/img/icons/refresh-icon.svg';
 import { ReactComponent as Renew } from '~/assets/img/icons/renew-icon.svg';
+import { ReactComponent as ScrollArrowUp } from '~/assets/img/icons/scroll-arrow-up-icon.svg';
 import { ReactComponent as Search } from '~/assets/img/icons/search-icon.svg';
 import { ReactComponent as Share } from '~/assets/img/icons/share-icon.svg';
 import { ReactComponent as Sparkles } from '~/assets/img/icons/sparkles-icon.svg';
 import { ReactComponent as Star } from '~/assets/img/icons/star-icon.svg';
+import { ReactComponent as TextSizeDecrease } from '~/assets/img/icons/text-decrease-icon.svg';
+import { ReactComponent as TextSizeIncrease } from '~/assets/img/icons/text-increase-icon.svg';
 import { ReactComponent as TrashBinIcon } from '~/assets/img/icons/trash-bin-icon.svg';
 import { ReactComponent as View } from '~/assets/img/icons/view-icon.svg';
 import { ReactComponent as WritoriumLogo } from '~/assets/img/icons/writorium-logo-icon.svg';
@@ -48,6 +54,7 @@ type IconName =
   | 'like'
   | 'dislike'
   | 'favorite'
+  | 'favoriteFilled'
   | 'textAlignLeft'
   | 'textAlignCenter'
   | 'textAlignRight'
@@ -79,7 +86,12 @@ type IconName =
   | 'header5'
   | 'header6'
   | 'trashBin'
-  | 'facebook';
+  | 'facebook'
+  | 'autoFix'
+  | 'scrollArrowUp'
+  | 'textSizeIncrease'
+  | 'textSizeDecrease'
+  | 'ellipsisVertical';
 
 const iconNameToIcon: Record<
   IconName,
@@ -93,6 +105,7 @@ const iconNameToIcon: Record<
   like: Like,
   dislike: Dislike,
   favorite: Favorite,
+  favoriteFilled: FavoriteFilled,
   textAlignLeft: TextAlignLeft,
   textAlignCenter: TextAlignCenter,
   textAlignRight: TextAlignRight,
@@ -125,6 +138,11 @@ const iconNameToIcon: Record<
   header6: Header6,
   trashBin: TrashBinIcon,
   facebook: Facebook,
+  autoFix: AutoFix,
+  ellipsisVertical: ellipsisVertical,
+  scrollArrowUp: ScrollArrowUp,
+  textSizeDecrease: TextSizeDecrease,
+  textSizeIncrease: TextSizeIncrease,
 };
 
 export { type IconName, iconNameToIcon };

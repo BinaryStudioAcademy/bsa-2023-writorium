@@ -1,5 +1,10 @@
-import { Button, Input, TextEditor } from '~/libs/components/components.js';
-import { ButtonType } from '~/libs/enums/enums.js';
+import {
+  Button,
+  Input,
+  Loader,
+  TextEditor,
+} from '~/libs/components/components.js';
+import { ButtonType, DataStatus } from '~/libs/enums/enums.js';
 import {
   useAppDispatch,
   useAppForm,
@@ -34,10 +39,13 @@ type Properties = {
 const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { generatedPrompt } = useAppSelector(({ prompts }) => ({
-    generatedPrompt: prompts.generatedPrompt,
-  }));
-  const { control, errors, handleSubmit, handleReset, isDirty, isSubmitting } =
+  const { generatedPrompt, saveArticleStatus } = useAppSelector(
+    ({ prompts, articles }) => ({
+      generatedPrompt: prompts.generatedPrompt,
+      saveArticleStatus: articles.saveArticleStatus,
+    }),
+  );
+  const { control, errors, handleSubmit, handleReset, isDirty } =
     useAppForm<ArticleRequestDto>({
       defaultValues: articleForUpdate
         ? {
@@ -53,6 +61,8 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
     });
 
   const isDraft = !articleForUpdate?.publishedAt;
+
+  const isLoading = saveArticleStatus === DataStatus.PENDING;
 
   const handleArticleSubmit = useCallback(
     (articleSubmitType: ValueOf<typeof ArticleSubmitType>) =>
@@ -76,23 +86,27 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
   );
 
   const handleArticleUpdate = useCallback(
-    (payload: ArticleRequestDto): void => {
-      if (!articleForUpdate) {
-        return;
-      }
+    (articleSubmitType: ValueOf<typeof ArticleSubmitType>) =>
+      (payload: ArticleRequestDto): void => {
+        if (!articleForUpdate) {
+          return;
+        }
+        const isArticleDrafted = articleSubmitType === ArticleSubmitType.DRAFT;
 
-      const updatePayload = {
-        articleId: articleForUpdate.id,
-        articleForUpdate: {
-          text: payload.text,
-          title: payload.title,
-          publishedAt: articleForUpdate.publishedAt ?? new Date().toISOString(),
-          coverId: payload.coverId,
-        },
-      };
+        const updatePayload = {
+          articleId: articleForUpdate.id,
+          articleForUpdate: {
+            text: payload.text,
+            title: payload.title,
+            publishedAt: isArticleDrafted
+              ? null
+              : articleForUpdate.publishedAt ?? new Date().toISOString(),
+            coverId: payload.coverId,
+          },
+        };
 
-      void dispatch(articlesActions.updateArticle(updatePayload));
-    },
+        void dispatch(articlesActions.updateArticle(updatePayload));
+      },
 
     [dispatch, articleForUpdate],
   );
@@ -100,14 +114,14 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
   const handleFormSubmit = useCallback(
     (event_: React.BaseSyntheticEvent<SubmitEvent>): void => {
       const button = event_.nativeEvent.submitter as HTMLButtonElement;
+      const submitType = button.name as ValueOf<typeof ArticleSubmitType>;
 
-      void handleSubmit(
-        articleForUpdate
-          ? handleArticleUpdate
-          : handleArticleSubmit(
-              button.name as ValueOf<typeof ArticleSubmitType>,
-            ),
-      )(event_);
+      if (articleForUpdate) {
+        void handleSubmit(handleArticleUpdate(submitType))(event_);
+        return;
+      }
+
+      void handleSubmit(handleArticleSubmit(submitType))(event_);
     },
     [handleSubmit, handleArticleSubmit, articleForUpdate, handleArticleUpdate],
   );
@@ -136,7 +150,12 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
   }, [dispatch]);
 
   return (
-    <div>
+    <Loader
+      isLoading={isLoading}
+      hasOverlay
+      type="circular"
+      className={styles.loader}
+    >
       <form
         method="POST"
         onSubmit={handleFormSubmit}
@@ -169,25 +188,23 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
             label="Cancel"
             className={styles.cancelBtn}
           />
-          {!articleForUpdate && (
-            <Button
-              type={ButtonType.SUBMIT}
-              label="Save draft"
-              name="draft"
-              className={styles.saveDraftBtn}
-              disabled={!isDirty || isSubmitting}
-            />
-          )}
+          <Button
+            type={ButtonType.SUBMIT}
+            label="Save draft"
+            name="draft"
+            className={styles.saveDraftBtn}
+            disabled={!isDirty || isLoading}
+          />
           <Button
             type={ButtonType.SUBMIT}
             label="Publish"
             name="publish"
             className={styles.publishBtn}
-            disabled={(!isDirty && !isDraft) || isSubmitting}
+            disabled={(!isDirty && !isDraft) || isLoading}
           />
         </div>
       </form>
-    </div>
+    </Loader>
   );
 };
 

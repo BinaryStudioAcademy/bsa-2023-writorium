@@ -8,15 +8,21 @@ import {
 } from 'react-hook-form';
 
 import { getValidClassNames, sanitizeHtml } from '~/libs/helpers/helpers.js';
-import { useEffect, useFormController, useRef } from '~/libs/hooks/hooks.js';
+import {
+  useEffect,
+  useFormController,
+  useReference,
+} from '~/libs/hooks/hooks.js';
 
 import { ErrorMessage } from '../components.js';
 import { Toolbar } from './libs/components/components.js';
 import { TEXT_EDITOR_PLACEHOLDER_TEXT } from './libs/constants/constants.js';
 import {
+  FontSize,
   Placeholder,
   StarterKit,
   TextAlign,
+  TextStyle,
   Underline,
   Upperline,
 } from './libs/extensions/extensions.js';
@@ -29,19 +35,6 @@ type Properties<T extends FieldValues> = {
   wasEdited: boolean;
 };
 
-const extensions = [
-  Underline,
-  Upperline,
-  StarterKit,
-  Placeholder.configure({
-    placeholder: TEXT_EDITOR_PLACEHOLDER_TEXT,
-    emptyNodeClass: styles.placeholder,
-  }),
-  TextAlign.configure({
-    types: ['heading', 'paragraph'],
-  }),
-];
-
 const TextEditor = <T extends FieldValues>({
   name,
   errors,
@@ -51,11 +44,39 @@ const TextEditor = <T extends FieldValues>({
   const { field } = useFormController({ name, control });
   const error = errors[name]?.message;
   const hasError = Boolean(error);
-  const initialFieldValue = useRef<string>(field.value);
+  const initialFieldValue = useReference<string>(field.value);
 
   const handleEditorUpdate: EditorOptions['onUpdate'] = ({ editor }): void => {
     field.onChange(editor.getHTML());
   };
+
+  const wrapperReference = useReference<HTMLDivElement>(null);
+
+  const getWrapperFontSize = (
+    wrapper: HTMLDivElement | null,
+  ): string | null => {
+    if (!wrapper) {
+      return null;
+    }
+    return window.getComputedStyle(wrapper).getPropertyValue('font-size');
+  };
+
+  const extensions = [
+    Underline,
+    Upperline,
+    StarterKit,
+    TextStyle,
+    FontSize.configure({
+      baseFontSize: getWrapperFontSize(wrapperReference.current),
+    }),
+    Placeholder.configure({
+      placeholder: TEXT_EDITOR_PLACEHOLDER_TEXT,
+      emptyNodeClass: styles.placeholder,
+    }),
+    TextAlign.configure({
+      types: ['heading', 'paragraph'],
+    }),
+  ];
 
   const editor = useEditor({
     extensions,
@@ -85,10 +106,10 @@ const TextEditor = <T extends FieldValues>({
     if (!wasEdited && editor) {
       editor.commands.setContent(initialFieldValue.current);
     }
-  }, [wasEdited, editor]);
+  }, [wasEdited, initialFieldValue, editor]);
 
   return (
-    <div className={styles.textEditorWrapper}>
+    <div className={styles.textEditorWrapper} ref={wrapperReference}>
       {editor && <Toolbar editor={editor} />}
       <EditorContent editor={editor} />
       <ErrorMessage error={error as string} />

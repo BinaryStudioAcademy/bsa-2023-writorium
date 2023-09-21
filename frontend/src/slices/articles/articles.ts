@@ -9,9 +9,14 @@ import {
   fetchSharedArticle,
   getAllGenres,
   getArticle,
+  getImprovementSuggestions,
+  getImprovementSuggestionsBySession,
   reactToArticle,
+  setShowFavourites,
   shareArticle,
+  toggleIsFavourite,
   updateArticle,
+  updateArticleAuthorFollowInfo,
   updateComment,
 } from './actions.js';
 import { actions } from './articles.slice.js';
@@ -32,6 +37,11 @@ const allActions = {
   deleteArticleReaction,
   shareArticle,
   fetchSharedArticle,
+  toggleIsFavourite,
+  setShowFavourites,
+  getImprovementSuggestions,
+  getImprovementSuggestionsBySession,
+  updateArticleAuthorFollowInfo,
 };
 
 export { allActions as actions };

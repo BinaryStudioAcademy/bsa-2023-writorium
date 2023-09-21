@@ -2,7 +2,6 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  max-width: 830px;
 }
 
 .titleInput {
@@ -43,4 +42,11 @@
 .publishBtn:hover {
   color: var(--white);
   background-color: var(--light-green);
+}
+
+.loader {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
