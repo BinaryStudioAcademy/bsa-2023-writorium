@@ -1,5 +1,6 @@
 export {
   ArticleImprovementSuggestionPriority,
+  ArticlePublishStatus,
   ArticlesApiPath,
 } from './libs/enums/enums.js';
 export {
@@ -22,6 +23,7 @@ export {
 } from './libs/types/types.js';
 export {
   articleCreate as articleCreateValidationSchema,
+  articleGenreStatsFilters as articleGenreStatsFiltersValidationSchema,
   articlesFilters as articlesFiltersValidationSchema,
   articlesFormFilters as articlesFormFiltersValidationSchema,
   articleUpdate as articleUpdateValidationSchema,
