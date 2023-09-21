@@ -66,6 +66,8 @@ const SharedArticlePage: React.FC = () => {
                   publishedAt={article.publishedAt ?? ''}
                   genre={article.genre ?? ''}
                   avatarUrl={article.author.avatarUrl}
+                  authorFollowers={article.author.followersCount}
+                  isShared
                 />
               )}
             </>

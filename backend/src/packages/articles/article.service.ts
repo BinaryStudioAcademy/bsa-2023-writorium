@@ -15,6 +15,7 @@ import {
 } from '~/libs/packages/exceptions/exceptions.js';
 import { type OpenAIService } from '~/libs/packages/openai/openai.package.js';
 import { token as articleToken } from '~/libs/packages/token/token.js';
+import { type FollowRepository } from '~/packages/follow/follow.js';
 
 import { GenreEntity } from '../genres/genre.entity.js';
 import { type GenreRepository } from '../genres/genre.repository.js';
@@ -42,6 +43,7 @@ import {
   type ArticlesFilters,
   type ArticleUpdateRequestDto,
   type ArticleWithCommentCountResponseDto,
+  type ArticleWithFollowResponseDto,
   type DetectedArticleGenre,
   type UserActivityResponseDto,
   type UserArticlesGenreStatsResponseDto,
@@ -51,19 +53,23 @@ class ArticleService implements IService {
   private articleRepository: ArticleRepository;
   private openAIService: OpenAIService;
   private genreRepository: GenreRepository;
+  private followRepository: FollowRepository;
 
   public constructor({
     articleRepository,
     openAIService,
     genreRepository,
+    followRepository,
   }: {
     articleRepository: ArticleRepository;
     openAIService: OpenAIService;
     genreRepository: GenreRepository;
+    followRepository: FollowRepository;
   }) {
     this.articleRepository = articleRepository;
     this.openAIService = openAIService;
     this.genreRepository = genreRepository;
+    this.followRepository = followRepository;
   }
 
   private async detectArticleGenreFromText(
@@ -188,6 +194,30 @@ class ArticleService implements IService {
     }
 
     return article.toObjectWithRelations();
+  }
+
+  public async findArticleWithFollow(
+    id: number,
+    userId?: number,
+  ): Promise<ArticleWithFollowResponseDto | null> {
+    const article = await this.articleRepository.find(id);
+
+    if (!article) {
+      return null;
+    }
+
+    const articleObject = article.toObjectWithRelations();
+
+    const { isFollowed, followersCount } =
+      await this.followRepository.getAuthorFollowersCountAndStatus({
+        userId,
+        authorId: articleObject.userId,
+      });
+
+    return {
+      ...articleObject,
+      author: { ...articleObject.author, isFollowed, followersCount },
+    };
   }
 
   private async generateImprovementSuggestions(
@@ -383,7 +413,7 @@ class ArticleService implements IService {
 
   public async findShared(
     headers: IncomingHttpHeaders,
-  ): Promise<ArticleResponseDto> {
+  ): Promise<ArticleWithFollowResponseDto> {
     const token = headers[CustomHttpHeader.SHARED_ARTICLE_TOKEN] as string;
 
     if (!token) {
@@ -392,7 +422,9 @@ class ArticleService implements IService {
 
     const encoded = await articleToken.verifyToken(token);
 
-    const articleFound = await this.find(Number(encoded.articleId));
+    const articleFound = await this.findArticleWithFollow(
+      Number(encoded.articleId),
+    );
 
     if (!articleFound) {
       throw new NotFoundError(ExceptionMessage.ARTICLE_NOT_FOUND);
