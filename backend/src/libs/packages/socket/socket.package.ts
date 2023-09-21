@@ -10,8 +10,6 @@ import { SocketServer } from './libs/types/types.js';
 class SocketService {
   private '_io': SocketServer;
 
-  private sockets = new Map<string, Socket>();
-
   public get io(): SocketServer {
     return this._io;
   }
@@ -35,10 +33,6 @@ class SocketService {
         );
     }
   };
-
-  public getSocket(roomId: string): Socket | undefined {
-    return this.sockets.get(roomId);
-  }
 
   private handleNamespaceConnection = (socket: Socket): void => {
     socket.on(SocketEvent.JOIN_ROOM, (roomId: ValueOf<typeof SocketRoom>) => {
