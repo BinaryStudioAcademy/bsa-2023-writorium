@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 
+import { AppRoute } from '~/libs/enums/app-route.enum.js';
 import { SocketNamespace, SocketRoom } from '~/libs/packages/socket/socket.js';
 import {
   type ArticleReactionsSocketEventPayload,
@@ -19,15 +21,18 @@ const { NEW_REACTION } = ArticleReactionsSocketEvent;
 
 const useArticlesFeedRoom = (): void => {
   const dispatch = useAppDispatch();
+  const location = useLocation();
 
   const articlesSocketReference = useSocketNamespace(
     SocketNamespace.ARTICLES,
     SocketRoom.ARTICLES_FEED,
+    [location.pathname],
   );
 
   const reactionsSocketReference = useSocketNamespace(
     SocketNamespace.REACTIONS,
     SocketRoom.ARTICLES_FEED,
+    [location.pathname],
   );
 
   useEffect(() => {
@@ -37,7 +42,9 @@ const useArticlesFeedRoom = (): void => {
     articlesSocket?.on(
       NEW_ARTICLE,
       (newArticle: ArticleSocketEventPayload[typeof NEW_ARTICLE]) => {
-        void dispatch(articleActions.addArticle(newArticle));
+        if (location.pathname === AppRoute.ARTICLES) {
+          void dispatch(articleActions.addArticle(newArticle));
+        }
       },
     );
 
@@ -47,7 +54,7 @@ const useArticlesFeedRoom = (): void => {
         void dispatch(articleActions.addReactionToArticlesFeed(reaction));
       },
     );
-  }, [dispatch, articlesSocketReference, reactionsSocketReference]);
+  }, [dispatch, articlesSocketReference, reactionsSocketReference, location]);
 };
 
 export { useArticlesFeedRoom };

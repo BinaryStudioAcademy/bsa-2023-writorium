@@ -1,4 +1,4 @@
-import { type MutableRefObject } from 'react';
+import { type DependencyList, type MutableRefObject } from 'react';
 import { type Socket } from 'socket.io-client';
 
 import { type SocketNamespace } from '~/libs/packages/socket/socket.js';
@@ -10,9 +10,11 @@ import { useAppSelector, useEffect, useReference } from '../hooks.js';
 const useSocketNamespace = (
   namespace: ValueOf<typeof SocketNamespace>,
   roomId: string,
+  deps?: DependencyList,
 ): MutableRefObject<Socket | null> => {
   const userId = useAppSelector((state) => state.auth.user?.id);
   const socketInstanceReference = useReference<Socket | null>(null);
+  const stringifiedDependencies = JSON.stringify(deps);
 
   useEffect(() => {
     if (!userId) {
@@ -28,7 +30,13 @@ const useSocketNamespace = (
       socketInstance.disconnect();
       socketInstanceReference.current = null;
     };
-  }, [roomId, userId, namespace, socketInstanceReference]);
+  }, [
+    roomId,
+    userId,
+    namespace,
+    socketInstanceReference,
+    stringifiedDependencies,
+  ]);
 
   return socketInstanceReference;
 };
