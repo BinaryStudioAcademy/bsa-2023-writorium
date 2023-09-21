@@ -6,6 +6,7 @@ export {
   type ArticleCommentCount,
   type ArticleCreateDto,
   type ArticleEntityType,
+  type ArticleGenreStatsFilters,
   type ArticleGetAllResponseDto,
   type ArticleGetImprovementSuggestionsResponseDto,
   type ArticleImprovementSuggestion,

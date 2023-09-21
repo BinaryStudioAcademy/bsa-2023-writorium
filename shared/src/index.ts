@@ -67,6 +67,7 @@ export {
   type ArticleCreateDto,
   articleCreateValidationSchema,
   type ArticleEntityType,
+  type ArticleGenreStatsFilters,
   type ArticleGetAllResponseDto,
   type ArticleGetImprovementSuggestionsResponseDto,
   type ArticleImprovementSuggestion,
