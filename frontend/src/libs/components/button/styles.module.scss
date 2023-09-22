@@ -1,3 +1,5 @@
+@use "src/assets/css/breakpoints.scss";
+
 .button {
   font-weight: 700;
   font-size: 16px;
@@ -6,9 +8,7 @@
   border: none;
   border-radius: 7px;
   cursor: pointer;
-  transition:
-    color 0.3s ease,
-    border-color 0.3s ease;
+  transition: background-color 0.3s ease;
 }
 
 .button:disabled {
@@ -16,6 +16,11 @@
 }
 
 .button:hover {
-  color: var(--light-green);
-  border-color: var(--light-green);
+  background-color: var(--light-green);
+}
+
+@media only screen and (max-width: breakpoints.$medium) {
+  .button {
+    font-size: 14px;
+  }
 }

@@ -34,6 +34,20 @@
   position: relative;
 }
 
+.clearFilters {
+  color: var(--dark-gray);
+  font-weight: 500;
+  font-size: 12px;
+  font-family: Lato, sans-serif;
+  background-color: var(--input-bg);
+  border: none;
+  cursor: pointer;
+}
+
+.clearFilters:hover {
+  color: var(--light-gray);
+}
+
 .filterInput {
   height: 45px;
   background: var(--input-bg);
@@ -64,16 +78,6 @@
   font-family: Lato, sans-serif;
   font-style: normal;
   line-height: normal;
-}
-
-.clearFilters {
-  color: var(--dark-gray);
-  font-weight: 500;
-  font-size: 12px;
-  font-family: Lato, sans-serif;
-  background-color: var(--input-bg);
-  border: none;
-  cursor: pointer;
 }
 
 @media only screen and (max-width: breakpoints.$extra-large) {

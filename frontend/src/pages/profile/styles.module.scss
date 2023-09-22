@@ -1,12 +1,10 @@
 .profile {
   display: grid;
   grid-template:
-    "info activity activity" 1.4fr "info articles genres" 0.3fr "achievements articles genres" 1.3fr / minmax(
-      270px,
-      0.5fr
-    )
-    1.3fr 1.2fr;
-  gap: 60px;
+    "activity activity info"
+    "articles genres achievements"
+    / 1fr 1fr 1fr;
+  gap: 20px;
   width: 100%;
   max-width: 1590px;
   margin: 0 auto;
@@ -14,7 +12,6 @@
 }
 
 .profileBlock {
-  background-color: var(--white);
+  border: 1px solid var(--pastel-gray);
   border-radius: 7px;
-  box-shadow: 0 0 6px var(--translucent-dark-blue-gray);
 }
