@@ -27,22 +27,24 @@ const UserInfo: FC<Properties> = ({ user, className }) => {
       {isEditingProfile ? (
         <ProfileEditForm user={user} onEdit={handleEditMode} />
       ) : (
-        <>
+        <div className={styles.userInfoWrapper}>
           <Avatar
             username={userName}
             avatarUrl={user.avatarUrl}
             className={styles.avatar}
           />
-          <div className={styles.userInfo}>
-            <p>{userName}</p>
-            <p>{user.email}</p>
+          <div>
+            <div className={styles.userInfo}>
+              <p className={styles.userName}>{userName}</p>
+              <p className={styles.userEmail}>{user.email}</p>
+            </div>
+            <Button
+              label="Edit profile"
+              className={styles.editProfileBtn}
+              onClick={handleEditMode}
+            />
           </div>
-          <Button
-            label="Edit profile"
-            className={styles.editProfileBtn}
-            onClick={handleEditMode}
-          />
-        </>
+        </div>
       )}
     </div>
   );

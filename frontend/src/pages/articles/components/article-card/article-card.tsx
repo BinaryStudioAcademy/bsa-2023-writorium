@@ -164,6 +164,7 @@ const ArticleCard: React.FC<Properties> = ({
 
         <div className={styles.toolbar}>
           <IconButton
+            className={styles.topActionsIcon}
             iconName={isFavourite ? 'favoriteFilled' : 'favorite'}
             onClick={handleToggleIsFavourite}
             isLoading={isLoading}
@@ -179,7 +180,7 @@ const ArticleCard: React.FC<Properties> = ({
             }
           >
             <Icon
-              className={styles.moreActionsIcon}
+              className={styles.topActionsIcon}
               iconName="ellipsisVertical"
             />
           </Popover>
@@ -214,7 +215,7 @@ const ArticleCard: React.FC<Properties> = ({
             >
               <IconButton
                 iconName="comment"
-                className={styles.footerIcon}
+                className={styles.iconWrapper}
                 label={commentCount.toString()}
               />
             </Link>

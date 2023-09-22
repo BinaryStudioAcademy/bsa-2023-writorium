@@ -3,15 +3,12 @@
   color: var(--white);
   font-family: Lato, sans-serif;
   background-color: var(--dark-green);
-  border: 2px solid var(--dark-green);
   transition:
     background-color 0.3s ease-in,
-    color 0.3s ease-in,
-    border-color 0.3s ease-in;
+    color 0.3s ease-in;
 }
 
 .button:disabled {
   color: var(--white);
   background-color: var(--pastel-gray);
-  border-color: transparent;
 }
