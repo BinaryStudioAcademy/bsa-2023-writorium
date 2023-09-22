@@ -120,18 +120,6 @@
   grid-area: followButton;
   justify-self: flex-start;
   margin-top: 10px;
-  padding: 6px 12px;
-  color: var(--white);
-  font-weight: 700;
-  font-size: 14px;
-  background-color: var(--dark-green);
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
-}
-
-.followButton:hover {
-  color: var(--white);
-  background-color: var(--light-green);
 }
 
 @media only screen and (max-width: breakpoints.$medium) {

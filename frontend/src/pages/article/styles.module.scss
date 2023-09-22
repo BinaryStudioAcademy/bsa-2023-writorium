@@ -63,10 +63,7 @@
 
 .showPrompt {
   display: none;
-  padding: 0 0 21px 6px;
-  color: var(--light-green);
-  font-weight: 700;
-  font-size: 16px;
+  margin-bottom: 24px;
 }
 
 @media only screen and (max-width: breakpoints.$medium) {
@@ -90,7 +87,7 @@
   }
 
   .promptGenerationModal {
-    top: 25px;
+    top: 45px;
     width: 100%;
     border: 1px solid var(--dark-gray-40);
     border-radius: 15px;
