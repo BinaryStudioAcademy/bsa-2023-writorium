@@ -110,7 +110,12 @@ const updateArticle = createAsyncThunk<
     }),
   );
 
-  dispatch(appActions.navigate(AppRoute.ARTICLES_MY_ARTICLES));
+  const wasPublished = Boolean(updatedArticle.publishedAt);
+  const routeToNavigate = wasPublished
+    ? AppRoute.ARTICLES
+    : AppRoute.ARTICLES_MY_ARTICLES;
+
+  dispatch(appActions.navigate(routeToNavigate));
 
   return updatedArticle;
 });

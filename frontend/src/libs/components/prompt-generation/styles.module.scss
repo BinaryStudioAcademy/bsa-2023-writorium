@@ -23,10 +23,16 @@
   position: absolute;
   top: -20px;
   background: transparent;
+  transition: color 0.3 ease;
 }
 
 .resetPromptButton {
   right: 0;
+}
+
+.resetPromptButton:hover {
+  color: var(--light-green);
+  background: transparent;
 }
 
 .generatePromptButton {
