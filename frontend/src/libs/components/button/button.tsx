@@ -6,8 +6,11 @@ import styles from './styles.module.scss';
 
 type ButtonVariant = 'primary' | 'outlined' | 'text';
 
+type ButtonSize = 'medium' | 'small';
+
 type Properties = {
   variant?: ButtonVariant;
+  size?: ButtonSize;
   disabled?: boolean;
   label: React.ReactNode;
   type?: ValueOf<typeof ButtonType>;
@@ -29,11 +32,17 @@ const Button: React.FC<Properties> = ({
   onClick,
   fullWidth,
   variant = 'primary',
+  size = 'medium',
 }) => {
   const variantClassNameMapper: Record<ButtonVariant, string> = {
     text: styles.buttonText,
     primary: styles.buttonPrimary,
     outlined: styles.buttonOutlined,
+  };
+
+  const sizeClassNameMapper: Record<ButtonSize, string> = {
+    medium: styles.buttonMedium,
+    small: styles.buttonSmall,
   };
 
   return (
@@ -43,9 +52,10 @@ const Button: React.FC<Properties> = ({
       disabled={disabled}
       className={getValidClassNames(
         styles.button,
-        className,
+        sizeClassNameMapper[size],
         variantClassNameMapper[variant],
         fullWidth && styles.fullWidth,
+        className,
       )}
       onClick={onClick}
     >
