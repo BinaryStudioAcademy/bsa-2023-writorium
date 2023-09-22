@@ -1,7 +1,15 @@
+@use "src/assets/css/breakpoints.scss";
+
 .toolbar {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 16px;
   background-color: transparent;
+}
+
+@media only screen and (max-width: breakpoints.$medium) {
+  .toolbar {
+    gap: 4px;
+  }
 }
