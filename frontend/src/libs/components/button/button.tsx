@@ -13,6 +13,7 @@ type Properties = {
   type?: ValueOf<typeof ButtonType>;
   name?: string;
   className?: string;
+  fullWidth?: boolean;
   onClick?:
     | (() => void)
     | (() => Promise<void>)
@@ -26,6 +27,7 @@ const Button: React.FC<Properties> = ({
   className = '',
   disabled,
   onClick,
+  fullWidth,
   variant = 'primary',
 }) => {
   const variantClassNameMapper: Record<ButtonVariant, string> = {
@@ -43,6 +45,7 @@ const Button: React.FC<Properties> = ({
         styles.button,
         className,
         variantClassNameMapper[variant],
+        fullWidth && styles.fullWidth,
       )}
       onClick={onClick}
     >

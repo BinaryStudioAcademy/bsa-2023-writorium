@@ -120,16 +120,16 @@ const ProfileEditForm: FC<Properties> = ({ user, onEdit }: Properties) => {
       </div>
       <div className={styles.buttonsBlock}>
         <Button
+          fullWidth
           label="Cancel"
           variant="outlined"
           type={ButtonType.BUTTON}
           onClick={handleCancel}
-          className={styles.button}
         />
         <Button
+          fullWidth
           label="Save"
           type={ButtonType.SUBMIT}
-          className={styles.button}
           disabled={(!isDirty && avatarId === user.avatarId) || isSubmitting}
         />
       </div>

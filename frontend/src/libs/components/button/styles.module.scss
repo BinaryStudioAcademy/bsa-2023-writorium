@@ -55,6 +55,10 @@
   cursor: not-allowed;
 }
 
+.button.fullWidth {
+  width: 100%;
+}
+
 @media only screen and (max-width: breakpoints.$medium) {
   .button {
     font-size: 14px;
