@@ -184,11 +184,13 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
         />
         <div className={styles.buttonWrapper}>
           <Button
+            variant="outlined"
             type={ButtonType.RESET}
             label="Cancel"
             className={styles.cancelBtn}
           />
           <Button
+            variant="outlined"
             type={ButtonType.SUBMIT}
             label="Save draft"
             name="draft"

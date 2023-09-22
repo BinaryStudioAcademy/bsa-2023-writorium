@@ -1,6 +1,7 @@
 @use "src/assets/css/breakpoints.scss";
 
 .button {
+  padding: 12px 26px;
   font-weight: 700;
   font-size: 16px;
   font-family: inherit;
@@ -22,7 +23,7 @@
 
 .button.buttonPrimary:disabled {
   color: var(--white);
-  background-color: var(--pastel-gray);
+  background-color: var(--disabled-gray);
 }
 
 .button.buttonPrimary:not(:disabled):hover {
@@ -39,8 +40,8 @@
 }
 
 .button.buttonOutlined:disabled {
-  color: var(--black-25);
-  border-color: var(--black-12);
+  color: var(--black-20);
+  border-color: var(--disabled-gray);
 }
 
 .button.buttonOutlined:not(:disabled):hover {
