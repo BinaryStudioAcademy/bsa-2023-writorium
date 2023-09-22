@@ -1,13 +1,18 @@
 import { type Model, type Page, type QueryBuilder } from 'objection';
 
 import { DatabaseTableName } from '~/libs/packages/database/libs/enums/database-table-name.enum.js';
+import { type ArticleViewModel } from '~/packages/article-views/article-view.model.js';
 import { type CommentModel } from '~/packages/comments/comment.model.js';
 
 import { ArticleEntity } from './article.entity.js';
 import { type ArticleModel } from './article.model.js';
 import { type FavouredUserArticlesModel } from './favoured-user-articles.model.js';
-import { EMPTY_COMMENT_COUNT } from './libs/constants/constants.js';
 import {
+  EMPTY_COMMENT_COUNT,
+  EMPTY_VIEW_COUNT,
+} from './libs/constants/constants.js';
+import {
+  getArticlePublishedStatusQuery,
   getIsFavouriteSubQuery,
   getShowFavouritesQuery,
   getSortingCondition,
@@ -19,7 +24,8 @@ import {
 } from './libs/helpers/helpers.js';
 import { type IArticleRepository } from './libs/interfaces/interfaces.js';
 import {
-  type ArticleCommentCount,
+  type ArticleCounts,
+  type ArticleGenreStatsFilters,
   type ArticlesFilters,
   type GetUserArticlesGenresStatsDatabaseResponse,
   type UserActivityResponseDto,
@@ -61,6 +67,13 @@ class ArticleRepository implements IArticleRepository {
       .as('commentCount');
   }
 
+  private getViewsCountQuery(): QueryBuilder<ArticleViewModel> {
+    return this.articleModel
+      .relatedQuery<ArticleViewModel>('articleViews')
+      .countDistinct('viewed_by_id')
+      .as('viewCount');
+  }
+
   public async findAll({
     userId,
     take,
@@ -81,6 +94,7 @@ class ArticleRepository implements IArticleRepository {
       .select(
         `${DatabaseTableName.ARTICLES}.*`,
         this.getCommentsCountQuery(),
+        this.getViewsCountQuery(),
         getIsFavouriteSubQuery(Boolean(showFavourites), requestUserId),
       )
       .where(getWhereUserIdQuery(userId))
@@ -93,7 +107,7 @@ class ArticleRepository implements IArticleRepository {
       .orderBy(getSortingCondition(hasPublishedOnly))
       .page(skip / take, take)
       .modify(this.joinArticleRelations)
-      .castTo<Page<ArticleModel & ArticleCommentCount>>();
+      .castTo<Page<ArticleModel & ArticleCounts>>();
 
     return {
       total: articles.total,
@@ -125,6 +139,7 @@ class ArticleRepository implements IArticleRepository {
     const article = await this.articleModel
       .query()
       .findById(id)
+      .whereNull('deletedAt')
       .modify(this.joinArticleRelations);
 
     if (!article) {
@@ -149,6 +164,7 @@ class ArticleRepository implements IArticleRepository {
           }
         : null,
       commentCount: null,
+      viewCount: null,
     });
   }
 
@@ -189,6 +205,7 @@ class ArticleRepository implements IArticleRepository {
         : null,
       commentCount: null,
       isFavourite: article.isFavourite,
+      viewCount: null,
     });
   }
 
@@ -220,6 +237,7 @@ class ArticleRepository implements IArticleRepository {
         : null,
       commentCount: EMPTY_COMMENT_COUNT,
       coverUrl: article.cover?.url ?? null,
+      viewCount: EMPTY_VIEW_COUNT,
     });
   }
 
@@ -246,6 +264,7 @@ class ArticleRepository implements IArticleRepository {
 
   public getUserArticlesGenreStats(
     userId: number,
+    { articlePublishedStatus }: ArticleGenreStatsFilters,
   ): Promise<GetUserArticlesGenresStatsDatabaseResponse[]> {
     return this.articleModel
       .query()
@@ -257,6 +276,7 @@ class ArticleRepository implements IArticleRepository {
       .joinRelated('genre')
       .groupBy('genre.key', 'genre.name')
       .where({ userId })
+      .where(getArticlePublishedStatusQuery(articlePublishedStatus))
       .castTo<GetUserArticlesGenresStatsDatabaseResponse[]>()
       .execute();
   }
@@ -270,7 +290,7 @@ class ArticleRepository implements IArticleRepository {
       .select(`${DatabaseTableName.ARTICLES}.*`, this.getCommentsCountQuery())
       .withGraphFetched(this.defaultRelationExpression)
       .modifyGraph('reactions', this.modifyReactionsGraph)
-      .castTo<ArticleModel & ArticleCommentCount>();
+      .castTo<ArticleModel & ArticleCounts>();
 
     return ArticleEntity.initialize({
       ...article,
@@ -298,7 +318,7 @@ class ArticleRepository implements IArticleRepository {
       .patchAndFetchById(id, { deletedAt: new Date().toISOString() })
       .select(`${DatabaseTableName.ARTICLES}.*`, this.getCommentsCountQuery())
       .withGraphFetched(this.defaultRelationExpression)
-      .castTo<ArticleModel & ArticleCommentCount>();
+      .castTo<ArticleModel & ArticleCounts>();
 
     return ArticleEntity.initialize({
       ...article,

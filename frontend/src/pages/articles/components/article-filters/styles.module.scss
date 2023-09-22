@@ -42,6 +42,10 @@
   cursor: pointer;
 }
 
+.clearFilters:hover {
+  color: var(--light-gray);
+}
+
 .filterInput {
   height: 45px;
 }

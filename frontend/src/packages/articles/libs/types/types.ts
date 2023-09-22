@@ -1,5 +1,6 @@
 export {
   type ArticleCreateDto,
+  type ArticleGenreStatsFilters,
   type ArticleGetAllResponseDto,
   type ArticleGetImprovementSuggestionsResponseDto,
   type ArticleImprovementSuggestion,
@@ -11,7 +12,8 @@ export {
   type ArticlesFilters,
   type ArticleUpdateRequestDto,
   type ArticleUpdateRequestPayload,
-  type ArticleWithCommentCountResponseDto,
+  type ArticleWithCountsResponseDto,
+  type ArticleWithFollowResponseDto,
   type ArticleWithRelationsType,
   type ReactionResponseDto,
 } from 'shared/build/index.js';

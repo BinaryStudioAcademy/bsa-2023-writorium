@@ -5,6 +5,7 @@ const ArticlesApiPath = {
   $ID: '/:id',
   REACT: '/react',
   OWN: '/own',
+  ARTICLE_ID: '/article-id',
   $ID_SHARE: '/:id/share',
   SHARED_BASE: '/shared',
   SHARED_$TOKEN: SHARED_$TOKEN,

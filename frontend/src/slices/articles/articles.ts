@@ -7,6 +7,7 @@ import {
   fetchAllCommentsToArticle,
   fetchOwn,
   fetchSharedArticle,
+  geArticleIdByToken,
   getAllGenres,
   getArticle,
   getImprovementSuggestions,
@@ -16,6 +17,7 @@ import {
   shareArticle,
   toggleIsFavourite,
   updateArticle,
+  updateArticleAuthorFollowInfo,
   updateComment,
 } from './actions.js';
 import { actions } from './articles.slice.js';
@@ -40,6 +42,8 @@ const allActions = {
   setShowFavourites,
   getImprovementSuggestions,
   getImprovementSuggestionsBySession,
+  updateArticleAuthorFollowInfo,
+  geArticleIdByToken,
 };
 
 export { allActions as actions };

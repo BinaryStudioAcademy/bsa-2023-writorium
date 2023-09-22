@@ -16,9 +16,12 @@ import {
 } from '~/libs/packages/exceptions/exceptions.js';
 import { type OpenAIService } from '~/libs/packages/openai/openai.package.js';
 import { token as articleToken } from '~/libs/packages/token/token.js';
+import { type ArticleViewService } from '~/packages/article-views/article-view.service.js';
+import { type FollowRepository } from '~/packages/follow/follow.js';
 
 import { type AchievementService } from '../achievements/achievement.service.js';
 import { GenreEntity } from '../genres/genre.entity.js';
+import { UNKNOWN_GENRE_KEY } from '../genres/genre.js';
 import { type GenreRepository } from '../genres/genre.repository.js';
 import { type UserAuthResponseDto } from '../users/users.js';
 import { ArticleEntity } from './article.entity.js';
@@ -37,13 +40,15 @@ import {
 } from './libs/helpers/helpers.js';
 import {
   type ArticleCreateDto,
+  type ArticleGenreStatsFilters,
   type ArticleGetAllResponseDto,
   type ArticleGetImprovementSuggestionsResponseDto,
   type ArticleImprovementSuggestion,
   type ArticleResponseDto,
   type ArticlesFilters,
   type ArticleUpdateRequestDto,
-  type ArticleWithCommentCountResponseDto,
+  type ArticleWithCountsResponseDto,
+  type ArticleWithFollowResponseDto,
   type DetectedArticleGenre,
   type UserActivityResponseDto,
   type UserArticlesGenreStatsResponseDto,
@@ -54,6 +59,8 @@ type Parameters = {
   openAIService: OpenAIService;
   genreRepository: GenreRepository;
   achievementService: AchievementService;
+  articleViewService: ArticleViewService;
+  followRepository: FollowRepository;
 };
 
 class ArticleService implements IService {
@@ -61,17 +68,23 @@ class ArticleService implements IService {
   private openAIService: OpenAIService;
   private genreRepository: GenreRepository;
   private achievementService: AchievementService;
+  private articleViewService: ArticleViewService;
+  private followRepository: FollowRepository;
 
   public constructor({
     articleRepository,
     openAIService,
     genreRepository,
     achievementService,
+    articleViewService,
+    followRepository,
   }: Parameters) {
     this.articleRepository = articleRepository;
     this.openAIService = openAIService;
     this.genreRepository = genreRepository;
     this.achievementService = achievementService;
+    this.articleViewService = articleViewService;
+    this.followRepository = followRepository;
   }
 
   private async detectArticleGenreFromText(
@@ -143,6 +156,59 @@ class ArticleService implements IService {
     return newGenreEntity.toObject().id;
   }
 
+  private async checkActualGenre(
+    genreId: number | null,
+    articleText: string,
+  ): Promise<number | null> {
+    if (!genreId) {
+      return genreId;
+    }
+    const currentGenre = await this.genreRepository.find(genreId);
+
+    if (!currentGenre) {
+      throw new ApplicationError({
+        message: `Genre with id:${genreId} doesn't exist! `,
+      });
+    }
+
+    const genresJSON = await this.openAIService.createCompletion(
+      getDetectArticleGenreCompletionConfig(articleText),
+    );
+
+    if (!genresJSON) {
+      return genreId;
+    }
+
+    const parsedGenres = safeJSONParse<DetectedArticleGenre[]>(genresJSON);
+    if (!parsedGenres || !Array.isArray(parsedGenres) || !parsedGenres.length) {
+      return genreId;
+    }
+
+    const currentGenreInSuggestions =
+      parsedGenres.some((item) => item.key === currentGenre.toObject().key) &&
+      currentGenre.toObject().key !== UNKNOWN_GENRE_KEY;
+
+    if (currentGenreInSuggestions) {
+      return genreId;
+    }
+
+    const [suggestedGenre] = parsedGenres;
+
+    const existingGenre = await this.genreRepository.findByKey(
+      suggestedGenre.key,
+    );
+
+    if (existingGenre) {
+      return existingGenre.toObject().id;
+    }
+
+    const newGenreEntity = await this.genreRepository.create(
+      GenreEntity.initializeNew(suggestedGenre),
+    );
+
+    return newGenreEntity.toObject().id;
+  }
+
   private async getGenreIdToSet({
     genreId,
     text,
@@ -164,9 +230,7 @@ class ArticleService implements IService {
 
     return {
       total,
-      items: items.map((article) =>
-        article.toObjectWithRelationsAndCommentCount(),
-      ),
+      items: items.map((article) => article.toObjectWithRelationsAndCounts()),
     };
   }
 
@@ -182,9 +246,7 @@ class ArticleService implements IService {
 
     return {
       total,
-      items: items.map((article) =>
-        article.toObjectWithRelationsAndCommentCount(),
-      ),
+      items: items.map((article) => article.toObjectWithRelationsAndCounts()),
     };
   }
 
@@ -196,6 +258,35 @@ class ArticleService implements IService {
     }
 
     return article.toObjectWithRelations();
+  }
+
+  public async findArticleWithFollow(
+    id: number,
+    userId?: number,
+  ): Promise<ArticleWithFollowResponseDto | null> {
+    const article = await this.articleRepository.find(id);
+
+    if (!article) {
+      throw new NotFoundError(ExceptionMessage.ARTICLE_NOT_FOUND);
+    }
+
+    const articleObject = article.toObjectWithRelations();
+
+    const { isFollowed, followersCount } =
+      await this.followRepository.getAuthorFollowersCountAndStatus({
+        userId,
+        authorId: articleObject.userId,
+      });
+
+    await this.articleViewService.create({
+      articleId: id,
+      viewedById: userId as number,
+    });
+
+    return {
+      ...articleObject,
+      author: { ...articleObject.author, isFollowed, followersCount },
+    };
   }
 
   private async generateImprovementSuggestions(
@@ -225,9 +316,7 @@ class ArticleService implements IService {
     const article = await this.find(id);
 
     if (!article) {
-      throw new ApplicationError({
-        message: `Article with id ${id} not found`,
-      });
+      throw new NotFoundError(ExceptionMessage.ARTICLE_NOT_FOUND);
     }
 
     const suggestions = await this.generateImprovementSuggestions(article.text);
@@ -296,9 +385,11 @@ class ArticleService implements IService {
 
   public async getUserArticlesGenreStats(
     userId: number,
+    filters: ArticleGenreStatsFilters,
   ): Promise<UserArticlesGenreStatsResponseDto> {
     const stats = await this.articleRepository.getUserArticlesGenreStats(
       userId,
+      filters,
     );
 
     return {
@@ -311,13 +402,17 @@ class ArticleService implements IService {
 
   public async create(
     payload: ArticleCreateDto,
-  ): Promise<ArticleWithCommentCountResponseDto> {
+  ): Promise<ArticleWithCountsResponseDto> {
+    const withPrompt = Boolean(payload.promptId);
     const genreId = await this.getGenreIdToSet(payload);
+
     const readTime = await this.getArticleReadTime(payload.text);
 
     const article = await this.articleRepository.create(
       ArticleEntity.initializeNew({
-        genreId,
+        genreId: withPrompt
+          ? await this.checkActualGenre(genreId, payload.text)
+          : genreId,
         readTime,
         title: payload.title,
         text: payload.text,
@@ -337,7 +432,7 @@ class ArticleService implements IService {
       referenceTable: DatabaseTableName.ARTICLES,
     });
 
-    return article.toObjectWithRelationsAndCommentCount();
+    return article.toObjectWithRelationsAndCounts();
   }
 
   public async update(
@@ -346,17 +441,24 @@ class ArticleService implements IService {
       payload,
       user,
     }: { payload: ArticleUpdateRequestDto; user: UserAuthResponseDto },
-  ): Promise<ArticleWithCommentCountResponseDto> {
+  ): Promise<ArticleWithCountsResponseDto> {
     const article = await this.find(id);
 
     if (!article) {
-      throw new ApplicationError({
-        message: `Article with id ${id} not found`,
-      });
+      throw new NotFoundError(ExceptionMessage.ARTICLE_NOT_FOUND);
     }
 
     if (article.userId !== user.id) {
       throw new ForbiddenError('Article can be edited only by author!');
+    }
+
+    let updatedGenreId = payload.genreId ?? article.genreId;
+
+    if (payload.text && (article.promptId || payload.promptId)) {
+      updatedGenreId = await this.checkActualGenre(
+        updatedGenreId,
+        payload.text,
+      );
     }
 
     const updatedReadTime =
@@ -368,12 +470,14 @@ class ArticleService implements IService {
       ArticleEntity.initialize({
         ...article,
         ...payload,
+        genreId: updatedGenreId,
         readTime: updatedReadTime,
         commentCount: null,
+        viewCount: null,
       }),
     );
 
-    return updatedArticle.toObjectWithRelationsAndCommentCount();
+    return updatedArticle.toObjectWithRelationsAndCounts();
   }
 
   public async getArticleSharingLink(
@@ -400,7 +504,7 @@ class ArticleService implements IService {
 
   public async findShared(
     headers: IncomingHttpHeaders,
-  ): Promise<ArticleResponseDto> {
+  ): Promise<ArticleWithFollowResponseDto> {
     const token = headers[CustomHttpHeader.SHARED_ARTICLE_TOKEN] as string;
 
     if (!token) {
@@ -409,7 +513,9 @@ class ArticleService implements IService {
 
     const encoded = await articleToken.verifyToken(token);
 
-    const articleFound = await this.find(Number(encoded.articleId));
+    const articleFound = await this.findArticleWithFollow(
+      Number(encoded.articleId),
+    );
 
     if (!articleFound) {
       throw new NotFoundError(ExceptionMessage.ARTICLE_NOT_FOUND);
@@ -418,24 +524,30 @@ class ArticleService implements IService {
     return articleFound;
   }
 
+  public async getArticleIdByToken(
+    headers: IncomingHttpHeaders,
+  ): Promise<Pick<ArticleWithFollowResponseDto, 'id'>> {
+    const token = headers[CustomHttpHeader.SHARED_ARTICLE_TOKEN] as string;
+
+    if (!token) {
+      throw new BadRequestError(ExceptionMessage.INVALID_TOKEN);
+    }
+
+    const encoded = await articleToken.verifyToken(token);
+
+    return {
+      id: Number(encoded.articleId),
+    };
+  }
+
   public async delete(
     id: number,
     userId: number,
-  ): Promise<ArticleWithCommentCountResponseDto> {
+  ): Promise<ArticleWithCountsResponseDto> {
     const article = await this.find(id);
 
     if (!article) {
-      throw new ApplicationError({
-        message: `Article with id ${id} not found`,
-      });
-    }
-
-    const { deletedAt } = article;
-
-    if (deletedAt) {
-      throw new ApplicationError({
-        message: `Article with id ${id} has already been deleted`,
-      });
+      throw new NotFoundError(ExceptionMessage.ARTICLE_NOT_FOUND);
     }
 
     if (article.userId !== userId) {
@@ -444,7 +556,7 @@ class ArticleService implements IService {
 
     const deletedArticle = await this.articleRepository.delete(id);
 
-    return deletedArticle.toObjectWithRelationsAndCommentCount();
+    return deletedArticle.toObjectWithRelationsAndCounts();
   }
 
   public async toggleIsFavourite(
@@ -468,7 +580,7 @@ class ArticleService implements IService {
     if (!article) {
       return null;
     }
-    return article.toObjectWithRelationsAndCommentCount();
+    return article.toObjectWithRelationsAndCounts();
   }
 }
 

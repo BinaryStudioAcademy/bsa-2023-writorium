@@ -1,9 +1,14 @@
-import { type ArticleWithCommentCountResponseDto } from '~/packages/articles/articles.js';
+import {
+  type ArticleWithCountsResponseDto,
+  type ArticleWithFollowResponseDto,
+} from '~/packages/articles/articles.js';
 
-const removeReaction = (
-  article: ArticleWithCommentCountResponseDto,
+const removeReaction = <
+  T extends ArticleWithFollowResponseDto | ArticleWithCountsResponseDto,
+>(
+  article: T,
   reactionId: number,
-): ArticleWithCommentCountResponseDto => {
+): T => {
   const reactionIndex = article.reactions.findIndex(
     ({ id }) => id === reactionId,
   );
