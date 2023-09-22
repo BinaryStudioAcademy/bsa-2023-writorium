@@ -25,23 +25,6 @@
   line-height: normal;
 }
 
-.editProfileBtn {
-  width: 137px;
-  padding: 12px 14px 12px 19px;
-  color: var(--dark-blue);
-  font-weight: 700;
-  line-height: normal;
-  background-color: transparent;
-  border: 2px solid var(--dark-blue);
-  border-radius: 5px;
-}
-
-.editProfileBtn:hover {
-  color: var(--white);
-  background-color: var(--light-green);
-  border-color: var(--light-green);
-}
-
 .userName {
   margin-bottom: 3px;
   font-size: 24px;
