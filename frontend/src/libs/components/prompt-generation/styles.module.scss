@@ -37,7 +37,7 @@
 
 .generatePromptButton {
   display: none;
-  color: var(--light-green);
+  color: var(--dark-green);
 }
 
 .shuffleButton {
@@ -89,5 +89,10 @@
 
   .generatePromptButton {
     display: block;
+  }
+
+  .generatePromptButton:hover {
+    color: var(--light-green);
+    background-color: transparent;
   }
 }
