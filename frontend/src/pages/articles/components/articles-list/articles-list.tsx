@@ -2,7 +2,7 @@ import { InfiniteScroll } from '~/libs/components/components.js';
 import { getArticleTags } from '~/libs/helpers/helpers.js';
 import { type ArticleWithCountsResponseDto } from '~/packages/articles/articles.js';
 
-import { ArticleCard } from '../components.js';
+import { ArticleCard } from '../article-card/article-card.js';
 import styles from './styles.module.scss';
 
 type Properties = {

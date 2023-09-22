@@ -1,4 +1,4 @@
-import { useEffect, useState } from '../hooks.js';
+import { useEffect, useState } from '../react/react.js';
 
 type WindowDimensions = {
   width: number;
