@@ -22,6 +22,7 @@
 .generatePromptButton {
   position: absolute;
   top: -20px;
+  color: var(--dark-green);
   background: transparent;
   transition: color 0.3 ease;
 }
@@ -37,7 +38,6 @@
 
 .generatePromptButton {
   display: none;
-  color: var(--dark-green);
 }
 
 .shuffleButton {
