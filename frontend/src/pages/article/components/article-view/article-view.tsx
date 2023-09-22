@@ -131,28 +131,32 @@ const ArticleView: React.FC<Properties> = ({
               onClick={onButtonClick}
             />
 
-            <Link
-              to={{ hash: LinkHash.COMMENTS }}
-              state={article}
-              className={styles.iconButton}
-            >
-              <Icon iconName="comment" className={styles.icon} />
-            </Link>
+            {publishedAt && (
+              <>
+                <Link
+                  to={{ hash: LinkHash.COMMENTS }}
+                  state={article}
+                  className={styles.iconButton}
+                >
+                  <Icon iconName="comment" className={styles.icon} />
+                </Link>
 
-            <IconButton
-              iconName="share"
-              className={styles.iconButton}
-              iconClassName={styles.icon}
-              onClick={handleShareButtonClick}
-            />
-            <ShareOnFacebookButton
-              title={title}
-              articleUrl={articleUrl}
-              iconStyle={getValidClassNames(
-                styles.iconButton,
-                styles.facebookIconButton,
-              )}
-            />
+                <IconButton
+                  iconName="share"
+                  className={styles.iconButton}
+                  iconClassName={styles.icon}
+                  onClick={handleShareButtonClick}
+                />
+                <ShareOnFacebookButton
+                  title={title}
+                  articleUrl={articleUrl}
+                  iconStyle={getValidClassNames(
+                    styles.iconButton,
+                    styles.facebookIconButton,
+                  )}
+                />
+              </>
+            )}
           </div>
         )}
       </div>
@@ -188,7 +192,7 @@ const ArticleView: React.FC<Properties> = ({
           className={styles.text}
           dangerouslySetInnerHTML={{ __html: sanitizeHtml(text) }}
         />
-        {!isShared && (
+        {!isShared && publishedAt && (
           <div className={styles.reactionButtonsWrapper}>
             <IconButton
               iconName="like"

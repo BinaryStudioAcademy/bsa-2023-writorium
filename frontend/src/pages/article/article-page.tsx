@@ -209,31 +209,33 @@ const ArticlePage: React.FC = () => {
               </ul>
             )}
           </div>
-          <div className={styles.reactionButtonsWrapper}>
-            <IconButton
-              iconName="like"
-              iconClassName={styles.reactionIcon}
-              className={getValidClassNames(
-                styles.reactionButton,
-                isArticleOwner && styles.disabled,
-                hasAlreadyReactedWith === Reaction.LIKE && styles.pressed,
-              )}
-              label={String(likesCount)}
-              onClick={handleLikeReaction}
-            />
-            <IconButton
-              iconName="dislike"
-              iconClassName={styles.reactionIcon}
-              className={getValidClassNames(
-                styles.iconButton,
-                styles.reactionButton,
-                isArticleOwner && styles.disabled,
-                hasAlreadyReactedWith === Reaction.DISLIKE && styles.pressed,
-              )}
-              label={String(dislikesCount)}
-              onClick={handleDislikeReaction}
-            />
-          </div>
+          {article.publishedAt && (
+            <div className={styles.reactionButtonsWrapper}>
+              <IconButton
+                iconName="like"
+                iconClassName={styles.reactionIcon}
+                className={getValidClassNames(
+                  styles.reactionButton,
+                  isArticleOwner && styles.disabled,
+                  hasAlreadyReactedWith === Reaction.LIKE && styles.pressed,
+                )}
+                label={String(likesCount)}
+                onClick={handleLikeReaction}
+              />
+              <IconButton
+                iconName="dislike"
+                iconClassName={styles.reactionIcon}
+                className={getValidClassNames(
+                  styles.iconButton,
+                  styles.reactionButton,
+                  isArticleOwner && styles.disabled,
+                  hasAlreadyReactedWith === Reaction.DISLIKE && styles.pressed,
+                )}
+                label={String(dislikesCount)}
+                onClick={handleDislikeReaction}
+              />
+            </div>
+          )}
         </div>
       </Layout>
     </Loader>

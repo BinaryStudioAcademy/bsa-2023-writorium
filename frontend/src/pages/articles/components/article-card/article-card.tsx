@@ -203,7 +203,68 @@ const ArticleCard: React.FC<Properties> = ({
         )}
       </div>
       <div className={styles.footer}>
-        <ul className={styles.reactions}>
+        {publishedAt && (
+          <>
+            <ul className={styles.reactions}>
+              <li className={styles.reaction}>
+                <Link
+                  to={{
+                    pathname: articleRouteById,
+                    hash: LinkHash.COMMENTS,
+                  }}
+                  className={styles.reaction}
+                >
+                  <IconButton
+                    iconName="comment"
+                    className={styles.footerIcon}
+                    label={commentCount.toString()}
+                  />
+                </Link>
+              </li>
+              <li className={styles.footerIcon}>
+                <Icon iconName="view" />
+                <span>{viewCount}</span>
+              </li>
+              <li>
+                <IconButton
+                  iconName="like"
+                  className={getValidClassNames(
+                    styles.footerIcon,
+                    isOwnArticle ? styles.disabled : styles.reaction,
+                    hasAlreadyReactedWith === Reaction.LIKE && styles.pressed,
+                  )}
+                  label={String(likesCount)}
+                  onClick={handleLikeReaction}
+                />
+              </li>
+              <li>
+                <IconButton
+                  iconName="dislike"
+                  className={getValidClassNames(
+                    styles.footerIcon,
+                    isOwnArticle ? styles.disabled : styles.reaction,
+                    hasAlreadyReactedWith === Reaction.DISLIKE &&
+                      styles.pressed,
+                  )}
+                  label={String(dislikesCount)}
+                  onClick={handleDislikeReaction}
+                />
+              </li>
+            </ul>
+
+            <IconButton
+              iconName="share"
+              className={styles.iconWrapper}
+              onClick={handleSharedButtonClick}
+            />
+            <ShareOnFacebookButton
+              title={title}
+              articleUrl={articleUrl}
+              iconStyle={styles.facebookIconButton}
+            />
+          </>
+        )}
+        {/* <ul className={styles.reactions}>
           <li className={styles.reaction}>
             <Link
               to={{
@@ -258,7 +319,7 @@ const ArticleCard: React.FC<Properties> = ({
           title={title}
           articleUrl={articleUrl}
           iconStyle={styles.facebookIconButton}
-        />
+        /> */}
         <Link to={articleRouteById} className={styles.readMore}>
           Read more
         </Link>
