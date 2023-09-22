@@ -24,7 +24,6 @@
 }
 
 .textWrapper {
-  flex-grow: 1;
   padding: 18px 33px 62px;
 }
 
@@ -72,12 +71,6 @@
   transition: background-color 0.2s ease;
 }
 
-.reactionButton {
-  gap: 3px;
-  color: var(--dark-gray-50);
-  font-size: 12px;
-}
-
 .iconButton:hover {
   background-color: var(--light-gray);
 }
@@ -111,9 +104,18 @@
 }
 
 .reactionButtonsWrapper {
+  position: absolute;
   display: none;
-  gap: 10px;
-  margin: 10px 0;
+  gap: 20px;
+}
+
+.reactionButton {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--dark-gray-50);
+  font-family: Lato, sans-serif;
+  background-color: transparent;
 }
 
 .disabled {
@@ -124,7 +126,8 @@
   color: var(--light-green);
 }
 
-.pressed svg {
+.pressed svg,
+.reactionButton:hover svg {
   color: var(--light-green);
 }
 
@@ -164,9 +167,17 @@
     width: 235px;
   }
 
+  .reactionButtonsWrapper {
+    margin-top: 15px;
+  }
+
   .reactionIcon {
     width: 15px;
     height: 15px;
+  }
+
+  .reactionButton {
+    font-size: 12px;
   }
 }
 
@@ -195,6 +206,10 @@
   .authorDetails.authorDetailsModal {
     left: 15px;
     width: 293px;
+  }
+
+  .reactionButtonsWrapper {
+    margin-top: 10px;
   }
 
   .reactionIcon {
@@ -243,9 +258,9 @@
     display: flex;
   }
 
-  .textWrapper {
-    padding-bottom: 0;
-  }
+  // .textWrapper {
+  //   padding-bottom: 0;
+  // }
 }
 
 @media print {

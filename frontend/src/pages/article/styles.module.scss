@@ -69,6 +69,47 @@
   font-size: 16px;
 }
 
+.reactionButtonsWrapper {
+  position: fixed;
+  right: 335px;
+  bottom: 30px;
+  display: flex;
+  gap: 20px;
+  max-width: 125px;
+  padding: 10px 20px;
+  background: var(--light-gray);
+  border: 1px solid var(--light-gray-border);
+  border-radius: 20px;
+}
+
+.reactionIcon {
+  width: 20px;
+  height: 20px;
+}
+
+.reactionButton {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--dark-gray-50);
+  font-size: 14px;
+  font-family: Lato, sans-serif;
+  background-color: transparent;
+}
+
+.disabled {
+  cursor: default;
+}
+
+.disabled svg {
+  color: var(--light-green);
+}
+
+.pressed svg,
+.reactionButton:hover svg {
+  color: var(--light-green);
+}
+
 @media only screen and (max-width: breakpoints.$extra-large) {
   .articleCreatePageWrapper .articleFormWrapper {
     max-width: none;
@@ -98,10 +139,18 @@
   .showPrompt {
     display: block;
   }
+
+  .reactionButtonsWrapper {
+    display: none;
+  }
 }
 
 @media print {
   .commentsBlockWrapper {
+    display: none;
+  }
+
+  .reactionButtonsWrapper {
     display: none;
   }
 }
