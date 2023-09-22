@@ -168,6 +168,16 @@ const fetchSharedArticle = createAsyncThunk<
   return articleApi.getByToken(articlePayload.token);
 });
 
+const geArticleIdByToken = createAsyncThunk<
+  Pick<ArticleWithFollowResponseDto, 'id'>,
+  { token: string },
+  AsyncThunkConfig
+>(`${sliceName}/article-id-by-token`, (articlePayload, { extra }) => {
+  const { articleApi } = extra;
+
+  return articleApi.geArticleIdByToken(articlePayload.token);
+});
+
 const reactToArticle = createAsyncThunk<
   {
     articleId: number;
@@ -338,6 +348,7 @@ export {
   fetchAllCommentsToArticle,
   fetchOwn,
   fetchSharedArticle,
+  geArticleIdByToken,
   getAllGenres,
   getArticle,
   getImprovementSuggestions,

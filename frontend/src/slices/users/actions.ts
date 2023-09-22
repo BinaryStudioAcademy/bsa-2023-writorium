@@ -1,6 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { type AsyncThunkConfig } from '~/libs/types/types.js';
+import { type ArticleGenreStatsFilters } from '~/packages/articles/articles.js';
 import {
   type UserActivityResponseDto,
   type UserArticlesGenreStatsResponseDto,
@@ -36,12 +37,12 @@ const getUserActivity = createAsyncThunk<
 
 const getUserArticlesGenresStats = createAsyncThunk<
   UserArticlesGenreStatsResponseDto,
-  undefined,
+  ArticleGenreStatsFilters,
   AsyncThunkConfig
->(`${sliceName}/get-user-articles-genres-stats`, (_, { extra }) => {
+>(`${sliceName}/get-user-articles-genres-stats`, (payload, { extra }) => {
   const { userApi } = extra;
 
-  return userApi.getUserArticlesGenresStats();
+  return userApi.getUserArticlesGenresStats(payload);
 });
 
 const updateUser = createAsyncThunk<

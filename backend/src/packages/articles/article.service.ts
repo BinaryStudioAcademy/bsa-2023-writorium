@@ -38,6 +38,7 @@ import {
 } from './libs/helpers/helpers.js';
 import {
   type ArticleCreateDto,
+  type ArticleGenreStatsFilters,
   type ArticleGetAllResponseDto,
   type ArticleGetImprovementSuggestionsResponseDto,
   type ArticleImprovementSuggestion,
@@ -376,9 +377,11 @@ class ArticleService implements IService {
 
   public async getUserArticlesGenreStats(
     userId: number,
+    filters: ArticleGenreStatsFilters,
   ): Promise<UserArticlesGenreStatsResponseDto> {
     const stats = await this.articleRepository.getUserArticlesGenreStats(
       userId,
+      filters,
     );
 
     return {
@@ -502,6 +505,22 @@ class ArticleService implements IService {
     }
 
     return articleFound;
+  }
+
+  public async getArticleIdByToken(
+    headers: IncomingHttpHeaders,
+  ): Promise<Pick<ArticleWithFollowResponseDto, 'id'>> {
+    const token = headers[CustomHttpHeader.SHARED_ARTICLE_TOKEN] as string;
+
+    if (!token) {
+      throw new BadRequestError(ExceptionMessage.INVALID_TOKEN);
+    }
+
+    const encoded = await articleToken.verifyToken(token);
+
+    return {
+      id: Number(encoded.articleId),
+    };
   }
 
   public async delete(

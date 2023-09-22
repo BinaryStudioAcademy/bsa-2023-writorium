@@ -3,6 +3,7 @@ import { HttpApi } from '~/libs/packages/api/api.js';
 import { type IHttp } from '~/libs/packages/http/http.js';
 import { type IStorage } from '~/libs/packages/storage/storage.js';
 
+import { type ArticleGenreStatsFilters } from '../articles/articles.js';
 import { UsersApiPath } from './libs/enums/enums.js';
 import {
   type UserActivityResponseDto,
@@ -47,10 +48,17 @@ class UserApi extends HttpApi {
     return await response.json<UserActivityResponseDto[]>();
   }
 
-  public async getUserArticlesGenresStats(): Promise<UserArticlesGenreStatsResponseDto> {
+  public async getUserArticlesGenresStats(
+    genreStatsFilters: ArticleGenreStatsFilters,
+  ): Promise<UserArticlesGenreStatsResponseDto> {
     const response = await this.load(
       this.getFullEndpoint(UsersApiPath.ARTICLES_GENRE_STATS, {}),
-      { method: 'GET', contentType: ContentType.JSON, hasAuth: true },
+      {
+        method: 'GET',
+        contentType: ContentType.JSON,
+        hasAuth: true,
+        query: genreStatsFilters,
+      },
     );
 
     return await response.json<UserArticlesGenreStatsResponseDto>();
