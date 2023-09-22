@@ -1,12 +1,12 @@
 import { useEffect, useState } from '../hooks.js';
 
-type ReturnType = {
+type WindowDimensions = {
   width: number;
   height: number;
 };
 
-const useGetWindowDimensions = (): ReturnType => {
-  const [dimensions, setDimensions] = useState(() => ({
+const useGetWindowDimensions = (): WindowDimensions => {
+  const [dimensions, setDimensions] = useState<WindowDimensions>(() => ({
     width: window.innerWidth,
     height: window.innerHeight,
   }));
