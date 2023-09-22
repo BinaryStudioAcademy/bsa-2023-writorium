@@ -4,7 +4,7 @@ import {
 } from '~/libs/enums/enums.js';
 import { type ValueOf } from '~/libs/types/types.js';
 
-const checkWindowBreakpoint = (
+const checkIsPassingWindowBreakpoint = (
   breakpoint: ValueOf<typeof WindowBreakpoint>,
   width: number,
 ): boolean => {
@@ -30,4 +30,4 @@ const checkWindowBreakpoint = (
   }
 };
 
-export { checkWindowBreakpoint };
+export { checkIsPassingWindowBreakpoint };

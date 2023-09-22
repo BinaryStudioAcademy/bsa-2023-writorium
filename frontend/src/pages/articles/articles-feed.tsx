@@ -4,7 +4,10 @@ import {
   ScrollToTop,
 } from '~/libs/components/components.js';
 import { WindowBreakpoint } from '~/libs/enums/enums.js';
-import { checkIsEqual, checkWindowBreakpoint } from '~/libs/helpers/helpers.js';
+import {
+  checkIsEqual,
+  checkIsPassingWindowBreakpoint,
+} from '~/libs/helpers/helpers.js';
 import {
   useAppDispatch,
   useAppSelector,
@@ -38,7 +41,7 @@ const ArticlesFeed: React.FC = () => {
   const { authors } = useAppSelector(({ users }) => users);
 
   const { width } = useGetWindowDimensions();
-  const shouldHideFilters = checkWindowBreakpoint(
+  const shouldHideFilters = checkIsPassingWindowBreakpoint(
     WindowBreakpoint.LARGE,
     width,
   );
