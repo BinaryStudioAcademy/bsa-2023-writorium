@@ -8,55 +8,28 @@ const TableName = {
   COMMENTS: 'comments',
 } as const;
 
-const REFERENCE_TABLES = [TableName.ARTICLES, TableName.COMMENTS];
-
-type User = {
-  id: number;
-  email: string;
-  passwordHash: string;
-  passwordSalt: string;
-  createdAt: string;
-  updatedAt: string;
-};
-
-type Achievement = {
-  id: number;
-  key: string;
-  name: string;
-  description: string;
-  referenceTable: typeof TableName.ARTICLES | typeof TableName.COMMENTS;
-  breakpoint: number;
-  createdAt: string;
-  updatedAt: string;
-};
-
-const up = async (knex: Knex): Promise<void> => {
-  const users = await knex<User>(TableName.USERS).select('*');
-  const achievements = await knex<Achievement>(TableName.ACHIEVEMENTS).select(
-    '*',
-  );
-
-  for (const user of users) {
-    for (const tableName of REFERENCE_TABLES) {
-      const { count } = (await knex(tableName)
-        .select()
-        .count()
-        .where('userId', user.id)
-        .first()) as { count: string };
-
-      for (const achievement of achievements) {
-        if (
-          achievement.referenceTable === tableName &&
-          achievement.breakpoint <= Number(count)
-        ) {
-          await knex(TableName.USERS_ACHIEVEMENTS).insert({
-            userId: user.id,
-            achievementId: achievement.id,
-          });
-        }
-      }
-    }
-  }
+const up = (knex: Knex): Promise<void> => {
+  return knex.raw(`
+    WITH UsersCounts AS (
+      SELECT t.user_id, t.reference_table, COUNT(*)
+      FROM (
+        SELECT c.user_id, c.id, a.reference_table
+        FROM ${TableName.COMMENTS} c
+        JOIN ${TableName.ACHIEVEMENTS} a ON a.reference_table = '${TableName.COMMENTS}'
+        GROUP BY c.user_id, c.id, a.reference_table
+        UNION ALL
+        SELECT ar.user_id, ar.id, a.reference_table
+        FROM ${TableName.ARTICLES} ar
+        JOIN ${TableName.ACHIEVEMENTS} a ON a.reference_table = '${TableName.ARTICLES}'
+        GROUP BY ar.user_id, ar.id, a.reference_table
+      ) t
+      GROUP BY t.user_id, t.reference_table
+    )
+    INSERT INTO ${TableName.USERS_ACHIEVEMENTS} (user_id, achievement_id)
+    SELECT uc.user_id, a.id AS achievement_id
+    FROM UsersCounts uc, ${TableName.ACHIEVEMENTS} a
+    WHERE uc.reference_table = a.reference_table AND uc.count >= a.breakpoint;
+  `);
 };
 
 const down = (knex: Knex): Promise<void> => {
