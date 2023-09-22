@@ -44,11 +44,13 @@ const SignInForm: React.FC<Properties> = ({
       <Notification />
       <div className={styles.formWrapper}>
         <h2 className={styles.authFormTitle}>Hello!</h2>
-        <AuthSignInButton
-          onClick={onGoogleLogin}
-          label="Sign in with Google"
-        ></AuthSignInButton>
-        <FacebookLogin onLogin={onFacebookLogin} />
+        <div className={styles.socialsSignInButtons}>
+          <AuthSignInButton
+            onClick={onGoogleLogin}
+            label="Sign in with Google"
+          />
+          <FacebookLogin onLogin={onFacebookLogin} />
+        </div>
         <span className={styles.or}>or</span>
         <form
           className={styles.form}

@@ -13,6 +13,7 @@ const AuthSignInButton: React.FC<Properties> = ({
 }) => {
   return (
     <Button
+      variant="outlined"
       label={label}
       disabled={disabled}
       onClick={onClick}

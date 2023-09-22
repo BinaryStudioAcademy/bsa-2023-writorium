@@ -7,7 +7,12 @@ type Properties = Pick<ButtonProperties, 'label' | 'disabled'>;
 
 const AuthSubmitButton: React.FC<Properties> = (properties) => {
   return (
-    <Button {...properties} className={styles.authSubmitButton} type="submit" />
+    <Button
+      {...properties}
+      fullWidth
+      className={styles.authSubmitButton}
+      type="submit"
+    />
   );
 };
 
