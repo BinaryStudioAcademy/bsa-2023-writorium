@@ -110,6 +110,12 @@
   color: var(--light-green);
 }
 
+@media only screen and (max-width: breakpoints.$medium) {
+  .editArticlePage {
+    flex-direction: column;
+  }
+}
+
 @media only screen and (max-width: breakpoints.$extra-large) {
   .articleCreatePageWrapper .articleFormWrapper {
     max-width: none;

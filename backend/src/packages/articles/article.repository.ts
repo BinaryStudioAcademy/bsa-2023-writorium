@@ -12,6 +12,7 @@ import {
   EMPTY_VIEW_COUNT,
 } from './libs/constants/constants.js';
 import {
+  getArticlePublishedStatusQuery,
   getIsFavouriteSubQuery,
   getShowFavouritesQuery,
   getSortingCondition,
@@ -24,6 +25,7 @@ import {
 import { type IArticleRepository } from './libs/interfaces/interfaces.js';
 import {
   type ArticleCounts,
+  type ArticleGenreStatsFilters,
   type ArticlesFilters,
   type GetUserArticlesGenresStatsDatabaseResponse,
   type UserActivityResponseDto,
@@ -137,6 +139,7 @@ class ArticleRepository implements IArticleRepository {
     const article = await this.articleModel
       .query()
       .findById(id)
+      .whereNull('deletedAt')
       .modify(this.joinArticleRelations);
 
     if (!article) {
@@ -261,6 +264,7 @@ class ArticleRepository implements IArticleRepository {
 
   public getUserArticlesGenreStats(
     userId: number,
+    { articlePublishedStatus }: ArticleGenreStatsFilters,
   ): Promise<GetUserArticlesGenresStatsDatabaseResponse[]> {
     return this.articleModel
       .query()
@@ -272,6 +276,7 @@ class ArticleRepository implements IArticleRepository {
       .joinRelated('genre')
       .groupBy('genre.key', 'genre.name')
       .where({ userId })
+      .where(getArticlePublishedStatusQuery(articlePublishedStatus))
       .castTo<GetUserArticlesGenresStatsDatabaseResponse[]>()
       .execute();
   }

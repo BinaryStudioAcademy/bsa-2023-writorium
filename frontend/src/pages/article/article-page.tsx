@@ -209,7 +209,7 @@ const ArticlePage: React.FC = () => {
               </ul>
             )}
           </div>
-          {article.publishedAt && (
+          {article?.publishedAt && (
             <div className={styles.reactionButtonsWrapper}>
               <IconButton
                 iconName="like"

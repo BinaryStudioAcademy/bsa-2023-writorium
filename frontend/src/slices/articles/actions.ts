@@ -110,7 +110,12 @@ const updateArticle = createAsyncThunk<
     }),
   );
 
-  dispatch(appActions.navigate(AppRoute.ARTICLES_MY_ARTICLES));
+  const wasPublished = Boolean(updatedArticle.publishedAt);
+  const routeToNavigate = wasPublished
+    ? AppRoute.ARTICLES
+    : AppRoute.ARTICLES_MY_ARTICLES;
+
+  dispatch(appActions.navigate(routeToNavigate));
 
   return updatedArticle;
 });
@@ -161,6 +166,16 @@ const fetchSharedArticle = createAsyncThunk<
   const { articleApi } = extra;
 
   return articleApi.getByToken(articlePayload.token);
+});
+
+const geArticleIdByToken = createAsyncThunk<
+  Pick<ArticleWithFollowResponseDto, 'id'>,
+  { token: string },
+  AsyncThunkConfig
+>(`${sliceName}/article-id-by-token`, (articlePayload, { extra }) => {
+  const { articleApi } = extra;
+
+  return articleApi.geArticleIdByToken(articlePayload.token);
 });
 
 const reactToArticle = createAsyncThunk<
@@ -333,6 +348,7 @@ export {
   fetchAllCommentsToArticle,
   fetchOwn,
   fetchSharedArticle,
+  geArticleIdByToken,
   getAllGenres,
   getArticle,
   getImprovementSuggestions,
