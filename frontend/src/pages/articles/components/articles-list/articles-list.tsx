@@ -17,25 +17,23 @@ const ArticlesList: React.FC<Properties> = ({
   articlesLength,
   onFetchData,
   articles,
-}) => {
-  return (
-    <InfiniteScroll
-      hasMore={hasMore}
-      className={styles.articles}
-      dataLength={articlesLength}
-      fetchData={onFetchData}
-    >
-      {articles.map((article) => (
-        <ArticleCard
-          key={article.id}
-          article={article}
-          author={article.author}
-          tags={getArticleTags(article)}
-          reactions={article.reactions}
-        />
-      ))}
-    </InfiniteScroll>
-  );
-};
+}) => (
+  <InfiniteScroll
+    hasMore={hasMore}
+    className={styles.articles}
+    dataLength={articlesLength}
+    fetchData={onFetchData}
+  >
+    {articles.map((article) => (
+      <ArticleCard
+        key={article.id}
+        article={article}
+        author={article.author}
+        tags={getArticleTags(article)}
+        reactions={article.reactions}
+      />
+    ))}
+  </InfiniteScroll>
+);
 
 export { ArticlesList };
