@@ -1,8 +1,9 @@
 .emptyArticlesPlaceholder {
   display: flex;
+  flex-direction: column;
   align-items: center;
   align-self: center;
-  gap: 10px;
+  gap: 20px;
 }
 
 .emptyArticlesIcon {
