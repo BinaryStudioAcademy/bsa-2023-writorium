@@ -110,7 +110,7 @@ const UserArticlesGenresStats: React.FC<Properties> = ({ className }) => {
                   layout="vertical"
                   align="center"
                   verticalAlign="bottom"
-                  content={<GenresList chartData={chartData} />}
+                  content={<GenresList genresStatistics={chartData} />}
                 />
                 <Tooltip />
               </RechartsPieChart>

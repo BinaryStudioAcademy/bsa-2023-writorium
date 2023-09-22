@@ -4,12 +4,12 @@ import { GENRES_CHART_COLORS } from '../../constants/constants.js';
 import styles from './styles.module.scss';
 
 type Properties = {
-  chartData: UserArticlesGenreStatsItem[];
+  genresStatistics: UserArticlesGenreStatsItem[];
 };
 
-const GenresList: React.FC<Properties> = ({ chartData }) => (
+const GenresList: React.FC<Properties> = ({ genresStatistics }) => (
   <ul className={styles.list}>
-    {chartData.map((data, index) => (
+    {genresStatistics.map((data, index) => (
       <li
         key={data.key}
         className={styles.listItem}
