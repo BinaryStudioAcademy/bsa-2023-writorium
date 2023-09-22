@@ -3,7 +3,6 @@ import { type Knex } from 'knex';
 const TableName = {
   USERS_ACHIEVEMENTS: 'users_achievements',
   ACHIEVEMENTS: 'achievements',
-  USERS: 'users',
   ARTICLES: 'articles',
   COMMENTS: 'comments',
 } as const;
