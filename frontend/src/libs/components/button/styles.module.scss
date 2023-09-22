@@ -6,17 +6,52 @@
   font-family: inherit;
   line-height: 19px;
   border: none;
-  border-radius: 7px;
+  border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition:
+    color 0.3s ease,
+    background-color 0.3s ease,
+    border-color 0.3s ease;
 }
+
+/* Primary */
+.button.buttonPrimary {
+  color: var(--white);
+  background-color: var(--dark-green);
+}
+
+.button.buttonPrimary:disabled {
+  color: var(--white);
+  background-color: var(--pastel-gray);
+}
+
+.button.buttonPrimary:not(:disabled):hover {
+  background-color: var(--light-green);
+}
+
+/* Primary */
+
+/* Outlined */
+.button.buttonOutlined {
+  color: var(--dark-green);
+  background-color: transparent;
+  border: 2px solid var(--dark-green);
+}
+
+.button.buttonOutlined:disabled {
+  color: var(--black-25);
+  border-color: var(--black-12);
+}
+
+.button.buttonOutlined:not(:disabled):hover {
+  color: var(--light-green);
+  border-color: var(--light-green);
+}
+
+/* Outlined */
 
 .button:disabled {
   cursor: not-allowed;
-}
-
-.button:hover {
-  background-color: var(--light-green);
 }
 
 @media only screen and (max-width: breakpoints.$medium) {

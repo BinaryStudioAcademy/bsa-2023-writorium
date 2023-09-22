@@ -4,7 +4,10 @@ import { type ValueOf } from '~/libs/types/types.js';
 
 import styles from './styles.module.scss';
 
+type ButtonVariant = 'primary' | 'outlined' | 'text';
+
 type Properties = {
+  variant?: ButtonVariant;
   disabled?: boolean;
   label: React.ReactNode;
   type?: ValueOf<typeof ButtonType>;
@@ -23,16 +26,29 @@ const Button: React.FC<Properties> = ({
   className = '',
   disabled,
   onClick,
-}) => (
-  <button
-    type={type}
-    name={name}
-    disabled={disabled}
-    className={getValidClassNames(styles.button, className)}
-    onClick={onClick}
-  >
-    {label}
-  </button>
-);
+  variant = 'primary',
+}) => {
+  const variantClassNameMapper: Record<ButtonVariant, string> = {
+    text: 'buttonText',
+    primary: styles.buttonPrimary,
+    outlined: styles.buttonOutlined,
+  };
+
+  return (
+    <button
+      type={type}
+      name={name}
+      disabled={disabled}
+      className={getValidClassNames(
+        styles.button,
+        className,
+        variantClassNameMapper[variant],
+      )}
+      onClick={onClick}
+    >
+      {label}
+    </button>
+  );
+};
 
 export { Button, type Properties as ButtonProperties };
