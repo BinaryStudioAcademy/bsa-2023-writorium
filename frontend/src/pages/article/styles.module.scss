@@ -69,6 +69,12 @@
   font-size: 16px;
 }
 
+@media only screen and (max-width: breakpoints.$medium) {
+  .editArticlePage {
+    flex-direction: column;
+  }
+}
+
 @media only screen and (max-width: breakpoints.$extra-large) {
   .articleCreatePageWrapper .articleFormWrapper {
     max-width: none;
