@@ -139,6 +139,7 @@ class ArticleRepository implements IArticleRepository {
     const article = await this.articleModel
       .query()
       .findById(id)
+      .whereNull('deletedAt')
       .modify(this.joinArticleRelations);
 
     if (!article) {
