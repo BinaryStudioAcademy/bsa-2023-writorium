@@ -51,6 +51,13 @@
 
 /* Outlined */
 
+/* Text */
+.button.buttonText {
+  background-color: transparent;
+}
+
+/* Text */
+
 .button:disabled {
   cursor: not-allowed;
 }

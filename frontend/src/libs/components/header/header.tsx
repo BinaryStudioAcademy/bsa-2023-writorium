@@ -48,6 +48,7 @@ const Header: React.FC<Properties> = ({ user }) => {
                     Profile
                   </Link>
                   <Button
+                    variant="text"
                     type="button"
                     name="Logout"
                     label="Logout"

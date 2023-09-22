@@ -31,7 +31,7 @@ const Button: React.FC<Properties> = ({
   variant = 'primary',
 }) => {
   const variantClassNameMapper: Record<ButtonVariant, string> = {
-    text: 'buttonText',
+    text: styles.buttonText,
     primary: styles.buttonPrimary,
     outlined: styles.buttonOutlined,
   };
