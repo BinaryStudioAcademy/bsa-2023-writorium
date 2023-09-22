@@ -1,4 +1,9 @@
-import { Input, Link, Notification } from '~/libs/components/components.js';
+import {
+  Button,
+  Input,
+  Link,
+  Notification,
+} from '~/libs/components/components.js';
 import { AppRoute } from '~/libs/enums/app-route.enum';
 import { useAppForm, useCallback } from '~/libs/hooks/hooks.js';
 import { type UserSignInWithFacebookResponseDto } from '~/packages/auth/auth.js';
@@ -7,7 +12,6 @@ import {
   userSignInValidationSchema,
 } from '~/packages/users/users.js';
 import {
-  AuthSignInButton,
   AuthSubmitButton,
   FacebookLogin,
   PasswordInput,
@@ -45,7 +49,8 @@ const SignInForm: React.FC<Properties> = ({
       <div className={styles.formWrapper}>
         <h2 className={styles.authFormTitle}>Hello!</h2>
         <div className={styles.socialsSignInButtons}>
-          <AuthSignInButton
+          <Button
+            variant="outlined"
             onClick={onGoogleLogin}
             label="Sign in with Google"
           />
