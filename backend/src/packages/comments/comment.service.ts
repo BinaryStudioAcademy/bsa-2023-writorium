@@ -1,4 +1,5 @@
 import { ApplicationError } from '~/libs/exceptions/exceptions.js';
+import { configureString } from '~/libs/helpers/helpers.js';
 import { type IService } from '~/libs/interfaces/service.interface.js';
 import { ForbiddenError } from '~/libs/packages/exceptions/exceptions.js';
 import { SocketNamespace, SocketRoom } from '~/libs/packages/socket/socket.js';
@@ -72,7 +73,11 @@ class CommentService implements IService {
 
     this.socketService.io
       .of(SocketNamespace.COMMENTS)
-      .to(SocketRoom.ARTICLE_$ID.replace(':id', payload.articleId.toString()))
+      .to(
+        configureString(SocketRoom.ARTICLE_$ID, {
+          id: String(payload.articleId),
+        }),
+      )
       .emit(CommentsSocketEvent.NEW_COMMENT, socketEventPayload);
 
     return comment.toObjectWithRelations();

@@ -1,7 +1,5 @@
-import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-
 import { AppRoute } from '~/libs/enums/app-route.enum.js';
+import { useEffect, useLocation } from '~/libs/hooks/hooks.js';
 import { SocketNamespace, SocketRoom } from '~/libs/packages/socket/socket.js';
 import {
   type ArticleReactionsSocketEventPayload,

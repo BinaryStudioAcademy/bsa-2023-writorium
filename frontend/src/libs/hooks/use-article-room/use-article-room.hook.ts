@@ -1,3 +1,4 @@
+import { configureString } from '~/libs/helpers/helpers.js';
 import { SocketNamespace, SocketRoom } from '~/libs/packages/socket/socket.js';
 import {
   ArticleReactionsSocketEvent,
@@ -20,11 +21,11 @@ const useArticleRoom = (articleId: number): void => {
   const dispatch = useAppDispatch();
   const commentsSocketReference = useSocketNamespace(
     SocketNamespace.COMMENTS,
-    SocketRoom.ARTICLE_$ID.replace(':id', articleId.toString()),
+    configureString(SocketRoom.ARTICLE_$ID, { id: String(articleId) }),
   );
   const reactionsSocketReference = useSocketNamespace(
     SocketNamespace.REACTIONS,
-    SocketRoom.ARTICLE_$ID.replace(':id', articleId.toString()),
+    configureString(SocketRoom.ARTICLE_$ID, { id: String(articleId) }),
   );
 
   useEffect(() => {

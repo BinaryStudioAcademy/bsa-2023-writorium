@@ -1,4 +1,5 @@
 import { ApiPath } from '~/libs/enums/enums.js';
+import { configureString } from '~/libs/helpers/helpers.js';
 import {
   type ApiHandlerOptions,
   type ApiHandlerResponse,
@@ -18,6 +19,7 @@ import {
   type ArticleReactionsSocketEventPayload,
 } from './libs/types/types.js';
 import { articleReactionValidationSchema } from './libs/validation-schemas/validation-schemas.js';
+
 /**
  * @swagger
  * components:
@@ -175,10 +177,9 @@ class ArticleReactionController extends Controller {
       .of(SocketNamespace.REACTIONS)
       .to([
         SocketRoom.ARTICLES_FEED,
-        SocketRoom.ARTICLE_$ID.replace(
-          ':id',
-          options.body.articleId.toString(),
-        ),
+        configureString(SocketRoom.ARTICLE_$ID, {
+          id: String(options.body.articleId),
+        }),
       ])
       .emit(ArticleReactionsSocketEvent.NEW_REACTION, socketEventPayload);
 
