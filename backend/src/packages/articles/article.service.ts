@@ -258,7 +258,7 @@ class ArticleService implements IService {
     const article = await this.articleRepository.find(id);
 
     if (!article) {
-      return null;
+      throw new NotFoundError(ExceptionMessage.ARTICLE_NOT_FOUND);
     }
 
     const articleObject = article.toObjectWithRelations();
@@ -307,9 +307,7 @@ class ArticleService implements IService {
     const article = await this.find(id);
 
     if (!article) {
-      throw new ApplicationError({
-        message: `Article with id ${id} not found`,
-      });
+      throw new NotFoundError(ExceptionMessage.ARTICLE_NOT_FOUND);
     }
 
     const suggestions = await this.generateImprovementSuggestions(article.text);
@@ -427,9 +425,7 @@ class ArticleService implements IService {
     const article = await this.find(id);
 
     if (!article) {
-      throw new ApplicationError({
-        message: `Article with id ${id} not found`,
-      });
+      throw new NotFoundError(ExceptionMessage.ARTICLE_NOT_FOUND);
     }
 
     if (article.userId !== user.id) {
@@ -531,17 +527,7 @@ class ArticleService implements IService {
     const article = await this.find(id);
 
     if (!article) {
-      throw new ApplicationError({
-        message: `Article with id ${id} not found`,
-      });
-    }
-
-    const { deletedAt } = article;
-
-    if (deletedAt) {
-      throw new ApplicationError({
-        message: `Article with id ${id} has already been deleted`,
-      });
+      throw new NotFoundError(ExceptionMessage.ARTICLE_NOT_FOUND);
     }
 
     if (article.userId !== userId) {
