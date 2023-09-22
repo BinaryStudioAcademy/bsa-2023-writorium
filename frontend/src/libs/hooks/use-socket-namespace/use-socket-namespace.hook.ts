@@ -10,11 +10,10 @@ import { useAppSelector, useEffect, useReference } from '../hooks.js';
 const useSocketNamespace = (
   namespace: ValueOf<typeof SocketNamespace>,
   roomId: string,
-  deps?: DependencyList,
+  dependecies?: DependencyList,
 ): MutableRefObject<Socket | null> => {
   const userId = useAppSelector((state) => state.auth.user?.id);
   const socketInstanceReference = useReference<Socket | null>(null);
-  const stringifiedDependencies = JSON.stringify(deps);
 
   useEffect(() => {
     if (!userId) {
@@ -35,7 +34,8 @@ const useSocketNamespace = (
     userId,
     namespace,
     socketInstanceReference,
-    stringifiedDependencies,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    ...(dependecies ?? []),
   ]);
 
   return socketInstanceReference;
