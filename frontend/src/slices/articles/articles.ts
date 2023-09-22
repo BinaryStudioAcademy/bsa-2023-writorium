@@ -11,6 +11,7 @@ import {
   fetchAllCommentsToArticle,
   fetchOwn,
   fetchSharedArticle,
+  geArticleIdByToken,
   getAllGenres,
   getArticle,
   getImprovementSuggestions,
@@ -50,6 +51,7 @@ const allActions = {
   addArticle,
   addReactionToArticlesFeed,
   updateArticleAuthorFollowInfo,
+  geArticleIdByToken,
 };
 
 export { allActions as actions };

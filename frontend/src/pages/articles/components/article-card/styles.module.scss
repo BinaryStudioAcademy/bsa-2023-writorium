@@ -141,6 +141,10 @@
   border-top: 2px solid var(--pale-gray);
 }
 
+.footer svg {
+  color: var(--light-green);
+}
+
 .footer .reactions {
   display: flex;
   align-items: center;
@@ -176,8 +180,7 @@
   color: var(--light-green);
 }
 
-.pressed svg,
-.reaction:hover svg {
+.pressed svg {
   color: var(--light-green);
 }
 
@@ -202,11 +205,28 @@
   background-color: transparent;
 }
 
+.disabled:hover svg {
+  color: var(--light-green);
+}
+
+.footerIcon:hover svg {
+  color: var(--light-green);
+}
+
+.iconWrapper:hover svg {
+  color: var(--dark-green);
+}
+
 .facebookIconButton {
   width: 18px;
   height: 18px;
   color: var(--light-green);
   border-radius: 50%;
+  transition: color 0.3s ease;
+}
+
+.facebookIconButton:hover {
+  color: var(--dark-green);
 }
 
 .moreActions {
@@ -219,7 +239,7 @@
   opacity: 1;
 }
 
-.moreActionsIcon {
+.topActionsIcon {
   width: 35px;
   height: 35px;
   padding: 5px;
@@ -227,7 +247,7 @@
   transition: background-color 0.2s ease;
 }
 
-.moreActionsIcon:hover {
+.topActionsIcon:hover {
   background-color: var(--light-gray);
 }
 

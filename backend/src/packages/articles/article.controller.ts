@@ -26,6 +26,12 @@ import {
  * @swagger
  * components:
  *    schemas:
+ *      ArticleId:
+ *        type: object
+ *        properties:
+ *          id:
+ *            type: integer
+ *            format: int64
  *      ImprovementSuggestion:
  *        type: object
  *        properties:
@@ -217,6 +223,17 @@ class ArticleController extends Controller {
       method: 'GET',
       handler: (options) =>
         this.findShared(
+          options as ApiHandlerOptions<{
+            headers: IncomingHttpHeaders;
+          }>,
+        ),
+    });
+
+    this.addRoute({
+      path: ArticlesApiPath.ARTICLE_ID,
+      method: 'GET',
+      handler: (options) =>
+        this.getArticleIdByToken(
           options as ApiHandlerOptions<{
             headers: IncomingHttpHeaders;
           }>,
@@ -627,6 +644,33 @@ class ArticleController extends Controller {
       payload: await this.articleService.getImprovementSuggestions(
         options.params.id,
       ),
+    };
+  }
+
+  /**
+   * @swagger
+   * /articles/article-id/:token:
+   *    get:
+   *      summary: Get article ID encoded from query
+   *      description: Get article ID encoded from query
+   *      security:
+   *       - bearerAuth: []
+   *      responses:
+   *        200:
+   *          description: Successful operation
+   *          content:
+   *            application/json:
+   *              schema:
+   *                $ref: '#/components/schemas/ArticleId'
+   */
+  private async getArticleIdByToken(
+    options: ApiHandlerOptions<{
+      headers: IncomingHttpHeaders;
+    }>,
+  ): Promise<ApiHandlerResponse> {
+    return {
+      status: HttpCode.OK,
+      payload: await this.articleService.getArticleIdByToken(options.headers),
     };
   }
 }

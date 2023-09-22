@@ -60,6 +60,7 @@ const Header: React.FC<Properties> = ({ user }) => {
               }
             >
               <Avatar
+                className={styles.avatar}
                 username={getFullName(user.firstName, user.lastName)}
                 avatarUrl={user.avatarUrl}
               />

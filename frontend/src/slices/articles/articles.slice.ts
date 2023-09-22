@@ -24,6 +24,7 @@ import {
   fetchAllCommentsToArticle,
   fetchOwn,
   fetchSharedArticle,
+  geArticleIdByToken,
   getAllGenres,
   getArticle,
   getImprovementSuggestions,
@@ -54,10 +55,13 @@ type State = {
   showFavourites: boolean;
   improvementSuggestions: ArticleImprovementSuggestion[] | null;
   improvementSuggestionsDataStatus: ValueOf<typeof DataStatus>;
+  articleIdByToken: number | null;
+  articleIdByTokenDataStatus: ValueOf<typeof DataStatus>;
 };
 
 const initialState: State = {
   article: null,
+  articleIdByToken: null,
   articleComments: [],
   articles: [],
   genres: [],
@@ -69,6 +73,7 @@ const initialState: State = {
   articleReactionDataStatus: DataStatus.IDLE,
   getArticleStatus: DataStatus.IDLE,
   improvementSuggestionsDataStatus: DataStatus.IDLE,
+  articleIdByTokenDataStatus: DataStatus.IDLE,
 };
 
 const { reducer, actions, name } = createSlice({
@@ -82,6 +87,10 @@ const { reducer, actions, name } = createSlice({
     resetComments(state) {
       state.articleComments = initialState.articleComments;
       state.articleCommentsDataStatus = DataStatus.IDLE;
+    },
+    resetArticleIdByToken(state) {
+      state.articleIdByToken = initialState.articleIdByToken;
+      state.articleIdByTokenDataStatus = DataStatus.FULFILLED;
     },
   },
   extraReducers(builder) {
@@ -244,7 +253,16 @@ const { reducer, actions, name } = createSlice({
       });
       state.articleCommentsDataStatus = DataStatus.FULFILLED;
     });
-
+    builder.addCase(geArticleIdByToken.rejected, (state) => {
+      state.articleIdByTokenDataStatus = DataStatus.REJECTED;
+    });
+    builder.addCase(geArticleIdByToken.pending, (state) => {
+      state.articleIdByTokenDataStatus = DataStatus.PENDING;
+    });
+    builder.addCase(geArticleIdByToken.fulfilled, (state, action) => {
+      state.articleIdByToken = action.payload.id;
+      state.articleIdByTokenDataStatus = DataStatus.FULFILLED;
+    });
     builder.addMatcher(
       isAnyOf(
         getImprovementSuggestions.fulfilled,

@@ -1,5 +1,6 @@
 export {
   ArticleImprovementSuggestionPriority,
+  ArticlePublishStatus,
   ArticleReactionsSocketEvent,
   ArticlesApiPath,
   ArticleSocketEvent,

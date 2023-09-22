@@ -129,6 +129,24 @@ class ArticleApi extends HttpApi {
     return await response.json<ArticleWithFollowResponseDto>();
   }
 
+  public async geArticleIdByToken(
+    token: string,
+  ): Promise<Pick<ArticleWithFollowResponseDto, 'id'>> {
+    const response = await this.load(
+      this.getFullEndpoint(ArticlesApiPath.ARTICLE_ID, {}),
+      {
+        method: 'GET',
+        contentType: ContentType.JSON,
+        hasAuth: true,
+        customHeaders: {
+          [CustomHttpHeader.SHARED_ARTICLE_TOKEN]: token,
+        },
+      },
+    );
+
+    return await response.json<Pick<ArticleWithFollowResponseDto, 'id'>>();
+  }
+
   public async getArticle(id: number): Promise<ArticleWithFollowResponseDto> {
     const response = await this.load(
       this.getFullEndpoint(ArticlesApiPath.$ID, { id: String(id) }),

@@ -40,6 +40,7 @@ import {
 } from './libs/helpers/helpers.js';
 import {
   type ArticleCreateDto,
+  type ArticleGenreStatsFilters,
   type ArticleGetAllResponseDto,
   type ArticleGetImprovementSuggestionsResponseDto,
   type ArticleImprovementSuggestion,
@@ -267,7 +268,7 @@ class ArticleService implements IService {
     const article = await this.articleRepository.find(id);
 
     if (!article) {
-      return null;
+      throw new NotFoundError(ExceptionMessage.ARTICLE_NOT_FOUND);
     }
 
     const articleObject = article.toObjectWithRelations();
@@ -316,9 +317,7 @@ class ArticleService implements IService {
     const article = await this.find(id);
 
     if (!article) {
-      throw new ApplicationError({
-        message: `Article with id ${id} not found`,
-      });
+      throw new NotFoundError(ExceptionMessage.ARTICLE_NOT_FOUND);
     }
 
     const suggestions = await this.generateImprovementSuggestions(article.text);
@@ -387,9 +386,11 @@ class ArticleService implements IService {
 
   public async getUserArticlesGenreStats(
     userId: number,
+    filters: ArticleGenreStatsFilters,
   ): Promise<UserArticlesGenreStatsResponseDto> {
     const stats = await this.articleRepository.getUserArticlesGenreStats(
       userId,
+      filters,
     );
 
     return {
@@ -444,9 +445,7 @@ class ArticleService implements IService {
     const article = await this.find(id);
 
     if (!article) {
-      throw new ApplicationError({
-        message: `Article with id ${id} not found`,
-      });
+      throw new NotFoundError(ExceptionMessage.ARTICLE_NOT_FOUND);
     }
 
     if (article.userId !== user.id) {
@@ -525,6 +524,22 @@ class ArticleService implements IService {
     return articleFound;
   }
 
+  public async getArticleIdByToken(
+    headers: IncomingHttpHeaders,
+  ): Promise<Pick<ArticleWithFollowResponseDto, 'id'>> {
+    const token = headers[CustomHttpHeader.SHARED_ARTICLE_TOKEN] as string;
+
+    if (!token) {
+      throw new BadRequestError(ExceptionMessage.INVALID_TOKEN);
+    }
+
+    const encoded = await articleToken.verifyToken(token);
+
+    return {
+      id: Number(encoded.articleId),
+    };
+  }
+
   public async delete(
     id: number,
     userId: number,
@@ -532,17 +547,7 @@ class ArticleService implements IService {
     const article = await this.find(id);
 
     if (!article) {
-      throw new ApplicationError({
-        message: `Article with id ${id} not found`,
-      });
-    }
-
-    const { deletedAt } = article;
-
-    if (deletedAt) {
-      throw new ApplicationError({
-        message: `Article with id ${id} has already been deleted`,
-      });
+      throw new NotFoundError(ExceptionMessage.ARTICLE_NOT_FOUND);
     }
 
     if (article.userId !== userId) {

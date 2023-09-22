@@ -27,3 +27,6 @@ const articleController = new ArticleController(logger, articleService);
 
 export { articleController, articleService };
 export { ArticleModel } from './article.model.js';
+export { ArticlePublishStatus } from './libs/enums/enums.js';
+export { type ArticleGenreStatsFilters } from './libs/types/types.js';
+export { articleGenreStatsFiltersValidationSchema } from './libs/validation-schemas/validation-schemas.js';

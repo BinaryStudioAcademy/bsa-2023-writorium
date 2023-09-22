@@ -4,6 +4,7 @@ export {
   type ArticleCounts,
   type ArticleCreateDto,
   type ArticleEntityType,
+  type ArticleGenreStatsFilters,
   type ArticleGetAllResponseDto,
   type ArticleGetImprovementSuggestionsResponseDto,
   type ArticleImprovementSuggestion,
