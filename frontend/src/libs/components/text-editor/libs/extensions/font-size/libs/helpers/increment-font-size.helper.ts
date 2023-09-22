@@ -1,4 +1,4 @@
-import { FontSizeConfig } from '../constants/config.constant.js';
+import { FontSizeConfig } from '../constants/constants.js';
 
 const incrementFontSize = (fontSize: number): number => {
   const newFontSize = fontSize + FontSizeConfig.CHANGE_STEP;
