@@ -72,6 +72,12 @@
   transition: background-color 0.2s ease;
 }
 
+.reactionButton {
+  gap: 3px;
+  color: var(--dark-gray-50);
+  font-size: 12px;
+}
+
 .iconButton:hover {
   background-color: var(--light-gray);
 }
@@ -94,7 +100,8 @@
 }
 
 .text {
-  max-width: 586px;
+  // max-width: 586px;
+  width: 100%;
   margin: 28px auto 0;
   color: var(--dark-gray);
   font-weight: 400;
@@ -103,22 +110,10 @@
   word-break: break-word;
 }
 
-.reactionIcon {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 30px;
-  padding-top: 6px;
-  color: var(--dark-gray-50);
-  font-weight: 400;
-  font-size: 12px;
-  background-color: var(--white-90);
-  border-radius: 50%;
-  transition: background-color 0.2s ease;
-}
-
-.reactionIcon:hover {
-  background-color: var(--light-gray);
+.reactionButtonsWrapper {
+  display: none;
+  gap: 10px;
+  margin: 10px 0;
 }
 
 .disabled {
@@ -168,6 +163,11 @@
     left: 15px;
     width: 235px;
   }
+
+  .reactionIcon {
+    width: 15px;
+    height: 15px;
+  }
 }
 
 @media only screen and (min-width: breakpoints.$medium) and (max-width: breakpoints.$extra-large) {
@@ -195,6 +195,17 @@
   .authorDetails.authorDetailsModal {
     left: 15px;
     width: 293px;
+  }
+
+  .reactionIcon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .reactionButton {
+    width: 37px;
+    height: 37px;
+    font-size: 14px;
   }
 }
 
@@ -226,6 +237,14 @@
   .authorDetails.authorDetailsModal {
     display: flex;
     background-color: var(--light-gray-15);
+  }
+
+  .reactionButtonsWrapper {
+    display: flex;
+  }
+
+  .textWrapper {
+    padding-bottom: 0;
   }
 }
 

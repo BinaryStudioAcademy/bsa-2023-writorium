@@ -188,28 +188,6 @@ const ArticleView: React.FC<Properties> = ({
                 styles.facebookIconButton,
               )}
             />
-            <IconButton
-              iconName="like"
-              iconClassName={styles.icon}
-              className={getValidClassNames(
-                styles.reactionIcon,
-                isArticleOwner && styles.disabled,
-                hasAlreadyReactedWith === Reaction.LIKE && styles.pressed,
-              )}
-              label={String(likesCount)}
-              onClick={handleLikeReaction}
-            />
-            <IconButton
-              iconName="dislike"
-              iconClassName={styles.icon}
-              className={getValidClassNames(
-                styles.reactionIcon,
-                isArticleOwner && styles.disabled,
-                hasAlreadyReactedWith === Reaction.DISLIKE && styles.pressed,
-              )}
-              label={String(dislikesCount)}
-              onClick={handleDislikeReaction}
-            />
           </div>
         )}
       </div>
@@ -245,6 +223,32 @@ const ArticleView: React.FC<Properties> = ({
           className={styles.text}
           dangerouslySetInnerHTML={{ __html: sanitizeHtml(text) }}
         />
+        <div className={styles.reactionButtonsWrapper}>
+          <IconButton
+            iconName="like"
+            iconClassName={styles.reactionIcon}
+            className={getValidClassNames(
+              styles.iconButton,
+              styles.reactionButton,
+              isArticleOwner && styles.disabled,
+              hasAlreadyReactedWith === Reaction.LIKE && styles.pressed,
+            )}
+            label={String(likesCount)}
+            onClick={handleLikeReaction}
+          />
+          <IconButton
+            iconName="dislike"
+            iconClassName={styles.reactionIcon}
+            className={getValidClassNames(
+              styles.iconButton,
+              styles.reactionButton,
+              isArticleOwner && styles.disabled,
+              hasAlreadyReactedWith === Reaction.DISLIKE && styles.pressed,
+            )}
+            label={String(dislikesCount)}
+            onClick={handleDislikeReaction}
+          />
+        </div>
       </div>
       <ConfirmArticleDeleteDialog
         onDeleteArticle={handleDeleteArticle}
