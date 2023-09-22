@@ -14,6 +14,25 @@
     border-color 0.3s ease;
 }
 
+.button.buttonLoading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 10px;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.button .loader {
+  width: 15px;
+  height: 15px;
+  border-width: 2px;
+}
+
+.button .loaderOverlay {
+  padding: 0;
+}
+
 /* Primary */
 .button.buttonPrimary {
   color: var(--white);
@@ -25,8 +44,12 @@
   background-color: var(--disabled-gray);
 }
 
-.button.buttonPrimary:not(:disabled):hover {
+.button.buttonPrimary:not(:disabled, .buttonLoading):hover {
   background-color: var(--light-green);
+}
+
+.button.buttonPrimary .loader {
+  --loader-color: var(--white);
 }
 
 /* Primary */
@@ -43,9 +66,13 @@
   border-color: var(--disabled-gray);
 }
 
-.button.buttonOutlined:not(:disabled):hover {
+.button.buttonOutlined:not(:disabled, .buttonLoading):hover {
   color: var(--light-green);
   border-color: var(--light-green);
+}
+
+.button.buttonOutlined .loader {
+  --loader-color: var(--dark-green);
 }
 
 /* Outlined */
@@ -60,7 +87,7 @@
   color: var(--black-20);
 }
 
-.button.buttonText:not(:disabled):hover {
+.button.buttonText:not(:disabled, .buttonLoading):hover {
   color: var(--light-green);
 }
 
