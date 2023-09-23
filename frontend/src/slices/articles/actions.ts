@@ -22,7 +22,6 @@ import {
   type CommentWithRelationsResponseDto,
 } from '~/packages/comments/comments.js';
 import { type GenreGetAllResponseDto } from '~/packages/genres/genres.js';
-import { NotificationType } from '~/packages/notification/notification.js';
 import { type PromptRequestDto } from '~/packages/prompts/prompts.js';
 import { type UserFollowResponseDto } from '~/packages/users/users.js';
 
@@ -150,7 +149,7 @@ const shareArticle = createAsyncThunk<
 
   void dispatch(
     appActions.notify({
-      type: NotificationType.SUCCESS,
+      type: 'success',
       message: 'The sharing link was copied to clipboard',
     }),
   );
@@ -261,7 +260,7 @@ const deleteArticle = createAsyncThunk<
 
     void dispatch(
       appActions.notify({
-        type: NotificationType.SUCCESS,
+        type: 'success',
         message: 'The article has been deleted successfully.',
       }),
     );
