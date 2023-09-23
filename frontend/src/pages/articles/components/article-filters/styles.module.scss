@@ -2,32 +2,28 @@
 
 .wrapper {
   position: sticky;
-  top: calc(var(--header-height) + 55px);
-  flex: none;
-  align-self: flex-start;
-  width: 400px;
-  max-height: 639px;
-  padding: 27px 40px 34px 36px;
-  text-align: left;
+  top: calc(var(--header-height) + 15px);
+  width: 100%;
+  max-width: 400px;
+  max-height: 640px;
+  padding-block-start: 15px;
   background: var(--light-gray);
-  border: 1px solid var(--light-gray-border);
-  border-radius: 10px;
 }
 
 .title {
-  position: absolute;
-  top: -25px;
-  left: 0;
   display: flex;
   justify-content: space-between;
   width: 100%;
-  transform: translateY(-100%);
+  margin-block-end: 10px;
 }
 
 .filterGroup {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 15px;
+  padding: 30px 40px;
+  border: 1px solid var(--light-gray-border);
+  border-radius: 10px;
 }
 
 .inputWrapper {

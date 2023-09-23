@@ -1,7 +1,9 @@
+@use "src/assets/css/breakpoints.scss";
+
 .article {
   width: 100%;
   max-width: 832px;
-  padding: 31px 24px 20px 31px;
+  padding: 20px;
   background: var(--white);
   border: 2px solid var(--pale-gray);
   border-radius: 10px;
@@ -20,7 +22,7 @@
   gap: 10px;
 }
 
-.header .publisherName {
+.publisherName {
   color: var(--dark-gray);
   font-weight: 500;
   font-size: 16px;
@@ -29,7 +31,8 @@
   line-height: normal;
 }
 
-.header .publicationTime {
+.publicationTime,
+.readTime {
   position: relative;
   display: flex;
   align-items: center;
@@ -42,7 +45,8 @@
   line-height: normal;
 }
 
-.header .publicationTime::before {
+.publicationTime::before,
+.readTime::before {
   content: "";
   position: absolute;
   left: -20px;
@@ -53,9 +57,8 @@
 .body {
   display: flex;
   justify-content: space-between;
-  gap: 39px;
-  margin-bottom: 23px;
-  padding-right: 19px;
+  gap: 30px;
+  margin-bottom: 20px;
 }
 
 .body .articleInfo {
@@ -129,15 +132,14 @@
   display: flex;
   align-items: center;
   gap: 20px;
-  padding: 12px 33px 0 4px;
+  padding-block-start: 10px;
 }
 
 .footer::before {
   content: "";
   position: absolute;
   top: 0;
-  right: -24px;
-  left: -31px;
+  width: 100%;
   border-top: 2px solid var(--pale-gray);
 }
 
@@ -259,4 +261,43 @@
 .toolbar {
   display: flex;
   gap: 5px;
+}
+
+@media only screen and (max-width: breakpoints.$medium) {
+  .article {
+    padding: 10px;
+  }
+
+  .header .info {
+    display: grid;
+    grid-template-areas:
+      "avatar name name"
+      "avatar date readtime";
+    align-items: center;
+    gap: 10px;
+  }
+
+  .publisherAvatar {
+    grid-area: avatar;
+  }
+
+  .publisherName {
+    grid-area: name;
+  }
+
+  .publicationTime {
+    grid-area: date;
+  }
+
+  .readTime {
+    grid-area: readtime;
+  }
+
+  .footer {
+    gap: 10px;
+  }
+
+  .footer .reactions {
+    gap: 10px;
+  }
 }
