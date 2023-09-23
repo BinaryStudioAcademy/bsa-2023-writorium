@@ -89,11 +89,13 @@ erDiagram
     varchar key "inner usage key value"
     varchar name "readable name value"
     text description "achivement description"
+    int breakpoint
+    text reference_table "referencing to table with records for achievements"
   }
 
-  achievements_to_users ||--|| achievements : achievement_id
-  achievements_to_users }o..|| users : user_id
-  achievements_to_users {
+  users_achievements ||--|| achievements : achievement_id
+  users_achievements }o..|| users : user_id
+  users_achievements {
     int id PK
     dateTime created_at
     dateTime updated_at
