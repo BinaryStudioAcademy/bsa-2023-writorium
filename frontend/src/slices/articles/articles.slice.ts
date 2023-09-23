@@ -12,6 +12,10 @@ import { type CommentWithRelationsResponseDto } from '~/packages/comments/commen
 import { type GenreGetAllResponseDto } from '~/packages/genres/genres.js';
 
 import {
+  addArticle,
+  addComment,
+  addReactionToArticlesFeed,
+  addReactionToArticleView,
   createArticle,
   createComment,
   deleteArticle,
@@ -32,7 +36,11 @@ import {
   updateArticleAuthorFollowInfo,
   updateComment,
 } from './actions.js';
-import { removeReaction, updateReaction } from './libs/helpers/helpers.js';
+import {
+  applyReaction,
+  removeReaction,
+  updateReaction,
+} from './libs/helpers/helpers.js';
 
 type State = {
   article: ArticleWithFollowResponseDto | null;
@@ -86,6 +94,12 @@ const { reducer, actions, name } = createSlice({
     },
   },
   extraReducers(builder) {
+    builder.addCase(addArticle.fulfilled, (state, action) => {
+      if (action.payload) {
+        state.articles = [action.payload, ...state.articles];
+      }
+    });
+
     builder.addCase(createArticle.fulfilled, (state) => {
       state.saveArticleStatus = DataStatus.FULFILLED;
     });
@@ -98,9 +112,11 @@ const { reducer, actions, name } = createSlice({
       state.getArticleStatus = DataStatus.FULFILLED;
       state.article = action.payload;
     });
+
     builder.addCase(setShowFavourites, (state, action) => {
       state.showFavourites = action.payload;
     });
+
     builder.addCase(deleteArticle.fulfilled, (state, action) => {
       const article = action.payload;
       if (article) {
@@ -110,6 +126,29 @@ const { reducer, actions, name } = createSlice({
       }
       state.dataStatus = DataStatus.FULFILLED;
     });
+
+    builder.addCase(addReactionToArticlesFeed.fulfilled, (state, action) => {
+      const reaction = action.payload;
+
+      state.articles = state.articles.map((article) => {
+        if (article.id !== reaction?.articleId) {
+          return article;
+        }
+
+        return applyReaction(article, reaction);
+      });
+    });
+
+    builder.addCase(addReactionToArticleView.fulfilled, (state, action) => {
+      const reaction = action.payload;
+
+      if (!reaction || !state.article) {
+        return;
+      }
+
+      state.article = applyReaction(state.article, reaction);
+    });
+
     builder.addCase(updateArticleAuthorFollowInfo, (state, { payload }) => {
       const { isFollowed, followersCount } = payload;
 
@@ -188,6 +227,11 @@ const { reducer, actions, name } = createSlice({
     builder.addCase(fetchAllCommentsToArticle.fulfilled, (state, action) => {
       state.articleComments = action.payload.items;
       state.articleCommentsDataStatus = DataStatus.FULFILLED;
+    });
+    builder.addCase(addComment.fulfilled, (state, action) => {
+      if (action.payload) {
+        state.articleComments = [action.payload, ...state.articleComments];
+      }
     });
     builder.addCase(toggleIsFavourite.fulfilled, (state, action) => {
       const article = action.payload;

@@ -2,14 +2,20 @@ import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
 
 import { PREVIOUS_PAGE_INDEX } from '~/libs/constants/constants.js';
 import { AppRoute } from '~/libs/enums/enums.js';
+import { getFullName } from '~/libs/helpers/helpers.js';
 import { StorageKey } from '~/libs/packages/storage/storage.js';
 import { type AsyncThunkConfig } from '~/libs/types/types.js';
 import {
   type ArticleGetAllResponseDto,
   type ArticleImprovementSuggestion,
   type ArticleReactionRequestDto,
+  type ArticleReactionResponseDto,
+  type ArticleReactionsSocketEvent,
+  type ArticleReactionsSocketEventPayload,
   type ArticleRequestDto,
   type ArticlesFilters,
+  type ArticleSocketEvent,
+  type ArticleSocketEventPayload,
   type ArticleUpdateRequestPayload,
   type ArticleWithCountsResponseDto,
   type ArticleWithFollowResponseDto,
@@ -18,6 +24,8 @@ import {
 import {
   type CommentBaseRequestDto,
   type CommentGetAllResponseDto,
+  type CommentsSocketEvent,
+  type CommentsSocketEventPayload,
   type CommentUpdateDto,
   type CommentWithRelationsResponseDto,
 } from '~/packages/comments/comments.js';
@@ -47,6 +55,34 @@ const fetchOwn = createAsyncThunk<
   const { articleApi } = extra;
 
   return articleApi.getOwn(filters);
+});
+
+const addArticle = createAsyncThunk<
+  ArticleSocketEventPayload[typeof ArticleSocketEvent.NEW_ARTICLE] | null,
+  ArticleSocketEventPayload[typeof ArticleSocketEvent.NEW_ARTICLE],
+  AsyncThunkConfig
+>(`${sliceName}/add-article`, (article, { getState, dispatch }) => {
+  const {
+    auth: { user },
+  } = getState();
+
+  if (user?.id !== article.userId) {
+    const { author } = article;
+
+    void dispatch(
+      appActions.notify({
+        type: 'info',
+        message: `New article from ${getFullName(
+          author.firstName,
+          author.lastName,
+        )}`,
+      }),
+    );
+
+    return article;
+  }
+
+  return null;
 });
 
 const createArticle = createAsyncThunk<
@@ -196,6 +232,38 @@ const reactToArticle = createAsyncThunk<
   };
 });
 
+const addReactionToArticleView = createAsyncThunk<
+  ArticleReactionResponseDto | null,
+  ArticleReactionsSocketEventPayload[typeof ArticleReactionsSocketEvent.NEW_REACTION],
+  AsyncThunkConfig
+>(`${sliceName}/add-reaction-to-article-view`, (reaction, { getState }) => {
+  const {
+    auth: { user },
+  } = getState();
+
+  if (user?.id !== reaction.userId) {
+    return reaction;
+  }
+
+  return null;
+});
+
+const addReactionToArticlesFeed = createAsyncThunk<
+  ArticleReactionResponseDto | null,
+  ArticleReactionsSocketEventPayload[typeof ArticleReactionsSocketEvent.NEW_REACTION],
+  AsyncThunkConfig
+>(`${sliceName}/add-reaction-to-articles-feed`, (reaction, { getState }) => {
+  const {
+    auth: { user },
+  } = getState();
+
+  if (user?.id !== reaction.userId) {
+    return reaction;
+  }
+
+  return null;
+});
+
 const deleteArticleReaction = createAsyncThunk<
   {
     articleId: number;
@@ -221,6 +289,34 @@ const fetchAllCommentsToArticle = createAsyncThunk<
   const { commentsApi } = extra;
 
   return commentsApi.fetchAllByArticleId(articleId);
+});
+
+const addComment = createAsyncThunk<
+  CommentsSocketEventPayload[typeof CommentsSocketEvent.NEW_COMMENT] | null,
+  CommentsSocketEventPayload[typeof CommentsSocketEvent.NEW_COMMENT],
+  AsyncThunkConfig
+>(`${sliceName}/add-comment`, (comment, { getState, dispatch }) => {
+  const {
+    auth: { user },
+  } = getState();
+
+  if (user?.id !== comment.userId) {
+    const { author } = comment;
+
+    void dispatch(
+      appActions.notify({
+        type: 'info',
+        message: `New comment from ${getFullName(
+          author.firstName,
+          author.lastName,
+        )}`,
+      }),
+    );
+
+    return comment;
+  }
+
+  return null;
 });
 
 const createComment = createAsyncThunk<
@@ -339,6 +435,10 @@ const updateArticleAuthorFollowInfo = createAction<UserFollowResponseDto>(
 );
 
 export {
+  addArticle,
+  addComment,
+  addReactionToArticlesFeed,
+  addReactionToArticleView,
   createArticle,
   createComment,
   deleteArticle,

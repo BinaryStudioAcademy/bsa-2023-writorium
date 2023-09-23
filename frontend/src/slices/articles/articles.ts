@@ -1,4 +1,8 @@
 import {
+  addArticle,
+  addComment,
+  addReactionToArticlesFeed,
+  addReactionToArticleView,
   createArticle,
   createComment,
   deleteArticle,
@@ -26,7 +30,9 @@ const allActions = {
   ...actions,
   fetchAll,
   fetchOwn,
+  addReactionToArticleView,
   createArticle,
+  addComment,
   updateArticle,
   getArticle,
   getAllGenres,
@@ -42,6 +48,8 @@ const allActions = {
   setShowFavourites,
   getImprovementSuggestions,
   getImprovementSuggestionsBySession,
+  addArticle,
+  addReactionToArticlesFeed,
   updateArticleAuthorFollowInfo,
   geArticleIdByToken,
 };

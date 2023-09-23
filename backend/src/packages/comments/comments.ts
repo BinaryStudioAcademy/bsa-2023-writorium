@@ -1,4 +1,5 @@
 import { logger } from '~/libs/packages/logger/logger.js';
+import { socketService } from '~/libs/packages/socket/socket.js';
 
 import { achievementService } from '../achievements/achievements.js';
 import { CommentController } from './comment.controller.js';
@@ -7,10 +8,11 @@ import { CommentRepository } from './comment.repository.js';
 import { CommentService } from './comment.service.js';
 
 const commentRepository = new CommentRepository(CommentModel);
-const commentService = new CommentService(
+const commentService = new CommentService({
+  socketService,
   commentRepository,
   achievementService,
-);
+});
 const commentController = new CommentController(logger, commentService);
 
 export { commentController, commentService };
