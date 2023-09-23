@@ -34,18 +34,19 @@ const ConfirmArticleDeleteDialog: React.FC<Properties> = ({
         Are you sure you want to delete this article? This action cannot be
         undone.
       </p>
-      <div className={styles.buttonWrapper}>
+      <div className={styles.buttonsWrapper}>
         <Button
-          type={ButtonType.BUTTON}
+          fullWidth
           label="Cancel"
+          variant="outlined"
+          type={ButtonType.BUTTON}
           onClick={handleClose}
-          className={styles.buttonCancel}
         />
         <Button
-          type={ButtonType.BUTTON}
+          fullWidth
           label="Delete"
+          type={ButtonType.BUTTON}
           onClick={onDeleteArticle}
-          className={styles.buttonDelete}
         />
       </div>
     </Modal>
