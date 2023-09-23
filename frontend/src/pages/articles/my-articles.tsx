@@ -1,17 +1,31 @@
-import { InfiniteScroll, ScrollToTop } from '~/libs/components/components.js';
-import { checkIsEqual, getArticleTags } from '~/libs/helpers/helpers.js';
+import {
+  IconButton,
+  Modal,
+  ScrollToTop,
+} from '~/libs/components/components.js';
+import { WindowBreakpoint } from '~/libs/enums/enums.js';
+import {
+  checkIsEqual,
+  checkIsPassingWindowBreakpoint,
+} from '~/libs/helpers/helpers.js';
 import {
   useAppDispatch,
   useAppSelector,
   useCallback,
   useEffect,
+  useGetWindowDimensions,
+  useModal,
   usePagination,
   useState,
 } from '~/libs/hooks/hooks.js';
 import { actions as articlesActions } from '~/slices/articles/articles.js';
 import { actions as userActions } from '~/slices/users/users.js';
 
-import { ArticleCard, ArticleFilters } from './components/components.js';
+import {
+  ArticleFilters,
+  ArticlesList,
+  EmptyArticlesPlaceholder,
+} from './components/components.js';
 import {
   getActiveFilters,
   getSelectAuthorsOptions,
@@ -21,9 +35,16 @@ import { type FilterFormValues } from './libs/types/types.js';
 import styles from './styles.module.scss';
 
 const MyArticles: React.FC = () => {
+  const { handleToggleModalOpen, isOpen } = useModal();
   const dispatch = useAppDispatch();
   const { articles, genres } = useAppSelector(({ articles }) => articles);
   const { authors } = useAppSelector(({ users }) => users);
+
+  const { width } = useGetWindowDimensions();
+  const shouldHideFilters = checkIsPassingWindowBreakpoint(
+    WindowBreakpoint.LARGE,
+    width,
+  );
 
   const [filters, setFilters] = useState<FilterFormValues>({
     titleFilter: '',
@@ -71,6 +92,13 @@ const MyArticles: React.FC = () => {
     [filters, resetSkip, dispatch],
   );
 
+  const handleModalClose = useCallback(() => {
+    if (isOpen) {
+      handleToggleModalOpen();
+    }
+    return false;
+  }, [handleToggleModalOpen, isOpen]);
+
   useEffect(() => {
     handleLoadArticles();
     handleLoadAuthors();
@@ -84,28 +112,41 @@ const MyArticles: React.FC = () => {
   return (
     <>
       <div className={styles.articlesWrapper}>
-        <InfiniteScroll
-          hasMore={hasMore}
-          className={styles.articles}
-          dataLength={articles.length}
-          fetchData={handleLoadArticles}
+        {Boolean(articles.length) ? (
+          <ArticlesList
+            hasMore={hasMore}
+            articlesLength={articles.length}
+            onFetchData={handleLoadArticles}
+            articles={articles}
+          />
+        ) : (
+          <EmptyArticlesPlaceholder />
+        )}
+
+        {shouldHideFilters ? (
+          <IconButton
+            iconName="filter"
+            className={styles.filterButton}
+            onClick={handleToggleModalOpen}
+          />
+        ) : (
+          <ArticleFilters
+            genreSelectOptions={getSelectGenresOptions(genres)}
+            authorsSelectOptions={getSelectAuthorsOptions(authors)}
+            onSubmit={handleFiltersSubmit}
+          />
+        )}
+        <Modal
+          contentClassName={styles.modalContent}
+          isOpen={shouldHideFilters ? isOpen : handleModalClose()}
+          onClose={handleToggleModalOpen}
         >
-          {Boolean(articles.length) &&
-            articles.map((article) => (
-              <ArticleCard
-                key={article.id}
-                article={article}
-                author={article.author}
-                tags={getArticleTags(article)}
-                reactions={article.reactions}
-              />
-            ))}
-        </InfiniteScroll>
-        <ArticleFilters
-          genreSelectOptions={getSelectGenresOptions(genres)}
-          authorsSelectOptions={getSelectAuthorsOptions(authors)}
-          onSubmit={handleFiltersSubmit}
-        />
+          <ArticleFilters
+            genreSelectOptions={getSelectGenresOptions(genres)}
+            authorsSelectOptions={getSelectAuthorsOptions(authors)}
+            onSubmit={handleFiltersSubmit}
+          />
+        </Modal>
       </div>
       <ScrollToTop />
     </>
