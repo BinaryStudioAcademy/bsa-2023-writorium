@@ -11,6 +11,7 @@ const DatabaseTableName = {
   ACHIEVEMENTS: 'achievements',
   GENRES: 'genres',
   PROMPTS: 'prompts',
+  USERS_ACHIEVEMENTS: 'users_achievements',
   FAVOURED_USER_ARTICLES: 'favoured_user_articles',
 } as const;
 
