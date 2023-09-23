@@ -340,6 +340,10 @@ class ArticleRepository implements IArticleRepository {
     });
   }
 
+  public countArticlesByUserId(userId: number): Promise<number> {
+    return this.articleModel.query().where({ userId }).resultSize();
+  }
+
   public async toggleIsFavourite(
     userId: number,
     articleId: number,

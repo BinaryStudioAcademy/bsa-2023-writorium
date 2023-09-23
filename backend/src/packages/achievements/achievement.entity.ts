@@ -1,7 +1,7 @@
 import { type IEntity } from '~/libs/interfaces/interfaces.js';
 import { type WithNullableKeys } from '~/libs/types/types.js';
 
-import { type Achievement } from './libs/types/types.js';
+import { type Achievement, type ReferenceTable } from './libs/types/types.js';
 
 type AchievementEntityPayload = Omit<Achievement, 'id'>;
 
@@ -14,16 +14,24 @@ class AchievementEntity implements IEntity {
 
   private 'description': string;
 
+  private 'breakpoint': number;
+
+  private 'referenceTable': ReferenceTable;
+
   private constructor({
     id,
     key,
     name,
     description,
+    breakpoint,
+    referenceTable,
   }: WithNullableKeys<Achievement, 'id'>) {
     this.id = id;
     this.key = key;
     this.name = name;
     this.description = description;
+    this.breakpoint = breakpoint;
+    this.referenceTable = referenceTable as ReferenceTable;
   }
 
   public static initialize({
@@ -31,12 +39,16 @@ class AchievementEntity implements IEntity {
     key,
     name,
     description,
+    breakpoint,
+    referenceTable,
   }: Achievement): AchievementEntity {
     return new AchievementEntity({
       id,
       key,
       name,
       description,
+      breakpoint,
+      referenceTable,
     });
   }
 
@@ -44,12 +56,16 @@ class AchievementEntity implements IEntity {
     key,
     name,
     description,
+    breakpoint,
+    referenceTable,
   }: AchievementEntityPayload): AchievementEntity {
     return new AchievementEntity({
       id: null,
       key,
       name,
       description,
+      breakpoint,
+      referenceTable,
     });
   }
 
@@ -59,6 +75,8 @@ class AchievementEntity implements IEntity {
       key: this.key,
       name: this.name,
       description: this.description,
+      breakpoint: this.breakpoint,
+      referenceTable: this.referenceTable,
     };
   }
 
@@ -67,6 +85,8 @@ class AchievementEntity implements IEntity {
       key: this.key,
       name: this.name,
       description: this.description,
+      breakpoint: this.breakpoint,
+      referenceTable: this.referenceTable,
     };
   }
 }
