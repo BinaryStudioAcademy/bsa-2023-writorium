@@ -21,9 +21,21 @@
     border-color 0.3s ease-in;
 }
 
+.button:hover {
+  color: var(--light-green);
+  background-color: transparent;
+  border-color: var(--light-green);
+}
+
 .buttonSave {
   color: var(--white);
   background: var(--dark-green);
+}
+
+.buttonSave:hover {
+  color: var(--white);
+  background: var(--light-green);
+  border-color: var(--light-green);
 }
 
 .button:disabled {

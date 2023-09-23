@@ -199,7 +199,11 @@
 
 .iconWrapper {
   display: flex;
-  gap: 10px;
+  gap: 5px;
+  color: var(--dark-gray-50);
+  font-size: 12px;
+  font-family: Lato, sans-serif;
+  line-height: normal;
   background-color: transparent;
 }
 
