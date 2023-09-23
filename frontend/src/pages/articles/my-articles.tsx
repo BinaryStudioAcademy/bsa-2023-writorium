@@ -112,7 +112,7 @@ const MyArticles: React.FC = () => {
   return (
     <>
       <div className={styles.articlesWrapper}>
-        {articles.length ? (
+        {Boolean(articles.length) ? (
           <ArticlesList
             hasMore={hasMore}
             articlesLength={articles.length}
