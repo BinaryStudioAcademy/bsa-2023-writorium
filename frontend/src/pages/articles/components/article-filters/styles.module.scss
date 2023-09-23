@@ -1,42 +1,44 @@
-.title {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
-}
+@use "src/assets/css/breakpoints.scss";
 
 .wrapper {
   position: sticky;
-  top: 115px;
-  flex-grow: 1;
-  flex-shrink: 0;
+  top: calc(var(--header-height) + 55px);
+  flex: none;
   align-self: flex-start;
-  min-width: 389px;
-  max-width: 500px;
+  width: 400px;
+  max-height: 639px;
+  padding: 27px 40px 34px 36px;
+  text-align: left;
+  background: var(--light-gray);
+  border: 1px solid var(--light-gray-border);
+  border-radius: 10px;
+}
+
+.title {
+  position: absolute;
+  top: -25px;
+  left: 0;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  transform: translateY(-100%);
 }
 
 .filterGroup {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  padding: 0;
 }
 
-.form {
-  padding: 27px 35px 20px;
-  border: 1px solid var(--light-gray-border);
-  border-radius: 10px;
-}
-
-.filterTitle {
-  color: var(--dark-gray);
-  font-weight: 700;
-  font-size: 16px;
+.inputWrapper {
+  position: relative;
 }
 
 .clearFilters {
   color: var(--dark-gray);
   font-weight: 500;
-  font-size: 14px;
+  font-size: 12px;
+  font-family: Lato, sans-serif;
   background-color: var(--input-bg);
   border: none;
   cursor: pointer;
@@ -48,9 +50,44 @@
 
 .filterInput {
   height: 45px;
+  background: var(--input-bg);
+  border-radius: 5px;
+}
+
+.filterInput:focus {
+  background: var(--white);
 }
 
 .filterInput:hover {
   border: 2px solid var(--light-green);
   cursor: pointer;
+}
+
+.searchIcon {
+  position: absolute;
+  right: 15px;
+  bottom: 25px;
+  cursor: pointer;
+  transform: translateY(-100%);
+}
+
+.filterTitle {
+  color: var(--dark-gray);
+  font-weight: 700;
+  font-size: 16px;
+  font-family: Lato, sans-serif;
+  font-style: normal;
+  line-height: normal;
+}
+
+@media only screen and (max-width: breakpoints.$extra-large) {
+  .wrapper {
+    margin: -5px;
+    padding-bottom: 20px;
+  }
+
+  .title {
+    position: static;
+    margin-bottom: 15px;
+  }
 }

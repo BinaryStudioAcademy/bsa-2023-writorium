@@ -1,0 +1,13 @@
+.emptyArticlesPlaceholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-self: center;
+  gap: 20px;
+}
+
+.emptyArticlesIcon {
+  width: 70px;
+  height: 70px;
+  color: var(--light-green);
+}

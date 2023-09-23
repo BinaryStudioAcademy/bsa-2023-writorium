@@ -11,7 +11,7 @@ const getDefaultStyles = <
   const defaultStyles: StylesConfig<SelectOption, isMulti, Group> = {
     dropdownIndicator: (styles, state) => ({
       ...styles,
-      padding: '0 8px',
+      padding: '0 10px',
       transform: state.selectProps.menuIsOpen ? 'rotate(180deg)' : '',
       color: Color.DARK_GREEN,
       cursor: 'pointer',
@@ -30,7 +30,10 @@ const getDefaultStyles = <
           : Color.INPUT_TEXT,
       fontSize: '14px',
       fontFamily: 'Lato, sans-serif',
-      background: Color.INPUT_BG,
+      background:
+        state.isFocused || state.hasValue || state.menuIsOpen
+          ? Color.WHITE
+          : Color.INPUT_BG,
       border:
         state.isFocused || state.hasValue || state.menuIsOpen
           ? `2px solid ${Color.LIGHT_GREEN}`

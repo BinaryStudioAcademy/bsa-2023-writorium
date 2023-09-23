@@ -48,14 +48,6 @@
   background: var(--light-green);
 }
 
-.articles {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  padding-bottom: 15px;
-  border-top: 1px solid var(--gray);
-}
-
 .articlesWrapper {
   display: flex;
   gap: 50px;
@@ -64,4 +56,18 @@
 
 .articlesWrapper > div:first-child {
   min-width: 0;
+}
+
+.filterButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  color: var(--light-green);
+  background: transparent;
+}
+
+.modalContent {
+  width: max-content;
 }
