@@ -9,6 +9,7 @@ import { AppRoute } from '~/libs/enums/enums.js';
 import { getFullName } from '~/libs/helpers/helpers.js';
 import { useAppDispatch, useCallback } from '~/libs/hooks/hooks.js';
 import { type UserAuthResponseDto } from '~/packages/users/users.js';
+import { actions as appActions } from '~/slices/app/app.js';
 import { actions as authActions } from '~/slices/auth/auth.js';
 
 import styles from './styles.module.scss';
@@ -24,6 +25,10 @@ const Header: React.FC<Properties> = ({ user }) => {
     void dispatch(authActions.logout());
   }, [dispatch]);
 
+  const handleWriteButtonClick = (): void => {
+    dispatch(appActions.navigate(AppRoute.CREATE_ARTICLE));
+  };
+
   return (
     <>
       {user && (
@@ -32,9 +37,11 @@ const Header: React.FC<Properties> = ({ user }) => {
             <Icon iconName="writoriumLogo" className={styles.logo} />
           </Link>
           <div className={styles.rightSide}>
-            <Link to={AppRoute.CREATE_ARTICLE} className={styles.writeLink}>
-              Write
-            </Link>
+            <Button
+              label="Write"
+              className={styles.writeButton}
+              onClick={handleWriteButtonClick}
+            />
             <Popover
               content={
                 <>
