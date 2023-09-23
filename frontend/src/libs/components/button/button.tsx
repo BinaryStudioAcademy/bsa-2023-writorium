@@ -52,16 +52,15 @@ const Button: React.FC<Properties> = ({
     small: styles.buttonSmall,
   };
 
-  const handleButtonClick = (
-    event: MouseEvent<HTMLButtonElement>,
-  ): typeof onClick | undefined => {
+  const handleButtonClick = (event: MouseEvent<HTMLButtonElement>): void => {
     const allowClick = !disabled && !loading;
 
     if (!allowClick) {
       event.preventDefault();
+      return;
     }
 
-    return allowClick ? onClick : undefined;
+    void onClick?.(event);
   };
 
   const getButtonLoadingLabel = (): ReactNode | null => {
