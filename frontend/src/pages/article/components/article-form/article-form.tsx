@@ -1,10 +1,5 @@
-import {
-  Button,
-  Input,
-  Loader,
-  TextEditor,
-} from '~/libs/components/components.js';
-import { ButtonType, DataStatus } from '~/libs/enums/enums.js';
+import { Button, Input, TextEditor } from '~/libs/components/components.js';
+import { ButtonType } from '~/libs/enums/enums.js';
 import {
   useAppDispatch,
   useAppForm,
@@ -12,6 +7,7 @@ import {
   useCallback,
   useEffect,
   useNavigate,
+  useState,
 } from '~/libs/hooks/hooks.js';
 import { type ValueOf } from '~/libs/types/types.js';
 import {
@@ -39,12 +35,11 @@ type Properties = {
 const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { generatedPrompt, saveArticleStatus } = useAppSelector(
-    ({ prompts, articles }) => ({
-      generatedPrompt: prompts.generatedPrompt,
-      saveArticleStatus: articles.saveArticleStatus,
-    }),
-  );
+  const [isPublishing, setIsPublishing] = useState(false);
+  const [isSavingDraft, setIsSavingDraft] = useState(false);
+  const { generatedPrompt } = useAppSelector(({ prompts }) => ({
+    generatedPrompt: prompts.generatedPrompt,
+  }));
   const { control, errors, handleSubmit, handleReset, isDirty } =
     useAppForm<ArticleRequestDto>({
       defaultValues: articleForUpdate
@@ -62,7 +57,16 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
 
   const isDraft = !articleForUpdate?.publishedAt;
 
-  const isLoading = saveArticleStatus === DataStatus.PENDING;
+  const setLoadingBySubmitType = (
+    loading: boolean,
+    articleSubmitType: ValueOf<typeof ArticleSubmitType>,
+  ): void => {
+    if (articleSubmitType === ArticleSubmitType.DRAFT) {
+      setIsSavingDraft(loading);
+    } else {
+      setIsPublishing(loading);
+    }
+  };
 
   const handleArticleSubmit = useCallback(
     (articleSubmitType: ValueOf<typeof ArticleSubmitType>) =>
@@ -75,12 +79,16 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
           publishedAt: isArticlePublished ? new Date().toISOString() : null,
         };
 
+        setLoadingBySubmitType(true, articleSubmitType);
+
         void dispatch(
           articlesActions.createArticle({
             articlePayload: updatedPayload,
             generatedPrompt: getGeneratedPromptPayload(generatedPrompt),
           }),
-        );
+        ).finally(() => {
+          setLoadingBySubmitType(false, articleSubmitType);
+        });
       },
     [dispatch, generatedPrompt],
   );
@@ -105,7 +113,12 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
           },
         };
 
-        void dispatch(articlesActions.updateArticle(updatePayload));
+        setLoadingBySubmitType(true, articleSubmitType);
+        void dispatch(articlesActions.updateArticle(updatePayload)).finally(
+          () => {
+            setLoadingBySubmitType(false, articleSubmitType);
+          },
+        );
       },
 
     [dispatch, articleForUpdate],
@@ -150,63 +163,59 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
   }, [dispatch]);
 
   return (
-    <Loader
-      isLoading={isLoading}
-      hasOverlay
-      type="circular"
-      className={styles.loader}
+    <form
+      method="POST"
+      onSubmit={handleFormSubmit}
+      onReset={handleCancel}
+      className={styles.formContainer}
     >
-      <form
-        method="POST"
-        onSubmit={handleFormSubmit}
-        onReset={handleCancel}
-        className={styles.formContainer}
-      >
-        <ArticleCoverUpload
-          name="coverId"
-          control={control}
-          errors={errors}
-          initialPreviewUrl={articleForUpdate?.coverUrl}
+      <ArticleCoverUpload
+        name="coverId"
+        control={control}
+        errors={errors}
+        initialPreviewUrl={articleForUpdate?.coverUrl}
+      />
+      <Input
+        type="text"
+        placeholder="Enter the title of the article"
+        name="title"
+        control={control}
+        errors={errors}
+        className={styles.titleInput}
+      />
+      <TextEditor
+        control={control}
+        name="text"
+        errors={errors}
+        wasEdited={isDirty}
+      />
+      <div className={styles.buttonWrapper}>
+        <Button
+          variant="outlined"
+          type={ButtonType.RESET}
+          label="Cancel"
+          className={styles.cancelBtn}
+          disabled={isPublishing || isSavingDraft}
         />
-        <Input
-          type="text"
-          placeholder="Enter the title of the article"
-          name="title"
-          control={control}
-          errors={errors}
-          className={styles.titleInput}
+        <Button
+          variant="outlined"
+          type={ButtonType.SUBMIT}
+          label="Save draft"
+          name="draft"
+          loading={isSavingDraft}
+          className={styles.saveDraftBtn}
+          disabled={!isDirty || isPublishing}
         />
-        <TextEditor
-          control={control}
-          name="text"
-          errors={errors}
-          wasEdited={isDirty}
+        <Button
+          name="publish"
+          label="Publish"
+          loading={isPublishing}
+          type={ButtonType.SUBMIT}
+          className={styles.publishBtn}
+          disabled={(!isDirty && !isDraft) || isSavingDraft}
         />
-        <div className={styles.buttonWrapper}>
-          <Button
-            variant="outlined"
-            type={ButtonType.RESET}
-            label="Cancel"
-            className={styles.cancelBtn}
-          />
-          <Button
-            variant="outlined"
-            type={ButtonType.SUBMIT}
-            label="Save draft"
-            name="draft"
-            className={styles.saveDraftBtn}
-            disabled={!isDirty || isLoading}
-          />
-          <Button
-            type={ButtonType.SUBMIT}
-            label="Publish"
-            name="publish"
-            className={styles.publishBtn}
-            disabled={(!isDirty && !isDraft) || isLoading}
-          />
-        </div>
-      </form>
-    </Loader>
+      </div>
+    </form>
   );
 };
 

@@ -55,7 +55,7 @@ const Button: React.FC<Properties> = ({
   const handleButtonClick = (event: MouseEvent<HTMLButtonElement>): void => {
     const allowClick = !disabled && !loading;
 
-    if (!allowClick) {
+    if (onClick && !allowClick) {
       event.preventDefault();
       return;
     }
