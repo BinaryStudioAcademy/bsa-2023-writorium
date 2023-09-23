@@ -15,7 +15,7 @@ type Properties = {
 };
 
 const CommentCard: React.FC<Properties> = ({ user, comment }) => {
-  const { firstName, lastName } = user;
+  const { firstName, lastName, avatarUrl } = user;
   const { text, createdAt } = comment;
   const userName = getFullName(firstName, lastName);
 
@@ -29,7 +29,7 @@ const CommentCard: React.FC<Properties> = ({ user, comment }) => {
           <div className={styles.userInfo}>
             <Avatar
               username={userName}
-              avatarUrl={null}
+              avatarUrl={avatarUrl}
               className={styles.avatar}
             />
             <span className={styles.userName}>{userName}</span>
@@ -42,7 +42,6 @@ const CommentCard: React.FC<Properties> = ({ user, comment }) => {
           <Icon iconName="share" className={styles.shareIcon} />
         </div>
       </div>
-
       <p className={styles.text}>{text}</p>
     </section>
   );

@@ -1,5 +1,6 @@
 import { logger } from '~/libs/packages/logger/logger.js';
 import { openAIService } from '~/libs/packages/openai/openai.js';
+import { socketService } from '~/libs/packages/socket/socket.js';
 
 import { achievementService } from '../achievements/achievements.js';
 import { articleViewService } from '../article-views/article-views.js';
@@ -19,6 +20,7 @@ const articleService = new ArticleService({
   articleRepository,
   openAIService,
   genreRepository,
+  socketService,
   achievementService,
   articleViewService,
   followRepository,

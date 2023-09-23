@@ -21,12 +21,14 @@ import { DEFAULT_LOGIN_PAYLOAD } from './libs/constants/constants.js';
 import styles from './styles.module.scss';
 
 type Properties = {
+  isLoading: boolean;
   onSubmit: (payload: UserSignInRequestDto) => void;
   onGoogleLogin: () => void;
   onFacebookLogin: (payload: UserSignInWithFacebookResponseDto) => void;
 };
 
 const SignInForm: React.FC<Properties> = ({
+  isLoading,
   onSubmit,
   onGoogleLogin,
   onFacebookLogin,
@@ -85,7 +87,7 @@ const SignInForm: React.FC<Properties> = ({
               Forgot password?
             </Link>
           </fieldset>
-          <AuthSubmitButton label="Sign In" />
+          <AuthSubmitButton disabled={isLoading} label="Sign In" />
         </form>
       </div>
       <div className={styles.messageWrapper}>

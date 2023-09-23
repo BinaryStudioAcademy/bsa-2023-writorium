@@ -2,6 +2,7 @@ export {
   ArticleImprovementSuggestionPriority,
   ArticlePublishStatus,
   ArticlesApiPath,
+  ArticleSocketEvent,
 } from './libs/enums/enums.js';
 export {
   type ArticleCounts,
@@ -14,6 +15,7 @@ export {
   type ArticleRequestDto,
   type ArticleResponseDto,
   type ArticlesFilters,
+  type ArticleSocketEventPayload,
   type ArticleUpdateRequestDto,
   type ArticleUpdateRequestPayload,
   type ArticleWithCountsResponseDto,
