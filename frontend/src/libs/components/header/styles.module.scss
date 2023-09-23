@@ -72,12 +72,14 @@ img.avatar:hover {
   border-color: var(--light-green);
 }
 
-.logoutBtn {
+.header .logoutBtn {
+  height: auto;
   padding: 14px 10px;
+  line-height: initial;
   border-radius: 0 0 7px 7px;
 }
 
-.logoutBtn:hover {
+.header .logoutBtn:hover {
   background-color: var(--light-gray-15);
 }
 
