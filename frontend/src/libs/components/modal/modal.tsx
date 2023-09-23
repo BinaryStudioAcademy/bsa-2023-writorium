@@ -9,6 +9,7 @@ type Properties = {
   onClose: () => void;
   isOpen: boolean;
   className?: string;
+  contentClassName?: string;
 };
 
 const Modal: React.FC<Properties> = ({
@@ -16,6 +17,7 @@ const Modal: React.FC<Properties> = ({
   onClose,
   children,
   className,
+  contentClassName,
 }) => {
   const overlayReference = useReference<HTMLDivElement>(null);
 
@@ -52,7 +54,11 @@ const Modal: React.FC<Properties> = ({
         ref={overlayReference}
       >
         <div
-          className={getValidClassNames(styles.content, className)}
+          className={getValidClassNames(
+            styles.content,
+            className,
+            contentClassName,
+          )}
           role="button"
           tabIndex={0}
         >

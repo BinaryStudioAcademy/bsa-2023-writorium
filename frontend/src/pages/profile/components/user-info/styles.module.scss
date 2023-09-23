@@ -23,6 +23,7 @@
   margin-bottom: 19px;
   color: var(--black-90);
   line-height: normal;
+  word-break: break-word;
 }
 
 .editProfileBtn {
@@ -37,8 +38,8 @@
 }
 
 .editProfileBtn:hover {
-  color: var(--white);
-  background-color: var(--light-green);
+  color: var(--light-green);
+  background-color: transparent;
   border-color: var(--light-green);
 }
 

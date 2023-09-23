@@ -8,6 +8,7 @@ import {
 import { ApplicationError } from '~/libs/exceptions/exceptions.js';
 import { configureString } from '~/libs/helpers/helpers.js';
 import { type IService } from '~/libs/interfaces/service.interface.js';
+import { DatabaseTableName } from '~/libs/packages/database/database.js';
 import {
   BadRequestError,
   ForbiddenError,
@@ -20,6 +21,7 @@ import { token as articleToken } from '~/libs/packages/token/token.js';
 import { type ArticleViewService } from '~/packages/article-views/article-view.service.js';
 import { type FollowRepository } from '~/packages/follow/follow.js';
 
+import { type AchievementService } from '../achievements/achievement.service.js';
 import { GenreEntity } from '../genres/genre.entity.js';
 import { UNKNOWN_GENRE_KEY } from '../genres/genre.js';
 import { type GenreRepository } from '../genres/genre.repository.js';
@@ -62,6 +64,7 @@ type Constructor = {
   socketService: SocketService;
   articleViewService: ArticleViewService;
   followRepository: FollowRepository;
+  achievementService: AchievementService;
 };
 
 class ArticleService implements IService {
@@ -69,6 +72,7 @@ class ArticleService implements IService {
   private openAIService: OpenAIService;
   private genreRepository: GenreRepository;
   private socketService: SocketService;
+  private achievementService: AchievementService;
   private articleViewService: ArticleViewService;
   private followRepository: FollowRepository;
 
@@ -79,6 +83,7 @@ class ArticleService implements IService {
     socketService,
     articleViewService,
     followRepository,
+    achievementService,
   }: Constructor) {
     this.articleRepository = articleRepository;
     this.openAIService = openAIService;
@@ -86,6 +91,7 @@ class ArticleService implements IService {
     this.socketService = socketService;
     this.followRepository = followRepository;
     this.articleViewService = articleViewService;
+    this.achievementService = achievementService;
   }
 
   private async detectArticleGenreFromText(
@@ -431,6 +437,15 @@ class ArticleService implements IService {
       .of(SocketNamespace.ARTICLES)
       .to(SocketRoom.ARTICLES_FEED)
       .emit(ArticleSocketEvent.NEW_ARTICLE, socketEventPayload);
+
+    const countOfOwnArticles =
+      await this.articleRepository.countArticlesByUserId(payload.userId);
+
+    await this.achievementService.checkAchievement({
+      userId: payload.userId,
+      countOfItems: countOfOwnArticles,
+      referenceTable: DatabaseTableName.ARTICLES,
+    });
 
     return article.toObjectWithRelationsAndCounts();
   }

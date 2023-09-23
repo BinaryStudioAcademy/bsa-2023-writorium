@@ -1,11 +1,13 @@
 import { ApplicationError } from '~/libs/exceptions/exceptions.js';
 import { configureString } from '~/libs/helpers/helpers.js';
 import { type IService } from '~/libs/interfaces/service.interface.js';
+import { DatabaseTableName } from '~/libs/packages/database/database.js';
 import { ForbiddenError } from '~/libs/packages/exceptions/exceptions.js';
 import { SocketNamespace, SocketRoom } from '~/libs/packages/socket/socket.js';
 import { type SocketService } from '~/libs/packages/socket/socket.package.js';
 import { type UserAuthResponseDto } from '~/packages/users/users.js';
 
+import { type AchievementService } from '../achievements/achievement.service.js';
 import { CommentEntity } from './comment.entity.js';
 import { type CommentRepository } from './comment.repository.js';
 import { CommentsSocketEvent } from './libs/enums/enums.js';
@@ -20,15 +22,22 @@ import {
 type Constructor = {
   commentRepository: CommentRepository;
   socketService: SocketService;
+  achievementService: AchievementService;
 };
 
 class CommentService implements IService {
   private commentRepository: CommentRepository;
+  private achievementService: AchievementService;
   private socketService: SocketService;
 
-  public constructor({ commentRepository, socketService }: Constructor) {
+  public constructor({
+    commentRepository,
+    socketService,
+    achievementService,
+  }: Constructor) {
     this.commentRepository = commentRepository;
     this.socketService = socketService;
+    this.achievementService = achievementService;
   }
 
   public findAll(): Promise<{ items: unknown[] }> {
@@ -79,6 +88,15 @@ class CommentService implements IService {
         }),
       )
       .emit(CommentsSocketEvent.NEW_COMMENT, socketEventPayload);
+
+    const countOfOwnComments =
+      await this.commentRepository.countCommentsByUserId(payload.userId);
+
+    await this.achievementService.checkAchievement({
+      userId: payload.userId,
+      countOfItems: countOfOwnComments,
+      referenceTable: DatabaseTableName.COMMENTS,
+    });
 
     return comment.toObjectWithRelations();
   }

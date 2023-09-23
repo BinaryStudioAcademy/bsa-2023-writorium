@@ -1,11 +1,13 @@
 import { type FC } from 'react';
 
-import { Button, Modal, Tooltip } from '~/libs/components/components.js';
-import { DataTooltipId } from '~/libs/enums/enums.js';
 import {
-  getShuffledArray,
-  getValidClassNames,
-} from '~/libs/helpers/helpers.js';
+  Button,
+  Loader,
+  Modal,
+  Tooltip,
+} from '~/libs/components/components.js';
+import { DataStatus, DataTooltipId } from '~/libs/enums/enums.js';
+import { getValidClassNames } from '~/libs/helpers/helpers.js';
 import {
   useAppDispatch,
   useAppSelector,
@@ -13,13 +15,8 @@ import {
   useMemo,
   useModal,
 } from '~/libs/hooks/hooks.js';
-import {
-  NUMBER_OF_ACHIEVEMENTS_TO_DISPLAY,
-  PROGRESS_MAX,
-  PROGRESS_MIN,
-} from '~/pages/profile/libs/constants/constants.js';
-import { getRandomNumber } from '~/pages/profile/libs/helpers/helpers.js';
-import { type UserAchievement } from '~/pages/profile/libs/types/user-achievement.js';
+import { type AchievementWithProgressResponseDto } from '~/packages/achievements/achievements.js';
+import { NUMBER_OF_ACHIEVEMENTS_TO_DISPLAY } from '~/pages/profile/libs/constants/constants.js';
 import { actions as achievementsActions } from '~/slices/achievements/achievements.js';
 
 import { AchievementList } from '../components.js';
@@ -30,66 +27,60 @@ type Properties = {
 };
 
 const UserAchievements: FC<Properties> = ({ className }) => {
+  const FIRST_ITEM_INDEX = 0;
+
   const { handleToggleModalOpen, isOpen } = useModal();
   const dispatch = useAppDispatch();
-  const { achievements } = useAppSelector(({ achievements }) => achievements);
-
-  const mockUserAchievements: UserAchievement[] = useMemo(() => {
-    return getShuffledArray(achievements)
-      .slice(-NUMBER_OF_ACHIEVEMENTS_TO_DISPLAY)
-      .map((achievement) => ({
-        ...achievement,
-        progress: getRandomNumber({ min: PROGRESS_MIN, max: PROGRESS_MAX }),
-      }));
-  }, [achievements]);
-
-  const achievementsList: UserAchievement[] = useMemo(() => {
-    return achievements
-      .map((achievement) => {
-        const userAchievement = mockUserAchievements.find(
-          ({ id }) => achievement.id === id,
-        );
-
-        return userAchievement ?? { ...achievement, progress: PROGRESS_MIN };
-      })
-      .sort((a, b) => b.progress - a.progress);
-  }, [achievements, mockUserAchievements]);
+  const { ownAchievements, ownAchievementsDataStatus } = useAppSelector(
+    ({ achievements }) => achievements,
+  );
 
   useEffect(() => {
-    void dispatch(achievementsActions.fetchAll());
+    void dispatch(achievementsActions.fetchOwnWithProgress());
   }, [dispatch]);
+
+  const achievementsList: AchievementWithProgressResponseDto[] = useMemo(() => {
+    return [...ownAchievements].sort((a, b) => b.progress - a.progress);
+  }, [ownAchievements]);
+
+  const isLoading = ownAchievementsDataStatus === DataStatus.PENDING;
 
   return (
     <div className={getValidClassNames(className, styles.achievementBlock)}>
       <h3 className={styles.title}>Achievements</h3>
-      <AchievementList
-        achievements={mockUserAchievements}
-        className={styles.achievementList}
-      />
-      <Button
-        label="Show all"
-        className={styles.buttonShow}
-        onClick={handleToggleModalOpen}
-      />
-      <Modal
-        isOpen={isOpen}
-        onClose={handleToggleModalOpen}
-        className={styles.modal}
-      >
-        <div>
-          <h2 className={styles.title}>Achievements</h2>
-          <AchievementList
-            hasToShowTooltip={true}
-            achievements={achievementsList}
-            className={styles.achievementListModal}
-            classNameAchievement={styles.achievementItem}
-          />
-        </div>
-        <Tooltip
-          id={DataTooltipId.ACHIEVEMENT_TOOLTIP}
-          className={styles.achievementTooltip}
+      <Loader isLoading={isLoading} type="dots">
+        <AchievementList
+          achievements={achievementsList.slice(
+            FIRST_ITEM_INDEX,
+            NUMBER_OF_ACHIEVEMENTS_TO_DISPLAY,
+          )}
+          className={styles.achievementList}
         />
-      </Modal>
+        <Button
+          label="Show all"
+          className={styles.buttonShow}
+          onClick={handleToggleModalOpen}
+        />
+        <Modal
+          isOpen={isOpen}
+          onClose={handleToggleModalOpen}
+          className={styles.modal}
+        >
+          <div>
+            <h2 className={styles.title}>Achievements</h2>
+            <AchievementList
+              hasToShowTooltip={true}
+              achievements={achievementsList}
+              className={styles.achievementListModal}
+              classNameAchievement={styles.achievementItem}
+            />
+          </div>
+          <Tooltip
+            id={DataTooltipId.ACHIEVEMENT_TOOLTIP}
+            className={styles.achievementTooltip}
+          />
+        </Modal>
+      </Loader>
     </div>
   );
 };
