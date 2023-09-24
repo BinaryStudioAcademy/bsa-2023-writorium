@@ -206,13 +206,12 @@ const ArticleCard: React.FC<Properties> = ({
       </div>
       <div className={styles.footer}>
         <ul className={styles.reactions}>
-          <li className={styles.reaction}>
+          <li>
             <Link
               to={{
                 pathname: articleRouteById,
                 hash: LinkHash.COMMENTS,
               }}
-              className={styles.reaction}
             >
               <IconButton
                 iconName="comment"
@@ -230,7 +229,7 @@ const ArticleCard: React.FC<Properties> = ({
               iconName="like"
               className={getValidClassNames(
                 styles.footerIcon,
-                isOwnArticle ? styles.disabled : styles.reaction,
+                isOwnArticle && styles.disabled,
                 hasAlreadyReactedWith === Reaction.LIKE && styles.pressed,
               )}
               label={String(likesCount)}
@@ -242,7 +241,7 @@ const ArticleCard: React.FC<Properties> = ({
               iconName="dislike"
               className={getValidClassNames(
                 styles.footerIcon,
-                isOwnArticle ? styles.disabled : styles.reaction,
+                isOwnArticle && styles.disabled,
                 hasAlreadyReactedWith === Reaction.DISLIKE && styles.pressed,
               )}
               label={String(dislikesCount)}
