@@ -2,14 +2,14 @@ import { matchPath } from 'react-router-dom';
 
 import { Button, Input, ToggleCheckbox } from '~/libs/components/components.js';
 import { Select } from '~/libs/components/select/select.js';
-import { AppRoute } from '~/libs/enums/enums.js';
+import { AppRoute, InputType } from '~/libs/enums/enums.js';
 import {
   useAppForm,
   useCallback,
   useDeepCompareEffect,
   useLocation,
 } from '~/libs/hooks/hooks.js';
-import { type SelectOption } from '~/libs/types/select-option.type.js';
+import { type SelectOption } from '~/libs/types/types.js';
 
 import { type FilterFormValues } from '../../libs/types/types.js';
 import { DEFAULT_FILTER_PAYLOAD } from './libs/constants/constants.js';
@@ -47,7 +47,7 @@ const ArticleFilters: React.FC<Properties> = ({
     };
   }, [data]);
 
-  const formReset = useCallback(() => {
+  const handleFormReset = useCallback(() => {
     handleReset(DEFAULT_FILTER_PAYLOAD);
   }, [handleReset]);
 
@@ -58,14 +58,14 @@ const ArticleFilters: React.FC<Properties> = ({
         <Button
           className={styles.clearFilters}
           label="Clear filters"
-          onClick={formReset}
+          onClick={handleFormReset}
         />
       </div>
       <form className={styles.form} name="FiltersForm">
         <div className={styles.filterGroup}>
           <Input
             name="titleFilter"
-            type="text"
+            type={InputType.TEXT}
             placeholder="Search..."
             label="Title"
             className={styles.filterInput}
