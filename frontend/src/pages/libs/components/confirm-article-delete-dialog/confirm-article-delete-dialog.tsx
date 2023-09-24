@@ -36,14 +36,14 @@ const ConfirmArticleDeleteDialog: React.FC<Properties> = ({
       </p>
       <div className={styles.buttonsWrapper}>
         <Button
-          fullWidth
+          hasFullWidth
           label="Cancel"
           variant="outlined"
           type={ButtonType.BUTTON}
           onClick={handleClose}
         />
         <Button
-          fullWidth
+          hasFullWidth
           label="Delete"
           type={ButtonType.BUTTON}
           onClick={onDeleteArticle}

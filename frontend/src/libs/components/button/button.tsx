@@ -19,7 +19,7 @@ type Properties = {
   type?: ValueOf<typeof ButtonType>;
   name?: string;
   className?: string;
-  fullWidth?: boolean;
+  hasFullWidth?: boolean;
   loading?: boolean;
   loadingLabel?: boolean | string;
   onClick?:
@@ -35,7 +35,7 @@ const Button: React.FC<Properties> = ({
   className = '',
   disabled,
   onClick,
-  fullWidth,
+  hasFullWidth,
   variant = 'primary',
   size = 'medium',
   loading,
@@ -80,7 +80,7 @@ const Button: React.FC<Properties> = ({
         styles.button,
         sizeClassNameMapper[size],
         variantClassNameMapper[variant],
-        fullWidth && styles.fullWidth,
+        hasFullWidth && styles.hasFullWidth,
         loading && styles.buttonLoading,
         className,
       )}

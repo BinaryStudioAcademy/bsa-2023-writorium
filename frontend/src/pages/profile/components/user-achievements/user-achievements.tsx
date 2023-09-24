@@ -56,7 +56,7 @@ const UserAchievements: FC<Properties> = ({ className }) => {
           )}
           className={styles.achievementList}
         />
-        <Button fullWidth label="Show all" onClick={handleToggleModalOpen} />
+        <Button hasFullWidth label="Show all" onClick={handleToggleModalOpen} />
         <Modal
           isOpen={isOpen}
           onClose={handleToggleModalOpen}
