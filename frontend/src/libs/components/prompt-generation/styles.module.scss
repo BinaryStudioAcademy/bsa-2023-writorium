@@ -22,18 +22,10 @@
 .generatePromptButton {
   position: absolute;
   top: -20px;
-  color: var(--dark-green);
-  background: transparent;
-  transition: color 0.3 ease;
 }
 
 .resetPromptButton {
   right: 0;
-}
-
-.resetPromptButton:hover {
-  color: var(--light-green);
-  background: transparent;
 }
 
 .generatePromptButton {
@@ -89,10 +81,5 @@
 
   .generatePromptButton {
     display: block;
-  }
-
-  .generatePromptButton:hover {
-    color: var(--light-green);
-    background-color: transparent;
   }
 }

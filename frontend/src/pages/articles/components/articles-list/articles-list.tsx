@@ -8,20 +8,23 @@ import styles from './styles.module.scss';
 type Properties = {
   hasMore: boolean;
   articlesLength: number;
-  onFetchData: () => void;
   articles: ArticleWithCountsResponseDto[];
+  isLoading: boolean;
+  onFetchData: () => void;
 };
 
 const ArticlesList: React.FC<Properties> = ({
   hasMore,
   articlesLength,
-  onFetchData,
   articles,
+  isLoading,
+  onFetchData,
 }) => (
   <InfiniteScroll
     hasMore={hasMore}
     className={styles.articles}
     dataLength={articlesLength}
+    isLoading={isLoading}
     fetchData={onFetchData}
   >
     {articles.map((article) => (

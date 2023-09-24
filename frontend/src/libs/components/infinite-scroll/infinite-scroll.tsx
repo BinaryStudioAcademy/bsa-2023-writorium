@@ -1,9 +1,12 @@
 import ReactInfiniteScroll from 'react-infinite-scroll-component';
 
+import { Loader } from '../loader/loader.js';
+
 type Properties = {
   children: React.ReactNode;
   hasMore: boolean;
   dataLength: number;
+  isLoading: boolean;
   fetchData: () => void;
   className?: string;
 };
@@ -14,9 +17,10 @@ const InfiniteScroll: React.FC<Properties> = ({
   hasMore,
   dataLength,
   className,
+  isLoading,
 }) => (
   <ReactInfiniteScroll
-    loader={null}
+    loader={<Loader isLoading={isLoading} type="circular" hasOverlay />}
     next={fetchData}
     hasMore={hasMore}
     dataLength={dataLength}
