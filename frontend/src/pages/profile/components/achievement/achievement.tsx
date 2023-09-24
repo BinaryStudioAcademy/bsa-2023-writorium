@@ -1,10 +1,10 @@
-import { ReactComponent as ArticlesAchievementIcon } from '~/assets/img/articles-achievement.svg';
-import { ReactComponent as CommentsAchievementIcon } from '~/assets/img/comments-achievement.svg';
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
 import { type AchievementWithProgressResponseDto } from '~/packages/achievements/achievements.js';
 
 import { AchievementItemConfig } from '../../libs/enums/enums.js';
 import { getRadialProgressStyleString } from '../../libs/helpers/helpers.js';
+import { AchievementIcon } from '../achievement-icon/achievement-icon.js';
+import { type AchievementIconName } from '../achievement-icon/common.js';
 import styles from './styles.module.scss';
 
 type Properties = {
@@ -18,12 +18,6 @@ const Achievement: React.FC<Properties> = ({ achievement }) => {
     'comments': styles.comments,
     'articles': styles.articles,
   }[referenceTable];
-
-  const AchievementImage: React.FC<React.SVGProps<SVGSVGElement>> | undefined =
-    {
-      'comments': CommentsAchievementIcon,
-      'articles': ArticlesAchievementIcon,
-    }[referenceTable];
 
   return (
     <div className={styles.achievementWrapper}>
@@ -53,7 +47,7 @@ const Achievement: React.FC<Properties> = ({ achievement }) => {
           />
         </svg>
         <div className={styles.achievementImage}>
-          {AchievementImage && <AchievementImage />}
+          <AchievementIcon iconName={referenceTable as AchievementIconName} />
         </div>
       </div>
       <h4 className={styles.name}>{name}</h4>
