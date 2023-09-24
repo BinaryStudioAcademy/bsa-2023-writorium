@@ -154,6 +154,7 @@ const ArticlesFeed: React.FC = () => {
             genreSelectOptions={getSelectGenresOptions(genres)}
             authorsSelectOptions={getSelectAuthorsOptions(authors)}
             onSubmit={handleFiltersSubmit}
+            currentFilters={filters}
           />
         </Modal>
       </div>

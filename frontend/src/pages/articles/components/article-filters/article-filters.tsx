@@ -27,15 +27,17 @@ type Properties = {
   genreSelectOptions: SelectOption[];
   authorsSelectOptions: SelectOption[];
   onSubmit: (payload: FilterFormValues) => void;
+  currentFilters?: FilterFormValues;
 };
 
 const ArticleFilters: React.FC<Properties> = ({
   genreSelectOptions,
   authorsSelectOptions,
   onSubmit,
+  currentFilters,
 }) => {
   const { control, errors, watch, handleReset } = useAppForm<FilterFormValues>({
-    defaultValues: DEFAULT_FILTER_PAYLOAD,
+    defaultValues: currentFilters ?? DEFAULT_FILTER_PAYLOAD,
     mode: 'onChange',
   });
   const { pathname } = useLocation();
