@@ -22,6 +22,7 @@
 
 .title {
   margin-bottom: 30px;
+  color: var(--white);
 }
 
 .buttonShow {
@@ -36,6 +37,10 @@
   box-shadow: 0 0 6px var(--translucent-dark-blue-gray);
 }
 
+.modalContent {
+  background-color: var(--dark-green);
+}
+
 .achievementListModal {
   --achievement-columns: 4;
 
@@ -48,7 +53,11 @@
 .modal .achievementTooltip {
   max-width: 150px;
   color: var(--pale-gray);
-  background-color: var(--dark-green);
+  background-color: var(--light-green);
   border-radius: 7px;
   opacity: 1;
+}
+
+.modalCloseBtn {
+  color: var(--white);
 }

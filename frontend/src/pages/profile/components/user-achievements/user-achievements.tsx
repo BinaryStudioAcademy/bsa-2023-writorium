@@ -65,6 +65,8 @@ const UserAchievements: FC<Properties> = ({ className }) => {
           isOpen={isOpen}
           onClose={handleToggleModalOpen}
           className={styles.modal}
+          contentClassName={styles.modalContent}
+          closeBtnClassName={styles.modalCloseBtn}
         >
           <div>
             <h2 className={styles.title}>Achievements</h2>
