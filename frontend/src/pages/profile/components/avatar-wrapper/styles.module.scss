@@ -4,10 +4,7 @@
   flex-direction: column;
   align-items: center;
   row-gap: 10px;
-}
-
-.imageGroupInner {
-  width: 162px;
+  max-width: 160px;
 }
 
 .imageWrapper {
@@ -32,7 +29,7 @@
   content: "";
 }
 
-.imageGroupInner:hover .imageWrapper::after {
+.imageGroup:hover .imageWrapper::after {
   opacity: 1;
 }
 
@@ -63,13 +60,13 @@
   transition: opacity 0.3s ease-in;
 }
 
-.imageGroupInner:hover .iconButtonEdit {
+.imageGroup:hover .iconButtonEdit {
   opacity: 1;
 }
 
 .iconButtonRemove {
   top: 10px;
-  right: 30px;
+  right: 10px;
   z-index: var(--z-index-level-one);
   color: var(--red);
   background-color: var(--light-red);
@@ -87,7 +84,7 @@
   transform: scale(1.1);
 }
 
-.imageGroupInner:hover .iconButtonRemove {
+.imageGroup:hover .iconButtonRemove {
   visibility: visible;
   opacity: 1;
 }

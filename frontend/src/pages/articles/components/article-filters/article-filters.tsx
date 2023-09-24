@@ -17,7 +17,10 @@ import {
 import { type SelectOption } from '~/libs/types/types.js';
 
 import { type FilterFormValues } from '../../libs/types/types.js';
-import { DEFAULT_FILTER_PAYLOAD } from './libs/constants/constants.js';
+import {
+  DEFAULT_FILTER_PAYLOAD,
+  FILTERS_FORM_SUBMISSION_DELAY,
+} from './libs/constants/constants.js';
 import styles from './styles.module.scss';
 
 type Properties = {
@@ -31,7 +34,6 @@ const ArticleFilters: React.FC<Properties> = ({
   authorsSelectOptions,
   onSubmit,
 }) => {
-  const FILTERS_FORM_SUBMISSION_DELAY = 500;
   const { control, errors, watch, handleReset } = useAppForm<FilterFormValues>({
     defaultValues: DEFAULT_FILTER_PAYLOAD,
     mode: 'onChange',
@@ -42,6 +44,7 @@ const ArticleFilters: React.FC<Properties> = ({
     pathname,
   );
   const data: FilterFormValues = watch();
+
   useDeepCompareEffect(() => {
     const handler = setTimeout(() => {
       onSubmit(data);

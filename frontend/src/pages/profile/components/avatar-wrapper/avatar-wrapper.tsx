@@ -64,41 +64,39 @@ const AvatarWrapper: FC<Properties> = ({
 
   return (
     <div className={styles.imageGroup}>
-      <div className={styles.imageGroupInner}>
-        <label className={styles.imageWrapper} htmlFor="avatarId">
-          <Avatar
-            username={`${user.firstName} ${user.lastName}`}
-            avatarUrl={previewUrl}
-            className={styles.avatar}
-          />
-          <input
-            className="visually-hidden"
-            id="avatarId"
-            onChange={handleUploadUserAvatar}
-            type="file"
-            accept={SUPPORTED_FILE_TYPES_STRING}
-          />
-          <span
-            className={getValidClassNames(
-              styles.iconButtonEdit,
-              styles.iconButton,
-            )}
-          >
-            <Icon iconName="edit" className={styles.iconEdit} />
-          </span>
-        </label>
-        {previewUrl && (
-          <IconButton
-            iconName="crossMark"
-            className={getValidClassNames(
-              styles.iconButtonRemove,
-              styles.iconButton,
-            )}
-            iconClassName={styles.iconRemove}
-            onClick={handleRemoveAvatar}
-          />
-        )}
-      </div>
+      <label className={styles.imageWrapper} htmlFor="avatarId">
+        <Avatar
+          username={`${user.firstName} ${user.lastName}`}
+          avatarUrl={previewUrl}
+          className={styles.avatar}
+        />
+        <input
+          className="visually-hidden"
+          id="avatarId"
+          onChange={handleUploadUserAvatar}
+          type="file"
+          accept={SUPPORTED_FILE_TYPES_STRING}
+        />
+        <span
+          className={getValidClassNames(
+            styles.iconButtonEdit,
+            styles.iconButton,
+          )}
+        >
+          <Icon iconName="edit" className={styles.iconEdit} />
+        </span>
+      </label>
+      {previewUrl && (
+        <IconButton
+          iconName="crossMark"
+          className={getValidClassNames(
+            styles.iconButtonRemove,
+            styles.iconButton,
+          )}
+          iconClassName={styles.iconRemove}
+          onClick={handleRemoveAvatar}
+        />
+      )}
       <ErrorMessage error={errorImageUpload as string} />
     </div>
   );
