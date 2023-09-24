@@ -109,6 +109,10 @@
   word-break: break-word;
 }
 
+.text p:not(:last-child) {
+  margin-block-end: 10px;
+}
+
 .reactionIcon {
   display: flex;
   flex-direction: column;
