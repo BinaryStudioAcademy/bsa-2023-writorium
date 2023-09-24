@@ -111,8 +111,8 @@ class ArticleRepository implements IArticleRepository {
 
     return {
       total: articles.total,
-      items: articles.results.map((article) =>
-        ArticleEntity.initialize({
+      items: articles.results.map((article) => {
+        return ArticleEntity.initialize({
           ...article,
           coverUrl: article.cover?.url ?? null,
           author: {
@@ -123,14 +123,15 @@ class ArticleRepository implements IArticleRepository {
           genre: article.genre?.name ?? null,
           prompt: article.prompt
             ? {
-                character: article.prompt.character,
-                setting: article.prompt.setting,
-                situation: article.prompt.situation,
-                prop: article.prompt.prop,
-              }
+              character: article.prompt.character,
+              setting: article.prompt.setting,
+              situation: article.prompt.situation,
+              prop: article.prompt.prop,
+            }
             : null,
           isFavourite: article.isFavourite,
-        }),
+        });
+      },
       ),
     };
   }

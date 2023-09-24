@@ -40,8 +40,7 @@ const FontSize = Extension.create<FontSizeOptions>({
         attributes: {
           fontSize: {
             default: null,
-            parseHTML: (element): string | null | undefined =>
-              element.style.fontSize.replaceAll(/["']+/g, ''),
+            parseHTML: (element): string | null | undefined => { return element.style.fontSize.replaceAll(/["']+/g, ''); },
             renderHTML: (
               attributes,
             ): Record<string, string> | null | undefined => {

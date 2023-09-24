@@ -23,20 +23,22 @@ const Landing: FC = () => {
   );
 
   const offsetX = useMemo(
-    () =>
-      getAxisOffset({
+    () => {
+      return getAxisOffset({
         axisValue: x,
         innerAxisValue: window.innerWidth,
-      }),
+      });
+    },
     [x],
   );
 
   const offsetY = useMemo(
-    () =>
-      getAxisOffset({
+    () => {
+      return getAxisOffset({
         axisValue: y,
         innerAxisValue: window.innerHeight,
-      }),
+      });
+    },
     [y],
   );
 

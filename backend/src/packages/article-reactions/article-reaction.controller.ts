@@ -57,13 +57,14 @@ class ArticleReactionController extends Controller {
       validation: {
         body: articleReactionValidationSchema,
       },
-      handler: (options) =>
-        this.create(
+      handler: (options) => {
+        return this.create(
           options as ApiHandlerOptions<{
             user: UserAuthResponseDto;
             body: ArticleReactionRequestDto;
           }>,
-        ),
+        );
+      },
     });
 
     this.addRoute({
@@ -72,13 +73,14 @@ class ArticleReactionController extends Controller {
       validation: {
         body: articleReactionValidationSchema,
       },
-      handler: (options) =>
-        this.update(
+      handler: (options) => {
+        return this.update(
           options as ApiHandlerOptions<{
             user: UserAuthResponseDto;
             body: ArticleReactionRequestDto;
           }>,
-        ),
+        );
+      },
     });
   }
 

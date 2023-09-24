@@ -61,8 +61,8 @@ class UserRepository implements IRepository {
   public async findAll(): Promise<UserEntity[]> {
     const users = await this.userModel.query().execute();
 
-    return users.map((user) =>
-      UserEntity.initialize({
+    return users.map((user) => {
+      return UserEntity.initialize({
         id: user.id,
         email: user.email,
         firstName: user.userDetails.firstName,
@@ -71,7 +71,8 @@ class UserRepository implements IRepository {
         passwordSalt: user.passwordSalt,
         avatarId: user.userDetails.avatarId,
         avatarUrl: user.userDetails.avatar?.url ?? null,
-      }),
+      });
+    },
     );
   }
 

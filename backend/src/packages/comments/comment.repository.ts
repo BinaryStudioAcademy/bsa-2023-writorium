@@ -25,15 +25,16 @@ class CommentRepository implements IRepository {
       .withGraphJoined(this.defaultRelationExpression)
       .execute();
 
-    return comments.map((comment) =>
-      CommentEntity.initialize({
+    return comments.map((comment) => {
+      return CommentEntity.initialize({
         ...comment,
         author: {
           firstName: comment.author.firstName,
           lastName: comment.author.lastName,
           avatarUrl: comment.author.avatar?.url ?? null,
         },
-      }),
+      });
+    },
     );
   }
 
