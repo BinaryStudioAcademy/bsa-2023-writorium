@@ -10,6 +10,7 @@ const AuthSubmitButton: React.FC<Properties> = (properties) => {
   return (
     <Button
       {...properties}
+      hasFullWidth
       className={styles.authSubmitButton}
       type={ButtonType.SUBMIT}
     />

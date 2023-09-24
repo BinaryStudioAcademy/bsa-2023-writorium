@@ -1,6 +1,5 @@
 import { Button, Input } from '~/libs/components/components.js';
 import { ButtonType, InputType } from '~/libs/enums/enums.js';
-import { getValidClassNames } from '~/libs/helpers/helpers.js';
 import {
   useAppDispatch,
   useAppForm,
@@ -123,16 +122,17 @@ const ProfileEditForm: React.FC<Properties> = ({
       </div>
       <div className={styles.buttonsBlock}>
         <Button
-          type={ButtonType.BUTTON}
+          hasFullWidth
           label="Cancel"
-          className={styles.button}
+          variant="outlined"
+          type={ButtonType.BUTTON}
           onClick={handleCancel}
         />
         <Button
-          type={ButtonType.SUBMIT}
+          hasFullWidth
           label="Save"
+          type={ButtonType.SUBMIT}
           disabled={(!isDirty && avatarId === user.avatarId) || isSubmitting}
-          className={getValidClassNames(styles.button, styles.buttonSave)}
         />
       </div>
     </form>

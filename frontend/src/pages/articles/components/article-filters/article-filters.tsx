@@ -63,7 +63,8 @@ const ArticleFilters: React.FC<Properties> = ({
       <div className={styles.title}>
         <span className={styles.filterTitle}>Filter</span>
         <Button
-          className={styles.clearFilters}
+          size="small"
+          variant="outlined"
           label="Clear filters"
           onClick={handleFormReset}
         />

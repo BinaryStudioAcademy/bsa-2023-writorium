@@ -54,11 +54,7 @@ const UserAchievements: React.FC<Properties> = ({ className }) => {
           )}
           className={styles.achievementList}
         />
-        <Button
-          label="Show all"
-          className={styles.buttonShow}
-          onClick={handleToggleModalOpen}
-        />
+        <Button hasFullWidth label="Show all" onClick={handleToggleModalOpen} />
         <Modal
           isOpen={isOpen}
           onClose={handleToggleModalOpen}

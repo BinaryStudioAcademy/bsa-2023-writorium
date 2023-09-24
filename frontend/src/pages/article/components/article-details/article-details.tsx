@@ -51,9 +51,10 @@ const ArticleDetails: React.FC<Properties> = ({
         </ul>
         {!isArticleOwner && !isShared && (
           <Button
+            size="small"
+            onClick={onFollow}
             className={styles.followButton}
             label={isFollowed ? FollowStatus.UNFOLLOW : FollowStatus.FOLLOW}
-            onClick={onFollow}
           />
         )}
       </div>
