@@ -23,6 +23,7 @@ import styles from './styles.module.scss';
 const ArticlesFeed: React.FC = () => {
   const dispatch = useAppDispatch();
   const { articles, genres } = useAppSelector(({ articles }) => articles);
+
   const { authors } = useAppSelector(({ users }) => users);
   const [filters, setFilters] = useState<FilterFormValues>({
     titleFilter: '',
@@ -32,7 +33,6 @@ const ArticlesFeed: React.FC = () => {
   });
 
   const { hasMore, loadMore, resetSkip } = usePagination();
-
   const handleLoadArticles = useCallback(() => {
     void loadMore(async (skip: number, take: number) => {
       const data = await dispatch(
@@ -43,7 +43,7 @@ const ArticlesFeed: React.FC = () => {
         }),
       ).unwrap();
 
-      return Boolean(data.items.length);
+      return Boolean(data.items.length >= take);
     });
   }, [dispatch, loadMore, filters]);
 
