@@ -41,7 +41,7 @@ const SignUpForm: React.FC<Properties> = ({ onSubmit }) => {
         >
           <fieldset className={styles.fieldset}>
             <Input
-              required
+              isRequired
               type="text"
               label="Email"
               placeholder="Enter your email"
@@ -50,7 +50,7 @@ const SignUpForm: React.FC<Properties> = ({ onSubmit }) => {
               errors={errors}
             />
             <Input
-              required
+              isRequired
               type="text"
               label="First Name"
               placeholder="Enter your first name"
@@ -59,7 +59,7 @@ const SignUpForm: React.FC<Properties> = ({ onSubmit }) => {
               errors={errors}
             />
             <Input
-              required
+              isRequired
               type="text"
               label="Last Name"
               placeholder="Enter your last name"
@@ -68,7 +68,7 @@ const SignUpForm: React.FC<Properties> = ({ onSubmit }) => {
               errors={errors}
             />
             <PasswordInput
-              required
+              isRequired
               name="password"
               control={control}
               errors={errors}
@@ -76,7 +76,7 @@ const SignUpForm: React.FC<Properties> = ({ onSubmit }) => {
               placeholder="Enter password"
             />
           </fieldset>
-          <AuthSubmitButton label="Sign Up" disabled={!isValid} />
+          <AuthSubmitButton label="Sign Up" isDisabled={!isValid} />
         </form>
       </div>
       <div className={styles.messageWrapper}>

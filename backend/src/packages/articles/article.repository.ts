@@ -82,7 +82,7 @@ class ArticleRepository implements IArticleRepository {
     genreId,
     titleFilter,
     authorId,
-    showFavourites,
+    shouldShowFavourites,
     requestUserId,
   }: {
     userId?: number;
@@ -95,13 +95,15 @@ class ArticleRepository implements IArticleRepository {
         `${DatabaseTableName.ARTICLES}.*`,
         this.getCommentsCountQuery(),
         this.getViewsCountQuery(),
-        getIsFavouriteSubQuery(Boolean(showFavourites), requestUserId),
+        getIsFavouriteSubQuery(Boolean(shouldShowFavourites), requestUserId),
       )
       .where(getWhereUserIdQuery(userId))
       .where(getWhereGenreIdQuery(genreId))
       .where(getWhereAuthorIdQuery(authorId))
       .where(getWhereTitleLikeQuery(titleFilter))
-      .where(getShowFavouritesQuery(Boolean(showFavourites), requestUserId))
+      .where(
+        getShowFavouritesQuery(Boolean(shouldShowFavourites), requestUserId),
+      )
       .where(getWherePublishedOnlyQuery(hasPublishedOnly))
       .whereNull('deletedAt')
       .orderBy(getSortingCondition(hasPublishedOnly))
@@ -123,16 +125,15 @@ class ArticleRepository implements IArticleRepository {
           genre: article.genre?.name ?? null,
           prompt: article.prompt
             ? {
-              character: article.prompt.character,
-              setting: article.prompt.setting,
-              situation: article.prompt.situation,
-              prop: article.prompt.prop,
-            }
+                character: article.prompt.character,
+                setting: article.prompt.setting,
+                situation: article.prompt.situation,
+                prop: article.prompt.prop,
+              }
             : null,
           isFavourite: article.isFavourite,
         });
-      },
-      ),
+      }),
     };
   }
 

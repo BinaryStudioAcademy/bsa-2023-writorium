@@ -29,7 +29,7 @@ const MyArticles: React.FC = () => {
     titleFilter: '',
     authorId: null,
     genreId: null,
-    showFavourites: false,
+    shouldShowFavourites: false,
   });
 
   const { hasMore, loadMore, resetSkip } = usePagination();
@@ -61,9 +61,9 @@ const MyArticles: React.FC = () => {
       if (!checkIsEqual(filters, payload)) {
         setFilters(payload);
         resetSkip();
-        if (filters.showFavourites !== payload.showFavourites) {
+        if (filters.shouldShowFavourites !== payload.shouldShowFavourites) {
           void dispatch(
-            articlesActions.setShowFavourites(payload.showFavourites),
+            articlesActions.setShowFavourites(payload.shouldShowFavourites),
           );
         }
       }

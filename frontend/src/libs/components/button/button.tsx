@@ -5,7 +5,7 @@ import { type ValueOf } from '~/libs/types/types.js';
 import styles from './styles.module.scss';
 
 type Properties = {
-  disabled?: boolean;
+  isDisabled?: boolean;
   label: React.ReactNode;
   type?: ValueOf<typeof ButtonType>;
   name?: string;
@@ -21,13 +21,13 @@ const Button: React.FC<Properties> = ({
   label,
   name = '',
   className = '',
-  disabled,
+  isDisabled,
   onClick,
 }) => (
   <button
     type={type}
     name={name}
-    disabled={disabled}
+    disabled={isDisabled}
     className={getValidClassNames(styles.button, className)}
     onClick={onClick}
   >

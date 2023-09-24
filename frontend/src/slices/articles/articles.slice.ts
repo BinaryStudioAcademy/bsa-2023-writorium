@@ -44,7 +44,7 @@ type State = {
   articleReactionDataStatus: ValueOf<typeof DataStatus>;
   getArticleStatus: ValueOf<typeof DataStatus>;
   saveArticleStatus: ValueOf<typeof DataStatus>;
-  showFavourites: boolean;
+  shouldShowFavourites: boolean;
   improvementSuggestions: ArticleImprovementSuggestion[] | null;
   improvementSuggestionsDataStatus: ValueOf<typeof DataStatus>;
   articleIdByToken: number | null;
@@ -57,7 +57,7 @@ const initialState: State = {
   articleComments: [],
   articles: [],
   genres: [],
-  showFavourites: false,
+  shouldShowFavourites: false,
   improvementSuggestions: null,
   dataStatus: DataStatus.IDLE,
   articleCommentsDataStatus: DataStatus.IDLE,
@@ -99,7 +99,7 @@ const { reducer, actions, name } = createSlice({
       state.article = action.payload;
     });
     builder.addCase(setShowFavourites, (state, action) => {
-      state.showFavourites = action.payload;
+      state.shouldShowFavourites = action.payload;
     });
     builder.addCase(deleteArticle.fulfilled, (state, action) => {
       const article = action.payload;
@@ -195,7 +195,7 @@ const { reducer, actions, name } = createSlice({
         state.articles = deleteOrUpdateConditionally({
           items: state.articles,
           itemToDeleteOrUpdate: article,
-          hasToDelete: !article.isFavourite && state.showFavourites,
+          hasToDelete: !article.isFavourite && state.shouldShowFavourites,
         });
         state.dataStatus = DataStatus.FULFILLED;
       }

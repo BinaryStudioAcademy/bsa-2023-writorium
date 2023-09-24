@@ -4,17 +4,17 @@ import { ButtonType } from '~/libs/enums/enums.js';
 
 import styles from './styles.module.scss';
 
-type Properties = Pick<ButtonProperties, 'label' | 'disabled' | 'onClick'>;
+type Properties = Pick<ButtonProperties, 'label' | 'isDisabled' | 'onClick'>;
 
 const AuthSignInButton: React.FC<Properties> = ({
   label,
-  disabled,
+  isDisabled,
   onClick,
 }) => {
   return (
     <Button
       label={label}
-      disabled={disabled}
+      isDisabled={isDisabled}
       onClick={onClick}
       className={styles.authSignInButton}
       type={ButtonType.BUTTON}

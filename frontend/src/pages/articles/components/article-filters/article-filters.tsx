@@ -93,7 +93,7 @@ const ArticleFilters: React.FC<Properties> = ({
             errors={errors}
           />
           <ToggleCheckbox
-            name="showFavourites"
+            name="shouldShowFavourites"
             control={control}
             errors={errors}
             label="Show only favourite articles"

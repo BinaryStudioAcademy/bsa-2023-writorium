@@ -129,7 +129,7 @@ const ProfileEditForm: FC<Properties> = ({ user, onEdit }: Properties) => {
         <Button
           type={ButtonType.SUBMIT}
           label="Save"
-          disabled={(!isDirty && avatarId === user.avatarId) || isSubmitting}
+          isDisabled={(!isDirty && avatarId === user.avatarId) || isSubmitting}
           className={getValidClassNames(styles.button, styles.buttonSave)}
         />
       </div>

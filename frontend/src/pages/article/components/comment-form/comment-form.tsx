@@ -44,7 +44,7 @@ const CommentForm: FC<Properties> = ({ onSubmit }) => {
       <Button
         type={ButtonType.SUBMIT}
         label="Send"
-        disabled={!isDirty || isSubmitting}
+        isDisabled={!isDirty || isSubmitting}
         className={getValidClassNames(styles.button)}
       />
     </form>

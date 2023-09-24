@@ -194,7 +194,7 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
               label="Save draft"
               name="draft"
               className={styles.saveDraftBtn}
-              disabled={!isDirty || isLoading}
+              isDisabled={!isDirty || isLoading}
             />
           )}
           <Button
@@ -202,7 +202,7 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
             label="Publish"
             name="publish"
             className={styles.publishBtn}
-            disabled={(!isDirty && !isDraft) || isLoading}
+            isDisabled={(!isDirty && !isDraft) || isLoading}
           />
         </div>
       </form>

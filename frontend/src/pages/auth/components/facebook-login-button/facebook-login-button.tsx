@@ -61,7 +61,7 @@ const FacebookLoginButton: React.FC<FacebookLoginButtonProperties> = ({
       type="button"
       label="Sign in with Facebook"
       name="Sign in with Facebook"
-      disabled={isLoading}
+      isDisabled={isLoading}
       onClick={handleFacebookLogin}
       className={styles.facebookLoginButton}
     />
