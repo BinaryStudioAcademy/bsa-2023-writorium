@@ -16,3 +16,12 @@
 .passwordToggle {
   display: contents;
 }
+
+.passwordInput {
+  padding-right: 45px;
+}
+
+.passwordInput::-ms-reveal,
+.passwordInput::-ms-clear {
+  display: none;
+}

@@ -1,16 +1,16 @@
 import { BlockWithTooltip } from '~/libs/components/components.js';
 import { DataTooltipId } from '~/libs/enums/enums.js';
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
+import { type AchievementWithProgressResponseDto } from '~/packages/achievements/achievements.js';
 
 import {
   Achievement,
   AchievementTooltipContent,
 } from '../../components/components.js';
-import { type UserAchievement } from '../../libs/types/types.js';
 import styles from './styles.module.scss';
 
 type Properties = {
-  achievements: UserAchievement[];
+  achievements: AchievementWithProgressResponseDto[];
   hasToShowTooltip?: boolean;
   className?: string;
   classNameAchievement?: string;

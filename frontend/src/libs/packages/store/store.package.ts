@@ -101,5 +101,5 @@ class Store {
   }
 }
 
-export { type ExtraArguments };
+export { type ExtraArguments, type RootReducer };
 export { Store };

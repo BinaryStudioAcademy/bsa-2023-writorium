@@ -1,8 +1,8 @@
 import { type FieldValues } from 'react-hook-form';
 
-import { Icon, Input } from '~/libs/components/components.js';
+import { IconButton, Input } from '~/libs/components/components.js';
 import { type InputProperties } from '~/libs/components/input/input.js';
-import { ButtonType, InputType } from '~/libs/enums/enums.js';
+import { InputType } from '~/libs/enums/enums.js';
 import { useCallback, useState } from '~/libs/hooks/hooks.js';
 
 import styles from './styles.module.scss';
@@ -20,19 +20,16 @@ const PasswordInput = <T extends FieldValues>(
 
   return (
     <div className={styles.passwordInputWrapper}>
-      <button
-        type={ButtonType.BUTTON}
+      <IconButton
         className={styles.passwordToggle}
         onClick={handleTogglePasswordVisibility}
-      >
-        <Icon
-          iconName={isPasswordVisible ? 'view' : 'hide'}
-          className={styles.icon}
-        />
-      </button>
+        iconName={isPasswordVisible ? 'hide' : 'view'}
+        iconClassName={styles.icon}
+      />
       <Input
         {...properties}
         type={isPasswordVisible ? InputType.TEXT : InputType.PASSWORD}
+        className={styles.passwordInput}
       />
     </div>
   );

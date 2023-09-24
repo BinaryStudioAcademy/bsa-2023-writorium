@@ -1,1 +1,1 @@
-export { AchievementsApiPath } from 'shared/build/index.js';
+export { AchievementsApiPath, PercentageProgress } from 'shared/build/index.js';

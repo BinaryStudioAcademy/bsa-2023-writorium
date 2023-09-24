@@ -7,17 +7,21 @@ import {
 } from '~/libs/enums/enums.js';
 import { ApplicationError } from '~/libs/exceptions/exceptions.js';
 import { configureString } from '~/libs/helpers/helpers.js';
-import { type IService } from '~/libs/interfaces/interfaces.js';
+import { type IService } from '~/libs/interfaces/service.interface.js';
+import { DatabaseTableName } from '~/libs/packages/database/database.js';
 import {
   BadRequestError,
   ForbiddenError,
   NotFoundError,
 } from '~/libs/packages/exceptions/exceptions.js';
 import { type OpenAIService } from '~/libs/packages/openai/openai.package.js';
+import { SocketNamespace, SocketRoom } from '~/libs/packages/socket/socket.js';
+import { type SocketService } from '~/libs/packages/socket/socket.package.js';
 import { token as articleToken } from '~/libs/packages/token/token.js';
 import { type ArticleViewService } from '~/packages/article-views/article-view.service.js';
 import { type FollowRepository } from '~/packages/follow/follow.js';
 
+import { type AchievementService } from '../achievements/achievement.service.js';
 import { GenreEntity } from '../genres/genre.entity.js';
 import { UNKNOWN_GENRE_KEY } from '../genres/genre.js';
 import { type GenreRepository } from '../genres/genre.repository.js';
@@ -29,7 +33,7 @@ import {
   INDEX_INCREMENT,
   SHARED_$TOKEN,
 } from './libs/constants/constants.js';
-import { DateFormat } from './libs/enums/enums.js';
+import { ArticleSocketEvent, DateFormat } from './libs/enums/enums.js';
 import {
   getArticleImprovementSuggestionsCompletionConfig,
   getArticleReadTimeCompletionConfig,
@@ -48,6 +52,7 @@ import {
   type ArticleImprovementSuggestion,
   type ArticleResponseDto,
   type ArticlesFilters,
+  type ArticleSocketEventPayload,
   type ArticleUpdateRequestDto,
   type ArticleWithCountsResponseDto,
   type ArticleWithFollowResponseDto,
@@ -56,10 +61,22 @@ import {
   type UserArticlesGenreStatsResponseDto,
 } from './libs/types/types.js';
 
+type Constructor = {
+  articleRepository: ArticleRepository;
+  openAIService: OpenAIService;
+  genreRepository: GenreRepository;
+  socketService: SocketService;
+  articleViewService: ArticleViewService;
+  followRepository: FollowRepository;
+  achievementService: AchievementService;
+};
+
 class ArticleService implements IService {
   private articleRepository: ArticleRepository;
   private openAIService: OpenAIService;
   private genreRepository: GenreRepository;
+  private socketService: SocketService;
+  private achievementService: AchievementService;
   private articleViewService: ArticleViewService;
   private followRepository: FollowRepository;
 
@@ -67,20 +84,18 @@ class ArticleService implements IService {
     articleRepository,
     openAIService,
     genreRepository,
+    socketService,
     articleViewService,
     followRepository,
-  }: {
-    articleRepository: ArticleRepository;
-    openAIService: OpenAIService;
-    genreRepository: GenreRepository;
-    articleViewService: ArticleViewService;
-    followRepository: FollowRepository;
-  }) {
+    achievementService,
+  }: Constructor) {
     this.articleRepository = articleRepository;
     this.openAIService = openAIService;
     this.genreRepository = genreRepository;
-    this.articleViewService = articleViewService;
+    this.socketService = socketService;
     this.followRepository = followRepository;
+    this.articleViewService = articleViewService;
+    this.achievementService = achievementService;
   }
 
   private async detectArticleGenreFromText(
@@ -420,6 +435,23 @@ class ArticleService implements IService {
         publishedAt: payload?.publishedAt ?? null,
       }),
     );
+
+    const socketEventPayload: ArticleSocketEventPayload[typeof ArticleSocketEvent.NEW_ARTICLE] =
+      article.toObjectWithRelationsAndCounts();
+
+    this.socketService.io
+      .of(SocketNamespace.ARTICLES)
+      .to(SocketRoom.ARTICLES_FEED)
+      .emit(ArticleSocketEvent.NEW_ARTICLE, socketEventPayload);
+
+    const countOfOwnArticles =
+      await this.articleRepository.countArticlesByUserId(payload.userId);
+
+    await this.achievementService.checkAchievement({
+      userId: payload.userId,
+      countOfItems: countOfOwnArticles,
+      referenceTable: DatabaseTableName.ARTICLES,
+    });
 
     return article.toObjectWithRelationsAndCounts();
   }

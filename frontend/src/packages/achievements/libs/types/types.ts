@@ -1,4 +1,1 @@
-export {
-  type AchievementBaseResponseDto,
-  type AchievementGetAllResponseDto,
-} from 'shared/build/index.js';
+export { type AchievementWithProgressResponseDto } from 'shared/build/index.js';

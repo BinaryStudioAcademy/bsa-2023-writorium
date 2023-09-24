@@ -42,6 +42,11 @@ export {
   type IHttp,
 } from './libs/packages/http/http.js';
 export { type SendEmailResponse } from './libs/packages/mailer/mailer.js';
+export {
+  SocketEvent,
+  SocketNamespace,
+  SocketRoom,
+} from './libs/packages/socket/socket.js';
 export { type IStorage } from './libs/packages/storage/storage.js';
 export {
   type PaginationParameters,
@@ -59,12 +64,17 @@ export {
   type AchievementBaseResponseDto,
   type AchievementGetAllResponseDto,
   AchievementsApiPath,
+  type AchievementWithProgressResponseDto,
+  PercentageProgress,
+  type UserAchievement,
 } from './packages/achievements/achievements.js';
 export {
   type ArticleReactionCreateDto,
   type ArticleReactionEntityType,
   type ArticleReactionRequestDto,
   type ArticleReactionResponseDto,
+  ArticleReactionsSocketEvent,
+  type ArticleReactionsSocketEventPayload,
   articleReactionValidationSchema,
 } from './packages/article-reactions/article-reactions.js';
 export {
@@ -90,6 +100,8 @@ export {
   type ArticlesFilters,
   articlesFiltersValidationSchema,
   articlesFormFiltersValidationSchema,
+  ArticleSocketEvent,
+  type ArticleSocketEventPayload,
   type ArticleUpdateRequestDto,
   type ArticleUpdateRequestPayload,
   articleUpdateValidationSchema,
@@ -116,6 +128,8 @@ export {
   type CommentGetAllRequestDto,
   type CommentGetAllResponseDto,
   CommentsApiPath,
+  CommentsSocketEvent,
+  type CommentsSocketEventPayload,
   type CommentUpdateDto,
   type CommentUpdateRequestDto,
   commentUpdateValidationSchema,

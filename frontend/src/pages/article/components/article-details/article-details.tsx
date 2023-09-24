@@ -11,7 +11,6 @@ import styles from './styles.module.scss';
 type Properties = {
   authorName: string;
   authorFollowers: number;
-  authorRating?: number;
   publishedAt: string | null;
   readTime: number | null;
   genre: string | null;
@@ -26,7 +25,6 @@ type Properties = {
 const ArticleDetails: React.FC<Properties> = ({
   authorName,
   authorFollowers,
-  authorRating,
   publishedAt,
   readTime,
   genre,
@@ -49,11 +47,6 @@ const ArticleDetails: React.FC<Properties> = ({
             <Icon iconName="renew" />
             <span className={styles.authorInfoValue}>{authorFollowers}</span>
             following
-          </li>
-          <li className={styles.authorInfo}>
-            <Icon iconName="star" />
-            <span className={styles.authorInfoValue}>{authorRating}</span>
-            rating
           </li>
         </ul>
         {!isArticleOwner && !isShared && (
@@ -83,8 +76,10 @@ const ArticleDetails: React.FC<Properties> = ({
             )}
           </ul>
         </div>
-        <Icon iconName="sparkles" />
-        <span className={styles.articleGenre}>{genre}</span>
+        <section className={styles.articleGenreInfo}>
+          <Icon iconName="sparkles" />
+          <span className={styles.articleGenre}>{genre}</span>
+        </section>
       </div>
     </div>
   );

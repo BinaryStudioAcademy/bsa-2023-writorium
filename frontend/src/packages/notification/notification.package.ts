@@ -1,28 +1,77 @@
-import { toast } from 'react-toastify';
+import {
+  Slide,
+  toast,
+  type ToastOptions,
+  type ToastTransition,
+} from 'react-toastify';
 
 import {
+  DEFAULT_NOTIFICATION_POSITION,
   INFO_MESSAGE,
   SUCCESS_MESSAGE,
   UNKNOWN_ERROR_MESSAGE,
   WARNING_MESSAGE,
 } from './libs/constants/constants.js';
 import { NotificationType } from './libs/enums/enums.js';
+import { type NotificationPayload } from './libs/types/types.js';
 
-class Notification {
-  public [NotificationType.ERROR] = (message = UNKNOWN_ERROR_MESSAGE): void => {
-    toast.error(message);
+type Options = {
+  position?: ToastOptions['position'];
+  transition?: ToastTransition;
+  type?: ToastOptions['type'];
+};
+
+type NotificationService = Record<
+  NotificationPayload['type'],
+  (message?: string, options?: Options) => void
+>;
+
+class Notification implements NotificationService {
+  public error = (
+    message = UNKNOWN_ERROR_MESSAGE,
+    options: Options = {},
+  ): void => {
+    this.showToast(message, {
+      ...options,
+      type: NotificationType.ERROR,
+    });
   };
 
-  public [NotificationType.SUCCESS] = (message = SUCCESS_MESSAGE): void => {
-    toast.success(message);
+  public success = (message = SUCCESS_MESSAGE, options: Options = {}): void => {
+    this.showToast(message, {
+      ...options,
+      type: NotificationType.SUCCESS,
+    });
   };
 
-  public [NotificationType.WARNING] = (message = WARNING_MESSAGE): void => {
-    toast.warn(message);
+  public warning = (message = WARNING_MESSAGE, options: Options = {}): void => {
+    this.showToast(message, {
+      ...options,
+      type: NotificationType.WARNING,
+    });
   };
 
-  public [NotificationType.INFO] = (message = INFO_MESSAGE): void => {
-    toast.info(message);
+  public info = (message = INFO_MESSAGE, options: Options = {}): void => {
+    this.showToast(message, {
+      ...options,
+      type: NotificationType.INFO,
+    });
+  };
+
+  private showToast = (message: string, options: Options = {}): void => {
+    toast(message, this.mapOptions(options));
+  };
+
+  private mapOptions = ({
+    position = DEFAULT_NOTIFICATION_POSITION,
+    transition = Slide,
+    type,
+  }: Options): ToastOptions => {
+    return {
+      position,
+      transition,
+      type,
+    };
   };
 }
 

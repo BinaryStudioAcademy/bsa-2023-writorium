@@ -5,6 +5,7 @@ export {
   type CommentEntityType,
   type CommentGetAllRequestDto,
   type CommentGetAllResponseDto,
+  type CommentsSocketEventPayload,
   type CommentUpdateDto,
   type CommentUpdateRequestDto,
   type CommentWithRelationsResponseDto,

@@ -1,11 +1,11 @@
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
+import { type AchievementWithProgressResponseDto } from '~/packages/achievements/achievements.js';
 
 import { getProgressStyleClass } from '../../libs/helpers/helpers.js';
-import { type UserAchievement } from '../../libs/types/types.js';
 import styles from './styles.module.scss';
 
 type Properties = {
-  achievement: UserAchievement;
+  achievement: AchievementWithProgressResponseDto;
   className?: string;
 };
 

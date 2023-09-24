@@ -21,6 +21,7 @@ import {
 import { type ArticleGenreStatsFilters } from '~/packages/articles/articles.js';
 import { actions as usersActions } from '~/slices/users/users.js';
 
+import { GenresList } from './libs/components/components.js';
 import {
   articleStatusOptions,
   DEFAULT_FILTER_PAYLOAD,
@@ -107,8 +108,9 @@ const UserArticlesGenresStats: React.FC<Properties> = ({ className }) => {
                 </Pie>
                 <Legend
                   layout="vertical"
-                  align="right"
-                  verticalAlign="middle"
+                  align="center"
+                  verticalAlign="bottom"
+                  content={<GenresList genresStatistics={chartData} />}
                 />
                 <Tooltip />
               </RechartsPieChart>
