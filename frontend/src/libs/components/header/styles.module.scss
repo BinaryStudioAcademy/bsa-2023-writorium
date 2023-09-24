@@ -34,8 +34,21 @@ img.avatar:hover {
   opacity: 0.8;
 }
 
-.writeButton {
+.writeLink {
   margin-right: 35px;
+  padding: 12px 26px;
+  color: var(--white);
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 19px;
+  background-color: var(--dark-green);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.writeLink:hover {
+  background-color: var(--light-green);
 }
 
 .popoverWriteLink {
