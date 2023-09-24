@@ -3,6 +3,8 @@ import { ReactComponent as CommentsAchievementIcon } from '~/assets/img/comments
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
 import { type AchievementWithProgressResponseDto } from '~/packages/achievements/achievements.js';
 
+import { AchievementItemConfig } from '../../libs/enums/enums.js';
+import { getRadialProgressStyleString } from '../../libs/helpers/helpers.js';
 import styles from './styles.module.scss';
 
 type Properties = {
@@ -12,10 +14,6 @@ type Properties = {
 
 const Achievement: React.FC<Properties> = ({ achievement }) => {
   const { name, referenceTable, progress } = achievement;
-  const radius = 45;
-  const circumference = Math.PI * 2 * radius;
-  const offset = (progress / 100) * circumference;
-
   const achievementEntityClassName: string | undefined = {
     'comments': styles.comments,
     'articles': styles.articles,
@@ -37,13 +35,21 @@ const Achievement: React.FC<Properties> = ({ achievement }) => {
         )}
       >
         <svg viewBox="0 0 100 100" className={styles.progressWrapper}>
-          <circle cx="50" cy="50" r={radius} className={styles.progressTrack} />
           <circle
             cx="50"
             cy="50"
-            r={radius}
+            className={styles.progressTrack}
+            r={AchievementItemConfig.PROGRESS_RADIUS}
+          />
+          <circle
+            cx="50"
+            cy="50"
             className={styles.progress}
-            strokeDasharray={`${offset} ${circumference}`}
+            r={AchievementItemConfig.PROGRESS_RADIUS}
+            strokeDasharray={getRadialProgressStyleString(
+              progress,
+              AchievementItemConfig.PROGRESS_RADIUS,
+            )}
           />
         </svg>
         <div className={styles.achievementImage}>
