@@ -30,21 +30,6 @@
   position: relative;
 }
 
-.clearFilters {
-  color: var(--dark-gray);
-  font-weight: 500;
-  font-size: 12px;
-  font-family: Lato, sans-serif;
-  background-color: var(--input-bg);
-  border: none;
-  cursor: pointer;
-}
-
-.clearFilters:hover {
-  color: var(--light-green);
-  background-color: transparent;
-}
-
 .filterInput {
   height: 45px;
   background: var(--input-bg);
