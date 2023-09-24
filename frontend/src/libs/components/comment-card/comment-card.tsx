@@ -1,4 +1,4 @@
-import { Avatar, Icon } from '~/libs/components/components.js';
+import { Avatar } from '~/libs/components/components.js';
 import {
   getDateDifferenceWithUnit,
   getFullName,
@@ -36,10 +36,6 @@ const CommentCard: React.FC<Properties> = ({ user, comment }) => {
             <span className={styles.indicator}></span>
           </div>
           <span className={styles.publicationTime}>{publicationTime} ago</span>
-        </div>
-        <div className={styles.iconWrapper}>
-          <Icon iconName="link" className={styles.linkIcon} />
-          <Icon iconName="share" className={styles.shareIcon} />
         </div>
       </div>
       <p className={styles.text}>{text}</p>

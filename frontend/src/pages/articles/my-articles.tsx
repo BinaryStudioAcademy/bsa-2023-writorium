@@ -3,7 +3,7 @@ import {
   Modal,
   ScrollToTop,
 } from '~/libs/components/components.js';
-import { WindowBreakpoint } from '~/libs/enums/enums.js';
+import { DataStatus, WindowBreakpoint } from '~/libs/enums/enums.js';
 import {
   checkIsEqual,
   checkIsPassingWindowBreakpoint,
@@ -37,8 +37,14 @@ import styles from './styles.module.scss';
 const MyArticles: React.FC = () => {
   const { handleToggleModalOpen, isOpen } = useModal();
   const dispatch = useAppDispatch();
-  const { articles, genres } = useAppSelector(({ articles }) => articles);
-  const { authors } = useAppSelector(({ users }) => users);
+  const { articles, articlesStatus, authors, genres } = useAppSelector(
+    ({ articles, users }) => ({
+      articles: articles.articles,
+      articlesStatus: articles.dataStatus,
+      genres: articles.genres,
+      authors: users.authors,
+    }),
+  );
 
   const { width } = useGetWindowDimensions();
   const shouldHideFilters = checkIsPassingWindowBreakpoint(
@@ -53,6 +59,7 @@ const MyArticles: React.FC = () => {
     showFavourites: false,
   });
 
+  const isLoadingArticles = articlesStatus === DataStatus.PENDING;
   const { hasMore, loadMore, resetSkip } = usePagination();
 
   const handleLoadArticles = useCallback(() => {
@@ -112,23 +119,25 @@ const MyArticles: React.FC = () => {
   return (
     <>
       <div className={styles.articlesWrapper}>
-        {Boolean(articles.length) ? (
+        {Boolean(articles.length) || isLoadingArticles ? (
           <ArticlesList
             hasMore={hasMore}
             articlesLength={articles.length}
-            onFetchData={handleLoadArticles}
             articles={articles}
+            isLoading={isLoadingArticles}
+            onFetchData={handleLoadArticles}
           />
         ) : (
           <EmptyArticlesPlaceholder />
         )}
-
         {shouldHideFilters ? (
-          <IconButton
-            iconName="filter"
-            className={styles.filterButton}
-            onClick={handleToggleModalOpen}
-          />
+          <div className={styles.filterButtonWrapper}>
+            <IconButton
+              iconName="filter"
+              className={styles.filterButton}
+              onClick={handleToggleModalOpen}
+            />
+          </div>
         ) : (
           <ArticleFilters
             genreSelectOptions={getSelectGenresOptions(genres)}

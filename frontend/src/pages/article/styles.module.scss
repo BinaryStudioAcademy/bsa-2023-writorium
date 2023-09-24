@@ -2,10 +2,9 @@
 
 .articlePageWrapper {
   display: grid;
-  grid-template-columns: 1fr min-content;
+  grid-template-columns: 1fr 400px;
   align-items: flex-start;
   gap: 40px 20px;
-  padding-bottom: 100px;
 }
 
 .articleCreatePageWrapper,

@@ -241,7 +241,7 @@ const ArticleView: React.FC<Properties> = ({
 
         <h4 className={styles.title}>{title}</h4>
         {tags && <Tags tags={tags} />}
-        <p
+        <article
           className={styles.text}
           dangerouslySetInnerHTML={{ __html: sanitizeHtml(text) }}
         />
