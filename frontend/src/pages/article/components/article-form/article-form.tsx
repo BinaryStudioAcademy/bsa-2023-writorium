@@ -4,7 +4,7 @@ import {
   Loader,
   TextEditor,
 } from '~/libs/components/components.js';
-import { ButtonType, DataStatus } from '~/libs/enums/enums.js';
+import { ButtonType, DataStatus, InputType } from '~/libs/enums/enums.js';
 import {
   useAppDispatch,
   useAppForm,
@@ -169,7 +169,7 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
           initialPreviewUrl={articleForUpdate?.coverUrl}
         />
         <Input
-          type="text"
+          type={InputType.TEXT}
           placeholder="Enter the title of the article"
           name="title"
           control={control}
@@ -178,7 +178,7 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
         />
         <TextEditor
           control={control}
-          name="text"
+          name={InputType.TEXT}
           errors={errors}
           wasEdited={isDirty}
         />

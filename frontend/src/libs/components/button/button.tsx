@@ -1,6 +1,7 @@
+import { EMPTY_STRING } from '~/libs/constants/constants.js';
 import { ButtonType } from '~/libs/enums/enums.js';
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
-import { type ValueOf } from '~/libs/types/types.js';
+import { type ReactMouseEvent, type ValueOf } from '~/libs/types/types.js';
 
 import styles from './styles.module.scss';
 
@@ -13,14 +14,14 @@ type Properties = {
   onClick?:
     | (() => void)
     | (() => Promise<void>)
-    | ((event: React.MouseEvent<HTMLButtonElement>) => void);
+    | ((event: ReactMouseEvent<HTMLButtonElement>) => void);
 };
 
 const Button: React.FC<Properties> = ({
   type = ButtonType.BUTTON,
   label,
-  name = '',
-  className = '',
+  name = EMPTY_STRING,
+  className = EMPTY_STRING,
   disabled,
   onClick,
 }) => (

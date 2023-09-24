@@ -20,6 +20,7 @@ class ArticleViewRepository implements IRepository {
 
   public async create(entity: ArticleViewEntity): Promise<ArticleViewEntity> {
     const { articleId, viewedById } = entity.toNewObject();
+    const CONFLICT_COLUMNS = ['article_id', 'viewed_by_id'];
 
     const view = await this.articleViewModel
       .query()
@@ -27,7 +28,7 @@ class ArticleViewRepository implements IRepository {
         articleId,
         viewedById,
       })
-      .onConflict(['article_id', 'viewed_by_id'])
+      .onConflict(CONFLICT_COLUMNS)
       .ignore();
 
     return ArticleViewEntity.initialize(view);

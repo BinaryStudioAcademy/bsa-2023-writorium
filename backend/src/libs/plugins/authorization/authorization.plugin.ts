@@ -8,7 +8,10 @@ import { type WhiteRoute } from '~/libs/packages/server-application/server-appli
 import { type IToken } from '~/libs/packages/token/token.js';
 import { type UserService } from '~/packages/users/users.js';
 
-import { SERVED_PAGE_PATH } from './libs/constants/constants.js';
+import {
+  ONE_SPACE_DELIMITER,
+  SERVED_PAGE_PATH,
+} from './libs/constants/constants.js';
 
 type AuthorizationPluginParameters = {
   whiteRoutesConfig: readonly WhiteRoute[];
@@ -46,7 +49,8 @@ const authorization = fp(
         return;
       }
 
-      const [, requestToken] = headers.authorization?.split(' ') ?? [];
+      const [, requestToken] =
+        headers.authorization?.split(ONE_SPACE_DELIMITER) ?? [];
 
       if (!requestToken) {
         throw new UnauthorizedError(ExceptionMessage.AUTHORIZATION_HEADER);

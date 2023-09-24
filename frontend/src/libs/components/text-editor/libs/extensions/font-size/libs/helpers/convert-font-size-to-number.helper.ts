@@ -1,8 +1,8 @@
+import { type OptionalString } from '../types/types.js';
+
 const FONT_SIZE_PATTERN = /([\d.]+)px/i;
 
-const convertFontSizeToNumber = (
-  styleValue: string | null | undefined,
-): number | null => {
+const convertFontSizeToNumber = (styleValue: OptionalString): number | null => {
   if (!styleValue) {
     return null;
   }

@@ -1,2 +1,1 @@
-export { CommentsApiPath } from 'shared/build/index.js';
-export { SortingOrder } from 'shared/build/index.js';
+export { CommentsApiPath, SortingOrder } from 'shared/build/index.js';

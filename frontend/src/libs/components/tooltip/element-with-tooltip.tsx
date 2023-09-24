@@ -1,6 +1,5 @@
 import {
   createElement,
-  type FC,
   type ReactElement,
   type ReactHTML,
   type ReactNode,
@@ -14,6 +13,8 @@ import {
 } from '~/libs/enums/enums.js';
 import { type ValueOf } from '~/libs/types/types.js';
 
+import { DataTooltipKey } from './libs/enums/enums.js';
+
 type ElementWithTooltipProperties = {
   className?: string;
   elementType: keyof ReactHTML;
@@ -25,7 +26,7 @@ type ElementWithTooltipProperties = {
   children?: ReactNode;
 };
 
-const ElementWithTooltip: FC<ElementWithTooltipProperties> = ({
+const ElementWithTooltip: React.FC<ElementWithTooltipProperties> = ({
   children,
   className,
   elementType,
@@ -37,16 +38,16 @@ const ElementWithTooltip: FC<ElementWithTooltipProperties> = ({
 }) => {
   const isStringContent = typeof tooltipContent === 'string';
   const contentDataAttribute = isStringContent
-    ? 'data-tooltip-content'
-    : 'data-tooltip-html';
+    ? DataTooltipKey.CONTENT
+    : DataTooltipKey.HTML;
   const adaptedTooltipContent = isStringContent
     ? tooltipContent
     : renderToStaticMarkup(tooltipContent);
   const tooltipAttributes = hasToShowTooltip
     ? {
-        'data-tooltip-id': tooltipId,
-        'data-tooltip-place': placement,
-        'data-tooltip-position-strategy': tooltipPositionStrategy,
+        [DataTooltipKey.ID]: tooltipId,
+        [DataTooltipKey.PLACE]: placement,
+        [DataTooltipKey.POSITION_STRATEGY]: tooltipPositionStrategy,
         [contentDataAttribute]: adaptedTooltipContent,
       }
     : {};

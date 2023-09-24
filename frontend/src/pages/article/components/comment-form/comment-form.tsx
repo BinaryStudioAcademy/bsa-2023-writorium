@@ -1,9 +1,9 @@
-import { type BaseSyntheticEvent, type FC } from 'react';
-
 import { Button, Input } from '~/libs/components/components.js';
+import { EMPTY_STRING } from '~/libs/constants/constants.js';
 import { ButtonType } from '~/libs/enums/enums.js';
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
 import { useAppForm, useCallback } from '~/libs/hooks/hooks.js';
+import { type ReactBaseSyntheticEvent } from '~/libs/types/types.js';
 import {
   type CommentBaseRequestDto,
   commentCreateValidationSchema,
@@ -15,17 +15,17 @@ type Properties = {
   onSubmit: (payload: Omit<CommentBaseRequestDto, 'articleId'>) => void;
 };
 
-const CommentForm: FC<Properties> = ({ onSubmit }) => {
+const CommentForm: React.FC<Properties> = ({ onSubmit }) => {
   const { control, errors, handleSubmit, handleReset, isDirty, isSubmitting } =
     useAppForm<Omit<CommentBaseRequestDto, 'articleId'>>({
       defaultValues: {
-        text: '',
+        text: EMPTY_STRING,
       },
       validationSchema: commentCreateValidationSchema,
     });
 
   const handleCreateComment = useCallback(
-    (event_: BaseSyntheticEvent): void => {
+    (event_: ReactBaseSyntheticEvent): void => {
       void handleSubmit(onSubmit)(event_);
       handleReset();
     },

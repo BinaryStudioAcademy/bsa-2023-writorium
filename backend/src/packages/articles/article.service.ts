@@ -7,7 +7,7 @@ import {
 } from '~/libs/enums/enums.js';
 import { ApplicationError } from '~/libs/exceptions/exceptions.js';
 import { configureString } from '~/libs/helpers/helpers.js';
-import { type IService } from '~/libs/interfaces/service.interface.js';
+import { type IService } from '~/libs/interfaces/interfaces.js';
 import {
   BadRequestError,
   ForbiddenError,
@@ -24,7 +24,11 @@ import { type GenreRepository } from '../genres/genre.repository.js';
 import { type UserAuthResponseDto } from '../users/users.js';
 import { ArticleEntity } from './article.entity.js';
 import { type ArticleRepository } from './article.repository.js';
-import { INDEX_INCREMENT, SHARED_$TOKEN } from './libs/constants/constants.js';
+import {
+  EMPTY_STRING,
+  INDEX_INCREMENT,
+  SHARED_$TOKEN,
+} from './libs/constants/constants.js';
 import { DateFormat } from './libs/enums/enums.js';
 import {
   getArticleImprovementSuggestionsCompletionConfig,
@@ -82,6 +86,8 @@ class ArticleService implements IService {
   private async detectArticleGenreFromText(
     text: string,
   ): Promise<DetectedArticleGenre | null> {
+    const FIRST_ITEM_INDEX = 0;
+
     const genresJSON = await this.openAIService.createCompletion(
       getDetectArticleGenreCompletionConfig(text),
     );
@@ -92,8 +98,6 @@ class ArticleService implements IService {
 
     const parsedGenres = safeJSONParse<DetectedArticleGenre[]>(genresJSON);
 
-    const FIRST_ITEM_INDEX = 0;
-
     if (Array.isArray(parsedGenres) && parsedGenres[FIRST_ITEM_INDEX]) {
       return parsedGenres[FIRST_ITEM_INDEX];
     }
@@ -102,6 +106,8 @@ class ArticleService implements IService {
   }
 
   private async getArticleReadTime(text: string): Promise<number | null> {
+    const READ_TIME_KEY = 'readTime';
+
     const readTimeJSON = await this.openAIService.createCompletion(
       getArticleReadTimeCompletionConfig(text),
     );
@@ -114,7 +120,7 @@ class ArticleService implements IService {
       safeJSONParse<{ readTime: number }>(readTimeJSON) ?? {};
 
     if (
-      'readTime' in readTimeData &&
+      READ_TIME_KEY in readTimeData &&
       typeof readTimeData.readTime === 'number'
     ) {
       return readTimeData.readTime;
@@ -315,7 +321,7 @@ class ArticleService implements IService {
 
     if (!suggestions) {
       throw new ApplicationError({
-        message: 'Failed to generate improvement suggestions for article',
+        message: ExceptionMessage.FAILED_TO_GENERATE_IMPROVEMENT_SUGGESTIONS,
       });
     }
 
@@ -432,7 +438,9 @@ class ArticleService implements IService {
     }
 
     if (article.userId !== user.id) {
-      throw new ForbiddenError('Article can be edited only by author!');
+      throw new ForbiddenError(
+        ExceptionMessage.ARTICLE_CAN_BE_EDITED_ONLY_BY_AUTHOR,
+      );
     }
 
     let updatedGenreId = payload.genreId ?? article.genreId;
@@ -471,7 +479,7 @@ class ArticleService implements IService {
       articleId: id,
     });
 
-    const refererOrigin = getOriginFromRefererHeader(referer) ?? '';
+    const refererOrigin = getOriginFromRefererHeader(referer) ?? EMPTY_STRING;
 
     const link = configureString(
       refererOrigin,
@@ -534,7 +542,9 @@ class ArticleService implements IService {
     }
 
     if (article.userId !== userId) {
-      throw new ForbiddenError('Article can be deleted only by author!');
+      throw new ForbiddenError(
+        ExceptionMessage.ARTICLE_CAN_BE_EDITED_ONLY_BY_AUTHOR,
+      );
     }
 
     const deletedArticle = await this.articleRepository.delete(id);
@@ -552,7 +562,7 @@ class ArticleService implements IService {
     );
     if (!toggleResult) {
       throw new ApplicationError({
-        message: 'Unable to update article status',
+        message: ExceptionMessage.UNABLE_TO_UPDATE_ARTICLE_STATUS,
       });
     }
 

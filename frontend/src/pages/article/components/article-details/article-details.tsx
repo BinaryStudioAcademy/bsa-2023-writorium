@@ -1,5 +1,3 @@
-import { type FC } from 'react';
-
 import { Avatar, Button, Icon } from '~/libs/components/components.js';
 import { DateFormat, FollowStatus } from '~/libs/enums/enums.js';
 import {
@@ -7,6 +5,7 @@ import {
   getValidClassNames,
 } from '~/libs/helpers/helpers.js';
 
+import { DRAFT_STATUS } from '../../libs/constants/constants.js';
 import styles from './styles.module.scss';
 
 type Properties = {
@@ -24,10 +23,10 @@ type Properties = {
   isShared?: boolean;
 };
 
-const ArticleDetails: FC<Properties> = ({
+const ArticleDetails: React.FC<Properties> = ({
   authorName,
   authorFollowers,
-  authorRating = 700,
+  authorRating,
   publishedAt,
   readTime,
   genre,
@@ -73,7 +72,7 @@ const ArticleDetails: FC<Properties> = ({
               <span>
                 {publishedAt
                   ? getFormattedDate(publishedAt, DateFormat.MONTH_DATE_YEAR)
-                  : 'draft'}
+                  : DRAFT_STATUS}
               </span>
             </li>
             {readTime && (

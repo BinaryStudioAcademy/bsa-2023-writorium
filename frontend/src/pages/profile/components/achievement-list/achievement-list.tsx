@@ -1,14 +1,12 @@
-import { type FC } from 'react';
-
 import { BlockWithTooltip } from '~/libs/components/components.js';
 import { DataTooltipId } from '~/libs/enums/enums.js';
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
+
 import {
   Achievement,
   AchievementTooltipContent,
-} from '~/pages/profile/components/components.js';
-import { type UserAchievement } from '~/pages/profile/libs/types/types.js';
-
+} from '../../components/components.js';
+import { type UserAchievement } from '../../libs/types/types.js';
 import styles from './styles.module.scss';
 
 type Properties = {
@@ -18,7 +16,7 @@ type Properties = {
   classNameAchievement?: string;
 };
 
-const AchievementList: FC<Properties> = ({
+const AchievementList: React.FC<Properties> = ({
   achievements,
   className,
   classNameAchievement,

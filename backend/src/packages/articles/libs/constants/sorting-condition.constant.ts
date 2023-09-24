@@ -1,4 +1,4 @@
-import { ArticleSortingKey, SortingOrder } from '../../enums/enums.js';
+import { ArticleSortingKey, SortingOrder } from '../enums/enums.js';
 
 const PUBLISHED_ARTICLES_CONDITION = [
   { column: ArticleSortingKey.PUBLISHED, order: SortingOrder.DESCENDING },

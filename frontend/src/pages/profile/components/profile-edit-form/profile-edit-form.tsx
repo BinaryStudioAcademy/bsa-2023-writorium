@@ -1,5 +1,3 @@
-import { type BaseSyntheticEvent, type FC } from 'react';
-
 import { Button, Input } from '~/libs/components/components.js';
 import { ButtonType, InputType } from '~/libs/enums/enums.js';
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
@@ -9,6 +7,7 @@ import {
   useCallback,
   useState,
 } from '~/libs/hooks/hooks.js';
+import { type ReactBaseSyntheticEvent } from '~/libs/types/types.js';
 import {
   type UserAuthResponseDto,
   type UserUpdateRequestDto,
@@ -24,7 +23,10 @@ type Properties = {
   onEdit: (value: boolean) => void;
 };
 
-const ProfileEditForm: FC<Properties> = ({ user, onEdit }: Properties) => {
+const ProfileEditForm: React.FC<Properties> = ({
+  user,
+  onEdit,
+}: Properties) => {
   const dispatch = useAppDispatch();
   const {
     control,
@@ -53,7 +55,7 @@ const ProfileEditForm: FC<Properties> = ({ user, onEdit }: Properties) => {
   );
 
   const handleUpdateUserDetails = useCallback(
-    (event_: BaseSyntheticEvent): void => {
+    (event_: ReactBaseSyntheticEvent): void => {
       if (errorImageUpload) {
         return;
       }

@@ -1,4 +1,5 @@
 import { Layout, Loader, Navigate } from '~/libs/components/components.js';
+import { EMPTY_STRING } from '~/libs/constants/constants.js';
 import { AppRoute, DataStatus } from '~/libs/enums/enums.js';
 import { getFullName } from '~/libs/helpers/helpers.js';
 import {
@@ -63,8 +64,8 @@ const SharedArticlePage: React.FC = () => {
                     article.author.firstName,
                     article.author.lastName,
                   )}
-                  publishedAt={article.publishedAt ?? ''}
-                  genre={article.genre ?? ''}
+                  publishedAt={article.publishedAt ?? EMPTY_STRING}
+                  genre={article.genre ?? EMPTY_STRING}
                   avatarUrl={article.author.avatarUrl}
                   authorFollowers={article.author.followersCount}
                   isShared

@@ -1,6 +1,6 @@
 import { type Knex } from 'knex';
 
-const TABLE_NAME = 'user_details';
+const TableName = { USER_DETAILS: 'user_details', USERS: 'users' };
 
 const ColumnName = {
   ID: 'id',
@@ -11,8 +11,10 @@ const ColumnName = {
   UPDATED_AT: 'updated_at',
 };
 
+const CASCADE_RELATION_RULE = 'CASCADE';
+
 const up = (knex: Knex): Promise<void> => {
-  return knex.schema.createTable(TABLE_NAME, (table) => {
+  return knex.schema.createTable(TableName.USER_DETAILS, (table) => {
     table.increments(ColumnName.ID).primary();
     table.text(ColumnName.FIRST_NAME).notNullable();
     table.text(ColumnName.LAST_NAME).notNullable();
@@ -20,9 +22,9 @@ const up = (knex: Knex): Promise<void> => {
       .integer(ColumnName.USER_ID)
       .notNullable()
       .unsigned()
-      .references('id')
-      .inTable('users')
-      .onDelete('CASCADE')
+      .references(ColumnName.ID)
+      .inTable(TableName.USERS)
+      .onDelete(CASCADE_RELATION_RULE)
       .index();
     table
       .dateTime(ColumnName.CREATED_AT)
@@ -36,7 +38,7 @@ const up = (knex: Knex): Promise<void> => {
 };
 
 const down = (knex: Knex): Promise<void> => {
-  return knex.schema.dropTableIfExists(TABLE_NAME);
+  return knex.schema.dropTableIfExists(TableName.USER_DETAILS);
 };
 
 export { down, up };

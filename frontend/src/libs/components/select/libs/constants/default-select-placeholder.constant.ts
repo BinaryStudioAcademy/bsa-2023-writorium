@@ -1,0 +1,3 @@
+const DEFAULT_SELECT_PLACEHOLDER = 'Search...';
+
+export { DEFAULT_SELECT_PLACEHOLDER };

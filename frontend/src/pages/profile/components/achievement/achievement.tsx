@@ -1,9 +1,7 @@
-import { type FC } from 'react';
-
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
-import { getProgressStyleClass } from '~/pages/profile/libs/helpers/helpers.js';
-import { type UserAchievement } from '~/pages/profile/libs/types/types.js';
 
+import { getProgressStyleClass } from '../../libs/helpers/helpers.js';
+import { type UserAchievement } from '../../libs/types/types.js';
 import styles from './styles.module.scss';
 
 type Properties = {
@@ -11,7 +9,7 @@ type Properties = {
   className?: string;
 };
 
-const Achievement: FC<Properties> = ({ achievement, className }) => {
+const Achievement: React.FC<Properties> = ({ achievement, className }) => {
   const { name, progress } = achievement;
   const statusStyleClass = getProgressStyleClass(progress);
 

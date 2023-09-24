@@ -1,16 +1,13 @@
 import { type Model, type Page, type QueryBuilder } from 'objection';
 
-import { DatabaseTableName } from '~/libs/packages/database/libs/enums/database-table-name.enum.js';
+import { DatabaseTableName } from '~/libs/packages/database/libs/enums/enums.js';
 import { type ArticleViewModel } from '~/packages/article-views/article-view.model.js';
 import { type CommentModel } from '~/packages/comments/comment.model.js';
 
 import { ArticleEntity } from './article.entity.js';
 import { type ArticleModel } from './article.model.js';
 import { type FavouredUserArticlesModel } from './favoured-user-articles.model.js';
-import {
-  EMPTY_COMMENT_COUNT,
-  EMPTY_VIEW_COUNT,
-} from './libs/constants/constants.js';
+import { ZERO_COUNT } from './libs/constants/constants.js';
 import {
   getArticlePublishedStatusQuery,
   getIsFavouriteSubQuery,
@@ -235,9 +232,9 @@ class ArticleRepository implements IArticleRepository {
             prop: article.prompt.prop,
           }
         : null,
-      commentCount: EMPTY_COMMENT_COUNT,
+      commentCount: ZERO_COUNT,
       coverUrl: article.cover?.url ?? null,
-      viewCount: EMPTY_VIEW_COUNT,
+      viewCount: ZERO_COUNT,
     });
   }
 

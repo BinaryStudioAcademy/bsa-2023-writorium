@@ -1,5 +1,5 @@
 import { Input, Link } from '~/libs/components/components.js';
-import { AppRoute } from '~/libs/enums/app-route.enum.js';
+import { AppRoute, InputType } from '~/libs/enums/enums.js';
 import { useAppForm, useCallback } from '~/libs/hooks/hooks.js';
 import {
   type UserSignUpRequestDto,
@@ -42,7 +42,7 @@ const SignUpForm: React.FC<Properties> = ({ onSubmit }) => {
           <fieldset className={styles.fieldset}>
             <Input
               required
-              type="text"
+              type={InputType.EMAIL}
               label="Email"
               placeholder="Enter your email"
               name="email"
@@ -51,7 +51,7 @@ const SignUpForm: React.FC<Properties> = ({ onSubmit }) => {
             />
             <Input
               required
-              type="text"
+              type={InputType.TEXT}
               label="First Name"
               placeholder="Enter your first name"
               name="firstName"
@@ -60,7 +60,7 @@ const SignUpForm: React.FC<Properties> = ({ onSubmit }) => {
             />
             <Input
               required
-              type="text"
+              type={InputType.TEXT}
               label="Last Name"
               placeholder="Enter your last name"
               name="lastName"

@@ -1,3 +1,4 @@
+import { PromptCategory } from '~/libs/enums/enums.js';
 import { type TagType } from '~/libs/types/types.js';
 import { type ArticleResponseDto } from '~/packages/articles/articles.js';
 
@@ -7,7 +8,7 @@ const getArticleTags = (article: ArticleResponseDto): TagType[] => {
 
   if (genre) {
     result.push({
-      category: 'genre',
+      category: PromptCategory.GENRE,
       text: genre,
     });
   }

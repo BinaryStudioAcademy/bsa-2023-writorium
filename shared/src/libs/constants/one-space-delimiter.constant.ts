@@ -1,0 +1,3 @@
+const ONE_SPACE_DELIMITER = ' ';
+
+export { ONE_SPACE_DELIMITER };

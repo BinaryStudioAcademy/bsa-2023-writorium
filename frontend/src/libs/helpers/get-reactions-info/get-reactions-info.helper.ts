@@ -1,3 +1,4 @@
+import { INDEX_INCREMENT, ZERO_COUNT } from '~/libs/constants/constants.js';
 import { Reaction } from '~/libs/enums/enums.js';
 import { type ValueOf } from '~/libs/types/types.js';
 import { type ReactionResponseDto } from '~/packages/articles/articles.js';
@@ -20,18 +21,22 @@ const getReactionsInfo = (
 
       return {
         likesCount: reaction.isLike
-          ? reactionsInfo.likesCount + 1
+          ? reactionsInfo.likesCount + INDEX_INCREMENT
           : reactionsInfo.likesCount,
         dislikesCount: reaction.isLike
           ? reactionsInfo.dislikesCount
-          : reactionsInfo.dislikesCount + 1,
+          : reactionsInfo.dislikesCount + INDEX_INCREMENT,
         hasAlreadyReactedWith:
           reaction.userId === userId
             ? reactionType
             : reactionsInfo.hasAlreadyReactedWith,
       };
     },
-    { likesCount: 0, dislikesCount: 0, hasAlreadyReactedWith: null },
+    {
+      likesCount: ZERO_COUNT,
+      dislikesCount: ZERO_COUNT,
+      hasAlreadyReactedWith: null,
+    },
   );
 };
 

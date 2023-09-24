@@ -1,4 +1,5 @@
 import { InfiniteScroll, ScrollToTop } from '~/libs/components/components.js';
+import { EMPTY_STRING } from '~/libs/constants/constants.js';
 import { checkIsEqual, getArticleTags } from '~/libs/helpers/helpers.js';
 import {
   useAppDispatch,
@@ -26,7 +27,7 @@ const MyArticles: React.FC = () => {
   const { authors } = useAppSelector(({ users }) => users);
 
   const [filters, setFilters] = useState<FilterFormValues>({
-    titleFilter: '',
+    titleFilter: EMPTY_STRING,
     authorId: null,
     genreId: null,
     showFavourites: false,

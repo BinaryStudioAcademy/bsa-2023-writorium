@@ -96,11 +96,13 @@ const sendEmailResetPasswordLink = createAsyncThunk<
   async (payload, { dispatch, extra }) => {
     const { authApi } = extra;
     const response = await authApi.sendEmailResetPasswordLink(payload);
+    const resetPasswordEmailMessage =
+      'Email with reset password link was send to your email address';
+
     void dispatch(
       appActions.notify({
         type: NotificationType.SUCCESS,
-        message:
-          'Email with reset password link was send to your email address',
+        message: resetPasswordEmailMessage,
       }),
     );
 

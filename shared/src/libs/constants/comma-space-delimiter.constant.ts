@@ -1,0 +1,3 @@
+const COMMA_SPACE_DELIMITER = ', ';
+
+export { COMMA_SPACE_DELIMITER };

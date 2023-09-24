@@ -147,11 +147,12 @@ const shareArticle = createAsyncThunk<
   const { articleApi } = extra;
 
   const response = await articleApi.share(articlePayload.id);
+  const sharingNotifyMessage = 'The sharing link was copied to clipboard';
 
   void dispatch(
     appActions.notify({
       type: NotificationType.SUCCESS,
-      message: 'The sharing link was copied to clipboard',
+      message: sharingNotifyMessage,
     }),
   );
 
@@ -259,10 +260,11 @@ const deleteArticle = createAsyncThunk<
       dispatch(appActions.navigate(PREVIOUS_PAGE_INDEX));
     }
 
+    const articleDeletedMessage = 'The article has been deleted successfully.';
     void dispatch(
       appActions.notify({
         type: NotificationType.SUCCESS,
-        message: 'The article has been deleted successfully.',
+        message: articleDeletedMessage,
       }),
     );
 

@@ -1,4 +1,4 @@
-import { FontSizeConfig } from '../constants/constants.js';
+import { FontSizeConfig } from '../enums/enums.js';
 
 const decrementFontSize = (fontSize: number): number => {
   const newFontSize = fontSize - FontSizeConfig.CHANGE_STEP;

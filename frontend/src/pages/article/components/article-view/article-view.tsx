@@ -6,6 +6,7 @@ import {
   ShareOnFacebookButton,
   Tags,
 } from '~/libs/components/components.js';
+import { EMPTY_STRING } from '~/libs/constants/constants.js';
 import { AppRoute, LinkHash, Reaction } from '~/libs/enums/enums.js';
 import {
   configureString,
@@ -218,7 +219,7 @@ const ArticleView: React.FC<Properties> = ({
           <ArticleDetails
             readTime={readTime}
             authorName={authorFullName}
-            publishedAt={publishedAt ?? ''}
+            publishedAt={publishedAt ?? EMPTY_STRING}
             genre={genre}
             avatarUrl={avatarUrl}
             containerStyle={styles.articleDetailsContainer}

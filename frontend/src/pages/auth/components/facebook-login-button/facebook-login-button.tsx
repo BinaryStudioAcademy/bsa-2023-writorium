@@ -1,10 +1,15 @@
 import { LoginStatus, useFacebook } from 'react-facebook';
 
 import { Button } from '~/libs/components/components.js';
+import { ButtonType } from '~/libs/enums/enums.js';
 import { useCallback } from '~/libs/hooks/hooks.js';
 import { type UserSignInWithFacebookResponseDto } from '~/packages/auth/auth.js';
 import { notification } from '~/packages/notification/notification.js';
 
+import {
+  EMAIL_STRING,
+  FACEBOOK_ERROR_MESSAGE,
+} from './libs/constants/constants.js';
 import styles from './styles.module.scss';
 
 type FacebookLoginButtonProperties = {
@@ -15,8 +20,6 @@ type ProfileResponse = {
   email: string;
   id: string;
 };
-
-const FACEBOOK_ERROR_MESSAGE = 'Facebook sign in failed';
 
 const FacebookLoginButton: React.FC<FacebookLoginButtonProperties> = ({
   onLogin,
@@ -31,14 +34,14 @@ const FacebookLoginButton: React.FC<FacebookLoginButtonProperties> = ({
         throw new Error(FACEBOOK_ERROR_MESSAGE);
       }
 
-      const response = await api.login({ scope: 'email' });
+      const response = await api.login({ scope: EMAIL_STRING });
 
       if (response.status !== LoginStatus.CONNECTED) {
         throw new Error(FACEBOOK_ERROR_MESSAGE);
       }
 
       const profile = (await api.getProfile({
-        fields: ['email'],
+        fields: [EMAIL_STRING],
       })) as ProfileResponse | undefined;
 
       if (!profile?.email) {
@@ -58,7 +61,7 @@ const FacebookLoginButton: React.FC<FacebookLoginButtonProperties> = ({
 
   return (
     <Button
-      type="button"
+      type={ButtonType.BUTTON}
       label="Sign in with Facebook"
       name="Sign in with Facebook"
       disabled={isLoading}

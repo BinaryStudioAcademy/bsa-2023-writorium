@@ -1,5 +1,3 @@
-import { type FC } from 'react';
-
 import { Button, Modal, Tooltip } from '~/libs/components/components.js';
 import { DataTooltipId } from '~/libs/enums/enums.js';
 import {
@@ -13,15 +11,15 @@ import {
   useMemo,
   useModal,
 } from '~/libs/hooks/hooks.js';
+import { actions as achievementsActions } from '~/slices/achievements/achievements.js';
+
 import {
   NUMBER_OF_ACHIEVEMENTS_TO_DISPLAY,
   PROGRESS_MAX,
   PROGRESS_MIN,
-} from '~/pages/profile/libs/constants/constants.js';
-import { getRandomNumber } from '~/pages/profile/libs/helpers/helpers.js';
-import { type UserAchievement } from '~/pages/profile/libs/types/user-achievement.js';
-import { actions as achievementsActions } from '~/slices/achievements/achievements.js';
-
+} from '../../libs/constants/constants.js';
+import { getRandomNumber } from '../../libs/helpers/helpers.js';
+import { type UserAchievement } from '../../libs/types/user-achievement.js';
 import { AchievementList } from '../components.js';
 import styles from './styles.module.scss';
 
@@ -29,7 +27,7 @@ type Properties = {
   className?: string;
 };
 
-const UserAchievements: FC<Properties> = ({ className }) => {
+const UserAchievements: React.FC<Properties> = ({ className }) => {
   const { handleToggleModalOpen, isOpen } = useModal();
   const dispatch = useAppDispatch();
   const { achievements } = useAppSelector(({ achievements }) => achievements);

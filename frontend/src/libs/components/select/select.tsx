@@ -9,13 +9,20 @@ import { default as ReactSelect } from 'react-select';
 
 import { ErrorMessage } from '~/libs/components/components.js';
 import { useCallback, useFormController } from '~/libs/hooks/hooks.js';
-import { type SelectOption } from '~/libs/types/types.js';
 
 import {
   DropdownIndicator,
   IndicatorSeparator,
 } from './libs/components/components.js';
-import { getDefaultStyles } from './libs/constants/constants.js';
+import {
+  DEFAULT_SELECT_PLACEHOLDER,
+  getDefaultStyles,
+} from './libs/constants/constants.js';
+import {
+  type SelectOption,
+  type SelectOptions,
+  type SelectValue,
+} from './libs/types/types.js';
 import cssStyles from './styles.module.scss';
 
 type Properties<
@@ -34,7 +41,7 @@ const Select = <
   IsMulti extends boolean = false,
   Group extends GroupBase<SelectOption> = GroupBase<SelectOption>,
 >({
-  placeholder = 'Search...',
+  placeholder = DEFAULT_SELECT_PLACEHOLDER,
   styles,
   name,
   control,
@@ -56,9 +63,7 @@ const Select = <
     [field],
   );
 
-  const handleSelectValue = (
-    value: string | number | (string | number)[],
-  ): SelectOption | SelectOption[] | undefined => {
+  const handleSelectValue = (value: SelectValue): SelectOptions => {
     return isMulti
       ? (options as SelectOption[])?.filter((option) => {
           return (value as Array<string | number>).includes(option.value);

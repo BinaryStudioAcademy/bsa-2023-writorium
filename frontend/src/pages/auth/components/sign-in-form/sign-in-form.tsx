@@ -1,5 +1,5 @@
 import { Input, Link, Notification } from '~/libs/components/components.js';
-import { AppRoute } from '~/libs/enums/app-route.enum';
+import { AppRoute, InputType } from '~/libs/enums/enums.js';
 import { useAppForm, useCallback } from '~/libs/hooks/hooks.js';
 import { type UserSignInWithFacebookResponseDto } from '~/packages/auth/auth.js';
 import {
@@ -58,7 +58,7 @@ const SignInForm: React.FC<Properties> = ({
           <fieldset className={styles.fieldset}>
             <Input
               name="email"
-              type="email"
+              type={InputType.EMAIL}
               placeholder="Enter your email"
               label="Email"
               control={control}

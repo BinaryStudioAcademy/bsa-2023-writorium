@@ -6,8 +6,10 @@ import {
   useController,
 } from 'react-hook-form';
 
+import { InputType } from '~/libs/enums/enums.js';
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
 
+import { TOGGLE_CHECKBOX_ID } from './libs/constants/constants.js';
 import styles from './styles.module.scss';
 
 type Properties<T extends FieldValues> = {
@@ -31,12 +33,12 @@ const ToggleCheckbox = <T extends FieldValues>({
       <input
         {...field}
         name={name}
-        type="checkbox"
-        id="toggle-checkbox"
+        type={InputType.CHECKBOX}
+        id={TOGGLE_CHECKBOX_ID}
         checked={field.value}
         className={getValidClassNames(styles.switch, styles.pointer)}
       />
-      <label className={styles.pointer} htmlFor="toggle-checkbox">
+      <label className={styles.pointer} htmlFor={TOGGLE_CHECKBOX_ID}>
         {label}
       </label>
     </div>

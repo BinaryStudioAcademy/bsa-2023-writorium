@@ -1,4 +1,3 @@
-import { type ChangeEvent } from 'react';
 import {
   type Control,
   type FieldErrors,
@@ -12,6 +11,11 @@ import {
   IconButton,
   Loader,
 } from '~/libs/components/components.js';
+import {
+  FILE_KEY,
+  SUPPORTED_FILE_TYPES_STRING,
+} from '~/libs/constants/constants.js';
+import { InputType } from '~/libs/enums/enums.js';
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
 import {
   useAppDispatch,
@@ -20,10 +24,11 @@ import {
   useReference,
   useState,
 } from '~/libs/hooks/hooks.js';
-import { SUPPORTED_FILE_TYPES_STRING } from '~/pages/profile/libs/constants/constants.js';
+import { type ReactChangeEvent } from '~/libs/types/types.js';
 import { actions as appActions } from '~/slices/app/app.js';
 import { actions as filesActions } from '~/slices/file/file.js';
 
+import { ERROR_TYPE } from '../../constants/constants.js';
 import styles from './styles.module.scss';
 
 type Properties<T extends FieldValues> = {
@@ -50,13 +55,13 @@ const ArticleCoverUpload = <T extends FieldValues>({
   const initialWrapperId = useReference<number | null>(field.value);
 
   const handleUploadArticleCover = (
-    event_: ChangeEvent<HTMLInputElement>,
+    event_: ReactChangeEvent<HTMLInputElement>,
   ): void => {
     const [image] = event_.target.files ?? [];
 
     if (image) {
       const formData = new FormData();
-      formData.append('file', image);
+      formData.append(FILE_KEY, image);
 
       setIsUploadFileLoading(true);
       void dispatch(filesActions.uploadFile(formData))
@@ -66,7 +71,7 @@ const ArticleCoverUpload = <T extends FieldValues>({
           setPreviewUrl(fileData.url);
         })
         .catch((error: Error) => {
-          appActions.notify({ type: 'error', message: error.message });
+          appActions.notify({ type: ERROR_TYPE, message: error.message });
           field.onChange(null);
         })
         .finally(() => {
@@ -129,7 +134,7 @@ const ArticleCoverUpload = <T extends FieldValues>({
             )}
           >
             <input
-              type="file"
+              type={InputType.FILE}
               onDrop={handleDrop}
               className={styles.fileInput}
               onDragEnter={handleDragEnter}
