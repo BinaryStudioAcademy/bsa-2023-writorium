@@ -20,12 +20,16 @@
   filter: grayscale(100%);
 }
 
-.achievementBadge.articles {
+.achievementBadge.inProgress {
   --progress-color: #ffc700;
 }
 
-.achievementBadge.comments {
+.achievementBadge.done {
   --progress-color: #4fa457;
+}
+
+.achievementBadge.earlyStage {
+  --progress-color: var(--medium-brightness-gray);
 }
 
 .achievementImage {

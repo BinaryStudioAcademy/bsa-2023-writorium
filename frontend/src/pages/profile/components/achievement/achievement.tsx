@@ -2,7 +2,10 @@ import { getValidClassNames } from '~/libs/helpers/helpers.js';
 import { type AchievementWithProgressResponseDto } from '~/packages/achievements/achievements.js';
 
 import { AchievementItemConfig } from '../../libs/enums/enums.js';
-import { getRadialProgressStyleString } from '../../libs/helpers/helpers.js';
+import {
+  getProgressStyleClass,
+  getRadialProgressStyleString,
+} from '../../libs/helpers/helpers.js';
 import { AchievementIcon } from '../achievement-icon/achievement-icon.js';
 import { type AchievementIconName } from '../achievement-icon/common.js';
 import styles from './styles.module.scss';
@@ -14,18 +17,15 @@ type Properties = {
 
 const Achievement: React.FC<Properties> = ({ achievement }) => {
   const { name, referenceTable, progress } = achievement;
-  const achievementEntityClassName: string | undefined = {
-    'comments': styles.comments,
-    'articles': styles.articles,
-  }[referenceTable];
+
+  const progressStyleClassName = getProgressStyleClass(progress);
 
   return (
     <div className={styles.achievementWrapper}>
       <div
         className={getValidClassNames(
           styles.achievementBadge,
-          achievementEntityClassName,
-          !progress && styles.notStarted,
+          styles[progressStyleClassName],
         )}
       >
         <svg viewBox="0 0 100 100" className={styles.progressWrapper}>
