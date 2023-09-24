@@ -1,4 +1,4 @@
-import { useState } from '../react/react.js';
+import { useState } from '../hooks.js';
 
 type ReturnValue = {
   isOpen: boolean;

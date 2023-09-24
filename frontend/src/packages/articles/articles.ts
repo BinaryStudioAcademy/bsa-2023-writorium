@@ -14,6 +14,8 @@ export { articleApi };
 export {
   ArticleImprovementSuggestionPriority,
   ArticlePublishStatus,
+  ArticleReactionsSocketEvent,
+  ArticleSocketEvent,
 } from './libs/enums/enums.js';
 export { getReadTimeString } from './libs/helpers/helpers.js';
 export {
@@ -23,9 +25,11 @@ export {
   type ArticleImprovementSuggestion,
   type ArticleReactionRequestDto,
   type ArticleReactionResponseDto,
+  type ArticleReactionsSocketEventPayload,
   type ArticleRequestDto,
   type ArticleResponseDto,
   type ArticlesFilters,
+  type ArticleSocketEventPayload,
   type ArticleUpdateRequestDto,
   type ArticleUpdateRequestPayload,
   type ArticleWithCountsResponseDto,

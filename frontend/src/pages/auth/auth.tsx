@@ -1,9 +1,10 @@
 import { useGoogleLogin } from '@react-oauth/google';
 import { matchPath } from 'react-router-dom';
 
-import { AppRoute } from '~/libs/enums/enums.js';
+import { AppRoute, DataStatus } from '~/libs/enums/enums.js';
 import {
   useAppDispatch,
+  useAppSelector,
   useCallback,
   useLocation,
 } from '~/libs/hooks/hooks.js';
@@ -29,6 +30,9 @@ import {
 const Auth: React.FC = () => {
   const dispatch = useAppDispatch();
   const { pathname } = useLocation();
+  const { authRequestStatus } = useAppSelector(({ auth }) => ({
+    authRequestStatus: auth.authRequestStatus,
+  }));
 
   const handleSignInSubmit = useCallback(
     (payload: UserSignInRequestDto): void => {
@@ -80,6 +84,7 @@ const Auth: React.FC = () => {
       case AppRoute.SIGN_IN: {
         return (
           <SignInForm
+            isLoading={authRequestStatus === DataStatus.PENDING}
             onSubmit={handleSignInSubmit}
             onGoogleLogin={handleGoogleLogin}
             onFacebookLogin={handleFacebookLogin}
@@ -87,7 +92,12 @@ const Auth: React.FC = () => {
         );
       }
       case AppRoute.SIGN_UP: {
-        return <SignUpForm onSubmit={handleSignUpSubmit} />;
+        return (
+          <SignUpForm
+            isLoading={authRequestStatus === DataStatus.PENDING}
+            onSubmit={handleSignUpSubmit}
+          />
+        );
       }
       case AppRoute.FORGOT_PASSWORD: {
         return <ForgotPasswordForm onSubmit={handleForgotPasswordSubmit} />;

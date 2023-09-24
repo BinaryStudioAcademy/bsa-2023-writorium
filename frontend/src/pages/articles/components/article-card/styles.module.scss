@@ -1,7 +1,9 @@
+@use "src/assets/css/breakpoints.scss";
+
 .article {
   width: 100%;
-  max-width: 830px;
-  padding: 31px 24px 0 31px;
+  max-width: 832px;
+  padding: 20px;
   background: var(--white);
   border: 2px solid var(--pale-gray);
   border-radius: 10px;
@@ -20,7 +22,7 @@
   gap: 10px;
 }
 
-.header .publisherName {
+.publisherName {
   color: var(--dark-gray);
   font-weight: 500;
   font-size: 16px;
@@ -29,7 +31,8 @@
   line-height: normal;
 }
 
-.header .publicationTime {
+.publicationTime,
+.readTime {
   position: relative;
   display: flex;
   align-items: center;
@@ -42,7 +45,8 @@
   line-height: normal;
 }
 
-.header .publicationTime::before {
+.publicationTime::before,
+.readTime::before {
   content: "";
   position: absolute;
   left: -20px;
@@ -51,26 +55,29 @@
 }
 
 .body {
-  display: flex;
-  justify-content: space-between;
-  gap: 39px;
-  margin-bottom: 23px;
-  padding-right: 19px;
+  display: grid;
+  grid-template-columns: 1fr 150px;
+  grid-template-areas: "content cover" "tags tags";
+  gap: 20px;
+  margin-bottom: 15px;
 }
 
 .body .articleInfo {
   display: flex;
+  grid-area: content;
   flex-direction: column;
 }
 
 .body .title {
   margin: 0;
+  overflow: hidden;
   color: var(--dark-gray);
   font-weight: 700;
   font-size: 24px;
   font-family: "Libre Baskerville", serif;
   font-style: normal;
   line-height: normal;
+  text-overflow: ellipsis;
 }
 
 .text ul {
@@ -78,8 +85,8 @@
 }
 
 .body .text {
-  --max-lines: 3;
-  --height: 51px;
+  --max-lines: 4;
+  --height: 80px;
 
   display: -webkit-box;
   -webkit-line-clamp: var(--max-lines);
@@ -98,11 +105,16 @@
 }
 
 .coverWrapper {
+  grid-area: cover;
   flex-shrink: 0;
-  width: 134px;
-  height: 134px;
+  width: 150px;
+  height: 150px;
   overflow: hidden;
   border-radius: 5px;
+}
+
+.body .articleTags {
+  grid-area: tags;
 }
 
 .cover {
@@ -111,6 +123,10 @@
   height: 100%;
   aspect-ratio: 1 / 1;
   object-fit: cover;
+}
+
+.body:not(.hasCover) {
+  grid-template-areas: "content content" "tags tags";
 }
 
 .body:not(.hasCover) .articleInfo {
@@ -127,15 +143,14 @@
   display: flex;
   align-items: center;
   gap: 20px;
-  padding: 12px 33px 20px 4px;
+  padding-block-start: 10px;
 }
 
 .footer::before {
   content: "";
   position: absolute;
   top: 0;
-  right: -24px;
-  left: -31px;
+  width: 100%;
   border-top: 2px solid var(--pale-gray);
 }
 
@@ -199,7 +214,11 @@
 
 .iconWrapper {
   display: flex;
-  gap: 10px;
+  gap: 5px;
+  color: var(--dark-gray-50);
+  font-size: 12px;
+  font-family: Lato, sans-serif;
+  line-height: normal;
   background-color: transparent;
 }
 
@@ -240,6 +259,7 @@
 .topActionsIcon {
   width: 35px;
   height: 35px;
+  margin: -5px -5px 0 0;
   padding: 5px;
   border-radius: 50%;
   transition: background-color 0.2s ease;
@@ -252,4 +272,57 @@
 .toolbar {
   display: flex;
   gap: 5px;
+}
+
+@media only screen and (max-width: breakpoints.$medium) {
+  .article {
+    padding: 10px;
+  }
+
+  .header .info {
+    display: grid;
+    grid-template-areas:
+      "avatar name name"
+      "avatar date readtime";
+    align-items: center;
+    gap: 10px;
+  }
+
+  .publisherAvatar {
+    grid-area: avatar;
+  }
+
+  .publisherName {
+    grid-area: name;
+  }
+
+  .publicationTime {
+    grid-area: date;
+  }
+
+  .readTime {
+    grid-area: readtime;
+  }
+
+  .body {
+    grid-template-columns: 1fr 100px;
+  }
+
+  .body .text {
+    --max-lines: 3;
+    --height: 60px;
+  }
+
+  .coverWrapper {
+    width: 100px;
+    height: 100px;
+  }
+
+  .footer {
+    gap: 10px;
+  }
+
+  .footer .reactions {
+    gap: 10px;
+  }
 }

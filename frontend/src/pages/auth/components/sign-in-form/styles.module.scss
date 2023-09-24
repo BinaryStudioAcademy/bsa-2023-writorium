@@ -90,3 +90,9 @@
 .or::after {
   margin-inline-start: 10px;
 }
+
+.socialsSignInButtons {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}

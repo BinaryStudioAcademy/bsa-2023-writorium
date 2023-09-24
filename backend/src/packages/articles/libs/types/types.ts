@@ -11,6 +11,7 @@ export {
   type ArticleRequestDto,
   type ArticleResponseDto,
   type ArticlesFilters,
+  type ArticleSocketEventPayload,
   type ArticleUpdateRequestDto,
   type ArticleWithCountsResponseDto,
   type ArticleWithFollowResponseDto,

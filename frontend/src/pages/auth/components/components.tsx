@@ -1,5 +1,4 @@
 export { AuthLayout } from './auth-layout/auth-layout.js';
-export { AuthSignInButton } from './auth-sign-in-button/auth-sign-in-button.js';
 export { AuthSubmitButton } from './auth-submit-button/auth-submit-button.js';
 export { FacebookLogin } from './facebook-login-button/facebook-login.js';
 export { FacebookLoginButton } from './facebook-login-button/facebook-login-button.js';
