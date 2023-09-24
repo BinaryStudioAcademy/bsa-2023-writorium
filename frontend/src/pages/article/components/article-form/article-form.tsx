@@ -1,5 +1,5 @@
 import { Button, Input, TextEditor } from '~/libs/components/components.js';
-import { ButtonType } from '~/libs/enums/enums.js';
+import { ButtonType, DataStatus } from '~/libs/enums/enums.js';
 import {
   useAppDispatch,
   useAppForm,
@@ -35,11 +35,12 @@ type Properties = {
 const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const [isPublishing, setIsPublishing] = useState(false);
-  const [isSavingDraft, setIsSavingDraft] = useState(false);
-  const { generatedPrompt } = useAppSelector(({ prompts }) => ({
-    generatedPrompt: prompts.generatedPrompt,
-  }));
+  const { generatedPrompt, saveArticleStatus } = useAppSelector(
+    ({ prompts, articles }) => ({
+      generatedPrompt: prompts.generatedPrompt,
+      saveArticleStatus: articles.saveArticleStatus,
+    }),
+  );
   const { control, errors, handleSubmit, handleReset, isDirty } =
     useAppForm<ArticleRequestDto>({
       defaultValues: articleForUpdate
@@ -54,19 +55,11 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
         ? articleUpdateValidationSchema
         : articleCreateValidationSchema,
     });
+  const [submitType, setSubmitType] = useState<ValueOf<
+    typeof ArticleSubmitType
+  > | null>(null);
 
   const isDraft = !articleForUpdate?.publishedAt;
-
-  const setLoadingBySubmitType = (
-    loading: boolean,
-    articleSubmitType: ValueOf<typeof ArticleSubmitType>,
-  ): void => {
-    if (articleSubmitType === ArticleSubmitType.DRAFT) {
-      setIsSavingDraft(loading);
-    } else {
-      setIsPublishing(loading);
-    }
-  };
 
   const handleArticleSubmit = useCallback(
     (articleSubmitType: ValueOf<typeof ArticleSubmitType>) =>
@@ -79,15 +72,14 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
           publishedAt: isArticlePublished ? new Date().toISOString() : null,
         };
 
-        setLoadingBySubmitType(true, articleSubmitType);
-
+        setSubmitType(articleSubmitType);
         void dispatch(
           articlesActions.createArticle({
             articlePayload: updatedPayload,
             generatedPrompt: getGeneratedPromptPayload(generatedPrompt),
           }),
         ).finally(() => {
-          setLoadingBySubmitType(false, articleSubmitType);
+          setSubmitType(null);
         });
       },
     [dispatch, generatedPrompt],
@@ -113,10 +105,10 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
           },
         };
 
-        setLoadingBySubmitType(true, articleSubmitType);
+        setSubmitType(articleSubmitType);
         void dispatch(articlesActions.updateArticle(updatePayload)).finally(
           () => {
-            setLoadingBySubmitType(false, articleSubmitType);
+            setSubmitType(null);
           },
         );
       },
@@ -162,6 +154,14 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
     };
   }, [dispatch]);
 
+  const isSaveDraftLoading =
+    submitType === ArticleSubmitType.DRAFT &&
+    saveArticleStatus === DataStatus.PENDING;
+
+  const isPublishLoading =
+    submitType === ArticleSubmitType.PUBLISH &&
+    saveArticleStatus === DataStatus.PENDING;
+
   return (
     <form
       method="POST"
@@ -195,24 +195,24 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
           type={ButtonType.RESET}
           label="Cancel"
           className={styles.cancelBtn}
-          disabled={isPublishing || isSavingDraft}
+          disabled={isPublishLoading || isSaveDraftLoading}
         />
         <Button
           variant="outlined"
           type={ButtonType.SUBMIT}
           label="Save draft"
           name="draft"
-          isLoading={isSavingDraft}
+          isLoading={isSaveDraftLoading}
           className={styles.saveDraftBtn}
-          disabled={!isDirty || isPublishing}
+          disabled={!isDirty || isPublishLoading}
         />
         <Button
           name="publish"
           label="Publish"
-          isLoading={isPublishing}
+          isLoading={isPublishLoading}
           type={ButtonType.SUBMIT}
           className={styles.publishBtn}
-          disabled={(!isDirty && !isDraft) || isSavingDraft}
+          disabled={(!isDirty && !isDraft) || isSaveDraftLoading}
         />
       </div>
     </form>
