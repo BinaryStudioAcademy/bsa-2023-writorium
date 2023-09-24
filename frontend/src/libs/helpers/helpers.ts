@@ -1,6 +1,6 @@
 export { checkIsEqual } from './check-is-equal/check-is-equal.helper.js';
 export { cloneDeep } from './clone-deep/clone-deep.helper.js';
-export { conditionallyDeleteOrUpdate } from './conditionally-delete-or-update/conditionally-delete-or-update.helper.js';
+export { deleteOrUpdateConditionally } from './delete-or-update-conditionally/delete-or-update-conditionally.helper.js';
 export { getArticleTags } from './get-article-tags/get-article-tags.js';
 export { getAxisOffset } from './get-axis-offset/get-axis-offset.helper.js';
 export { getFirstLetters } from './get-first-letters/get-first-letters.helper.js';
@@ -18,5 +18,5 @@ export {
   getFormattedDate,
   getShuffledArray,
   makePluralOrSingular,
-  safeJSONParse,
+  parseJSONSafely,
 } from 'shared/build/index.js';

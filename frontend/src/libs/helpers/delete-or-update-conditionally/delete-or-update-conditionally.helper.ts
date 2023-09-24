@@ -8,7 +8,7 @@ type Arguments<T> = {
   hasToDelete: boolean;
 };
 
-const conditionallyDeleteOrUpdate = <T extends ItemType>({
+const deleteOrUpdateConditionally = <T extends ItemType>({
   items,
   itemToDeleteOrUpdate,
   hasToDelete,
@@ -23,4 +23,4 @@ const conditionallyDeleteOrUpdate = <T extends ItemType>({
       });
 };
 
-export { conditionallyDeleteOrUpdate };
+export { deleteOrUpdateConditionally };

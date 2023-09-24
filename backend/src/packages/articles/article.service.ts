@@ -33,7 +33,7 @@ import {
   getDifferenceBetweenDates,
   getFormattedDate,
   getOriginFromRefererHeader,
-  safeJSONParse,
+  parseJSONSafely,
   subtractMonthsFromDate,
 } from './libs/helpers/helpers.js';
 import {
@@ -90,7 +90,7 @@ class ArticleService implements IService {
       return null;
     }
 
-    const parsedGenres = safeJSONParse<DetectedArticleGenre[]>(genresJSON);
+    const parsedGenres = parseJSONSafely<DetectedArticleGenre[]>(genresJSON);
 
     const FIRST_ITEM_INDEX = 0;
 
@@ -111,7 +111,7 @@ class ArticleService implements IService {
     }
 
     const readTimeData =
-      safeJSONParse<{ readTime: number }>(readTimeJSON) ?? {};
+      parseJSONSafely<{ readTime: number }>(readTimeJSON) ?? {};
 
     if (
       'readTime' in readTimeData &&
@@ -171,7 +171,7 @@ class ArticleService implements IService {
       return genreId;
     }
 
-    const parsedGenres = safeJSONParse<DetectedArticleGenre[]>(genresJSON);
+    const parsedGenres = parseJSONSafely<DetectedArticleGenre[]>(genresJSON);
     if (!parsedGenres || !Array.isArray(parsedGenres) || !parsedGenres.length) {
       return genreId;
     }
@@ -293,7 +293,7 @@ class ArticleService implements IService {
     }
 
     const parsedSuggestions =
-      safeJSONParse<ArticleImprovementSuggestion[]>(suggestionsJSON);
+      parseJSONSafely<ArticleImprovementSuggestion[]>(suggestionsJSON);
 
     if (Array.isArray(parsedSuggestions)) {
       return parsedSuggestions;

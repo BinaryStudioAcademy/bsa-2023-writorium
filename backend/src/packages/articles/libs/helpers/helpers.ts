@@ -14,6 +14,6 @@ export { getWhereUserIdQuery } from './get-where-user-id-query.helper.js';
 export {
   getDifferenceBetweenDates,
   getFormattedDate,
-  safeJSONParse,
+  parseJSONSafely,
   subtractMonthsFromDate,
 } from '~/libs/helpers/helpers.js';

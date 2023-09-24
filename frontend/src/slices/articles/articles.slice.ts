@@ -1,7 +1,7 @@
 import { createSlice, isAnyOf } from '@reduxjs/toolkit';
 
 import { DataStatus } from '~/libs/enums/enums.js';
-import { conditionallyDeleteOrUpdate } from '~/libs/helpers/helpers.js';
+import { deleteOrUpdateConditionally } from '~/libs/helpers/helpers.js';
 import { type ValueOf } from '~/libs/types/types.js';
 import {
   type ArticleImprovementSuggestion,
@@ -192,7 +192,7 @@ const { reducer, actions, name } = createSlice({
     builder.addCase(toggleIsFavourite.fulfilled, (state, action) => {
       const article = action.payload;
       if (article) {
-        state.articles = conditionallyDeleteOrUpdate({
+        state.articles = deleteOrUpdateConditionally({
           items: state.articles,
           itemToDeleteOrUpdate: article,
           hasToDelete: !article.isFavourite && state.showFavourites,
