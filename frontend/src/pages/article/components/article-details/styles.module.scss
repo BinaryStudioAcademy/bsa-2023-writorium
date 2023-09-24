@@ -1,7 +1,6 @@
 @use "src/assets/css/breakpoints.scss";
 
 .container {
-  max-width: 466px;
   background: var(--light-gray);
   border: 1px solid var(--light-gray-border);
   border-radius: 10px;
@@ -15,8 +14,9 @@
     "avatar authorInfo"
     "avatar followButton";
   align-items: center;
-  padding: 30px 41px 21px;
-  column-gap: 16px;
+  row-gap: 5px;
+  padding: 25px;
+  column-gap: 15px;
   border-bottom: 2px solid rgba(172 186 215 / 20%);
 }
 
@@ -64,53 +64,50 @@
 .authorInfo {
   display: flex;
   align-items: center;
+  gap: 5px;
   color: var(--light-gray-text);
-  line-height: normal;
+  line-height: normal
 }
 
 .authorInfo:last-child::before {
   content: "●";
-  margin-left: 14px;
-  padding-right: 16px;
   color: var(--light-green);
 }
 
-.authorInfoValue {
-  margin-right: 4px;
-  margin-left: 10px;
-}
-
 .articleInfoWrapper {
-  padding: 32px 61px 54px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 25px;
 }
 
 .articleInfoListWrapper {
   display: flex;
   align-items: flex-start;
-  margin-bottom: 37px;
-  column-gap: 21px;
+  gap: 15px;
 }
 
 .articleInfoList {
   display: flex;
   color: var(--dark-gray-40);
   line-height: normal;
-  column-gap: 16px;
+  column-gap: 15px;
   list-style: none;
-}
-
-.articleReadTimeValue {
-  padding-right: 4px;
 }
 
 .articleInfoItem::before {
   content: "●";
-  margin-right: 8px;
+  padding-inline-end: 5px;
   color: var(--light-green);
 }
 
+.articleGenreInfo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .articleGenre {
-  margin-left: 20px;
   color: var(--dark-gray);
   font-weight: 700;
   font-size: 18px;
@@ -150,22 +147,12 @@
     font-size: 12px;
   }
 
-  .authorInfoValue {
-    margin-right: 2px;
-    margin-left: 8px;
-  }
-
-  .authorInfo:last-child::before {
-    margin-left: 8px;
-    padding-right: 4px;
-  }
-
   .articleInfoWrapper {
-    padding: 0 8px 8px;
+    gap: 10px;
+    padding: 8px;
   }
 
   .articleInfoListWrapper {
-    margin-bottom: 8px;
     column-gap: 8px;
   }
 
@@ -184,19 +171,14 @@
     column-gap: 8px;
   }
 
-  .articleInfoItem::before {
-    margin-right: 4px;
-  }
-
   .articleGenre {
-    margin-left: 8px;
     font-size: 12px;
   }
 }
 
 @media only screen and (min-width: breakpoints.$medium) and (max-width: breakpoints.$extra-large) {
   .authorWrapper {
-    row-gap: 15px;
+    row-gap: 10px;
     padding: 15px 15px 10px;
     column-gap: 10px;
   }
@@ -209,22 +191,11 @@
     font-size: inherit;
   }
 
-  .authorInfoValue {
-    margin-right: 4px;
-    margin-left: 10px;
-  }
-
-  .authorInfo:last-child::before {
-    margin-left: 10px;
-    padding-right: 8px;
-  }
-
   .articleInfoWrapper {
-    padding: 0 15px 15px;
+    padding: 15px;
   }
 
   .articleInfoListWrapper {
-    margin-bottom: 10px;
     column-gap: 10px;
   }
 
@@ -232,12 +203,7 @@
     column-gap: 10px;
   }
 
-  .articleInfoItem::before {
-    margin-right: 8px;
-  }
-
   .articleGenre {
-    margin-left: 10px;
     font-size: 14px;
   }
 }
@@ -252,10 +218,9 @@
     grid-template: repeat(2, max-content) / max-content 1fr;
     grid-template-areas:
       "avatar authorName"
-      "authorInfo authorInfo"
+      "avatar authorInfo"
       "followButton followButton";
     align-items: center;
-    border-bottom: none;
   }
 
   .avatarWrapper {
@@ -303,10 +268,6 @@
     color: var(--dark-gray-40);
     line-height: normal;
     list-style: none;
-  }
-
-  .articleReadTimeValue {
-    padding-right: 4px;
   }
 
   .articleGenre {
