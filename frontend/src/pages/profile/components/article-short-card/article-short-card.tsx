@@ -1,9 +1,7 @@
 import { type FC } from 'react';
 
-import { Icon } from '~/libs/components/icon/icon.js';
-import { Link } from '~/libs/components/link/link.js';
-import { AppRoute } from '~/libs/enums/app-route.enum.js';
-import { LinkHash } from '~/libs/enums/link-hash.enum.js';
+import { Icon, Link } from '~/libs/components/components.js';
+import { AppRoute, LinkHash } from '~/libs/enums/enums.js';
 import {
   configureString,
   getReactionsInfo,
