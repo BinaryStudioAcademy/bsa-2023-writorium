@@ -61,7 +61,6 @@ const ArticlesFeed: React.FC = () => {
 
   const isLoadingArticles = articlesStatus === DataStatus.PENDING;
   const { hasMore, loadMore, resetSkip } = usePagination();
-
   const handleLoadArticles = useCallback(() => {
     void loadMore(async (skip: number, take: number) => {
       const data = await dispatch(
@@ -72,7 +71,7 @@ const ArticlesFeed: React.FC = () => {
         }),
       ).unwrap();
 
-      return Boolean(data.items.length);
+      return Boolean(data.items.length >= take);
     });
   }, [dispatch, loadMore, filters]);
 
