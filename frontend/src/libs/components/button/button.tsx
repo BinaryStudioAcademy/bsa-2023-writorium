@@ -20,7 +20,7 @@ type Properties = {
   name?: string;
   className?: string;
   hasFullWidth?: boolean;
-  loading?: boolean;
+  isLoading?: boolean;
   onClick?:
     | (() => void)
     | (() => Promise<void>)
@@ -37,7 +37,7 @@ const Button: React.FC<Properties> = ({
   hasFullWidth,
   variant = 'primary',
   size = 'medium',
-  loading,
+  isLoading,
 }) => {
   const variantClassNameMapper: Record<ButtonVariant, string> = {
     text: styles.buttonText,
@@ -51,7 +51,7 @@ const Button: React.FC<Properties> = ({
   };
 
   const handleButtonClick = (event: MouseEvent<HTMLButtonElement>): void => {
-    const allowClick = !disabled && !loading;
+    const allowClick = !disabled && !isLoading;
 
     if (onClick && !allowClick) {
       event.preventDefault();
@@ -71,12 +71,12 @@ const Button: React.FC<Properties> = ({
         sizeClassNameMapper[size],
         variantClassNameMapper[variant],
         hasFullWidth && styles.hasFullWidth,
-        loading && styles.buttonLoading,
+        isLoading && styles.buttonLoading,
         className,
       )}
       onClick={handleButtonClick}
     >
-      {loading && (
+      {isLoading && (
         <Loader
           isLoading
           type="circular"
@@ -85,7 +85,7 @@ const Button: React.FC<Properties> = ({
           overlayClassName={styles.loaderOverlay}
         />
       )}
-      {loading ? null : label}
+      {isLoading ? null : label}
     </button>
   );
 };

@@ -202,14 +202,14 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
           type={ButtonType.SUBMIT}
           label="Save draft"
           name="draft"
-          loading={isSavingDraft}
+          isLoading={isSavingDraft}
           className={styles.saveDraftBtn}
           disabled={!isDirty || isPublishing}
         />
         <Button
           name="publish"
           label="Publish"
-          loading={isPublishing}
+          isLoading={isPublishing}
           type={ButtonType.SUBMIT}
           className={styles.publishBtn}
           disabled={(!isDirty && !isDraft) || isSavingDraft}
