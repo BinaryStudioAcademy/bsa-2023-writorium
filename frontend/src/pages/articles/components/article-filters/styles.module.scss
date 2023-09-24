@@ -78,13 +78,8 @@
 }
 
 @media only screen and (max-width: breakpoints.$extra-large) {
-  .wrapper {
-    margin: -5px;
-    padding-bottom: 20px;
-  }
-
   .title {
     position: static;
-    margin-bottom: 15px;
+    margin-block: 10px;
   }
 }

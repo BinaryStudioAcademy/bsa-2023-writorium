@@ -1,6 +1,5 @@
 import {
   IconButton,
-  Loader,
   Modal,
   ScrollToTop,
 } from '~/libs/components/components.js';
@@ -60,6 +59,7 @@ const MyArticles: React.FC = () => {
     showFavourites: false,
   });
 
+  const isLoadingArticles = articlesStatus === DataStatus.PENDING;
   const { hasMore, loadMore, resetSkip } = usePagination();
 
   const handleLoadArticles = useCallback(() => {
@@ -119,23 +119,17 @@ const MyArticles: React.FC = () => {
   return (
     <>
       <div className={styles.articlesWrapper}>
-        <Loader
-          isLoading={articlesStatus === DataStatus.PENDING}
-          type="circular"
-          hasOverlay
-        >
-          {Boolean(articles.length) ? (
-            <ArticlesList
-              hasMore={hasMore}
-              articlesLength={articles.length}
-              onFetchData={handleLoadArticles}
-              articles={articles}
-            />
-          ) : (
-            <EmptyArticlesPlaceholder />
-          )}
-        </Loader>
-
+        {Boolean(articles.length) || isLoadingArticles ? (
+          <ArticlesList
+            hasMore={hasMore}
+            articlesLength={articles.length}
+            articles={articles}
+            isLoading={isLoadingArticles}
+            onFetchData={handleLoadArticles}
+          />
+        ) : (
+          <EmptyArticlesPlaceholder />
+        )}
         {shouldHideFilters ? (
           <div className={styles.filterButtonWrapper}>
             <IconButton
