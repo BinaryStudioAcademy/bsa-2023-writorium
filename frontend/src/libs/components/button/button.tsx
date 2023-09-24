@@ -1,4 +1,4 @@
-import { type MouseEvent, type ReactNode } from 'react';
+import { type MouseEvent } from 'react';
 
 import { ButtonType } from '~/libs/enums/enums.js';
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
@@ -21,7 +21,6 @@ type Properties = {
   className?: string;
   hasFullWidth?: boolean;
   loading?: boolean;
-  loadingLabel?: boolean | string;
   onClick?:
     | (() => void)
     | (() => Promise<void>)
@@ -39,7 +38,6 @@ const Button: React.FC<Properties> = ({
   variant = 'primary',
   size = 'medium',
   loading,
-  loadingLabel,
 }) => {
   const variantClassNameMapper: Record<ButtonVariant, string> = {
     text: styles.buttonText,
@@ -61,14 +59,6 @@ const Button: React.FC<Properties> = ({
     }
 
     void onClick?.(event);
-  };
-
-  const getButtonLoadingLabel = (): ReactNode | null => {
-    if (typeof loadingLabel === 'string') {
-      return loadingLabel;
-    }
-
-    return loadingLabel ? label : null;
   };
 
   return (
@@ -95,7 +85,7 @@ const Button: React.FC<Properties> = ({
           overlayClassName={styles.loaderOverlay}
         />
       )}
-      {loading ? getButtonLoadingLabel() : label}
+      {loading ? null : label}
     </button>
   );
 };
