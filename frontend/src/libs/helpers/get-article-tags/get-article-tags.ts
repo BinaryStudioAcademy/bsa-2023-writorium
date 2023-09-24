@@ -2,11 +2,11 @@ import { type TagType } from '~/libs/types/types.js';
 import { type ArticleResponseDto } from '~/packages/articles/articles.js';
 
 const getArticleTags = (article: ArticleResponseDto): TagType[] => {
-  const result: TagType[] = [];
+  const results: TagType[] = [];
   const { prompt, genre } = article;
 
   if (genre) {
-    result.push({
+    results.push({
       category: 'genre',
       text: genre,
     });
@@ -21,7 +21,7 @@ const getArticleTags = (article: ArticleResponseDto): TagType[] => {
       });
     }
     return resultingTags;
-  }, result);
+  }, results);
 };
 
 export { getArticleTags };

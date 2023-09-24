@@ -334,13 +334,13 @@ class ArticleService implements IService {
     );
     const daysInHalfYear = getDifferenceBetweenDates(currentDate, sixMonthAgo);
 
-    const userActivity = await this.articleRepository.getUserActivity({
+    const userActivities = await this.articleRepository.getUserActivity({
       userId,
       activityFrom: sixMonthAgo.toISOString(),
       activityTo: currentDate.toISOString(),
     });
 
-    const halfYearActivity: UserActivityResponseDto[] = Array.from({
+    const halfYearActivities: UserActivityResponseDto[] = Array.from({
       length: daysInHalfYear + INDEX_INCREMENT,
     }).map((_, index) => {
       const incrementedDate = sixMonthAgo.getDate() + index;
@@ -350,7 +350,7 @@ class ArticleService implements IService {
         incrementedDate,
       ).toISOString();
 
-      const activeDayIndex = userActivity.findIndex((activity) => {
+      const activeDayIndex = userActivities.findIndex((activity) => {
         return (
           getFormattedDate(activity.date, DateFormat.YEAR_MONTH_DATE) ===
           getFormattedDate(dateForStatistic, DateFormat.YEAR_MONTH_DATE)
@@ -358,7 +358,7 @@ class ArticleService implements IService {
       });
 
       if (activeDayIndex >= ZERO_ACTIVITY_COUNT) {
-        const dayActivity = userActivity[activeDayIndex];
+        const dayActivity = userActivities[activeDayIndex];
 
         return {
           date: dayActivity.date,
@@ -372,7 +372,7 @@ class ArticleService implements IService {
       };
     });
 
-    return halfYearActivity;
+    return halfYearActivities;
   }
 
   public async getUserArticlesGenreStats(
