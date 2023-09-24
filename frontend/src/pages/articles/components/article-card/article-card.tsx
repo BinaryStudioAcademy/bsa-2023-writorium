@@ -196,13 +196,13 @@ const ArticleCard: React.FC<Properties> = ({
             className={getValidClassNames(styles.text, 'text-overflow')}
             dangerouslySetInnerHTML={{ __html: sanitizeHtml(text) }}
           ></article>
-          <Tags tags={tags} />
         </div>
         {coverUrl && (
           <div className={styles.coverWrapper}>
             <img src={coverUrl} alt="article cover" className={styles.cover} />
           </div>
         )}
+        <Tags className={styles.articleTags} tags={tags} />
       </div>
       <div className={styles.footer}>
         <ul className={styles.reactions}>
