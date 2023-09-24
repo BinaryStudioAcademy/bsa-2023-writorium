@@ -13,7 +13,7 @@
 .achievementList {
   grid-template-columns: repeat(var(--achievement-columns), minmax(75px, 1fr));
   font-size: 12px;
-  column-gap: 5px;
+  column-gap: 10px;
 }
 
 .achievementItem {
