@@ -49,7 +49,9 @@ const Button: React.FC<Properties> = ({
     small: styles.buttonSmall,
   };
 
-  const handleButtonClick = (event: ReactMouseEvent<HTMLButtonElement>): void => {
+  const handleButtonClick = (
+    event: ReactMouseEvent<HTMLButtonElement>,
+  ): void => {
     const allowClick = !disabled && !isLoading;
 
     if (onClick && !allowClick) {
