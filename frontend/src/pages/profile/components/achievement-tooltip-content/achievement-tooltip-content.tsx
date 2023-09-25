@@ -1,11 +1,9 @@
-import { type FC } from 'react';
-
 type Properties = {
   description: string;
   progress: number;
 };
 
-const AchievementTooltipContent: FC<Properties> = ({
+const AchievementTooltipContent: React.FC<Properties> = ({
   description,
   progress,
 }) => (

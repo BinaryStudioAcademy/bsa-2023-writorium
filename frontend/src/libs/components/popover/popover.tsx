@@ -1,3 +1,4 @@
+import { EventKey } from '~/libs/enums/enums.js';
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
 import {
   useCallback,
@@ -33,7 +34,7 @@ const Popover: React.FC<Properties> = ({
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>): void => {
-    if (event.key === 'Escape') {
+    if (event.key === EventKey.ESCAPE) {
       handleClose();
     }
   };

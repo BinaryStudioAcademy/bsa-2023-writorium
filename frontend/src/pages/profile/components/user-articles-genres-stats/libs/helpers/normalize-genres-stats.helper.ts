@@ -1,3 +1,4 @@
+import { FIRST_ELEMENT_ARRAY_INDEX } from '~/libs/constants/constants.js';
 import { type UserArticlesGenreStatsItem } from '~/packages/users/users.js';
 
 import { OtherGenre } from '../enums/enums.js';
@@ -10,7 +11,7 @@ const normalizeGenresStats = (
     (itemA, itemB) => itemB.count - itemA.count,
   );
 
-  const mainGenres = sortedData.slice(0, maxGenres);
+  const mainGenres = sortedData.slice(FIRST_ELEMENT_ARRAY_INDEX, maxGenres);
   const restGenres = sortedData.slice(maxGenres);
   const restGenresItem =
     stats.length > maxGenres

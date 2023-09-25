@@ -1,4 +1,4 @@
-import { ActivityBreakpoint, ActivityThreshold } from '../../enums/enums.js';
+import { ActivityBreakpoint, ActivityThreshold } from '../enums/enums.js';
 
 const getActivityBreakpoint = (activityCount: number): string => {
   const DEFAULT_RESULT = '';

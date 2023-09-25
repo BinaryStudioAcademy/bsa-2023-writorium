@@ -1,1 +1,1 @@
-export { getDefaultStyles } from './select.styles.js';
+export { getDefaultStyles } from './select.styles.constant.js';

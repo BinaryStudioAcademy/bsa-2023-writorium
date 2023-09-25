@@ -1,5 +1,5 @@
 import { type HttpCode } from '~/libs/packages/http/http.js';
-import { type ValueOf } from '~/libs/types/value-of.type.js';
+import { type ValueOf } from '~/libs/types/types.js';
 
 import { ApplicationError } from '../application-error/application-error.exception.js';
 

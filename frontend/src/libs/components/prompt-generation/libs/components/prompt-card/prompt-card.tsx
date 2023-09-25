@@ -1,6 +1,6 @@
 import { Loader } from '~/libs/components/components.js';
 import { type ValueOf } from '~/libs/types/types.js';
-import { type PromptCategory } from '~/packages/prompts/libs/enums/enums.js';
+import { type PromptCategory } from '~/packages/prompts/prompts.js';
 
 import styles from './styles.module.scss';
 

@@ -2,6 +2,8 @@ export { type AsyncThunkConfig } from './async-thunk-config.type.js';
 export {
   type DependencyList,
   type EffectCallback,
+  type ReactBaseSyntheticEvent,
+  type ReactChangeEvent,
   type ReactMouseEvent,
   type RefObject,
 } from './react.type.js';
