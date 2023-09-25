@@ -16,12 +16,14 @@ type Properties = {
   hasToShowTooltip?: boolean;
   className?: string;
   classNameAchievement?: string;
+  classNameBadge?: string;
 };
 
 const AchievementList: FC<Properties> = ({
   achievements,
   className,
   classNameAchievement,
+  classNameBadge,
   hasToShowTooltip = false,
 }) => {
   return (
@@ -41,6 +43,7 @@ const AchievementList: FC<Properties> = ({
             <Achievement
               achievement={achievement}
               className={classNameAchievement}
+              classNameBadge={classNameBadge}
             />
           </BlockWithTooltip>
         </li>
