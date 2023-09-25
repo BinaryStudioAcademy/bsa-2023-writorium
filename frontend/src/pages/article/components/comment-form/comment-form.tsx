@@ -9,17 +9,19 @@ import {
 } from '~/packages/comments/comments.js';
 
 type Properties = {
+  isLoading: boolean;
   onSubmit: (payload: Omit<CommentBaseRequestDto, 'articleId'>) => void;
 };
 
-const CommentForm: FC<Properties> = ({ onSubmit }) => {
-  const { control, errors, handleSubmit, handleReset, isDirty, isSubmitting } =
-    useAppForm<Omit<CommentBaseRequestDto, 'articleId'>>({
-      defaultValues: {
-        text: '',
-      },
-      validationSchema: commentCreateValidationSchema,
-    });
+const CommentForm: FC<Properties> = ({ onSubmit, isLoading }) => {
+  const { control, errors, handleSubmit, handleReset, isDirty } = useAppForm<
+    Omit<CommentBaseRequestDto, 'articleId'>
+  >({
+    defaultValues: {
+      text: '',
+    },
+    validationSchema: commentCreateValidationSchema,
+  });
 
   const handleCreateComment = useCallback(
     (event_: BaseSyntheticEvent): void => {
@@ -40,8 +42,9 @@ const CommentForm: FC<Properties> = ({ onSubmit }) => {
       />
       <Button
         label="Send"
+        disabled={!isDirty}
+        isLoading={isLoading}
         type={ButtonType.SUBMIT}
-        disabled={!isDirty || isSubmitting}
       />
     </form>
   );
