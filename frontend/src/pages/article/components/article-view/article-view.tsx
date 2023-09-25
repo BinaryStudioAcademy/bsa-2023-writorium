@@ -173,6 +173,7 @@ const ArticleView: React.FC<Properties> = ({
             onFollow={onFollow}
             authorFollowers={followersCount}
             isFollowed={isFollowed}
+            isShared={isShared}
           />
         }
         className={getValidClassNames(
