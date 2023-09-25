@@ -3,6 +3,7 @@ import {
   Layout,
   Loader,
   Navigate,
+  ScrollToTop,
 } from '~/libs/components/components.js';
 import { AppRoute, DataStatus, LinkHash } from '~/libs/enums/enums.js';
 import { getFullName, getValidClassNames } from '~/libs/helpers/helpers.js';
@@ -167,6 +168,7 @@ const ArticlePage: React.FC = () => {
           </div>
         </div>
       </Layout>
+      <ScrollToTop />
     </Loader>
   );
 };
