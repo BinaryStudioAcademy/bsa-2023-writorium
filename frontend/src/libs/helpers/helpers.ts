@@ -1,4 +1,5 @@
 export { checkIsEqual } from './check-is-equal/check-is-equal.helper.js';
+export { checkIsPassingWindowBreakpoint } from './check-is-passing-window-breakpoint/check-is-passing-window-breakpoint.helper.js';
 export { cloneDeep } from './clone-deep/clone-deep.helper.js';
 export { deleteOrUpdateConditionally } from './delete-or-update-conditionally/delete-or-update-conditionally.helper.js';
 export { getArticleTags } from './get-article-tags/get-article-tags.js';

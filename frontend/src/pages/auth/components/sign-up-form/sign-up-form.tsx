@@ -12,10 +12,11 @@ import { DEFAULT_SIGN_UP_PAYLOAD } from './libs/constants.js';
 import styles from './styles.module.scss';
 
 type Properties = {
+  isLoading: boolean;
   onSubmit: (payload: UserSignUpRequestDto) => void;
 };
 
-const SignUpForm: React.FC<Properties> = ({ onSubmit }) => {
+const SignUpForm: React.FC<Properties> = ({ isLoading, onSubmit }) => {
   const { control, errors, handleSubmit, isValid } =
     useAppForm<UserSignUpRequestDto>({
       mode: 'onTouched',
@@ -76,7 +77,10 @@ const SignUpForm: React.FC<Properties> = ({ onSubmit }) => {
               placeholder="Enter password"
             />
           </fieldset>
-          <AuthSubmitButton label="Sign Up" isDisabled={!isValid} />
+          <AuthSubmitButton
+            label="Sign Up"
+            isDisabled={!isValid || isLoading}
+          />
         </form>
       </div>
       <div className={styles.messageWrapper}>

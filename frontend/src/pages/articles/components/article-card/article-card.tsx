@@ -142,6 +142,7 @@ const ArticleCard: React.FC<Properties> = ({
       <div className={styles.header}>
         <div className={styles.info}>
           <Avatar
+            className={styles.publisherAvatar}
             username={getFullName(firstName, lastName)}
             avatarUrl={avatarUrl}
           />
@@ -156,7 +157,7 @@ const ArticleCard: React.FC<Properties> = ({
             <span className={styles.publicationTime}>draft</span>
           )}
           {readTime && (
-            <span className={styles.publicationTime}>
+            <span className={styles.readTime}>
               {getReadTimeString(readTime)}
             </span>
           )}
@@ -195,23 +196,22 @@ const ArticleCard: React.FC<Properties> = ({
             className={getValidClassNames(styles.text, 'text-overflow')}
             dangerouslySetInnerHTML={{ __html: sanitizeHtml(text) }}
           ></article>
-          <Tags tags={tags} />
         </div>
         {coverUrl && (
           <div className={styles.coverWrapper}>
             <img src={coverUrl} alt="article cover" className={styles.cover} />
           </div>
         )}
+        <Tags className={styles.articleTags} tags={tags} />
       </div>
       <div className={styles.footer}>
         <ul className={styles.reactions}>
-          <li className={styles.reaction}>
+          <li>
             <Link
               to={{
                 pathname: articleRouteById,
                 hash: LinkHash.COMMENTS,
               }}
-              className={styles.reaction}
             >
               <IconButton
                 iconName="comment"
@@ -229,7 +229,7 @@ const ArticleCard: React.FC<Properties> = ({
               iconName="like"
               className={getValidClassNames(
                 styles.footerIcon,
-                isOwnArticle ? styles.disabled : styles.reaction,
+                isOwnArticle && styles.disabled,
                 hasAlreadyReactedWith === Reaction.LIKE && styles.pressed,
               )}
               label={String(likesCount)}
@@ -241,7 +241,7 @@ const ArticleCard: React.FC<Properties> = ({
               iconName="dislike"
               className={getValidClassNames(
                 styles.footerIcon,
-                isOwnArticle ? styles.disabled : styles.reaction,
+                isOwnArticle && styles.disabled,
                 hasAlreadyReactedWith === Reaction.DISLIKE && styles.pressed,
               )}
               label={String(dislikesCount)}

@@ -1,16 +1,25 @@
 import { type ValueOf } from '~/libs/types/types.js';
 
-import { PROGRESS_MAX, PROGRESS_MIN } from '../constants/constants.js';
-import { ProgressStatusClass } from '../enums/enums.js';
+import {
+  AchievementStatusThreshold,
+  ProgressStatusClass,
+} from '../enums/enums.js';
 
 const getProgressStyleClass = (
   progress: number,
 ): ValueOf<typeof ProgressStatusClass> => {
-  if (progress <= PROGRESS_MIN) {
+  if (progress < AchievementStatusThreshold.EARLY_STAGE) {
     return ProgressStatusClass.NOT_STARTED;
   }
 
-  if (progress >= PROGRESS_MAX) {
+  if (
+    progress >= AchievementStatusThreshold.EARLY_STAGE &&
+    progress < AchievementStatusThreshold.IN_PROGRESS
+  ) {
+    return ProgressStatusClass.EARLY_STAGE;
+  }
+
+  if (progress === AchievementStatusThreshold.DONE) {
     return ProgressStatusClass.DONE;
   }
 

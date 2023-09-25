@@ -13,7 +13,7 @@
 .achievementList {
   grid-template-columns: repeat(var(--achievement-columns), minmax(75px, 1fr));
   font-size: 12px;
-  column-gap: 5px;
+  column-gap: 10px;
 }
 
 .achievementItem {
@@ -22,18 +22,16 @@
 
 .title {
   margin-bottom: 30px;
-}
-
-.buttonShow {
-  width: 100%;
-  padding: 13px 20px;
   color: var(--white);
-  background-color: var(--dark-green);
 }
 
 .modal {
   overflow: hidden;
   box-shadow: 0 0 6px var(--translucent-dark-blue-gray);
+}
+
+.modalContent {
+  background-color: var(--dark-green);
 }
 
 .achievementListModal {
@@ -48,7 +46,11 @@
 .modal .achievementTooltip {
   max-width: 150px;
   color: var(--pale-gray);
-  background-color: var(--dark-green);
+  background-color: var(--light-green);
   border-radius: 7px;
   opacity: 1;
+}
+
+.modalCloseBtn {
+  color: var(--white);
 }

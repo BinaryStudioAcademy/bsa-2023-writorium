@@ -126,7 +126,7 @@ const ArticleView: React.FC<Properties> = ({
   }, [handleToggleModalOpen, isOpen]);
 
   return (
-    <div
+    <article
       className={getValidClassNames(styles.body, coverUrl && styles.hasCover)}
     >
       <div className={styles.coverWrapper}>
@@ -233,7 +233,7 @@ const ArticleView: React.FC<Properties> = ({
           styles.authorDetailsModal,
         )}
       >
-        <h5 className={styles.presentationAuthorName}>{authorFullName}</h5>
+        <h5 className={styles.authorName}>{authorFullName}</h5>
       </Popover>
 
       <div className={styles.textWrapper}>
@@ -241,7 +241,7 @@ const ArticleView: React.FC<Properties> = ({
 
         <h4 className={styles.title}>{title}</h4>
         {tags && <Tags tags={tags} />}
-        <p
+        <article
           className={styles.text}
           dangerouslySetInnerHTML={{ __html: sanitizeHtml(text) }}
         />
@@ -250,7 +250,7 @@ const ArticleView: React.FC<Properties> = ({
         onDeleteArticle={handleDeleteArticle}
         trigger={{ onToggleModalOpen: handleToggleModalOpen, isOpen }}
       />
-    </div>
+    </article>
   );
 };
 

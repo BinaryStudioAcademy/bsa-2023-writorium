@@ -100,9 +100,9 @@ const Toolbar: React.FC<Properties> = ({ editor }) => {
   return (
     <div className={styles.toolbar}>
       <ToggleButtonsGroup
-        buttons={TEXT_ALIGNMENT_BUTTONS}
-        onButtonClick={handleTextAlignmentChange}
-        isButtonActive={(key): boolean => editor.isActive({ textAlign: key })}
+        buttons={TEXT_SIZE_BUTTONS}
+        onButtonClick={handleTextSizeChange}
+        isButtonActive={(key): boolean => editor.isActive(key)}
       />
       <ToggleButtonsGroup
         buttons={TEXT_STYLE_BUTTONS}
@@ -110,9 +110,9 @@ const Toolbar: React.FC<Properties> = ({ editor }) => {
         isButtonActive={(key): boolean => editor.isActive(key)}
       />
       <ToggleButtonsGroup
-        buttons={TEXT_SIZE_BUTTONS}
-        onButtonClick={handleTextSizeChange}
-        isButtonActive={(key): boolean => editor.isActive(key)}
+        buttons={TEXT_ALIGNMENT_BUTTONS}
+        onButtonClick={handleTextAlignmentChange}
+        isButtonActive={(key): boolean => editor.isActive({ textAlign: key })}
       />
       <ToggleButtonsGroup
         buttons={TEXT_DECORATION_BUTTONS}

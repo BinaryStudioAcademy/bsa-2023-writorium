@@ -1,0 +1,51 @@
+.card {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  align-self: flex-start;
+  padding: 0 26px;
+  color: var(--dark-gray);
+  font-weight: 700;
+  font-size: 16px;
+  font-family: "Libre Baskerville", serif;
+  line-height: normal;
+}
+
+.titleLink {
+  display: -webkit-box;
+  overflow: hidden;
+  color: inherit;
+  transition: color 0.3s ease-in;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.titleLink:hover {
+  color: var(--light-green);
+}
+
+.reactions {
+  display: flex;
+  align-items: center;
+  padding: 15px 26px;
+  column-gap: 22px;
+  list-style: none;
+  border-top: 2px solid var(--pale-gray);
+}
+
+.reaction {
+  display: flex;
+  align-items: center;
+  color: var(--light-green);
+  column-gap: 5px;
+}
+
+.reactionText {
+  color: var(--dark-gray-50);
+  font-size: 12px;
+}

@@ -1,9 +1,4 @@
-import {
-  Button,
-  Input,
-  Loader,
-  TextEditor,
-} from '~/libs/components/components.js';
+import { Button, Input, TextEditor } from '~/libs/components/components.js';
 import { ButtonType, DataStatus } from '~/libs/enums/enums.js';
 import {
   useAppDispatch,
@@ -12,6 +7,7 @@ import {
   useCallback,
   useEffect,
   useNavigate,
+  useState,
 } from '~/libs/hooks/hooks.js';
 import { type ValueOf } from '~/libs/types/types.js';
 import {
@@ -59,10 +55,11 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
         ? articleUpdateValidationSchema
         : articleCreateValidationSchema,
     });
+  const [submitType, setSubmitType] = useState<ValueOf<
+    typeof ArticleSubmitType
+  > | null>(null);
 
   const isDraft = !articleForUpdate?.publishedAt;
-
-  const isLoading = saveArticleStatus === DataStatus.PENDING;
 
   const handleArticleSubmit = useCallback(
     (articleSubmitType: ValueOf<typeof ArticleSubmitType>) =>
@@ -75,12 +72,15 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
           publishedAt: isArticlePublished ? new Date().toISOString() : null,
         };
 
+        setSubmitType(articleSubmitType);
         void dispatch(
           articlesActions.createArticle({
             articlePayload: updatedPayload,
             generatedPrompt: getGeneratedPromptPayload(generatedPrompt),
           }),
-        );
+        ).finally(() => {
+          setSubmitType(null);
+        });
       },
     [dispatch, generatedPrompt],
   );
@@ -105,7 +105,12 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
           },
         };
 
-        void dispatch(articlesActions.updateArticle(updatePayload));
+        setSubmitType(articleSubmitType);
+        void dispatch(articlesActions.updateArticle(updatePayload)).finally(
+          () => {
+            setSubmitType(null);
+          },
+        );
       },
 
     [dispatch, articleForUpdate],
@@ -149,64 +154,70 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
     };
   }, [dispatch]);
 
+  const isSaveDraftLoading =
+    submitType === ArticleSubmitType.DRAFT &&
+    saveArticleStatus === DataStatus.PENDING;
+
+  const isPublishLoading =
+    submitType === ArticleSubmitType.PUBLISH &&
+    saveArticleStatus === DataStatus.PENDING;
+
   return (
-    <Loader
-      isLoading={isLoading}
-      hasOverlay
-      type="circular"
-      className={styles.loader}
+    <form
+      method="POST"
+      onSubmit={handleFormSubmit}
+      onReset={handleCancel}
+      className={styles.formContainer}
     >
-      <form
-        method="POST"
-        onSubmit={handleFormSubmit}
-        onReset={handleCancel}
-        className={styles.formContainer}
-      >
-        <ArticleCoverUpload
-          name="coverId"
-          control={control}
-          errors={errors}
-          initialPreviewUrl={articleForUpdate?.coverUrl}
+      <ArticleCoverUpload
+        name="coverId"
+        control={control}
+        errors={errors}
+        initialPreviewUrl={articleForUpdate?.coverUrl}
+      />
+      <Input
+        type="text"
+        placeholder="Enter the title of the article"
+        name="title"
+        control={control}
+        errors={errors}
+        className={styles.titleInput}
+      />
+      <TextEditor
+        control={control}
+        name="text"
+        errors={errors}
+        wasEdited={isDirty}
+      />
+      <div className={styles.buttonWrapper}>
+        <Button
+          variant="outlined"
+          type={ButtonType.RESET}
+          label="Cancel"
+          className={styles.cancelBtn}
+          isDisabled={isPublishLoading || isSaveDraftLoading}
         />
-        <Input
-          type="text"
-          placeholder="Enter the title of the article"
-          name="title"
-          control={control}
-          errors={errors}
-          className={styles.titleInput}
-        />
-        <TextEditor
-          control={control}
-          name="text"
-          errors={errors}
-          wasEdited={isDirty}
-        />
-        <div className={styles.buttonWrapper}>
+        {isDraft && (
           <Button
-            type={ButtonType.RESET}
-            label="Cancel"
-            className={styles.cancelBtn}
-          />
-          {isDraft && (
-            <Button
-              type={ButtonType.SUBMIT}
-              label="Save draft"
-              name="draft"
-              className={styles.saveDraftBtn}
-              isDisabled={!isDirty || isLoading}
-            />
-          )}
-          <Button
+            variant="outlined"
             type={ButtonType.SUBMIT}
-            label="Publish"
-            name="publish"
-            className={styles.publishBtn}
-            isDisabled={(!isDirty && !isDraft) || isLoading}
+            label="Save draft"
+            name="draft"
+            isLoading={isSaveDraftLoading}
+            className={styles.saveDraftBtn}
+            isDisabled={!isDirty || isPublishLoading}
           />
-        </div>
-      </form>
-    </Loader>
+        )}
+        <Button
+          name="publish"
+          label="Publish"
+          isLoading={isPublishLoading}
+          type={ButtonType.SUBMIT}
+          className={styles.publishBtn}
+          isDisabled={(!isDirty && !isDraft) || isSaveDraftLoading}
+        />
+      </div>
+    </form>
   );
 };
 

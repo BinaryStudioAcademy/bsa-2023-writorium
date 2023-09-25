@@ -2,14 +2,11 @@ import { type BaseSyntheticEvent, type FC } from 'react';
 
 import { Button, Input } from '~/libs/components/components.js';
 import { ButtonType } from '~/libs/enums/enums.js';
-import { getValidClassNames } from '~/libs/helpers/helpers.js';
 import { useAppForm, useCallback } from '~/libs/hooks/hooks.js';
 import {
   type CommentBaseRequestDto,
   commentCreateValidationSchema,
 } from '~/packages/comments/comments.js';
-
-import styles from './style.module.scss';
 
 type Properties = {
   onSubmit: (payload: Omit<CommentBaseRequestDto, 'articleId'>) => void;
@@ -45,7 +42,6 @@ const CommentForm: FC<Properties> = ({ onSubmit }) => {
         type={ButtonType.SUBMIT}
         label="Send"
         isDisabled={!isDirty || isSubmitting}
-        className={getValidClassNames(styles.button)}
       />
     </form>
   );

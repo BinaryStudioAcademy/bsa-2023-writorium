@@ -1,19 +1,21 @@
 import { BlockWithTooltip, Tooltip } from '~/libs/components/components.js';
 import { DataTooltipId } from '~/libs/enums/enums.js';
+import { getValidClassNames } from '~/libs/helpers/helpers.js';
 import { type TagType } from '~/libs/types/types.js';
 
 import styles from './styles.module.scss';
 
 type Properties = {
+  className?: string;
   tags: TagType[];
 };
 
 const TOOLTIP_OFFSET = 2;
 
-const Tags: React.FC<Properties> = ({ tags }) => (
-  <ul className={styles.tags}>
+const Tags: React.FC<Properties> = ({ className, tags }) => (
+  <ul className={getValidClassNames(styles.tags, className)}>
     {tags.map((tag) => (
-      <li key={crypto.randomUUID()} className={styles.container}>
+      <li key={tag.category} className={styles.container}>
         <BlockWithTooltip
           tooltipContent={tag.text}
           placement="top"

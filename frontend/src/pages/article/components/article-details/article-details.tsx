@@ -12,7 +12,6 @@ import styles from './styles.module.scss';
 type Properties = {
   authorName: string;
   authorFollowers: number;
-  authorRating?: number;
   publishedAt: string | null;
   readTime: number | null;
   genre: string | null;
@@ -27,7 +26,6 @@ type Properties = {
 const ArticleDetails: FC<Properties> = ({
   authorName,
   authorFollowers,
-  authorRating = 700,
   publishedAt,
   readTime,
   genre,
@@ -51,17 +49,13 @@ const ArticleDetails: FC<Properties> = ({
             <span className={styles.authorInfoValue}>{authorFollowers}</span>
             following
           </li>
-          <li className={styles.authorInfo}>
-            <Icon iconName="star" />
-            <span className={styles.authorInfoValue}>{authorRating}</span>
-            rating
-          </li>
         </ul>
         {!isArticleOwner && !isShared && (
           <Button
+            size="small"
+            onClick={onFollow}
             className={styles.followButton}
             label={isFollowed ? FollowStatus.UNFOLLOW : FollowStatus.FOLLOW}
-            onClick={onFollow}
           />
         )}
       </div>
@@ -84,8 +78,10 @@ const ArticleDetails: FC<Properties> = ({
             )}
           </ul>
         </div>
-        <Icon iconName="sparkles" />
-        <span className={styles.articleGenre}>{genre}</span>
+        <section className={styles.articleGenreInfo}>
+          <Icon iconName="sparkles" />
+          <span className={styles.articleGenre}>{genre}</span>
+        </section>
       </div>
     </div>
   );

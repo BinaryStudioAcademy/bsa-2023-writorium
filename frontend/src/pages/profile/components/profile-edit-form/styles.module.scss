@@ -8,33 +8,10 @@
   gap: 20px;
 }
 
-.button {
-  width: 100%;
-  height: 45px;
-  color: var(--dark-green);
-  font-family: Lato, sans-serif;
-  background-color: var(--light-gray);
-  border: 2px solid var(--dark-green);
-  transition:
-    background-color 0.3s ease-in,
-    color 0.3s ease-in,
-    border-color 0.3s ease-in;
-}
-
-.buttonSave {
-  color: var(--white);
-  background: var(--dark-green);
-}
-
-.button:disabled {
-  color: var(--white);
-  background-color: var(--pastel-gray);
-  border-color: transparent;
-}
-
 .fieldset {
   display: flex;
   flex-direction: column;
+  align-items: center;
   margin: 0 0 10px;
   padding: 0;
   text-align: left;

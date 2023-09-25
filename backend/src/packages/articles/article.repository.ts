@@ -35,8 +35,7 @@ class ArticleRepository implements IArticleRepository {
   private articleModel: typeof ArticleModel;
   private favouriteArticlesModel: typeof FavouredUserArticlesModel;
 
-  private defaultRelationExpression =
-    '[author.avatar, prompt, genre, reactions, cover]';
+  private defaultRelationExpression = '[author.avatar, prompt, genre, cover]';
 
   public constructor(
     articleModel: typeof ArticleModel,
@@ -45,14 +44,6 @@ class ArticleRepository implements IArticleRepository {
     this.articleModel = articleModel;
     this.favouriteArticlesModel = favouriteArticlesModel;
   }
-
-  private joinArticleRelations = <T>(
-    queryBuilder: QueryBuilder<ArticleModel, T>,
-  ): void => {
-    void queryBuilder
-      .withGraphJoined(this.defaultRelationExpression)
-      .modifyGraph('reactions', this.modifyReactionsGraph);
-  };
 
   private modifyReactionsGraph = (
     builder: QueryBuilder<Model, Model[]>,
@@ -97,6 +88,9 @@ class ArticleRepository implements IArticleRepository {
         this.getViewsCountQuery(),
         getIsFavouriteSubQuery(Boolean(shouldShowFavourites), requestUserId),
       )
+      .withGraphJoined(this.defaultRelationExpression)
+      .withGraphFetched('reactions')
+      .modifyGraph('reactions', this.modifyReactionsGraph)
       .where(getWhereUserIdQuery(userId))
       .where(getWhereGenreIdQuery(genreId))
       .where(getWhereAuthorIdQuery(authorId))
@@ -108,7 +102,6 @@ class ArticleRepository implements IArticleRepository {
       .whereNull('deletedAt')
       .orderBy(getSortingCondition(hasPublishedOnly))
       .page(skip / take, take)
-      .modify(this.joinArticleRelations)
       .castTo<Page<ArticleModel & ArticleCounts>>();
 
     return {
@@ -141,8 +134,10 @@ class ArticleRepository implements IArticleRepository {
     const article = await this.articleModel
       .query()
       .findById(id)
-      .whereNull('deletedAt')
-      .modify(this.joinArticleRelations);
+      .withGraphJoined(this.defaultRelationExpression)
+      .withGraphFetched('reactions')
+      .modifyGraph('reactions', this.modifyReactionsGraph)
+      .whereNull('deletedAt');
 
     if (!article) {
       return null;
@@ -180,9 +175,11 @@ class ArticleRepository implements IArticleRepository {
         `${DatabaseTableName.ARTICLES}.*`,
         getIsFavouriteSubQuery(false, userId),
       )
+      .withGraphJoined(this.defaultRelationExpression)
+      .withGraphFetched('reactions')
+      .modifyGraph('reactions', this.modifyReactionsGraph)
       .where({ 'articles.id': id })
-      .first()
-      .modify(this.joinArticleRelations);
+      .first();
 
     if (!article) {
       return null;
@@ -217,9 +214,10 @@ class ArticleRepository implements IArticleRepository {
     const article = await this.articleModel
       .query()
       .insert(payload)
-      .returning('*')
       .withGraphFetched(this.defaultRelationExpression)
-      .modifyGraph('reactions', this.modifyReactionsGraph);
+      .withGraphFetched('reactions')
+      .modifyGraph('reactions', this.modifyReactionsGraph)
+      .returning('*');
 
     return ArticleEntity.initialize({
       ...article,
@@ -291,6 +289,7 @@ class ArticleRepository implements IArticleRepository {
       .patchAndFetchById(id, payload)
       .select(`${DatabaseTableName.ARTICLES}.*`, this.getCommentsCountQuery())
       .withGraphFetched(this.defaultRelationExpression)
+      .withGraphFetched('reactions')
       .modifyGraph('reactions', this.modifyReactionsGraph)
       .castTo<ArticleModel & ArticleCounts>();
 
@@ -340,6 +339,10 @@ class ArticleRepository implements IArticleRepository {
       },
       coverUrl: article.cover?.url ?? null,
     });
+  }
+
+  public countArticlesByUserId(userId: number): Promise<number> {
+    return this.articleModel.query().where({ userId }).resultSize();
   }
 
   public async toggleIsFavourite(
