@@ -176,12 +176,16 @@ const ArticleView: React.FC<Properties> = ({
             isShared={isShared}
           />
         }
-        className={getValidClassNames(
+        className={styles.popover}
+        classNameContentWrapper={getValidClassNames(
           styles.authorDetails,
           styles.authorDetailsModal,
         )}
       >
-        <h5 className={styles.authorName}>{authorFullName}</h5>
+        <h5 className={styles.authorName}>
+          <span>{authorFullName}</span>
+          <Icon iconName="info" className={styles.infoIcon} />
+        </h5>
       </Popover>
 
       <div className={styles.textWrapper}>

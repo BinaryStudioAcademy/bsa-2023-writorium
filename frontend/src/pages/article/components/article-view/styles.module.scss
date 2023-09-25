@@ -2,6 +2,7 @@
 
 .body {
   width: 100%;
+  padding: 15px 33px 62px;
   background: var(--white);
   border-radius: 10px;
 }
@@ -13,7 +14,7 @@
 
 .coverWrapper {
   position: relative;
-  padding: 16px 15px 0 14px;
+  margin: 0 -18px 15px;
 }
 
 .cover {
@@ -27,7 +28,7 @@
 .buttonsWrapper {
   position: absolute;
   top: 5%;
-  left: 28px;
+  left: 13px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -75,16 +76,27 @@
   padding: 0;
 }
 
+.popover {
+  max-width: max-content;
+}
+
 .authorName {
   display: none;
-  padding: 20px 33px 0;
   font-size: 16px;
   cursor: pointer;
+  transition: color 0.3s ease-in;
+}
+
+.infoIcon {
+  transform: translateY(-3px);
+}
+
+.authorName:hover {
+  color: var(--light-green);
 }
 
 .textWrapper {
   flex-grow: 1;
-  padding: 18px 33px 62px;
 }
 
 .body:not(.hasCover) .textWrapper {
@@ -205,6 +217,12 @@
     font-size: 18px;
   }
 
+  .infoIcon {
+    width: 17px;
+    height: 17px;
+    transform: translateY(-5px);
+  }
+
   .title {
     font-size: 30px;
   }
@@ -246,6 +264,11 @@
 
   .title {
     margin-bottom: 5px;
+  }
+
+  .popover {
+    margin-bottom: 15px;
+    padding: 5px 0;
   }
 
   .authorName {

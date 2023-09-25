@@ -171,7 +171,7 @@ const ArticleCard: React.FC<Properties> = ({
             isLoading={isLoading}
           />
           <Popover
-            className={styles.moreActions}
+            classNameContentWrapper={styles.moreActions}
             content={
               <PopoverButtonsGroup
                 isOwnArticle={isOwnArticle}
