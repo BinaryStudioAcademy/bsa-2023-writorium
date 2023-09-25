@@ -25,7 +25,7 @@ const AchievementList: React.FC<Properties> = ({
   return (
     <ul className={getValidClassNames(className, styles.achievementList)}>
       {achievements.map((achievement) => (
-        <li key={achievement.id}>
+        <li key={achievement.id} className={styles.achievementListItem}>
           <BlockWithTooltip
             tooltipContent={
               <AchievementTooltipContent

@@ -21,6 +21,7 @@ const usePagination = ({
   });
   const resetSkip = (): void => {
     paginationParameters.current.skip = ZERO_COUNT;
+    setHasMore(false);
   };
 
   const loadMore = useCallback(
