@@ -1,6 +1,7 @@
 export {
   DEFAULT_PAGINATION_SKIP,
   DEFAULT_PAGINATION_TAKE,
+  FIRST_ELEMENT_ARRAY_INDEX,
   INDEX_INCREMENT,
   SHARED_$TOKEN,
 } from './libs/constants/constants.js';

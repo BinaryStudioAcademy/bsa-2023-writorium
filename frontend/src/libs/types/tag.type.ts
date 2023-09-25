@@ -1,5 +1,5 @@
 import { type ValueOf } from '~/libs/types/types.js';
-import { type PromptCategory } from '~/packages/prompts/libs/enums/enums.js';
+import { type PromptCategory } from '~/packages/prompts/prompts.js';
 
 type Tag = {
   category: ValueOf<typeof PromptCategory>;

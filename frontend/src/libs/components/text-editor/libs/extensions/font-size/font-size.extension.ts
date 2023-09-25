@@ -2,12 +2,15 @@ import '@tiptap/starter-kit';
 
 import { Extension } from '@tiptap/core';
 
-import { FontSizeConfig } from './libs/constants/constants.js';
+import { ExtensionName } from '../libs/enums/enums.js';
+import { EXTENSION_OPTION_TYPE } from './libs/constants/constants.js';
+import { FontSizeConfig } from './libs/enums/enums.js';
 import {
   convertFontSizeToNumber,
   decrementFontSize,
   incrementFontSize,
 } from './libs/helpers/helpers.js';
+import { type RenderedHTML } from './libs/types/types.js';
 
 type FontSizeOptions = {
   types: string[];
@@ -24,11 +27,11 @@ declare module '@tiptap/core' {
 }
 
 const FontSize = Extension.create<FontSizeOptions>({
-  name: 'fontSize',
+  name: ExtensionName.FONT_SIZE,
 
   addOptions(): FontSizeOptions {
     return {
-      types: ['textStyle'],
+      types: [EXTENSION_OPTION_TYPE],
       baseFontSize: null,
     };
   },
@@ -40,10 +43,10 @@ const FontSize = Extension.create<FontSizeOptions>({
         attributes: {
           fontSize: {
             default: null,
-            parseHTML: (element): string | null | undefined => { return element.style.fontSize.replaceAll(/["']+/g, ''); },
-            renderHTML: (
-              attributes,
-            ): Record<string, string> | null | undefined => {
+            parseHTML: (element): string | null | undefined => {
+              return element.style.fontSize.replaceAll(/["']+/g, '');
+            },
+            renderHTML: (attributes): RenderedHTML => {
               if (!attributes.fontSize) {
                 return {};
               }
@@ -69,7 +72,7 @@ const FontSize = Extension.create<FontSizeOptions>({
             FontSizeConfig.DEFAULT_FONT_SIZE;
 
           return chain()
-            .setMark('textStyle', {
+            .setMark(EXTENSION_OPTION_TYPE, {
               fontSize: `${incrementFontSize(fontSize)}px`,
             })
             .run();
@@ -82,7 +85,7 @@ const FontSize = Extension.create<FontSizeOptions>({
             FontSizeConfig.DEFAULT_FONT_SIZE;
 
           return chain()
-            .setMark('textStyle', {
+            .setMark(EXTENSION_OPTION_TYPE, {
               fontSize: `${decrementFontSize(fontSize)}px`,
             })
             .removeEmptyTextStyle()

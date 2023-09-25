@@ -1,5 +1,5 @@
 import { Input, Link } from '~/libs/components/components.js';
-import { AppRoute } from '~/libs/enums/app-route.enum.js';
+import { AppRoute } from '~/libs/enums/enums.js';
 import { useAppForm, useCallback } from '~/libs/hooks/hooks.js';
 import {
   type UserSignUpRequestDto,
@@ -43,7 +43,7 @@ const SignUpForm: React.FC<Properties> = ({ isLoading, onSubmit }) => {
           <fieldset className={styles.fieldset}>
             <Input
               isRequired
-              type="text"
+              type="email"
               label="Email"
               placeholder="Enter your email"
               name="email"

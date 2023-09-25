@@ -1,1 +1,1 @@
-export { type IFacebookAuth } from './facebook-auth.interfaces.js';
+export { type IFacebookAuth } from './facebook-auth.interface.js';

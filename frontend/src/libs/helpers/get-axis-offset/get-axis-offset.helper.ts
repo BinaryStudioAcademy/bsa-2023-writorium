@@ -1,4 +1,5 @@
 const DEEP = 0.05;
+const HALF_DIVIDER = 2;
 
 type Properties = {
   axisValue: number;
@@ -11,7 +12,7 @@ const getAxisOffset = ({
   innerAxisValue,
   deep = DEEP,
 }: Properties): number => {
-  return (axisValue - innerAxisValue / 2) * deep;
+  return (axisValue - innerAxisValue / HALF_DIVIDER) * deep;
 };
 
 export { getAxisOffset };

@@ -9,12 +9,13 @@ const removeReaction = <
   article: T,
   reactionId: number,
 ): T => {
+  const ELEMENT_TO_REMOVE_COUNT = 1;
   const reactionIndex = article.reactions.findIndex(
     ({ id }) => id === reactionId,
   );
 
   const reactionsToUpdate = [...article.reactions];
-  reactionsToUpdate.splice(reactionIndex, 1);
+  reactionsToUpdate.splice(reactionIndex, ELEMENT_TO_REMOVE_COUNT);
 
   return {
     ...article,

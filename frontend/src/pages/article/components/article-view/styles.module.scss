@@ -2,6 +2,7 @@
 
 .body {
   width: 100%;
+  padding: 15px 33px 62px;
   background: var(--white);
   border-radius: 10px;
 }
@@ -13,7 +14,7 @@
 
 .coverWrapper {
   position: relative;
-  padding: 16px 15px 0 14px;
+  margin: 0 -18px 15px;
 }
 
 .cover {
@@ -27,7 +28,7 @@
 .buttonsWrapper {
   position: absolute;
   top: 5%;
-  left: 28px;
+  left: 13px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -75,15 +76,27 @@
   padding: 0;
 }
 
+.popover {
+  max-width: max-content;
+}
+
 .authorName {
   display: none;
-  padding: 20px 33px 0;
   font-size: 16px;
+  cursor: pointer;
+  transition: color 0.3s ease-in;
+}
+
+.infoIcon {
+  transform: translateY(-3px);
+}
+
+.authorName:hover {
+  color: var(--light-green);
 }
 
 .textWrapper {
   flex-grow: 1;
-  padding: 18px 33px 62px;
 }
 
 .body:not(.hasCover) .textWrapper {
@@ -113,22 +126,19 @@
   margin-block-end: 10px;
 }
 
-.reactionIcon {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 30px;
-  padding-top: 6px;
-  color: var(--dark-gray-50);
-  font-weight: 400;
-  font-size: 12px;
-  background-color: var(--white-90);
-  border-radius: 50%;
-  transition: background-color 0.2s ease;
+.reactionButtonsWrapper {
+  position: absolute;
+  display: none;
+  gap: 20px;
 }
 
-.reactionIcon:hover {
-  background-color: var(--light-gray);
+.reactionButton {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--dark-gray-50);
+  font-family: Lato, sans-serif;
+  background-color: transparent;
 }
 
 .disabled {
@@ -139,7 +149,8 @@
   color: var(--light-green);
 }
 
-.pressed svg {
+.pressed svg,
+.reactionButton:hover svg {
   color: var(--light-green);
 }
 
@@ -177,6 +188,19 @@
     left: 15px;
     width: 235px;
   }
+
+  .reactionButtonsWrapper {
+    margin-top: 15px;
+  }
+
+  .reactionIcon {
+    width: 15px;
+    height: 15px;
+  }
+
+  .reactionButton {
+    font-size: 12px;
+  }
 }
 
 @media only screen and (min-width: breakpoints.$medium) and (max-width: breakpoints.$extra-large) {
@@ -193,6 +217,12 @@
     font-size: 18px;
   }
 
+  .infoIcon {
+    width: 17px;
+    height: 17px;
+    transform: translateY(-5px);
+  }
+
   .title {
     font-size: 30px;
   }
@@ -204,6 +234,21 @@
   .authorDetails.authorDetailsModal {
     left: 15px;
     width: 293px;
+  }
+
+  .reactionButtonsWrapper {
+    margin-top: 10px;
+  }
+
+  .reactionIcon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .reactionButton {
+    width: 37px;
+    height: 37px;
+    font-size: 14px;
   }
 }
 
@@ -221,6 +266,11 @@
     margin-bottom: 5px;
   }
 
+  .popover {
+    margin-bottom: 15px;
+    padding: 5px 0;
+  }
+
   .authorName {
     display: block;
   }
@@ -235,6 +285,10 @@
   .authorDetails.authorDetailsModal {
     display: flex;
     background-color: var(--light-gray-15);
+  }
+
+  .reactionButtonsWrapper {
+    display: flex;
   }
 }
 

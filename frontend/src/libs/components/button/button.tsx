@@ -1,8 +1,6 @@
-import { type MouseEvent } from 'react';
-
 import { ButtonType } from '~/libs/enums/enums.js';
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
-import { type ValueOf } from '~/libs/types/types.js';
+import { type ReactMouseEvent, type ValueOf } from '~/libs/types/types.js';
 
 import { Loader } from '../components.js';
 import styles from './styles.module.scss';
@@ -24,7 +22,7 @@ type Properties = {
   onClick?:
     | (() => void)
     | (() => Promise<void>)
-    | ((event: React.MouseEvent<HTMLButtonElement>) => void);
+    | ((event: ReactMouseEvent<HTMLButtonElement>) => void);
 };
 
 const Button: React.FC<Properties> = ({
@@ -50,7 +48,9 @@ const Button: React.FC<Properties> = ({
     small: styles.buttonSmall,
   };
 
-  const handleButtonClick = (event: MouseEvent<HTMLButtonElement>): void => {
+  const handleButtonClick = (
+    event: ReactMouseEvent<HTMLButtonElement>,
+  ): void => {
     const allowClick = !isDisabled && !isLoading;
 
     if (onClick && !allowClick) {
