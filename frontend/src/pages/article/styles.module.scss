@@ -149,6 +149,10 @@
 }
 
 @media print {
+  .articlePageWrapper {
+    display: block;
+  }
+
   .commentsBlockWrapper {
     display: none;
   }

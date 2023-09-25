@@ -29,7 +29,7 @@ import {
   useCallback,
   useModal,
 } from '~/libs/hooks/hooks.js';
-import { type TagType, type ValueOf } from '~/libs/types/types.js';
+import { type Tag, type ValueOf } from '~/libs/types/types.js';
 import {
   type ArticleWithCountsResponseDto,
   getReadTimeString,
@@ -48,7 +48,7 @@ import styles from './styles.module.scss';
 type Properties = {
   article: ArticleWithCountsResponseDto;
   author: UserDetailsResponseDto;
-  tags: TagType[];
+  tags: Tag[];
   reactions: ReactionResponseDto[];
 };
 

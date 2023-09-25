@@ -1,14 +1,14 @@
 import { BlockWithTooltip, Tooltip } from '~/libs/components/components.js';
 import { DataTooltipId } from '~/libs/enums/enums.js';
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
-import { type TagType } from '~/libs/types/types.js';
+import { type Tag } from '~/libs/types/types.js';
 
 import { TOOLTIP_OFFSET } from './libs/constants/constants.js';
 import styles from './styles.module.scss';
 
 type Properties = {
   className?: string;
-  tags: TagType[];
+  tags: Tag[];
 };
 
 const Tags: React.FC<Properties> = ({ className, tags }) => (

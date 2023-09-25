@@ -1,5 +1,8 @@
-import { RESET_PASSWORD_ROUTE } from '~/libs/constants/constants.js';
-import { ExceptionMessage, TokenExpirationTime } from '~/libs/enums/enums.js';
+import {
+  ExceptionMessage,
+  ResetPasswordRoute,
+  TokenExpirationTime,
+} from '~/libs/enums/enums.js';
 import { type IEncrypt } from '~/libs/packages/encrypt/encrypt.js';
 import {
   BadRequestError,
@@ -141,7 +144,7 @@ class AuthService {
       TokenExpirationTime.ONE_HOUR,
     );
 
-    const resetLink = `${url}${RESET_PASSWORD_ROUTE.BASE}/${token}`;
+    const resetLink = `${url}${ResetPasswordRoute.BASE}/${token}`;
 
     return await this.mailer.sendResetPasswordEmail(email, resetLink);
   }

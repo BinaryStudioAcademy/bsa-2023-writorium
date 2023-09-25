@@ -7,5 +7,6 @@ export {
   CustomHttpHeader,
   DateFormat,
   ExceptionMessage,
+  ResetPasswordRoute,
   ServerErrorType,
 } from 'shared/build/index.js';

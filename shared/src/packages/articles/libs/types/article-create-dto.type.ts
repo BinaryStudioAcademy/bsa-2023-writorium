@@ -1,7 +1,7 @@
-import { type ArticleEntityType } from './article-entity.type.js';
+import { type ArticleEntityInstance } from './article-entity-instance.type.js';
 
 type ArticleCreateDto = Pick<
-  ArticleEntityType,
+  ArticleEntityInstance,
   | 'title'
   | 'text'
   | 'userId'

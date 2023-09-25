@@ -1,7 +1,7 @@
-import { type CommentEntityType } from '~/packages/comments/libs/types/comment-entity.type.js';
+import { type CommentEntityInstance } from '~/packages/comments/libs/types/comment-entity-instance.type.js';
 
 type CommentBaseResponseDto = Pick<
-  CommentEntityType,
+  CommentEntityInstance,
   'id' | 'text' | 'userId' | 'articleId' | 'createdAt'
 >;
 

@@ -87,7 +87,7 @@ const SignInForm: React.FC<Properties> = ({
               Forgot password?
             </Link>
           </fieldset>
-          <AuthSubmitButton disabled={isLoading} label="Sign In" />
+          <AuthSubmitButton isDisabled={isLoading} label="Sign In" />
         </form>
       </div>
       <div className={styles.messageWrapper}>

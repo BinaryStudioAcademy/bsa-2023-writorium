@@ -1,7 +1,7 @@
-import { type CommentEntityType } from './comment-entity.type.js';
+import { type CommentEntityInstance } from './comment-entity-instance.type.js';
 
 type CommentCreateDto = Pick<
-  CommentEntityType,
+  CommentEntityInstance,
   'text' | 'userId' | 'articleId'
 >;
 

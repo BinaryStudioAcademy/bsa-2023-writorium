@@ -3,6 +3,6 @@ export {
   configureString,
   getDifferenceBetweenDates,
   getFormattedDate,
-  safeJSONParse,
+  parseJSONSafely,
   subtractMonthsFromDate,
 } from 'shared/build/index.js';
