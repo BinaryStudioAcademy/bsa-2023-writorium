@@ -3,7 +3,7 @@ export { type GetUserArticlesGenresStatsDatabaseResponse } from './get-user-arti
 export {
   type ArticleCounts,
   type ArticleCreateDto,
-  type ArticleEntityType,
+  type ArticleEntityInstance,
   type ArticleGenreStatsFilters,
   type ArticleGetAllResponseDto,
   type ArticleGetImprovementSuggestionsResponseDto,
@@ -15,7 +15,7 @@ export {
   type ArticleUpdateRequestDto,
   type ArticleWithCountsResponseDto,
   type ArticleWithFollowResponseDto,
-  type ArticleWithRelationsType,
+  type ArticleWithRelations,
   type ReactionResponseDto,
   type UserActivityResponseDto,
   type UserArticlesGenreStatsItem,

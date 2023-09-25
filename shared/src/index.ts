@@ -65,7 +65,7 @@ export {
 } from './packages/achievements/achievements.js';
 export {
   type ArticleReactionCreateDto,
-  type ArticleReactionEntityType,
+  type ArticleReactionEntityInstance,
   type ArticleReactionRequestDto,
   type ArticleReactionResponseDto,
   ArticleReactionsSocketEvent,
@@ -81,7 +81,7 @@ export {
   type ArticleCounts,
   type ArticleCreateDto,
   articleCreateValidationSchema,
-  type ArticleEntityType,
+  type ArticleEntityInstance,
   type ArticleGenreStatsFilters,
   articleGenreStatsFiltersValidationSchema,
   type ArticleGetAllResponseDto,
@@ -102,7 +102,7 @@ export {
   articleUpdateValidationSchema,
   type ArticleWithCountsResponseDto,
   type ArticleWithFollowResponseDto,
-  type ArticleWithRelationsType,
+  type ArticleWithRelations,
   type ReactionResponseDto,
 } from './packages/articles/articles.js';
 export {
@@ -119,7 +119,7 @@ export {
   type CommentBaseResponseDto,
   type CommentCreateDto,
   commentCreateValidationSchema,
-  type CommentEntityType,
+  type CommentEntityInstance,
   type CommentGetAllRequestDto,
   type CommentGetAllResponseDto,
   CommentsApiPath,
@@ -138,7 +138,7 @@ export {
   SUPPORTED_FILE_TYPES,
 } from './packages/files/files.js';
 export {
-  type GenreEntityType,
+  type GenreEntityInstance,
   type GenreGetAllItemResponseDto,
   type GenreGetAllResponseDto,
   GenresApiPath,

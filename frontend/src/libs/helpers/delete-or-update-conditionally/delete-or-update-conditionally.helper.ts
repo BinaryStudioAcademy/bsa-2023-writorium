@@ -1,4 +1,4 @@
-type ItemType = {
+type Item = {
   id: number;
 };
 
@@ -8,7 +8,7 @@ type Arguments<T> = {
   hasToDelete: boolean;
 };
 
-const deleteOrUpdateConditionally = <T extends ItemType>({
+const deleteOrUpdateConditionally = <T extends Item>({
   items,
   itemToDeleteOrUpdate,
   hasToDelete,

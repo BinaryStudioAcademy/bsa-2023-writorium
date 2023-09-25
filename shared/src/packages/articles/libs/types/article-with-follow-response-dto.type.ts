@@ -3,9 +3,9 @@ import {
   type UserFollowResponseDto,
 } from '~/packages/users/users.js';
 
-import { type ArticleWithRelationsType } from './article-with-relations.type.js';
+import { type ArticleWithRelations } from './article-with-relations.type.js';
 
-type ArticleWithFollowResponseDto = Omit<ArticleWithRelationsType, 'author'> & {
+type ArticleWithFollowResponseDto = Omit<ArticleWithRelations, 'author'> & {
   author: UserDetailsResponseDto & Omit<UserFollowResponseDto, 'authorId'>;
 };
 

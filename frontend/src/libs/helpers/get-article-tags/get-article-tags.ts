@@ -1,8 +1,8 @@
-import { type TagType } from '~/libs/types/types.js';
+import { type Tag } from '~/libs/types/types.js';
 import { type ArticleResponseDto } from '~/packages/articles/articles.js';
 
-const getArticleTags = (article: ArticleResponseDto): TagType[] => {
-  const results: TagType[] = [];
+const getArticleTags = (article: ArticleResponseDto): Tag[] => {
+  const results: Tag[] = [];
   const { prompt, genre } = article;
 
   if (genre) {
@@ -16,7 +16,7 @@ const getArticleTags = (article: ArticleResponseDto): TagType[] => {
     if (value) {
       // eslint-disable-next-line unicorn/prefer-spread
       return resultingTags.concat({
-        category: key as TagType['category'],
+        category: key as Tag['category'],
         text: value,
       });
     }
