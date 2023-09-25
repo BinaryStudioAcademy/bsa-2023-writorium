@@ -7,7 +7,7 @@ export {
 export {
   type ArticleCounts,
   type ArticleCreateDto,
-  type ArticleEntityType,
+  type ArticleEntityInstance,
   type ArticleGenreStatsFilters,
   type ArticleGetAllResponseDto,
   type ArticleGetImprovementSuggestionsResponseDto,
@@ -20,7 +20,7 @@ export {
   type ArticleUpdateRequestPayload,
   type ArticleWithCountsResponseDto,
   type ArticleWithFollowResponseDto,
-  type ArticleWithRelationsType,
+  type ArticleWithRelations,
   type ReactionResponseDto,
 } from './libs/types/types.js';
 export {

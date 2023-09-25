@@ -3,11 +3,11 @@ import { type WithNullableKeys } from '~/libs/types/types.js';
 import { type UserDetailsResponseDto } from '~/packages/users/libs/types/types.js';
 
 import {
-  type CommentEntityType,
+  type CommentEntityInstance,
   type CommentWithRelationsResponseDto,
 } from './libs/types/types.js';
 
-type CommentEntityPayloadType = Omit<CommentEntityType, 'id' | 'createdAt'>;
+type CommentEntityPayload = Omit<CommentEntityInstance, 'id' | 'createdAt'>;
 
 class CommentEntity implements IEntity {
   private 'id': number | null;
@@ -58,7 +58,7 @@ class CommentEntity implements IEntity {
     text,
     userId,
     articleId,
-  }: CommentEntityPayloadType): CommentEntity {
+  }: CommentEntityPayload): CommentEntity {
     return new CommentEntity({
       id: null,
       text,
@@ -69,7 +69,7 @@ class CommentEntity implements IEntity {
     });
   }
 
-  public toObject(): CommentEntityType {
+  public toObject(): CommentEntityInstance {
     return {
       id: this.id as number,
       text: this.text,
@@ -90,7 +90,7 @@ class CommentEntity implements IEntity {
     };
   }
 
-  public toNewObject(): CommentEntityPayloadType {
+  public toNewObject(): CommentEntityPayload {
     return {
       text: this.text,
       userId: this.userId,

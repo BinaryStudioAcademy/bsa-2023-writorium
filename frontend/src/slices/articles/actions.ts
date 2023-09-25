@@ -62,15 +62,22 @@ const fetchOwn = createAsyncThunk<
 });
 
 const addArticle = createAsyncThunk<
-  ArticleSocketEventPayload[typeof ArticleSocketEvent.NEW_ARTICLE] | null,
+  | ArticleSocketEventPayload[typeof ArticleSocketEvent.NEW_ARTICLE]['article']
+  | null,
   ArticleSocketEventPayload[typeof ArticleSocketEvent.NEW_ARTICLE],
   AsyncThunkConfig
->(`${sliceName}/add-article`, (article, { getState, dispatch }) => {
+>(`${sliceName}/add-article`, (socketPayload, { getState, dispatch }) => {
   const {
     auth: { user },
   } = getState();
 
-  if (user?.id !== article.userId) {
+  const { article, isByFollowingAuthor } = socketPayload;
+
+  if (user?.id === article.userId) {
+    return null;
+  }
+
+  if (isByFollowingAuthor) {
     const { author } = article;
 
     void dispatch(
@@ -82,11 +89,9 @@ const addArticle = createAsyncThunk<
         )}`,
       }),
     );
-
-    return article;
   }
 
-  return null;
+  return article;
 });
 
 const createArticle = createAsyncThunk<

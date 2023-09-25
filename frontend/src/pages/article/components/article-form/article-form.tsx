@@ -310,26 +310,28 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
           type="reset"
           label="Cancel"
           className={styles.cancelBtn}
-          disabled={isPublishLoading || isSaveDraftLoading}
+          isDisabled={isPublishLoading || isSaveDraftLoading}
         />
-        <Button
-          variant="outlined"
-          type="submit"
-          label="Save draft"
-          name="draft"
-          isLoading={isSaveDraftLoading}
-          className={styles.saveDraftBtn}
-          disabled={
-            (!isDirty && !isContentFromLocalStorage) || isPublishLoading
-          }
-        />
+        {isDraft && (
+          <Button
+            variant="outlined"
+            type="submit"
+            label="Save draft"
+            name="draft"
+            isLoading={isSaveDraftLoading}
+            className={styles.saveDraftBtn}
+            isDisabled={
+              (!isDirty && !isContentFromLocalStorage) || isPublishLoading
+            }
+          />
+        )}
         <Button
           name="publish"
           label="Publish"
           isLoading={isPublishLoading}
           type="submit"
           className={styles.publishBtn}
-          disabled={(!isDirty && !isDraft) || isSaveDraftLoading}
+          isDisabled={(!isDirty && !isDraft) || isSaveDraftLoading}
         />
       </div>
     </form>

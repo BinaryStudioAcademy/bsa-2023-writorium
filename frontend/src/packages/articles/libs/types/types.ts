@@ -15,6 +15,6 @@ export {
   type ArticleUpdateRequestPayload,
   type ArticleWithCountsResponseDto,
   type ArticleWithFollowResponseDto,
-  type ArticleWithRelationsType,
+  type ArticleWithRelations,
   type ReactionResponseDto,
 } from 'shared/build/index.js';

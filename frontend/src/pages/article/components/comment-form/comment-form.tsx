@@ -40,7 +40,7 @@ const CommentForm: React.FC<Properties> = ({ onSubmit, isLoading }) => {
       />
       <Button
         label="Send"
-        disabled={!isDirty}
+        isDisabled={!isDirty}
         isLoading={isLoading}
         type="submit"
       />

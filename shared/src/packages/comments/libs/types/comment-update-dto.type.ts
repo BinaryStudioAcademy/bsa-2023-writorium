@@ -1,5 +1,5 @@
-import { type CommentEntityType } from './comment-entity.type.js';
+import { type CommentEntityInstance } from './comment-entity-instance.type.js';
 
-type CommentUpdateDto = Pick<CommentEntityType, 'text' | 'id'>;
+type CommentUpdateDto = Pick<CommentEntityInstance, 'text' | 'id'>;
 
 export { type CommentUpdateDto };

@@ -1,7 +1,7 @@
 import { createSlice, isAnyOf } from '@reduxjs/toolkit';
 
 import { DataStatus } from '~/libs/enums/enums.js';
-import { conditionallyDeleteOrUpdate } from '~/libs/helpers/helpers.js';
+import { deleteOrUpdateConditionally } from '~/libs/helpers/helpers.js';
 import { type ValueOf } from '~/libs/types/types.js';
 import {
   type ArticleImprovementSuggestion,
@@ -53,7 +53,7 @@ type State = {
   articleReactionDataStatus: ValueOf<typeof DataStatus>;
   getArticleStatus: ValueOf<typeof DataStatus>;
   saveArticleStatus: ValueOf<typeof DataStatus>;
-  showFavourites: boolean;
+  shouldShowFavourites: boolean;
   improvementSuggestions: ArticleImprovementSuggestion[] | null;
   improvementSuggestionsDataStatus: ValueOf<typeof DataStatus>;
   articleIdByToken: number | null;
@@ -72,7 +72,7 @@ const initialState: State = {
   articleComments: [],
   articles: [],
   genres: [],
-  showFavourites: false,
+  shouldShowFavourites: false,
   improvementSuggestions: null,
   dataStatus: DataStatus.IDLE,
   fetchArticleCommentsDataStatus: DataStatus.IDLE,
@@ -124,7 +124,7 @@ const { reducer, actions, name } = createSlice({
     });
 
     builder.addCase(setShowFavourites, (state, action) => {
-      state.showFavourites = action.payload;
+      state.shouldShowFavourites = action.payload;
     });
 
     builder.addCase(deleteArticle.fulfilled, (state, action) => {
@@ -260,10 +260,10 @@ const { reducer, actions, name } = createSlice({
     builder.addCase(toggleIsFavourite.fulfilled, (state, action) => {
       const article = action.payload;
       if (article) {
-        state.articles = conditionallyDeleteOrUpdate({
+        state.articles = deleteOrUpdateConditionally({
           items: state.articles,
           itemToDeleteOrUpdate: article,
-          hasToDelete: !article.isFavourite && state.showFavourites,
+          hasToDelete: !article.isFavourite && state.shouldShowFavourites,
         });
         state.dataStatus = DataStatus.FULFILLED;
       }

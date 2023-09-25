@@ -1,4 +1,4 @@
-import { safeJSONParse } from '~/libs/helpers/helpers.js';
+import { parseJSONSafely } from '~/libs/helpers/helpers.js';
 import { type ArticleImprovementSuggestion } from '~/packages/articles/articles.js';
 
 const parseImprovementSuggestionsJSON = (
@@ -9,7 +9,7 @@ const parseImprovementSuggestionsJSON = (
   }
 
   return (
-    safeJSONParse<Record<string, ArticleImprovementSuggestion[]>>(
+    parseJSONSafely<Record<string, ArticleImprovementSuggestion[]>>(
       suggestionsJSON,
     ) ?? {}
   );
