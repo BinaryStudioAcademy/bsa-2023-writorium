@@ -1,17 +1,17 @@
-import { type ChangeEvent, type FC } from 'react';
-
 import {
   Avatar,
   ErrorMessage,
   Icon,
   IconButton,
 } from '~/libs/components/components.js';
-import { getValidClassNames } from '~/libs/helpers/helpers.js';
+import { FILE_KEY } from '~/libs/constants/constants.js';
+import { getFullName, getValidClassNames } from '~/libs/helpers/helpers.js';
 import { useAppDispatch, useCallback, useState } from '~/libs/hooks/hooks.js';
+import { type ReactChangeEvent } from '~/libs/types/types.js';
 import { type UserAuthResponseDto } from '~/packages/users/users.js';
-import { SUPPORTED_FILE_TYPES_STRING } from '~/pages/profile/libs/constants/constants.js';
 import { actions as filesActions } from '~/slices/file/file.js';
 
+import { SUPPORTED_FILE_TYPES_STRING } from '../../libs/constants/constants.js';
 import styles from './styles.module.scss';
 
 type Properties = {
@@ -23,7 +23,7 @@ type Properties = {
   onErrorUpload: (value: string | null) => void;
 };
 
-const AvatarWrapper: FC<Properties> = ({
+const AvatarWrapper: React.FC<Properties> = ({
   user,
   errorImageUpload,
   onRemoveAvatar,
@@ -34,12 +34,12 @@ const AvatarWrapper: FC<Properties> = ({
   const [previewUrl, setPreviewUrl] = useState<string | null>(user.avatarUrl);
 
   const handleUploadUserAvatar = useCallback(
-    (event_: ChangeEvent<HTMLInputElement>): void => {
+    (event_: ReactChangeEvent<HTMLInputElement>): void => {
       const [image] = event_.target.files ?? [];
 
       if (image) {
         const formData = new FormData();
-        formData.append('file', image);
+        formData.append(FILE_KEY, image);
 
         void dispatch(filesActions.uploadFile(formData))
           .unwrap()
@@ -66,7 +66,7 @@ const AvatarWrapper: FC<Properties> = ({
     <div className={styles.imageGroup}>
       <label className={styles.imageWrapper} htmlFor="avatarId">
         <Avatar
-          username={`${user.firstName} ${user.lastName}`}
+          username={getFullName(user.firstName, user.lastName)}
           avatarUrl={previewUrl}
           className={styles.avatar}
         />

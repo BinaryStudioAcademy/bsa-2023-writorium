@@ -1,5 +1,5 @@
 import { Button, Input, TextEditor } from '~/libs/components/components.js';
-import { ButtonType, DataStatus } from '~/libs/enums/enums.js';
+import { DataStatus } from '~/libs/enums/enums.js';
 import {
   useAppDispatch,
   useAppForm,
@@ -192,14 +192,14 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
       <div className={styles.buttonWrapper}>
         <Button
           variant="outlined"
-          type={ButtonType.RESET}
+          type="reset"
           label="Cancel"
           className={styles.cancelBtn}
           disabled={isPublishLoading || isSaveDraftLoading}
         />
         <Button
           variant="outlined"
-          type={ButtonType.SUBMIT}
+          type="submit"
           label="Save draft"
           name="draft"
           isLoading={isSaveDraftLoading}
@@ -210,7 +210,7 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
           name="publish"
           label="Publish"
           isLoading={isPublishLoading}
-          type={ButtonType.SUBMIT}
+          type="submit"
           className={styles.publishBtn}
           disabled={(!isDirty && !isDraft) || isSaveDraftLoading}
         />

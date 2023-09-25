@@ -1,8 +1,6 @@
-import { type BaseSyntheticEvent, type FC } from 'react';
-
 import { Button, Input } from '~/libs/components/components.js';
-import { ButtonType } from '~/libs/enums/enums.js';
 import { useAppForm, useCallback } from '~/libs/hooks/hooks.js';
+import { type ReactBaseSyntheticEvent } from '~/libs/types/types.js';
 import {
   type CommentBaseRequestDto,
   commentCreateValidationSchema,
@@ -13,7 +11,7 @@ type Properties = {
   onSubmit: (payload: Omit<CommentBaseRequestDto, 'articleId'>) => void;
 };
 
-const CommentForm: FC<Properties> = ({ onSubmit, isLoading }) => {
+const CommentForm: React.FC<Properties> = ({ onSubmit, isLoading }) => {
   const { control, errors, handleSubmit, handleReset, isDirty } = useAppForm<
     Omit<CommentBaseRequestDto, 'articleId'>
   >({
@@ -24,7 +22,7 @@ const CommentForm: FC<Properties> = ({ onSubmit, isLoading }) => {
   });
 
   const handleCreateComment = useCallback(
-    (event_: BaseSyntheticEvent): void => {
+    (event_: ReactBaseSyntheticEvent): void => {
       void handleSubmit(onSubmit)(event_);
       handleReset();
     },
@@ -44,7 +42,7 @@ const CommentForm: FC<Properties> = ({ onSubmit, isLoading }) => {
         label="Send"
         disabled={!isDirty}
         isLoading={isLoading}
-        type={ButtonType.SUBMIT}
+        type="submit"
       />
     </form>
   );

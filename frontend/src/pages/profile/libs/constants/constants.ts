@@ -1,7 +1,4 @@
-import { SUPPORTED_FILE_TYPES } from '~/libs/constants/constants.js';
-
-const SUPPORTED_FILE_TYPES_STRING = SUPPORTED_FILE_TYPES.join(', ');
-
 const NUMBER_OF_ACHIEVEMENTS_TO_DISPLAY = 3;
 
-export { NUMBER_OF_ACHIEVEMENTS_TO_DISPLAY, SUPPORTED_FILE_TYPES_STRING };
+export { NUMBER_OF_ACHIEVEMENTS_TO_DISPLAY };
+export { SUPPORTED_FILE_TYPES_STRING } from '~/libs/constants/constants.js';

@@ -3,7 +3,7 @@ export { type ArticleCreateDto } from './article-create-dto.type.js';
 export { type ArticleEntityType } from './article-entity.type.js';
 export { type ArticleGenreStatsFilters } from './article-genre-stats-filters.type.js';
 export { type ArticleGetAllResponseDto } from './article-get-all-response-dto.type.js';
-export { type ArticleGetImprovementSuggestionsResponseDto } from './article-get-improvement-suggestions-response-dto.js';
+export { type ArticleGetImprovementSuggestionsResponseDto } from './article-get-improvement-suggestions-response-dto.type.js';
 export { type ArticleImprovementSuggestion } from './article-improvement-suggestion.type.js';
 export { type ArticleRequestDto } from './article-request-dto.type.js';
 export { type ArticleResponseDto } from './article-response-dto.type.js';

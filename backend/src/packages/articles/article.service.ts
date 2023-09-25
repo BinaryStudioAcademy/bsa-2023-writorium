@@ -28,7 +28,11 @@ import { type GenreRepository } from '../genres/genre.repository.js';
 import { type UserAuthResponseDto } from '../users/users.js';
 import { ArticleEntity } from './article.entity.js';
 import { type ArticleRepository } from './article.repository.js';
-import { INDEX_INCREMENT, SHARED_$TOKEN } from './libs/constants/constants.js';
+import {
+  FIRST_ELEMENT_ARRAY_INDEX,
+  INDEX_INCREMENT,
+  SHARED_$TOKEN,
+} from './libs/constants/constants.js';
 import { ArticleSocketEvent, DateFormat } from './libs/enums/enums.js';
 import {
   getArticleImprovementSuggestionsCompletionConfig,
@@ -107,10 +111,11 @@ class ArticleService implements IService {
 
     const parsedGenres = safeJSONParse<DetectedArticleGenre[]>(genresJSON);
 
-    const FIRST_ITEM_INDEX = 0;
-
-    if (Array.isArray(parsedGenres) && parsedGenres[FIRST_ITEM_INDEX]) {
-      return parsedGenres[FIRST_ITEM_INDEX];
+    if (
+      Array.isArray(parsedGenres) &&
+      parsedGenres[FIRST_ELEMENT_ARRAY_INDEX]
+    ) {
+      return parsedGenres[FIRST_ELEMENT_ARRAY_INDEX];
     }
 
     return null;
@@ -330,7 +335,7 @@ class ArticleService implements IService {
 
     if (!suggestions) {
       throw new ApplicationError({
-        message: 'Failed to generate improvement suggestions for article',
+        message: ExceptionMessage.FAILED_TO_GENERATE_IMPROVEMENT_SUGGESTIONS,
       });
     }
 
@@ -464,7 +469,9 @@ class ArticleService implements IService {
     }
 
     if (article.userId !== user.id) {
-      throw new ForbiddenError('Article can be edited only by author!');
+      throw new ForbiddenError(
+        ExceptionMessage.ARTICLE_CAN_BE_EDITED_ONLY_BY_AUTHOR,
+      );
     }
 
     let updatedGenreId = payload.genreId ?? article.genreId;
@@ -566,7 +573,9 @@ class ArticleService implements IService {
     }
 
     if (article.userId !== userId) {
-      throw new ForbiddenError('Article can be deleted only by author!');
+      throw new ForbiddenError(
+        ExceptionMessage.ARTICLE_CAN_BE_EDITED_ONLY_BY_AUTHOR,
+      );
     }
 
     const deletedArticle = await this.articleRepository.delete(id);
@@ -584,7 +593,7 @@ class ArticleService implements IService {
     );
     if (!toggleResult) {
       throw new ApplicationError({
-        message: 'Unable to update article status',
+        message: ExceptionMessage.UNABLE_TO_UPDATE_ARTICLE_STATUS,
       });
     }
 

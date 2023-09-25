@@ -3,15 +3,15 @@ import {
   Button,
   IconButton,
 } from '~/libs/components/components.js';
-import { DataStatus } from '~/libs/enums/data-status.enum.js';
-import { DataTooltipId } from '~/libs/enums/enums.js';
+import { DataStatus, DataTooltipId } from '~/libs/enums/enums.js';
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
 import {
   useAppDispatch,
   useAppSelector,
   useCallback,
 } from '~/libs/hooks/hooks.js';
-import { PromptCategory } from '~/packages/prompts/libs/enums/enums.js';
+import { type ReactMouseEvent } from '~/libs/types/types.js';
+import { PromptCategory } from '~/packages/prompts/prompts.js';
 import { actions as promptsActions } from '~/slices/prompts/prompts.js';
 
 import { PromptCard } from './libs/components/components.js';
@@ -32,7 +32,7 @@ const PromptGeneration: React.FC<Properties> = ({ containerStyle }) => {
   const dispatch = useAppDispatch();
 
   const handlePromptGenerate = useCallback(
-    (event: React.MouseEvent<HTMLButtonElement>) => {
+    (event: ReactMouseEvent<HTMLButtonElement>) => {
       event.stopPropagation();
       void dispatch(promptsActions.generatePrompt());
     },
@@ -40,7 +40,7 @@ const PromptGeneration: React.FC<Properties> = ({ containerStyle }) => {
   );
 
   const handleResetPrompt = useCallback(
-    (event: React.MouseEvent<HTMLButtonElement>) => {
+    (event: ReactMouseEvent<HTMLButtonElement>) => {
       event.stopPropagation();
       dispatch(promptsActions.resetPrompts());
     },

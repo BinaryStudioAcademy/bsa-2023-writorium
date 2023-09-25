@@ -1,5 +1,3 @@
-import { type FC } from 'react';
-
 import {
   ElementWithTooltip,
   type ElementWithTooltipProperties,
@@ -7,7 +5,10 @@ import {
 
 type Properties = Omit<ElementWithTooltipProperties, 'elementType'>;
 
-const BlockWithTooltip: FC<Properties> = ({ children, ...restProperties }) => (
+const BlockWithTooltip: React.FC<Properties> = ({
+  children,
+  ...restProperties
+}) => (
   <ElementWithTooltip {...restProperties} elementType="div">
     {children}
   </ElementWithTooltip>

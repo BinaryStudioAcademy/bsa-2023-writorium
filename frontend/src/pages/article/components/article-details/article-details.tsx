@@ -1,5 +1,3 @@
-import { type FC } from 'react';
-
 import { Avatar, Button, Icon } from '~/libs/components/components.js';
 import { DateFormat, FollowStatus } from '~/libs/enums/enums.js';
 import {
@@ -23,7 +21,7 @@ type Properties = {
   isShared?: boolean;
 };
 
-const ArticleDetails: FC<Properties> = ({
+const ArticleDetails: React.FC<Properties> = ({
   authorName,
   authorFollowers,
   publishedAt,

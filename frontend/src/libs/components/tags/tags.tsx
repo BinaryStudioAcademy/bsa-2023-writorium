@@ -3,14 +3,13 @@ import { DataTooltipId } from '~/libs/enums/enums.js';
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
 import { type TagType } from '~/libs/types/types.js';
 
+import { TOOLTIP_OFFSET } from './libs/constants/constants.js';
 import styles from './styles.module.scss';
 
 type Properties = {
   className?: string;
   tags: TagType[];
 };
-
-const TOOLTIP_OFFSET = 2;
 
 const Tags: React.FC<Properties> = ({ className, tags }) => (
   <ul className={getValidClassNames(styles.tags, className)}>

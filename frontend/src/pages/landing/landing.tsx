@@ -1,6 +1,4 @@
-import { type FC } from 'react';
-
-import backgroundLetters from '~/assets/img/background-leters.png';
+import backgroundLetters from '~/assets/img/background-letters.png';
 import backgroundTypewriter from '~/assets/img/background-typewriter.jpg';
 import { Link } from '~/libs/components/components.js';
 import { AppRoute } from '~/libs/enums/enums.js';
@@ -14,7 +12,7 @@ import {
 
 import styles from './styles.module.scss';
 
-const Landing: FC = () => {
+const Landing: React.FC = () => {
   const { x, y } = useMousePosition();
 
   const lettersElementReference = useReference<HTMLImageElement | null>(null);

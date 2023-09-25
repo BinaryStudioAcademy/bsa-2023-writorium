@@ -3,7 +3,10 @@ import { useEffect, useState } from '../react/react.js';
 type ReturnValue = { x: number; y: number };
 
 const useMousePosition = (): ReturnValue => {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [mousePosition, setMousePosition] = useState({
+    x: 0,
+    y: 0,
+  });
 
   useEffect(() => {
     const updateMousePosition = (event: MouseEvent): void => {
