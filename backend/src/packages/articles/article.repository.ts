@@ -213,6 +213,7 @@ class ArticleRepository implements IArticleRepository {
       .query()
       .insert(payload)
       .withGraphFetched(this.defaultRelationExpression)
+      .withGraphFetched('reactions')
       .modifyGraph('reactions', this.modifyReactionsGraph)
       .returning('*');
 
@@ -286,6 +287,7 @@ class ArticleRepository implements IArticleRepository {
       .patchAndFetchById(id, payload)
       .select(`${DatabaseTableName.ARTICLES}.*`, this.getCommentsCountQuery())
       .withGraphFetched(this.defaultRelationExpression)
+      .withGraphFetched('reactions')
       .modifyGraph('reactions', this.modifyReactionsGraph)
       .castTo<ArticleModel & ArticleCounts>();
 
