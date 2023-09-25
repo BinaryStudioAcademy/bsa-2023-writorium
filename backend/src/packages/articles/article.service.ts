@@ -435,13 +435,33 @@ class ArticleService implements IService {
       }),
     );
 
-    const socketEventPayload: ArticleSocketEventPayload[typeof ArticleSocketEvent.NEW_ARTICLE] =
-      article.toObjectWithRelationsAndCounts();
-
-    this.socketService.io
+    const activeSockets = await this.socketService.io
       .of(SocketNamespace.ARTICLES)
-      .to(SocketRoom.ARTICLES_FEED)
-      .emit(ArticleSocketEvent.NEW_ARTICLE, socketEventPayload);
+      .in(SocketRoom.ARTICLES_FEED)
+      .fetchSockets();
+
+    const authorFollowers = await this.followRepository.findAuthorFollowers(
+      payload.userId,
+    );
+
+    const authorFollowersIds = new Set(
+      authorFollowers.map(({ userId }) => userId),
+    );
+
+    for (const activeSocket of activeSockets) {
+      const socketUserId = Number(activeSocket.handshake.query.userId);
+
+      const socketEventPayload: ArticleSocketEventPayload[typeof ArticleSocketEvent.NEW_ARTICLE] =
+        {
+          article: article.toObjectWithRelationsAndCounts(),
+          isByFollowingAuthor: authorFollowersIds.has(socketUserId),
+        };
+
+      this.socketService.io
+        .of(SocketNamespace.ARTICLES)
+        .to(SocketRoom.ARTICLES_FEED)
+        .emit(ArticleSocketEvent.NEW_ARTICLE, socketEventPayload);
+    }
 
     const countOfOwnArticles =
       await this.articleRepository.countArticlesByUserId(payload.userId);
