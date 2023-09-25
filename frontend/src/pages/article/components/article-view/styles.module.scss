@@ -6,9 +6,22 @@
   border-radius: 10px;
 }
 
+.body:not(.hasCover) {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
 .coverWrapper {
   position: relative;
   padding: 16px 15px 0 14px;
+}
+
+.cover {
+  width: 100%;
+  height: 100%;
+  max-height: 337px;
+  object-fit: cover;
+  border-radius: 10px;
 }
 
 .buttonsWrapper {
@@ -23,40 +36,9 @@
   height: 90%;
 }
 
-.textWrapper {
-  padding: 18px 33px 62px;
-}
-
-.body:not(.hasCover) {
-  display: flex;
-  flex-direction: row-reverse;
-}
-
-.body:not(.hasCover) .textWrapper {
-  padding-top: 40px;
-}
-
 .body:not(.hasCover) .buttonsWrapper {
   position: static;
   justify-content: flex-start;
-}
-
-.cover {
-  width: 100%;
-  height: 100%;
-  max-height: 337px;
-  object-fit: cover;
-  border-radius: 10px;
-}
-
-.icon {
-  width: 20px;
-  height: 20px;
-}
-
-.body.hasCover .icon {
-  width: 15px;
-  height: 15px;
 }
 
 .iconButton {
@@ -75,12 +57,37 @@
   background-color: var(--light-gray);
 }
 
+.icon {
+  width: 20px;
+  height: 20px;
+}
+
+.body.hasCover .icon {
+  width: 15px;
+  height: 15px;
+}
+
 .facebookIconButton {
   padding: 5px;
 }
 
 .body:not(.hasCover) .facebookIconButton {
   padding: 0;
+}
+
+.authorName {
+  display: none;
+  padding: 20px 33px 0;
+  font-size: 16px;
+}
+
+.textWrapper {
+  flex-grow: 1;
+  padding: 18px 33px 62px;
+}
+
+.body:not(.hasCover) .textWrapper {
+  padding-top: 40px;
 }
 
 .title {
@@ -93,13 +100,17 @@
 }
 
 .text {
-  max-width: 586px;
+  width: 100%;
   margin: 28px auto 0;
   color: var(--dark-gray);
   font-weight: 400;
   font-size: 18px;
   line-height: 145%;
   word-break: break-word;
+}
+
+.text p:not(:last-child) {
+  margin-block-end: 10px;
 }
 
 .reactionButtonsWrapper {
@@ -130,12 +141,6 @@
   color: var(--light-green);
 }
 
-.presentationAuthorName {
-  display: none;
-  padding: 20px 33px 0;
-  font-size: 16px;
-}
-
 .onlyForPrint {
   display: none;
 }
@@ -150,6 +155,11 @@
 
   .body:not(.hasCover) .textWrapper {
     padding-top: 18px;
+  }
+
+  .iconButton {
+    width: 25px;
+    height: 25px;
   }
 
   .title {
@@ -190,7 +200,7 @@
     padding-top: 18px;
   }
 
-  .presentationAuthorName {
+  .authorName {
     font-size: 18px;
   }
 
@@ -237,7 +247,7 @@
     margin-bottom: 5px;
   }
 
-  .presentationAuthorName {
+  .authorName {
     display: block;
   }
 

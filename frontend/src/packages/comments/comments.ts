@@ -11,10 +11,12 @@ const commentsApi = new CommentsApi({
 });
 
 export { commentsApi };
+export { CommentsSocketEvent } from './libs/enums/enums.js';
 export {
   type CommentBaseRequestDto,
   type CommentBaseResponseDto,
   type CommentGetAllResponseDto,
+  type CommentsSocketEventPayload,
   type CommentUpdateDto,
   type CommentUpdateRequestDto,
   type CommentWithRelationsResponseDto,

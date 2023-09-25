@@ -44,6 +44,7 @@
     "pino": "8.15.0",
     "pino-pretty": "10.2.0",
     "pug": "3.0.2",
+    "socket.io": "4.7.2",
     "swagger-jsdoc": "6.2.8"
   },
   "devDependencies": {

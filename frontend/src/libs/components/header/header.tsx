@@ -31,12 +31,10 @@ const Header: React.FC<Properties> = ({ user }) => {
           <Link to={AppRoute.ARTICLES}>
             <Icon iconName="writoriumLogo" className={styles.logo} />
           </Link>
-
           <div className={styles.rightSide}>
             <Link to={AppRoute.CREATE_ARTICLE} className={styles.writeLink}>
               Write
             </Link>
-
             <Popover
               content={
                 <>
@@ -50,6 +48,7 @@ const Header: React.FC<Properties> = ({ user }) => {
                     Profile
                   </Link>
                   <Button
+                    variant="text"
                     type="button"
                     name="Logout"
                     label="Logout"

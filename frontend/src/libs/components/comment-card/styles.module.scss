@@ -43,17 +43,6 @@
   border-radius: 50%;
 }
 
-.iconWrapper {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-.shareIcon,
-.linkIcon {
-  cursor: pointer;
-}
-
 .text {
   max-width: 735px;
   color: var(--dark-gray);

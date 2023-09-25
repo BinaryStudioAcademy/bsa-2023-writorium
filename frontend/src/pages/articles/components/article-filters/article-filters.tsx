@@ -1,6 +1,11 @@
 import { matchPath } from 'react-router-dom';
 
-import { Button, Input, ToggleCheckbox } from '~/libs/components/components.js';
+import {
+  Button,
+  Icon,
+  Input,
+  ToggleCheckbox,
+} from '~/libs/components/components.js';
 import { Select } from '~/libs/components/select/select.js';
 import { AppRoute } from '~/libs/enums/enums.js';
 import {
@@ -9,26 +14,30 @@ import {
   useDeepCompareEffect,
   useLocation,
 } from '~/libs/hooks/hooks.js';
-import { type SelectOption } from '~/libs/types/select-option.type.js';
+import { type SelectOption } from '~/libs/types/types.js';
 
 import { type FilterFormValues } from '../../libs/types/types.js';
-import { DEFAULT_FILTER_PAYLOAD } from './libs/constants/constants.js';
+import {
+  DEFAULT_FILTER_PAYLOAD,
+  FILTERS_FORM_SUBMISSION_DELAY,
+} from './libs/constants/constants.js';
 import styles from './styles.module.scss';
 
 type Properties = {
   genreSelectOptions: SelectOption[];
   authorsSelectOptions: SelectOption[];
   onSubmit: (payload: FilterFormValues) => void;
+  currentFilters?: FilterFormValues;
 };
 
 const ArticleFilters: React.FC<Properties> = ({
   genreSelectOptions,
   authorsSelectOptions,
   onSubmit,
+  currentFilters,
 }) => {
-  const FILTERS_FORM_SUBMISSION_DELAY = 500;
   const { control, errors, watch, handleReset } = useAppForm<FilterFormValues>({
-    defaultValues: DEFAULT_FILTER_PAYLOAD,
+    defaultValues: currentFilters ?? DEFAULT_FILTER_PAYLOAD,
     mode: 'onChange',
   });
   const { pathname } = useLocation();
@@ -56,13 +65,14 @@ const ArticleFilters: React.FC<Properties> = ({
       <div className={styles.title}>
         <span className={styles.filterTitle}>Filter</span>
         <Button
-          className={styles.clearFilters}
+          size="small"
+          variant="outlined"
           label="Clear filters"
           onClick={formReset}
         />
       </div>
-      <form className={styles.form} name="FiltersForm">
-        <div className={styles.filterGroup}>
+      <form className={styles.filterGroup} name="FiltersForm">
+        <div className={styles.inputWrapper}>
           <Input
             name="titleFilter"
             type="text"
@@ -73,32 +83,32 @@ const ArticleFilters: React.FC<Properties> = ({
             control={control}
             errors={errors}
           />
-          {!isMyArticlesPage && (
-            <Select
-              name="authorId"
-              placeholder="Search..."
-              label="Author"
-              control={control}
-              errors={errors}
-              options={authorsSelectOptions}
-            />
-          )}
-
-          <Select
-            name="genreId"
-            placeholder="Search..."
-            label="Genre"
-            options={genreSelectOptions}
-            control={control}
-            errors={errors}
-          />
-          <ToggleCheckbox
-            name="showFavourites"
-            control={control}
-            errors={errors}
-            label="Show only favourite articles"
-          />
+          <Icon iconName="search" className={styles.searchIcon} />
         </div>
+        {!isMyArticlesPage && (
+          <Select
+            name="authorId"
+            placeholder="Search..."
+            label="Author"
+            control={control}
+            errors={errors}
+            options={authorsSelectOptions}
+          />
+        )}
+        <Select
+          name="genreId"
+          placeholder="Search..."
+          label="Genre"
+          options={genreSelectOptions}
+          control={control}
+          errors={errors}
+        />
+        <ToggleCheckbox
+          name="showFavourites"
+          control={control}
+          errors={errors}
+          label="Show only favorite articles"
+        />
       </form>
     </div>
   );

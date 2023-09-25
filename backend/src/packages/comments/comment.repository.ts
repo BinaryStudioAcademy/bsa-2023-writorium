@@ -101,6 +101,10 @@ class CommentRepository implements IRepository {
     });
   }
 
+  public countCommentsByUserId(userId: number): Promise<number> {
+    return this.commentModel.query().where({ userId }).resultSize();
+  }
+
   public delete(): Promise<boolean> {
     return Promise.resolve(false);
   }
