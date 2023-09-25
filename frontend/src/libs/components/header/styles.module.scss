@@ -84,8 +84,13 @@ img.avatar:hover {
 }
 
 @media only screen and (max-width: breakpoints.$medium) {
-  .writeButton {
+  .writeLink {
     display: none;
+  }
+
+  .header {
+    height: 80px;
+    padding: 15px 30px;
   }
 
   .popoverWriteLink {
@@ -103,6 +108,22 @@ img.avatar:hover {
   .popoverWriteLink:hover {
     background-color: var(--light-gray-15);
     border-color: var(--light-green);
+  }
+}
+
+@media only screen and (max-width: breakpoints.$small) {
+  .header {
+    height: 55px;
+    padding: 15px 30px;
+  }
+
+  .logo {
+    width: 150px;
+  }
+
+  .avatar {
+    width: 30px;
+    height: 30px;
   }
 }
 
