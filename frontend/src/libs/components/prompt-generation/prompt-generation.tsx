@@ -1,5 +1,10 @@
-import { Button, IconButton } from '~/libs/components/components.js';
+import {
+  BlockWithTooltip,
+  Button,
+  IconButton,
+} from '~/libs/components/components.js';
 import { DataStatus } from '~/libs/enums/data-status.enum.js';
+import { DataTooltipId } from '~/libs/enums/enums.js';
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
 import {
   useAppDispatch,
@@ -47,12 +52,19 @@ const PromptGeneration: React.FC<Properties> = ({ containerStyle }) => {
       <div className={styles.promptsContainer}>
         <ul className={styles.prompts}>
           {Object.values(PromptCategory).map((category) => (
-            <PromptCard
+            <BlockWithTooltip
+              tooltipContent={generatedPrompt?.[category] ?? ''}
+              placement="top"
+              tooltipId={DataTooltipId.MAIN_TOOLTIP}
+              className={styles.minWidth}
               key={category}
-              category={category}
-              text={generatedPrompt?.[category] ?? ''}
-              isGenerating={isGenerating}
-            />
+            >
+              <PromptCard
+                category={category}
+                text={generatedPrompt?.[category] ?? ''}
+                isGenerating={isGenerating}
+              />
+            </BlockWithTooltip>
           ))}
           <Button
             size="small"

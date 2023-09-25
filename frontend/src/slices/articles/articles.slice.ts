@@ -48,7 +48,7 @@ type State = {
   articles: ArticleWithCountsResponseDto[];
   dataStatus: ValueOf<typeof DataStatus>;
   genres: GenreGetAllResponseDto['items'];
-  articleCommentsDataStatus: ValueOf<typeof DataStatus>;
+  fetchArticleCommentsDataStatus: ValueOf<typeof DataStatus>;
   articleReactionDataStatus: ValueOf<typeof DataStatus>;
   getArticleStatus: ValueOf<typeof DataStatus>;
   saveArticleStatus: ValueOf<typeof DataStatus>;
@@ -57,6 +57,7 @@ type State = {
   improvementSuggestionsDataStatus: ValueOf<typeof DataStatus>;
   articleIdByToken: number | null;
   articleIdByTokenDataStatus: ValueOf<typeof DataStatus>;
+  createCommentDataStatus: ValueOf<typeof DataStatus>;
 };
 
 const initialState: State = {
@@ -68,12 +69,13 @@ const initialState: State = {
   showFavourites: false,
   improvementSuggestions: null,
   dataStatus: DataStatus.IDLE,
-  articleCommentsDataStatus: DataStatus.IDLE,
+  fetchArticleCommentsDataStatus: DataStatus.IDLE,
   saveArticleStatus: DataStatus.IDLE,
   articleReactionDataStatus: DataStatus.IDLE,
   getArticleStatus: DataStatus.IDLE,
   improvementSuggestionsDataStatus: DataStatus.IDLE,
   articleIdByTokenDataStatus: DataStatus.IDLE,
+  createCommentDataStatus: DataStatus.IDLE,
 };
 
 const { reducer, actions, name } = createSlice({
@@ -86,7 +88,8 @@ const { reducer, actions, name } = createSlice({
     },
     resetComments(state) {
       state.articleComments = initialState.articleComments;
-      state.articleCommentsDataStatus = DataStatus.IDLE;
+      state.fetchArticleCommentsDataStatus = DataStatus.IDLE;
+      state.createCommentDataStatus = DataStatus.IDLE;
     },
     resetArticleIdByToken(state) {
       state.articleIdByToken = initialState.articleIdByToken;
@@ -222,12 +225,26 @@ const { reducer, actions, name } = createSlice({
 
     builder.addCase(createComment.fulfilled, (state, action) => {
       state.articleComments = [action.payload, ...state.articleComments];
-      state.articleCommentsDataStatus = DataStatus.FULFILLED;
+      state.createCommentDataStatus = DataStatus.FULFILLED;
     });
+    builder.addCase(createComment.pending, (state) => {
+      state.createCommentDataStatus = DataStatus.PENDING;
+    });
+    builder.addCase(createComment.rejected, (state) => {
+      state.createCommentDataStatus = DataStatus.REJECTED;
+    });
+
     builder.addCase(fetchAllCommentsToArticle.fulfilled, (state, action) => {
       state.articleComments = action.payload.items;
-      state.articleCommentsDataStatus = DataStatus.FULFILLED;
+      state.fetchArticleCommentsDataStatus = DataStatus.FULFILLED;
     });
+    builder.addCase(fetchAllCommentsToArticle.pending, (state) => {
+      state.fetchArticleCommentsDataStatus = DataStatus.PENDING;
+    });
+    builder.addCase(fetchAllCommentsToArticle.rejected, (state) => {
+      state.fetchArticleCommentsDataStatus = DataStatus.REJECTED;
+    });
+
     builder.addCase(addComment.fulfilled, (state, action) => {
       if (action.payload) {
         state.articleComments = [action.payload, ...state.articleComments];
@@ -251,7 +268,6 @@ const { reducer, actions, name } = createSlice({
       state.articleComments = state.articleComments.map((comment) => {
         return comment.id === updatedComment.id ? updatedComment : comment;
       });
-      state.articleCommentsDataStatus = DataStatus.FULFILLED;
     });
     builder.addCase(geArticleIdByToken.rejected, (state) => {
       state.articleIdByTokenDataStatus = DataStatus.REJECTED;
@@ -291,26 +307,7 @@ const { reducer, actions, name } = createSlice({
         state.improvementSuggestionsDataStatus = DataStatus.REJECTED;
       },
     );
-    builder.addMatcher(
-      isAnyOf(
-        createComment.pending,
-        fetchAllCommentsToArticle.pending,
-        updateComment.pending,
-      ),
-      (state) => {
-        state.articleCommentsDataStatus = DataStatus.PENDING;
-      },
-    );
-    builder.addMatcher(
-      isAnyOf(
-        createComment.rejected,
-        fetchAllCommentsToArticle.rejected,
-        updateComment.rejected,
-      ),
-      (state) => {
-        state.articleCommentsDataStatus = DataStatus.REJECTED;
-      },
-    );
+
     builder.addMatcher(
       isAnyOf(fetchAll.fulfilled, fetchOwn.fulfilled),
       (state, action) => {

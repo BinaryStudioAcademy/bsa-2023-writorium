@@ -36,9 +36,17 @@ const ArticleDetails: FC<Properties> = ({
   onFollow,
   isShared = false,
 }) => {
+  const shouldDisplayFollowButton = !isArticleOwner && !isShared;
   return (
     <div className={getValidClassNames(styles.container, containerStyle)}>
-      <div className={styles.authorWrapper}>
+      <div
+        className={getValidClassNames(
+          styles.authorWrapper,
+          shouldDisplayFollowButton
+            ? styles.templateFollowButton
+            : styles.templateOwnArticle,
+        )}
+      >
         <div className={styles.avatarWrapper}>
           <Avatar username={authorName} avatarUrl={avatarUrl} />
         </div>
@@ -50,7 +58,7 @@ const ArticleDetails: FC<Properties> = ({
             following
           </li>
         </ul>
-        {!isArticleOwner && !isShared && (
+        {shouldDisplayFollowButton && (
           <Button
             size="small"
             onClick={onFollow}
@@ -72,7 +80,9 @@ const ArticleDetails: FC<Properties> = ({
             </li>
             {readTime && (
               <li className={styles.articleInfoItem}>
-                <span className={styles.articleReadTimeValue}>{readTime}</span>
+                <span
+                  className={styles.articleReadTimeValue}
+                >{`${readTime} `}</span>
                 min read
               </li>
             )}
