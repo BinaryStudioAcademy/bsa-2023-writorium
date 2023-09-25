@@ -3,5 +3,4 @@ export {
   DEFAULT_PAGINATION_TAKE,
   INDEX_INCREMENT,
   RESET_PASSWORD_ROUTE,
-  ZERO_COUNT,
 } from 'shared/build/index.js';

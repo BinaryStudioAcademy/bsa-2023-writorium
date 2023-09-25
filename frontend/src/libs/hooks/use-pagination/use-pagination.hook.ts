@@ -1,5 +1,3 @@
-import { ZERO_COUNT } from '~/libs/constants/constants.js';
-
 import { useCallback, useReference, useState } from '../react/react.js';
 import {
   DEFAULT_PAGINATION_SKIP,
@@ -20,7 +18,7 @@ const usePagination = ({
     take: defaultTake,
   });
   const resetSkip = (): void => {
-    paginationParameters.current.skip = ZERO_COUNT;
+    paginationParameters.current.skip = 0;
     setHasMore(false);
   };
 

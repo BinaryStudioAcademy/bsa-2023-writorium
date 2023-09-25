@@ -1,4 +1,4 @@
-import { INDEX_INCREMENT, ZERO_COUNT } from '~/libs/constants/constants.js';
+import { INDEX_INCREMENT } from '~/libs/constants/constants.js';
 import { Reaction } from '~/libs/enums/enums.js';
 import { type ValueOf } from '~/libs/types/types.js';
 import { type ReactionResponseDto } from '~/packages/articles/articles.js';
@@ -33,8 +33,8 @@ const getReactionsInfo = (
       };
     },
     {
-      likesCount: ZERO_COUNT,
-      dislikesCount: ZERO_COUNT,
+      likesCount: 0,
+      dislikesCount: 0,
       hasAlreadyReactedWith: null,
     },
   );

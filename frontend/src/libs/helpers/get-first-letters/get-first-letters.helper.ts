@@ -1,4 +1,4 @@
-import { ZERO_COUNT as FIRST_ELEMENT_ARRAY_INDEX } from '~/libs/constants/constants.js';
+import { FIRST_ELEMENT_ARRAY_INDEX } from '~/libs/constants/constants.js';
 
 const getFirstLetters = (initialString: string): string => {
   return initialString

@@ -28,7 +28,11 @@ import { type GenreRepository } from '../genres/genre.repository.js';
 import { type UserAuthResponseDto } from '../users/users.js';
 import { ArticleEntity } from './article.entity.js';
 import { type ArticleRepository } from './article.repository.js';
-import { INDEX_INCREMENT, SHARED_$TOKEN } from './libs/constants/constants.js';
+import {
+  FIRST_ELEMENT_ARRAY_INDEX,
+  INDEX_INCREMENT,
+  SHARED_$TOKEN,
+} from './libs/constants/constants.js';
 import { ArticleSocketEvent, DateFormat } from './libs/enums/enums.js';
 import {
   getArticleImprovementSuggestionsCompletionConfig,
@@ -97,8 +101,6 @@ class ArticleService implements IService {
   private async detectArticleGenreFromText(
     text: string,
   ): Promise<DetectedArticleGenre | null> {
-    const FIRST_ITEM_INDEX = 0;
-
     const genresJSON = await this.openAIService.createCompletion(
       getDetectArticleGenreCompletionConfig(text),
     );
@@ -109,16 +111,17 @@ class ArticleService implements IService {
 
     const parsedGenres = safeJSONParse<DetectedArticleGenre[]>(genresJSON);
 
-    if (Array.isArray(parsedGenres) && parsedGenres[FIRST_ITEM_INDEX]) {
-      return parsedGenres[FIRST_ITEM_INDEX];
+    if (
+      Array.isArray(parsedGenres) &&
+      parsedGenres[FIRST_ELEMENT_ARRAY_INDEX]
+    ) {
+      return parsedGenres[FIRST_ELEMENT_ARRAY_INDEX];
     }
 
     return null;
   }
 
   private async getArticleReadTime(text: string): Promise<number | null> {
-    const READ_TIME_KEY = 'readTime';
-
     const readTimeJSON = await this.openAIService.createCompletion(
       getArticleReadTimeCompletionConfig(text),
     );
@@ -131,7 +134,7 @@ class ArticleService implements IService {
       safeJSONParse<{ readTime: number }>(readTimeJSON) ?? {};
 
     if (
-      READ_TIME_KEY in readTimeData &&
+      'readTime' in readTimeData &&
       typeof readTimeData.readTime === 'number'
     ) {
       return readTimeData.readTime;

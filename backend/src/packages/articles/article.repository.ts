@@ -7,7 +7,10 @@ import { type CommentModel } from '~/packages/comments/comment.model.js';
 import { ArticleEntity } from './article.entity.js';
 import { type ArticleModel } from './article.model.js';
 import { type FavouredUserArticlesModel } from './favoured-user-articles.model.js';
-import { ZERO_COUNT } from './libs/constants/constants.js';
+import {
+  EMPTY_COMMENT_COUNT,
+  EMPTY_VIEW_COUNT,
+} from './libs/constants/constants.js';
 import {
   getArticlePublishedStatusQuery,
   getIsFavouriteSubQuery,
@@ -230,9 +233,9 @@ class ArticleRepository implements IArticleRepository {
             prop: article.prompt.prop,
           }
         : null,
-      commentCount: ZERO_COUNT,
+      commentCount: EMPTY_COMMENT_COUNT,
       coverUrl: article.cover?.url ?? null,
-      viewCount: ZERO_COUNT,
+      viewCount: EMPTY_VIEW_COUNT,
     });
   }
 
