@@ -1,6 +1,6 @@
 import { Link } from '~/libs/components/components.js';
 import { AppRoute } from '~/libs/enums/enums.js';
-import { configureString, getValidClassNames } from '~/libs/helpers/helpers.js';
+import { getValidClassNames } from '~/libs/helpers/helpers.js';
 import {
   useAppDispatch,
   useAppSelector,
@@ -8,6 +8,7 @@ import {
 } from '~/libs/hooks/hooks.js';
 import { actions as articlesActions } from '~/slices/articles/articles.js';
 
+import { ArticleShortCard } from '../article-short-card/article-short-card.js';
 import { ownArticlesPaginationConfig } from './libs/enums/enums.js';
 import styles from './styles.module.scss';
 
@@ -35,22 +36,13 @@ const UserLatestArticles: React.FC<Properties> = ({ className }) => {
     <div className={getValidClassNames(className, styles.wrapper)}>
       <div>
         <h3 className={styles.listTitle}>Your latest articles</h3>
-        <ol>
+        <ul className={styles.articleList}>
           {articles.map((article) => (
-            <li key={article.id} className={styles.articleTitle}>
-              <Link
-                to={
-                  configureString(AppRoute.ARTICLES_$ID, {
-                    id: String(article.id),
-                  }) as typeof AppRoute.ARTICLES_$ID
-                }
-                className={styles.articleLink}
-              >
-                {article.title}
-              </Link>
+            <li key={article.id}>
+              <ArticleShortCard article={article} className={styles.article} />
             </li>
           ))}
-        </ol>
+        </ul>
       </div>
       <Link to={AppRoute.ARTICLES_MY_ARTICLES} className={styles.showAll}>
         Show all
