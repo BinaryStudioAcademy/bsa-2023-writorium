@@ -82,14 +82,13 @@
 
 .authorName {
   display: none;
-  align-items: center;
   font-size: 16px;
   transition: color 0.3s ease-in;
 }
 
 .infoIcon {
   position: relative;
-  top: -5px;
+  top: -3px;
 }
 
 .authorName:hover {
@@ -208,7 +207,7 @@
   }
 
   .infoIcon {
-    top: -8px;
+    top: -5px;
     width: 17px;
     height: 17px;
   }
@@ -247,7 +246,7 @@
   }
 
   .authorName {
-    display: flex;
+    display: block;
   }
 
   .articleDetailsContainer {
