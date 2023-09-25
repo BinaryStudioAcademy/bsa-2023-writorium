@@ -2,6 +2,7 @@ import { ReactComponent as ArrowDown } from '~/assets/img/icons/arrow-down-icon.
 import { ReactComponent as ArrowUp } from '~/assets/img/icons/arrow-up-icon.svg';
 import { ReactComponent as AutoFix } from '~/assets/img/icons/auto-fix-icon.svg';
 import { ReactComponent as Bell } from '~/assets/img/icons/bell-icon.svg';
+import { ReactComponent as Book } from '~/assets/img/icons/book-icon.svg';
 import { ReactComponent as Comment } from '~/assets/img/icons/comment-icon.svg';
 import { ReactComponent as CrossMark } from '~/assets/img/icons/cross-mark-icon.svg';
 import { ReactComponent as Dislike } from '~/assets/img/icons/dislike-icon.svg';
@@ -9,6 +10,7 @@ import { ReactComponent as ellipsisVertical } from '~/assets/img/icons/ellipsis-
 import { ReactComponent as Facebook } from '~/assets/img/icons/facebook-icon.svg';
 import { ReactComponent as Favorite } from '~/assets/img/icons/favorite-icon.svg';
 import { ReactComponent as FavoriteFilled } from '~/assets/img/icons/favourite-filled-icon.svg';
+import { ReactComponent as Filter } from '~/assets/img/icons/filter-icon.svg';
 import { ReactComponent as Header1 } from '~/assets/img/icons/format-header-1-icon.svg';
 import { ReactComponent as Header2 } from '~/assets/img/icons/format-header-2-icon.svg';
 import { ReactComponent as Header3 } from '~/assets/img/icons/format-header-3-icon.svg';
@@ -28,6 +30,7 @@ import { ReactComponent as TextUnderline } from '~/assets/img/icons/format-text-
 import { ReactComponent as TextUpperline } from '~/assets/img/icons/format-text-upperline-icon.svg';
 import { ReactComponent as Hide } from '~/assets/img/icons/hide-icon.svg';
 import { ReactComponent as Image } from '~/assets/img/icons/image-icon.svg';
+import { ReactComponent as Info } from '~/assets/img/icons/info-icon.svg';
 import { ReactComponent as Like } from '~/assets/img/icons/like-icon.svg';
 import { ReactComponent as Link } from '~/assets/img/icons/link-icon.svg';
 import { ReactComponent as Notes } from '~/assets/img/icons/notes-icon.svg';
@@ -49,12 +52,14 @@ type IconName =
   | 'arrowDown'
   | 'arrowUp'
   | 'bell'
+  | 'book'
   | 'comment'
   | 'crossMark'
   | 'like'
   | 'dislike'
   | 'favorite'
   | 'favoriteFilled'
+  | 'filter'
   | 'textAlignLeft'
   | 'textAlignCenter'
   | 'textAlignRight'
@@ -91,7 +96,8 @@ type IconName =
   | 'scrollArrowUp'
   | 'textSizeIncrease'
   | 'textSizeDecrease'
-  | 'ellipsisVertical';
+  | 'ellipsisVertical'
+  | 'info';
 
 const iconNameToIcon: Record<
   IconName,
@@ -100,12 +106,14 @@ const iconNameToIcon: Record<
   arrowDown: ArrowDown,
   arrowUp: ArrowUp,
   bell: Bell,
+  book: Book,
   comment: Comment,
   crossMark: CrossMark,
   like: Like,
   dislike: Dislike,
   favorite: Favorite,
   favoriteFilled: FavoriteFilled,
+  filter: Filter,
   textAlignLeft: TextAlignLeft,
   textAlignCenter: TextAlignCenter,
   textAlignRight: TextAlignRight,
@@ -143,6 +151,7 @@ const iconNameToIcon: Record<
   scrollArrowUp: ScrollArrowUp,
   textSizeDecrease: TextSizeDecrease,
   textSizeIncrease: TextSizeIncrease,
+  info: Info,
 };
 
 export { type IconName, iconNameToIcon };

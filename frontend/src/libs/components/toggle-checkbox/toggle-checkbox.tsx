@@ -8,6 +8,7 @@ import {
 
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
 
+import { TOGGLE_CHECKBOX_ID } from './libs/constants/constants.js';
 import styles from './styles.module.scss';
 
 type Properties<T extends FieldValues> = {
@@ -32,11 +33,11 @@ const ToggleCheckbox = <T extends FieldValues>({
         {...field}
         name={name}
         type="checkbox"
-        id="toggle-checkbox"
+        id={TOGGLE_CHECKBOX_ID}
         checked={field.value}
         className={getValidClassNames(styles.switch, styles.pointer)}
       />
-      <label className={styles.pointer} htmlFor="toggle-checkbox">
+      <label className={styles.pointer} htmlFor={TOGGLE_CHECKBOX_ID}>
         {label}
       </label>
     </div>

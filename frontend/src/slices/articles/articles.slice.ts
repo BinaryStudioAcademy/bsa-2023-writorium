@@ -12,6 +12,10 @@ import { type CommentWithRelationsResponseDto } from '~/packages/comments/commen
 import { type GenreGetAllResponseDto } from '~/packages/genres/genres.js';
 
 import {
+  addArticle,
+  addComment,
+  addReactionToArticlesFeed,
+  addReactionToArticleView,
   createArticle,
   createComment,
   deleteArticle,
@@ -20,6 +24,7 @@ import {
   fetchAllCommentsToArticle,
   fetchOwn,
   fetchSharedArticle,
+  geArticleIdByToken,
   getAllGenres,
   getArticle,
   getImprovementSuggestions,
@@ -31,7 +36,11 @@ import {
   updateArticleAuthorFollowInfo,
   updateComment,
 } from './actions.js';
-import { removeReaction, updateReaction } from './libs/helpers/helpers.js';
+import {
+  applyReaction,
+  removeReaction,
+  updateReaction,
+} from './libs/helpers/helpers.js';
 
 type State = {
   article: ArticleWithFollowResponseDto | null;
@@ -39,28 +48,34 @@ type State = {
   articles: ArticleWithCountsResponseDto[];
   dataStatus: ValueOf<typeof DataStatus>;
   genres: GenreGetAllResponseDto['items'];
-  articleCommentsDataStatus: ValueOf<typeof DataStatus>;
+  fetchArticleCommentsDataStatus: ValueOf<typeof DataStatus>;
   articleReactionDataStatus: ValueOf<typeof DataStatus>;
   getArticleStatus: ValueOf<typeof DataStatus>;
   saveArticleStatus: ValueOf<typeof DataStatus>;
   showFavourites: boolean;
   improvementSuggestions: ArticleImprovementSuggestion[] | null;
   improvementSuggestionsDataStatus: ValueOf<typeof DataStatus>;
+  articleIdByToken: number | null;
+  articleIdByTokenDataStatus: ValueOf<typeof DataStatus>;
+  createCommentDataStatus: ValueOf<typeof DataStatus>;
 };
 
 const initialState: State = {
   article: null,
+  articleIdByToken: null,
   articleComments: [],
   articles: [],
   genres: [],
   showFavourites: false,
   improvementSuggestions: null,
   dataStatus: DataStatus.IDLE,
-  articleCommentsDataStatus: DataStatus.IDLE,
+  fetchArticleCommentsDataStatus: DataStatus.IDLE,
   saveArticleStatus: DataStatus.IDLE,
   articleReactionDataStatus: DataStatus.IDLE,
   getArticleStatus: DataStatus.IDLE,
   improvementSuggestionsDataStatus: DataStatus.IDLE,
+  articleIdByTokenDataStatus: DataStatus.IDLE,
+  createCommentDataStatus: DataStatus.IDLE,
 };
 
 const { reducer, actions, name } = createSlice({
@@ -73,10 +88,21 @@ const { reducer, actions, name } = createSlice({
     },
     resetComments(state) {
       state.articleComments = initialState.articleComments;
-      state.articleCommentsDataStatus = DataStatus.IDLE;
+      state.fetchArticleCommentsDataStatus = DataStatus.IDLE;
+      state.createCommentDataStatus = DataStatus.IDLE;
+    },
+    resetArticleIdByToken(state) {
+      state.articleIdByToken = initialState.articleIdByToken;
+      state.articleIdByTokenDataStatus = DataStatus.FULFILLED;
     },
   },
   extraReducers(builder) {
+    builder.addCase(addArticle.fulfilled, (state, action) => {
+      if (action.payload) {
+        state.articles = [action.payload, ...state.articles];
+      }
+    });
+
     builder.addCase(createArticle.fulfilled, (state) => {
       state.saveArticleStatus = DataStatus.FULFILLED;
     });
@@ -89,9 +115,11 @@ const { reducer, actions, name } = createSlice({
       state.getArticleStatus = DataStatus.FULFILLED;
       state.article = action.payload;
     });
+
     builder.addCase(setShowFavourites, (state, action) => {
       state.showFavourites = action.payload;
     });
+
     builder.addCase(deleteArticle.fulfilled, (state, action) => {
       const article = action.payload;
       if (article) {
@@ -101,6 +129,29 @@ const { reducer, actions, name } = createSlice({
       }
       state.dataStatus = DataStatus.FULFILLED;
     });
+
+    builder.addCase(addReactionToArticlesFeed.fulfilled, (state, action) => {
+      const reaction = action.payload;
+
+      state.articles = state.articles.map((article) => {
+        if (article.id !== reaction?.articleId) {
+          return article;
+        }
+
+        return applyReaction(article, reaction);
+      });
+    });
+
+    builder.addCase(addReactionToArticleView.fulfilled, (state, action) => {
+      const reaction = action.payload;
+
+      if (!reaction || !state.article) {
+        return;
+      }
+
+      state.article = applyReaction(state.article, reaction);
+    });
+
     builder.addCase(updateArticleAuthorFollowInfo, (state, { payload }) => {
       const { isFollowed, followersCount } = payload;
 
@@ -174,11 +225,30 @@ const { reducer, actions, name } = createSlice({
 
     builder.addCase(createComment.fulfilled, (state, action) => {
       state.articleComments = [action.payload, ...state.articleComments];
-      state.articleCommentsDataStatus = DataStatus.FULFILLED;
+      state.createCommentDataStatus = DataStatus.FULFILLED;
     });
+    builder.addCase(createComment.pending, (state) => {
+      state.createCommentDataStatus = DataStatus.PENDING;
+    });
+    builder.addCase(createComment.rejected, (state) => {
+      state.createCommentDataStatus = DataStatus.REJECTED;
+    });
+
     builder.addCase(fetchAllCommentsToArticle.fulfilled, (state, action) => {
       state.articleComments = action.payload.items;
-      state.articleCommentsDataStatus = DataStatus.FULFILLED;
+      state.fetchArticleCommentsDataStatus = DataStatus.FULFILLED;
+    });
+    builder.addCase(fetchAllCommentsToArticle.pending, (state) => {
+      state.fetchArticleCommentsDataStatus = DataStatus.PENDING;
+    });
+    builder.addCase(fetchAllCommentsToArticle.rejected, (state) => {
+      state.fetchArticleCommentsDataStatus = DataStatus.REJECTED;
+    });
+
+    builder.addCase(addComment.fulfilled, (state, action) => {
+      if (action.payload) {
+        state.articleComments = [action.payload, ...state.articleComments];
+      }
     });
     builder.addCase(toggleIsFavourite.fulfilled, (state, action) => {
       const article = action.payload;
@@ -198,9 +268,17 @@ const { reducer, actions, name } = createSlice({
       state.articleComments = state.articleComments.map((comment) => {
         return comment.id === updatedComment.id ? updatedComment : comment;
       });
-      state.articleCommentsDataStatus = DataStatus.FULFILLED;
     });
-
+    builder.addCase(geArticleIdByToken.rejected, (state) => {
+      state.articleIdByTokenDataStatus = DataStatus.REJECTED;
+    });
+    builder.addCase(geArticleIdByToken.pending, (state) => {
+      state.articleIdByTokenDataStatus = DataStatus.PENDING;
+    });
+    builder.addCase(geArticleIdByToken.fulfilled, (state, action) => {
+      state.articleIdByToken = action.payload.id;
+      state.articleIdByTokenDataStatus = DataStatus.FULFILLED;
+    });
     builder.addMatcher(
       isAnyOf(
         getImprovementSuggestions.fulfilled,
@@ -229,26 +307,7 @@ const { reducer, actions, name } = createSlice({
         state.improvementSuggestionsDataStatus = DataStatus.REJECTED;
       },
     );
-    builder.addMatcher(
-      isAnyOf(
-        createComment.pending,
-        fetchAllCommentsToArticle.pending,
-        updateComment.pending,
-      ),
-      (state) => {
-        state.articleCommentsDataStatus = DataStatus.PENDING;
-      },
-    );
-    builder.addMatcher(
-      isAnyOf(
-        createComment.rejected,
-        fetchAllCommentsToArticle.rejected,
-        updateComment.rejected,
-      ),
-      (state) => {
-        state.articleCommentsDataStatus = DataStatus.REJECTED;
-      },
-    );
+
     builder.addMatcher(
       isAnyOf(fetchAll.fulfilled, fetchOwn.fulfilled),
       (state, action) => {

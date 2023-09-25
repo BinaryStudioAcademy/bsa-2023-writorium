@@ -54,6 +54,8 @@ rules:
     - off
   unicorn/no-null:
     - off
+  no-extra-boolean-cast:
+    - off
   '@typescript-eslint/padding-line-between-statements':
     - error
     - blankLine: never

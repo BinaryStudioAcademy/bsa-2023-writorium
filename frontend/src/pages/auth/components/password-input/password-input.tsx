@@ -1,8 +1,8 @@
-import { useCallback, useState } from 'react';
 import { type FieldValues } from 'react-hook-form';
 
-import { Icon, Input } from '~/libs/components/components.js';
+import { IconButton, Input } from '~/libs/components/components.js';
 import { type InputProperties } from '~/libs/components/input/input.js';
+import { useCallback, useState } from '~/libs/hooks/hooks.js';
 
 import styles from './styles.module.scss';
 
@@ -19,17 +19,17 @@ const PasswordInput = <T extends FieldValues>(
 
   return (
     <div className={styles.passwordInputWrapper}>
-      <button
-        type="button"
+      <IconButton
         className={styles.passwordToggle}
         onClick={handleTogglePasswordVisibility}
-      >
-        <Icon
-          iconName={isPasswordVisible ? 'view' : 'hide'}
-          className={styles.icon}
-        />
-      </button>
-      <Input {...properties} type={isPasswordVisible ? 'text' : 'password'} />
+        iconName={isPasswordVisible ? 'hide' : 'view'}
+        iconClassName={styles.icon}
+      />
+      <Input
+        {...properties}
+        type={isPasswordVisible ? 'text' : 'password'}
+        className={styles.passwordInput}
+      />
     </div>
   );
 };

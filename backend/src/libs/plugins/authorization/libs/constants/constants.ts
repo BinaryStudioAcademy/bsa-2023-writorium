@@ -1,1 +1,1 @@
-export { SERVED_PAGE_PATH } from './served-page.path.constants.js';
+export { SERVED_PAGE_PATH } from './served-page-path.constant.js';

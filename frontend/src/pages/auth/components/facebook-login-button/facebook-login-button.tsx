@@ -5,7 +5,7 @@ import { useCallback } from '~/libs/hooks/hooks.js';
 import { type UserSignInWithFacebookResponseDto } from '~/packages/auth/auth.js';
 import { notification } from '~/packages/notification/notification.js';
 
-import styles from './styles.module.scss';
+import { FACEBOOK_ERROR_MESSAGE } from './libs/constants/constants.js';
 
 type FacebookLoginButtonProperties = {
   onLogin: (response: UserSignInWithFacebookResponseDto) => void;
@@ -15,8 +15,6 @@ type ProfileResponse = {
   email: string;
   id: string;
 };
-
-const FACEBOOK_ERROR_MESSAGE = 'Facebook sign in failed';
 
 const FacebookLoginButton: React.FC<FacebookLoginButtonProperties> = ({
   onLogin,
@@ -59,11 +57,11 @@ const FacebookLoginButton: React.FC<FacebookLoginButtonProperties> = ({
   return (
     <Button
       type="button"
+      variant="outlined"
+      disabled={isLoading}
       label="Sign in with Facebook"
       name="Sign in with Facebook"
-      disabled={isLoading}
       onClick={handleFacebookLogin}
-      className={styles.facebookLoginButton}
     />
   );
 };

@@ -1,4 +1,8 @@
 import {
+  addArticle,
+  addComment,
+  addReactionToArticlesFeed,
+  addReactionToArticleView,
   createArticle,
   createComment,
   deleteArticle,
@@ -7,6 +11,7 @@ import {
   fetchAllCommentsToArticle,
   fetchOwn,
   fetchSharedArticle,
+  geArticleIdByToken,
   getAllGenres,
   getArticle,
   getImprovementSuggestions,
@@ -25,7 +30,9 @@ const allActions = {
   ...actions,
   fetchAll,
   fetchOwn,
+  addReactionToArticleView,
   createArticle,
+  addComment,
   updateArticle,
   getArticle,
   getAllGenres,
@@ -41,7 +48,10 @@ const allActions = {
   setShowFavourites,
   getImprovementSuggestions,
   getImprovementSuggestionsBySession,
+  addArticle,
+  addReactionToArticlesFeed,
   updateArticleAuthorFollowInfo,
+  geArticleIdByToken,
 };
 
 export { allActions as actions };

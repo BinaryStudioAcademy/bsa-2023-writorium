@@ -1,7 +1,9 @@
+@use "src/assets/css/breakpoints.scss";
+
 .scrollProgress {
   position: fixed;
-  right: 61px;
-  bottom: 51px;
+  right: 60px;
+  bottom: 50px;
   padding: 4px;
   border-radius: 50%;
   visibility: hidden;
@@ -17,16 +19,23 @@
 .scrollToTop {
   display: flex;
   align-items: center;
-  padding: 15px 10px;
-  background-color: var(--white);
+  padding: 10px 5px;
+  background-color: var(--white-50);
   border-radius: 50%;
 }
 
 .scrollToTop:hover {
-  background-color: var(--white-50);
+  background-color: var(--white);
 }
 
 .visible {
   visibility: visible;
   opacity: 1;
+}
+
+@media only screen and (max-width: breakpoints.$medium) {
+  .scrollProgress {
+    right: 30px;
+    bottom: 20px;
+  }
 }

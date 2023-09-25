@@ -1,9 +1,12 @@
 import { Layout, Link, RouterOutlet } from '~/libs/components/components.js';
 import { AppRoute } from '~/libs/enums/enums.js';
+import { useArticlesFeedRoom } from '~/libs/hooks/hooks.js';
 
 import styles from './styles.module.scss';
 
 const ArticlesPage: React.FC = () => {
+  useArticlesFeedRoom();
+
   return (
     <Layout>
       <div className={styles.wrapper}>

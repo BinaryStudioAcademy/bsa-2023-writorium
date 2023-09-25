@@ -1,22 +1,65 @@
-.achievementItem {
+.achievementWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 10px;
+}
+
+.achievementBadge {
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 5px;
-  border: 2px solid var(--light-green);
+  width: 100px;
+  height: 100px;
+  background-color: var(--white);
   border-radius: 50%;
-  aspect-ratio: 1 / 1;
 }
 
-.done {
-  background-color: var(--madang);
+.achievementBadge.notStarted {
+  filter: grayscale(100%);
 }
 
-.inProgress {
-  background-color: var(--picasso);
+.achievementBadge.inProgress {
+  --progress-color: #ffc700;
 }
 
-.notStarted {
-  background-color: var(--gray);
+.achievementBadge.done {
+  --progress-color: #4fa457;
+}
+
+.achievementBadge.earlyStage {
+  --progress-color: var(--medium-brightness-gray);
+}
+
+.achievementImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.progressWrapper {
+  transform: rotate(-90deg);
+}
+
+.progress,
+.progressTrack {
+  fill: transparent;
+  stroke-width: 3px;
+}
+
+.progressTrack {
+  stroke: var(--progress-color);
+  opacity: 0.5;
+}
+
+.progress {
+  stroke: var(--progress-color);
+}
+
+.name {
+  color: var(--white);
+  font-size: 12px;
 }

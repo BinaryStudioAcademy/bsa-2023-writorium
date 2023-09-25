@@ -1,21 +1,123 @@
+@use "src/assets/css/breakpoints.scss";
+
 .button {
+  padding: 12px 26px;
   font-weight: 700;
-  font-size: 16px;
   font-family: inherit;
-  line-height: 19px;
+  line-height: 1;
   border: none;
-  border-radius: 7px;
+  border-radius: 5px;
   cursor: pointer;
   transition:
     color 0.3s ease,
+    background-color 0.3s ease,
     border-color 0.3s ease;
 }
+
+.button.buttonLoading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 10px;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.button .loader {
+  width: 15px;
+  height: 15px;
+  border-width: 2px;
+}
+
+.button .loaderOverlay {
+  padding: 0;
+}
+
+/* Primary */
+.button.buttonPrimary {
+  color: var(--white);
+  background-color: var(--dark-green);
+}
+
+.button.buttonPrimary:disabled {
+  color: var(--white);
+  background-color: var(--disabled-gray);
+}
+
+.button.buttonPrimary:not(:disabled, .buttonLoading):hover {
+  background-color: var(--light-green);
+}
+
+.button.buttonPrimary .loader {
+  --loader-color: var(--white);
+}
+
+/* Primary */
+
+/* Outlined */
+.button.buttonOutlined {
+  color: var(--dark-green);
+  background-color: transparent;
+  border: 2px solid var(--dark-green);
+}
+
+.button.buttonOutlined:disabled {
+  color: var(--black-20);
+  border-color: var(--disabled-gray);
+}
+
+.button.buttonOutlined:not(:disabled, .buttonLoading):hover {
+  color: var(--light-green);
+  border-color: var(--light-green);
+}
+
+.button.buttonOutlined .loader {
+  --loader-color: var(--dark-green);
+}
+
+/* Outlined */
+
+/* Text */
+.button.buttonText {
+  background-color: transparent;
+}
+
+.button.buttonText:disabled {
+  padding: 0;
+  color: var(--black-20);
+}
+
+.button.buttonText:not(:disabled, .buttonLoading):hover {
+  color: var(--light-green);
+}
+
+/* Text */
+
+/* Sizing */
+.button.buttonMedium {
+  height: 43px;
+  padding: 12px 26px;
+  font-size: 16px;
+}
+
+.button.buttonSmall {
+  height: 29px;
+  padding: 5px 10px;
+  font-size: 14px;
+}
+
+/* Sizing */
 
 .button:disabled {
   cursor: not-allowed;
 }
 
-.button:hover {
-  color: var(--light-green);
-  border-color: var(--light-green);
+.button.hasFullWidth {
+  width: 100%;
+}
+
+@media only screen and (max-width: breakpoints.$medium) {
+  .button {
+    font-size: 14px;
+  }
 }

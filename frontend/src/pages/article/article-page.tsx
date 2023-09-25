@@ -9,6 +9,7 @@ import { getFullName, getValidClassNames } from '~/libs/helpers/helpers.js';
 import {
   useAppDispatch,
   useAppSelector,
+  useArticleRoom,
   useCallback,
   useEffect,
   useLocation,
@@ -34,13 +35,15 @@ const ArticlePage: React.FC = () => {
     article,
     getArticleStatus,
     articleComments,
-    commentsDataStatus,
+    fetchArticleCommentsDataStatus,
+    createCommentDataStatus,
     user,
   } = useAppSelector(({ articles, auth }) => ({
     article: articles.article as ArticleWithFollowResponseDto,
     getArticleStatus: articles.getArticleStatus,
     articleComments: articles.articleComments,
-    commentsDataStatus: articles.articleCommentsDataStatus,
+    fetchArticleCommentsDataStatus: articles.fetchArticleCommentsDataStatus,
+    createCommentDataStatus: articles.createCommentDataStatus,
     user: auth.user,
   }));
 
@@ -48,6 +51,8 @@ const ArticlePage: React.FC = () => {
   const isArticleOwner = user?.id === article?.userId;
 
   const { id } = useParams();
+
+  useArticleRoom(Number(id));
 
   useEffect(() => {
     const { hash } = location;
@@ -59,7 +64,7 @@ const ArticlePage: React.FC = () => {
         behavior: 'smooth',
       });
     }
-  }, [commentsDataStatus, location]);
+  }, [location]);
 
   useEffect(() => {
     void dispatch(articleActions.getArticle(Number(id)));
@@ -85,13 +90,13 @@ const ArticlePage: React.FC = () => {
 
   const isLoading =
     getArticleStatus === DataStatus.PENDING ||
-    commentsDataStatus === DataStatus.PENDING;
+    fetchArticleCommentsDataStatus === DataStatus.PENDING;
 
   const isLoaded =
     getArticleStatus === DataStatus.FULFILLED ||
     getArticleStatus === DataStatus.REJECTED ||
-    commentsDataStatus === DataStatus.FULFILLED ||
-    commentsDataStatus === DataStatus.REJECTED;
+    fetchArticleCommentsDataStatus === DataStatus.FULFILLED ||
+    fetchArticleCommentsDataStatus === DataStatus.REJECTED;
 
   if (!article && !isLoading && isLoaded) {
     return <Navigate to={AppRoute.ARTICLES} />;
@@ -146,7 +151,10 @@ const ArticlePage: React.FC = () => {
                 Discussion ({articleComments.length})
               </p>
             )}
-            <CommentForm onSubmit={handleCreateComment} />
+            <CommentForm
+              onSubmit={handleCreateComment}
+              isLoading={createCommentDataStatus === DataStatus.PENDING}
+            />
             {hasComments && (
               <ul className={styles.commentList}>
                 {articleComments.map(({ author, ...comment }) => (

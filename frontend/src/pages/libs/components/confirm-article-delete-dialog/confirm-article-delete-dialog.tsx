@@ -1,5 +1,4 @@
 import { Button, Modal } from '~/libs/components/components.js';
-import { ButtonType } from '~/libs/enums/enums.js';
 import { useCallback } from '~/libs/hooks/hooks.js';
 
 import styles from './styles.module.scss';
@@ -34,16 +33,18 @@ const ConfirmArticleDeleteDialog: React.FC<Properties> = ({
         Are you sure you want to delete this article? This action cannot be
         undone.
       </p>
-      <div className={styles.buttonWrapper}>
+      <div className={styles.buttonsWrapper}>
         <Button
-          type={ButtonType.BUTTON}
+          hasFullWidth
           label="Cancel"
+          variant="outlined"
+          type="button"
           onClick={handleClose}
-          className={styles.buttonCancel}
         />
         <Button
-          type={ButtonType.BUTTON}
+          hasFullWidth
           label="Delete"
+          type="button"
           onClick={onDeleteArticle}
           className={styles.buttonDelete}
         />

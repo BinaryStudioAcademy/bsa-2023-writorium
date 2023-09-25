@@ -72,7 +72,7 @@ const TextEditor = <T extends FieldValues>({
     }),
     Placeholder.configure({
       placeholder: TEXT_EDITOR_PLACEHOLDER_TEXT,
-      emptyNodeClass: styles.placeholder,
+      emptyEditorClass: styles.placeholder,
     }),
     TextAlign.configure({
       types: ['heading', 'paragraph'],

@@ -17,11 +17,13 @@ import {
 } from './actions.js';
 
 type State = {
+  authRequestStatus: ValueOf<typeof DataStatus>;
   dataStatus: ValueOf<typeof DataStatus>;
   user: User | null;
 };
 
 const initialState: State = {
+  authRequestStatus: DataStatus.IDLE,
   dataStatus: DataStatus.IDLE,
   user: null,
 };
@@ -42,28 +44,36 @@ const { reducer, actions, name } = createSlice({
     });
     builder.addMatcher(
       isAnyOf(
-        signUp.pending,
         signIn.pending,
-        sendEmailResetPasswordLink.pending,
-        resetPassword.pending,
+        signUp.pending,
         signInWithFacebook.pending,
         loginWithGoogle.pending,
       ),
       (state) => {
+        state.authRequestStatus = DataStatus.PENDING;
+      },
+    );
+    builder.addMatcher(
+      isAnyOf(sendEmailResetPasswordLink.pending, resetPassword.pending),
+      (state) => {
         state.dataStatus = DataStatus.PENDING;
       },
     );
-
     builder.addMatcher(
       isAnyOf(
         signIn.rejected,
         signUp.rejected,
-        getCurrentUser.rejected,
         logout.rejected,
-        resetPassword.rejected,
         signInWithFacebook.rejected,
         loginWithGoogle.rejected,
       ),
+      (state) => {
+        state.authRequestStatus = DataStatus.REJECTED;
+        state.user = null;
+      },
+    );
+    builder.addMatcher(
+      isAnyOf(getCurrentUser.rejected, logout.rejected, resetPassword.rejected),
       (state) => {
         state.dataStatus = DataStatus.REJECTED;
         state.user = null;
@@ -71,13 +81,21 @@ const { reducer, actions, name } = createSlice({
     );
     builder.addMatcher(
       isAnyOf(
-        logout.fulfilled,
         signUp.fulfilled,
         signIn.fulfilled,
-        getCurrentUser.fulfilled,
-        resetPassword.fulfilled,
         signInWithFacebook.fulfilled,
         loginWithGoogle.fulfilled,
+      ),
+      (state, action) => {
+        state.authRequestStatus = DataStatus.FULFILLED;
+        state.user = action.payload;
+      },
+    );
+    builder.addMatcher(
+      isAnyOf(
+        logout.fulfilled,
+        getCurrentUser.fulfilled,
+        resetPassword.fulfilled,
       ),
       (state, action) => {
         state.dataStatus = DataStatus.FULFILLED;

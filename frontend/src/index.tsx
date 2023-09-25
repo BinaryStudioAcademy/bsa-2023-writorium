@@ -9,6 +9,7 @@ import {
   ProtectedRoute,
   PublicRoute,
   RouterProvider,
+  SharedArticleRoute,
   StoreProvider,
   Tooltip,
 } from '~/libs/components/components.js';
@@ -102,9 +103,9 @@ createRoot(document.querySelector('#root') as HTMLElement).render(
                 {
                   path: AppRoute.ARTICLES_SHARED_$TOKEN,
                   element: (
-                    <PublicRoute>
+                    <SharedArticleRoute>
                       <SharedArticlePage />
-                    </PublicRoute>
+                    </SharedArticleRoute>
                   ),
                 },
                 {

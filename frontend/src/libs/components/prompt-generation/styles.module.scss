@@ -12,7 +12,7 @@
 .prompts {
   position: relative;
   display: grid;
-  grid-template-columns: repeat(5, auto);
+  grid-template-columns: repeat(5, minmax(min-content, 1fr));
   flex: 1 1 auto;
   gap: 20px;
   list-style: none;
@@ -22,7 +22,6 @@
 .generatePromptButton {
   position: absolute;
   top: -20px;
-  background: transparent;
 }
 
 .resetPromptButton {
@@ -31,7 +30,6 @@
 
 .generatePromptButton {
   display: none;
-  color: var(--light-green);
 }
 
 .shuffleButton {
@@ -54,6 +52,10 @@
 
 .spin {
   animation: spin 0.5s linear infinite;
+}
+
+.minWidth {
+  min-width: 0;
 }
 
 @keyframes spin {
@@ -83,5 +85,15 @@
 
   .generatePromptButton {
     display: block;
+  }
+}
+
+@media only screen and (max-width: breakpoints.$extra-extra-large) {
+  .promptsContainer {
+    gap: 10px;
+  }
+
+  .prompts {
+    gap: 10px;
   }
 }

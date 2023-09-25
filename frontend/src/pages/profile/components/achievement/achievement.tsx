@@ -1,29 +1,56 @@
-import { type FC } from 'react';
-
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
-import { getProgressStyleClass } from '~/pages/profile/libs/helpers/helpers.js';
-import { type UserAchievement } from '~/pages/profile/libs/types/types.js';
+import { type AchievementWithProgressResponseDto } from '~/packages/achievements/achievements.js';
 
+import { AchievementItemConfig } from '../../libs/enums/enums.js';
+import {
+  getProgressStyleClass,
+  getRadialProgressStyleString,
+} from '../../libs/helpers/helpers.js';
+import { AchievementIcon } from '../achievement-icon/achievement-icon.js';
+import { type AchievementIconName } from '../achievement-icon/common.js';
 import styles from './styles.module.scss';
 
 type Properties = {
-  achievement: UserAchievement;
+  achievement: AchievementWithProgressResponseDto;
   className?: string;
 };
 
-const Achievement: FC<Properties> = ({ achievement, className }) => {
-  const { name, progress } = achievement;
-  const statusStyleClass = getProgressStyleClass(progress);
+const Achievement: React.FC<Properties> = ({ achievement }) => {
+  const { name, referenceTable, progress } = achievement;
+
+  const progressStyleClassName = getProgressStyleClass(progress);
 
   return (
-    <div
-      className={getValidClassNames(
-        styles.achievementItem,
-        className,
-        styles[statusStyleClass],
-      )}
-    >
-      <h4>{name}</h4>
+    <div className={styles.achievementWrapper}>
+      <div
+        className={getValidClassNames(
+          styles.achievementBadge,
+          styles[progressStyleClassName],
+        )}
+      >
+        <svg viewBox="0 0 100 100" className={styles.progressWrapper}>
+          <circle
+            cx="50"
+            cy="50"
+            className={styles.progressTrack}
+            r={AchievementItemConfig.PROGRESS_RADIUS}
+          />
+          <circle
+            cx="50"
+            cy="50"
+            className={styles.progress}
+            r={AchievementItemConfig.PROGRESS_RADIUS}
+            strokeDasharray={getRadialProgressStyleString(
+              progress,
+              AchievementItemConfig.PROGRESS_RADIUS,
+            )}
+          />
+        </svg>
+        <div className={styles.achievementImage}>
+          <AchievementIcon iconName={referenceTable as AchievementIconName} />
+        </div>
+      </div>
+      <h4 className={styles.name}>{name}</h4>
     </div>
   );
 };

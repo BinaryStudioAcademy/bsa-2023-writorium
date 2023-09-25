@@ -2,10 +2,9 @@
 
 .articlePageWrapper {
   display: grid;
-  grid-template-columns: 1fr min-content;
+  grid-template-columns: 1fr 400px;
   align-items: flex-start;
   gap: 40px 20px;
-  padding-bottom: 100px;
 }
 
 .articleCreatePageWrapper,
@@ -61,12 +60,16 @@
   line-height: 30px;
 }
 
-.showPrompt {
+.articleCreatePageWrapper .showPrompt {
   display: none;
-  padding: 0 0 21px 6px;
+  padding: 0 0 24px 6px;
   color: var(--light-green);
-  font-weight: 700;
-  font-size: 16px;
+}
+
+@media only screen and (max-width: breakpoints.$medium) {
+  .editArticlePage {
+    flex-direction: column;
+  }
 }
 
 @media only screen and (max-width: breakpoints.$extra-large) {
@@ -95,7 +98,7 @@
     padding: 10px;
   }
 
-  .showPrompt {
+  .articleCreatePageWrapper .showPrompt {
     display: block;
   }
 }

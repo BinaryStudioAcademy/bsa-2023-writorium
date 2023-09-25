@@ -1,31 +1,28 @@
-import { type BaseSyntheticEvent, type FC } from 'react';
-
 import { Button, Input } from '~/libs/components/components.js';
-import { ButtonType } from '~/libs/enums/enums.js';
-import { getValidClassNames } from '~/libs/helpers/helpers.js';
 import { useAppForm, useCallback } from '~/libs/hooks/hooks.js';
+import { type ReactBaseSyntheticEvent } from '~/libs/types/types.js';
 import {
   type CommentBaseRequestDto,
   commentCreateValidationSchema,
 } from '~/packages/comments/comments.js';
 
-import styles from './style.module.scss';
-
 type Properties = {
+  isLoading: boolean;
   onSubmit: (payload: Omit<CommentBaseRequestDto, 'articleId'>) => void;
 };
 
-const CommentForm: FC<Properties> = ({ onSubmit }) => {
-  const { control, errors, handleSubmit, handleReset, isDirty, isSubmitting } =
-    useAppForm<Omit<CommentBaseRequestDto, 'articleId'>>({
-      defaultValues: {
-        text: '',
-      },
-      validationSchema: commentCreateValidationSchema,
-    });
+const CommentForm: React.FC<Properties> = ({ onSubmit, isLoading }) => {
+  const { control, errors, handleSubmit, handleReset, isDirty } = useAppForm<
+    Omit<CommentBaseRequestDto, 'articleId'>
+  >({
+    defaultValues: {
+      text: '',
+    },
+    validationSchema: commentCreateValidationSchema,
+  });
 
   const handleCreateComment = useCallback(
-    (event_: BaseSyntheticEvent): void => {
+    (event_: ReactBaseSyntheticEvent): void => {
       void handleSubmit(onSubmit)(event_);
       handleReset();
     },
@@ -42,10 +39,10 @@ const CommentForm: FC<Properties> = ({ onSubmit }) => {
         rows={4}
       />
       <Button
-        type={ButtonType.SUBMIT}
         label="Send"
-        disabled={!isDirty || isSubmitting}
-        className={getValidClassNames(styles.button)}
+        disabled={!isDirty}
+        isLoading={isLoading}
+        type="submit"
       />
     </form>
   );
