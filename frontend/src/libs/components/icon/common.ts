@@ -30,6 +30,7 @@ import { ReactComponent as TextUnderline } from '~/assets/img/icons/format-text-
 import { ReactComponent as TextUpperline } from '~/assets/img/icons/format-text-upperline-icon.svg';
 import { ReactComponent as Hide } from '~/assets/img/icons/hide-icon.svg';
 import { ReactComponent as Image } from '~/assets/img/icons/image-icon.svg';
+import { ReactComponent as Info } from '~/assets/img/icons/info-icon.svg';
 import { ReactComponent as Like } from '~/assets/img/icons/like-icon.svg';
 import { ReactComponent as Link } from '~/assets/img/icons/link-icon.svg';
 import { ReactComponent as Notes } from '~/assets/img/icons/notes-icon.svg';
@@ -95,7 +96,8 @@ type IconName =
   | 'scrollArrowUp'
   | 'textSizeIncrease'
   | 'textSizeDecrease'
-  | 'ellipsisVertical';
+  | 'ellipsisVertical'
+  | 'info';
 
 const iconNameToIcon: Record<
   IconName,
@@ -149,6 +151,7 @@ const iconNameToIcon: Record<
   scrollArrowUp: ScrollArrowUp,
   textSizeDecrease: TextSizeDecrease,
   textSizeIncrease: TextSizeIncrease,
+  info: Info,
 };
 
 export { type IconName, iconNameToIcon };
