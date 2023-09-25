@@ -20,7 +20,7 @@ const CreateArticlePage: React.FC = () => (
         className={styles.promptGenerationModal}
       >
         <Button
-          variant="outlined"
+          variant="text"
           label="Show prompt"
           className={styles.showPrompt}
         />
