@@ -15,7 +15,6 @@ import {
   NotFoundError,
 } from '~/libs/packages/exceptions/exceptions.js';
 import { type OpenAIService } from '~/libs/packages/openai/openai.package.js';
-import { type SocketService } from '~/libs/packages/socket/socket.package.js';
 import { token as articleToken } from '~/libs/packages/token/token.js';
 import { type ArticleViewService } from '~/packages/article-views/article-view.service.js';
 import { type FollowRepository } from '~/packages/follow/follow.js';
@@ -64,7 +63,6 @@ type Constructor = {
   articleRepository: ArticleRepository;
   openAIService: OpenAIService;
   genreRepository: GenreRepository;
-  socketService: SocketService;
   articleViewService: ArticleViewService;
   followRepository: FollowRepository;
   achievementService: AchievementService;

@@ -27,7 +27,6 @@ const articleService = new ArticleService({
   articleRepository,
   openAIService,
   genreRepository,
-  socketService,
   achievementService,
   articleViewService,
   followRepository,

@@ -16,7 +16,7 @@ import {
 
 const { NEW_ARTICLE } = ArticleSocketEvent;
 
-interface ArticlesServerToClientEvents {
+interface ArticleServerToClientEvents {
   [NEW_ARTICLE]: (
     payload: ArticleSocketEventPayload[typeof NEW_ARTICLE],
   ) => void;
@@ -38,7 +38,7 @@ class ArticleSocketService {
 
   private get namespace(): Namespace<
     DefaultEventsMap,
-    ArticlesServerToClientEvents
+    ArticleServerToClientEvents
   > {
     return this.socketService.io.of(SocketNamespace.ARTICLES);
   }
@@ -61,7 +61,7 @@ class ArticleSocketService {
     for (const socket of sockets) {
       const socketUserId = Number(socket.handshake.query.userId);
 
-      this.namespace.to(SocketRoom.ARTICLES_FEED).emit('new-article', {
+      this.namespace.to(SocketRoom.ARTICLES_FEED).emit(NEW_ARTICLE, {
         article,
         isByFollowingAuthor: authorFollowersIds.has(socketUserId),
       });
