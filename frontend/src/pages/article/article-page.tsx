@@ -4,6 +4,7 @@ import {
   Layout,
   Loader,
   Navigate,
+  ScrollToTop,
 } from '~/libs/components/components.js';
 import {
   AppRoute,
@@ -246,6 +247,7 @@ const ArticlePage: React.FC = () => {
           )}
         </div>
       </Layout>
+      <ScrollToTop />
     </Loader>
   );
 };
