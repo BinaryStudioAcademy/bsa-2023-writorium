@@ -1,5 +1,5 @@
 import { Input, Link } from '~/libs/components/components.js';
-import { AppRoute } from '~/libs/enums/app-route.enum.js';
+import { AppRoute } from '~/libs/enums/enums.js';
 import { useAppForm, useCallback } from '~/libs/hooks/hooks.js';
 import {
   type UserSignUpRequestDto,
@@ -12,10 +12,11 @@ import { DEFAULT_SIGN_UP_PAYLOAD } from './libs/constants.js';
 import styles from './styles.module.scss';
 
 type Properties = {
+  isLoading: boolean;
   onSubmit: (payload: UserSignUpRequestDto) => void;
 };
 
-const SignUpForm: React.FC<Properties> = ({ onSubmit }) => {
+const SignUpForm: React.FC<Properties> = ({ isLoading, onSubmit }) => {
   const { control, errors, handleSubmit, isValid } =
     useAppForm<UserSignUpRequestDto>({
       mode: 'onTouched',
@@ -42,7 +43,7 @@ const SignUpForm: React.FC<Properties> = ({ onSubmit }) => {
           <fieldset className={styles.fieldset}>
             <Input
               required
-              type="text"
+              type="email"
               label="Email"
               placeholder="Enter your email"
               name="email"
@@ -76,7 +77,7 @@ const SignUpForm: React.FC<Properties> = ({ onSubmit }) => {
               placeholder="Enter password"
             />
           </fieldset>
-          <AuthSubmitButton label="Sign Up" disabled={!isValid} />
+          <AuthSubmitButton label="Sign Up" disabled={!isValid || isLoading} />
         </form>
       </div>
       <div className={styles.messageWrapper}>

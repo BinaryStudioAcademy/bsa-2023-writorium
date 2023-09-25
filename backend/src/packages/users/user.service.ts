@@ -11,6 +11,7 @@ import { type AuthResetPasswordDto } from '~/packages/auth/libs/types/types.js';
 import { UserEntity } from '~/packages/users/user.entity.js';
 import { type UserRepository } from '~/packages/users/user.repository.js';
 
+import { type ArticleGenreStatsFilters } from '../articles/articles.js';
 import {
   type UserActivityResponseDto,
   type UserArticlesGenreStatsResponseDto,
@@ -92,8 +93,9 @@ class UserService implements IService {
 
   public async getUserArticlesGenreStats(
     userId: number,
+    filters: ArticleGenreStatsFilters,
   ): Promise<UserArticlesGenreStatsResponseDto> {
-    return await this.articleService.getUserArticlesGenreStats(userId);
+    return await this.articleService.getUserArticlesGenreStats(userId, filters);
   }
 
   public async create(

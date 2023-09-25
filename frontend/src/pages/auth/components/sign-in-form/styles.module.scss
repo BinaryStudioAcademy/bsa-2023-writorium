@@ -36,12 +36,22 @@
   color: var(--light-green);
   font-size: 16px;
   font-family: Lato, sans-serif;
+  transition: color 0.3s ease;
+}
+
+.link:hover {
+  color: var(--dark-green);
 }
 
 .forgotPasswordLink {
   color: var(--light-green);
   font-size: 12px;
   font-family: Lato, sans-serif;
+  transition: color 0.3s ease;
+}
+
+.forgotPasswordLink:hover {
+  color: var(--dark-green);
 }
 
 .authFormTitle {
@@ -79,4 +89,10 @@
 
 .or::after {
   margin-inline-start: 10px;
+}
+
+.socialsSignInButtons {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }

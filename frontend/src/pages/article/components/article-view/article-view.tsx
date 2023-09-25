@@ -10,24 +10,17 @@ import { AppRoute, LinkHash, Reaction } from '~/libs/enums/enums.js';
 import {
   configureString,
   getFullName,
-  getReactionConvertedToBoolean,
-  getReactionsInfo,
   getValidClassNames,
   sanitizeHtml,
 } from '~/libs/helpers/helpers.js';
 import {
   useAppDispatch,
-  useAppSelector,
   useCallback,
   useModal,
   useParams,
 } from '~/libs/hooks/hooks.js';
 import { type TagType, type ValueOf } from '~/libs/types/types.js';
-import {
-  type ArticleWithFollowResponseDto,
-  type ReactionResponseDto,
-} from '~/packages/articles/articles.js';
-import { type UserAuthResponseDto } from '~/packages/users/users.js';
+import { type ArticleWithFollowResponseDto } from '~/packages/articles/articles.js';
 import { ConfirmArticleDeleteDialog } from '~/pages/libs/components/components.js';
 import { actions as articlesActions } from '~/slices/articles/articles.js';
 
@@ -40,8 +33,12 @@ type Properties = {
   article: ArticleWithFollowResponseDto;
   isArticleOwner?: boolean;
   onFollow?: () => void;
-  reactions?: ReactionResponseDto[];
   authorName: string;
+  onLikeReaction?: () => void;
+  onDislikeReaction?: () => void;
+  likesCount?: string;
+  dislikesCount?: string;
+  hasAlreadyReactedWith?: ValueOf<typeof Reaction> | null;
 };
 
 const onButtonClick = (): void => {
@@ -56,8 +53,12 @@ const ArticleView: React.FC<Properties> = ({
   isArticleOwner,
   article,
   onFollow,
-  reactions = [],
   authorName,
+  onLikeReaction,
+  onDislikeReaction,
+  likesCount,
+  dislikesCount,
+  hasAlreadyReactedWith,
 }) => {
   const { text, title, coverUrl, author, readTime, genre, publishedAt } =
     article;
@@ -66,8 +67,6 @@ const ArticleView: React.FC<Properties> = ({
   const articleUrl = window.location.href;
 
   const { id } = useParams();
-
-  const user = useAppSelector(({ auth }) => auth.user) as UserAuthResponseDto;
 
   const dispatch = useAppDispatch();
 
@@ -85,40 +84,6 @@ const ArticleView: React.FC<Properties> = ({
     );
   }, [dispatch, id]);
 
-  const { likesCount, dislikesCount, hasAlreadyReactedWith } = isShared
-    ? { likesCount: null, dislikesCount: null, hasAlreadyReactedWith: null }
-    : getReactionsInfo(user.id, reactions);
-
-  const handleReaction = (reaction: ValueOf<typeof Reaction>): void => {
-    if (isArticleOwner) {
-      return;
-    }
-
-    if (hasAlreadyReactedWith === reaction) {
-      return void dispatch(
-        articlesActions.deleteArticleReaction({
-          isLike: getReactionConvertedToBoolean(reaction),
-          articleId: Number(id),
-        }),
-      );
-    }
-
-    void dispatch(
-      articlesActions.reactToArticle({
-        isLike: getReactionConvertedToBoolean(reaction),
-        articleId: Number(id),
-      }),
-    );
-  };
-
-  const handleLikeReaction = (): void => {
-    handleReaction(Reaction.LIKE);
-  };
-
-  const handleDislikeReaction = (): void => {
-    handleReaction(Reaction.DISLIKE);
-  };
-
   const handleDeleteButtonClick = useCallback((): void => {
     if (!isOpen) {
       handleToggleModalOpen();
@@ -126,7 +91,7 @@ const ArticleView: React.FC<Properties> = ({
   }, [handleToggleModalOpen, isOpen]);
 
   return (
-    <div
+    <article
       className={getValidClassNames(styles.body, coverUrl && styles.hasCover)}
     >
       <div className={styles.coverWrapper}>
@@ -166,50 +131,32 @@ const ArticleView: React.FC<Properties> = ({
               onClick={onButtonClick}
             />
 
-            <Link
-              to={{ hash: LinkHash.COMMENTS }}
-              state={article}
-              className={styles.iconButton}
-            >
-              <Icon iconName="comment" className={styles.icon} />
-            </Link>
+            {publishedAt && (
+              <>
+                <Link
+                  to={{ hash: LinkHash.COMMENTS }}
+                  state={article}
+                  className={styles.iconButton}
+                >
+                  <Icon iconName="comment" className={styles.icon} />
+                </Link>
 
-            <IconButton
-              iconName="share"
-              className={styles.iconButton}
-              iconClassName={styles.icon}
-              onClick={handleShareButtonClick}
-            />
-            <ShareOnFacebookButton
-              title={title}
-              articleUrl={articleUrl}
-              iconStyle={getValidClassNames(
-                styles.iconButton,
-                styles.facebookIconButton,
-              )}
-            />
-            <IconButton
-              iconName="like"
-              iconClassName={styles.icon}
-              className={getValidClassNames(
-                styles.reactionIcon,
-                isArticleOwner && styles.disabled,
-                hasAlreadyReactedWith === Reaction.LIKE && styles.pressed,
-              )}
-              label={String(likesCount)}
-              onClick={handleLikeReaction}
-            />
-            <IconButton
-              iconName="dislike"
-              iconClassName={styles.icon}
-              className={getValidClassNames(
-                styles.reactionIcon,
-                isArticleOwner && styles.disabled,
-                hasAlreadyReactedWith === Reaction.DISLIKE && styles.pressed,
-              )}
-              label={String(dislikesCount)}
-              onClick={handleDislikeReaction}
-            />
+                <IconButton
+                  iconName="share"
+                  className={styles.iconButton}
+                  iconClassName={styles.icon}
+                  onClick={handleShareButtonClick}
+                />
+                <ShareOnFacebookButton
+                  title={title}
+                  articleUrl={articleUrl}
+                  iconStyle={getValidClassNames(
+                    styles.iconButton,
+                    styles.facebookIconButton,
+                  )}
+                />
+              </>
+            )}
           </div>
         )}
       </div>
@@ -226,14 +173,19 @@ const ArticleView: React.FC<Properties> = ({
             onFollow={onFollow}
             authorFollowers={followersCount}
             isFollowed={isFollowed}
+            isShared={isShared}
           />
         }
-        className={getValidClassNames(
+        className={styles.popover}
+        classNameContentWrapper={getValidClassNames(
           styles.authorDetails,
           styles.authorDetailsModal,
         )}
       >
-        <h5 className={styles.presentationAuthorName}>{authorFullName}</h5>
+        <h5 className={styles.authorName}>
+          <span>{authorFullName}</span>
+          <Icon iconName="info" className={styles.infoIcon} />
+        </h5>
       </Popover>
 
       <div className={styles.textWrapper}>
@@ -241,16 +193,42 @@ const ArticleView: React.FC<Properties> = ({
 
         <h4 className={styles.title}>{title}</h4>
         {tags && <Tags tags={tags} />}
-        <p
+        <article
           className={styles.text}
           dangerouslySetInnerHTML={{ __html: sanitizeHtml(text) }}
         />
+        {!isShared && publishedAt && (
+          <div className={styles.reactionButtonsWrapper}>
+            <IconButton
+              iconName="like"
+              iconClassName={styles.reactionIcon}
+              className={getValidClassNames(
+                styles.reactionButton,
+                isArticleOwner && styles.disabled,
+                hasAlreadyReactedWith === Reaction.LIKE && styles.pressed,
+              )}
+              label={likesCount}
+              onClick={onLikeReaction}
+            />
+            <IconButton
+              iconName="dislike"
+              iconClassName={styles.reactionIcon}
+              className={getValidClassNames(
+                styles.reactionButton,
+                isArticleOwner && styles.disabled,
+                hasAlreadyReactedWith === Reaction.DISLIKE && styles.pressed,
+              )}
+              label={dislikesCount}
+              onClick={onDislikeReaction}
+            />
+          </div>
+        )}
       </div>
       <ConfirmArticleDeleteDialog
         onDeleteArticle={handleDeleteArticle}
         trigger={{ onToggleModalOpen: handleToggleModalOpen, isOpen }}
       />
-    </div>
+    </article>
   );
 };
 

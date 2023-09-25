@@ -1,9 +1,7 @@
-import { type ValueOf } from '~/libs/types/types.js';
-
-import { type NotificationType } from '../enums/notification-type.enum.js';
+import { type ToastOptions } from 'react-toastify';
 
 type NotificationPayload = {
-  type: ValueOf<typeof NotificationType>;
+  type: Exclude<ToastOptions['type'], undefined | 'default'>;
   message?: string;
 };
 

@@ -1,6 +1,7 @@
 export {
   DEFAULT_PAGINATION_SKIP,
   DEFAULT_PAGINATION_TAKE,
+  FIRST_ELEMENT_ARRAY_INDEX,
   INDEX_INCREMENT,
   RESET_PASSWORD_ROUTE,
   SHARED_$TOKEN,
@@ -37,6 +38,11 @@ export {
   type IHttp,
 } from './libs/packages/http/http.js';
 export { type SendEmailResponse } from './libs/packages/mailer/mailer.js';
+export {
+  SocketEvent,
+  SocketNamespace,
+  SocketRoom,
+} from './libs/packages/socket/socket.js';
 export { type IStorage } from './libs/packages/storage/storage.js';
 export {
   type PaginationParameters,
@@ -54,12 +60,17 @@ export {
   type AchievementBaseResponseDto,
   type AchievementGetAllResponseDto,
   AchievementsApiPath,
+  type AchievementWithProgressResponseDto,
+  PercentageProgress,
+  type UserAchievement,
 } from './packages/achievements/achievements.js';
 export {
   type ArticleReactionCreateDto,
   type ArticleReactionEntityType,
   type ArticleReactionRequestDto,
   type ArticleReactionResponseDto,
+  ArticleReactionsSocketEvent,
+  type ArticleReactionsSocketEventPayload,
   articleReactionValidationSchema,
 } from './packages/article-reactions/article-reactions.js';
 export {
@@ -72,16 +83,21 @@ export {
   type ArticleCreateDto,
   articleCreateValidationSchema,
   type ArticleEntityType,
+  type ArticleGenreStatsFilters,
+  articleGenreStatsFiltersValidationSchema,
   type ArticleGetAllResponseDto,
   type ArticleGetImprovementSuggestionsResponseDto,
   type ArticleImprovementSuggestion,
   ArticleImprovementSuggestionPriority,
+  ArticlePublishStatus,
   type ArticleRequestDto,
   type ArticleResponseDto,
   ArticlesApiPath,
   type ArticlesFilters,
   articlesFiltersValidationSchema,
   articlesFormFiltersValidationSchema,
+  ArticleSocketEvent,
+  type ArticleSocketEventPayload,
   type ArticleUpdateRequestDto,
   type ArticleUpdateRequestPayload,
   articleUpdateValidationSchema,
@@ -108,6 +124,8 @@ export {
   type CommentGetAllRequestDto,
   type CommentGetAllResponseDto,
   CommentsApiPath,
+  CommentsSocketEvent,
+  type CommentsSocketEventPayload,
   type CommentUpdateDto,
   type CommentUpdateRequestDto,
   commentUpdateValidationSchema,

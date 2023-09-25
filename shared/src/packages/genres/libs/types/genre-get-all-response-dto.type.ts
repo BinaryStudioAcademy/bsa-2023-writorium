@@ -1,4 +1,4 @@
-import { type GenreGetAllItemResponseDto } from './genre-get-all-item-response-dto.types.js';
+import { type GenreGetAllItemResponseDto } from './genre-get-all-item-response-dto.type.js';
 
 type GenreGetAllResponseDto = {
   items: GenreGetAllItemResponseDto[];

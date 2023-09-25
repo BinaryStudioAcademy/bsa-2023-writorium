@@ -11,7 +11,11 @@ const promptApi = new PromptApi({
 });
 
 export { promptApi };
-export { PromptType } from './libs/enums/enums.js';
+export {
+  PromptCategory,
+  PromptsApiPath,
+  PromptType,
+} from './libs/enums/enums.js';
 export { getGeneratedPromptPayload } from './libs/helpers/helpers.js';
 export {
   type GenerateArticlePromptResponseDto,

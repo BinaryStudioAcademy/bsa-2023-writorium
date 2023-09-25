@@ -1,7 +1,6 @@
 import { FacebookShareButton } from 'react-share';
 
-import { Icon } from '~/libs/components/components.js';
-
+import { Icon } from '../icon/icon.js';
 import styles from './styles.module.scss';
 
 type Properties = {

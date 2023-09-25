@@ -2,15 +2,15 @@ div.confirmModal {
   padding: 0;
 }
 
-.buttonWrapper {
+.buttonsWrapper {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
   margin-bottom: 20px;
 }
 
-.buttonWrapper button {
-  width: 100%;
+.buttonsWrapper button {
   max-width: 160px;
-  height: 45px;
-  transition: background-color 0.3s ease-in;
 }
 
 .message {
@@ -20,19 +20,10 @@ div.confirmModal {
   border-bottom: 2px solid var(--light-gray-15);
 }
 
-.buttonCancel {
-  margin-right: 16px;
-  color: var(--dark-green);
-  background-color: var(--light-gray);
-  border: 2px solid var(--dark-green);
+.confirmModal .buttonsWrapper .buttonDelete {
+  background-color: #b83733;
 }
 
-.buttonDelete {
-  color: var(--white);
-  background-color: var(--button-delete-bg);
-}
-
-.buttonDelete:hover {
-  color: var(--white);
-  background-color: var(--button-delete-hover);
+.confirmModal .buttonsWrapper .buttonDelete:hover {
+  background-color: #d9534f;
 }

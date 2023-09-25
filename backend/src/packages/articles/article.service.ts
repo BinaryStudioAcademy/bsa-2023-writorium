@@ -8,24 +8,32 @@ import {
 import { ApplicationError } from '~/libs/exceptions/exceptions.js';
 import { configureString } from '~/libs/helpers/helpers.js';
 import { type IService } from '~/libs/interfaces/service.interface.js';
+import { DatabaseTableName } from '~/libs/packages/database/database.js';
 import {
   BadRequestError,
   ForbiddenError,
   NotFoundError,
 } from '~/libs/packages/exceptions/exceptions.js';
 import { type OpenAIService } from '~/libs/packages/openai/openai.package.js';
+import { SocketNamespace, SocketRoom } from '~/libs/packages/socket/socket.js';
+import { type SocketService } from '~/libs/packages/socket/socket.package.js';
 import { token as articleToken } from '~/libs/packages/token/token.js';
 import { type ArticleViewService } from '~/packages/article-views/article-view.service.js';
 import { type FollowRepository } from '~/packages/follow/follow.js';
 
+import { type AchievementService } from '../achievements/achievement.service.js';
 import { GenreEntity } from '../genres/genre.entity.js';
 import { UNKNOWN_GENRE_KEY } from '../genres/genre.js';
 import { type GenreRepository } from '../genres/genre.repository.js';
 import { type UserAuthResponseDto } from '../users/users.js';
 import { ArticleEntity } from './article.entity.js';
 import { type ArticleRepository } from './article.repository.js';
-import { INDEX_INCREMENT, SHARED_$TOKEN } from './libs/constants/constants.js';
-import { DateFormat } from './libs/enums/enums.js';
+import {
+  FIRST_ELEMENT_ARRAY_INDEX,
+  INDEX_INCREMENT,
+  SHARED_$TOKEN,
+} from './libs/constants/constants.js';
+import { ArticleSocketEvent, DateFormat } from './libs/enums/enums.js';
 import {
   getArticleImprovementSuggestionsCompletionConfig,
   getArticleReadTimeCompletionConfig,
@@ -38,11 +46,13 @@ import {
 } from './libs/helpers/helpers.js';
 import {
   type ArticleCreateDto,
+  type ArticleGenreStatsFilters,
   type ArticleGetAllResponseDto,
   type ArticleGetImprovementSuggestionsResponseDto,
   type ArticleImprovementSuggestion,
   type ArticleResponseDto,
   type ArticlesFilters,
+  type ArticleSocketEventPayload,
   type ArticleUpdateRequestDto,
   type ArticleWithCountsResponseDto,
   type ArticleWithFollowResponseDto,
@@ -51,10 +61,22 @@ import {
   type UserArticlesGenreStatsResponseDto,
 } from './libs/types/types.js';
 
+type Constructor = {
+  articleRepository: ArticleRepository;
+  openAIService: OpenAIService;
+  genreRepository: GenreRepository;
+  socketService: SocketService;
+  articleViewService: ArticleViewService;
+  followRepository: FollowRepository;
+  achievementService: AchievementService;
+};
+
 class ArticleService implements IService {
   private articleRepository: ArticleRepository;
   private openAIService: OpenAIService;
   private genreRepository: GenreRepository;
+  private socketService: SocketService;
+  private achievementService: AchievementService;
   private articleViewService: ArticleViewService;
   private followRepository: FollowRepository;
 
@@ -62,20 +84,18 @@ class ArticleService implements IService {
     articleRepository,
     openAIService,
     genreRepository,
+    socketService,
     articleViewService,
     followRepository,
-  }: {
-    articleRepository: ArticleRepository;
-    openAIService: OpenAIService;
-    genreRepository: GenreRepository;
-    articleViewService: ArticleViewService;
-    followRepository: FollowRepository;
-  }) {
+    achievementService,
+  }: Constructor) {
     this.articleRepository = articleRepository;
     this.openAIService = openAIService;
     this.genreRepository = genreRepository;
-    this.articleViewService = articleViewService;
+    this.socketService = socketService;
     this.followRepository = followRepository;
+    this.articleViewService = articleViewService;
+    this.achievementService = achievementService;
   }
 
   private async detectArticleGenreFromText(
@@ -91,10 +111,11 @@ class ArticleService implements IService {
 
     const parsedGenres = safeJSONParse<DetectedArticleGenre[]>(genresJSON);
 
-    const FIRST_ITEM_INDEX = 0;
-
-    if (Array.isArray(parsedGenres) && parsedGenres[FIRST_ITEM_INDEX]) {
-      return parsedGenres[FIRST_ITEM_INDEX];
+    if (
+      Array.isArray(parsedGenres) &&
+      parsedGenres[FIRST_ELEMENT_ARRAY_INDEX]
+    ) {
+      return parsedGenres[FIRST_ELEMENT_ARRAY_INDEX];
     }
 
     return null;
@@ -258,7 +279,7 @@ class ArticleService implements IService {
     const article = await this.articleRepository.find(id);
 
     if (!article) {
-      return null;
+      throw new NotFoundError(ExceptionMessage.ARTICLE_NOT_FOUND);
     }
 
     const articleObject = article.toObjectWithRelations();
@@ -307,16 +328,14 @@ class ArticleService implements IService {
     const article = await this.find(id);
 
     if (!article) {
-      throw new ApplicationError({
-        message: `Article with id ${id} not found`,
-      });
+      throw new NotFoundError(ExceptionMessage.ARTICLE_NOT_FOUND);
     }
 
     const suggestions = await this.generateImprovementSuggestions(article.text);
 
     if (!suggestions) {
       throw new ApplicationError({
-        message: 'Failed to generate improvement suggestions for article',
+        message: ExceptionMessage.FAILED_TO_GENERATE_IMPROVEMENT_SUGGESTIONS,
       });
     }
 
@@ -378,9 +397,11 @@ class ArticleService implements IService {
 
   public async getUserArticlesGenreStats(
     userId: number,
+    filters: ArticleGenreStatsFilters,
   ): Promise<UserArticlesGenreStatsResponseDto> {
     const stats = await this.articleRepository.getUserArticlesGenreStats(
       userId,
+      filters,
     );
 
     return {
@@ -414,6 +435,23 @@ class ArticleService implements IService {
       }),
     );
 
+    const socketEventPayload: ArticleSocketEventPayload[typeof ArticleSocketEvent.NEW_ARTICLE] =
+      article.toObjectWithRelationsAndCounts();
+
+    this.socketService.io
+      .of(SocketNamespace.ARTICLES)
+      .to(SocketRoom.ARTICLES_FEED)
+      .emit(ArticleSocketEvent.NEW_ARTICLE, socketEventPayload);
+
+    const countOfOwnArticles =
+      await this.articleRepository.countArticlesByUserId(payload.userId);
+
+    await this.achievementService.checkAchievement({
+      userId: payload.userId,
+      countOfItems: countOfOwnArticles,
+      referenceTable: DatabaseTableName.ARTICLES,
+    });
+
     return article.toObjectWithRelationsAndCounts();
   }
 
@@ -427,13 +465,13 @@ class ArticleService implements IService {
     const article = await this.find(id);
 
     if (!article) {
-      throw new ApplicationError({
-        message: `Article with id ${id} not found`,
-      });
+      throw new NotFoundError(ExceptionMessage.ARTICLE_NOT_FOUND);
     }
 
     if (article.userId !== user.id) {
-      throw new ForbiddenError('Article can be edited only by author!');
+      throw new ForbiddenError(
+        ExceptionMessage.ARTICLE_CAN_BE_EDITED_ONLY_BY_AUTHOR,
+      );
     }
 
     let updatedGenreId = payload.genreId ?? article.genreId;
@@ -508,6 +546,22 @@ class ArticleService implements IService {
     return articleFound;
   }
 
+  public async getArticleIdByToken(
+    headers: IncomingHttpHeaders,
+  ): Promise<Pick<ArticleWithFollowResponseDto, 'id'>> {
+    const token = headers[CustomHttpHeader.SHARED_ARTICLE_TOKEN] as string;
+
+    if (!token) {
+      throw new BadRequestError(ExceptionMessage.INVALID_TOKEN);
+    }
+
+    const encoded = await articleToken.verifyToken(token);
+
+    return {
+      id: Number(encoded.articleId),
+    };
+  }
+
   public async delete(
     id: number,
     userId: number,
@@ -515,21 +569,13 @@ class ArticleService implements IService {
     const article = await this.find(id);
 
     if (!article) {
-      throw new ApplicationError({
-        message: `Article with id ${id} not found`,
-      });
-    }
-
-    const { deletedAt } = article;
-
-    if (deletedAt) {
-      throw new ApplicationError({
-        message: `Article with id ${id} has already been deleted`,
-      });
+      throw new NotFoundError(ExceptionMessage.ARTICLE_NOT_FOUND);
     }
 
     if (article.userId !== userId) {
-      throw new ForbiddenError('Article can be deleted only by author!');
+      throw new ForbiddenError(
+        ExceptionMessage.ARTICLE_CAN_BE_EDITED_ONLY_BY_AUTHOR,
+      );
     }
 
     const deletedArticle = await this.articleRepository.delete(id);
@@ -547,7 +593,7 @@ class ArticleService implements IService {
     );
     if (!toggleResult) {
       throw new ApplicationError({
-        message: 'Unable to update article status',
+        message: ExceptionMessage.UNABLE_TO_UPDATE_ARTICLE_STATUS,
       });
     }
 

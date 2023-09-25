@@ -1,3 +1,4 @@
+import { EventKey } from '~/libs/enums/enums.js';
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
 import {
   useCallback,
@@ -10,12 +11,14 @@ import styles from './styles.module.scss';
 
 type Properties = {
   className?: string;
+  classNameContentWrapper?: string;
   content: React.ReactNode;
   children: React.ReactNode;
 };
 
 const Popover: React.FC<Properties> = ({
   className,
+  classNameContentWrapper,
   content,
   children,
 }: Properties): JSX.Element => {
@@ -31,7 +34,7 @@ const Popover: React.FC<Properties> = ({
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>): void => {
-    if (event.key === 'Escape') {
+    if (event.key === EventKey.ESCAPE) {
       handleClose();
     }
   };
@@ -43,7 +46,7 @@ const Popover: React.FC<Properties> = ({
 
   return (
     <div
-      className={styles.popoverWrapper}
+      className={getValidClassNames(styles.popoverWrapper, className)}
       role="button"
       tabIndex={0}
       onClick={handleClick}
@@ -55,7 +58,7 @@ const Popover: React.FC<Properties> = ({
         <div
           className={getValidClassNames(
             styles.popoverContentWrapper,
-            className,
+            classNameContentWrapper,
           )}
         >
           {content}

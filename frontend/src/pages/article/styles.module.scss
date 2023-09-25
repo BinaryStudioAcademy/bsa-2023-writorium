@@ -2,10 +2,9 @@
 
 .articlePageWrapper {
   display: grid;
-  grid-template-columns: 1fr min-content;
+  grid-template-columns: 1fr 400px;
   align-items: flex-start;
   gap: 40px 20px;
-  padding-bottom: 100px;
 }
 
 .articleCreatePageWrapper,
@@ -61,12 +60,57 @@
   line-height: 30px;
 }
 
-.showPrompt {
+.articleCreatePageWrapper .showPrompt {
   display: none;
-  padding: 0 0 21px 6px;
+  padding: 0 0 24px 6px;
   color: var(--light-green);
-  font-weight: 700;
-  font-size: 16px;
+}
+
+.reactionButtonsWrapper {
+  position: fixed;
+  right: 335px;
+  bottom: 30px;
+  display: flex;
+  gap: 20px;
+  max-width: 125px;
+  padding: 10px 20px;
+  background: var(--light-gray);
+  border: 1px solid var(--light-gray-border);
+  border-radius: 20px;
+}
+
+.reactionIcon {
+  width: 20px;
+  height: 20px;
+}
+
+.reactionButton {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--dark-gray-50);
+  font-size: 14px;
+  font-family: Lato, sans-serif;
+  background-color: transparent;
+}
+
+.disabled {
+  cursor: default;
+}
+
+.disabled svg {
+  color: var(--light-green);
+}
+
+.pressed svg,
+.reactionButton:hover svg {
+  color: var(--light-green);
+}
+
+@media only screen and (max-width: breakpoints.$medium) {
+  .editArticlePage {
+    flex-direction: column;
+  }
 }
 
 @media only screen and (max-width: breakpoints.$extra-large) {
@@ -95,13 +139,21 @@
     padding: 10px;
   }
 
-  .showPrompt {
+  .articleCreatePageWrapper .showPrompt {
     display: block;
+  }
+
+  .reactionButtonsWrapper {
+    display: none;
   }
 }
 
 @media print {
   .commentsBlockWrapper {
+    display: none;
+  }
+
+  .reactionButtonsWrapper {
     display: none;
   }
 }

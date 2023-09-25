@@ -2,30 +2,9 @@
 
 .body {
   width: 100%;
+  padding: 15px 33px 62px;
   background: var(--white);
   border-radius: 10px;
-}
-
-.coverWrapper {
-  position: relative;
-  padding: 16px 15px 0 14px;
-}
-
-.buttonsWrapper {
-  position: absolute;
-  top: 5%;
-  left: 28px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 11px;
-  height: 90%;
-}
-
-.textWrapper {
-  flex-grow: 1;
-  padding: 18px 33px 62px;
 }
 
 .body:not(.hasCover) {
@@ -33,13 +12,9 @@
   flex-direction: row-reverse;
 }
 
-.body:not(.hasCover) .textWrapper {
-  padding-top: 40px;
-}
-
-.body:not(.hasCover) .buttonsWrapper {
-  position: static;
-  justify-content: flex-start;
+.coverWrapper {
+  position: relative;
+  margin: 0 -18px 15px;
 }
 
 .cover {
@@ -50,14 +25,21 @@
   border-radius: 10px;
 }
 
-.icon {
-  width: 20px;
-  height: 20px;
+.buttonsWrapper {
+  position: absolute;
+  top: 5%;
+  left: 13px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 11px;
+  height: 90%;
 }
 
-.body.hasCover .icon {
-  width: 15px;
-  height: 15px;
+.body:not(.hasCover) .buttonsWrapper {
+  position: static;
+  justify-content: flex-start;
 }
 
 .iconButton {
@@ -76,12 +58,49 @@
   background-color: var(--light-gray);
 }
 
+.icon {
+  width: 20px;
+  height: 20px;
+}
+
+.body.hasCover .icon {
+  width: 15px;
+  height: 15px;
+}
+
 .facebookIconButton {
   padding: 5px;
 }
 
 .body:not(.hasCover) .facebookIconButton {
   padding: 0;
+}
+
+.popover {
+  max-width: max-content;
+}
+
+.authorName {
+  display: none;
+  font-size: 16px;
+  cursor: pointer;
+  transition: color 0.3s ease-in;
+}
+
+.infoIcon {
+  transform: translateY(-3px);
+}
+
+.authorName:hover {
+  color: var(--light-green);
+}
+
+.textWrapper {
+  flex-grow: 1;
+}
+
+.body:not(.hasCover) .textWrapper {
+  padding-top: 40px;
 }
 
 .title {
@@ -94,7 +113,7 @@
 }
 
 .text {
-  max-width: 586px;
+  width: 100%;
   margin: 28px auto 0;
   color: var(--dark-gray);
   font-weight: 400;
@@ -103,22 +122,23 @@
   word-break: break-word;
 }
 
-.reactionIcon {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 30px;
-  padding-top: 6px;
-  color: var(--dark-gray-50);
-  font-weight: 400;
-  font-size: 12px;
-  background-color: var(--white-90);
-  border-radius: 50%;
-  transition: background-color 0.2s ease;
+.text p:not(:last-child) {
+  margin-block-end: 10px;
 }
 
-.reactionIcon:hover {
-  background-color: var(--light-gray);
+.reactionButtonsWrapper {
+  position: absolute;
+  display: none;
+  gap: 20px;
+}
+
+.reactionButton {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--dark-gray-50);
+  font-family: Lato, sans-serif;
+  background-color: transparent;
 }
 
 .disabled {
@@ -129,14 +149,9 @@
   color: var(--light-green);
 }
 
-.pressed svg {
+.pressed svg,
+.reactionButton:hover svg {
   color: var(--light-green);
-}
-
-.presentationAuthorName {
-  display: none;
-  padding: 20px 33px 0;
-  font-size: 16px;
 }
 
 .onlyForPrint {
@@ -155,6 +170,11 @@
     padding-top: 18px;
   }
 
+  .iconButton {
+    width: 25px;
+    height: 25px;
+  }
+
   .title {
     font-size: 20px;
   }
@@ -168,6 +188,19 @@
     left: 15px;
     width: 235px;
   }
+
+  .reactionButtonsWrapper {
+    margin-top: 15px;
+  }
+
+  .reactionIcon {
+    width: 15px;
+    height: 15px;
+  }
+
+  .reactionButton {
+    font-size: 12px;
+  }
 }
 
 @media only screen and (min-width: breakpoints.$medium) and (max-width: breakpoints.$extra-large) {
@@ -180,8 +213,14 @@
     padding-top: 18px;
   }
 
-  .presentationAuthorName {
+  .authorName {
     font-size: 18px;
+  }
+
+  .infoIcon {
+    width: 17px;
+    height: 17px;
+    transform: translateY(-5px);
   }
 
   .title {
@@ -195,6 +234,21 @@
   .authorDetails.authorDetailsModal {
     left: 15px;
     width: 293px;
+  }
+
+  .reactionButtonsWrapper {
+    margin-top: 10px;
+  }
+
+  .reactionIcon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .reactionButton {
+    width: 37px;
+    height: 37px;
+    font-size: 14px;
   }
 }
 
@@ -212,7 +266,12 @@
     margin-bottom: 5px;
   }
 
-  .presentationAuthorName {
+  .popover {
+    margin-bottom: 15px;
+    padding: 5px 0;
+  }
+
+  .authorName {
     display: block;
   }
 
@@ -226,6 +285,10 @@
   .authorDetails.authorDetailsModal {
     display: flex;
     background-color: var(--light-gray-15);
+  }
+
+  .reactionButtonsWrapper {
+    display: flex;
   }
 }
 

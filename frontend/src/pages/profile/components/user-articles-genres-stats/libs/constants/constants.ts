@@ -1,3 +1,5 @@
+import { type ArticleGenreStatsFilters } from '~/packages/articles/articles.js';
+
 const GENRES_CHART_COLORS = [
   '#44996b',
   '#58a77c',
@@ -12,4 +14,9 @@ const GENRES_CHART_COLORS = [
   '#d6ecff',
 ];
 
-export { GENRES_CHART_COLORS };
+const DEFAULT_FILTER_PAYLOAD: ArticleGenreStatsFilters = {
+  articlePublishedStatus: null,
+} as const;
+
+export { DEFAULT_FILTER_PAYLOAD, GENRES_CHART_COLORS };
+export { articleStatusOptions } from './article-status-select-options.constant.js';

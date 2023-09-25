@@ -1,4 +1,5 @@
 import {
+  Button,
   Layout,
   Popover,
   PromptGeneration,
@@ -16,9 +17,13 @@ const CreateArticlePage: React.FC = () => (
         content={
           <PromptGeneration containerStyle={styles.promptGenerationContainer} />
         }
-        className={styles.promptGenerationModal}
+        classNameContentWrapper={styles.promptGenerationModal}
       >
-        <p className={styles.showPrompt}>Show prompt</p>
+        <Button
+          variant="text"
+          label="Show prompt"
+          className={styles.showPrompt}
+        />
       </Popover>
       <div className={styles.articleFormWrapper}>
         <ArticleForm />

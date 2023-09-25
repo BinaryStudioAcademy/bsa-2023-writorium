@@ -1,5 +1,3 @@
-import { type FC } from 'react';
-
 import { Avatar, Button, Icon } from '~/libs/components/components.js';
 import { DateFormat, FollowStatus } from '~/libs/enums/enums.js';
 import {
@@ -12,7 +10,6 @@ import styles from './styles.module.scss';
 type Properties = {
   authorName: string;
   authorFollowers: number;
-  authorRating?: number;
   publishedAt: string | null;
   readTime: number | null;
   genre: string | null;
@@ -24,10 +21,9 @@ type Properties = {
   isShared?: boolean;
 };
 
-const ArticleDetails: FC<Properties> = ({
+const ArticleDetails: React.FC<Properties> = ({
   authorName,
   authorFollowers,
-  authorRating = 700,
   publishedAt,
   readTime,
   genre,
@@ -38,9 +34,17 @@ const ArticleDetails: FC<Properties> = ({
   onFollow,
   isShared = false,
 }) => {
+  const shouldDisplayFollowButton = !isArticleOwner && !isShared;
   return (
     <div className={getValidClassNames(styles.container, containerStyle)}>
-      <div className={styles.authorWrapper}>
+      <div
+        className={getValidClassNames(
+          styles.authorWrapper,
+          shouldDisplayFollowButton
+            ? styles.templateFollowButton
+            : styles.templateOwnArticle,
+        )}
+      >
         <div className={styles.avatarWrapper}>
           <Avatar username={authorName} avatarUrl={avatarUrl} />
         </div>
@@ -51,17 +55,13 @@ const ArticleDetails: FC<Properties> = ({
             <span className={styles.authorInfoValue}>{authorFollowers}</span>
             following
           </li>
-          <li className={styles.authorInfo}>
-            <Icon iconName="star" />
-            <span className={styles.authorInfoValue}>{authorRating}</span>
-            rating
-          </li>
         </ul>
-        {!isArticleOwner && !isShared && (
+        {shouldDisplayFollowButton && (
           <Button
+            size="small"
+            onClick={onFollow}
             className={styles.followButton}
             label={isFollowed ? FollowStatus.UNFOLLOW : FollowStatus.FOLLOW}
-            onClick={onFollow}
           />
         )}
       </div>
@@ -78,14 +78,18 @@ const ArticleDetails: FC<Properties> = ({
             </li>
             {readTime && (
               <li className={styles.articleInfoItem}>
-                <span className={styles.articleReadTimeValue}>{readTime}</span>
+                <span
+                  className={styles.articleReadTimeValue}
+                >{`${readTime} `}</span>
                 min read
               </li>
             )}
           </ul>
         </div>
-        <Icon iconName="sparkles" />
-        <span className={styles.articleGenre}>{genre}</span>
+        <section className={styles.articleGenreInfo}>
+          <Icon iconName="sparkles" />
+          <span className={styles.articleGenre}>{genre}</span>
+        </section>
       </div>
     </div>
   );
