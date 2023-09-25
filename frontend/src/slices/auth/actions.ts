@@ -8,7 +8,6 @@ import {
   type AuthResetPasswordDto,
   type UserSignInWithFacebookResponseDto,
 } from '~/packages/auth/auth.js';
-import { NotificationType } from '~/packages/notification/notification.js';
 import {
   type UserAuthResponseDto,
   type UserSignInRequestDto,
@@ -96,13 +95,12 @@ const sendEmailResetPasswordLink = createAsyncThunk<
   async (payload, { dispatch, extra }) => {
     const { authApi } = extra;
     const response = await authApi.sendEmailResetPasswordLink(payload);
-    const resetPasswordEmailMessage =
-      'Email with reset password link was send to your email address';
 
     void dispatch(
       appActions.notify({
-        type: NotificationType.SUCCESS,
-        message: resetPasswordEmailMessage,
+        type: 'success',
+        message:
+          'Email with reset password link was send to your email address',
       }),
     );
 

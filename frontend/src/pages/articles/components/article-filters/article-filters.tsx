@@ -7,7 +7,7 @@ import {
   ToggleCheckbox,
 } from '~/libs/components/components.js';
 import { Select } from '~/libs/components/select/select.js';
-import { AppRoute, InputType } from '~/libs/enums/enums.js';
+import { AppRoute } from '~/libs/enums/enums.js';
 import {
   useAppForm,
   useCallback,
@@ -73,7 +73,7 @@ const ArticleFilters: React.FC<Properties> = ({
         <div className={styles.inputWrapper}>
           <Input
             name="titleFilter"
-            type={InputType.TEXT}
+            type="text"
             placeholder="Search..."
             label="Title"
             className={styles.filterInput}

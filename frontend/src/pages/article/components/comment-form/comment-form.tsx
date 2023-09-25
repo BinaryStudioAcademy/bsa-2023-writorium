@@ -1,6 +1,4 @@
 import { Button, Input } from '~/libs/components/components.js';
-import { EMPTY_STRING } from '~/libs/constants/constants.js';
-import { ButtonType } from '~/libs/enums/enums.js';
 import { useAppForm, useCallback } from '~/libs/hooks/hooks.js';
 import { type ReactBaseSyntheticEvent } from '~/libs/types/types.js';
 import {
@@ -16,7 +14,7 @@ const CommentForm: React.FC<Properties> = ({ onSubmit }) => {
   const { control, errors, handleSubmit, handleReset, isDirty, isSubmitting } =
     useAppForm<Omit<CommentBaseRequestDto, 'articleId'>>({
       defaultValues: {
-        text: EMPTY_STRING,
+        text: '',
       },
       validationSchema: commentCreateValidationSchema,
     });
@@ -38,11 +36,7 @@ const CommentForm: React.FC<Properties> = ({ onSubmit }) => {
         errors={errors}
         rows={4}
       />
-      <Button
-        label="Send"
-        type={ButtonType.SUBMIT}
-        disabled={!isDirty || isSubmitting}
-      />
+      <Button label="Send" type="submit" disabled={!isDirty || isSubmitting} />
     </form>
   );
 };

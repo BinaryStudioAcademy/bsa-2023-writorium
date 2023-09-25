@@ -1,6 +1,5 @@
 import { Link } from '~/libs/components/components.js';
-import { EMPTY_STRING } from '~/libs/constants/constants.js';
-import { AppRoute, InputType } from '~/libs/enums/enums.js';
+import { AppRoute } from '~/libs/enums/enums.js';
 import { useAppForm, useCallback, useParams } from '~/libs/hooks/hooks.js';
 import { type AuthResetPasswordDto } from '~/packages/auth/auth.js';
 import { resetPasswordValidationSchema } from '~/packages/auth/auth.js';
@@ -20,7 +19,7 @@ const ResetPasswordForm: React.FC<Properties> = ({ onSubmit }) => {
   const { control, errors, handleSubmit } = useAppForm({
     defaultValues: {
       ...DEFAULT_PAYLOAD,
-      resetPasswordToken: token ?? EMPTY_STRING,
+      resetPasswordToken: token ?? '',
     },
     validationSchema: resetPasswordValidationSchema,
   });
@@ -44,7 +43,7 @@ const ResetPasswordForm: React.FC<Properties> = ({ onSubmit }) => {
           <fieldset className={styles.fieldset}>
             <PasswordInput
               name="password"
-              type={InputType.PASSWORD}
+              type="password"
               placeholder="Enter new password"
               label="Password"
               control={control}
@@ -52,7 +51,7 @@ const ResetPasswordForm: React.FC<Properties> = ({ onSubmit }) => {
             />
             <PasswordInput
               name="confirmPassword"
-              type={InputType.PASSWORD}
+              type="password"
               placeholder="Confirm new password"
               label="Confirm password"
               control={control}

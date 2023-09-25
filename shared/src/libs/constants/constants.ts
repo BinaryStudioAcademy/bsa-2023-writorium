@@ -1,8 +1,4 @@
-export { COMMA_SPACE_DELIMITER } from './comma-space-delimiter.constant.js';
-export { EMPTY_STRING } from './empty-string.constant.js';
-export { FIRST_INDEX } from './first-index.constant.js';
 export { INDEX_INCREMENT } from './index-increment.constant.js';
-export { ONE_SPACE_DELIMITER } from './one-space-delimiter.constant.js';
 export {
   DEFAULT_PAGINATION_SKIP,
   DEFAULT_PAGINATION_TAKE,

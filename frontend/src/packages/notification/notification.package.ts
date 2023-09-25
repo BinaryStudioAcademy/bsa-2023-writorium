@@ -5,14 +5,6 @@ import {
   type ToastTransition,
 } from 'react-toastify';
 
-import {
-  DEFAULT_NOTIFICATION_POSITION,
-  INFO_MESSAGE,
-  SUCCESS_MESSAGE,
-  UNKNOWN_ERROR_MESSAGE,
-  WARNING_MESSAGE,
-} from './libs/constants/constants.js';
-import { NotificationType } from './libs/enums/enums.js';
 import { type NotificationPayload } from './libs/types/types.js';
 
 type Options = {
@@ -27,34 +19,31 @@ type NotificationService = Record<
 >;
 
 class Notification implements NotificationService {
-  public error = (
-    message = UNKNOWN_ERROR_MESSAGE,
-    options: Options = {},
-  ): void => {
+  public error = (message = 'Unknown Error!', options: Options = {}): void => {
     this.showToast(message, {
       ...options,
-      type: NotificationType.ERROR,
+      type: 'error',
     });
   };
 
-  public success = (message = SUCCESS_MESSAGE, options: Options = {}): void => {
+  public success = (message = 'Success!', options: Options = {}): void => {
     this.showToast(message, {
       ...options,
-      type: NotificationType.SUCCESS,
+      type: 'success',
     });
   };
 
-  public warning = (message = WARNING_MESSAGE, options: Options = {}): void => {
+  public warning = (message = 'Warning!', options: Options = {}): void => {
     this.showToast(message, {
       ...options,
-      type: NotificationType.WARNING,
+      type: 'warning',
     });
   };
 
-  public info = (message = INFO_MESSAGE, options: Options = {}): void => {
+  public info = (message = 'Info!', options: Options = {}): void => {
     this.showToast(message, {
       ...options,
-      type: NotificationType.INFO,
+      type: 'info',
     });
   };
 
@@ -63,7 +52,7 @@ class Notification implements NotificationService {
   };
 
   private mapOptions = ({
-    position = DEFAULT_NOTIFICATION_POSITION,
+    position = 'top-right',
     transition = Slide,
     type,
   }: Options): ToastOptions => {

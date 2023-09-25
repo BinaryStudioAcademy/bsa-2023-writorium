@@ -28,11 +28,7 @@ import { type GenreRepository } from '../genres/genre.repository.js';
 import { type UserAuthResponseDto } from '../users/users.js';
 import { ArticleEntity } from './article.entity.js';
 import { type ArticleRepository } from './article.repository.js';
-import {
-  EMPTY_STRING,
-  INDEX_INCREMENT,
-  SHARED_$TOKEN,
-} from './libs/constants/constants.js';
+import { INDEX_INCREMENT, SHARED_$TOKEN } from './libs/constants/constants.js';
 import { ArticleSocketEvent, DateFormat } from './libs/enums/enums.js';
 import {
   getArticleImprovementSuggestionsCompletionConfig,
@@ -511,7 +507,7 @@ class ArticleService implements IService {
       articleId: id,
     });
 
-    const refererOrigin = getOriginFromRefererHeader(referer) ?? EMPTY_STRING;
+    const refererOrigin = getOriginFromRefererHeader(referer) ?? '';
 
     const link = configureString(
       refererOrigin,

@@ -6,7 +6,6 @@ import {
   useController,
 } from 'react-hook-form';
 
-import { InputType } from '~/libs/enums/enums.js';
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
 
 import { TOGGLE_CHECKBOX_ID } from './libs/constants/constants.js';
@@ -33,7 +32,7 @@ const ToggleCheckbox = <T extends FieldValues>({
       <input
         {...field}
         name={name}
-        type={InputType.CHECKBOX}
+        type="checkbox"
         id={TOGGLE_CHECKBOX_ID}
         checked={field.value}
         className={getValidClassNames(styles.switch, styles.pointer)}

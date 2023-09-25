@@ -1,4 +1,3 @@
-import { EMPTY_STRING } from '~/libs/constants/constants.js';
 import { AppRoute, ContentType, ServerErrorType } from '~/libs/enums/enums.js';
 import { configureString, constructUrl } from '~/libs/helpers/helpers.js';
 import {
@@ -102,10 +101,7 @@ class HttpApi implements IHttpApi {
     if (hasAuth) {
       const token = await this.storage.get<string>(StorageKey.TOKEN);
 
-      headers.append(
-        HttpHeader.AUTHORIZATION,
-        `Bearer ${token ?? EMPTY_STRING}`,
-      );
+      headers.append(HttpHeader.AUTHORIZATION, `Bearer ${token ?? ''}`);
     }
 
     return headers;

@@ -13,8 +13,6 @@ import {
 } from '~/libs/enums/enums.js';
 import { type ValueOf } from '~/libs/types/types.js';
 
-import { DataTooltipKey } from './libs/enums/enums.js';
-
 type ElementWithTooltipProperties = {
   className?: string;
   elementType: keyof ReactHTML;
@@ -38,16 +36,16 @@ const ElementWithTooltip: React.FC<ElementWithTooltipProperties> = ({
 }) => {
   const isStringContent = typeof tooltipContent === 'string';
   const contentDataAttribute = isStringContent
-    ? DataTooltipKey.CONTENT
-    : DataTooltipKey.HTML;
+    ? 'data-tooltip-content'
+    : 'data-tooltip-html';
   const adaptedTooltipContent = isStringContent
     ? tooltipContent
     : renderToStaticMarkup(tooltipContent);
   const tooltipAttributes = hasToShowTooltip
     ? {
-        [DataTooltipKey.ID]: tooltipId,
-        [DataTooltipKey.PLACE]: placement,
-        [DataTooltipKey.POSITION_STRATEGY]: tooltipPositionStrategy,
+        'data-tooltip-id': tooltipId,
+        'data-tooltip-place': placement,
+        'data-tooltip-position-strategy': tooltipPositionStrategy,
         [contentDataAttribute]: adaptedTooltipContent,
       }
     : {};

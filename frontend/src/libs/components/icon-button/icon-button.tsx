@@ -1,6 +1,4 @@
 import { Icon } from '~/libs/components/components.js';
-import { EMPTY_STRING } from '~/libs/constants/constants.js';
-import { ButtonType } from '~/libs/enums/enums.js';
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
 import { type ReactMouseEvent } from '~/libs/types/types.js';
 
@@ -21,14 +19,14 @@ type Properties = {
 const IconButton: React.FC<Properties> = ({
   iconName,
   onClick,
-  label = EMPTY_STRING,
-  className = EMPTY_STRING,
-  iconClassName = EMPTY_STRING,
+  label = '',
+  className = '',
+  iconClassName = '',
   isLoading,
 }) => (
   <button
     className={getValidClassNames(styles.iconButton, className)}
-    type={ButtonType.BUTTON}
+    type="button"
     onClick={onClick}
     disabled={isLoading}
   >

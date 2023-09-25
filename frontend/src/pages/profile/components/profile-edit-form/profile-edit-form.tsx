@@ -1,5 +1,4 @@
 import { Button, Input } from '~/libs/components/components.js';
-import { ButtonType, InputType } from '~/libs/enums/enums.js';
 import {
   useAppDispatch,
   useAppForm,
@@ -96,7 +95,7 @@ const ProfileEditForm: React.FC<Properties> = ({
           onUpdateAvatarId={handleUpdateAvatarId}
         />
         <Input
-          type={InputType.TEXT}
+          type="text"
           label="First Name"
           placeholder="Enter your first name"
           name="firstName"
@@ -104,7 +103,7 @@ const ProfileEditForm: React.FC<Properties> = ({
           errors={errors}
         />
         <Input
-          type={InputType.TEXT}
+          type="text"
           label="Last Name"
           placeholder="Enter your last name"
           name="lastName"
@@ -112,7 +111,7 @@ const ProfileEditForm: React.FC<Properties> = ({
           errors={errors}
         />
         <Input
-          type={InputType.EMAIL}
+          type="email"
           label="Email"
           placeholder="Enter your email"
           name="email"
@@ -125,13 +124,13 @@ const ProfileEditForm: React.FC<Properties> = ({
           hasFullWidth
           label="Cancel"
           variant="outlined"
-          type={ButtonType.BUTTON}
+          type="button"
           onClick={handleCancel}
         />
         <Button
           hasFullWidth
           label="Save"
-          type={ButtonType.SUBMIT}
+          type="submit"
           disabled={(!isDirty && avatarId === user.avatarId) || isSubmitting}
         />
       </div>

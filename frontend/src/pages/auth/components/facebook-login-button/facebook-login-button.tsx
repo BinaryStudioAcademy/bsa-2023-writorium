@@ -1,15 +1,11 @@
 import { LoginStatus, useFacebook } from 'react-facebook';
 
 import { Button } from '~/libs/components/components.js';
-import { ButtonType } from '~/libs/enums/enums.js';
 import { useCallback } from '~/libs/hooks/hooks.js';
 import { type UserSignInWithFacebookResponseDto } from '~/packages/auth/auth.js';
 import { notification } from '~/packages/notification/notification.js';
 
-import {
-  EMAIL_STRING,
-  FACEBOOK_ERROR_MESSAGE,
-} from './libs/constants/constants.js';
+import { FACEBOOK_ERROR_MESSAGE } from './libs/constants/constants.js';
 
 type FacebookLoginButtonProperties = {
   onLogin: (response: UserSignInWithFacebookResponseDto) => void;
@@ -33,14 +29,14 @@ const FacebookLoginButton: React.FC<FacebookLoginButtonProperties> = ({
         throw new Error(FACEBOOK_ERROR_MESSAGE);
       }
 
-      const response = await api.login({ scope: EMAIL_STRING });
+      const response = await api.login({ scope: 'email' });
 
       if (response.status !== LoginStatus.CONNECTED) {
         throw new Error(FACEBOOK_ERROR_MESSAGE);
       }
 
       const profile = (await api.getProfile({
-        fields: [EMAIL_STRING],
+        fields: ['email'],
       })) as ProfileResponse | undefined;
 
       if (!profile?.email) {
@@ -60,7 +56,7 @@ const FacebookLoginButton: React.FC<FacebookLoginButtonProperties> = ({
 
   return (
     <Button
-      type={ButtonType.BUTTON}
+      type="button"
       variant="outlined"
       disabled={isLoading}
       label="Sign in with Facebook"

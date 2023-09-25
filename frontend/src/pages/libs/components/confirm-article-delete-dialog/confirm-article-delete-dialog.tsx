@@ -1,5 +1,4 @@
 import { Button, Modal } from '~/libs/components/components.js';
-import { ButtonType } from '~/libs/enums/enums.js';
 import { useCallback } from '~/libs/hooks/hooks.js';
 
 import styles from './styles.module.scss';
@@ -39,13 +38,13 @@ const ConfirmArticleDeleteDialog: React.FC<Properties> = ({
           hasFullWidth
           label="Cancel"
           variant="outlined"
-          type={ButtonType.BUTTON}
+          type="button"
           onClick={handleClose}
         />
         <Button
           hasFullWidth
           label="Delete"
-          type={ButtonType.BUTTON}
+          type="button"
           onClick={onDeleteArticle}
         />
       </div>

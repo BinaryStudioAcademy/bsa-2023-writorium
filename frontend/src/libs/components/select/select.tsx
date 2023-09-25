@@ -14,10 +14,7 @@ import {
   DropdownIndicator,
   IndicatorSeparator,
 } from './libs/components/components.js';
-import {
-  DEFAULT_SELECT_PLACEHOLDER,
-  getDefaultStyles,
-} from './libs/constants/constants.js';
+import { getDefaultStyles } from './libs/constants/constants.js';
 import {
   type SelectOption,
   type SelectOptions,
@@ -41,7 +38,7 @@ const Select = <
   IsMulti extends boolean = false,
   Group extends GroupBase<SelectOption> = GroupBase<SelectOption>,
 >({
-  placeholder = DEFAULT_SELECT_PLACEHOLDER,
+  placeholder = 'Search...',
   styles,
   name,
   control,

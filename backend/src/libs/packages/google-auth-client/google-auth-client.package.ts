@@ -8,7 +8,6 @@ import {
   BadRequestError,
   InternalServerError,
 } from '../exceptions/exceptions.js';
-import { POSTMESSAGE } from './libs/constants/constants.js';
 import { type GetTokenResponse } from './libs/types/types.js';
 
 class GoogleAuthClient {
@@ -21,7 +20,7 @@ class GoogleAuthClient {
     this.authClient = new OAuth2Client(
       GOOGLE_AUTH.CLIENT_ID,
       GOOGLE_AUTH.CLIENT_SECRET,
-      POSTMESSAGE,
+      'postmessage',
     );
   }
   private async getTokens(code: string): Promise<GetTokenResponse['tokens']> {

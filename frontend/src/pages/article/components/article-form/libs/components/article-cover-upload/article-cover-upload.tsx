@@ -15,7 +15,6 @@ import {
   FILE_KEY,
   SUPPORTED_FILE_TYPES_STRING,
 } from '~/libs/constants/constants.js';
-import { InputType } from '~/libs/enums/enums.js';
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
 import {
   useAppDispatch,
@@ -28,7 +27,6 @@ import { type ReactChangeEvent } from '~/libs/types/types.js';
 import { actions as appActions } from '~/slices/app/app.js';
 import { actions as filesActions } from '~/slices/file/file.js';
 
-import { ERROR_TYPE } from '../../constants/constants.js';
 import styles from './styles.module.scss';
 
 type Properties<T extends FieldValues> = {
@@ -71,7 +69,7 @@ const ArticleCoverUpload = <T extends FieldValues>({
           setPreviewUrl(fileData.url);
         })
         .catch((error: Error) => {
-          appActions.notify({ type: ERROR_TYPE, message: error.message });
+          appActions.notify({ type: 'error', message: error.message });
           field.onChange(null);
         })
         .finally(() => {
@@ -134,7 +132,7 @@ const ArticleCoverUpload = <T extends FieldValues>({
             )}
           >
             <input
-              type={InputType.FILE}
+              type="file"
               onDrop={handleDrop}
               className={styles.fileInput}
               onDragEnter={handleDragEnter}

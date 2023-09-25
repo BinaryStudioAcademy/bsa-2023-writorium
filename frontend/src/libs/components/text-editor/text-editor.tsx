@@ -7,7 +7,6 @@ import {
   type FieldValues,
 } from 'react-hook-form';
 
-import { EMPTY_STRING } from '~/libs/constants/constants.js';
 import { getValidClassNames, sanitizeHtml } from '~/libs/helpers/helpers.js';
 import {
   useEffect,
@@ -82,7 +81,7 @@ const TextEditor = <T extends FieldValues>({
   const editor = useEditor({
     extensions,
     onUpdate: handleEditorUpdate,
-    content: sanitizeHtml(field.value ?? EMPTY_STRING),
+    content: sanitizeHtml(field.value ?? ''),
     editorProps: {
       attributes: {
         class: styles.textEditor,

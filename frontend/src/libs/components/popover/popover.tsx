@@ -1,4 +1,4 @@
-import { ButtonType, EventKey } from '~/libs/enums/enums.js';
+import { EventKey } from '~/libs/enums/enums.js';
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
 import {
   useCallback,
@@ -45,7 +45,7 @@ const Popover: React.FC<Properties> = ({
   return (
     <div
       className={styles.popoverWrapper}
-      role={ButtonType.BUTTON}
+      role="button"
       tabIndex={0}
       onClick={handleClick}
       onKeyDown={handleKeyDown}

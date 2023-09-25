@@ -10,7 +10,7 @@ import {
   decrementFontSize,
   incrementFontSize,
 } from './libs/helpers/helpers.js';
-import { type OptionalString, type RenderedHTML } from './libs/types/types.js';
+import { type RenderedHTML } from './libs/types/types.js';
 
 type FontSizeOptions = {
   types: string[];
@@ -43,7 +43,7 @@ const FontSize = Extension.create<FontSizeOptions>({
         attributes: {
           fontSize: {
             default: null,
-            parseHTML: (element): OptionalString =>
+            parseHTML: (element): string | null | undefined =>
               element.style.fontSize.replaceAll(/["']+/g, ''),
             renderHTML: (attributes): RenderedHTML => {
               if (!attributes.fontSize) {

@@ -5,7 +5,6 @@ import {
   IconButton,
 } from '~/libs/components/components.js';
 import { FILE_KEY } from '~/libs/constants/constants.js';
-import { InputType } from '~/libs/enums/enums.js';
 import { getFullName, getValidClassNames } from '~/libs/helpers/helpers.js';
 import { useAppDispatch, useCallback, useState } from '~/libs/hooks/hooks.js';
 import { type ReactChangeEvent } from '~/libs/types/types.js';
@@ -75,7 +74,7 @@ const AvatarWrapper: React.FC<Properties> = ({
           className="visually-hidden"
           id="avatarId"
           onChange={handleUploadUserAvatar}
-          type={InputType.FILE}
+          type="file"
           accept={SUPPORTED_FILE_TYPES_STRING}
         />
         <span

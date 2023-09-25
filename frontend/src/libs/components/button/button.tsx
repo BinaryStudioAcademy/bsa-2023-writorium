@@ -1,4 +1,3 @@
-import { EMPTY_STRING } from '~/libs/constants/constants.js';
 import { ButtonType } from '~/libs/enums/enums.js';
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
 import { type ReactMouseEvent, type ValueOf } from '~/libs/types/types.js';
@@ -29,8 +28,8 @@ type Properties = {
 const Button: React.FC<Properties> = ({
   type = ButtonType.BUTTON,
   label,
-  name = EMPTY_STRING,
-  className = EMPTY_STRING,
+  name = '',
+  className = '',
   disabled,
   onClick,
   hasFullWidth,

@@ -25,7 +25,6 @@ import {
   ArticleView,
   CommentForm,
 } from './components/components.js';
-import { ScrollIntoViewValue } from './libs/enums/enums.js';
 import { getArticleViewTags } from './libs/helpers/helpers.js';
 import styles from './styles.module.scss';
 
@@ -59,8 +58,8 @@ const ArticlePage: React.FC = () => {
 
     if (hash && element) {
       element.scrollIntoView({
-        block: ScrollIntoViewValue.START,
-        behavior: ScrollIntoViewValue.SMOOTH,
+        block: 'start',
+        behavior: 'smooth',
       });
     }
   }, [commentsDataStatus, location]);

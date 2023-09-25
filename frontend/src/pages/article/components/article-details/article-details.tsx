@@ -5,7 +5,6 @@ import {
   getValidClassNames,
 } from '~/libs/helpers/helpers.js';
 
-import { DRAFT_STATUS } from '../../libs/constants/constants.js';
 import styles from './styles.module.scss';
 
 type Properties = {
@@ -66,7 +65,7 @@ const ArticleDetails: React.FC<Properties> = ({
               <span>
                 {publishedAt
                   ? getFormattedDate(publishedAt, DateFormat.MONTH_DATE_YEAR)
-                  : DRAFT_STATUS}
+                  : 'draft'}
               </span>
             </li>
             {readTime && (

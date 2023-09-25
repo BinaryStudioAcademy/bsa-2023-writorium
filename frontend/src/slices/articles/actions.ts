@@ -30,7 +30,6 @@ import {
   type CommentWithRelationsResponseDto,
 } from '~/packages/comments/comments.js';
 import { type GenreGetAllResponseDto } from '~/packages/genres/genres.js';
-import { NotificationType } from '~/packages/notification/notification.js';
 import { type PromptRequestDto } from '~/packages/prompts/prompts.js';
 import { type UserFollowResponseDto } from '~/packages/users/users.js';
 
@@ -183,12 +182,11 @@ const shareArticle = createAsyncThunk<
   const { articleApi } = extra;
 
   const response = await articleApi.share(articlePayload.id);
-  const sharingNotifyMessage = 'The sharing link was copied to clipboard';
 
   void dispatch(
     appActions.notify({
-      type: NotificationType.SUCCESS,
-      message: sharingNotifyMessage,
+      type: 'success',
+      message: 'The sharing link was copied to clipboard',
     }),
   );
 
@@ -356,11 +354,10 @@ const deleteArticle = createAsyncThunk<
       dispatch(appActions.navigate(PREVIOUS_PAGE_INDEX));
     }
 
-    const articleDeletedMessage = 'The article has been deleted successfully.';
     void dispatch(
       appActions.notify({
-        type: NotificationType.SUCCESS,
-        message: articleDeletedMessage,
+        type: 'success',
+        message: 'The article has been deleted successfully.',
       }),
     );
 

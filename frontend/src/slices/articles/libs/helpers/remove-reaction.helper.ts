@@ -1,4 +1,3 @@
-import { FIRST_INDEX } from '~/libs/constants/constants.js';
 import {
   type ArticleWithCountsResponseDto,
   type ArticleWithFollowResponseDto,
@@ -10,12 +9,13 @@ const removeReaction = <
   article: T,
   reactionId: number,
 ): T => {
+  const FIRST_ARRAY_ITEM_INDEX = 1;
   const reactionIndex = article.reactions.findIndex(
     ({ id }) => id === reactionId,
   );
 
   const reactionsToUpdate = [...article.reactions];
-  reactionsToUpdate.splice(reactionIndex, FIRST_INDEX);
+  reactionsToUpdate.splice(reactionIndex, FIRST_ARRAY_ITEM_INDEX);
 
   return {
     ...article,

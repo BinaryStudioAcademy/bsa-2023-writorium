@@ -3,7 +3,6 @@ import {
   Modal,
   ScrollToTop,
 } from '~/libs/components/components.js';
-import { EMPTY_STRING } from '~/libs/constants/constants.js';
 import { DataStatus, WindowBreakpoint } from '~/libs/enums/enums.js';
 import {
   checkIsEqual,
@@ -54,7 +53,7 @@ const MyArticles: React.FC = () => {
   );
 
   const [filters, setFilters] = useState<FilterFormValues>({
-    titleFilter: EMPTY_STRING,
+    titleFilter: '',
     authorId: null,
     genreId: null,
     showFavourites: false,

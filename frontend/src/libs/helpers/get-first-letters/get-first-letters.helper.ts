@@ -1,14 +1,10 @@
-import {
-  EMPTY_STRING,
-  ONE_SPACE_DELIMITER,
-  ZERO_COUNT,
-} from '~/libs/constants/constants.js';
+import { ZERO_COUNT as FIRST_ELEMENT_ARRAY_INDEX } from '~/libs/constants/constants.js';
 
 const getFirstLetters = (initialString: string): string => {
   return initialString
-    .split(ONE_SPACE_DELIMITER)
-    .map((word) => word.charAt(ZERO_COUNT))
-    .join(EMPTY_STRING);
+    .split(' ')
+    .map((word) => word.charAt(FIRST_ELEMENT_ARRAY_INDEX))
+    .join('');
 };
 
 export { getFirstLetters };

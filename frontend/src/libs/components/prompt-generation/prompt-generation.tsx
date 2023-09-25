@@ -1,5 +1,4 @@
 import { Button, IconButton } from '~/libs/components/components.js';
-import { EMPTY_STRING } from '~/libs/constants/constants.js';
 import { DataStatus } from '~/libs/enums/enums.js';
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
 import {
@@ -52,7 +51,7 @@ const PromptGeneration: React.FC<Properties> = ({ containerStyle }) => {
             <PromptCard
               key={category}
               category={category}
-              text={generatedPrompt?.[category] ?? EMPTY_STRING}
+              text={generatedPrompt?.[category] ?? ''}
               isGenerating={isGenerating}
             />
           ))}
