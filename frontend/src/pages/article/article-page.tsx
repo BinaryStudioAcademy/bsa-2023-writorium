@@ -1,11 +1,22 @@
 import {
   CommentCard,
+  IconButton,
   Layout,
   Loader,
   Navigate,
 } from '~/libs/components/components.js';
-import { AppRoute, DataStatus, LinkHash } from '~/libs/enums/enums.js';
-import { getFullName, getValidClassNames } from '~/libs/helpers/helpers.js';
+import {
+  AppRoute,
+  DataStatus,
+  LinkHash,
+  Reaction,
+} from '~/libs/enums/enums.js';
+import {
+  getFullName,
+  getReactionConvertedToBoolean,
+  getReactionsInfo,
+  getValidClassNames,
+} from '~/libs/helpers/helpers.js';
 import {
   useAppDispatch,
   useAppSelector,
@@ -15,8 +26,10 @@ import {
   useLocation,
   useParams,
 } from '~/libs/hooks/hooks.js';
+import { type ValueOf } from '~/libs/types/types.js';
 import { type ArticleWithFollowResponseDto } from '~/packages/articles/articles.js';
 import { type CommentBaseRequestDto } from '~/packages/comments/comments.js';
+import { type UserAuthResponseDto } from '~/packages/users/users.js';
 import { actions as articleActions } from '~/slices/articles/articles.js';
 import { actions as userActions } from '~/slices/users/users.js';
 
@@ -44,7 +57,7 @@ const ArticlePage: React.FC = () => {
     articleComments: articles.articleComments,
     fetchArticleCommentsDataStatus: articles.fetchArticleCommentsDataStatus,
     createCommentDataStatus: articles.createCommentDataStatus,
-    user: auth.user,
+    user: auth.user as UserAuthResponseDto,
   }));
 
   const hasComments = Boolean(articleComments.length);
@@ -106,6 +119,41 @@ const ArticlePage: React.FC = () => {
     return null;
   }
 
+  const { likesCount, dislikesCount, hasAlreadyReactedWith } = getReactionsInfo(
+    user.id,
+    article?.reactions ?? [],
+  );
+
+  const handleReaction = (reaction: ValueOf<typeof Reaction>): void => {
+    if (isArticleOwner) {
+      return;
+    }
+
+    if (hasAlreadyReactedWith === reaction) {
+      return void dispatch(
+        articleActions.deleteArticleReaction({
+          isLike: getReactionConvertedToBoolean(reaction),
+          articleId: Number(id),
+        }),
+      );
+    }
+
+    void dispatch(
+      articleActions.reactToArticle({
+        isLike: getReactionConvertedToBoolean(reaction),
+        articleId: Number(id),
+      }),
+    );
+  };
+
+  const handleLikeReaction = (): void => {
+    handleReaction(Reaction.LIKE);
+  };
+
+  const handleDislikeReaction = (): void => {
+    handleReaction(Reaction.DISLIKE);
+  };
+
   return (
     <Loader isLoading={isLoading} hasOverlay type="circular">
       <Layout>
@@ -117,7 +165,11 @@ const ArticlePage: React.FC = () => {
                 isArticleOwner={isArticleOwner}
                 article={article}
                 onFollow={handleFollow}
-                reactions={article.reactions}
+                onLikeReaction={handleLikeReaction}
+                onDislikeReaction={handleDislikeReaction}
+                likesCount={String(likesCount)}
+                dislikesCount={String(dislikesCount)}
+                hasAlreadyReactedWith={hasAlreadyReactedWith}
                 authorName={getFullName(
                   article.author.firstName,
                   article.author.lastName,
@@ -165,6 +217,33 @@ const ArticlePage: React.FC = () => {
               </ul>
             )}
           </div>
+          {article?.publishedAt && (
+            <div className={styles.reactionButtonsWrapper}>
+              <IconButton
+                iconName="like"
+                iconClassName={styles.reactionIcon}
+                className={getValidClassNames(
+                  styles.reactionButton,
+                  isArticleOwner && styles.disabled,
+                  hasAlreadyReactedWith === Reaction.LIKE && styles.pressed,
+                )}
+                label={String(likesCount)}
+                onClick={handleLikeReaction}
+              />
+              <IconButton
+                iconName="dislike"
+                iconClassName={styles.reactionIcon}
+                className={getValidClassNames(
+                  styles.iconButton,
+                  styles.reactionButton,
+                  isArticleOwner && styles.disabled,
+                  hasAlreadyReactedWith === Reaction.DISLIKE && styles.pressed,
+                )}
+                label={String(dislikesCount)}
+                onClick={handleDislikeReaction}
+              />
+            </div>
+          )}
         </div>
       </Layout>
     </Loader>
