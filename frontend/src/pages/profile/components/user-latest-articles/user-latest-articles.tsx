@@ -8,7 +8,7 @@ import {
 } from '~/libs/hooks/hooks.js';
 import { actions as articlesActions } from '~/slices/articles/articles.js';
 
-import { ownArticlesPaginationConfig } from './libs/enums/enums.js';
+import { OwnArticlesPaginationConfig } from './libs/enums/enums.js';
 import styles from './styles.module.scss';
 
 type Properties = {
@@ -22,8 +22,8 @@ const UserLatestArticles: React.FC<Properties> = ({ className }) => {
   useEffect(() => {
     void dispatch(
       articlesActions.fetchOwn({
-        take: ownArticlesPaginationConfig.TAKE,
-        skip: ownArticlesPaginationConfig.SKIP,
+        take: OwnArticlesPaginationConfig.TAKE,
+        skip: OwnArticlesPaginationConfig.SKIP,
       }),
     );
     return () => {

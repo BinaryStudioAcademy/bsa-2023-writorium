@@ -14,6 +14,7 @@ export {
   ContentType,
   DateFormat,
   ExceptionMessage,
+  ResetPasswordRoute,
   ServerErrorType,
   TimeUnit,
 } from 'shared/build/index.js';

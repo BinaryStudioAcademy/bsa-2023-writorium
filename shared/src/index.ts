@@ -2,7 +2,6 @@ export {
   DEFAULT_PAGINATION_SKIP,
   DEFAULT_PAGINATION_TAKE,
   INDEX_INCREMENT,
-  RESET_PASSWORD_ROUTE,
   SHARED_$TOKEN,
 } from './libs/constants/constants.js';
 export {
@@ -11,6 +10,7 @@ export {
   ContentType,
   DateFormat,
   ExceptionMessage,
+  ResetPasswordRoute,
   ServerErrorType,
   SortingOrder,
   TimeUnit,
