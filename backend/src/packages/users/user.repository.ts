@@ -72,8 +72,7 @@ class UserRepository implements IRepository {
         avatarId: user.userDetails.avatarId,
         avatarUrl: user.userDetails.avatar?.url ?? null,
       });
-    },
-    );
+    });
   }
 
   public async create(entity: UserEntity): Promise<UserEntity> {

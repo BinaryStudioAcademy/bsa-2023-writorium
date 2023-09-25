@@ -34,8 +34,7 @@ class CommentRepository implements IRepository {
           avatarUrl: comment.author.avatar?.url ?? null,
         },
       });
-    },
-    );
+    });
   }
 
   public async find(id: number): Promise<CommentEntity | null> {

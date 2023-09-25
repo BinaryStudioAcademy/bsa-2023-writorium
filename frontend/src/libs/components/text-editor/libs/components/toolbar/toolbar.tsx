@@ -127,8 +127,9 @@ const Toolbar: React.FC<Properties> = ({ editor }) => {
       <ToggleButtonsGroup
         buttons={HEADER_BUTTONS}
         onButtonClick={handleToggleHeader}
-        isButtonActive={(key): boolean => { return editor.isActive('heading', { level: key }); }
-        }
+        isButtonActive={(key): boolean => {
+          return editor.isActive('heading', { level: key });
+        }}
       />
     </div>
   );
