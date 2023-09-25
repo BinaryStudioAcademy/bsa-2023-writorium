@@ -5,5 +5,4 @@ export {
   FIRST_ELEMENT_ARRAY_INDEX,
   INDEX_INCREMENT,
   SHARED_$TOKEN,
-  SUPPORTED_FILE_TYPES,
 } from 'shared/build/index.js';
