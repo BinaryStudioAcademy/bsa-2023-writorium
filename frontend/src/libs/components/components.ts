@@ -23,6 +23,7 @@ export { RouterProvider } from './router-provider/router-provider.js';
 export { ScrollToTop } from './scroll-to-top-button/scroll-to-top-button.js';
 export { ShareOnFacebookButton } from './share-on-facebook-button/share-on-facebook-button.js';
 export { SharedArticleRoute } from './shared-article-route/shared-article-route.js';
+export { Spoiler } from './spoiler/spoiler.js';
 export { Tags } from './tags/tags.js';
 export { TextEditor } from './text-editor/text-editor.js';
 export { ToggleCheckbox } from './toggle-checkbox/toggle-checkbox.js';
