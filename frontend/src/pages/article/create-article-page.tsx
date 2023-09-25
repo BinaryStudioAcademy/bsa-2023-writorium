@@ -17,7 +17,7 @@ const CreateArticlePage: React.FC = () => (
         content={
           <PromptGeneration containerStyle={styles.promptGenerationContainer} />
         }
-        className={styles.promptGenerationModal}
+        classNameContentWrapper={styles.promptGenerationModal}
       >
         <Button
           variant="outlined"
