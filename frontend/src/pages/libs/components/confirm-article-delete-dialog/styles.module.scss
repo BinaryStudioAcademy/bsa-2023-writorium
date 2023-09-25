@@ -19,3 +19,11 @@ div.confirmModal {
   font-size: 20px;
   border-bottom: 2px solid var(--light-gray-15);
 }
+
+.confirmModal .buttonsWrapper .buttonDelete {
+  background-color: #b83733;
+}
+
+.confirmModal .buttonsWrapper .buttonDelete:hover {
+  background-color: #d9534f;
+}

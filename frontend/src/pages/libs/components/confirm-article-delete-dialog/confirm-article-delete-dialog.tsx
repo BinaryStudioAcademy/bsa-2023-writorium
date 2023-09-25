@@ -47,6 +47,7 @@ const ConfirmArticleDeleteDialog: React.FC<Properties> = ({
           label="Delete"
           type={ButtonType.BUTTON}
           onClick={onDeleteArticle}
+          className={styles.buttonDelete}
         />
       </div>
     </Modal>
