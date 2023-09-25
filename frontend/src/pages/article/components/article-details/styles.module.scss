@@ -9,15 +9,24 @@
 .authorWrapper {
   display: grid;
   grid-template: repeat(2, max-content) / repeat(2, auto);
-  grid-template-areas:
-    "avatar authorName"
-    "avatar authorInfo"
-    "avatar followButton";
   align-items: center;
   row-gap: 5px;
   padding: 25px;
   column-gap: 15px;
   border-bottom: 2px solid rgba(172 186 215 / 20%);
+}
+
+.templateFollowButton {
+  grid-template-areas:
+    "avatar authorName"
+    "avatar authorInfo"
+    "avatar followButton";
+}
+
+.templateOwnArticle {
+  grid-template-areas:
+    "avatar authorName"
+    "avatar authorInfo";
 }
 
 .avatarWrapper {
