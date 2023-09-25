@@ -1,3 +1,4 @@
+export { FIRST_ELEMENT_ARRAY_INDEX } from './first-element-array-index.constant.js';
 export { INDEX_INCREMENT } from './index-increment.constant.js';
 export {
   DEFAULT_PAGINATION_SKIP,

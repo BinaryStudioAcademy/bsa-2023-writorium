@@ -1,11 +1,10 @@
+import { IconButton } from '~/libs/components/components.js';
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
 import { useCallback, useEffect, useState } from '~/libs/hooks/hooks.js';
 
-import { IconButton } from '../icon-button/icon-button.js';
-import { ScrollValue } from './libs/enums.js';
+import { MAX_PERCENTAGE_VALUE } from './libs/constants/constants.js';
+import { ScrollValue } from './libs/enums/enums.js';
 import styles from './styles.module.scss';
-
-const MAX_PERCENTAGE_VALUE = 100;
 
 const ScrollToTop: React.FC = () => {
   const [hasScrollToTopButton, setHasScrollToTopButton] = useState(false);

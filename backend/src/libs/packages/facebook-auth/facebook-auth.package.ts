@@ -1,3 +1,5 @@
+import { ExceptionMessage } from '~/libs/enums/enums.js';
+
 import { type IConfig } from '../config/config.js';
 import { HttpCode, HttpError } from '../http/http.js';
 import { type IFacebookAuth } from './libs/interfaces/interfaces.js';
@@ -33,7 +35,7 @@ class FacebookAuth implements IFacebookAuth {
       return responseData.data.is_valid;
     } catch (error) {
       const errorMessage =
-        error instanceof Error ? error.message : 'Unknown error';
+        error instanceof Error ? error.message : ExceptionMessage.UNKNOWN_ERROR;
 
       throw new HttpError({
         message: errorMessage,

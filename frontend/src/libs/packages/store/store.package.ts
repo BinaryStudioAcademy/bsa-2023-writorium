@@ -24,7 +24,7 @@ import { reducer as authReducer } from '~/slices/auth/auth.js';
 import { reducer as promptsReducer } from '~/slices/prompts/prompts.js';
 import { reducer as usersReducer } from '~/slices/users/users.js';
 
-import { notificationMiddleware } from './middlewares/notification-middleware.js';
+import { notificationMiddleware } from './middlewares/middlewares.js';
 
 type RootReducer = {
   app: ReturnType<typeof appReducer>;

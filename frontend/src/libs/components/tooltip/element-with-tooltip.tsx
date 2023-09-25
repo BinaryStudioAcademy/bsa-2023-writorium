@@ -1,6 +1,5 @@
 import {
   createElement,
-  type FC,
   type ReactElement,
   type ReactHTML,
   type ReactNode,
@@ -25,7 +24,7 @@ type ElementWithTooltipProperties = {
   children?: ReactNode;
 };
 
-const ElementWithTooltip: FC<ElementWithTooltipProperties> = ({
+const ElementWithTooltip: React.FC<ElementWithTooltipProperties> = ({
   children,
   className,
   elementType,

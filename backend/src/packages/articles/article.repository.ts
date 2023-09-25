@@ -1,6 +1,6 @@
 import { type Model, type Page, type QueryBuilder } from 'objection';
 
-import { DatabaseTableName } from '~/libs/packages/database/libs/enums/database-table-name.enum.js';
+import { DatabaseTableName } from '~/libs/packages/database/libs/enums/enums.js';
 import { type ArticleViewModel } from '~/packages/article-views/article-view.model.js';
 import { type CommentModel } from '~/packages/comments/comment.model.js';
 

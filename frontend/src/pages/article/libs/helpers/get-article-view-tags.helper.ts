@@ -1,7 +1,7 @@
 import { getArticleTags } from '~/libs/helpers/helpers.js';
 import { type TagType } from '~/libs/types/types.js';
 import { type ArticleResponseDto } from '~/packages/articles/articles.js';
-import { PromptCategory } from '~/packages/prompts/libs/enums/enums.js';
+import { PromptCategory } from '~/packages/prompts/prompts.js';
 
 const getArticleViewTags = (article: ArticleResponseDto): TagType[] | null => {
   const tags = getArticleTags(article);

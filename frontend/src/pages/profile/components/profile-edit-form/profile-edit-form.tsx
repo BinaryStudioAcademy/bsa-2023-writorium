@@ -1,13 +1,11 @@
-import { type BaseSyntheticEvent, type FC } from 'react';
-
 import { Button, Input } from '~/libs/components/components.js';
-import { ButtonType, InputType } from '~/libs/enums/enums.js';
 import {
   useAppDispatch,
   useAppForm,
   useCallback,
   useState,
 } from '~/libs/hooks/hooks.js';
+import { type ReactBaseSyntheticEvent } from '~/libs/types/types.js';
 import {
   type UserAuthResponseDto,
   type UserUpdateRequestDto,
@@ -23,7 +21,10 @@ type Properties = {
   onEdit: (value: boolean) => void;
 };
 
-const ProfileEditForm: FC<Properties> = ({ user, onEdit }: Properties) => {
+const ProfileEditForm: React.FC<Properties> = ({
+  user,
+  onEdit,
+}: Properties) => {
   const dispatch = useAppDispatch();
   const {
     control,
@@ -52,7 +53,7 @@ const ProfileEditForm: FC<Properties> = ({ user, onEdit }: Properties) => {
   );
 
   const handleUpdateUserDetails = useCallback(
-    (event_: BaseSyntheticEvent): void => {
+    (event_: ReactBaseSyntheticEvent): void => {
       if (errorImageUpload) {
         return;
       }
@@ -94,7 +95,7 @@ const ProfileEditForm: FC<Properties> = ({ user, onEdit }: Properties) => {
           onUpdateAvatarId={handleUpdateAvatarId}
         />
         <Input
-          type={InputType.TEXT}
+          type="text"
           label="First Name"
           placeholder="Enter your first name"
           name="firstName"
@@ -102,7 +103,7 @@ const ProfileEditForm: FC<Properties> = ({ user, onEdit }: Properties) => {
           errors={errors}
         />
         <Input
-          type={InputType.TEXT}
+          type="text"
           label="Last Name"
           placeholder="Enter your last name"
           name="lastName"
@@ -110,7 +111,7 @@ const ProfileEditForm: FC<Properties> = ({ user, onEdit }: Properties) => {
           errors={errors}
         />
         <Input
-          type={InputType.EMAIL}
+          type="email"
           label="Email"
           placeholder="Enter your email"
           name="email"
@@ -123,13 +124,13 @@ const ProfileEditForm: FC<Properties> = ({ user, onEdit }: Properties) => {
           hasFullWidth
           label="Cancel"
           variant="outlined"
-          type={ButtonType.BUTTON}
+          type="button"
           onClick={handleCancel}
         />
         <Button
           hasFullWidth
           label="Save"
-          type={ButtonType.SUBMIT}
+          type="submit"
           disabled={(!isDirty && avatarId === user.avatarId) || isSubmitting}
         />
       </div>
