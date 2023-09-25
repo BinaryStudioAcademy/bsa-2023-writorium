@@ -11,6 +11,7 @@ import {
   type UserGetAllResponseDto,
   type UserUpdateRequestDto,
 } from '~/packages/users/users.js';
+import { actions as appActions } from '~/slices/app/app.js';
 import { actions as articleActions } from '~/slices/articles/articles.js';
 
 import { name as sliceName } from './users.slice.js';
@@ -71,9 +72,17 @@ const toggleFollowAuthor = createAsyncThunk<
 >(`${sliceName}/follow`, async (authorId, { extra, dispatch }) => {
   const { userApi } = extra;
   const articleAuthorFollowInfo = await userApi.toggleFollowAuthor(authorId);
-
   dispatch(
     articleActions.updateArticleAuthorFollowInfo(articleAuthorFollowInfo),
+  );
+
+  void dispatch(
+    appActions.notify({
+      type: 'info',
+      message: articleAuthorFollowInfo.isFollowed
+        ? 'You have been subscribed'
+        : 'You have been unsubscribed',
+    }),
   );
 
   return articleAuthorFollowInfo;
