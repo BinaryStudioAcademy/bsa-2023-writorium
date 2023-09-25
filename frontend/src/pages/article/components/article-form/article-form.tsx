@@ -7,9 +7,9 @@ import {
   useCallback,
   useEffect,
   useNavigate,
+  useReference,
   useState,
 } from '~/libs/hooks/hooks.js';
-import { storage, StorageKey } from '~/libs/packages/storage/storage.js';
 import { type ValueOf } from '~/libs/types/types.js';
 import {
   articleCreateValidationSchema,
@@ -36,18 +36,24 @@ type Properties = {
 const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { generatedPrompt, saveArticleStatus } = useAppSelector(
-    ({ prompts, articles }) => ({
+
+  const { generatedPrompt, saveArticleStatus, articleDataFromLocalStorage } =
+    useAppSelector(({ prompts, articles }) => ({
       generatedPrompt: prompts.generatedPrompt,
       saveArticleStatus: articles.saveArticleStatus,
-    }),
-  );
+      articleDataFromLocalStorage: articles.articleDataFromLocalStorage,
+      generatedPromptStatus: prompts.dataStatus,
+    }));
+
   const [initialText, setInitialText] = useState(
     DEFAULT_ARTICLE_FORM_PAYLOAD.text,
   );
   const [isContentFromLocalStorage, setIsContentFromLocalStorage] =
     useState(false);
-  const { control, errors, handleSubmit, handleReset, isDirty } =
+
+  const isClikedSubmitButtonReference = useReference(false);
+
+  const { control, errors, handleSubmit, handleReset, isDirty, getValues } =
     useAppForm<ArticleRequestDto>({
       defaultValues: articleForUpdate
         ? {
@@ -65,38 +71,64 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
     typeof ArticleSubmitType
   > | null>(null);
 
+  const hadleInitialData = useCallback(() => {
+    void dispatch(articlesActions.setArticleFormDataFromLocalStorage());
+  }, [dispatch]);
+
   useEffect(() => {
-    void (async (): Promise<void> => {
+    if (!articleForUpdate) {
+      hadleInitialData();
+    }
+  }, [hadleInitialData, articleForUpdate]);
+
+  useEffect(() => {
+    ((): void => {
       if (articleForUpdate) {
         setInitialText(articleForUpdate.text);
       } else {
-        const articleTitleFromLocalStorage =
-          (await storage.get(StorageKey.ARTICLE_TITLE)) ??
-          DEFAULT_ARTICLE_FORM_PAYLOAD.title;
-        const articleTextFromLocalStorage =
-          (await storage.get(StorageKey.ARTICLE_TEXT)) ??
-          DEFAULT_ARTICLE_FORM_PAYLOAD.text;
+        const { title, text } = articleDataFromLocalStorage ?? {};
 
-        await storage.drop(StorageKey.ARTICLE_TEXT);
-        await storage.drop(StorageKey.ARTICLE_TITLE);
+        if (title || text) {
+          setIsContentFromLocalStorage(true);
+        }
 
-        setInitialText(articleTextFromLocalStorage);
-        setIsContentFromLocalStorage(true);
+        setInitialText(text ?? '');
 
         handleReset({
           ...DEFAULT_ARTICLE_FORM_PAYLOAD,
-          title: articleTitleFromLocalStorage,
-          text: articleTextFromLocalStorage,
+          title: title ?? DEFAULT_ARTICLE_FORM_PAYLOAD.title,
+          text: text ?? DEFAULT_ARTICLE_FORM_PAYLOAD.text,
         });
       }
     })();
-  }, [articleForUpdate, handleReset]);
+  }, [articleForUpdate, handleReset, dispatch, articleDataFromLocalStorage]);
+
+  const handleBeforeUnload = useCallback(
+    (event_: BeforeUnloadEvent) => {
+      if (isClikedSubmitButtonReference.current) {
+        return;
+      }
+      event_.preventDefault();
+      event_.returnValue = '';
+    },
+    [isClikedSubmitButtonReference],
+  );
+
+  useEffect(() => {
+    if (!articleForUpdate) {
+      window.addEventListener('beforeunload', handleBeforeUnload);
+
+      return () => {
+        window.removeEventListener('beforeunload', handleBeforeUnload);
+      };
+    }
+  }, [handleBeforeUnload, articleForUpdate]);
 
   const isDraft = !articleForUpdate?.publishedAt;
 
   const handleArticleSubmit = useCallback(
     (articleSubmitType: ValueOf<typeof ArticleSubmitType>) =>
-      async (payload: ArticleRequestDto): Promise<Promise<void>> => {
+      (payload: ArticleRequestDto): void => {
         const isArticlePublished =
           articleSubmitType === ArticleSubmitType.PUBLISH;
 
@@ -105,13 +137,16 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
           publishedAt: isArticlePublished ? new Date().toISOString() : null,
         };
 
-        await storage.set(StorageKey.ARTICLE_TITLE, payload.title);
-        await storage.set(StorageKey.ARTICLE_TEXT, payload.text);
-        generatedPrompt &&
-          (await storage.set(
-            StorageKey.PROMPT,
-            JSON.stringify(generatedPrompt),
-          ));
+        isClikedSubmitButtonReference.current = true;
+
+        void dispatch(
+          articlesActions.saveArticleFormDataToLocalStorage({
+            articlePayload: {
+              title: payload.title,
+              text: payload.text,
+            },
+          }),
+        );
 
         setSubmitType(articleSubmitType);
         void dispatch(
@@ -119,11 +154,15 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
             articlePayload: updatedPayload,
             generatedPrompt: getGeneratedPromptPayload(generatedPrompt),
           }),
-        ).finally(() => {
-          setSubmitType(null);
-        });
+        )
+          .catch(() => {
+            isClikedSubmitButtonReference.current = false;
+          })
+          .finally(() => {
+            setSubmitType(null);
+          });
       },
-    [dispatch, generatedPrompt],
+    [dispatch, generatedPrompt, isClikedSubmitButtonReference],
   );
 
   const handleArticleUpdate = useCallback(
@@ -182,8 +221,6 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
       ? setInitialText(articleForUpdate.text)
       : setInitialText(DEFAULT_ARTICLE_FORM_PAYLOAD.text);
 
-    setIsContentFromLocalStorage(false);
-
     handleReset(
       articleForUpdate
         ? {
@@ -193,19 +230,19 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
           }
         : DEFAULT_ARTICLE_FORM_PAYLOAD,
     );
+
+    if (!articleForUpdate) {
+      void dispatch(articlesActions.dropArticleFormDataFromLocalStorage());
+      setIsContentFromLocalStorage(false);
+    }
   }, [
     handleReset,
     navigate,
     isDirty,
     articleForUpdate,
     isContentFromLocalStorage,
+    dispatch,
   ]);
-
-  useEffect(() => {
-    return () => {
-      dispatch(promptActions.resetPrompts());
-    };
-  }, [dispatch]);
 
   const isSaveDraftLoading =
     submitType === ArticleSubmitType.DRAFT &&
@@ -214,6 +251,30 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
   const isPublishLoading =
     submitType === ArticleSubmitType.PUBLISH &&
     saveArticleStatus === DataStatus.PENDING;
+
+  useEffect(() => {
+    return () => {
+      if (!isClikedSubmitButtonReference.current && !articleForUpdate) {
+        const { title, text } = getValues();
+
+        void dispatch(
+          articlesActions.saveArticleFormDataToLocalStorage({
+            articlePayload: {
+              title,
+              text,
+            },
+            unmount: true,
+          }),
+        );
+      }
+    };
+  }, [dispatch, getValues, isClikedSubmitButtonReference, articleForUpdate]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(promptActions.resetPrompts());
+    };
+  }, [dispatch]);
 
   return (
     <form

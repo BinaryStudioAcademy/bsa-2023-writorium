@@ -9,14 +9,8 @@ import {
   useAppDispatch,
   useAppSelector,
   useCallback,
-  useEffect,
-  useState,
 } from '~/libs/hooks/hooks.js';
-import { storage, StorageKey } from '~/libs/packages/storage/storage.js';
-import {
-  type GeneratedArticlePrompt,
-  type ReactMouseEvent,
-} from '~/libs/types/types.js';
+import { type ReactMouseEvent } from '~/libs/types/types.js';
 import { PromptCategory } from '~/packages/prompts/prompts.js';
 import { actions as promptsActions } from '~/slices/prompts/prompts.js';
 
@@ -32,9 +26,6 @@ const PromptGeneration: React.FC<Properties> = ({ containerStyle }) => {
     generatedPrompt: prompts.generatedPrompt,
     dataStatus: prompts.dataStatus,
   }));
-
-  const [promptFromLocalStorage, setPromptFromLocalStorage] =
-    useState(generatedPrompt);
 
   const isGenerating = dataStatus === DataStatus.PENDING;
 
@@ -56,21 +47,6 @@ const PromptGeneration: React.FC<Properties> = ({ containerStyle }) => {
     [dispatch],
   );
 
-  useEffect(() => {
-    void (async (): Promise<void> => {
-      const promptFromLocalStorage =
-        (await storage.get(StorageKey.PROMPT)) ?? null;
-
-      await storage.drop(StorageKey.PROMPT);
-
-      if (promptFromLocalStorage) {
-        setPromptFromLocalStorage(
-          JSON.parse(promptFromLocalStorage) as GeneratedArticlePrompt,
-        );
-      }
-    })();
-  }, [generatedPrompt]);
-
   return (
     <section className={getValidClassNames(styles.container, containerStyle)}>
       <div className={styles.promptsContainer}>
@@ -85,11 +61,7 @@ const PromptGeneration: React.FC<Properties> = ({ containerStyle }) => {
             >
               <PromptCard
                 category={category}
-                text={
-                  generatedPrompt?.[category] ??
-                  promptFromLocalStorage?.[category] ??
-                  ''
-                }
+                text={generatedPrompt?.[category] ?? ''}
                 isGenerating={isGenerating}
               />
             </BlockWithTooltip>
