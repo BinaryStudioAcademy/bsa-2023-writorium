@@ -5,6 +5,7 @@ const GENRES_ORIGINAL = [
   { name: 'Historical Fiction', key: 'hist_fiction' },
   { name: 'Young Adult', key: 'ya_fiction' },
 ];
+
 const GENRES_UPDATES = [
   { name: 'Science Fiction', newKey: 'science_fiction' },
   { name: 'Historical Fiction', newKey: 'historical_fiction' },
