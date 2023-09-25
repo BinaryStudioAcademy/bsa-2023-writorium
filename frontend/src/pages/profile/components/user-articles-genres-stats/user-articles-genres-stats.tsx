@@ -46,8 +46,9 @@ const UserArticlesGenresStats: React.FC<Properties> = ({ className }) => {
     useAppSelector(({ users }) => users);
 
   const handleDataLoad = useCallback(
-    (filters: ArticleGenreStatsFilters) =>
-      void dispatch(usersActions.getUserArticlesGenresStats(filters)),
+    (filters: ArticleGenreStatsFilters) => {
+      return void dispatch(usersActions.getUserArticlesGenresStats(filters));
+    },
     [dispatch],
   );
   useDeepCompareEffect(() => {

@@ -75,12 +75,13 @@ class PromptsController extends Controller {
       validation: {
         body: promptCreateValidationSchema,
       },
-      handler: (options) =>
-        this.create(
+      handler: (options) => {
+        return this.create(
           options as ApiHandlerOptions<{
             body: PromptRequestDto;
           }>,
-        ),
+        );
+      },
     });
   }
 

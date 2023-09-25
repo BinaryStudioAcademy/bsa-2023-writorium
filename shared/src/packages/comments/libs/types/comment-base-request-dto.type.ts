@@ -1,5 +1,5 @@
-import { type CommentEntityType } from '~/packages/comments/libs/types/comment-entity.type.js';
+import { type CommentEntityInstance } from '~/packages/comments/libs/types/comment-entity-instance.type.js';
 
-type CommentBaseRequestDto = Pick<CommentEntityType, 'text' | 'articleId'>;
+type CommentBaseRequestDto = Pick<CommentEntityInstance, 'text' | 'articleId'>;
 
 export { type CommentBaseRequestDto };

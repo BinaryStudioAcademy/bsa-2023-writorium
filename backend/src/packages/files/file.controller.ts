@@ -36,12 +36,13 @@ class FileController extends Controller {
     this.addRoute({
       path: FilesApiPath.ROOT,
       method: 'POST',
-      handler: (options) =>
-        this.upload(
+      handler: (options) => {
+        return this.upload(
           options as ApiHandlerOptions<{
             fileToUpload: FileToUpload;
           }>,
-        ),
+        );
+      },
     });
   }
 
