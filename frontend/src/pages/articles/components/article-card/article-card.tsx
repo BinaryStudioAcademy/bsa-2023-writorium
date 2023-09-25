@@ -170,7 +170,8 @@ const ArticleCard: React.FC<Properties> = ({
             onClick={handleToggleIsFavourite}
             isLoading={isLoading}
           />
-          <Popover
+          {isOwnArticle && (
+            <Popover
             className={styles.moreActions}
             content={
               <PopoverButtonsGroup
@@ -185,6 +186,7 @@ const ArticleCard: React.FC<Properties> = ({
               iconName="ellipsisVertical"
             />
           </Popover>
+          )}
         </div>
       </div>
       <div
