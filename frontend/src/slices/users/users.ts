@@ -1,8 +1,10 @@
 import {
   getAllAuthors,
+  getAuthorFollowersCountAndStatus,
   getUserActivity,
   getUserArticlesGenresStats,
   loadAll,
+  toggleFollowAuthor,
   updateUser,
 } from './actions.js';
 import { actions } from './users.slice.js';
@@ -14,6 +16,8 @@ const allActions = {
   getUserActivity,
   getAllAuthors,
   getUserArticlesGenresStats,
+  toggleFollowAuthor,
+  getAuthorFollowersCountAndStatus,
 };
 
 export { allActions as actions };

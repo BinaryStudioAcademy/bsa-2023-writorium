@@ -1,51 +1,70 @@
-.title {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
-}
+@use "src/assets/css/breakpoints.scss";
 
 .wrapper {
   position: sticky;
-  top: 115px;
-  flex-shrink: 0;
-  align-self: flex-start;
-  min-width: 389px;
-  margin-left: auto;
+  top: calc(var(--header-height) + 15px);
+  width: 100%;
+  max-width: 400px;
+  max-height: 640px;
+  padding-block-start: 15px;
+  background: var(--light-gray);
+}
+
+.title {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-block-end: 10px;
 }
 
 .filterGroup {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding: 0;
-}
-
-.form {
-  padding: 20px;
+  gap: 15px;
+  padding: 30px 40px;
   border: 1px solid var(--light-gray-border);
   border-radius: 10px;
+}
+
+.inputWrapper {
+  position: relative;
+}
+
+.filterInput {
+  height: 45px;
+  background: var(--input-bg);
+  border-radius: 5px;
+}
+
+.filterInput:focus {
+  background: var(--white);
+}
+
+.filterInput:hover {
+  border: 2px solid var(--light-green);
+  cursor: pointer;
+}
+
+.searchIcon {
+  position: absolute;
+  right: 15px;
+  bottom: 25px;
+  cursor: pointer;
+  transform: translateY(-100%);
 }
 
 .filterTitle {
   color: var(--dark-gray);
   font-weight: 700;
   font-size: 16px;
+  font-family: Lato, sans-serif;
+  font-style: normal;
+  line-height: normal;
 }
 
-.clearFilters {
-  color: var(--dark-gray);
-  font-weight: 500;
-  font-size: 12px;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-}
-
-.filterInput {
-  height: 45px;
-}
-
-.filterInput:hover {
-  border: 2px solid var(--light-green);
-  cursor: pointer;
+@media only screen and (max-width: breakpoints.$extra-large) {
+  .title {
+    position: static;
+    margin-block: 10px;
+  }
 }

@@ -1,14 +1,7 @@
-.container {
-  padding: 32px 0 50px;
-}
+@use "src/assets/css/breakpoints.scss";
 
-.header {
-  margin-bottom: 21px;
-  color: var(--dark-gray);
-  font-weight: 700;
-  font-size: 24px;
-  font-family: "Libre Baskerville", serif;
-  line-height: 30px;
+.container {
+  padding-bottom: 50px;
 }
 
 .promptsContainer {
@@ -19,17 +12,24 @@
 .prompts {
   position: relative;
   display: grid;
-  grid-template-columns: repeat(5, auto);
+  grid-template-columns: repeat(5, minmax(min-content, 1fr));
   flex: 1 1 auto;
   gap: 20px;
   list-style: none;
 }
 
-.resetPromptButton {
+.resetPromptButton,
+.generatePromptButton {
   position: absolute;
   top: -20px;
+}
+
+.resetPromptButton {
   right: 0;
-  background: transparent;
+}
+
+.generatePromptButton {
+  display: none;
 }
 
 .shuffleButton {
@@ -54,6 +54,10 @@
   animation: spin 0.5s linear infinite;
 }
 
+.minWidth {
+  min-width: 0;
+}
+
 @keyframes spin {
   from {
     transform: rotate(0deg);
@@ -61,5 +65,35 @@
 
   to {
     transform: rotate(360deg);
+  }
+}
+
+@media only screen and (max-width: breakpoints.$extra-large) {
+  .container {
+    display: none;
+  }
+
+  .shuffleButton {
+    display: none;
+  }
+
+  .prompts {
+    grid-template-columns: 1fr;
+    gap: 0;
+    margin-top: 20px;
+  }
+
+  .generatePromptButton {
+    display: block;
+  }
+}
+
+@media only screen and (max-width: breakpoints.$extra-extra-large) {
+  .promptsContainer {
+    gap: 10px;
+  }
+
+  .prompts {
+    gap: 10px;
   }
 }

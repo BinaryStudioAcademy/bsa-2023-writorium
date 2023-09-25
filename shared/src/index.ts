@@ -1,8 +1,8 @@
 export {
   DEFAULT_PAGINATION_SKIP,
   DEFAULT_PAGINATION_TAKE,
+  FIRST_ELEMENT_ARRAY_INDEX,
   INDEX_INCREMENT,
-  RESET_PASSWORD_ROUTE,
   SHARED_$TOKEN,
 } from './libs/constants/constants.js';
 export {
@@ -11,6 +11,7 @@ export {
   ContentType,
   DateFormat,
   ExceptionMessage,
+  ResetPasswordRoute,
   ServerErrorType,
   SortingOrder,
   TimeUnit,
@@ -24,7 +25,7 @@ export {
   getFormattedDate,
   getShuffledArray,
   makePluralOrSingular,
-  safeJSONParse,
+  parseJSONSafely,
   subtractMonthsFromDate,
 } from './libs/helpers/helpers.js';
 export { type IConfig } from './libs/packages/config/config.js';
@@ -37,6 +38,11 @@ export {
   type IHttp,
 } from './libs/packages/http/http.js';
 export { type SendEmailResponse } from './libs/packages/mailer/mailer.js';
+export {
+  SocketEvent,
+  SocketNamespace,
+  SocketRoom,
+} from './libs/packages/socket/socket.js';
 export { type IStorage } from './libs/packages/storage/storage.js';
 export {
   type PaginationParameters,
@@ -54,34 +60,50 @@ export {
   type AchievementBaseResponseDto,
   type AchievementGetAllResponseDto,
   AchievementsApiPath,
+  type AchievementWithProgressResponseDto,
+  PercentageProgress,
+  type UserAchievement,
 } from './packages/achievements/achievements.js';
 export {
   type ArticleReactionCreateDto,
-  type ArticleReactionEntityType,
+  type ArticleReactionEntityInstance,
   type ArticleReactionRequestDto,
   type ArticleReactionResponseDto,
+  ArticleReactionsSocketEvent,
+  type ArticleReactionsSocketEventPayload,
   articleReactionValidationSchema,
 } from './packages/article-reactions/article-reactions.js';
 export {
-  type ArticleCommentCount,
+  type ArticleView,
+  type ArticleViewCreateDto,
+  type ArticleViewResponseDto,
+} from './packages/article-views/article-views.js';
+export {
+  type ArticleCounts,
   type ArticleCreateDto,
   articleCreateValidationSchema,
-  type ArticleEntityType,
+  type ArticleEntityInstance,
+  type ArticleGenreStatsFilters,
+  articleGenreStatsFiltersValidationSchema,
   type ArticleGetAllResponseDto,
   type ArticleGetImprovementSuggestionsResponseDto,
   type ArticleImprovementSuggestion,
   ArticleImprovementSuggestionPriority,
+  ArticlePublishStatus,
   type ArticleRequestDto,
   type ArticleResponseDto,
   ArticlesApiPath,
   type ArticlesFilters,
   articlesFiltersValidationSchema,
   articlesFormFiltersValidationSchema,
+  ArticleSocketEvent,
+  type ArticleSocketEventPayload,
   type ArticleUpdateRequestDto,
   type ArticleUpdateRequestPayload,
   articleUpdateValidationSchema,
-  type ArticleWithCommentCountResponseDto,
-  type ArticleWithRelationsType,
+  type ArticleWithCountsResponseDto,
+  type ArticleWithFollowResponseDto,
+  type ArticleWithRelations,
   type ReactionResponseDto,
 } from './packages/articles/articles.js';
 export {
@@ -98,10 +120,12 @@ export {
   type CommentBaseResponseDto,
   type CommentCreateDto,
   commentCreateValidationSchema,
-  type CommentEntityType,
+  type CommentEntityInstance,
   type CommentGetAllRequestDto,
   type CommentGetAllResponseDto,
   CommentsApiPath,
+  CommentsSocketEvent,
+  type CommentsSocketEventPayload,
   type CommentUpdateDto,
   type CommentUpdateRequestDto,
   commentUpdateValidationSchema,
@@ -115,7 +139,7 @@ export {
   SUPPORTED_FILE_TYPES,
 } from './packages/files/files.js';
 export {
-  type GenreEntityType,
+  type GenreEntityInstance,
   type GenreGetAllItemResponseDto,
   type GenreGetAllResponseDto,
   GenresApiPath,
@@ -138,6 +162,7 @@ export {
   type UserDetailsAuthorResponseDto,
   type UserDetailsDto,
   type UserDetailsResponseDto,
+  type UserFollowResponseDto,
   type UserGetAllItemResponseDto,
   type UserGetAllResponseDto,
   UsersApiPath,

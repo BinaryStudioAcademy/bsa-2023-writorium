@@ -1,29 +1,10 @@
+@use "src/assets/css/breakpoints.scss";
+
 .body {
   width: 100%;
+  padding: 15px 33px 62px;
   background: var(--white);
   border-radius: 10px;
-}
-
-.coverWrapper {
-  position: relative;
-  padding: 16px 15px 0 14px;
-}
-
-.buttonsWrapper {
-  position: absolute;
-  top: 5%;
-  left: 28px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 11px;
-  height: 90%;
-}
-
-.articleContent {
-  flex-grow: 1;
-  padding: 18px 33px 62px;
 }
 
 .body:not(.hasCover) {
@@ -31,13 +12,9 @@
   flex-direction: row-reverse;
 }
 
-.body:not(.hasCover) .articleContent {
-  padding-top: 40px;
-}
-
-.body:not(.hasCover) .buttonsWrapper {
-  position: static;
-  justify-content: flex-start;
+.coverWrapper {
+  position: relative;
+  margin: 0 -18px 15px;
 }
 
 .cover {
@@ -48,14 +25,21 @@
   border-radius: 10px;
 }
 
-.icon {
-  width: 20px;
-  height: 20px;
+.buttonsWrapper {
+  position: absolute;
+  top: 5%;
+  left: 13px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 11px;
+  height: 90%;
 }
 
-.body.hasCover .icon {
-  width: 15px;
-  height: 15px;
+.body:not(.hasCover) .buttonsWrapper {
+  position: static;
+  justify-content: flex-start;
 }
 
 .iconButton {
@@ -74,12 +58,49 @@
   background-color: var(--light-gray);
 }
 
+.icon {
+  width: 20px;
+  height: 20px;
+}
+
+.body.hasCover .icon {
+  width: 15px;
+  height: 15px;
+}
+
 .facebookIconButton {
   padding: 5px;
 }
 
 .body:not(.hasCover) .facebookIconButton {
   padding: 0;
+}
+
+.popover {
+  max-width: max-content;
+}
+
+.authorName {
+  display: none;
+  font-size: 16px;
+  cursor: pointer;
+  transition: color 0.3s ease-in;
+}
+
+.infoIcon {
+  transform: translateY(-3px);
+}
+
+.authorName:hover {
+  color: var(--light-green);
+}
+
+.textWrapper {
+  flex-grow: 1;
+}
+
+.body:not(.hasCover) .textWrapper {
+  padding-top: 40px;
 }
 
 .title {
@@ -92,11 +113,198 @@
 }
 
 .text {
-  max-width: 586px;
+  width: 100%;
   margin: 28px auto 0;
   color: var(--dark-gray);
   font-weight: 400;
   font-size: 18px;
   line-height: 145%;
   word-break: break-word;
+}
+
+.text p:not(:last-child) {
+  margin-block-end: 10px;
+}
+
+.reactionButtonsWrapper {
+  position: absolute;
+  display: none;
+  gap: 20px;
+}
+
+.reactionButton {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--dark-gray-50);
+  font-family: Lato, sans-serif;
+  background-color: transparent;
+}
+
+.disabled {
+  cursor: default;
+}
+
+.disabled svg {
+  color: var(--light-green);
+}
+
+.pressed svg,
+.reactionButton:hover svg {
+  color: var(--light-green);
+}
+
+.onlyForPrint {
+  display: none;
+}
+
+@media only screen and (max-width: breakpoints.$medium) {
+  .buttonsWrapper {
+    top: 25px;
+    flex-direction: row;
+    align-items: start;
+    gap: 10px;
+  }
+
+  .body:not(.hasCover) .textWrapper {
+    padding-top: 18px;
+  }
+
+  .iconButton {
+    width: 25px;
+    height: 25px;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  .text {
+    margin-top: 10px;
+    font-size: 16px;
+  }
+
+  .authorDetails.authorDetailsModal {
+    left: 15px;
+    width: 235px;
+  }
+
+  .reactionButtonsWrapper {
+    margin-top: 15px;
+  }
+
+  .reactionIcon {
+    width: 15px;
+    height: 15px;
+  }
+
+  .reactionButton {
+    font-size: 12px;
+  }
+}
+
+@media only screen and (min-width: breakpoints.$medium) and (max-width: breakpoints.$extra-large) {
+  .buttonsWrapper {
+    bottom: 5%;
+    gap: 15px;
+  }
+
+  .body:not(.hasCover) .textWrapper {
+    padding-top: 18px;
+  }
+
+  .authorName {
+    font-size: 18px;
+  }
+
+  .infoIcon {
+    width: 17px;
+    height: 17px;
+    transform: translateY(-5px);
+  }
+
+  .title {
+    font-size: 30px;
+  }
+
+  .text {
+    margin-top: 18px;
+  }
+
+  .authorDetails.authorDetailsModal {
+    left: 15px;
+    width: 293px;
+  }
+
+  .reactionButtonsWrapper {
+    margin-top: 10px;
+  }
+
+  .reactionIcon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .reactionButton {
+    width: 37px;
+    height: 37px;
+    font-size: 14px;
+  }
+}
+
+@media only screen and (max-width: breakpoints.$extra-large) {
+  .body:not(.hasCover) .buttonsWrapper {
+    flex-direction: row;
+  }
+
+  .body:not(.hasCover) {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .title {
+    margin-bottom: 5px;
+  }
+
+  .popover {
+    margin-bottom: 15px;
+    padding: 5px 0;
+  }
+
+  .authorName {
+    display: block;
+  }
+
+  .articleDetailsContainer {
+    display: block;
+    background: var(--light-gray);
+    border: 1px solid var(--light-gray-border);
+    border-radius: 10px;
+  }
+
+  .authorDetails.authorDetailsModal {
+    display: flex;
+    background-color: var(--light-gray-15);
+  }
+
+  .reactionButtonsWrapper {
+    display: flex;
+  }
+}
+
+@media print {
+  .buttonsWrapper {
+    display: none;
+  }
+
+  .onlyForPrint {
+    display: block;
+    padding: 16px 0;
+    color: var(--dark-gray);
+    font-weight: 700;
+    font-size: 24px;
+    font-family: Raleway, sans-serif;
+    font-style: normal;
+    line-height: normal;
+  }
 }

@@ -8,6 +8,7 @@ import { HttpCode } from '~/libs/packages/http/http.js';
 import { type ILogger } from '~/libs/packages/logger/logger.js';
 import { type AchievementService } from '~/packages/achievements/achievement.service.js';
 
+import { type UserAuthResponseDto } from '../users/users.js';
 import { AchievementsApiPath } from './libs/enums/enums.js';
 
 /**
@@ -27,6 +28,11 @@ import { AchievementsApiPath } from './libs/enums/enums.js';
  *            type: string
  *          description:
  *            type: string
+ *          breakpoint:
+ *            type: number
+ *            format: number
+ *          referenceTable:
+ *            type: string
  */
 
 class AchievementController extends Controller {
@@ -44,14 +50,26 @@ class AchievementController extends Controller {
     });
 
     this.addRoute({
-      path: AchievementsApiPath.$ID,
+      path: AchievementsApiPath.OWN,
       method: 'GET',
       handler: (options) =>
-        this.find(
+        this.findOwnProgress(
+          options as ApiHandlerOptions<{
+            user: UserAuthResponseDto;
+          }>,
+        ),
+    });
+
+    this.addRoute({
+      path: AchievementsApiPath.$ID,
+      method: 'GET',
+      handler: (options) => {
+        return this.find(
           options as ApiHandlerOptions<{
             params: { id: number };
           }>,
-        ),
+        );
+      },
     });
   }
 
@@ -75,6 +93,40 @@ class AchievementController extends Controller {
     return {
       status: HttpCode.OK,
       payload: await this.achievementService.findAll(),
+    };
+  }
+
+  /**
+   * @swagger
+   * /achievements:
+   *    get:
+   *      description: Returns an array of achievements with progress
+   *      responses:
+   *        200:
+   *          description: Successful operation
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: array
+   *                items:
+   *                  allOf:
+   *                    - $ref: '#/components/schemas/Achievement'
+   *                    - type: object
+   *                      properties:
+   *                        progress:
+   *                          type: number
+   *                          format: number
+   *                          minimum: 0
+   */
+
+  private async findOwnProgress(
+    options: ApiHandlerOptions<{
+      user: UserAuthResponseDto;
+    }>,
+  ): Promise<ApiHandlerResponse> {
+    return {
+      status: HttpCode.OK,
+      payload: await this.achievementService.findOwnProgress(options.user.id),
     };
   }
 

@@ -1,22 +1,38 @@
 import {
   CommentCard,
+  IconButton,
   Layout,
   Loader,
   Navigate,
+  ScrollToTop,
 } from '~/libs/components/components.js';
-import { AppRoute, DataStatus, LinkHash } from '~/libs/enums/enums.js';
-import { getFullName, getValidClassNames } from '~/libs/helpers/helpers.js';
+import {
+  AppRoute,
+  DataStatus,
+  LinkHash,
+  Reaction,
+} from '~/libs/enums/enums.js';
+import {
+  getFullName,
+  getReactionConvertedToBoolean,
+  getReactionsInfo,
+  getValidClassNames,
+} from '~/libs/helpers/helpers.js';
 import {
   useAppDispatch,
   useAppSelector,
+  useArticleRoom,
   useCallback,
   useEffect,
   useLocation,
   useParams,
 } from '~/libs/hooks/hooks.js';
-import { type ArticleWithCommentCountResponseDto } from '~/packages/articles/articles.js';
+import { type ValueOf } from '~/libs/types/types.js';
+import { type ArticleWithFollowResponseDto } from '~/packages/articles/articles.js';
 import { type CommentBaseRequestDto } from '~/packages/comments/comments.js';
+import { type UserAuthResponseDto } from '~/packages/users/users.js';
 import { actions as articleActions } from '~/slices/articles/articles.js';
+import { actions as userActions } from '~/slices/users/users.js';
 
 import {
   ArticleDetails,
@@ -33,20 +49,24 @@ const ArticlePage: React.FC = () => {
     article,
     getArticleStatus,
     articleComments,
-    commentsDataStatus,
+    fetchArticleCommentsDataStatus,
+    createCommentDataStatus,
     user,
   } = useAppSelector(({ articles, auth }) => ({
-    article: articles.article as ArticleWithCommentCountResponseDto,
+    article: articles.article as ArticleWithFollowResponseDto,
     getArticleStatus: articles.getArticleStatus,
     articleComments: articles.articleComments,
-    commentsDataStatus: articles.articleCommentsDataStatus,
-    user: auth.user,
+    fetchArticleCommentsDataStatus: articles.fetchArticleCommentsDataStatus,
+    createCommentDataStatus: articles.createCommentDataStatus,
+    user: auth.user as UserAuthResponseDto,
   }));
 
   const hasComments = Boolean(articleComments.length);
   const isArticleOwner = user?.id === article?.userId;
 
   const { id } = useParams();
+
+  useArticleRoom(Number(id));
 
   useEffect(() => {
     const { hash } = location;
@@ -58,7 +78,7 @@ const ArticlePage: React.FC = () => {
         behavior: 'smooth',
       });
     }
-  }, [commentsDataStatus, location]);
+  }, [location]);
 
   useEffect(() => {
     void dispatch(articleActions.getArticle(Number(id)));
@@ -78,15 +98,19 @@ const ArticlePage: React.FC = () => {
     [article, dispatch],
   );
 
+  const handleFollow = useCallback((): void => {
+    void dispatch(userActions.toggleFollowAuthor(article.userId));
+  }, [article, dispatch]);
+
   const isLoading =
     getArticleStatus === DataStatus.PENDING ||
-    commentsDataStatus === DataStatus.PENDING;
+    fetchArticleCommentsDataStatus === DataStatus.PENDING;
 
   const isLoaded =
     getArticleStatus === DataStatus.FULFILLED ||
     getArticleStatus === DataStatus.REJECTED ||
-    commentsDataStatus === DataStatus.FULFILLED ||
-    commentsDataStatus === DataStatus.REJECTED;
+    fetchArticleCommentsDataStatus === DataStatus.FULFILLED ||
+    fetchArticleCommentsDataStatus === DataStatus.REJECTED;
 
   if (!article && !isLoading && isLoaded) {
     return <Navigate to={AppRoute.ARTICLES} />;
@@ -96,6 +120,41 @@ const ArticlePage: React.FC = () => {
     return null;
   }
 
+  const { likesCount, dislikesCount, hasAlreadyReactedWith } = getReactionsInfo(
+    user.id,
+    article?.reactions ?? [],
+  );
+
+  const handleReaction = (reaction: ValueOf<typeof Reaction>): void => {
+    if (isArticleOwner) {
+      return;
+    }
+
+    if (hasAlreadyReactedWith === reaction) {
+      return void dispatch(
+        articleActions.deleteArticleReaction({
+          isLike: getReactionConvertedToBoolean(reaction),
+          articleId: Number(id),
+        }),
+      );
+    }
+
+    void dispatch(
+      articleActions.reactToArticle({
+        isLike: getReactionConvertedToBoolean(reaction),
+        articleId: Number(id),
+      }),
+    );
+  };
+
+  const handleLikeReaction = (): void => {
+    handleReaction(Reaction.LIKE);
+  };
+
+  const handleDislikeReaction = (): void => {
+    handleReaction(Reaction.DISLIKE);
+  };
+
   return (
     <Loader isLoading={isLoading} hasOverlay type="circular">
       <Layout>
@@ -104,11 +163,18 @@ const ArticlePage: React.FC = () => {
             <>
               <ArticleView
                 tags={getArticleViewTags(article)}
-                text={article.text}
-                title={article.title}
-                coverUrl={article.coverUrl}
                 isArticleOwner={isArticleOwner}
                 article={article}
+                onFollow={handleFollow}
+                onLikeReaction={handleLikeReaction}
+                onDislikeReaction={handleDislikeReaction}
+                likesCount={String(likesCount)}
+                dislikesCount={String(dislikesCount)}
+                hasAlreadyReactedWith={hasAlreadyReactedWith}
+                authorName={getFullName(
+                  article.author.firstName,
+                  article.author.lastName,
+                )}
               />
               <ArticleDetails
                 readTime={article.readTime}
@@ -119,6 +185,10 @@ const ArticlePage: React.FC = () => {
                 publishedAt={article.publishedAt}
                 genre={article.genre}
                 avatarUrl={article.author.avatarUrl}
+                isArticleOwner={isArticleOwner}
+                onFollow={handleFollow}
+                authorFollowers={article.author.followersCount}
+                isFollowed={article.author.isFollowed}
               />
             </>
           )}
@@ -134,7 +204,10 @@ const ArticlePage: React.FC = () => {
                 Discussion ({articleComments.length})
               </p>
             )}
-            <CommentForm onSubmit={handleCreateComment} />
+            <CommentForm
+              onSubmit={handleCreateComment}
+              isLoading={createCommentDataStatus === DataStatus.PENDING}
+            />
             {hasComments && (
               <ul className={styles.commentList}>
                 {articleComments.map(({ author, ...comment }) => (
@@ -145,8 +218,36 @@ const ArticlePage: React.FC = () => {
               </ul>
             )}
           </div>
+          {article?.publishedAt && (
+            <div className={styles.reactionButtonsWrapper}>
+              <IconButton
+                iconName="like"
+                iconClassName={styles.reactionIcon}
+                className={getValidClassNames(
+                  styles.reactionButton,
+                  isArticleOwner && styles.disabled,
+                  hasAlreadyReactedWith === Reaction.LIKE && styles.pressed,
+                )}
+                label={String(likesCount)}
+                onClick={handleLikeReaction}
+              />
+              <IconButton
+                iconName="dislike"
+                iconClassName={styles.reactionIcon}
+                className={getValidClassNames(
+                  styles.iconButton,
+                  styles.reactionButton,
+                  isArticleOwner && styles.disabled,
+                  hasAlreadyReactedWith === Reaction.DISLIKE && styles.pressed,
+                )}
+                label={String(dislikesCount)}
+                onClick={handleDislikeReaction}
+              />
+            </div>
+          )}
         </div>
       </Layout>
+      <ScrollToTop />
     </Loader>
   );
 };

@@ -1,3 +1,5 @@
+@use "src/assets/css/breakpoints.scss";
+
 .header {
   position: sticky;
   top: 0;
@@ -24,6 +26,14 @@
   align-items: center;
 }
 
+span.avatar:hover {
+  background-color: var(--light-green-80);
+}
+
+img.avatar:hover {
+  opacity: 0.8;
+}
+
 .writeLink {
   margin-right: 35px;
   padding: 12px 26px;
@@ -41,25 +51,8 @@
   background-color: var(--light-green);
 }
 
-.avatarButton {
-  background-color: transparent;
-  border: none;
-}
-
-.avatarButton > span {
-  transition: background-color 0.3s ease;
-}
-
-.avatarButton:hover > span {
-  background-color: var(--light-green-80);
-}
-
-.avatarButton img {
-  transition: opacity 0.3s ease;
-}
-
-.avatarButton:hover img {
-  opacity: 0.8;
+.popoverWriteLink {
+  display: none;
 }
 
 .profileLink {
@@ -79,12 +72,42 @@
   border-color: var(--light-green);
 }
 
-.logoutBtn {
+.header .logoutBtn {
+  height: auto;
   padding: 14px 10px;
-  background: none;
+  line-height: initial;
   border-radius: 0 0 7px 7px;
 }
 
-.logoutBtn:hover {
+.header .logoutBtn:hover {
   background-color: var(--light-gray-15);
+}
+
+@media only screen and (max-width: breakpoints.$medium) {
+  .writeLink {
+    display: none;
+  }
+
+  .popoverWriteLink {
+    display: block;
+    padding: 14px 10px;
+    color: var(--light-green);
+    font-weight: 700;
+    font-size: 16px;
+    line-height: normal;
+    text-align: center;
+    border-bottom: 2px solid var(--light-gray-15);
+    border-radius: 7px 7px 0 0;
+  }
+
+  .popoverWriteLink:hover {
+    background-color: var(--light-gray-15);
+    border-color: var(--light-green);
+  }
+}
+
+@media print {
+  .header {
+    display: none;
+  }
 }

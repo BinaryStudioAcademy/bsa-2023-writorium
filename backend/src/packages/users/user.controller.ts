@@ -6,8 +6,13 @@ import {
 } from '~/libs/packages/controller/controller.js';
 import { HttpCode } from '~/libs/packages/http/http.js';
 import { type ILogger } from '~/libs/packages/logger/logger.js';
+import { type FollowService } from '~/packages/follow/follow.js';
 import { type UserService } from '~/packages/users/user.service.js';
 
+import {
+  type ArticleGenreStatsFilters,
+  articleGenreStatsFiltersValidationSchema,
+} from '../articles/articles.js';
 import { UsersApiPath } from './libs/enums/enums.js';
 import {
   type UserAuthResponseDto,
@@ -116,11 +121,17 @@ import { userUpdateWithAvatarIdValidationSchema } from './libs/validation-schema
 
 class UserController extends Controller {
   private userService: UserService;
+  private followService: FollowService;
 
-  public constructor(logger: ILogger, userService: UserService) {
+  public constructor(
+    logger: ILogger,
+    userService: UserService,
+    followService: FollowService,
+  ) {
     super(logger, ApiPath.USERS);
 
     this.userService = userService;
+    this.followService = followService;
 
     this.addRoute({
       path: UsersApiPath.ROOT,
@@ -131,12 +142,13 @@ class UserController extends Controller {
     this.addRoute({
       path: UsersApiPath.ACTIVITY,
       method: 'GET',
-      handler: (options) =>
-        this.getUserActivity(
+      handler: (options) => {
+        return this.getUserActivity(
           options as ApiHandlerOptions<{
             user: UserAuthResponseDto;
           }>,
-        ),
+        );
+      },
     });
 
     this.addRoute({
@@ -150,12 +162,17 @@ class UserController extends Controller {
     this.addRoute({
       path: UsersApiPath.ARTICLES_GENRE_STATS,
       method: 'GET',
-      handler: (options) =>
-        this.getUserArticlesGenreStats(
+      validation: {
+        query: articleGenreStatsFiltersValidationSchema,
+      },
+      handler: (options) => {
+        return this.getUserArticlesGenreStats(
           options as ApiHandlerOptions<{
             user: UserAuthResponseDto;
+            query: ArticleGenreStatsFilters;
           }>,
-        ),
+        );
+      },
     });
 
     this.addRoute({
@@ -164,13 +181,40 @@ class UserController extends Controller {
       validation: {
         body: userUpdateWithAvatarIdValidationSchema,
       },
-      handler: (options) =>
-        this.update(
+      handler: (options) => {
+        return this.update(
           options as ApiHandlerOptions<{
             body: UserUpdateRequestDto;
             user: UserAuthResponseDto;
           }>,
-        ),
+        );
+      },
+    });
+
+    this.addRoute({
+      path: UsersApiPath.$ID_FOLLOW,
+      method: 'POST',
+      handler: (options) => {
+        return this.toggleFollowAuthor(
+          options as ApiHandlerOptions<{
+            params: { id: number };
+            user: UserAuthResponseDto;
+          }>,
+        );
+      },
+    });
+
+    this.addRoute({
+      path: UsersApiPath.$ID_FOLLOW,
+      method: 'GET',
+      handler: (options) => {
+        return this.getAuthorFollowersAndStatus(
+          options as ApiHandlerOptions<{
+            params: { id: number };
+            user: UserAuthResponseDto;
+          }>,
+        );
+      },
     });
   }
 
@@ -230,12 +274,16 @@ class UserController extends Controller {
    *          description: Successful operation
    */
   private async getUserArticlesGenreStats(
-    options: ApiHandlerOptions<{ user: UserAuthResponseDto }>,
+    options: ApiHandlerOptions<{
+      user: UserAuthResponseDto;
+      query: ArticleGenreStatsFilters;
+    }>,
   ): Promise<ApiHandlerResponse> {
     return {
       status: HttpCode.OK,
       payload: await this.userService.getUserArticlesGenreStats(
         options.user.id,
+        options.query,
       ),
     };
   }
@@ -302,6 +350,36 @@ class UserController extends Controller {
     return {
       status: HttpCode.OK,
       payload: await this.userService.getAllAuthors(),
+    };
+  }
+
+  private async toggleFollowAuthor(
+    options: ApiHandlerOptions<{
+      params: { id: number };
+      user: UserAuthResponseDto;
+    }>,
+  ): Promise<ApiHandlerResponse> {
+    return {
+      status: HttpCode.OK,
+      payload: await this.followService.toggleFollowAuthor({
+        userId: options.user.id,
+        authorId: options.params.id,
+      }),
+    };
+  }
+
+  private async getAuthorFollowersAndStatus(
+    options: ApiHandlerOptions<{
+      params: { id: number };
+      user: UserAuthResponseDto;
+    }>,
+  ): Promise<ApiHandlerResponse> {
+    return {
+      status: HttpCode.OK,
+      payload: await this.followService.getAuthorFollowersCountAndStatus({
+        userId: options.user.id,
+        authorId: options.params.id,
+      }),
     };
   }
 }

@@ -1,31 +1,37 @@
 .userInfoBlock {
-  display: flex;
   grid-area: info;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 40px;
   width: 100%;
-  max-width: 270px;
-  min-height: 356px;
-  padding: 30px;
-  text-align: center;
+  min-height: 262px;
+  padding: 45px 37px 55px;
+  background-color: var(--light-gray);
+}
+
+.userInfoWrapper {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 19px;
 }
 
 .avatar {
-  width: 80%;
+  width: 162px;
   aspect-ratio: 1 / 1;
   height: auto;
 }
 
 .userInfo {
-  font-size: 18px;
+  margin-bottom: 19px;
+  color: var(--black-90);
+  line-height: normal;
+  word-break: break-word;
 }
 
-.editProfileBtn {
-  width: 100%;
-  padding: 13px 20px;
-  color: var(--white);
-  background-color: var(--dark-green);
-  border: none;
+.userName {
+  margin-bottom: 3px;
+  font-size: 24px;
+  font-family: "Libre Baskerville", serif;
+}
+
+.userEmail {
+  font-size: 14px;
 }

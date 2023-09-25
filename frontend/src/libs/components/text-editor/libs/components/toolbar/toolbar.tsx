@@ -8,10 +8,16 @@ import {
   LIST_BUTTONS,
   TEXT_ALIGNMENT_BUTTONS,
   TEXT_DECORATION_BUTTONS,
+  TEXT_SIZE_BUTTONS,
   TEXT_STYLE_BUTTONS,
 } from '../../constants/constants.js';
 import { type HeaderLevel, type TextAlignment } from '../../enums/enums.js';
-import { ListType, TextDecoration, TextStyle } from '../../enums/enums.js';
+import {
+  ListType,
+  TextDecoration,
+  TextSize,
+  TextStyle,
+} from '../../enums/enums.js';
 import { ToggleButtonsGroup } from '../toggle-buttons-group/toggle-buttons-group.js';
 import styles from './styles.module.scss';
 
@@ -37,6 +43,20 @@ const Toolbar: React.FC<Properties> = ({ editor }) => {
       const command = commandsMapper[style];
 
       editor.chain().focus()[command]().run();
+    },
+    [editor],
+  );
+
+  const handleTextSizeChange = useCallback(
+    (style: ValueOf<typeof TextSize>) => {
+      const commandsMapper = {
+        [TextSize.INCREASE]: 'incrementFontSize',
+        [TextSize.DECREASE]: 'decrementFontSize',
+      } as const;
+
+      const command = commandsMapper[style];
+
+      editor.chain().focus()[command](editor.getAttributes('textStyle')).run();
     },
     [editor],
   );
@@ -80,14 +100,19 @@ const Toolbar: React.FC<Properties> = ({ editor }) => {
   return (
     <div className={styles.toolbar}>
       <ToggleButtonsGroup
-        buttons={TEXT_ALIGNMENT_BUTTONS}
-        onButtonClick={handleTextAlignmentChange}
-        isButtonActive={(key): boolean => editor.isActive({ textAlign: key })}
+        buttons={TEXT_SIZE_BUTTONS}
+        onButtonClick={handleTextSizeChange}
+        isButtonActive={(key): boolean => editor.isActive(key)}
       />
       <ToggleButtonsGroup
         buttons={TEXT_STYLE_BUTTONS}
         onButtonClick={handleTextStyleChange}
         isButtonActive={(key): boolean => editor.isActive(key)}
+      />
+      <ToggleButtonsGroup
+        buttons={TEXT_ALIGNMENT_BUTTONS}
+        onButtonClick={handleTextAlignmentChange}
+        isButtonActive={(key): boolean => editor.isActive({ textAlign: key })}
       />
       <ToggleButtonsGroup
         buttons={TEXT_DECORATION_BUTTONS}
@@ -102,9 +127,9 @@ const Toolbar: React.FC<Properties> = ({ editor }) => {
       <ToggleButtonsGroup
         buttons={HEADER_BUTTONS}
         onButtonClick={handleToggleHeader}
-        isButtonActive={(key): boolean =>
-          editor.isActive('heading', { level: key })
-        }
+        isButtonActive={(key): boolean => {
+          return editor.isActive('heading', { level: key });
+        }}
       />
     </div>
   );

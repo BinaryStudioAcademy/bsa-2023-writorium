@@ -1,5 +1,10 @@
-import { Input, Link, Notification } from '~/libs/components/components.js';
-import { AppRoute } from '~/libs/enums/app-route.enum';
+import {
+  Button,
+  Input,
+  Link,
+  Notification,
+} from '~/libs/components/components.js';
+import { AppRoute } from '~/libs/enums/enums.js';
 import { useAppForm, useCallback } from '~/libs/hooks/hooks.js';
 import { type UserSignInWithFacebookResponseDto } from '~/packages/auth/auth.js';
 import {
@@ -7,7 +12,6 @@ import {
   userSignInValidationSchema,
 } from '~/packages/users/users.js';
 import {
-  AuthSignInButton,
   AuthSubmitButton,
   FacebookLogin,
   PasswordInput,
@@ -17,12 +21,14 @@ import { DEFAULT_LOGIN_PAYLOAD } from './libs/constants/constants.js';
 import styles from './styles.module.scss';
 
 type Properties = {
+  isLoading: boolean;
   onSubmit: (payload: UserSignInRequestDto) => void;
   onGoogleLogin: () => void;
   onFacebookLogin: (payload: UserSignInWithFacebookResponseDto) => void;
 };
 
 const SignInForm: React.FC<Properties> = ({
+  isLoading,
   onSubmit,
   onGoogleLogin,
   onFacebookLogin,
@@ -44,11 +50,14 @@ const SignInForm: React.FC<Properties> = ({
       <Notification />
       <div className={styles.formWrapper}>
         <h2 className={styles.authFormTitle}>Hello!</h2>
-        <AuthSignInButton
-          onClick={onGoogleLogin}
-          label="Sign in with Google"
-        ></AuthSignInButton>
-        <FacebookLogin onLogin={onFacebookLogin} />
+        <div className={styles.socialsSignInButtons}>
+          <Button
+            variant="outlined"
+            onClick={onGoogleLogin}
+            label="Sign in with Google"
+          />
+          <FacebookLogin onLogin={onFacebookLogin} />
+        </div>
         <span className={styles.or}>or</span>
         <form
           className={styles.form}
@@ -78,7 +87,7 @@ const SignInForm: React.FC<Properties> = ({
               Forgot password?
             </Link>
           </fieldset>
-          <AuthSubmitButton label="Sign In" />
+          <AuthSubmitButton isDisabled={isLoading} label="Sign In" />
         </form>
       </div>
       <div className={styles.messageWrapper}>

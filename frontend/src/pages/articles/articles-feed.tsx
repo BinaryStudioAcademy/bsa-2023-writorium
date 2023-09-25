@@ -1,17 +1,31 @@
-import { InfiniteScroll } from '~/libs/components/components.js';
-import { checkIsEqual, getArticleTags } from '~/libs/helpers/helpers.js';
+import {
+  IconButton,
+  Modal,
+  ScrollToTop,
+} from '~/libs/components/components.js';
+import { DataStatus, WindowBreakpoint } from '~/libs/enums/enums.js';
+import {
+  checkIsEqual,
+  checkIsPassingWindowBreakpoint,
+} from '~/libs/helpers/helpers.js';
 import {
   useAppDispatch,
   useAppSelector,
   useCallback,
   useEffect,
+  useGetWindowDimensions,
+  useModal,
   usePagination,
   useState,
 } from '~/libs/hooks/hooks.js';
 import { actions as articlesActions } from '~/slices/articles/articles.js';
 import { actions as userActions } from '~/slices/users/users.js';
 
-import { ArticleCard, ArticleFilters } from './components/components.js';
+import {
+  ArticleFilters,
+  ArticlesList,
+  EmptyArticlesPlaceholder,
+} from './components/components.js';
 import {
   getActiveFilters,
   getSelectAuthorsOptions,
@@ -21,17 +35,32 @@ import { type FilterFormValues } from './libs/types/types.js';
 import styles from './styles.module.scss';
 
 const ArticlesFeed: React.FC = () => {
+  const { handleToggleModalOpen, isOpen } = useModal();
   const dispatch = useAppDispatch();
-  const { articles, genres } = useAppSelector(({ articles }) => articles);
-  const { authors } = useAppSelector(({ users }) => users);
+  const { articles, articlesStatus, authors, genres } = useAppSelector(
+    ({ articles, users }) => ({
+      articles: articles.articles,
+      articlesStatus: articles.dataStatus,
+      genres: articles.genres,
+      authors: users.authors,
+    }),
+  );
+
+  const { width } = useGetWindowDimensions();
+  const shouldHideFilters = checkIsPassingWindowBreakpoint(
+    WindowBreakpoint.LARGE,
+    width,
+  );
+
   const [filters, setFilters] = useState<FilterFormValues>({
     titleFilter: '',
     authorId: null,
     genreId: null,
+    shouldShowFavourites: false,
   });
 
+  const isLoadingArticles = articlesStatus === DataStatus.PENDING;
   const { hasMore, loadMore, resetSkip } = usePagination();
-
   const handleLoadArticles = useCallback(() => {
     void loadMore(async (skip: number, take: number) => {
       const data = await dispatch(
@@ -42,7 +71,7 @@ const ArticlesFeed: React.FC = () => {
         }),
       ).unwrap();
 
-      return Boolean(data.items.length);
+      return Boolean(data.items.length >= take);
     });
   }, [dispatch, loadMore, filters]);
 
@@ -59,9 +88,14 @@ const ArticlesFeed: React.FC = () => {
       if (!checkIsEqual(filters, payload)) {
         setFilters(payload);
         resetSkip();
+        if (filters.shouldShowFavourites !== payload.shouldShowFavourites) {
+          void dispatch(
+            articlesActions.setShowFavourites(payload.shouldShowFavourites),
+          );
+        }
       }
     },
-    [filters, resetSkip],
+    [filters, resetSkip, dispatch],
   );
 
   useEffect(() => {
@@ -74,32 +108,57 @@ const ArticlesFeed: React.FC = () => {
     };
   }, [dispatch, handleLoadArticles, handleLoadAuthors, handleLoadGenres]);
 
-  return (
-    <div className={styles.articlesWrapper}>
-      <InfiniteScroll
-        hasMore={hasMore}
-        className={styles.articles}
-        dataLength={articles.length}
-        fetchData={handleLoadArticles}
-      >
-        {Boolean(articles.length) &&
-          articles.map((article) => (
-            <ArticleCard
-              key={article.id}
-              article={article}
-              author={article.author}
-              tags={getArticleTags(article)}
-              reactions={article.reactions}
-            />
-          ))}
-      </InfiniteScroll>
+  const handleModalClose = useCallback(() => {
+    if (isOpen) {
+      handleToggleModalOpen();
+    }
+    return false;
+  }, [handleToggleModalOpen, isOpen]);
 
-      <ArticleFilters
-        genreSelectOptions={getSelectGenresOptions(genres)}
-        authorsSelectOptions={getSelectAuthorsOptions(authors)}
-        onSubmit={handleFiltersSubmit}
-      />
-    </div>
+  return (
+    <>
+      <div className={styles.articlesWrapper}>
+        {Boolean(articles.length) || isLoadingArticles ? (
+          <ArticlesList
+            hasMore={hasMore}
+            articlesLength={articles.length}
+            isLoading={isLoadingArticles}
+            articles={articles}
+            onFetchData={handleLoadArticles}
+          />
+        ) : (
+          <EmptyArticlesPlaceholder />
+        )}
+        {shouldHideFilters ? (
+          <div className={styles.filterButtonWrapper}>
+            <IconButton
+              iconName="filter"
+              className={styles.filterButton}
+              onClick={handleToggleModalOpen}
+            />
+          </div>
+        ) : (
+          <ArticleFilters
+            genreSelectOptions={getSelectGenresOptions(genres)}
+            authorsSelectOptions={getSelectAuthorsOptions(authors)}
+            onSubmit={handleFiltersSubmit}
+          />
+        )}
+        <Modal
+          contentClassName={styles.modalContent}
+          isOpen={shouldHideFilters ? isOpen : handleModalClose()}
+          onClose={handleToggleModalOpen}
+        >
+          <ArticleFilters
+            genreSelectOptions={getSelectGenresOptions(genres)}
+            authorsSelectOptions={getSelectAuthorsOptions(authors)}
+            onSubmit={handleFiltersSubmit}
+            currentFilters={filters}
+          />
+        </Modal>
+      </div>
+      <ScrollToTop />
+    </>
   );
 };
 

@@ -1,11 +1,12 @@
-export { CommentsApiPath } from './libs/enums/enums.js';
+export { CommentsApiPath, CommentsSocketEvent } from './libs/enums/enums.js';
 export {
   type CommentBaseRequestDto,
   type CommentBaseResponseDto,
   type CommentCreateDto,
-  type CommentEntityType,
+  type CommentEntityInstance,
   type CommentGetAllRequestDto,
   type CommentGetAllResponseDto,
+  type CommentsSocketEventPayload,
   type CommentUpdateDto,
   type CommentUpdateRequestDto,
   type CommentWithRelationsResponseDto,

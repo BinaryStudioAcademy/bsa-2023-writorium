@@ -1,1 +1,1 @@
-export { CommentsApiPath } from 'shared/build/index.js';
+export { CommentsApiPath, CommentsSocketEvent } from 'shared/build/index.js';

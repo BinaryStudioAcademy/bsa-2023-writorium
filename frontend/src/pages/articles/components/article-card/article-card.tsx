@@ -9,6 +9,7 @@ import {
 } from '~/libs/components/components.js';
 import {
   AppRoute,
+  DataStatus,
   DateFormat,
   LinkHash,
   Reaction,
@@ -17,6 +18,7 @@ import {
   configureString,
   getFormattedDate,
   getFullName,
+  getReactionConvertedToBoolean,
   getReactionsInfo,
   getValidClassNames,
   sanitizeHtml,
@@ -25,10 +27,11 @@ import {
   useAppDispatch,
   useAppSelector,
   useCallback,
+  useModal,
 } from '~/libs/hooks/hooks.js';
-import { type TagType, type ValueOf } from '~/libs/types/types.js';
+import { type Tag, type ValueOf } from '~/libs/types/types.js';
 import {
-  type ArticleWithCommentCountResponseDto,
+  type ArticleWithCountsResponseDto,
   getReadTimeString,
   type ReactionResponseDto,
 } from '~/packages/articles/articles.js';
@@ -36,17 +39,16 @@ import {
   type UserAuthResponseDto,
   type UserDetailsResponseDto,
 } from '~/packages/users/users.js';
+import { ConfirmArticleDeleteDialog } from '~/pages/libs/components/components.js';
 import { actions as articlesActions } from '~/slices/articles/articles.js';
 
-import { MOCKED_REACTIONS } from '../../libs/constants.js';
-import { getReactionConvertedToBoolean } from '../../libs/helpers/helpers.js';
 import { PopoverButtonsGroup } from './libs/components/components.js';
 import styles from './styles.module.scss';
 
 type Properties = {
-  article: ArticleWithCommentCountResponseDto;
+  article: ArticleWithCountsResponseDto;
   author: UserDetailsResponseDto;
-  tags: TagType[];
+  tags: Tag[];
   reactions: ReactionResponseDto[];
 };
 
@@ -57,8 +59,12 @@ const ArticleCard: React.FC<Properties> = ({
   reactions,
 }) => {
   const dispatch = useAppDispatch();
-  const user = useAppSelector(({ auth }) => auth.user) as UserAuthResponseDto;
-
+  const { handleToggleModalOpen, isOpen } = useModal();
+  const { user, articlesDataStatus } = useAppSelector(({ auth, articles }) => ({
+    user: auth.user as UserAuthResponseDto,
+    articlesDataStatus: articles.dataStatus,
+  }));
+  const isLoading = articlesDataStatus === DataStatus.PENDING;
   const {
     publishedAt,
     title,
@@ -68,6 +74,8 @@ const ArticleCard: React.FC<Properties> = ({
     coverUrl,
     readTime,
     commentCount,
+    isFavourite,
+    viewCount,
   } = article;
   const { likesCount, dislikesCount, hasAlreadyReactedWith } = getReactionsInfo(
     user.id,
@@ -78,6 +86,10 @@ const ArticleCard: React.FC<Properties> = ({
   const articleRouteById = configureString(AppRoute.ARTICLES_$ID, {
     id: String(id),
   }) as typeof AppRoute.ARTICLES_$ID;
+
+  const handleToggleIsFavourite = useCallback(() => {
+    void dispatch(articlesActions.toggleIsFavourite(id));
+  }, [dispatch, id]);
 
   const isOwnArticle = user.id === userId;
 
@@ -115,18 +127,22 @@ const ArticleCard: React.FC<Properties> = ({
     void dispatch(articlesActions.shareArticle({ id: id.toString() }));
   }, [dispatch, id]);
 
-  const handleDeleteArticle = useCallback(
-    (id: number): void => {
-      void dispatch(articlesActions.deleteArticle({ id }));
-    },
-    [dispatch],
-  );
+  const handleDeleteArticle = useCallback((): void => {
+    void dispatch(articlesActions.deleteArticle({ id }));
+  }, [dispatch, id]);
+
+  const handleDeleteButtonClick = useCallback((): void => {
+    if (!isOpen) {
+      handleToggleModalOpen();
+    }
+  }, [handleToggleModalOpen, isOpen]);
 
   return (
     <article className={styles.article}>
       <div className={styles.header}>
         <div className={styles.info}>
           <Avatar
+            className={styles.publisherAvatar}
             username={getFullName(firstName, lastName)}
             avatarUrl={avatarUrl}
           />
@@ -141,27 +157,35 @@ const ArticleCard: React.FC<Properties> = ({
             <span className={styles.publicationTime}>draft</span>
           )}
           {readTime && (
-            <span className={styles.publicationTime}>
+            <span className={styles.readTime}>
               {getReadTimeString(readTime)}
             </span>
           )}
         </div>
 
-        <Popover
-          className={styles.moreActions}
-          content={
-            <PopoverButtonsGroup
-              isOwnArticle={isOwnArticle}
-              article={article}
-              onDeleteArticle={handleDeleteArticle}
-            />
-          }
-        >
-          <Icon
-            className={styles.moreActionsIcon}
-            iconName="ellipsisVertical"
+        <div className={styles.toolbar}>
+          <IconButton
+            className={styles.topActionsIcon}
+            iconName={isFavourite ? 'favoriteFilled' : 'favorite'}
+            onClick={handleToggleIsFavourite}
+            isLoading={isLoading}
           />
-        </Popover>
+          <Popover
+            classNameContentWrapper={styles.moreActions}
+            content={
+              <PopoverButtonsGroup
+                isOwnArticle={isOwnArticle}
+                article={article}
+                onDeleteButtonClick={handleDeleteButtonClick}
+              />
+            }
+          >
+            <Icon
+              className={styles.topActionsIcon}
+              iconName="ellipsisVertical"
+            />
+          </Popover>
+        </div>
       </div>
       <div
         className={getValidClassNames(styles.body, coverUrl && styles.hasCover)}
@@ -172,75 +196,84 @@ const ArticleCard: React.FC<Properties> = ({
             className={getValidClassNames(styles.text, 'text-overflow')}
             dangerouslySetInnerHTML={{ __html: sanitizeHtml(text) }}
           ></article>
-          <Tags tags={tags} />
         </div>
         {coverUrl && (
           <div className={styles.coverWrapper}>
             <img src={coverUrl} alt="article cover" className={styles.cover} />
           </div>
         )}
+        <Tags className={styles.articleTags} tags={tags} />
       </div>
       <div className={styles.footer}>
-        <ul className={styles.reactions}>
-          <li className={styles.reaction}>
-            <Link
-              to={{
-                pathname: articleRouteById,
-                hash: LinkHash.COMMENTS,
-              }}
-              className={styles.reaction}
-            >
-              <IconButton
-                iconName="comment"
-                className={styles.footerIcon}
-                label={commentCount.toString()}
-              />
-            </Link>
-          </li>
-          <li className={styles.footerIcon}>
-            <Icon iconName="view" />
-            <span>{MOCKED_REACTIONS.views}</span>
-          </li>
-          <li>
-            <IconButton
-              iconName="like"
-              className={getValidClassNames(
-                styles.footerIcon,
-                isOwnArticle ? styles.disabled : styles.reaction,
-                hasAlreadyReactedWith === Reaction.LIKE && styles.pressed,
-              )}
-              label={String(likesCount)}
-              onClick={handleLikeReaction}
-            />
-          </li>
-          <li>
-            <IconButton
-              iconName="dislike"
-              className={getValidClassNames(
-                styles.footerIcon,
-                isOwnArticle ? styles.disabled : styles.reaction,
-                hasAlreadyReactedWith === Reaction.DISLIKE && styles.pressed,
-              )}
-              label={String(dislikesCount)}
-              onClick={handleDislikeReaction}
-            />
-          </li>
-        </ul>
+        {publishedAt && (
+          <>
+            <ul className={styles.reactions}>
+              <li className={styles.reaction}>
+                <Link
+                  to={{
+                    pathname: articleRouteById,
+                    hash: LinkHash.COMMENTS,
+                  }}
+                  className={styles.reaction}
+                >
+                  <IconButton
+                    iconName="comment"
+                    className={styles.iconWrapper}
+                    label={commentCount.toString()}
+                  />
+                </Link>
+              </li>
+              <li className={styles.footerIcon}>
+                <Icon iconName="view" />
+                <span>{viewCount}</span>
+              </li>
+              <li>
+                <IconButton
+                  iconName="like"
+                  className={getValidClassNames(
+                    styles.footerIcon,
+                    isOwnArticle ? styles.disabled : styles.reaction,
+                    hasAlreadyReactedWith === Reaction.LIKE && styles.pressed,
+                  )}
+                  label={String(likesCount)}
+                  onClick={handleLikeReaction}
+                />
+              </li>
+              <li>
+                <IconButton
+                  iconName="dislike"
+                  className={getValidClassNames(
+                    styles.footerIcon,
+                    isOwnArticle ? styles.disabled : styles.reaction,
+                    hasAlreadyReactedWith === Reaction.DISLIKE &&
+                      styles.pressed,
+                  )}
+                  label={String(dislikesCount)}
+                  onClick={handleDislikeReaction}
+                />
+              </li>
+            </ul>
 
-        <IconButton
-          iconName="share"
-          className={styles.iconWrapper}
-          onClick={handleSharedButtonClick}
-        />
-        <ShareOnFacebookButton
-          title={title}
-          articleUrl={articleUrl}
-          iconStyle={styles.facebookIconButton}
-        />
+            <IconButton
+              iconName="share"
+              className={styles.iconWrapper}
+              onClick={handleSharedButtonClick}
+            />
+            <ShareOnFacebookButton
+              title={title}
+              articleUrl={articleUrl}
+              iconStyle={styles.facebookIconButton}
+            />
+          </>
+        )}
         <Link to={articleRouteById} className={styles.readMore}>
           Read more
         </Link>
       </div>
+      <ConfirmArticleDeleteDialog
+        onDeleteArticle={handleDeleteArticle}
+        trigger={{ onToggleModalOpen: handleToggleModalOpen, isOpen }}
+      />
     </article>
   );
 };

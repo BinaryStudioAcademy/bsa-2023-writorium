@@ -16,6 +16,8 @@
   --dark-gray: #353535;
   --black: #000000;
   --black-20: rgb(29 29 29 / 20%);
+  --black-90: rgba(24 24 25 / 90%);
+  --blue: #66b9ff;
   --dark-blue-70: rgb(20 37 63 / 70%);
   --green: #12b76a;
   --gray: #e0e0e0;
@@ -27,16 +29,25 @@
   --light-gray-40: rgb(174 174 174 / 40%);
   --medium-brightness-gray: #919191;
   --light-gray-text: #b6b6b6;
-  --light-gray-border: var(--pastel-gray);
-  --light-gray-dashed-border: #c6c8cd;
+  --orange: #ffc700;
   --red: #df1c3d;
   --light-red: #d88184;
   --shadow-color: rgba(53 53 53 / 20%);
   --picasso: #ffec99;
   --madang: #b2f2bb;
+  --overlay-alpha-5: rgb(0 0 0 / 5%);
+  --overlay-alpha-10: rgb(0 0 0 / 10%);
   --overlay-alpha-50: rgb(0 0 0 / 50%);
   --pastel-gray: #dbdbdb;
+  --disabled-gray: #dedede;
+  --translucent-dark-blue-gray: rgb(16 24 40 / 16%);
+  --button-delete-bg: #b83733;
+  --button-delete-hover: #d9534f;
   --header-height: 105px;
+
+  /* border colors */
+  --light-gray-border: var(--pastel-gray);
+  --light-gray-dashed-border: #c6c8cd;
 
   /* z-index */
   --z-index-level-one: 100;

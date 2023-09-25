@@ -2,11 +2,11 @@ import { type IEntity } from '~/libs/interfaces/interfaces.js';
 import { type WithNullableKeys } from '~/libs/types/types.js';
 
 import {
-  type ArticleCommentCount,
-  type ArticleEntityType,
+  type ArticleCounts,
+  type ArticleEntityInstance,
   type ArticleResponseDto,
-  type ArticleWithCommentCountResponseDto,
-  type ArticleWithRelationsType,
+  type ArticleWithCountsResponseDto,
+  type ArticleWithRelations,
   type ReactionResponseDto,
 } from './libs/types/types.js';
 
@@ -20,13 +20,15 @@ class ArticleEntity implements IEntity {
   private 'coverId': number | null;
   private 'coverUrl'?: string | null;
   private 'publishedAt': string | null;
-  private 'author': ArticleWithRelationsType['author'] | null;
-  private 'prompt': ArticleWithRelationsType['prompt'];
-  private 'genre': ArticleWithRelationsType['genre'];
+  private 'author': ArticleWithRelations['author'] | null;
+  private 'prompt': ArticleWithRelations['prompt'];
+  private 'genre': ArticleWithRelations['genre'];
   private 'commentCount': number | null;
   private 'reactions': ReactionResponseDto[] | null;
   private 'readTime': number | null;
   private 'deletedAt': string | null;
+  private 'isFavourite': boolean;
+  private 'viewCount': number | null;
 
   private constructor({
     id,
@@ -45,9 +47,11 @@ class ArticleEntity implements IEntity {
     deletedAt,
     readTime,
     commentCount,
+    isFavourite,
+    viewCount,
   }: WithNullableKeys<
-    ArticleWithRelationsType & ArticleCommentCount,
-    'id' | 'author' | 'commentCount' | 'reactions' | 'deletedAt'
+    ArticleWithRelations & ArticleCounts,
+    'id' | 'author' | 'commentCount' | 'reactions' | 'deletedAt' | 'viewCount'
   >) {
     this.id = id;
     this.title = title;
@@ -65,6 +69,8 @@ class ArticleEntity implements IEntity {
     this.coverId = coverId;
     this.coverUrl = coverUrl;
     this.deletedAt = deletedAt;
+    this.isFavourite = isFavourite;
+    this.viewCount = viewCount;
   }
 
   public static initialize({
@@ -84,8 +90,13 @@ class ArticleEntity implements IEntity {
     reactions,
     deletedAt,
     readTime,
-  }: ArticleWithRelationsType &
-    WithNullableKeys<ArticleCommentCount, 'commentCount'>): ArticleEntity {
+    isFavourite,
+    viewCount,
+  }: ArticleWithRelations &
+    WithNullableKeys<
+      ArticleCounts,
+      'commentCount' | 'viewCount'
+    >): ArticleEntity {
     return new ArticleEntity({
       id,
       title,
@@ -103,6 +114,8 @@ class ArticleEntity implements IEntity {
       reactions,
       deletedAt,
       readTime,
+      isFavourite,
+      viewCount,
     });
   }
 
@@ -116,7 +129,7 @@ class ArticleEntity implements IEntity {
     coverId,
     readTime,
   }: Omit<
-    ArticleWithRelationsType,
+    ArticleWithRelations,
     | 'id'
     | 'author'
     | 'prompt'
@@ -124,6 +137,7 @@ class ArticleEntity implements IEntity {
     | 'reactions'
     | 'coverUrl'
     | 'deletedAt'
+    | 'isFavourite'
   >): ArticleEntity {
     return new ArticleEntity({
       id: null,
@@ -142,10 +156,12 @@ class ArticleEntity implements IEntity {
       reactions: null,
       deletedAt: null,
       readTime,
+      isFavourite: false,
+      viewCount: null,
     });
   }
 
-  public toObject(): ArticleEntityType {
+  public toObject(): ArticleEntityInstance {
     return {
       id: this.id as number,
       title: this.title,
@@ -171,16 +187,17 @@ class ArticleEntity implements IEntity {
       coverId: this.coverId,
       coverUrl: this.coverUrl as ArticleResponseDto['coverUrl'],
       publishedAt: this.publishedAt,
-      author: this.author as ArticleWithRelationsType['author'],
+      author: this.author as ArticleWithRelations['author'],
       reactions: this.reactions as ReactionResponseDto[],
       prompt: this.prompt,
       genre: this.genre,
       readTime: this.readTime,
       deletedAt: this.deletedAt,
+      isFavourite: this.isFavourite,
     };
   }
 
-  public toObjectWithRelationsAndCommentCount(): ArticleWithCommentCountResponseDto {
+  public toObjectWithRelationsAndCounts(): ArticleWithCountsResponseDto {
     return {
       id: this.id as number,
       title: this.title,
@@ -191,17 +208,19 @@ class ArticleEntity implements IEntity {
       coverId: this.coverId,
       coverUrl: this.coverUrl as ArticleResponseDto['coverUrl'],
       publishedAt: this.publishedAt,
-      author: this.author as ArticleWithRelationsType['author'],
+      author: this.author as ArticleWithRelations['author'],
       prompt: this.prompt,
       genre: this.genre,
       readTime: this.readTime,
       reactions: this.reactions as ReactionResponseDto[],
       commentCount: Number(this.commentCount as number),
       deletedAt: this.deletedAt,
+      isFavourite: this.isFavourite,
+      viewCount: Number(this.viewCount as number),
     };
   }
 
-  public toNewObject(): Omit<ArticleEntityType, 'id'> {
+  public toNewObject(): Omit<ArticleEntityInstance, 'id'> {
     return {
       title: this.title,
       text: this.text,

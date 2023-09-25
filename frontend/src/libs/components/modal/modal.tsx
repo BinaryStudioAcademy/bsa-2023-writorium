@@ -9,6 +9,8 @@ type Properties = {
   onClose: () => void;
   isOpen: boolean;
   className?: string;
+  contentClassName?: string;
+  closeBtnClassName?: string;
 };
 
 const Modal: React.FC<Properties> = ({
@@ -16,6 +18,8 @@ const Modal: React.FC<Properties> = ({
   onClose,
   children,
   className,
+  contentClassName,
+  closeBtnClassName,
 }) => {
   const overlayReference = useReference<HTMLDivElement>(null);
 
@@ -52,14 +56,20 @@ const Modal: React.FC<Properties> = ({
         ref={overlayReference}
       >
         <div
-          className={getValidClassNames(styles.content, className)}
+          className={getValidClassNames(
+            styles.content,
+            className,
+            contentClassName,
+          )}
           role="button"
           tabIndex={0}
         >
-          <button className={styles.closeBtn} onClick={onClose}>
+          <button
+            onClick={onClose}
+            className={getValidClassNames(styles.closeBtn, closeBtnClassName)}
+          >
             <Icon iconName="crossMark" />
           </button>
-
           {children}
         </div>
       </div>

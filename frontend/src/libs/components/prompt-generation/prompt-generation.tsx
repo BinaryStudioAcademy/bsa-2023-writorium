@@ -1,18 +1,27 @@
-import { Button, Icon } from '~/libs/components/components.js';
-import { DataStatus } from '~/libs/enums/data-status.enum.js';
+import {
+  BlockWithTooltip,
+  Button,
+  IconButton,
+} from '~/libs/components/components.js';
+import { DataStatus, DataTooltipId } from '~/libs/enums/enums.js';
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
 import {
   useAppDispatch,
   useAppSelector,
   useCallback,
 } from '~/libs/hooks/hooks.js';
-import { PromptCategory } from '~/packages/prompts/libs/enums/enums.js';
+import { type ReactMouseEvent } from '~/libs/types/types.js';
+import { PromptCategory } from '~/packages/prompts/prompts.js';
 import { actions as promptsActions } from '~/slices/prompts/prompts.js';
 
 import { PromptCard } from './libs/components/components.js';
 import styles from './styles.module.scss';
 
-const PromptGeneration: React.FC = () => {
+type Properties = {
+  containerStyle?: string;
+};
+
+const PromptGeneration: React.FC<Properties> = ({ containerStyle }) => {
   const { generatedPrompt, dataStatus } = useAppSelector(({ prompts }) => ({
     generatedPrompt: prompts.generatedPrompt,
     dataStatus: prompts.dataStatus,
@@ -22,41 +31,60 @@ const PromptGeneration: React.FC = () => {
 
   const dispatch = useAppDispatch();
 
-  const handlePromptGenerate = useCallback(() => {
-    void dispatch(promptsActions.generatePrompt());
-  }, [dispatch]);
+  const handlePromptGenerate = useCallback(
+    (event: ReactMouseEvent<HTMLButtonElement>) => {
+      event.stopPropagation();
+      void dispatch(promptsActions.generatePrompt());
+    },
+    [dispatch],
+  );
 
-  const handleResetPrompt = useCallback(() => {
-    dispatch(promptsActions.resetPrompts());
-  }, [dispatch]);
+  const handleResetPrompt = useCallback(
+    (event: ReactMouseEvent<HTMLButtonElement>) => {
+      event.stopPropagation();
+      dispatch(promptsActions.resetPrompts());
+    },
+    [dispatch],
+  );
 
   return (
-    <section className={styles.container}>
-      <h1 className={styles.header}>Write your own story</h1>
+    <section className={getValidClassNames(styles.container, containerStyle)}>
       <div className={styles.promptsContainer}>
         <ul className={styles.prompts}>
           {Object.values(PromptCategory).map((category) => (
-            <PromptCard
+            <BlockWithTooltip
+              tooltipContent={generatedPrompt?.[category] ?? ''}
+              placement="top"
+              tooltipId={DataTooltipId.MAIN_TOOLTIP}
+              className={styles.minWidth}
               key={category}
-              category={category}
-              text={generatedPrompt?.[category] ?? ''}
-              isGenerating={isGenerating}
-            />
+            >
+              <PromptCard
+                category={category}
+                text={generatedPrompt?.[category] ?? ''}
+                isGenerating={isGenerating}
+              />
+            </BlockWithTooltip>
           ))}
           <Button
-            label="Reset prompt"
+            size="small"
+            className={styles.generatePromptButton}
+            label="Generate prompt"
+            onClick={handlePromptGenerate}
+          />
+          <Button
+            size="small"
+            label="Reset"
+            variant="outlined"
+            isDisabled={!generatedPrompt}
             className={styles.resetPromptButton}
             onClick={handleResetPrompt}
           />
         </ul>
-        <Button
+        <IconButton
+          iconName="refresh"
           className={styles.shuffleButton}
-          label={
-            <Icon
-              iconName="refresh"
-              className={getValidClassNames(isGenerating && styles.spin)}
-            />
-          }
+          iconClassName={getValidClassNames(isGenerating && styles.spin)}
           onClick={handlePromptGenerate}
         />
       </div>

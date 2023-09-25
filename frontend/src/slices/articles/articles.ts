@@ -1,4 +1,8 @@
 import {
+  addArticle,
+  addComment,
+  addReactionToArticlesFeed,
+  addReactionToArticleView,
   createArticle,
   createComment,
   deleteArticle,
@@ -7,13 +11,17 @@ import {
   fetchAllCommentsToArticle,
   fetchOwn,
   fetchSharedArticle,
+  geArticleIdByToken,
   getAllGenres,
   getArticle,
   getImprovementSuggestions,
   getImprovementSuggestionsBySession,
   reactToArticle,
+  setShowFavourites,
   shareArticle,
+  toggleIsFavourite,
   updateArticle,
+  updateArticleAuthorFollowInfo,
   updateComment,
 } from './actions.js';
 import { actions } from './articles.slice.js';
@@ -22,7 +30,9 @@ const allActions = {
   ...actions,
   fetchAll,
   fetchOwn,
+  addReactionToArticleView,
   createArticle,
+  addComment,
   updateArticle,
   getArticle,
   getAllGenres,
@@ -34,8 +44,14 @@ const allActions = {
   deleteArticleReaction,
   shareArticle,
   fetchSharedArticle,
+  toggleIsFavourite,
+  setShowFavourites,
   getImprovementSuggestions,
   getImprovementSuggestionsBySession,
+  addArticle,
+  addReactionToArticlesFeed,
+  updateArticleAuthorFollowInfo,
+  geArticleIdByToken,
 };
 
 export { allActions as actions };

@@ -26,6 +26,12 @@ import {
  * @swagger
  * components:
  *    schemas:
+ *      ArticleId:
+ *        type: object
+ *        properties:
+ *          id:
+ *            type: integer
+ *            format: int64
  *      ImprovementSuggestion:
  *        type: object
  *        properties:
@@ -116,7 +122,10 @@ class ArticleController extends Controller {
       },
       handler: (options) => {
         return this.findAll(
-          options as ApiHandlerOptions<{ query: ArticlesFilters }>,
+          options as ApiHandlerOptions<{
+            query: ArticlesFilters;
+            user: UserAuthResponseDto;
+          }>,
         );
       },
     });
@@ -143,13 +152,14 @@ class ArticleController extends Controller {
       validation: {
         body: articleCreateValidationSchema,
       },
-      handler: (options) =>
-        this.create(
+      handler: (options) => {
+        return this.create(
           options as ApiHandlerOptions<{
             user: UserAuthResponseDto;
             body: ArticleRequestDto;
           }>,
-        ),
+        );
+      },
     });
 
     this.addRoute({
@@ -158,14 +168,15 @@ class ArticleController extends Controller {
       validation: {
         body: articleUpdateValidationSchema,
       },
-      handler: (options) =>
-        this.update(
+      handler: (options) => {
+        return this.update(
           options as ApiHandlerOptions<{
             params: { id: number };
             body: ArticleUpdateRequestDto;
             user: UserAuthResponseDto;
           }>,
-        ),
+        );
+      },
     });
 
     this.addRoute({
@@ -174,14 +185,15 @@ class ArticleController extends Controller {
       validation: {
         body: articleUpdateValidationSchema,
       },
-      handler: (options) =>
-        this.update(
+      handler: (options) => {
+        return this.update(
           options as ApiHandlerOptions<{
             params: { id: number };
             body: ArticleUpdateRequestDto;
             user: UserAuthResponseDto;
           }>,
-        ),
+        );
+      },
     });
 
     this.addRoute({
@@ -191,6 +203,7 @@ class ArticleController extends Controller {
         return this.find(
           options as ApiHandlerOptions<{
             params: { id: number };
+            user: UserAuthResponseDto;
           }>,
         );
       },
@@ -199,24 +212,38 @@ class ArticleController extends Controller {
     this.addRoute({
       path: ArticlesApiPath.$ID_SHARE,
       method: 'GET',
-      handler: (options) =>
-        this.share(
+      handler: (options) => {
+        return this.share(
           options as ApiHandlerOptions<{
             params: { id: number };
             headers: IncomingHttpHeaders;
           }>,
-        ),
+        );
+      },
     });
 
     this.addRoute({
       path: ArticlesApiPath.SHARED_BASE,
       method: 'GET',
-      handler: (options) =>
-        this.findShared(
+      handler: (options) => {
+        return this.findShared(
           options as ApiHandlerOptions<{
             headers: IncomingHttpHeaders;
           }>,
-        ),
+        );
+      },
+    });
+
+    this.addRoute({
+      path: ArticlesApiPath.ARTICLE_ID,
+      method: 'GET',
+      handler: (options) => {
+        return this.getArticleIdByToken(
+          options as ApiHandlerOptions<{
+            headers: IncomingHttpHeaders;
+          }>,
+        );
+      },
     });
 
     this.addRoute({
@@ -224,6 +251,19 @@ class ArticleController extends Controller {
       method: 'DELETE',
       handler: (options) => {
         return this.delete(
+          options as ApiHandlerOptions<{
+            params: { id: number };
+            user: UserAuthResponseDto;
+          }>,
+        );
+      },
+    });
+
+    this.addRoute({
+      path: ArticlesApiPath.FAVORITES,
+      method: 'POST',
+      handler: (options) => {
+        return this.toggleIsFavourite(
           options as ApiHandlerOptions<{
             params: { id: number };
             user: UserAuthResponseDto;
@@ -276,11 +316,17 @@ class ArticleController extends Controller {
    */
 
   private async findAll(
-    options: ApiHandlerOptions<{ query: ArticlesFilters }>,
+    options: ApiHandlerOptions<{
+      query: ArticlesFilters;
+      user: UserAuthResponseDto;
+    }>,
   ): Promise<ApiHandlerResponse> {
     return {
       status: HttpCode.OK,
-      payload: await this.articleService.findAll(options.query),
+      payload: await this.articleService.findAll({
+        ...options.query,
+        requestUserId: options.user.id,
+      }),
     };
   }
 
@@ -421,14 +467,19 @@ class ArticleController extends Controller {
    *              schema:
    *                $ref: '#/components/schemas/Article'
    */
+
   private async find(
     options: ApiHandlerOptions<{
       params: { id: number };
+      user: UserAuthResponseDto;
     }>,
   ): Promise<ApiHandlerResponse> {
     return {
       status: HttpCode.OK,
-      payload: await this.articleService.find(options.params.id),
+      payload: await this.articleService.findArticleWithFollow(
+        options.params.id,
+        options.user.id,
+      ),
     };
   }
 
@@ -538,6 +589,45 @@ class ArticleController extends Controller {
 
   /**
    * @swagger
+   * /articles/favourites:
+   *    post:
+   *      summary: Toggle article's isFavourite status
+   *      description: Delete record if in favourites and insert if not
+   *      security:
+   *        - bearerAuth: []
+   *      parameters:
+   *        - in: path
+   *          name: id
+   *          schema:
+   *            type: integer
+   *          required: true
+   *          description: The ID of the article to toggle
+   *      responses:
+   *        200:
+   *          description: Successful operation
+   *          content:
+   *            application/json:
+   *              schema:
+   *                $ref: '#/components/schemas/Article'
+   */
+
+  private async toggleIsFavourite(
+    options: ApiHandlerOptions<{
+      params: { id: number };
+      user: UserAuthResponseDto;
+    }>,
+  ): Promise<ApiHandlerResponse> {
+    return {
+      status: HttpCode.OK,
+      payload: await this.articleService.toggleIsFavourite(
+        options.user.id,
+        options.params.id,
+      ),
+    };
+  }
+
+  /**
+   * @swagger
    * /articles/:id/improvement-suggestions:
    *    get:
    *      summary: Get improvement suggestions for article
@@ -560,6 +650,33 @@ class ArticleController extends Controller {
       payload: await this.articleService.getImprovementSuggestions(
         options.params.id,
       ),
+    };
+  }
+
+  /**
+   * @swagger
+   * /articles/article-id/:token:
+   *    get:
+   *      summary: Get article ID encoded from query
+   *      description: Get article ID encoded from query
+   *      security:
+   *       - bearerAuth: []
+   *      responses:
+   *        200:
+   *          description: Successful operation
+   *          content:
+   *            application/json:
+   *              schema:
+   *                $ref: '#/components/schemas/ArticleId'
+   */
+  private async getArticleIdByToken(
+    options: ApiHandlerOptions<{
+      headers: IncomingHttpHeaders;
+    }>,
+  ): Promise<ApiHandlerResponse> {
+    return {
+      status: HttpCode.OK,
+      payload: await this.articleService.getArticleIdByToken(options.headers),
     };
   }
 }

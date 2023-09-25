@@ -3,6 +3,10 @@
   flex-direction: column;
 }
 
+.buttonsGroup svg {
+  color: var(--light-green);
+}
+
 .editLink,
 .buttonsGroup button {
   display: flex;
@@ -30,6 +34,7 @@
 
 .editLink:hover,
 .buttonsGroup button:hover {
+  color: var(--light-green);
   background-color: var(--pale-gray);
   border-color: var(--light-green);
 }

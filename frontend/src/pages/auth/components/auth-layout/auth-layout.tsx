@@ -14,8 +14,8 @@ type Properties = {
 };
 
 const AuthLayout: React.FC<Properties> = ({ children }) => {
-  const renderFloatingLetters = (letters: FloatingLetter[]): ReactNode[] =>
-    letters.map((item) => (
+  const renderFloatingLetters = (letters: FloatingLetter[]): ReactNode[] => {
+    return letters.map((item) => (
       <div
         key={item.key}
         style={item.position}
@@ -24,6 +24,7 @@ const AuthLayout: React.FC<Properties> = ({ children }) => {
         {item.value}
       </div>
     ));
+  };
 
   return (
     <div className={styles.authLayout}>

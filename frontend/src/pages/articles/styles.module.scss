@@ -1,21 +1,18 @@
+@use "src/assets/css/breakpoints.scss";
+
 .wrapper {
   width: 100%;
-  max-width: 930px;
 }
 
 .tabsWrapper {
   position: relative;
   display: flex;
-  gap: 29px;
-  width: 130px;
-  padding-left: 2px;
 }
 
 .tab {
-  flex: 1 0 auto;
-  padding-bottom: 15px;
-  font-weight: 400;
-  font-size: 14px;
+  padding: 0 15px 10px;
+  font-weight: 700;
+  font-size: 16px;
   font-family: Lato, sans-serif;
   font-style: normal;
   line-height: normal;
@@ -49,20 +46,46 @@
   background: var(--light-green);
 }
 
-.articles {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  padding-bottom: 15px;
+.articlesWrapper {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  gap: 50px;
   border-top: 1px solid var(--gray);
 }
 
-.articlesWrapper {
-  display: flex;
-  gap: 20px;
-  padding-top: 15px;
+.filterButtonWrapper {
+  position: sticky;
+  top: calc(var(--header-height) + 15px);
+  max-height: 400px;
+  padding-block-start: 15px;
+  background: var(--light-gray);
 }
 
-.articlesWrapper > div:first-child {
-  min-width: 0;
+.filterPopoverWrapper {
+  width: 340px;
+}
+
+.filterButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  color: var(--light-green);
+  background: transparent;
+}
+
+.modalContent {
+  width: max-content;
+  padding: 30px;
+  text-align: unset;
+  background: var(--light-gray);
+}
+
+@media only screen and (max-width: breakpoints.$large) {
+  .articlesWrapper {
+    grid-template-columns: 1fr 30px;
+    gap: 10px;
+    width: 100%;
+  }
 }

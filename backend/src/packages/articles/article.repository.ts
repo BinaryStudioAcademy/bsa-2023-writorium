@@ -1,12 +1,20 @@
 import { type Model, type Page, type QueryBuilder } from 'objection';
 
-import { DatabaseTableName } from '~/libs/packages/database/libs/enums/database-table-name.enum.js';
+import { DatabaseTableName } from '~/libs/packages/database/libs/enums/enums.js';
+import { type ArticleViewModel } from '~/packages/article-views/article-view.model.js';
 import { type CommentModel } from '~/packages/comments/comment.model.js';
 
 import { ArticleEntity } from './article.entity.js';
 import { type ArticleModel } from './article.model.js';
-import { EMPTY_COMMENT_COUNT } from './libs/constants/constants.js';
+import { type FavouredUserArticlesModel } from './favoured-user-articles.model.js';
 import {
+  EMPTY_COMMENT_COUNT,
+  EMPTY_VIEW_COUNT,
+} from './libs/constants/constants.js';
+import {
+  getArticlePublishedStatusQuery,
+  getIsFavouriteSubQuery,
+  getShowFavouritesQuery,
   getSortingCondition,
   getWhereAuthorIdQuery,
   getWhereGenreIdQuery,
@@ -16,7 +24,8 @@ import {
 } from './libs/helpers/helpers.js';
 import { type IArticleRepository } from './libs/interfaces/interfaces.js';
 import {
-  type ArticleCommentCount,
+  type ArticleCounts,
+  type ArticleGenreStatsFilters,
   type ArticlesFilters,
   type GetUserArticlesGenresStatsDatabaseResponse,
   type UserActivityResponseDto,
@@ -24,21 +33,17 @@ import {
 
 class ArticleRepository implements IArticleRepository {
   private articleModel: typeof ArticleModel;
+  private favouriteArticlesModel: typeof FavouredUserArticlesModel;
 
-  private defaultRelationExpression =
-    '[author.avatar, prompt, genre, reactions, cover]';
+  private defaultRelationExpression = '[author.avatar, prompt, genre, cover]';
 
-  public constructor(articleModel: typeof ArticleModel) {
+  public constructor(
+    articleModel: typeof ArticleModel,
+    favouriteArticlesModel: typeof FavouredUserArticlesModel,
+  ) {
     this.articleModel = articleModel;
+    this.favouriteArticlesModel = favouriteArticlesModel;
   }
-
-  private joinArticleRelations = <T>(
-    queryBuilder: QueryBuilder<ArticleModel, T>,
-  ): void => {
-    void queryBuilder
-      .withGraphJoined(this.defaultRelationExpression)
-      .modifyGraph('reactions', this.modifyReactionsGraph);
-  };
 
   private modifyReactionsGraph = (
     builder: QueryBuilder<Model, Model[]>,
@@ -53,6 +58,13 @@ class ArticleRepository implements IArticleRepository {
       .as('commentCount');
   }
 
+  private getViewsCountQuery(): QueryBuilder<ArticleViewModel> {
+    return this.articleModel
+      .relatedQuery<ArticleViewModel>('articleViews')
+      .countDistinct('viewed_by_id')
+      .as('viewCount');
+  }
+
   public async findAll({
     userId,
     take,
@@ -61,28 +73,41 @@ class ArticleRepository implements IArticleRepository {
     genreId,
     titleFilter,
     authorId,
+    shouldShowFavourites,
+    requestUserId,
   }: {
     userId?: number;
     hasPublishedOnly?: boolean;
+    requestUserId: number;
   } & ArticlesFilters): Promise<{ items: ArticleEntity[]; total: number }> {
     const articles = await this.articleModel
       .query()
-      .select(`${DatabaseTableName.ARTICLES}.*`, this.getCommentsCountQuery())
+      .select(
+        `${DatabaseTableName.ARTICLES}.*`,
+        this.getCommentsCountQuery(),
+        this.getViewsCountQuery(),
+        getIsFavouriteSubQuery(Boolean(shouldShowFavourites), requestUserId),
+      )
+      .withGraphJoined(this.defaultRelationExpression)
+      .withGraphFetched('reactions')
+      .modifyGraph('reactions', this.modifyReactionsGraph)
       .where(getWhereUserIdQuery(userId))
       .where(getWhereGenreIdQuery(genreId))
       .where(getWhereAuthorIdQuery(authorId))
       .where(getWhereTitleLikeQuery(titleFilter))
+      .where(
+        getShowFavouritesQuery(Boolean(shouldShowFavourites), requestUserId),
+      )
       .where(getWherePublishedOnlyQuery(hasPublishedOnly))
       .whereNull('deletedAt')
       .orderBy(getSortingCondition(hasPublishedOnly))
       .page(skip / take, take)
-      .modify(this.joinArticleRelations)
-      .castTo<Page<ArticleModel & ArticleCommentCount>>();
+      .castTo<Page<ArticleModel & ArticleCounts>>();
 
     return {
       total: articles.total,
-      items: articles.results.map((article) =>
-        ArticleEntity.initialize({
+      items: articles.results.map((article) => {
+        return ArticleEntity.initialize({
           ...article,
           coverUrl: article.cover?.url ?? null,
           author: {
@@ -99,8 +124,9 @@ class ArticleRepository implements IArticleRepository {
                 prop: article.prompt.prop,
               }
             : null,
-        }),
-      ),
+          isFavourite: article.isFavourite,
+        });
+      }),
     };
   }
 
@@ -108,7 +134,10 @@ class ArticleRepository implements IArticleRepository {
     const article = await this.articleModel
       .query()
       .findById(id)
-      .modify(this.joinArticleRelations);
+      .withGraphJoined(this.defaultRelationExpression)
+      .withGraphFetched('reactions')
+      .modifyGraph('reactions', this.modifyReactionsGraph)
+      .whereNull('deletedAt');
 
     if (!article) {
       return null;
@@ -132,6 +161,50 @@ class ArticleRepository implements IArticleRepository {
           }
         : null,
       commentCount: null,
+      viewCount: null,
+    });
+  }
+
+  public async findWithIsFavourite(
+    id: number,
+    userId: number,
+  ): Promise<ArticleEntity | null> {
+    const article = await this.articleModel
+      .query()
+      .select(
+        `${DatabaseTableName.ARTICLES}.*`,
+        getIsFavouriteSubQuery(false, userId),
+      )
+      .withGraphJoined(this.defaultRelationExpression)
+      .withGraphFetched('reactions')
+      .modifyGraph('reactions', this.modifyReactionsGraph)
+      .where({ 'articles.id': id })
+      .first();
+
+    if (!article) {
+      return null;
+    }
+
+    return ArticleEntity.initialize({
+      ...article,
+      author: {
+        firstName: article.author.firstName,
+        lastName: article.author.lastName,
+        avatarUrl: article.author.avatar?.url ?? null,
+      },
+      genre: article.genre?.name ?? null,
+      coverUrl: article.cover?.url ?? null,
+      prompt: article.prompt
+        ? {
+            character: article.prompt.character,
+            setting: article.prompt.setting,
+            situation: article.prompt.situation,
+            prop: article.prompt.prop,
+          }
+        : null,
+      commentCount: null,
+      isFavourite: article.isFavourite,
+      viewCount: null,
     });
   }
 
@@ -141,9 +214,10 @@ class ArticleRepository implements IArticleRepository {
     const article = await this.articleModel
       .query()
       .insert(payload)
-      .returning('*')
       .withGraphFetched(this.defaultRelationExpression)
-      .modifyGraph('reactions', this.modifyReactionsGraph);
+      .withGraphFetched('reactions')
+      .modifyGraph('reactions', this.modifyReactionsGraph)
+      .returning('*');
 
     return ArticleEntity.initialize({
       ...article,
@@ -163,6 +237,7 @@ class ArticleRepository implements IArticleRepository {
         : null,
       commentCount: EMPTY_COMMENT_COUNT,
       coverUrl: article.cover?.url ?? null,
+      viewCount: EMPTY_VIEW_COUNT,
     });
   }
 
@@ -189,6 +264,7 @@ class ArticleRepository implements IArticleRepository {
 
   public getUserArticlesGenreStats(
     userId: number,
+    { articlePublishedStatus }: ArticleGenreStatsFilters,
   ): Promise<GetUserArticlesGenresStatsDatabaseResponse[]> {
     return this.articleModel
       .query()
@@ -200,6 +276,7 @@ class ArticleRepository implements IArticleRepository {
       .joinRelated('genre')
       .groupBy('genre.key', 'genre.name')
       .where({ userId })
+      .where(getArticlePublishedStatusQuery(articlePublishedStatus))
       .castTo<GetUserArticlesGenresStatsDatabaseResponse[]>()
       .execute();
   }
@@ -212,8 +289,9 @@ class ArticleRepository implements IArticleRepository {
       .patchAndFetchById(id, payload)
       .select(`${DatabaseTableName.ARTICLES}.*`, this.getCommentsCountQuery())
       .withGraphFetched(this.defaultRelationExpression)
+      .withGraphFetched('reactions')
       .modifyGraph('reactions', this.modifyReactionsGraph)
-      .castTo<ArticleModel & ArticleCommentCount>();
+      .castTo<ArticleModel & ArticleCounts>();
 
     return ArticleEntity.initialize({
       ...article,
@@ -241,7 +319,7 @@ class ArticleRepository implements IArticleRepository {
       .patchAndFetchById(id, { deletedAt: new Date().toISOString() })
       .select(`${DatabaseTableName.ARTICLES}.*`, this.getCommentsCountQuery())
       .withGraphFetched(this.defaultRelationExpression)
-      .castTo<ArticleModel & ArticleCommentCount>();
+      .castTo<ArticleModel & ArticleCounts>();
 
     return ArticleEntity.initialize({
       ...article,
@@ -260,6 +338,35 @@ class ArticleRepository implements IArticleRepository {
         avatarUrl: article.author.avatar?.url ?? null,
       },
       coverUrl: article.cover?.url ?? null,
+    });
+  }
+
+  public countArticlesByUserId(userId: number): Promise<number> {
+    return this.articleModel.query().where({ userId }).resultSize();
+  }
+
+  public async toggleIsFavourite(
+    userId: number,
+    articleId: number,
+  ): Promise<FavouredUserArticlesModel | FavouredUserArticlesModel[]> {
+    return await this.favouriteArticlesModel.transaction(async () => {
+      const currentData = await this.favouriteArticlesModel
+        .query()
+        .where({ articleId, userId })
+        .first();
+
+      if (!currentData) {
+        return await this.favouriteArticlesModel
+          .query()
+          .insert({ userId, articleId })
+          .returning(['article_id', 'user_id']);
+      }
+
+      return await this.favouriteArticlesModel
+        .query()
+        .delete()
+        .where({ articleId, userId })
+        .returning(['article_id', 'user_id']);
     });
   }
 }

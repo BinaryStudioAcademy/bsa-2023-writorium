@@ -1,9 +1,9 @@
 import { type UserDetailsResponseDto } from '~/packages/users/users.js';
 
-import { type ArticleEntityType } from './article-entity.type.js';
+import { type ArticleEntityInstance } from './article-entity-instance.type.js';
 import { type ReactionResponseDto } from './reaction-response-dto.type.js';
 
-type ArticleWithRelationsType = ArticleEntityType & {
+type ArticleWithRelations = ArticleEntityInstance & {
   author: UserDetailsResponseDto;
   reactions: ReactionResponseDto[];
   prompt: {
@@ -14,6 +14,7 @@ type ArticleWithRelationsType = ArticleEntityType & {
   } | null;
   genre: string | null;
   coverUrl: string | null;
+  isFavourite: boolean;
 };
 
-export { type ArticleWithRelationsType };
+export { type ArticleWithRelations };

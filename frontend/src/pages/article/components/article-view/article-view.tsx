@@ -1,30 +1,44 @@
 import {
+  Icon,
   IconButton,
   Link,
+  Popover,
   ShareOnFacebookButton,
   Tags,
 } from '~/libs/components/components.js';
-import { AppRoute } from '~/libs/enums/enums.js';
+import { AppRoute, LinkHash, Reaction } from '~/libs/enums/enums.js';
 import {
   configureString,
+  getFullName,
   getValidClassNames,
   sanitizeHtml,
 } from '~/libs/helpers/helpers.js';
-import { useAppDispatch, useCallback, useParams } from '~/libs/hooks/hooks.js';
-import { type TagType } from '~/libs/types/types.js';
-import { type ArticleWithCommentCountResponseDto } from '~/packages/articles/articles.js';
+import {
+  useAppDispatch,
+  useCallback,
+  useModal,
+  useParams,
+} from '~/libs/hooks/hooks.js';
+import { type Tag, type ValueOf } from '~/libs/types/types.js';
+import { type ArticleWithFollowResponseDto } from '~/packages/articles/articles.js';
+import { ConfirmArticleDeleteDialog } from '~/pages/libs/components/components.js';
 import { actions as articlesActions } from '~/slices/articles/articles.js';
 
+import { ArticleDetails } from '../article-details/article-details.js';
 import styles from './styles.module.scss';
 
 type Properties = {
-  title: string;
-  text: string;
-  tags: TagType[] | null;
-  coverUrl: string | null;
+  tags: Tag[] | null;
   isShared?: boolean;
+  article: ArticleWithFollowResponseDto;
   isArticleOwner?: boolean;
-  article?: ArticleWithCommentCountResponseDto;
+  onFollow?: () => void;
+  authorName: string;
+  onLikeReaction?: () => void;
+  onDislikeReaction?: () => void;
+  likesCount?: string;
+  dislikesCount?: string;
+  hasAlreadyReactedWith?: ValueOf<typeof Reaction> | null;
 };
 
 const onButtonClick = (): void => {
@@ -34,19 +48,29 @@ const onButtonClick = (): void => {
 };
 
 const ArticleView: React.FC<Properties> = ({
-  title,
-  text,
   tags,
-  coverUrl,
   isShared = false,
   isArticleOwner,
   article,
+  onFollow,
+  authorName,
+  onLikeReaction,
+  onDislikeReaction,
+  likesCount,
+  dislikesCount,
+  hasAlreadyReactedWith,
 }) => {
+  const { text, title, coverUrl, author, readTime, genre, publishedAt } =
+    article;
+  const { firstName, lastName, avatarUrl, followersCount, isFollowed } = author;
+  const authorFullName = getFullName(firstName, lastName);
   const articleUrl = window.location.href;
 
   const { id } = useParams();
 
   const dispatch = useAppDispatch();
+
+  const { handleToggleModalOpen, isOpen } = useModal();
 
   const handleShareButtonClick = useCallback((): void => {
     if (id) {
@@ -60,8 +84,14 @@ const ArticleView: React.FC<Properties> = ({
     );
   }, [dispatch, id]);
 
+  const handleDeleteButtonClick = useCallback((): void => {
+    if (!isOpen) {
+      handleToggleModalOpen();
+    }
+  }, [handleToggleModalOpen, isOpen]);
+
   return (
-    <div
+    <article
       className={getValidClassNames(styles.body, coverUrl && styles.hasCover)}
     >
       <div className={styles.coverWrapper}>
@@ -76,7 +106,7 @@ const ArticleView: React.FC<Properties> = ({
                   iconName="trashBin"
                   className={styles.iconButton}
                   iconClassName={styles.icon}
-                  onClick={handleDeleteArticle}
+                  onClick={handleDeleteButtonClick}
                 />
                 <Link
                   to={
@@ -90,7 +120,6 @@ const ArticleView: React.FC<Properties> = ({
                     iconName="edit"
                     className={styles.iconButton}
                     iconClassName={styles.icon}
-                    onClick={onButtonClick}
                   />
                 </Link>
               </>
@@ -101,38 +130,105 @@ const ArticleView: React.FC<Properties> = ({
               iconClassName={styles.icon}
               onClick={onButtonClick}
             />
+
+            {publishedAt && (
+              <>
+                <Link
+                  to={{ hash: LinkHash.COMMENTS }}
+                  state={article}
+                  className={styles.iconButton}
+                >
+                  <Icon iconName="comment" className={styles.icon} />
+                </Link>
+
+                <IconButton
+                  iconName="share"
+                  className={styles.iconButton}
+                  iconClassName={styles.icon}
+                  onClick={handleShareButtonClick}
+                />
+                <ShareOnFacebookButton
+                  title={title}
+                  articleUrl={articleUrl}
+                  iconStyle={getValidClassNames(
+                    styles.iconButton,
+                    styles.facebookIconButton,
+                  )}
+                />
+              </>
+            )}
+          </div>
+        )}
+      </div>
+      <Popover
+        content={
+          <ArticleDetails
+            readTime={readTime}
+            authorName={authorFullName}
+            publishedAt={publishedAt ?? ''}
+            genre={genre}
+            avatarUrl={avatarUrl}
+            containerStyle={styles.articleDetailsContainer}
+            isArticleOwner={isArticleOwner}
+            onFollow={onFollow}
+            authorFollowers={followersCount}
+            isFollowed={isFollowed}
+            isShared={isShared}
+          />
+        }
+        className={styles.popover}
+        classNameContentWrapper={getValidClassNames(
+          styles.authorDetails,
+          styles.authorDetailsModal,
+        )}
+      >
+        <h5 className={styles.authorName}>
+          <span>{authorFullName}</span>
+          <Icon iconName="info" className={styles.infoIcon} />
+        </h5>
+      </Popover>
+
+      <div className={styles.textWrapper}>
+        <h2 className={styles.onlyForPrint}>{authorName}</h2>
+
+        <h4 className={styles.title}>{title}</h4>
+        {tags && <Tags tags={tags} />}
+        <article
+          className={styles.text}
+          dangerouslySetInnerHTML={{ __html: sanitizeHtml(text) }}
+        />
+        {!isShared && publishedAt && (
+          <div className={styles.reactionButtonsWrapper}>
             <IconButton
-              iconName="comment"
-              className={styles.iconButton}
-              iconClassName={styles.icon}
-              onClick={onButtonClick}
-            />
-            <IconButton
-              iconName="share"
-              className={styles.iconButton}
-              iconClassName={styles.icon}
-              onClick={handleShareButtonClick}
-            />
-            <ShareOnFacebookButton
-              title={title}
-              articleUrl={articleUrl}
-              iconStyle={getValidClassNames(
-                styles.iconButton,
-                styles.facebookIconButton,
+              iconName="like"
+              iconClassName={styles.reactionIcon}
+              className={getValidClassNames(
+                styles.reactionButton,
+                isArticleOwner && styles.disabled,
+                hasAlreadyReactedWith === Reaction.LIKE && styles.pressed,
               )}
+              label={likesCount}
+              onClick={onLikeReaction}
+            />
+            <IconButton
+              iconName="dislike"
+              iconClassName={styles.reactionIcon}
+              className={getValidClassNames(
+                styles.reactionButton,
+                isArticleOwner && styles.disabled,
+                hasAlreadyReactedWith === Reaction.DISLIKE && styles.pressed,
+              )}
+              label={dislikesCount}
+              onClick={onDislikeReaction}
             />
           </div>
         )}
       </div>
-      <div className={styles.articleContent}>
-        <h4 className={styles.title}>{title}</h4>
-        {tags && <Tags tags={tags} />}
-        <p
-          className={styles.text}
-          dangerouslySetInnerHTML={{ __html: sanitizeHtml(text) }}
-        />
-      </div>
-    </div>
+      <ConfirmArticleDeleteDialog
+        onDeleteArticle={handleDeleteArticle}
+        trigger={{ onToggleModalOpen: handleToggleModalOpen, isOpen }}
+      />
+    </article>
   );
 };
 

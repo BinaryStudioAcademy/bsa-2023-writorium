@@ -25,16 +25,16 @@ class CommentRepository implements IRepository {
       .withGraphJoined(this.defaultRelationExpression)
       .execute();
 
-    return comments.map((comment) =>
-      CommentEntity.initialize({
+    return comments.map((comment) => {
+      return CommentEntity.initialize({
         ...comment,
         author: {
           firstName: comment.author.firstName,
           lastName: comment.author.lastName,
           avatarUrl: comment.author.avatar?.url ?? null,
         },
-      }),
-    );
+      });
+    });
   }
 
   public async find(id: number): Promise<CommentEntity | null> {
@@ -99,6 +99,10 @@ class CommentRepository implements IRepository {
         avatarUrl: comment.author.avatar?.url ?? null,
       },
     });
+  }
+
+  public countCommentsByUserId(userId: number): Promise<number> {
+    return this.commentModel.query().where({ userId }).resultSize();
   }
 
   public delete(): Promise<boolean> {

@@ -1,29 +1,37 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
+import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
 
 import { PREVIOUS_PAGE_INDEX } from '~/libs/constants/constants.js';
 import { AppRoute } from '~/libs/enums/enums.js';
+import { getFullName } from '~/libs/helpers/helpers.js';
 import { StorageKey } from '~/libs/packages/storage/storage.js';
 import { type AsyncThunkConfig } from '~/libs/types/types.js';
 import {
   type ArticleGetAllResponseDto,
   type ArticleImprovementSuggestion,
   type ArticleReactionRequestDto,
+  type ArticleReactionResponseDto,
+  type ArticleReactionsSocketEvent,
+  type ArticleReactionsSocketEventPayload,
   type ArticleRequestDto,
-  type ArticleResponseDto,
   type ArticlesFilters,
+  type ArticleSocketEvent,
+  type ArticleSocketEventPayload,
   type ArticleUpdateRequestPayload,
-  type ArticleWithCommentCountResponseDto,
+  type ArticleWithCountsResponseDto,
+  type ArticleWithFollowResponseDto,
   type ReactionResponseDto,
 } from '~/packages/articles/articles.js';
 import {
   type CommentBaseRequestDto,
   type CommentGetAllResponseDto,
+  type CommentsSocketEvent,
+  type CommentsSocketEventPayload,
   type CommentUpdateDto,
   type CommentWithRelationsResponseDto,
 } from '~/packages/comments/comments.js';
 import { type GenreGetAllResponseDto } from '~/packages/genres/genres.js';
-import { NotificationType } from '~/packages/notification/notification.js';
 import { type PromptRequestDto } from '~/packages/prompts/prompts.js';
+import { type UserFollowResponseDto } from '~/packages/users/users.js';
 
 import { actions as appActions } from '../app/app.js';
 import { name as sliceName } from './articles.slice.js';
@@ -49,8 +57,36 @@ const fetchOwn = createAsyncThunk<
   return articleApi.getOwn(filters);
 });
 
+const addArticle = createAsyncThunk<
+  ArticleSocketEventPayload[typeof ArticleSocketEvent.NEW_ARTICLE] | null,
+  ArticleSocketEventPayload[typeof ArticleSocketEvent.NEW_ARTICLE],
+  AsyncThunkConfig
+>(`${sliceName}/add-article`, (article, { getState, dispatch }) => {
+  const {
+    auth: { user },
+  } = getState();
+
+  if (user?.id !== article.userId) {
+    const { author } = article;
+
+    void dispatch(
+      appActions.notify({
+        type: 'info',
+        message: `New article from ${getFullName(
+          author.firstName,
+          author.lastName,
+        )}`,
+      }),
+    );
+
+    return article;
+  }
+
+  return null;
+});
+
 const createArticle = createAsyncThunk<
-  ArticleWithCommentCountResponseDto,
+  ArticleWithCountsResponseDto,
   {
     articlePayload: ArticleRequestDto;
     generatedPrompt: PromptRequestDto | null;
@@ -85,7 +121,7 @@ const createArticle = createAsyncThunk<
 );
 
 const updateArticle = createAsyncThunk<
-  ArticleWithCommentCountResponseDto,
+  ArticleWithCountsResponseDto,
   ArticleUpdateRequestPayload,
   AsyncThunkConfig
 >(`${sliceName}/update`, async (payload, { extra, dispatch }) => {
@@ -109,13 +145,18 @@ const updateArticle = createAsyncThunk<
     }),
   );
 
-  dispatch(appActions.navigate(AppRoute.ARTICLES_MY_ARTICLES));
+  const wasPublished = Boolean(updatedArticle.publishedAt);
+  const routeToNavigate = wasPublished
+    ? AppRoute.ARTICLES
+    : AppRoute.ARTICLES_MY_ARTICLES;
+
+  dispatch(appActions.navigate(routeToNavigate));
 
   return updatedArticle;
 });
 
 const getArticle = createAsyncThunk<
-  ArticleResponseDto,
+  ArticleWithFollowResponseDto,
   number,
   AsyncThunkConfig
 >(`${sliceName}/getArticle`, (id, { extra }) => {
@@ -144,7 +185,7 @@ const shareArticle = createAsyncThunk<
 
   void dispatch(
     appActions.notify({
-      type: NotificationType.SUCCESS,
+      type: 'success',
       message: 'The sharing link was copied to clipboard',
     }),
   );
@@ -153,13 +194,23 @@ const shareArticle = createAsyncThunk<
 });
 
 const fetchSharedArticle = createAsyncThunk<
-  ArticleResponseDto,
+  ArticleWithFollowResponseDto,
   { token: string },
   AsyncThunkConfig
 >(`${sliceName}/shared`, (articlePayload, { extra }) => {
   const { articleApi } = extra;
 
   return articleApi.getByToken(articlePayload.token);
+});
+
+const geArticleIdByToken = createAsyncThunk<
+  Pick<ArticleWithFollowResponseDto, 'id'>,
+  { token: string },
+  AsyncThunkConfig
+>(`${sliceName}/article-id-by-token`, (articlePayload, { extra }) => {
+  const { articleApi } = extra;
+
+  return articleApi.geArticleIdByToken(articlePayload.token);
 });
 
 const reactToArticle = createAsyncThunk<
@@ -179,6 +230,38 @@ const reactToArticle = createAsyncThunk<
     articleId,
     reaction,
   };
+});
+
+const addReactionToArticleView = createAsyncThunk<
+  ArticleReactionResponseDto | null,
+  ArticleReactionsSocketEventPayload[typeof ArticleReactionsSocketEvent.NEW_REACTION],
+  AsyncThunkConfig
+>(`${sliceName}/add-reaction-to-article-view`, (reaction, { getState }) => {
+  const {
+    auth: { user },
+  } = getState();
+
+  if (user?.id !== reaction.userId) {
+    return reaction;
+  }
+
+  return null;
+});
+
+const addReactionToArticlesFeed = createAsyncThunk<
+  ArticleReactionResponseDto | null,
+  ArticleReactionsSocketEventPayload[typeof ArticleReactionsSocketEvent.NEW_REACTION],
+  AsyncThunkConfig
+>(`${sliceName}/add-reaction-to-articles-feed`, (reaction, { getState }) => {
+  const {
+    auth: { user },
+  } = getState();
+
+  if (user?.id !== reaction.userId) {
+    return reaction;
+  }
+
+  return null;
 });
 
 const deleteArticleReaction = createAsyncThunk<
@@ -208,6 +291,34 @@ const fetchAllCommentsToArticle = createAsyncThunk<
   return commentsApi.fetchAllByArticleId(articleId);
 });
 
+const addComment = createAsyncThunk<
+  CommentsSocketEventPayload[typeof CommentsSocketEvent.NEW_COMMENT] | null,
+  CommentsSocketEventPayload[typeof CommentsSocketEvent.NEW_COMMENT],
+  AsyncThunkConfig
+>(`${sliceName}/add-comment`, (comment, { getState, dispatch }) => {
+  const {
+    auth: { user },
+  } = getState();
+
+  if (user?.id !== comment.userId) {
+    const { author } = comment;
+
+    void dispatch(
+      appActions.notify({
+        type: 'info',
+        message: `New comment from ${getFullName(
+          author.firstName,
+          author.lastName,
+        )}`,
+      }),
+    );
+
+    return comment;
+  }
+
+  return null;
+});
+
 const createComment = createAsyncThunk<
   CommentWithRelationsResponseDto,
   CommentBaseRequestDto,
@@ -229,7 +340,7 @@ const updateComment = createAsyncThunk<
 });
 
 const deleteArticle = createAsyncThunk<
-  ArticleWithCommentCountResponseDto,
+  ArticleWithCountsResponseDto,
   { id: number; hasRedirect?: boolean },
   AsyncThunkConfig
 >(
@@ -242,6 +353,13 @@ const deleteArticle = createAsyncThunk<
     if (hasRedirect) {
       dispatch(appActions.navigate(PREVIOUS_PAGE_INDEX));
     }
+
+    void dispatch(
+      appActions.notify({
+        type: 'success',
+        message: 'The article has been deleted successfully.',
+      }),
+    );
 
     return deletedArticle;
   },
@@ -298,7 +416,29 @@ const getImprovementSuggestions = createAsyncThunk<
   return newSuggestions.items;
 });
 
+const toggleIsFavourite = createAsyncThunk<
+  ArticleWithCountsResponseDto,
+  number,
+  AsyncThunkConfig
+>(`${sliceName}/toggleIsFavourite`, (id, { extra }) => {
+  const { articleApi } = extra;
+
+  return articleApi.toggleIsFavourite(id);
+});
+
+const setShowFavourites = createAction<boolean>(
+  `${sliceName}/toggleIsFavourite`,
+);
+
+const updateArticleAuthorFollowInfo = createAction<UserFollowResponseDto>(
+  `${sliceName}/update-article-author-follow-info`,
+);
+
 export {
+  addArticle,
+  addComment,
+  addReactionToArticlesFeed,
+  addReactionToArticleView,
   createArticle,
   createComment,
   deleteArticle,
@@ -307,12 +447,16 @@ export {
   fetchAllCommentsToArticle,
   fetchOwn,
   fetchSharedArticle,
+  geArticleIdByToken,
   getAllGenres,
   getArticle,
   getImprovementSuggestions,
   getImprovementSuggestionsBySession,
   reactToArticle,
+  setShowFavourites,
   shareArticle,
+  toggleIsFavourite,
   updateArticle,
+  updateArticleAuthorFollowInfo,
   updateComment,
 };

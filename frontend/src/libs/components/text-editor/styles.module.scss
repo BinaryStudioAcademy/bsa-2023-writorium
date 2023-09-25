@@ -15,11 +15,15 @@
 .textEditor {
   height: 360px;
   max-height: 360px;
-  padding: 50px 23px;
+  padding: 20px;
   overflow: auto;
   background-color: var(--pale-gray);
   border: 2px solid transparent;
   border-radius: 5px;
+}
+
+.textEditor p:not(:last-child) {
+  margin-block-end: 10px;
 }
 
 .textEditor:focus {

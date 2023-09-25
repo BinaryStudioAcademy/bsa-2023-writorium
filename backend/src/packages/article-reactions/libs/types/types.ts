@@ -1,6 +1,7 @@
 export {
   type ArticleReactionCreateDto,
-  type ArticleReactionEntityType,
+  type ArticleReactionEntityInstance,
   type ArticleReactionRequestDto,
   type ArticleReactionResponseDto,
+  type ArticleReactionsSocketEventPayload,
 } from 'shared/build/index.js';

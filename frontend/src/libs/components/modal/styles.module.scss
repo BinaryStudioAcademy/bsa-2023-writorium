@@ -21,11 +21,12 @@
 
 .closeBtn {
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 10px;
+  right: 10px;
+  z-index: var(--z-index-level-one);
   margin: 5px 5px 0 0;
   padding: 0;
-  background-color: var(--white);
+  background: transparent;
   border: none;
   cursor: pointer;
 }

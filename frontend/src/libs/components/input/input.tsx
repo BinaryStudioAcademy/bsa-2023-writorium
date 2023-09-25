@@ -6,7 +6,7 @@ import {
 } from 'react-hook-form';
 
 import { ErrorMessage } from '~/libs/components/components.js';
-import { InputType } from '~/libs/enums/input-type.enum';
+import { type InputType } from '~/libs/enums/enums.js';
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
 import { useFormController } from '~/libs/hooks/hooks.js';
 import { type ValueOf } from '~/libs/types/types.js';
@@ -22,7 +22,7 @@ type Properties<T extends FieldValues> = {
   type?: ValueOf<typeof InputType>;
   className?: string;
   labelClassName?: string;
-  required?: boolean;
+  isRequired?: boolean;
   rows?: number;
 };
 
@@ -32,10 +32,10 @@ const Input = <T extends FieldValues>({
   label,
   name,
   placeholder = '',
-  type = InputType.TEXT,
+  type = 'text',
   className,
   labelClassName,
-  required,
+  isRequired,
   rows,
 }: Properties<T>): JSX.Element => {
   const { field } = useFormController({ name, control });
@@ -56,7 +56,7 @@ const Input = <T extends FieldValues>({
         className={getValidClassNames(
           styles.text,
           labelClassName,
-          required && styles.required,
+          isRequired && styles.required,
         )}
       >
         {label}
