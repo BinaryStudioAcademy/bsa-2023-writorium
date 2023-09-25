@@ -10,12 +10,19 @@ import { ArticleController } from './article.controller.js';
 import { ArticleModel } from './article.model.js';
 import { ArticleRepository } from './article.repository.js';
 import { ArticleService } from './article.service.js';
+import { ArticleSocketService } from './article-socket.service.js';
 import { FavouredUserArticlesModel } from './favoured-user-articles.model.js';
 
 const articleRepository = new ArticleRepository(
   ArticleModel,
   FavouredUserArticlesModel,
 );
+
+const articleSocketService = new ArticleSocketService({
+  followRepository,
+  socketService,
+});
+
 const articleService = new ArticleService({
   articleRepository,
   openAIService,
@@ -24,6 +31,7 @@ const articleService = new ArticleService({
   achievementService,
   articleViewService,
   followRepository,
+  articleSocketService,
 });
 const articleController = new ArticleController(logger, articleService);
 

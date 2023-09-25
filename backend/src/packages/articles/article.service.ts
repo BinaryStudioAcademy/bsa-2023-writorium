@@ -15,7 +15,6 @@ import {
   NotFoundError,
 } from '~/libs/packages/exceptions/exceptions.js';
 import { type OpenAIService } from '~/libs/packages/openai/openai.package.js';
-import { SocketNamespace, SocketRoom } from '~/libs/packages/socket/socket.js';
 import { type SocketService } from '~/libs/packages/socket/socket.package.js';
 import { token as articleToken } from '~/libs/packages/token/token.js';
 import { type ArticleViewService } from '~/packages/article-views/article-view.service.js';
@@ -28,12 +27,13 @@ import { type GenreRepository } from '../genres/genre.repository.js';
 import { type UserAuthResponseDto } from '../users/users.js';
 import { ArticleEntity } from './article.entity.js';
 import { type ArticleRepository } from './article.repository.js';
+import { type ArticleSocketService } from './article-socket.service.js';
 import {
   FIRST_ELEMENT_ARRAY_INDEX,
   INDEX_INCREMENT,
   SHARED_$TOKEN,
 } from './libs/constants/constants.js';
-import { ArticleSocketEvent, DateFormat } from './libs/enums/enums.js';
+import { DateFormat } from './libs/enums/enums.js';
 import {
   getArticleImprovementSuggestionsCompletionConfig,
   getArticleReadTimeCompletionConfig,
@@ -52,7 +52,6 @@ import {
   type ArticleImprovementSuggestion,
   type ArticleResponseDto,
   type ArticlesFilters,
-  type ArticleSocketEventPayload,
   type ArticleUpdateRequestDto,
   type ArticleWithCountsResponseDto,
   type ArticleWithFollowResponseDto,
@@ -69,13 +68,14 @@ type Constructor = {
   articleViewService: ArticleViewService;
   followRepository: FollowRepository;
   achievementService: AchievementService;
+  articleSocketService: ArticleSocketService;
 };
 
 class ArticleService implements IService {
   private articleRepository: ArticleRepository;
   private openAIService: OpenAIService;
   private genreRepository: GenreRepository;
-  private socketService: SocketService;
+  private articleSocketService: ArticleSocketService;
   private achievementService: AchievementService;
   private articleViewService: ArticleViewService;
   private followRepository: FollowRepository;
@@ -84,7 +84,7 @@ class ArticleService implements IService {
     articleRepository,
     openAIService,
     genreRepository,
-    socketService,
+    articleSocketService,
     articleViewService,
     followRepository,
     achievementService,
@@ -92,7 +92,7 @@ class ArticleService implements IService {
     this.articleRepository = articleRepository;
     this.openAIService = openAIService;
     this.genreRepository = genreRepository;
-    this.socketService = socketService;
+    this.articleSocketService = articleSocketService;
     this.followRepository = followRepository;
     this.articleViewService = articleViewService;
     this.achievementService = achievementService;
@@ -435,33 +435,9 @@ class ArticleService implements IService {
       }),
     );
 
-    const activeSockets = await this.socketService.io
-      .of(SocketNamespace.ARTICLES)
-      .in(SocketRoom.ARTICLES_FEED)
-      .fetchSockets();
-
-    const authorFollowers = await this.followRepository.findAuthorFollowers(
-      payload.userId,
+    void this.articleSocketService.handleNewArticle(
+      article.toObjectWithRelationsAndCounts(),
     );
-
-    const authorFollowersIds = new Set(
-      authorFollowers.map(({ userId }) => userId),
-    );
-
-    for (const activeSocket of activeSockets) {
-      const socketUserId = Number(activeSocket.handshake.query.userId);
-
-      const socketEventPayload: ArticleSocketEventPayload[typeof ArticleSocketEvent.NEW_ARTICLE] =
-        {
-          article: article.toObjectWithRelationsAndCounts(),
-          isByFollowingAuthor: authorFollowersIds.has(socketUserId),
-        };
-
-      this.socketService.io
-        .of(SocketNamespace.ARTICLES)
-        .to(SocketRoom.ARTICLES_FEED)
-        .emit(ArticleSocketEvent.NEW_ARTICLE, socketEventPayload);
-    }
 
     const countOfOwnArticles =
       await this.articleRepository.countArticlesByUserId(payload.userId);
