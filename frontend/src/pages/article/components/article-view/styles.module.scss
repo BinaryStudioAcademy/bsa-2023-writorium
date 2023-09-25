@@ -88,8 +88,7 @@
 }
 
 .infoIcon {
-  position: relative;
-  top: -3px;
+  transform: translateY(-3px);
 }
 
 .authorName:hover {
@@ -208,9 +207,9 @@
   }
 
   .infoIcon {
-    top: -5px;
     width: 17px;
     height: 17px;
+    transform: translateY(-5px);
   }
 
   .title {
