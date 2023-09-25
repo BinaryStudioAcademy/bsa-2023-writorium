@@ -1,10 +1,10 @@
-import { MAX_FILE_SIZE_MB } from '~/libs/packages/file/file.package.js';
+import { ExceptionMessage } from '~/libs/enums/enums.js';
 import { HttpCode, HttpError } from '~/libs/packages/http/http.js';
 
 class FileSizeLimitExceededError extends HttpError {
   public constructor() {
     super({
-      message: `The selected file exceeds the maximum allowed size of ${MAX_FILE_SIZE_MB} Mb`,
+      message: ExceptionMessage.FILE_SIZE_LIMIT_EXCEEDED,
       status: HttpCode.CONTENT_TOO_LARGE,
     });
   }

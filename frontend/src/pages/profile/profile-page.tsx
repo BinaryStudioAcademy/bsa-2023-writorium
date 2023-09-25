@@ -20,9 +20,9 @@ import styles from './styles.module.scss';
 
 const ProfilePage: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { user, userActivity } = useAppSelector(({ auth, users }) => ({
+  const { user, userActivities } = useAppSelector(({ auth, users }) => ({
     user: auth.user as UserAuthResponseDto,
-    userActivity: users.userActivity,
+    userActivities: users.userActivities,
   }));
 
   useEffect(() => {
@@ -44,7 +44,7 @@ const ProfilePage: React.FC = () => {
           summary="Your writing activity"
         >
           <UserActivity
-            userActivity={userActivity}
+            userActivities={userActivities}
             className={getValidClassNames(styles.profileBlock, styles.activity)}
           />
         </Spoiler>

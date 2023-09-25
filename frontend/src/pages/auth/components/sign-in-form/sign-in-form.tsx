@@ -4,7 +4,7 @@ import {
   Link,
   Notification,
 } from '~/libs/components/components.js';
-import { AppRoute } from '~/libs/enums/app-route.enum';
+import { AppRoute } from '~/libs/enums/enums.js';
 import { useAppForm, useCallback } from '~/libs/hooks/hooks.js';
 import { type UserSignInWithFacebookResponseDto } from '~/packages/auth/auth.js';
 import {
@@ -87,7 +87,7 @@ const SignInForm: React.FC<Properties> = ({
               Forgot password?
             </Link>
           </fieldset>
-          <AuthSubmitButton disabled={isLoading} label="Sign In" />
+          <AuthSubmitButton isDisabled={isLoading} label="Sign In" />
         </form>
       </div>
       <div className={styles.messageWrapper}>

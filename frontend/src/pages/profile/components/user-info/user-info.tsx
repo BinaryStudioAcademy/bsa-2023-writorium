@@ -1,11 +1,9 @@
-import { type FC } from 'react';
-
 import { Avatar, Button } from '~/libs/components/components.js';
 import { getFullName, getValidClassNames } from '~/libs/helpers/helpers.js';
 import { useCallback, useState } from '~/libs/hooks/hooks.js';
 import { type UserAuthResponseDto } from '~/packages/users/users.js';
-import { ProfileEditForm } from '~/pages/profile/components/components.js';
 
+import { ProfileEditForm } from '../../components/components.js';
 import styles from './styles.module.scss';
 
 type Properties = {
@@ -13,7 +11,7 @@ type Properties = {
   className?: string;
 };
 
-const UserInfo: FC<Properties> = ({ user, className }) => {
+const UserInfo: React.FC<Properties> = ({ user, className }) => {
   const [isEditingProfile, setIsEditingProfile] = useState(false);
   const userName = getFullName(user.firstName, user.lastName);
 

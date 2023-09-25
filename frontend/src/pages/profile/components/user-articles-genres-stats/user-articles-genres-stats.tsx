@@ -27,7 +27,7 @@ import {
   DEFAULT_FILTER_PAYLOAD,
   GENRES_CHART_COLORS,
 } from './libs/constants/constants.js';
-import { GenresChartConfig } from './libs/enums/genres-chart-config.enum.js';
+import { GenresChartConfig } from './libs/enums/enums.js';
 import { normalizeGenresStats } from './libs/helpers/helpers.js';
 import styles from './styles.module.scss';
 
@@ -46,8 +46,9 @@ const UserArticlesGenresStats: React.FC<Properties> = ({ className }) => {
     useAppSelector(({ users }) => users);
 
   const handleDataLoad = useCallback(
-    (filters: ArticleGenreStatsFilters) =>
-      void dispatch(usersActions.getUserArticlesGenresStats(filters)),
+    (filters: ArticleGenreStatsFilters) => {
+      return void dispatch(usersActions.getUserArticlesGenresStats(filters));
+    },
     [dispatch],
   );
   useDeepCompareEffect(() => {

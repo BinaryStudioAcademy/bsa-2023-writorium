@@ -1,5 +1,5 @@
 import { ExceptionMessage } from '~/libs/enums/enums.js';
-import { convertToSnakeCase, safeJSONParse } from '~/libs/helpers/helpers.js';
+import { convertToSnakeCase, parseJSONSafely } from '~/libs/helpers/helpers.js';
 import { type IService } from '~/libs/interfaces/interfaces.js';
 import { InternalServerError } from '~/libs/packages/exceptions/exceptions.js';
 import { type OpenAIService } from '~/libs/packages/openai/openai.package.js';
@@ -41,7 +41,7 @@ class PromptService implements IService {
       throw new InternalServerError(ExceptionMessage.FAILED_TO_GENERATE_PROMPT);
     }
 
-    const parsedPrompt = safeJSONParse<GeneratedArticlePrompt>(promptJSON);
+    const parsedPrompt = parseJSONSafely<GeneratedArticlePrompt>(promptJSON);
 
     if (!parsedPrompt) {
       throw new InternalServerError(ExceptionMessage.FAILED_TO_GENERATE_PROMPT);

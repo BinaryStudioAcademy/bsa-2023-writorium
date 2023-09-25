@@ -1,5 +1,5 @@
 import { Link } from '~/libs/components/components.js';
-import { AppRoute } from '~/libs/enums/app-route.enum';
+import { AppRoute } from '~/libs/enums/enums.js';
 import { useAppForm, useCallback, useParams } from '~/libs/hooks/hooks.js';
 import { type AuthResetPasswordDto } from '~/packages/auth/auth.js';
 import { resetPasswordValidationSchema } from '~/packages/auth/auth.js';

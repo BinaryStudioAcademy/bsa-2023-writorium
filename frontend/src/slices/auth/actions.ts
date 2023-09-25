@@ -95,6 +95,7 @@ const sendEmailResetPasswordLink = createAsyncThunk<
   async (payload, { dispatch, extra }) => {
     const { authApi } = extra;
     const response = await authApi.sendEmailResetPasswordLink(payload);
+
     void dispatch(
       appActions.notify({
         type: 'success',

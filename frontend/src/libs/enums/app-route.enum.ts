@@ -1,4 +1,5 @@
-import { RESET_PASSWORD_ROUTE, SHARED_$TOKEN } from '../constants/constants.js';
+import { SHARED_$TOKEN } from '../constants/constants.js';
+import { ResetPasswordRoute } from '../enums/enums.js';
 
 const AppRoute = {
   ROOT: '/',
@@ -11,7 +12,7 @@ const AppRoute = {
   ARTICLES_SHARED_$TOKEN: `/articles${SHARED_$TOKEN}`,
   CREATE_ARTICLE: '/articles/create',
   FORGOT_PASSWORD: '/forgot-password',
-  RESET_PASSWORD_$TOKEN: RESET_PASSWORD_ROUTE.WITH_PARAM,
+  RESET_PASSWORD_$TOKEN: ResetPasswordRoute.WITH_PARAM,
   ARTICLES_EDIT_$ID: '/articles/edit/:id',
 } as const;
 

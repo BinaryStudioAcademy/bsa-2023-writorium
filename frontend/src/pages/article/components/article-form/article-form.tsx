@@ -1,5 +1,5 @@
 import { Button, Input, TextEditor } from '~/libs/components/components.js';
-import { ButtonType, DataStatus } from '~/libs/enums/enums.js';
+import { DataStatus } from '~/libs/enums/enums.js';
 import {
   useAppDispatch,
   useAppForm,
@@ -192,27 +192,29 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
       <div className={styles.buttonWrapper}>
         <Button
           variant="outlined"
-          type={ButtonType.RESET}
+          type="reset"
           label="Cancel"
           className={styles.cancelBtn}
-          disabled={isPublishLoading || isSaveDraftLoading}
+          isDisabled={isPublishLoading || isSaveDraftLoading}
         />
-        <Button
-          variant="outlined"
-          type={ButtonType.SUBMIT}
-          label="Save draft"
-          name="draft"
-          isLoading={isSaveDraftLoading}
-          className={styles.saveDraftBtn}
-          disabled={!isDirty || isPublishLoading}
-        />
+        {isDraft && (
+          <Button
+            variant="outlined"
+            type="submit"
+            label="Save draft"
+            name="draft"
+            isLoading={isSaveDraftLoading}
+            className={styles.saveDraftBtn}
+            isDisabled={!isDirty || isPublishLoading}
+          />
+        )}
         <Button
           name="publish"
           label="Publish"
           isLoading={isPublishLoading}
-          type={ButtonType.SUBMIT}
+          type="submit"
           className={styles.publishBtn}
-          disabled={(!isDirty && !isDraft) || isSaveDraftLoading}
+          isDisabled={(!isDirty && !isDraft) || isSaveDraftLoading}
         />
       </div>
     </form>

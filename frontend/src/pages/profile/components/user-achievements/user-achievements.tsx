@@ -1,5 +1,3 @@
-import { type FC } from 'react';
-
 import {
   Button,
   Loader,
@@ -16,9 +14,9 @@ import {
   useModal,
 } from '~/libs/hooks/hooks.js';
 import { type AchievementWithProgressResponseDto } from '~/packages/achievements/achievements.js';
-import { NUMBER_OF_ACHIEVEMENTS_TO_DISPLAY } from '~/pages/profile/libs/constants/constants.js';
 import { actions as achievementsActions } from '~/slices/achievements/achievements.js';
 
+import { NUMBER_OF_ACHIEVEMENTS_TO_DISPLAY } from '../../libs/constants/constants.js';
 import { AchievementList } from '../components.js';
 import styles from './styles.module.scss';
 
@@ -26,7 +24,7 @@ type Properties = {
   className?: string;
 };
 
-const UserAchievements: FC<Properties> = ({ className }) => {
+const UserAchievements: React.FC<Properties> = ({ className }) => {
   const FIRST_ITEM_INDEX = 0;
 
   const { handleToggleModalOpen, isOpen } = useModal();

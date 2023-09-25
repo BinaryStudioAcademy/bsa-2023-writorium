@@ -56,7 +56,7 @@ const ArticleFilters: React.FC<Properties> = ({
     };
   }, [data]);
 
-  const formReset = useCallback(() => {
+  const handleFormReset = useCallback(() => {
     handleReset(DEFAULT_FILTER_PAYLOAD);
   }, [handleReset]);
 
@@ -68,7 +68,7 @@ const ArticleFilters: React.FC<Properties> = ({
           size="small"
           variant="outlined"
           label="Clear filters"
-          onClick={formReset}
+          onClick={handleFormReset}
         />
       </div>
       <form className={styles.filterGroup} name="FiltersForm">
@@ -104,7 +104,7 @@ const ArticleFilters: React.FC<Properties> = ({
           errors={errors}
         />
         <ToggleCheckbox
-          name="showFavourites"
+          name="shouldShowFavourites"
           control={control}
           errors={errors}
           label="Show only favorite articles"

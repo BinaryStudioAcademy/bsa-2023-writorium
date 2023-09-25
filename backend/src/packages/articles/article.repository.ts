@@ -1,6 +1,6 @@
 import { type Model, type Page, type QueryBuilder } from 'objection';
 
-import { DatabaseTableName } from '~/libs/packages/database/libs/enums/database-table-name.enum.js';
+import { DatabaseTableName } from '~/libs/packages/database/libs/enums/enums.js';
 import { type ArticleViewModel } from '~/packages/article-views/article-view.model.js';
 import { type CommentModel } from '~/packages/comments/comment.model.js';
 
@@ -73,7 +73,7 @@ class ArticleRepository implements IArticleRepository {
     genreId,
     titleFilter,
     authorId,
-    showFavourites,
+    shouldShowFavourites,
     requestUserId,
   }: {
     userId?: number;
@@ -86,7 +86,7 @@ class ArticleRepository implements IArticleRepository {
         `${DatabaseTableName.ARTICLES}.*`,
         this.getCommentsCountQuery(),
         this.getViewsCountQuery(),
-        getIsFavouriteSubQuery(Boolean(showFavourites), requestUserId),
+        getIsFavouriteSubQuery(Boolean(shouldShowFavourites), requestUserId),
       )
       .withGraphJoined(this.defaultRelationExpression)
       .withGraphFetched('reactions')
@@ -95,7 +95,9 @@ class ArticleRepository implements IArticleRepository {
       .where(getWhereGenreIdQuery(genreId))
       .where(getWhereAuthorIdQuery(authorId))
       .where(getWhereTitleLikeQuery(titleFilter))
-      .where(getShowFavouritesQuery(Boolean(showFavourites), requestUserId))
+      .where(
+        getShowFavouritesQuery(Boolean(shouldShowFavourites), requestUserId),
+      )
       .where(getWherePublishedOnlyQuery(hasPublishedOnly))
       .whereNull('deletedAt')
       .orderBy(getSortingCondition(hasPublishedOnly))
@@ -104,8 +106,8 @@ class ArticleRepository implements IArticleRepository {
 
     return {
       total: articles.total,
-      items: articles.results.map((article) =>
-        ArticleEntity.initialize({
+      items: articles.results.map((article) => {
+        return ArticleEntity.initialize({
           ...article,
           coverUrl: article.cover?.url ?? null,
           author: {
@@ -123,8 +125,8 @@ class ArticleRepository implements IArticleRepository {
               }
             : null,
           isFavourite: article.isFavourite,
-        }),
-      ),
+        });
+      }),
     };
   }
 

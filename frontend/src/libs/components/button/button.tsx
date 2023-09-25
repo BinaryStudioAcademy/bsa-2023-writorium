@@ -1,8 +1,6 @@
-import { type MouseEvent } from 'react';
-
 import { ButtonType } from '~/libs/enums/enums.js';
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
-import { type ValueOf } from '~/libs/types/types.js';
+import { type ReactMouseEvent, type ValueOf } from '~/libs/types/types.js';
 
 import { Loader } from '../components.js';
 import styles from './styles.module.scss';
@@ -14,7 +12,7 @@ type ButtonSize = 'medium' | 'small';
 type Properties = {
   variant?: ButtonVariant;
   size?: ButtonSize;
-  disabled?: boolean;
+  isDisabled?: boolean;
   label: React.ReactNode;
   type?: ValueOf<typeof ButtonType>;
   name?: string;
@@ -24,7 +22,7 @@ type Properties = {
   onClick?:
     | (() => void)
     | (() => Promise<void>)
-    | ((event: React.MouseEvent<HTMLButtonElement>) => void);
+    | ((event: ReactMouseEvent<HTMLButtonElement>) => void);
 };
 
 const Button: React.FC<Properties> = ({
@@ -32,7 +30,7 @@ const Button: React.FC<Properties> = ({
   label,
   name = '',
   className = '',
-  disabled,
+  isDisabled,
   onClick,
   hasFullWidth,
   variant = 'primary',
@@ -50,8 +48,10 @@ const Button: React.FC<Properties> = ({
     small: styles.buttonSmall,
   };
 
-  const handleButtonClick = (event: MouseEvent<HTMLButtonElement>): void => {
-    const allowClick = !disabled && !isLoading;
+  const handleButtonClick = (
+    event: ReactMouseEvent<HTMLButtonElement>,
+  ): void => {
+    const allowClick = !isDisabled && !isLoading;
 
     if (onClick && !allowClick) {
       event.preventDefault();
@@ -65,7 +65,7 @@ const Button: React.FC<Properties> = ({
     <button
       type={type}
       name={name}
-      disabled={disabled}
+      disabled={isDisabled}
       className={getValidClassNames(
         styles.button,
         sizeClassNameMapper[size],

@@ -1,7 +1,7 @@
 import { type IEntity } from '~/libs/interfaces/interfaces.js';
 import { type WithNullableKeys } from '~/libs/types/types.js';
 
-import { type ArticleReactionEntityType } from './libs/types/types.js';
+import { type ArticleReactionEntityInstance } from './libs/types/types.js';
 
 class ArticleReactionEntity implements IEntity {
   private 'id': number | null;
@@ -14,7 +14,7 @@ class ArticleReactionEntity implements IEntity {
     isLike,
     userId,
     articleId,
-  }: WithNullableKeys<ArticleReactionEntityType, 'id'>) {
+  }: WithNullableKeys<ArticleReactionEntityInstance, 'id'>) {
     this.id = id;
     this.isLike = isLike;
     this.userId = userId;
@@ -26,7 +26,7 @@ class ArticleReactionEntity implements IEntity {
     isLike,
     userId,
     articleId,
-  }: ArticleReactionEntityType): ArticleReactionEntity {
+  }: ArticleReactionEntityInstance): ArticleReactionEntity {
     return new ArticleReactionEntity({
       id,
       isLike,
@@ -39,7 +39,7 @@ class ArticleReactionEntity implements IEntity {
     isLike,
     userId,
     articleId,
-  }: Omit<ArticleReactionEntityType, 'id'>): ArticleReactionEntity {
+  }: Omit<ArticleReactionEntityInstance, 'id'>): ArticleReactionEntity {
     return new ArticleReactionEntity({
       id: null,
       isLike,
@@ -48,7 +48,7 @@ class ArticleReactionEntity implements IEntity {
     });
   }
 
-  public toObject(): ArticleReactionEntityType {
+  public toObject(): ArticleReactionEntityInstance {
     return {
       id: this.id as number,
       isLike: this.isLike,
@@ -57,7 +57,7 @@ class ArticleReactionEntity implements IEntity {
     };
   }
 
-  public toNewObject(): Omit<ArticleReactionEntityType, 'id'> {
+  public toNewObject(): Omit<ArticleReactionEntityInstance, 'id'> {
     return {
       isLike: this.isLike,
       userId: this.userId,

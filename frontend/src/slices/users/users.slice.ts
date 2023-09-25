@@ -18,7 +18,7 @@ import {
 
 type State = {
   users: UserGetAllItemResponseDto[];
-  userActivity: UserActivityResponseDto[];
+  userActivities: UserActivityResponseDto[];
   dataStatus: ValueOf<typeof DataStatus>;
   authors: UserDetailsAuthorResponseDto[];
   userArticlesGenresStats: UserArticlesGenreStatsItem[];
@@ -27,7 +27,7 @@ type State = {
 
 const initialState: State = {
   users: [],
-  userActivity: [],
+  userActivities: [],
   authors: [],
   userArticlesGenresStats: [],
   dataStatus: DataStatus.IDLE,
@@ -44,7 +44,7 @@ const { reducer, actions, name } = createSlice({
       state.dataStatus = DataStatus.FULFILLED;
     });
     builder.addCase(getUserActivity.fulfilled, (state, action) => {
-      state.userActivity = action.payload;
+      state.userActivities = action.payload;
     });
     builder.addCase(getAllAuthors.fulfilled, (state, action) => {
       state.dataStatus = DataStatus.FULFILLED;
