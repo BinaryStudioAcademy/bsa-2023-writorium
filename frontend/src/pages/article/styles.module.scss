@@ -60,10 +60,14 @@
   line-height: 30px;
 }
 
-.articleCreatePageWrapper .showPrompt {
+.articleCreatePageWrapper .popover .showPrompt {
   display: none;
   padding: 0 0 24px 6px;
   color: var(--light-green);
+}
+
+.articleCreatePageWrapper .popover .showPrompt:hover {
+  color: var(--dark-green);
 }
 
 .reactionButtonsWrapper {
@@ -107,9 +111,23 @@
   color: var(--light-green);
 }
 
+.popover {
+  max-width: max-content;
+}
+
 @media only screen and (max-width: breakpoints.$medium) {
   .editArticlePage {
     flex-direction: column;
+  }
+
+  .promptGenerationModal {
+    width: 320px;
+  }
+}
+
+@media only screen and (min-width: breakpoints.$medium) and (max-width: breakpoints.$extra-large) {
+  .promptGenerationModal {
+    width: 520px;
   }
 }
 
@@ -129,7 +147,7 @@
 
   .promptGenerationModal {
     top: 25px;
-    width: 100%;
+    left: 0;
     border: 1px solid var(--dark-gray-40);
     border-radius: 15px;
   }
@@ -139,7 +157,7 @@
     padding: 10px;
   }
 
-  .articleCreatePageWrapper .showPrompt {
+  .articleCreatePageWrapper .popover .showPrompt {
     display: block;
   }
 
