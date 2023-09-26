@@ -190,7 +190,7 @@ class ArticleApi extends HttpApi {
 
   public async toggleIsFavourite(
     articleId: number,
-  ): Promise<ArticleWithCountsResponseDto> {
+  ): Promise<ArticleWithCountsResponseDto & ArticleWithFollowResponseDto> {
     const response = await this.load(
       this.getFullEndpoint(ArticlesApiPath.FAVORITES, {
         id: String(articleId),
@@ -201,7 +201,9 @@ class ArticleApi extends HttpApi {
       },
     );
 
-    return await response.json<ArticleWithCountsResponseDto>();
+    return await response.json<
+      ArticleWithCountsResponseDto & ArticleWithFollowResponseDto
+    >();
   }
 
   public async getImprovementSuggestions(

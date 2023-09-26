@@ -19,4 +19,9 @@ export { useMousePosition } from './use-mouse-position/use-mouse-position.hook.j
 export { usePagination } from './use-pagination/use-pagination.hook.js';
 export { useSocketNamespace } from './use-socket-namespace/use-socket-namespace.hook.js';
 export { useController as useFormController } from 'react-hook-form';
-export { useLocation, useNavigate, useParams } from 'react-router-dom';
+export {
+  useBeforeUnload,
+  useLocation,
+  useNavigate,
+  useParams,
+} from 'react-router-dom';

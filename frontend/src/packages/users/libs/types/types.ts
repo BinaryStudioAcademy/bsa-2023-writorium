@@ -1,3 +1,4 @@
+export { type AuthorFollowDetails } from './author-follow-details.type.js';
 export {
   type UserActivityResponseDto,
   type UserArticlesGenreStatsItem,
