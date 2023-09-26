@@ -83,6 +83,10 @@ const getDefaultStyles = <
       ...styles,
       padding: '0',
     }),
+    menuList: (styles) => ({
+      ...styles,
+      maxHeight: '200px',
+    }),
   };
   return defaultStyles;
 };

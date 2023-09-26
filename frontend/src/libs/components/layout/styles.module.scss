@@ -1,6 +1,8 @@
 @use "src/assets/css/breakpoints.scss";
 
 .layout {
+  max-width: var(--layout-width);
+  margin: 0 auto;
   padding: 30px 60px;
 }
 
