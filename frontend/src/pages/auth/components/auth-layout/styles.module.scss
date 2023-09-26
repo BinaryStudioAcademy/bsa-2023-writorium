@@ -29,7 +29,6 @@
 }
 
 .formWrapper {
-  flex-basis: 553px;
   flex-direction: column;
   min-height: 100%;
 }
@@ -46,7 +45,7 @@
 }
 
 .scrollableFormWrapper {
-  flex-basis: 553px;
+  flex-basis: 550px;
   height: 100%;
   overflow: auto;
 }
@@ -92,5 +91,11 @@
 
   .formWrapperInner {
     padding: 0 15px;
+  }
+}
+
+@media only screen and (min-width: breakpoints.$extra-extra-large) {
+  .scrollableFormWrapper {
+    flex-basis: 33%;
   }
 }
