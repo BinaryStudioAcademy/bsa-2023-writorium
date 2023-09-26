@@ -179,6 +179,7 @@ class ArticleRepository implements IArticleRepository {
       .withGraphFetched('reactions')
       .modifyGraph('reactions', this.modifyReactionsGraph)
       .where({ 'articles.id': id })
+      .whereNull('deletedAt')
       .first();
 
     if (!article) {
