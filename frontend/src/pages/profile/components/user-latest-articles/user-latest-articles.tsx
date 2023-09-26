@@ -33,9 +33,9 @@ const UserLatestArticles: React.FC<Properties> = ({ className }) => {
   }, [dispatch]);
 
   return (
-    <div className={getValidClassNames(className, styles.wrapper)}>
-      <div>
-        <h3 className={styles.listTitle}>Your latest articles</h3>
+    <div className={styles.latestArticlesContainer}>
+      <h3 className={styles.listTitle}>Your latest articles</h3>
+      <div className={getValidClassNames(className, styles.wrapper)}>
         <ul className={styles.articleList}>
           {articles.map((article) => (
             <li key={article.id}>
@@ -43,10 +43,10 @@ const UserLatestArticles: React.FC<Properties> = ({ className }) => {
             </li>
           ))}
         </ul>
+        <Link to={AppRoute.ARTICLES_MY_ARTICLES} className={styles.showAll}>
+          Show all
+        </Link>
       </div>
-      <Link to={AppRoute.ARTICLES_MY_ARTICLES} className={styles.showAll}>
-        Show all
-      </Link>
     </div>
   );
 };

@@ -1,9 +1,15 @@
 @use "src/assets/css/breakpoints.scss";
 
-.wrapper {
+.latestArticlesContainer {
   display: flex;
   grid-area: articles;
   flex-direction: column;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .articleList {
@@ -19,11 +25,11 @@
   height: 116px;
   background: var(--white);
   border: 2px solid var(--pale-gray);
-  border-radius: 10px;
+  border-radius: 7px;
 }
 
 .listTitle {
-  margin-bottom: 10px;
+  margin-bottom: 6px;
 }
 
 .showAll {

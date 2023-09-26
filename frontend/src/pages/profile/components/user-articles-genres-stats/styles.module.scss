@@ -1,9 +1,19 @@
 @use "src/assets/css/breakpoints.scss";
 
-.wrapper {
+.statsContainer {
   display: flex;
   grid-area: genres;
   flex-direction: column;
+}
+
+.title {
+  margin-bottom: 6px;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   padding: 30px;
   background-color: var(--white);
 }
