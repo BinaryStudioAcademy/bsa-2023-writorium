@@ -16,8 +16,9 @@
 }
 
 .activityWrapper {
-  display: flex;
-  width: 710px;
+  display: grid;
+  grid-template-columns: auto min(694px);
+  grid-auto-flow: column;
 }
 
 .days .monday {
