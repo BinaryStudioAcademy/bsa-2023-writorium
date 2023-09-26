@@ -6,13 +6,16 @@
   right: 0;
   left: 0;
   z-index: var(--z-index-level-one);
+  background: var(--light-gray);
+  border-bottom: 2px solid var(--light-gray-15);
+}
+
+.layout {
   display: flex;
   justify-content: space-between;
   align-items: center;
   height: var(--header-height);
   padding: 30px 60px;
-  background: var(--light-gray);
-  border-bottom: 2px solid var(--light-gray-15);
 }
 
 .logo {
