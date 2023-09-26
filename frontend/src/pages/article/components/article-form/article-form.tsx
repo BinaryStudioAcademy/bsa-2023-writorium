@@ -4,6 +4,7 @@ import {
   useAppDispatch,
   useAppForm,
   useAppSelector,
+  useBeforeUnload,
   useCallback,
   useEffect,
   useNavigate,
@@ -71,15 +72,15 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
     typeof ArticleSubmitType
   > | null>(null);
 
-  const hadleInitialData = useCallback(() => {
+  const handleInitialData = useCallback(() => {
     void dispatch(articlesActions.setArticleFormDataFromLocalStorage());
   }, [dispatch]);
 
   useEffect(() => {
     if (!articleForUpdate) {
-      hadleInitialData();
+      handleInitialData();
     }
-  }, [hadleInitialData, articleForUpdate]);
+  }, [handleInitialData, articleForUpdate]);
 
   useEffect(() => {
     ((): void => {
@@ -103,26 +104,20 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
     })();
   }, [articleForUpdate, handleReset, dispatch, articleDataFromLocalStorage]);
 
-  const handleBeforeUnload = useCallback(
-    (event_: BeforeUnloadEvent) => {
-      if (isClikedSubmitButtonReference.current) {
-        return;
-      }
-      event_.preventDefault();
-      event_.returnValue = '';
-    },
-    [isClikedSubmitButtonReference],
+  useBeforeUnload(
+    useCallback(
+      (event_: BeforeUnloadEvent) => {
+        const { title, text } = getValues();
+        if ((!title && !text && !generatedPrompt) || articleForUpdate) {
+          return;
+        }
+
+        event_.preventDefault();
+        event_.returnValue = '';
+      },
+      [articleForUpdate, getValues, generatedPrompt],
+    ),
   );
-
-  useEffect(() => {
-    if (!articleForUpdate) {
-      window.addEventListener('beforeunload', handleBeforeUnload);
-
-      return () => {
-        window.removeEventListener('beforeunload', handleBeforeUnload);
-      };
-    }
-  }, [handleBeforeUnload, articleForUpdate]);
 
   const isDraft = !articleForUpdate?.publishedAt;
 
