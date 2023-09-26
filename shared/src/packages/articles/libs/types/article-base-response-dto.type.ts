@@ -1,7 +1,7 @@
-import { type ArticleEntityType } from '~/packages/articles/libs/types/types.js';
+import { type ArticleEntityInstance } from '~/packages/articles/libs/types/types.js';
 
 type ArticleBaseResponseDto = Pick<
-  ArticleEntityType,
+  ArticleEntityInstance,
   | 'id'
   | 'title'
   | 'text'

@@ -1,5 +1,5 @@
-import { type ArticleWithRelationsType } from './article-with-relations.type.js';
+import { type ArticleWithRelations } from './article-with-relations.type.js';
 
-type ArticleResponseDto = Required<ArticleWithRelationsType>;
+type ArticleResponseDto = Required<ArticleWithRelations>;
 
 export { type ArticleResponseDto };

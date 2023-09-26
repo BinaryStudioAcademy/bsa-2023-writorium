@@ -1,1 +1,1 @@
-export { ownArticlesPaginationConfig } from './own-articles-pagination-config.enum.js';
+export { OwnArticlesPaginationConfig } from './own-articles-pagination-config.enum.js';

@@ -18,9 +18,9 @@ import styles from './styles.module.scss';
 
 const ProfilePage: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { user, userActivity } = useAppSelector(({ auth, users }) => ({
+  const { user, userActivities } = useAppSelector(({ auth, users }) => ({
     user: auth.user as UserAuthResponseDto,
-    userActivity: users.userActivity,
+    userActivities: users.userActivities,
   }));
 
   useEffect(() => {
@@ -32,7 +32,7 @@ const ProfilePage: React.FC = () => {
       <div className={styles.profile}>
         <UserInfo user={user} className={styles.profileBlock} />
         <UserActivity
-          userActivity={userActivity}
+          userActivities={userActivities}
           className={styles.profileBlock}
         />
         <UserLatestArticles />

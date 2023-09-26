@@ -3,7 +3,7 @@ export {
   type CommentBaseRequestDto,
   type CommentBaseResponseDto,
   type CommentCreateDto,
-  type CommentEntityType,
+  type CommentEntityInstance,
   type CommentGetAllRequestDto,
   type CommentGetAllResponseDto,
   type CommentsSocketEventPayload,

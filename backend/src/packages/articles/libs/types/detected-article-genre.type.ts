@@ -1,5 +1,5 @@
-import { type GenreEntityType } from '~/packages/genres/lib/types/types.js';
+import { type GenreEntityInstance } from '~/packages/genres/lib/types/types.js';
 
-type DetectedArticleGenre = Pick<GenreEntityType, 'key' | 'name'>;
+type DetectedArticleGenre = Pick<GenreEntityInstance, 'key' | 'name'>;
 
 export { type DetectedArticleGenre };

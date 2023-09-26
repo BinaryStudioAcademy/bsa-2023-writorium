@@ -1,6 +1,7 @@
 import path from 'node:path';
 
-const getFileExtensionFromFileName = (fileName: string): string =>
-  path.extname(fileName);
+const getFileExtensionFromFileName = (fileName: string): string => {
+  return path.extname(fileName);
+};
 
 export { getFileExtensionFromFileName };
