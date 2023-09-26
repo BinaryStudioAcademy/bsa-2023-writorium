@@ -88,6 +88,10 @@ img.avatar:hover {
     display: none;
   }
 
+  .header {
+    padding: 15px 30px;
+  }
+
   .popoverWriteLink {
     display: block;
     padding: 14px 10px;
@@ -103,6 +107,17 @@ img.avatar:hover {
   .popoverWriteLink:hover {
     background-color: var(--light-gray-15);
     border-color: var(--light-green);
+  }
+}
+
+@media only screen and (max-width: breakpoints.$small) {
+  .logo {
+    width: 150px;
+  }
+
+  .avatar {
+    width: 30px;
+    height: 30px;
   }
 }
 
