@@ -89,7 +89,6 @@ img.avatar:hover {
   }
 
   .header {
-    height: 80px;
     padding: 15px 30px;
   }
 
@@ -112,11 +111,6 @@ img.avatar:hover {
 }
 
 @media only screen and (max-width: breakpoints.$small) {
-  .header {
-    height: 55px;
-    padding: 15px 30px;
-  }
-
   .logo {
     width: 150px;
   }
