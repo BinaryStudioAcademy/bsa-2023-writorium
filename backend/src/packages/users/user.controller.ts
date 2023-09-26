@@ -142,12 +142,13 @@ class UserController extends Controller {
     this.addRoute({
       path: UsersApiPath.ACTIVITY,
       method: 'GET',
-      handler: (options) =>
-        this.getUserActivity(
+      handler: (options) => {
+        return this.getUserActivity(
           options as ApiHandlerOptions<{
             user: UserAuthResponseDto;
           }>,
-        ),
+        );
+      },
     });
 
     this.addRoute({
@@ -164,13 +165,14 @@ class UserController extends Controller {
       validation: {
         query: articleGenreStatsFiltersValidationSchema,
       },
-      handler: (options) =>
-        this.getUserArticlesGenreStats(
+      handler: (options) => {
+        return this.getUserArticlesGenreStats(
           options as ApiHandlerOptions<{
             user: UserAuthResponseDto;
             query: ArticleGenreStatsFilters;
           }>,
-        ),
+        );
+      },
     });
 
     this.addRoute({
@@ -179,37 +181,40 @@ class UserController extends Controller {
       validation: {
         body: userUpdateWithAvatarIdValidationSchema,
       },
-      handler: (options) =>
-        this.update(
+      handler: (options) => {
+        return this.update(
           options as ApiHandlerOptions<{
             body: UserUpdateRequestDto;
             user: UserAuthResponseDto;
           }>,
-        ),
+        );
+      },
     });
 
     this.addRoute({
       path: UsersApiPath.$ID_FOLLOW,
       method: 'POST',
-      handler: (options) =>
-        this.toggleFollowAuthor(
+      handler: (options) => {
+        return this.toggleFollowAuthor(
           options as ApiHandlerOptions<{
             params: { id: number };
             user: UserAuthResponseDto;
           }>,
-        ),
+        );
+      },
     });
 
     this.addRoute({
       path: UsersApiPath.$ID_FOLLOW,
       method: 'GET',
-      handler: (options) =>
-        this.getAuthorFollowersAndStatus(
+      handler: (options) => {
+        return this.getAuthorFollowersAndStatus(
           options as ApiHandlerOptions<{
             params: { id: number };
             user: UserAuthResponseDto;
           }>,
-        ),
+        );
+      },
     });
   }
 

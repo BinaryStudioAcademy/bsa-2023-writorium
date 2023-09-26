@@ -20,6 +20,7 @@ export {
   DateFormat,
   ExceptionMessage,
   PromptCategory,
+  ResetPasswordRoute,
   ServerErrorType,
   TimeUnit,
 } from 'shared/build/index.js';

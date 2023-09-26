@@ -63,12 +63,13 @@ class AchievementController extends Controller {
     this.addRoute({
       path: AchievementsApiPath.$ID,
       method: 'GET',
-      handler: (options) =>
-        this.find(
+      handler: (options) => {
+        return this.find(
           options as ApiHandlerOptions<{
             params: { id: number };
           }>,
-        ),
+        );
+      },
     });
   }
 

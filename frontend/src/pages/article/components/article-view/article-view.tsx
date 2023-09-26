@@ -19,7 +19,7 @@ import {
   useModal,
   useParams,
 } from '~/libs/hooks/hooks.js';
-import { type TagType, type ValueOf } from '~/libs/types/types.js';
+import { type Tag, type ValueOf } from '~/libs/types/types.js';
 import { type ArticleWithFollowResponseDto } from '~/packages/articles/articles.js';
 import { ConfirmArticleDeleteDialog } from '~/pages/libs/components/components.js';
 import { actions as articlesActions } from '~/slices/articles/articles.js';
@@ -28,7 +28,7 @@ import { ArticleDetails } from '../article-details/article-details.js';
 import styles from './styles.module.scss';
 
 type Properties = {
-  tags: TagType[] | null;
+  tags: Tag[] | null;
   isShared?: boolean;
   article: ArticleWithFollowResponseDto;
   isArticleOwner?: boolean;

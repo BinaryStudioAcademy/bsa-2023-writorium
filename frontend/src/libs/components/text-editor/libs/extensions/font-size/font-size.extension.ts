@@ -3,7 +3,10 @@ import '@tiptap/starter-kit';
 import { Extension } from '@tiptap/core';
 
 import { ExtensionName } from '../libs/enums/enums.js';
-import { EXTENSION_OPTION_TYPE } from './libs/constants/constants.js';
+import {
+  EXTENSION_OPTION_TYPE,
+  QUOTES_REGEX,
+} from './libs/constants/constants.js';
 import { FontSizeConfig } from './libs/enums/enums.js';
 import {
   convertFontSizeToNumber,
@@ -43,8 +46,9 @@ const FontSize = Extension.create<FontSizeOptions>({
         attributes: {
           fontSize: {
             default: null,
-            parseHTML: (element): string | null | undefined =>
-              element.style.fontSize.replaceAll(/["']+/g, ''),
+            parseHTML: (element): string | null | undefined => {
+              return element.style.fontSize.replaceAll(QUOTES_REGEX, '');
+            },
             renderHTML: (attributes): RenderedHTML => {
               if (!attributes.fontSize) {
                 return {};

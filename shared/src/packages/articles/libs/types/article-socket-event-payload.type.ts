@@ -2,7 +2,10 @@ import { type ArticleSocketEvent } from '../enums/article-socket-event.enum.js';
 import { type ArticleWithCountsResponseDto } from './article-with-counts-response-dto.type.js';
 
 type ArticleSocketEventPayload = {
-  [ArticleSocketEvent.NEW_ARTICLE]: ArticleWithCountsResponseDto;
+  [ArticleSocketEvent.NEW_ARTICLE]: {
+    isByFollowingAuthor: boolean;
+    article: ArticleWithCountsResponseDto;
+  };
 };
 
 export { type ArticleSocketEventPayload };

@@ -1,7 +1,7 @@
 export { ArticleReactionsSocketEvent } from './libs/enums/enums.js';
 export {
   type ArticleReactionCreateDto,
-  type ArticleReactionEntityType,
+  type ArticleReactionEntityInstance,
   type ArticleReactionRequestDto,
   type ArticleReactionResponseDto,
   type ArticleReactionsSocketEventPayload,

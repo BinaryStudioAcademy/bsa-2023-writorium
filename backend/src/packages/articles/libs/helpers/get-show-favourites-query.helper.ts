@@ -5,11 +5,11 @@ import { DatabaseTableName } from '~/libs/packages/database/database.js';
 import { type ArticleModel } from '../../article.model.js';
 
 const getShowFavouritesQuery = (
-  showFavourites: boolean,
+  shouldShowFavourites: boolean,
   userId: number | null,
 ) => {
   return (builder: QueryBuilder<ArticleModel, ArticleModel[]>): void => {
-    if (showFavourites && userId) {
+    if (shouldShowFavourites && userId) {
       void builder.whereExists((qb) => {
         void qb
           .select(1)

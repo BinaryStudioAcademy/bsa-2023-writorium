@@ -4,7 +4,7 @@ type ArticlesFilters = PaginationParameters & {
   genreId?: number | null;
   titleFilter?: string;
   authorId?: number | null;
-  showFavourites?: boolean;
+  shouldShowFavourites?: boolean;
 };
 
 export { type ArticlesFilters };

@@ -20,23 +20,19 @@ const Landing: React.FC = () => {
     null,
   );
 
-  const offsetX = useMemo(
-    () =>
-      getAxisOffset({
-        axisValue: x,
-        innerAxisValue: window.innerWidth,
-      }),
-    [x],
-  );
+  const offsetX = useMemo(() => {
+    return getAxisOffset({
+      axisValue: x,
+      innerAxisValue: window.innerWidth,
+    });
+  }, [x]);
 
-  const offsetY = useMemo(
-    () =>
-      getAxisOffset({
-        axisValue: y,
-        innerAxisValue: window.innerHeight,
-      }),
-    [y],
-  );
+  const offsetY = useMemo(() => {
+    return getAxisOffset({
+      axisValue: y,
+      innerAxisValue: window.innerHeight,
+    });
+  }, [y]);
 
   const parallaxHandler = useCallback(() => {
     if (lettersElementReference.current) {

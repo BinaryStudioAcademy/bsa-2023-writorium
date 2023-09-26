@@ -131,7 +131,7 @@ const ProfileEditForm: React.FC<Properties> = ({
           hasFullWidth
           label="Save"
           type="submit"
-          disabled={(!isDirty && avatarId === user.avatarId) || isSubmitting}
+          isDisabled={(!isDirty && avatarId === user.avatarId) || isSubmitting}
         />
       </div>
     </form>

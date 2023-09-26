@@ -152,13 +152,14 @@ class ArticleController extends Controller {
       validation: {
         body: articleCreateValidationSchema,
       },
-      handler: (options) =>
-        this.create(
+      handler: (options) => {
+        return this.create(
           options as ApiHandlerOptions<{
             user: UserAuthResponseDto;
             body: ArticleRequestDto;
           }>,
-        ),
+        );
+      },
     });
 
     this.addRoute({
@@ -167,14 +168,15 @@ class ArticleController extends Controller {
       validation: {
         body: articleUpdateValidationSchema,
       },
-      handler: (options) =>
-        this.update(
+      handler: (options) => {
+        return this.update(
           options as ApiHandlerOptions<{
             params: { id: number };
             body: ArticleUpdateRequestDto;
             user: UserAuthResponseDto;
           }>,
-        ),
+        );
+      },
     });
 
     this.addRoute({
@@ -183,14 +185,15 @@ class ArticleController extends Controller {
       validation: {
         body: articleUpdateValidationSchema,
       },
-      handler: (options) =>
-        this.update(
+      handler: (options) => {
+        return this.update(
           options as ApiHandlerOptions<{
             params: { id: number };
             body: ArticleUpdateRequestDto;
             user: UserAuthResponseDto;
           }>,
-        ),
+        );
+      },
     });
 
     this.addRoute({
@@ -209,35 +212,38 @@ class ArticleController extends Controller {
     this.addRoute({
       path: ArticlesApiPath.$ID_SHARE,
       method: 'GET',
-      handler: (options) =>
-        this.share(
+      handler: (options) => {
+        return this.share(
           options as ApiHandlerOptions<{
             params: { id: number };
             headers: IncomingHttpHeaders;
           }>,
-        ),
+        );
+      },
     });
 
     this.addRoute({
       path: ArticlesApiPath.SHARED_BASE,
       method: 'GET',
-      handler: (options) =>
-        this.findShared(
+      handler: (options) => {
+        return this.findShared(
           options as ApiHandlerOptions<{
             headers: IncomingHttpHeaders;
           }>,
-        ),
+        );
+      },
     });
 
     this.addRoute({
       path: ArticlesApiPath.ARTICLE_ID,
       method: 'GET',
-      handler: (options) =>
-        this.getArticleIdByToken(
+      handler: (options) => {
+        return this.getArticleIdByToken(
           options as ApiHandlerOptions<{
             headers: IncomingHttpHeaders;
           }>,
-        ),
+        );
+      },
     });
 
     this.addRoute({
