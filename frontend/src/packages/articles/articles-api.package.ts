@@ -1,5 +1,4 @@
 import { ApiPath, ContentType } from '~/libs/enums/enums.js';
-import { writeTextInClipboard } from '~/libs/helpers/helpers.js';
 import { HttpApi } from '~/libs/packages/api/api.js';
 import { CustomHttpHeader, type IHttp } from '~/libs/packages/http/http.js';
 import { type IStorage } from '~/libs/packages/storage/storage.js';
@@ -94,7 +93,7 @@ class ArticleApi extends HttpApi {
     return await response.json<ArticleWithCountsResponseDto>();
   }
 
-  public async share(id: string): Promise<{ link: string }> {
+  public async getSharedLink(id: string): Promise<{ link: string }> {
     const response = await this.load(
       this.getFullEndpoint(ArticlesApiPath.$ID_SHARE, { id }),
       {
@@ -104,11 +103,7 @@ class ArticleApi extends HttpApi {
       },
     );
 
-    const { link } = await response.json<{ link: string }>();
-
-    await writeTextInClipboard(link);
-
-    return { link };
+    return await response.json<{ link: string }>();
   }
 
   public async getByToken(
@@ -129,7 +124,7 @@ class ArticleApi extends HttpApi {
     return await response.json<ArticleWithFollowResponseDto>();
   }
 
-  public async geArticleIdByToken(
+  public async getArticleIdByToken(
     token: string,
   ): Promise<Pick<ArticleWithFollowResponseDto, 'id'>> {
     const response = await this.load(
@@ -190,7 +185,7 @@ class ArticleApi extends HttpApi {
 
   public async toggleIsFavourite(
     articleId: number,
-  ): Promise<ArticleWithCountsResponseDto> {
+  ): Promise<ArticleWithCountsResponseDto & ArticleWithFollowResponseDto> {
     const response = await this.load(
       this.getFullEndpoint(ArticlesApiPath.FAVORITES, {
         id: String(articleId),
@@ -201,7 +196,9 @@ class ArticleApi extends HttpApi {
       },
     );
 
-    return await response.json<ArticleWithCountsResponseDto>();
+    return await response.json<
+      ArticleWithCountsResponseDto & ArticleWithFollowResponseDto
+    >();
   }
 
   public async getImprovementSuggestions(

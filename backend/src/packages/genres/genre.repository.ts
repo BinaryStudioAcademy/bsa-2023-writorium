@@ -11,7 +11,7 @@ class GenreRepository implements IRepository {
   }
 
   public async findAll(): Promise<GenreEntity[]> {
-    const genres = await this.genreModel.query().execute();
+    const genres = await this.genreModel.query().orderBy('name').execute();
 
     return genres.map((it) => GenreEntity.initialize(it));
   }

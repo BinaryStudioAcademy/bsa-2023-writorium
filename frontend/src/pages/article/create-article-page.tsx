@@ -17,6 +17,7 @@ const CreateArticlePage: React.FC = () => (
         content={
           <PromptGeneration containerStyle={styles.promptGenerationContainer} />
         }
+        className={styles.popover}
         classNameContentWrapper={styles.promptGenerationModal}
       >
         <Button
