@@ -10,7 +10,7 @@
   display: grid;
   grid-template: repeat(2, max-content) / repeat(2, auto);
   align-items: center;
-  row-gap: 5px;
+  row-gap: 3px;
   padding: 25px;
   column-gap: 15px;
   border-bottom: 2px solid rgba(172 186 215 / 20%);
@@ -126,7 +126,8 @@
 .followButton {
   grid-area: followButton;
   justify-self: flex-start;
-  margin-top: 10px;
+  width: 100px;
+  margin-top: 5px;
 }
 
 @media only screen and (max-width: breakpoints.$medium) {

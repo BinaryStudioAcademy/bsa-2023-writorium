@@ -165,21 +165,23 @@ const ArticleCard: React.FC<Properties> = ({
             onClick={handleToggleIsFavourite}
             isLoading={isLoading}
           />
-          <Popover
-            classNameContentWrapper={styles.moreActions}
-            content={
-              <PopoverButtonsGroup
-                isOwnArticle={isOwnArticle}
-                article={article}
-                onDeleteButtonClick={handleDeleteButtonClick}
+          {isOwnArticle && (
+            <Popover
+              classNameContentWrapper={styles.moreActions}
+              content={
+                <PopoverButtonsGroup
+                  isOwnArticle={isOwnArticle}
+                  article={article}
+                  onDeleteButtonClick={handleDeleteButtonClick}
+                />
+              }
+            >
+              <Icon
+                className={styles.topActionsIcon}
+                iconName="ellipsisVertical"
               />
-            }
-          >
-            <Icon
-              className={styles.topActionsIcon}
-              iconName="ellipsisVertical"
-            />
-          </Popover>
+            </Popover>
+          )}
         </div>
       </div>
       <div
