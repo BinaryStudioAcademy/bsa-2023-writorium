@@ -172,20 +172,20 @@ const ArticleCard: React.FC<Properties> = ({
           />
           {isOwnArticle && (
             <Popover
-            classNameContentWrapper={styles.moreActions}
-            content={
-              <PopoverButtonsGroup
-                isOwnArticle={isOwnArticle}
-                article={article}
-                onDeleteButtonClick={handleDeleteButtonClick}
+              classNameContentWrapper={styles.moreActions}
+              content={
+                <PopoverButtonsGroup
+                  isOwnArticle={isOwnArticle}
+                  article={article}
+                  onDeleteButtonClick={handleDeleteButtonClick}
+                />
+              }
+            >
+              <Icon
+                className={styles.topActionsIcon}
+                iconName="ellipsisVertical"
               />
-            }
-          >
-            <Icon
-              className={styles.topActionsIcon}
-              iconName="ellipsisVertical"
-            />
-          </Popover>
+            </Popover>
           )}
         </div>
       </div>
