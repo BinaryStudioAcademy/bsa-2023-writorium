@@ -99,7 +99,15 @@ const ArticlePage: React.FC = () => {
   );
 
   const handleFollow = useCallback((): void => {
-    void dispatch(userActions.toggleFollowAuthor(article.userId));
+    void dispatch(
+      userActions.toggleFollowAuthor({
+        authorId: article.userId,
+        authorName: getFullName(
+          article.author.firstName,
+          article.author.lastName,
+        ),
+      }),
+    );
   }, [article, dispatch]);
 
   const isLoading =
