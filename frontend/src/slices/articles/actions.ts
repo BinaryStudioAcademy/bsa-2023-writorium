@@ -4,7 +4,10 @@ import { PREVIOUS_PAGE_INDEX } from '~/libs/constants/constants.js';
 import { AppRoute } from '~/libs/enums/enums.js';
 import { getFullName } from '~/libs/helpers/helpers.js';
 import { StorageKey } from '~/libs/packages/storage/storage.js';
-import { type AsyncThunkConfig } from '~/libs/types/types.js';
+import {
+  type AsyncThunkConfig,
+  type GeneratedArticlePrompt,
+} from '~/libs/types/types.js';
 import {
   type ArticleGetAllResponseDto,
   type ArticleImprovementSuggestion,
@@ -34,6 +37,7 @@ import { type PromptRequestDto } from '~/packages/prompts/prompts.js';
 import { type UserFollowResponseDto } from '~/packages/users/users.js';
 
 import { actions as appActions } from '../app/app.js';
+import { actions as promptActions } from '../prompts/prompts.js';
 import { name as sliceName } from './articles.slice.js';
 import { parseImprovementSuggestionsJSON } from './libs/helpers/helpers.js';
 
@@ -105,14 +109,20 @@ const createArticle = createAsyncThunk<
     if (generatedPrompt) {
       const { id: promptId, genreId } = await promptApi.create(generatedPrompt);
 
-      return await articleApi.create({
+      const createdArticle = await articleApi.create({
         ...articlePayload,
         genreId,
         promptId,
       });
+
+      void dispatch(dropArticleFormDataFromLocalStorage());
+
+      return createdArticle;
     }
 
     const createdArticle = await articleApi.create(articlePayload);
+
+    void dispatch(dropArticleFormDataFromLocalStorage());
 
     const wasPublished = Boolean(createdArticle.publishedAt);
     const routeToNavigate = wasPublished
@@ -439,6 +449,93 @@ const updateArticleAuthorFollowInfo = createAction<UserFollowResponseDto>(
   `${sliceName}/update-article-author-follow-info`,
 );
 
+const saveArticleFormDataToLocalStorage = createAsyncThunk<
+  null,
+  {
+    articlePayload: Pick<ArticleRequestDto, 'text' | 'title'>;
+    unmount?: boolean;
+  },
+  AsyncThunkConfig
+>(
+  `${sliceName}/saveArticleFormPageDataToLocalStorage`,
+  async ({ articlePayload, unmount }, { extra, getState }) => {
+    const { storage } = extra;
+    const {
+      prompts: { generatedPrompt },
+    } = getState();
+    let shouldStore = true;
+
+    if (!articlePayload.title && !articlePayload.text && !generatedPrompt) {
+      return null;
+    }
+
+    if (unmount) {
+      shouldStore = confirm('There are unsaved changes. Save before leaving?');
+    }
+
+    if (shouldStore) {
+      await storage.set(StorageKey.ARTICLE_TITLE, articlePayload.title);
+      await storage.set(StorageKey.ARTICLE_TEXT, articlePayload.text);
+      generatedPrompt &&
+        (await storage.set(StorageKey.PROMPT, JSON.stringify(generatedPrompt)));
+    }
+
+    return null;
+  },
+);
+
+const setArticleFormDataFromLocalStorage = createAsyncThunk<
+  {
+    title: string | null;
+    text: string | null;
+    prompt: string | null;
+  },
+  undefined,
+  AsyncThunkConfig
+>(
+  `${sliceName}/getArticleFormPageDataFromLocalStorage`,
+  async (_payload, { extra, dispatch }) => {
+    const { storage } = extra;
+
+    const title = await storage.get(StorageKey.ARTICLE_TITLE);
+    const text = await storage.get(StorageKey.ARTICLE_TEXT);
+    const prompt = await storage.get(StorageKey.PROMPT);
+
+    if (prompt) {
+      void dispatch(
+        promptActions.setPromptFromLocalStorage(
+          JSON.parse(prompt) as GeneratedArticlePrompt,
+        ),
+      );
+    }
+
+    void dispatch(dropArticleFormDataFromLocalStorage());
+
+    return {
+      title,
+      text,
+      prompt,
+    };
+  },
+);
+
+const dropArticleFormDataFromLocalStorage = createAsyncThunk<
+  null,
+  undefined,
+  AsyncThunkConfig
+>(
+  `${sliceName}/dropArticleFormPageDataFromLocalStorage`,
+  async (_payload, { extra }) => {
+    const { storage } = extra;
+
+    await storage.drop(StorageKey.ARTICLE_TITLE);
+    await storage.drop(StorageKey.ARTICLE_TEXT);
+    await storage.drop(StorageKey.PROMPT);
+
+    return null;
+  },
+);
+
 export {
   addArticle,
   addComment,
@@ -448,6 +545,7 @@ export {
   createComment,
   deleteArticle,
   deleteArticleReaction,
+  dropArticleFormDataFromLocalStorage,
   fetchAll,
   fetchAllCommentsToArticle,
   fetchOwn,
@@ -458,6 +556,8 @@ export {
   getImprovementSuggestions,
   getImprovementSuggestionsBySession,
   reactToArticle,
+  saveArticleFormDataToLocalStorage,
+  setArticleFormDataFromLocalStorage,
   setShowFavourites,
   shareArticle,
   toggleIsFavourite,

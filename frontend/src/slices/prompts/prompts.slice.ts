@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 import { DataStatus } from '~/libs/enums/enums.js';
 import { type ValueOf } from '~/libs/types/types.js';
@@ -23,6 +23,9 @@ const { reducer, actions, name } = createSlice({
     resetPrompts(state) {
       state.generatedPrompt = initialState.generatedPrompt;
       state.dataStatus = DataStatus.IDLE;
+    },
+    setPromptFromLocalStorage(state, action: PayloadAction<GeneratedPrompt>) {
+      state.generatedPrompt = action.payload;
     },
   },
   extraReducers(builder) {

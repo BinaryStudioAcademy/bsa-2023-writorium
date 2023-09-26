@@ -30,6 +30,7 @@ import {
   getImprovementSuggestions,
   getImprovementSuggestionsBySession,
   reactToArticle,
+  setArticleFormDataFromLocalStorage,
   setShowFavourites,
   toggleIsFavourite,
   updateArticle,
@@ -58,6 +59,11 @@ type State = {
   articleIdByToken: number | null;
   articleIdByTokenDataStatus: ValueOf<typeof DataStatus>;
   createCommentDataStatus: ValueOf<typeof DataStatus>;
+  articleDataFromLocalStorage: {
+    title: string | null;
+    text: string | null;
+    prompt: string | null;
+  } | null;
 };
 
 const initialState: State = {
@@ -76,6 +82,7 @@ const initialState: State = {
   improvementSuggestionsDataStatus: DataStatus.IDLE,
   articleIdByTokenDataStatus: DataStatus.IDLE,
   createCommentDataStatus: DataStatus.IDLE,
+  articleDataFromLocalStorage: null,
 };
 
 const { reducer, actions, name } = createSlice({
@@ -279,6 +286,14 @@ const { reducer, actions, name } = createSlice({
       state.articleIdByToken = action.payload.id;
       state.articleIdByTokenDataStatus = DataStatus.FULFILLED;
     });
+
+    builder.addCase(
+      setArticleFormDataFromLocalStorage.fulfilled,
+      (state, action) => {
+        state.articleDataFromLocalStorage = { ...action.payload };
+      },
+    );
+
     builder.addMatcher(
       isAnyOf(
         getImprovementSuggestions.fulfilled,
