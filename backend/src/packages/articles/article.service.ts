@@ -232,6 +232,16 @@ class ArticleService implements IService {
     return await this.getGenreIdForArticle(text);
   }
 
+  public async find(id: number): Promise<ArticleResponseDto | null> {
+    const article = await this.articleRepository.find(id);
+
+    if (!article) {
+      return null;
+    }
+
+    return article.toObjectWithRelations();
+  }
+
   public async findAll(
     filters: ArticlesFilters & { requestUserId: number },
   ): Promise<ArticleGetAllResponseDto> {
@@ -262,21 +272,14 @@ class ArticleService implements IService {
     };
   }
 
-  public async find(id: number): Promise<ArticleResponseDto | null> {
-    const article = await this.articleRepository.find(id);
-
-    if (!article) {
-      return null;
-    }
-
-    return article.toObjectWithRelations();
-  }
-
   public async findArticleWithFollow(
     id: number,
     userId?: number,
   ): Promise<ArticleWithFollowResponseDto | null> {
-    const article = await this.articleRepository.find(id);
+    const article = await this.articleRepository.findWithIsFavourite(
+      id,
+      Number(userId),
+    );
 
     if (!article) {
       throw new NotFoundError(ExceptionMessage.ARTICLE_NOT_FOUND);
@@ -340,59 +343,6 @@ class ArticleService implements IService {
     }
 
     return { items: suggestions };
-  }
-
-  public async getUserActivity(
-    userId: number,
-  ): Promise<UserActivityResponseDto[]> {
-    const ZERO_ACTIVITY_COUNT = 0;
-    const MONTHS_TO_SUBTRACT_COUNT = 6;
-    const currentDate = new Date();
-    const sixMonthAgo = subtractMonthsFromDate(
-      currentDate,
-      MONTHS_TO_SUBTRACT_COUNT,
-    );
-    const daysInHalfYear = getDifferenceBetweenDates(currentDate, sixMonthAgo);
-
-    const userActivity = await this.articleRepository.getUserActivity({
-      userId,
-      activityFrom: sixMonthAgo.toISOString(),
-      activityTo: currentDate.toISOString(),
-    });
-
-    const halfYearActivity: UserActivityResponseDto[] = Array.from({
-      length: daysInHalfYear + INDEX_INCREMENT,
-    }).map((_, index) => {
-      const incrementedDate = sixMonthAgo.getDate() + index;
-      const dateForStatistic = new Date(
-        sixMonthAgo.getFullYear(),
-        sixMonthAgo.getMonth(),
-        incrementedDate,
-      ).toISOString();
-
-      const activeDayIndex = userActivity.findIndex((activity) => {
-        return (
-          getFormattedDate(activity.date, DateFormat.YEAR_MONTH_DATE) ===
-          getFormattedDate(dateForStatistic, DateFormat.YEAR_MONTH_DATE)
-        );
-      });
-
-      if (activeDayIndex >= ZERO_ACTIVITY_COUNT) {
-        const dayActivity = userActivity[activeDayIndex];
-
-        return {
-          date: dayActivity.date,
-          count: Number(dayActivity.count),
-        };
-      }
-
-      return {
-        date: dateForStatistic,
-        count: ZERO_ACTIVITY_COUNT,
-      };
-    });
-
-    return halfYearActivity;
   }
 
   public async getUserArticlesGenreStats(
@@ -586,7 +536,9 @@ class ArticleService implements IService {
   public async toggleIsFavourite(
     userId: number,
     articleId: number,
-  ): Promise<ArticleResponseDto | null> {
+  ): Promise<
+    (ArticleWithCountsResponseDto & ArticleWithFollowResponseDto) | null
+  > {
     const toggleResult = await this.articleRepository.toggleIsFavourite(
       userId,
       articleId,
@@ -601,10 +553,76 @@ class ArticleService implements IService {
       articleId,
       userId,
     );
+
     if (!article) {
       return null;
     }
-    return article.toObjectWithRelationsAndCounts();
+
+    const articleObject = article.toObjectWithRelationsAndCounts();
+
+    const { isFollowed, followersCount } =
+      await this.followRepository.getAuthorFollowersCountAndStatus({
+        userId,
+        authorId: articleObject.userId,
+      });
+
+    return {
+      ...articleObject,
+      author: { ...articleObject.author, isFollowed, followersCount },
+    };
+  }
+
+  public async getUserActivity(
+    userId: number,
+  ): Promise<UserActivityResponseDto[]> {
+    const ZERO_ACTIVITY_COUNT = 0;
+    const MONTHS_TO_SUBTRACT_COUNT = 6;
+    const currentDate = new Date();
+    const sixMonthAgo = subtractMonthsFromDate(
+      currentDate,
+      MONTHS_TO_SUBTRACT_COUNT,
+    );
+    const daysInHalfYear = getDifferenceBetweenDates(currentDate, sixMonthAgo);
+
+    const userActivity = await this.articleRepository.getUserActivity({
+      userId,
+      activityFrom: sixMonthAgo.toISOString(),
+      activityTo: currentDate.toISOString(),
+    });
+
+    const halfYearActivity: UserActivityResponseDto[] = Array.from({
+      length: daysInHalfYear + INDEX_INCREMENT,
+    }).map((_, index) => {
+      const incrementedDate = sixMonthAgo.getDate() + index;
+      const dateForStatistic = new Date(
+        sixMonthAgo.getFullYear(),
+        sixMonthAgo.getMonth(),
+        incrementedDate,
+      ).toISOString();
+
+      const activeDayIndex = userActivity.findIndex((activity) => {
+        return (
+          getFormattedDate(activity.date, DateFormat.YEAR_MONTH_DATE) ===
+          getFormattedDate(dateForStatistic, DateFormat.YEAR_MONTH_DATE)
+        );
+      });
+
+      if (activeDayIndex >= ZERO_ACTIVITY_COUNT) {
+        const dayActivity = userActivity[activeDayIndex];
+
+        return {
+          date: dayActivity.date,
+          count: Number(dayActivity.count),
+        };
+      }
+
+      return {
+        date: dateForStatistic,
+        count: ZERO_ACTIVITY_COUNT,
+      };
+    });
+
+    return halfYearActivity;
   }
 }
 
