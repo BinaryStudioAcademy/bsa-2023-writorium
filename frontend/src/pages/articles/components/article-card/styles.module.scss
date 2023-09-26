@@ -261,13 +261,14 @@
   height: 35px;
   margin: -5px -5px 0 0;
   padding: 5px;
+  color: var(--light-green);
   border-radius: 50%;
   cursor: pointer;
   transition: background-color 0.2s ease;
 }
 
 .topActionsIcon:hover {
-  background-color: var(--light-gray);
+  color: var(--dark-green);
 }
 
 .toolbar {
