@@ -17,14 +17,14 @@ type Properties = {
     prompt: GeneratedPrompt;
     payload: ArticleRequestDto;
   };
-  handleSubmitType: (value: ValueOf<typeof ArticleSubmitType> | null) => void;
+  onSetSubmitType: (value: ValueOf<typeof ArticleSubmitType> | null) => void;
   submitType: ValueOf<typeof ArticleSubmitType> | null;
   isLoading: boolean;
 };
 
 const PromptConfirmationForm: React.FC<Properties> = ({
   submitData,
-  handleSubmitType,
+  onSetSubmitType,
   submitType,
   isLoading,
 }) => {
@@ -39,17 +39,17 @@ const PromptConfirmationForm: React.FC<Properties> = ({
     (confirmedPrompt: PromptConfirmationFormValues) => {
       const payloadPrompt = getConfirmedPrompts(prompt, confirmedPrompt);
 
-      handleSubmitType(submitType);
+      onSetSubmitType(submitType);
       void dispatch(
         articlesActions.createArticle({
           articlePayload: payload,
           generatedPrompt: payloadPrompt,
         }),
       ).finally(() => {
-        handleSubmitType(null);
+        onSetSubmitType(null);
       });
     },
-    [dispatch, handleSubmitType, payload, prompt, submitType],
+    [dispatch, onSetSubmitType, payload, prompt, submitType],
   );
 
   const handleFormSubmit = useCallback(
@@ -83,7 +83,6 @@ const PromptConfirmationForm: React.FC<Properties> = ({
                   control={control}
                   errors={errors}
                   label=""
-                  checkBoxId={castedKey}
                 />
               </div>
             </div>

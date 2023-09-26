@@ -357,7 +357,7 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
         >
           <PromptConfirmationForm
             submitData={submitData}
-            handleSubmitType={setSubmitType}
+            onSetSubmitType={setSubmitType}
             submitType={submitType}
             isLoading={saveArticleStatus === DataStatus.PENDING}
           />
