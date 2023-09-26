@@ -1,4 +1,4 @@
-import { type ArticleReactionEntityType } from './article-reaction.entity.js';
+import { type ArticleReactionEntityType } from './article-reaction.entity.type.js';
 
 type ArticleReactionResponseDto = Pick<
   ArticleReactionEntityType,

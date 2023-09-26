@@ -1,7 +1,7 @@
 import { type CommandProps } from '@tiptap/react';
 import { Mark, mergeAttributes } from '@tiptap/react';
 
-import { UPPERLINE_EXTENSION_NAME } from './libs/constants/constants.js';
+import { ExtensionName } from '../libs/enums/enums.js';
 import { type UpperlineOptions } from './libs/types/types.js';
 
 declare module '@tiptap/core' {
@@ -15,19 +15,19 @@ declare module '@tiptap/core' {
 }
 
 const setUpperline = ({ commands }: CommandProps): boolean => {
-  return commands.setMark(UPPERLINE_EXTENSION_NAME);
+  return commands.setMark(ExtensionName.UPPERLINE);
 };
 
 const toggleUpperline = ({ commands }: CommandProps): boolean => {
-  return commands.toggleMark(UPPERLINE_EXTENSION_NAME);
+  return commands.toggleMark(ExtensionName.UPPERLINE);
 };
 
 const unsetUpperline = ({ commands }: CommandProps): boolean => {
-  return commands.unsetMark(UPPERLINE_EXTENSION_NAME);
+  return commands.unsetMark(ExtensionName.UPPERLINE);
 };
 
 const Upperline = Mark.create<UpperlineOptions>({
-  name: UPPERLINE_EXTENSION_NAME,
+  name: ExtensionName.UPPERLINE,
 
   addOptions() {
     return {

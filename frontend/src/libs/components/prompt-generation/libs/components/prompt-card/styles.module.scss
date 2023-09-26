@@ -1,3 +1,5 @@
+@use "src/assets/css/breakpoints.scss";
+
 .prompt {
   height: 73px;
   padding: 30px 5px 21px;
@@ -33,8 +35,17 @@
 .promptText {
   max-height: 22px;
   margin: 0;
+  overflow: hidden;
   color: var(--dark-gray);
   font-weight: 700;
   font-size: 18px;
   text-transform: capitalize;
+  text-wrap: nowrap;
+  text-overflow: ellipsis;
+}
+
+@media only screen and (max-width: breakpoints.$extra-extra-large) {
+  .promptText {
+    font-size: 16px;
+  }
 }

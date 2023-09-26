@@ -1,3 +1,5 @@
+import { MAX_FILE_SIZE_MB } from '~/packages/files/files.js';
+
 const ExceptionMessage = {
   EMAIL_IS_ALREADY_USED: 'An account using this email already exists',
   USER_NOT_FOUND: 'User not found',
@@ -16,6 +18,12 @@ const ExceptionMessage = {
   FAILED_TO_SEND_EMAIL: 'Failed to send email',
   FILE_NOT_PROVIDED: 'File not provided',
   ARTICLE_NOT_FOUND: 'Article not found',
+  UNSUPPORTED_FILE_TYPE: 'Unsupported file type',
+  FILE_SIZE_LIMIT_EXCEEDED: `The selected file exceeds the maximum allowed size of ${MAX_FILE_SIZE_MB} Mb`,
+  FAILED_TO_GENERATE_IMPROVEMENT_SUGGESTIONS:
+    'Failed to generate improvement suggestions for article',
+  ARTICLE_CAN_BE_EDITED_ONLY_BY_AUTHOR: 'Article can be edited only by author!',
+  UNABLE_TO_UPDATE_ARTICLE_STATUS: 'Unable to update article status',
 } as const;
 
 export { ExceptionMessage };

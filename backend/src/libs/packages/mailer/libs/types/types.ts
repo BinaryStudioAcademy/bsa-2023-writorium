@@ -1,1 +1,1 @@
-export { type SendEmailResponse } from './send-mail-response.type.js';
+export { type SendEmailResponse } from 'shared/build/index.js';
