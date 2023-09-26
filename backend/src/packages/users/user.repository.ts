@@ -2,7 +2,6 @@ import { type IRepository } from '~/libs/interfaces/interfaces.js';
 import { UserEntity } from '~/packages/users/user.entity.js';
 import { type UserModel } from '~/packages/users/user.model.js';
 
-import { getAuthorsSubquery } from './libs/helpers/helpers.js';
 import { UserDetailsModel } from './user-details.model.js';
 
 class UserRepository implements IRepository {
@@ -165,7 +164,21 @@ class UserRepository implements IRepository {
 
   public async getAllAuthors(): Promise<UserDetailsModel[] | null> {
     const authors = await UserDetailsModel.query()
-      .from(getAuthorsSubquery())
+      .from((builder) => {
+        void builder
+          .distinctOn('userId')
+          .select('userId', 'firstName', 'lastName')
+          .from('user_details')
+          .whereRaw(
+            `
+        EXISTS(SELECT 1
+        FROM articles,user_details
+        WHERE articles.user_id = user_details.user_id)
+      `,
+          )
+          .orderBy('userId')
+          .as('subquery');
+      })
       .orderBy('firstName')
       .orderBy('lastName');
 
