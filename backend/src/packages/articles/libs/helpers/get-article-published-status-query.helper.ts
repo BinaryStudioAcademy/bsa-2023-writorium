@@ -10,8 +10,12 @@ const getArticlePublishedStatusQuery = (
   return (builder: QueryBuilder<ArticleModel, ArticleModel[]>): void => {
     if (articleStatus) {
       articleStatus === ArticlePublishStatus.DRAFT
-        ? void builder.whereNull('articles.publishedAt')
-        : void builder.whereNotNull('articles.publishedAt');
+        ? void builder
+            .whereNull('articles.publishedAt')
+            .whereNull('articles.deletedAt')
+        : void builder
+            .whereNotNull('articles.publishedAt')
+            .whereNull('articles.deletedAt');
     }
   };
 };
