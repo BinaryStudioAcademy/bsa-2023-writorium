@@ -13,17 +13,23 @@ import styles from './styles.module.scss';
 type Properties = {
   achievement: AchievementWithProgressResponseDto;
   className?: string;
+  classNameBadge?: string;
 };
 
-const Achievement: React.FC<Properties> = ({ achievement }) => {
+const Achievement: React.FC<Properties> = ({
+  achievement,
+  className,
+  classNameBadge,
+}) => {
   const { name, referenceTable, progress } = achievement;
 
   const progressStyleClassName = getProgressStyleClass(progress);
 
   return (
-    <div className={styles.achievementWrapper}>
+    <div className={getValidClassNames(styles.achievementWrapper, className)}>
       <div
         className={getValidClassNames(
+          classNameBadge,
           styles.achievementBadge,
           styles[progressStyleClassName],
         )}
