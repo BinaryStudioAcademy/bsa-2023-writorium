@@ -101,18 +101,18 @@ const createArticle = createAsyncThunk<
   `${sliceName}/create`,
   async ({ articlePayload, generatedPrompt }, { extra, dispatch }) => {
     const { articleApi, promptApi } = extra;
+    let payload = articlePayload;
 
     if (generatedPrompt) {
       const { id: promptId, genreId } = await promptApi.create(generatedPrompt);
-
-      return await articleApi.create({
+      payload = {
         ...articlePayload,
         genreId,
         promptId,
-      });
+      };
     }
 
-    const createdArticle = await articleApi.create(articlePayload);
+    const createdArticle = await articleApi.create(payload);
 
     const wasPublished = Boolean(createdArticle.publishedAt);
     const routeToNavigate = wasPublished
