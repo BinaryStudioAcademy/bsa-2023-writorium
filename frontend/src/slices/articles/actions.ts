@@ -417,7 +417,7 @@ const getImprovementSuggestions = createAsyncThunk<
 });
 
 const toggleIsFavourite = createAsyncThunk<
-  ArticleWithCountsResponseDto,
+  ArticleWithCountsResponseDto & ArticleWithFollowResponseDto,
   number,
   AsyncThunkConfig
 >(`${sliceName}/toggleIsFavourite`, (id, { extra }) => {
