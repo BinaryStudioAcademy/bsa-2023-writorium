@@ -13,14 +13,14 @@ import {
 import styles from './styles.module.scss';
 
 type Properties = {
-  userActivity: UserActivityResponseDto[];
+  userActivities: UserActivityResponseDto[];
   className?: string;
 };
 
-const UserActivity: React.FC<Properties> = ({ userActivity, className }) => {
-  const uniqueMonths: string[] = getUniqueMonths(userActivity);
+const UserActivity: React.FC<Properties> = ({ userActivities, className }) => {
+  const uniqueMonths: string[] = getUniqueMonths(userActivities);
 
-  const activityStatistic = userActivity.map((activity, index) => {
+  const activityStatistic = userActivities.map((activity, index) => {
     const FIRST_ITEM_INDEX = 0;
     const { count, date } = activity;
     const activityBreakpoint = getActivityBreakpoint(count);
@@ -48,7 +48,7 @@ const UserActivity: React.FC<Properties> = ({ userActivity, className }) => {
 
   return (
     <>
-      {Boolean(userActivity.length) && (
+      {Boolean(userActivities.length) && (
         <section className={getValidClassNames(styles.wrapper, className)}>
           <h3 className={styles.title}>Your writing activity</h3>
           <div className={styles.activityWrapper}>

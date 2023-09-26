@@ -1,7 +1,7 @@
-import { type ArticleReactionEntityType } from './article-reaction.entity.type.js';
+import { type ArticleReactionEntityInstance } from './article-reaction-entity-instance.type.js';
 
 type ArticleReactionRequestDto = Pick<
-  ArticleReactionEntityType,
+  ArticleReactionEntityInstance,
   'isLike' | 'articleId'
 >;
 

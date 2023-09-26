@@ -53,6 +53,8 @@ const UserAchievements: React.FC<Properties> = ({ className }) => {
             NUMBER_OF_ACHIEVEMENTS_TO_DISPLAY,
           )}
           className={styles.achievementList}
+          classNameAchievement={styles.previewAchievementItem}
+          classNameBadge={styles.achievementBadge}
         />
         <Button hasFullWidth label="Show all" onClick={handleToggleModalOpen} />
         <Modal
@@ -69,6 +71,7 @@ const UserAchievements: React.FC<Properties> = ({ className }) => {
               achievements={achievementsList}
               className={styles.achievementListModal}
               classNameAchievement={styles.achievementItem}
+              classNameBadge={styles.achievementBadgeModal}
             />
           </div>
           <Tooltip

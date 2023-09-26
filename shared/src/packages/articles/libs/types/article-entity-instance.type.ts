@@ -1,4 +1,4 @@
-type ArticleEntityType = {
+type ArticleEntityInstance = {
   id: number;
   title: string;
   text: string;
@@ -11,4 +11,4 @@ type ArticleEntityType = {
   readTime: number | null;
 };
 
-export { type ArticleEntityType };
+export { type ArticleEntityInstance };

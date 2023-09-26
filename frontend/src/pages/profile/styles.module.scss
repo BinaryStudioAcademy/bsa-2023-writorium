@@ -1,3 +1,5 @@
+@use "src/assets/css/breakpoints.scss";
+
 .profile {
   display: grid;
   grid-template:
@@ -14,4 +16,61 @@
 .profileBlock {
   border: 1px solid var(--pastel-gray);
   border-radius: 7px;
+}
+
+@media only screen and (max-width: breakpoints.$extra-large) {
+  .userInfo {
+    padding: 20px;
+  }
+
+  .stats {
+    padding: 15px;
+  }
+}
+
+@media only screen and (max-width: breakpoints.$large) {
+  .profile {
+    display: flex;
+    flex-direction: column;
+    max-width: 600px;
+  }
+
+  .stats {
+    height: 450px;
+  }
+
+  .activity {
+    padding: 10px;
+    padding-right: 30px;
+  }
+}
+
+@media only screen and (max-width: breakpoints.$medium) {
+  .profile {
+    gap: 15px;
+    max-width: 500px;
+  }
+
+  .userInfo {
+    margin-bottom: 5px;
+  }
+
+  .stats {
+    height: 400px;
+  }
+}
+
+@media only screen and (max-width: breakpoints.$small) {
+  .profile {
+    gap: 10px;
+    padding-bottom: 5px;
+  }
+
+  .userInfo {
+    padding: 12px 10px 15px;
+  }
+
+  .stats {
+    padding: 10px;
+  }
 }

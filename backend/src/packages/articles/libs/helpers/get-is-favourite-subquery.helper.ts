@@ -5,10 +5,10 @@ import { DatabaseTableName } from '~/libs/packages/database/database.js';
 import { type ArticleModel } from '../../article.model.js';
 
 const getIsFavouriteSubQuery = (
-  showFavourites: boolean,
+  shouldShowFavourites: boolean,
   userId: number | null,
 ): ((builder: QueryBuilder<ArticleModel, ArticleModel[]>) => void) => {
-  const query = showFavourites
+  const query = shouldShowFavourites
     ? raw('true')
     : raw(
         `coalesce((SELECT true FROM ${DatabaseTableName.FAVOURED_USER_ARTICLES} fa WHERE fa.article_id=?? AND fa.user_id=??), false)`,

@@ -15,8 +15,6 @@ import {
   NotFoundError,
 } from '~/libs/packages/exceptions/exceptions.js';
 import { type OpenAIService } from '~/libs/packages/openai/openai.package.js';
-import { SocketNamespace, SocketRoom } from '~/libs/packages/socket/socket.js';
-import { type SocketService } from '~/libs/packages/socket/socket.package.js';
 import { token as articleToken } from '~/libs/packages/token/token.js';
 import { type ArticleViewService } from '~/packages/article-views/article-view.service.js';
 import { type FollowRepository } from '~/packages/follow/follow.js';
@@ -28,12 +26,13 @@ import { type GenreRepository } from '../genres/genre.repository.js';
 import { type UserAuthResponseDto } from '../users/users.js';
 import { ArticleEntity } from './article.entity.js';
 import { type ArticleRepository } from './article.repository.js';
+import { type ArticleSocketService } from './article-socket.service.js';
 import {
   FIRST_ELEMENT_ARRAY_INDEX,
   INDEX_INCREMENT,
   SHARED_$TOKEN,
 } from './libs/constants/constants.js';
-import { ArticleSocketEvent, DateFormat } from './libs/enums/enums.js';
+import { DateFormat } from './libs/enums/enums.js';
 import {
   getArticleImprovementSuggestionsCompletionConfig,
   getArticleReadTimeCompletionConfig,
@@ -41,7 +40,7 @@ import {
   getDifferenceBetweenDates,
   getFormattedDate,
   getOriginFromRefererHeader,
-  safeJSONParse,
+  parseJSONSafely,
   subtractMonthsFromDate,
 } from './libs/helpers/helpers.js';
 import {
@@ -52,7 +51,6 @@ import {
   type ArticleImprovementSuggestion,
   type ArticleResponseDto,
   type ArticlesFilters,
-  type ArticleSocketEventPayload,
   type ArticleUpdateRequestDto,
   type ArticleWithCountsResponseDto,
   type ArticleWithFollowResponseDto,
@@ -65,17 +63,17 @@ type Constructor = {
   articleRepository: ArticleRepository;
   openAIService: OpenAIService;
   genreRepository: GenreRepository;
-  socketService: SocketService;
   articleViewService: ArticleViewService;
   followRepository: FollowRepository;
   achievementService: AchievementService;
+  articleSocketService: ArticleSocketService;
 };
 
 class ArticleService implements IService {
   private articleRepository: ArticleRepository;
   private openAIService: OpenAIService;
   private genreRepository: GenreRepository;
-  private socketService: SocketService;
+  private articleSocketService: ArticleSocketService;
   private achievementService: AchievementService;
   private articleViewService: ArticleViewService;
   private followRepository: FollowRepository;
@@ -84,7 +82,7 @@ class ArticleService implements IService {
     articleRepository,
     openAIService,
     genreRepository,
-    socketService,
+    articleSocketService,
     articleViewService,
     followRepository,
     achievementService,
@@ -92,7 +90,7 @@ class ArticleService implements IService {
     this.articleRepository = articleRepository;
     this.openAIService = openAIService;
     this.genreRepository = genreRepository;
-    this.socketService = socketService;
+    this.articleSocketService = articleSocketService;
     this.followRepository = followRepository;
     this.articleViewService = articleViewService;
     this.achievementService = achievementService;
@@ -109,7 +107,7 @@ class ArticleService implements IService {
       return null;
     }
 
-    const parsedGenres = safeJSONParse<DetectedArticleGenre[]>(genresJSON);
+    const parsedGenres = parseJSONSafely<DetectedArticleGenre[]>(genresJSON);
 
     if (
       Array.isArray(parsedGenres) &&
@@ -131,7 +129,7 @@ class ArticleService implements IService {
     }
 
     const readTimeData =
-      safeJSONParse<{ readTime: number }>(readTimeJSON) ?? {};
+      parseJSONSafely<{ readTime: number }>(readTimeJSON) ?? {};
 
     if (
       'readTime' in readTimeData &&
@@ -191,7 +189,7 @@ class ArticleService implements IService {
       return genreId;
     }
 
-    const parsedGenres = safeJSONParse<DetectedArticleGenre[]>(genresJSON);
+    const parsedGenres = parseJSONSafely<DetectedArticleGenre[]>(genresJSON);
     if (!parsedGenres || !Array.isArray(parsedGenres) || !parsedGenres.length) {
       return genreId;
     }
@@ -313,7 +311,7 @@ class ArticleService implements IService {
     }
 
     const parsedSuggestions =
-      safeJSONParse<ArticleImprovementSuggestion[]>(suggestionsJSON);
+      parseJSONSafely<ArticleImprovementSuggestion[]>(suggestionsJSON);
 
     if (Array.isArray(parsedSuggestions)) {
       return parsedSuggestions;
@@ -354,13 +352,13 @@ class ArticleService implements IService {
     );
     const daysInHalfYear = getDifferenceBetweenDates(currentDate, sixMonthAgo);
 
-    const userActivity = await this.articleRepository.getUserActivity({
+    const userActivities = await this.articleRepository.getUserActivity({
       userId,
       activityFrom: sixMonthAgo.toISOString(),
       activityTo: currentDate.toISOString(),
     });
 
-    const halfYearActivity: UserActivityResponseDto[] = Array.from({
+    const halfYearActivities: UserActivityResponseDto[] = Array.from({
       length: daysInHalfYear + INDEX_INCREMENT,
     }).map((_, index) => {
       const incrementedDate = sixMonthAgo.getDate() + index;
@@ -370,7 +368,7 @@ class ArticleService implements IService {
         incrementedDate,
       ).toISOString();
 
-      const activeDayIndex = userActivity.findIndex((activity) => {
+      const activeDayIndex = userActivities.findIndex((activity) => {
         return (
           getFormattedDate(activity.date, DateFormat.YEAR_MONTH_DATE) ===
           getFormattedDate(dateForStatistic, DateFormat.YEAR_MONTH_DATE)
@@ -378,7 +376,7 @@ class ArticleService implements IService {
       });
 
       if (activeDayIndex >= ZERO_ACTIVITY_COUNT) {
-        const dayActivity = userActivity[activeDayIndex];
+        const dayActivity = userActivities[activeDayIndex];
 
         return {
           date: dayActivity.date,
@@ -392,7 +390,7 @@ class ArticleService implements IService {
       };
     });
 
-    return halfYearActivity;
+    return halfYearActivities;
   }
 
   public async getUserArticlesGenreStats(
@@ -435,13 +433,9 @@ class ArticleService implements IService {
       }),
     );
 
-    const socketEventPayload: ArticleSocketEventPayload[typeof ArticleSocketEvent.NEW_ARTICLE] =
-      article.toObjectWithRelationsAndCounts();
-
-    this.socketService.io
-      .of(SocketNamespace.ARTICLES)
-      .to(SocketRoom.ARTICLES_FEED)
-      .emit(ArticleSocketEvent.NEW_ARTICLE, socketEventPayload);
+    void this.articleSocketService.handleNewArticle(
+      article.toObjectWithRelationsAndCounts(),
+    );
 
     const countOfOwnArticles =
       await this.articleRepository.countArticlesByUserId(payload.userId);

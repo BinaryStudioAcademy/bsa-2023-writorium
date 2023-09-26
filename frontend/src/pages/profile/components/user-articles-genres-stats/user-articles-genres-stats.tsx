@@ -46,8 +46,9 @@ const UserArticlesGenresStats: React.FC<Properties> = ({ className }) => {
     useAppSelector(({ users }) => users);
 
   const handleDataLoad = useCallback(
-    (filters: ArticleGenreStatsFilters) =>
-      void dispatch(usersActions.getUserArticlesGenresStats(filters)),
+    (filters: ArticleGenreStatsFilters) => {
+      return void dispatch(usersActions.getUserArticlesGenresStats(filters));
+    },
     [dispatch],
   );
   useDeepCompareEffect(() => {
@@ -61,7 +62,7 @@ const UserArticlesGenresStats: React.FC<Properties> = ({ className }) => {
 
   return (
     <div className={getValidClassNames(styles.wrapper, className)}>
-      <h3>Genres Stats</h3>
+      <h3 className={styles.title}>Genres Stats</h3>
       <div className={styles.chartWrapper}>
         {userArticlesGenresStatsStatus === DataStatus.PENDING && (
           <Loader isLoading type="dots" />

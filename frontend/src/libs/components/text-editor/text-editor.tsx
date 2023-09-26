@@ -33,6 +33,7 @@ type Properties<T extends FieldValues> = {
   errors: FieldErrors<T>;
   name: FieldPath<T>;
   wasEdited: boolean;
+  initialValue: string;
 };
 
 const TextEditor = <T extends FieldValues>({
@@ -40,11 +41,11 @@ const TextEditor = <T extends FieldValues>({
   errors,
   control,
   wasEdited,
+  initialValue,
 }: Properties<T>): React.ReactNode => {
   const { field } = useFormController({ name, control });
   const error = errors[name]?.message;
   const hasError = Boolean(error);
-  const initialFieldValue = useReference<string>(field.value);
 
   const handleEditorUpdate: EditorOptions['onUpdate'] = ({ editor }): void => {
     field.onChange(editor.getHTML());
@@ -104,9 +105,9 @@ const TextEditor = <T extends FieldValues>({
 
   useEffect(() => {
     if (!wasEdited && editor) {
-      editor.commands.setContent(initialFieldValue.current);
+      editor.commands.setContent(initialValue);
     }
-  }, [wasEdited, initialFieldValue, editor]);
+  }, [wasEdited, initialValue, editor]);
 
   return (
     <div className={styles.textEditorWrapper} ref={wrapperReference}>

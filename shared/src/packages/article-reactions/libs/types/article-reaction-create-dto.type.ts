@@ -1,7 +1,7 @@
-import { type ArticleReactionEntityType } from './article-reaction.entity.type.js';
+import { type ArticleReactionEntityInstance } from './article-reaction-entity-instance.type.js';
 
 type ArticleReactionCreateDto = Pick<
-  ArticleReactionEntityType,
+  ArticleReactionEntityInstance,
   'isLike' | 'userId' | 'articleId'
 >;
 
