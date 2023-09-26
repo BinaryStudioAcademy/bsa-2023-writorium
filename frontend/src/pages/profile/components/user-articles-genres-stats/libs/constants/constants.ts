@@ -2,16 +2,14 @@ import { type ArticleGenreStatsFilters } from '~/packages/articles/articles.js';
 
 const GENRES_CHART_COLORS = [
   '#44996b',
-  '#6699CC',
-  '#996699',
-  '#CC9966',
-  '#66CC99',
-  '#CC99CC',
-  '#99CC66',
-  '#CC9999',
-  '#66CCCC',
-  '#8A8EAE',
-  '#d6ecff',
+  '#009473',
+  '#008E7E',
+  '#00878B',
+  '#008098',
+  '#0078A5',
+  '#00A0F4',
+  '#EAFCFF',
+  '#E6F4F1',
 ];
 
 const DEFAULT_FILTER_PAYLOAD: ArticleGenreStatsFilters = {
