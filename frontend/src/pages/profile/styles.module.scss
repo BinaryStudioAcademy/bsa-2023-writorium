@@ -44,12 +44,12 @@
 
 @media only screen and (max-width: breakpoints.$medium) {
   .profile {
-    gap: 0;
+    gap: 15px;
     max-width: 500px;
   }
 
   .userInfo {
-    margin-bottom: 20px;
+    margin-bottom: 5px;
   }
 
   .stats {
@@ -60,11 +60,11 @@
 
 @media only screen and (max-width: breakpoints.$small) {
   .profile {
-    padding-bottom: 10px;
+    gap: 10px;
+    padding-bottom: 5px;
   }
 
   .userInfo {
-    margin-bottom: 5px;
     padding: 12px 10px 15px;
   }
 }
