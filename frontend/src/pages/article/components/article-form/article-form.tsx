@@ -1,4 +1,9 @@
-import { Button, Input, TextEditor } from '~/libs/components/components.js';
+import {
+  Button,
+  Input,
+  Modal,
+  TextEditor,
+} from '~/libs/components/components.js';
 import { DataStatus } from '~/libs/enums/enums.js';
 import {
   useAppDispatch,
@@ -16,10 +21,12 @@ import {
   type ArticleResponseDto,
   articleUpdateValidationSchema,
 } from '~/packages/articles/articles.js';
+import { type GenerateArticlePromptResponseDto as GeneratedPrompt } from '~/packages/prompts/prompts.js';
 import { getGeneratedPromptPayload } from '~/packages/prompts/prompts.js';
 import { actions as articlesActions } from '~/slices/articles/articles.js';
 import { actions as promptActions } from '~/slices/prompts/prompts.js';
 
+import { PromptConfirmationForm } from '../components.js';
 import { ArticleCoverUpload } from './libs/components/components.js';
 import {
   DEFAULT_ARTICLE_FORM_PAYLOAD,
@@ -41,6 +48,16 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
       saveArticleStatus: articles.saveArticleStatus,
     }),
   );
+
+  const [submitData, setSubmitData] = useState<{
+    payload: ArticleRequestDto;
+    prompt: GeneratedPrompt;
+  } | null>(null);
+
+  const handleModalClose = useCallback(() => {
+    setSubmitData(null);
+  }, [setSubmitData]);
+
   const { control, errors, handleSubmit, handleReset, isDirty } =
     useAppForm<ArticleRequestDto>({
       defaultValues: articleForUpdate
@@ -72,15 +89,19 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
           publishedAt: isArticlePublished ? new Date().toISOString() : null,
         };
 
-        setSubmitType(articleSubmitType);
-        void dispatch(
-          articlesActions.createArticle({
-            articlePayload: updatedPayload,
-            generatedPrompt: getGeneratedPromptPayload(generatedPrompt),
-          }),
-        ).finally(() => {
-          setSubmitType(null);
-        });
+        if (generatedPrompt) {
+          setSubmitData({ payload: updatedPayload, prompt: generatedPrompt });
+        } else {
+          setSubmitType(articleSubmitType);
+          void dispatch(
+            articlesActions.createArticle({
+              articlePayload: updatedPayload,
+              generatedPrompt: getGeneratedPromptPayload(generatedPrompt),
+            }),
+          ).finally(() => {
+            setSubmitType(null);
+          });
+        }
       },
     [dispatch, generatedPrompt],
   );
@@ -217,6 +238,20 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
           isDisabled={(!isDirty && !isDraft) || isSaveDraftLoading}
         />
       </div>
+      {submitData?.prompt && (
+        <Modal
+          contentClassName={styles.modalContent}
+          isOpen={Boolean(submitData)}
+          onClose={handleModalClose}
+        >
+          <PromptConfirmationForm
+            submitData={submitData}
+            handleSubmitType={setSubmitType}
+            submitType={submitType}
+            isLoading={saveArticleStatus === DataStatus.PENDING}
+          />
+        </Modal>
+      )}
     </form>
   );
 };
