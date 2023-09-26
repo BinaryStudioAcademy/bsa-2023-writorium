@@ -7,6 +7,7 @@ import {
   createComment,
   deleteArticle,
   deleteArticleReaction,
+  dropArticleFormDataFromLocalStorage,
   fetchAll,
   fetchAllCommentsToArticle,
   fetchOwn,
@@ -17,6 +18,8 @@ import {
   getImprovementSuggestions,
   getImprovementSuggestionsBySession,
   reactToArticle,
+  saveArticleFormDataToLocalStorage,
+  setArticleFormDataFromLocalStorage,
   setShowFavourites,
   shareArticle,
   toggleIsFavourite,
@@ -52,6 +55,9 @@ const allActions = {
   addReactionToArticlesFeed,
   updateArticleAuthorFollowInfo,
   geArticleIdByToken,
+  dropArticleFormDataFromLocalStorage,
+  saveArticleFormDataToLocalStorage,
+  setArticleFormDataFromLocalStorage,
 };
 
 export { allActions as actions };

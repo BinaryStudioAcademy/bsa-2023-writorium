@@ -37,6 +37,7 @@ const UserInfo: React.FC<Properties> = ({ user, className }) => {
               <p className={styles.userEmail}>{user.email}</p>
             </div>
             <Button
+              className={styles.editButton}
               variant="outlined"
               label="Edit profile"
               onClick={handleEditMode}

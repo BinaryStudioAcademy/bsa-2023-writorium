@@ -10,6 +10,7 @@ export {
 export { type SelectOption } from './select-option.type.js';
 export { type Tag } from './tag.type.js';
 export {
+  type GeneratedArticlePrompt,
   type PaginationParameters,
   type ServerErrorDetail,
   type ServerErrorResponse,
