@@ -14,6 +14,7 @@ type Properties = {
   classNameContentWrapper?: string;
   content: React.ReactNode;
   children: React.ReactNode;
+  closeOnChildrenClick?: boolean;
 };
 
 const Popover: React.FC<Properties> = ({
@@ -21,6 +22,7 @@ const Popover: React.FC<Properties> = ({
   classNameContentWrapper,
   content,
   children,
+  closeOnChildrenClick,
 }: Properties): JSX.Element => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const popupReference = useReference<HTMLDivElement>(null);
@@ -49,11 +51,13 @@ const Popover: React.FC<Properties> = ({
       className={getValidClassNames(styles.popoverWrapper, className)}
       role="button"
       tabIndex={0}
-      onClick={handleClick}
       onKeyDown={handleKeyDown}
       ref={popupReference}
+      {...(!closeOnChildrenClick && { onClick: handleClick })}
     >
-      {children}
+      <div {...(closeOnChildrenClick && { onClick: handleClick })}>
+        {children}
+      </div>
       {isOpen && (
         <div
           className={getValidClassNames(
