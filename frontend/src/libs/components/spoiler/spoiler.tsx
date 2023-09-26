@@ -21,7 +21,7 @@ const Spoiler: React.FC<Properties> = ({ children, breakpoint, summary }) => {
 
   return (
     <details className={styles.spoiler}>
-      <summary>{summary}</summary>
+      <summary className={styles.summary}>{summary}</summary>
       {children}
     </details>
   );

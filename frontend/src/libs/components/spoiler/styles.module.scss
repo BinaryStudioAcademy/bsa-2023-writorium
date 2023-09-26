@@ -9,7 +9,7 @@
   max-height: 500px;
 }
 
-summary {
+.summary {
   height: 56px;
   padding: 20px;
   text-align: start;
@@ -19,12 +19,12 @@ summary {
   outline: none;
 }
 
-.spoiler[open] summary {
+.spoiler[open] .summary {
   background-color: var(--pastel-gray);
 }
 
-summary::before,
-summary::after {
+.summary::before,
+.summary::after {
   content: "";
   position: absolute;
   top: 30px;
@@ -35,10 +35,10 @@ summary::after {
   transition: transform 0.3s ease;
 }
 
-.spoiler summary::after {
+.spoiler .summary::after {
   transform: rotate(-90deg);
 }
 
-.spoiler[open] summary::after {
+.spoiler[open] .summary::after {
   transform: rotate(0deg);
 }
