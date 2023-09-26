@@ -60,6 +60,7 @@ const ArticleDetails: React.FC<Properties> = ({
         {shouldDisplayFollowButton && (
           <Button
             size="small"
+            variant="outlined"
             onClick={onFollow}
             className={styles.followButton}
             label={isFollowed ? FollowStatus.UNFOLLOW : FollowStatus.FOLLOW}
