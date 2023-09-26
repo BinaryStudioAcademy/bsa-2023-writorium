@@ -43,7 +43,10 @@ import {
 } from './libs/helpers/helpers.js';
 
 type State = {
-  article: ArticleWithFollowResponseDto | null;
+  article:
+    | ArticleWithFollowResponseDto
+    | (ArticleWithFollowResponseDto & ArticleWithCountsResponseDto)
+    | null;
   articleComments: CommentWithRelationsResponseDto[];
   articles: ArticleWithCountsResponseDto[];
   dataStatus: ValueOf<typeof DataStatus>;
@@ -259,6 +262,10 @@ const { reducer, actions, name } = createSlice({
           hasToDelete: !article.isFavourite && state.showFavourites,
         });
         state.dataStatus = DataStatus.FULFILLED;
+      }
+
+      if (article && state.article !== null) {
+        state.article = article;
       }
     });
 

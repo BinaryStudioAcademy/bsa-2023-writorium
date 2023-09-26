@@ -41,12 +41,6 @@ type Properties = {
   hasAlreadyReactedWith?: ValueOf<typeof Reaction> | null;
 };
 
-const onButtonClick = (): void => {
-  /**
-   * @todo implement handle logic for buttons clicked events(favorite, comment, share)
-   */
-};
-
 const ArticleView: React.FC<Properties> = ({
   tags,
   isShared = false,
@@ -60,8 +54,16 @@ const ArticleView: React.FC<Properties> = ({
   dislikesCount,
   hasAlreadyReactedWith,
 }) => {
-  const { text, title, coverUrl, author, readTime, genre, publishedAt } =
-    article;
+  const {
+    text,
+    title,
+    coverUrl,
+    author,
+    readTime,
+    genre,
+    publishedAt,
+    isFavourite,
+  } = article;
   const { firstName, lastName, avatarUrl, followersCount, isFollowed } = author;
   const authorFullName = getFullName(firstName, lastName);
   const articleUrl = window.location.href;
@@ -89,6 +91,10 @@ const ArticleView: React.FC<Properties> = ({
       handleToggleModalOpen();
     }
   }, [handleToggleModalOpen, isOpen]);
+
+  const handleToggleFavorite = useCallback(() => {
+    void dispatch(articlesActions.toggleIsFavourite(Number(id)));
+  }, [dispatch, id]);
 
   return (
     <article
@@ -125,10 +131,10 @@ const ArticleView: React.FC<Properties> = ({
               </>
             )}
             <IconButton
-              iconName="favorite"
+              iconName={isFavourite ? 'favoriteFilled' : 'favorite'}
               className={styles.iconButton}
               iconClassName={styles.icon}
-              onClick={onButtonClick}
+              onClick={handleToggleFavorite}
             />
 
             {publishedAt && (
