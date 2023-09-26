@@ -3,7 +3,7 @@ type FilterFormValues = {
   authorId: number | null;
   genreId: number | null;
   shouldShowFavourites: boolean;
-  shouldShowFollowedAuthorsArticles?: boolean;
+  shouldShowFollowedAuthorsArticles: boolean;
 };
 
 export { type FilterFormValues };
