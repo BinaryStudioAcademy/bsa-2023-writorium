@@ -22,6 +22,10 @@
   .userInfo {
     padding: 20px;
   }
+
+  .stats {
+    padding: 15px;
+  }
 }
 
 @media only screen and (max-width: breakpoints.$large) {
@@ -33,7 +37,6 @@
 
   .stats {
     height: 450px;
-    padding: 15px;
   }
 
   .activity {
@@ -54,7 +57,6 @@
 
   .stats {
     height: 400px;
-    padding: 10px;
   }
 }
 
@@ -66,5 +68,9 @@
 
   .userInfo {
     padding: 12px 10px 15px;
+  }
+
+  .stats {
+    padding: 10px;
   }
 }

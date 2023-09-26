@@ -20,12 +20,6 @@
   width: 100%;
 }
 
-@media only screen and (max-width: breakpoints.$extra-large) {
-  .wrapper {
-    padding: 15px;
-  }
-}
-
 @media only screen and (max-width: breakpoints.$large) {
   .title {
     display: none;
