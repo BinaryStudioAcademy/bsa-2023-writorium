@@ -18,12 +18,14 @@ type Properties<T extends FieldValues> = {
   name: FieldPath<T>;
   className?: string;
   labelClassName?: string;
+  checkBoxId?: string;
 };
 
 const ToggleCheckbox = <T extends FieldValues>({
   name,
   label,
   control,
+  checkBoxId,
 }: Properties<T>): JSX.Element => {
   const { field } = useController({ name, control });
 
@@ -33,11 +35,14 @@ const ToggleCheckbox = <T extends FieldValues>({
         {...field}
         name={name}
         type="checkbox"
-        id={TOGGLE_CHECKBOX_ID}
+        id={checkBoxId ?? TOGGLE_CHECKBOX_ID}
         checked={field.value}
         className={getValidClassNames(styles.switch, styles.pointer)}
       />
-      <label className={styles.pointer} htmlFor={TOGGLE_CHECKBOX_ID}>
+      <label
+        className={styles.pointer}
+        htmlFor={checkBoxId ?? TOGGLE_CHECKBOX_ID}
+      >
         {label}
       </label>
     </div>
