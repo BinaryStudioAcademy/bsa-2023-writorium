@@ -55,12 +55,13 @@ const ShareGroup: FC<Properties> = ({ articleId: id, articleTitle }) => {
       overlayClassName={styles.loader}
     >
       {sharedLink && (
-        <ul className={styles.group}>
+        <ul className={styles.fullWidth}>
           <li className={styles.groupItem}>
             <ShareOnFacebookButton
               label="With Facebook"
               title={articleTitle}
               articleUrl={sharedLink}
+              className={styles.fullWidth}
               classNameContent={styles.button}
               iconStyle={styles.icon}
             />

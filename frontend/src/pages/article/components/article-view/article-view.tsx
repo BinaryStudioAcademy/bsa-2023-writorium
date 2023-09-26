@@ -13,11 +13,7 @@ import {
   getValidClassNames,
   sanitizeHtml,
 } from '~/libs/helpers/helpers.js';
-import {
-  useAppDispatch,
-  useCallback,
-  useModal
-} from '~/libs/hooks/hooks.js';
+import { useAppDispatch, useCallback, useModal } from '~/libs/hooks/hooks.js';
 import { type Tag, type ValueOf } from '~/libs/types/types.js';
 import { type ArticleWithFollowResponseDto } from '~/packages/articles/articles.js';
 import { ConfirmArticleDeleteDialog } from '~/pages/libs/components/components.js';
@@ -134,6 +130,7 @@ const ArticleView: React.FC<Properties> = ({
                   articleTitle={title}
                   classNameContentWrapper={styles.sharePopover}
                   classNameIconButton={styles.iconButton}
+                  classNameIcon={styles.icon}
                 />
               </>
             )}
