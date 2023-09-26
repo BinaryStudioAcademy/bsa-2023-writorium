@@ -1,5 +1,5 @@
 import { Button, ToggleCheckbox } from '~/libs/components/components.js';
-import { ButtonType } from '~/libs/enums/enums.js';
+import { ButtonType, PromptCategory } from '~/libs/enums/enums.js';
 import { useAppDispatch, useAppForm, useCallback } from '~/libs/hooks/hooks.js';
 import { type ValueOf } from '~/libs/types/types.js';
 import { type ArticleRequestDto } from '~/packages/articles/articles.js';
@@ -68,7 +68,7 @@ const PromptConfirmationForm: React.FC<Properties> = ({
       >
         {Object.entries(prompt).map(([key, value]) => {
           const castedKey = key as keyof typeof prompt;
-          if (castedKey === 'genre') {
+          if (castedKey === PromptCategory.GENRE) {
             return;
           }
           return (
