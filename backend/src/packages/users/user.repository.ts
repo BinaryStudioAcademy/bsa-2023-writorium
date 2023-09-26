@@ -172,7 +172,7 @@ class UserRepository implements IRepository {
           .whereRaw(
             `
         EXISTS(SELECT 1
-        FROM articles,user_details
+        FROM articles
         WHERE articles.user_id = user_details.user_id)
       `,
           )
