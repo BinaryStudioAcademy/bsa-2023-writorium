@@ -321,7 +321,7 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
       />
       <div className={styles.buttonWrapper}>
         <Button
-          variant="outlined"
+          variant="greenOutlined"
           type="reset"
           label="Cancel"
           className={styles.cancelBtn}
@@ -329,7 +329,7 @@ const ArticleForm: React.FC<Properties> = ({ articleForUpdate }) => {
         />
         {isDraft && (
           <Button
-            variant="outlined"
+            variant="greenOutlined"
             type="submit"
             label="Save draft"
             name="draft"

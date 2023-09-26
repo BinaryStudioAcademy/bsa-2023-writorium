@@ -123,7 +123,7 @@ const ProfileEditForm: React.FC<Properties> = ({
         <Button
           hasFullWidth
           label="Cancel"
-          variant="outlined"
+          variant="greenOutlined"
           type="button"
           onClick={handleCancel}
         />

@@ -5,7 +5,7 @@ import { type ReactMouseEvent, type ValueOf } from '~/libs/types/types.js';
 import { Loader } from '../components.js';
 import styles from './styles.module.scss';
 
-type ButtonVariant = 'primary' | 'outlined' | 'text';
+type ButtonVariant = 'primary' | 'greenOutlined' | 'whiteOutlined' | 'text';
 
 type ButtonSize = 'medium' | 'small';
 
@@ -40,7 +40,8 @@ const Button: React.FC<Properties> = ({
   const variantClassNameMapper: Record<ButtonVariant, string> = {
     text: styles.buttonText,
     primary: styles.buttonPrimary,
-    outlined: styles.buttonOutlined,
+    greenOutlined: styles.buttonGreenOutlined,
+    whiteOutlined: styles.buttonWhiteOutlined,
   };
 
   const sizeClassNameMapper: Record<ButtonSize, string> = {

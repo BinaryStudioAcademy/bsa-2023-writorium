@@ -66,7 +66,7 @@ const ArticleFilters: React.FC<Properties> = ({
         <span className={styles.filterTitle}>Filter</span>
         <Button
           size="small"
-          variant="outlined"
+          variant="greenOutlined"
           label="Clear filters"
           onClick={handleFormReset}
         />

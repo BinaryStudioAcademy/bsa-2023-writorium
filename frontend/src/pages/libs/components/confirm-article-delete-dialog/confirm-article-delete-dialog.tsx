@@ -37,7 +37,7 @@ const ConfirmArticleDeleteDialog: React.FC<Properties> = ({
         <Button
           hasFullWidth
           label="Cancel"
-          variant="outlined"
+          variant="greenOutlined"
           type="button"
           onClick={handleClose}
         />

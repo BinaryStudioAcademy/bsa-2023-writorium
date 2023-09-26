@@ -75,7 +75,7 @@ const PromptGeneration: React.FC<Properties> = ({ containerStyle }) => {
           <Button
             size="small"
             label="Reset"
-            variant="outlined"
+            variant="greenOutlined"
             isDisabled={!generatedPrompt}
             className={styles.resetPromptButton}
             onClick={handleResetPrompt}
