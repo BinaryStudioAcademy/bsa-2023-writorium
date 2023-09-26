@@ -68,16 +68,12 @@
   height: 15px;
 }
 
-.facebookIconButton {
-  padding: 5px;
-}
-
-.body:not(.hasCover) .facebookIconButton {
-  padding: 0;
-}
-
 .popover {
   max-width: max-content;
+}
+
+.body.hasCover .sharePopover {
+  left: 0;
 }
 
 .authorName {
