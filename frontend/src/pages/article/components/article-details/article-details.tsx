@@ -3,6 +3,7 @@ import { DateFormat, FollowStatus } from '~/libs/enums/enums.js';
 import {
   getFormattedDate,
   getValidClassNames,
+  makePluralOrSingular,
 } from '~/libs/helpers/helpers.js';
 
 import styles from './styles.module.scss';
@@ -53,7 +54,7 @@ const ArticleDetails: React.FC<Properties> = ({
           <li className={styles.authorInfo}>
             <Icon iconName="renew" />
             <span className={styles.authorInfoValue}>{authorFollowers}</span>
-            following
+            {makePluralOrSingular('follower', authorFollowers)}
           </li>
         </ul>
         {shouldDisplayFollowButton && (
