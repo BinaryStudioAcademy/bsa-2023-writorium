@@ -105,22 +105,18 @@ const createArticle = createAsyncThunk<
   `${sliceName}/create`,
   async ({ articlePayload, generatedPrompt }, { extra, dispatch }) => {
     const { articleApi, promptApi } = extra;
+    let payload = articlePayload;
 
     if (generatedPrompt) {
       const { id: promptId, genreId } = await promptApi.create(generatedPrompt);
-
-      const createdArticle = await articleApi.create({
+      payload = {
         ...articlePayload,
         genreId,
         promptId,
-      });
-
-      void dispatch(dropArticleFormDataFromLocalStorage());
-
-      return createdArticle;
+      };
     }
 
-    const createdArticle = await articleApi.create(articlePayload);
+    const createdArticle = await articleApi.create(payload);
 
     void dispatch(dropArticleFormDataFromLocalStorage());
 
