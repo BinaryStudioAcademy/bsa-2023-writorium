@@ -2,7 +2,7 @@ import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
 
 import { PREVIOUS_PAGE_INDEX } from '~/libs/constants/constants.js';
 import { AppRoute } from '~/libs/enums/enums.js';
-import { getFullName } from '~/libs/helpers/helpers.js';
+import { getFullName, writeTextInClipboard } from '~/libs/helpers/helpers.js';
 import { StorageKey } from '~/libs/packages/storage/storage.js';
 import { type AsyncThunkConfig } from '~/libs/types/types.js';
 import {
@@ -174,23 +174,34 @@ const getAllGenres = createAsyncThunk<
   return await genresApi.getAll();
 });
 
-const shareArticle = createAsyncThunk<
+const copySharedLink = createAsyncThunk<unknown, undefined, AsyncThunkConfig>(
+  `${sliceName}/share`,
+  async (_, { dispatch, getState }) => {
+    const {
+      articles: { sharedLink },
+    } = getState();
+
+    if (sharedLink) {
+      await writeTextInClipboard(sharedLink);
+
+      void dispatch(
+        appActions.notify({
+          type: 'success',
+          message: 'The sharing link was copied to clipboard',
+        }),
+      );
+    }
+  },
+);
+
+const getSharedLink = createAsyncThunk<
   { link: string },
   { id: string },
   AsyncThunkConfig
->(`${sliceName}/share`, async (articlePayload, { dispatch, extra }) => {
+>(`${sliceName}/get-share-link`, async (articlePayload, { extra }) => {
   const { articleApi } = extra;
 
-  const response = await articleApi.share(articlePayload.id);
-
-  void dispatch(
-    appActions.notify({
-      type: 'success',
-      message: 'The sharing link was copied to clipboard',
-    }),
-  );
-
-  return response;
+  return await articleApi.getSharedLink(articlePayload.id);
 });
 
 const fetchSharedArticle = createAsyncThunk<
@@ -203,14 +214,14 @@ const fetchSharedArticle = createAsyncThunk<
   return articleApi.getByToken(articlePayload.token);
 });
 
-const geArticleIdByToken = createAsyncThunk<
+const getArticleIdByToken = createAsyncThunk<
   Pick<ArticleWithFollowResponseDto, 'id'>,
   { token: string },
   AsyncThunkConfig
 >(`${sliceName}/article-id-by-token`, (articlePayload, { extra }) => {
   const { articleApi } = extra;
 
-  return articleApi.geArticleIdByToken(articlePayload.token);
+  return articleApi.getArticleIdByToken(articlePayload.token);
 });
 
 const reactToArticle = createAsyncThunk<
@@ -439,6 +450,7 @@ export {
   addComment,
   addReactionToArticlesFeed,
   addReactionToArticleView,
+  copySharedLink,
   createArticle,
   createComment,
   deleteArticle,
@@ -447,14 +459,14 @@ export {
   fetchAllCommentsToArticle,
   fetchOwn,
   fetchSharedArticle,
-  geArticleIdByToken,
   getAllGenres,
   getArticle,
+  getArticleIdByToken,
   getImprovementSuggestions,
   getImprovementSuggestionsBySession,
+  getSharedLink,
   reactToArticle,
   setShowFavourites,
-  shareArticle,
   toggleIsFavourite,
   updateArticle,
   updateArticleAuthorFollowInfo,
