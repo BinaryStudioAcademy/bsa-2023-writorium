@@ -58,7 +58,7 @@ const ArticleView: React.FC<Properties> = ({
     genre,
     publishedAt,
     isFavourite,
-    id
+    id,
   } = article;
   const { firstName, lastName, avatarUrl, followersCount, isFollowed } = author;
   const authorFullName = getFullName(firstName, lastName);
