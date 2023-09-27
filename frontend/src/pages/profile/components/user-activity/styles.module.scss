@@ -139,13 +139,11 @@
   background: #30a14e;
 }
 
-@media only screen and (max-width: breakpoints.$extra-large) {
+@media only screen and (max-width: breakpoints.$large) {
   .wrapper {
     align-items: flex-start;
   }
-}
 
-@media only screen and (max-width: breakpoints.$large) {
   .title {
     display: none;
   }

@@ -1,3 +1,5 @@
+@use "src/assets/css/breakpoints.scss";
+
 .modalContent {
   width: max-content;
   padding: 30px;
@@ -56,4 +58,47 @@
 
 .checkBox {
   justify-self: end;
+}
+
+.header {
+  margin-bottom: 20px;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+@media only screen and (max-width: breakpoints.$large) {
+  .innerWrapper {
+    width: 80%;
+  }
+}
+
+@media only screen and (max-width: breakpoints.$medium) {
+  .innerWrapper {
+    width: 90%;
+  }
+}
+
+@media only screen and (max-width: breakpoints.$small) {
+  .innerWrapper {
+    width: 100%;
+  }
+
+  .promptItem {
+    grid-template: 1fr 1fr / 2fr 1fr;
+    grid-template-areas:
+      "category category"
+      "value checkbox ";
+  }
+
+  .category {
+    grid-area: category;
+  }
+
+  .promptValue {
+    grid-area: value;
+  }
+
+  .checkBox {
+    grid-area: checkbox;
+  }
 }
