@@ -117,6 +117,22 @@ const ArticleFilters: React.FC<Properties> = ({
             label="Show only followed authors articles"
           />
         )}
+        {isMyArticlesPage && (
+          <>
+            <ToggleCheckbox
+              name="shouldShowPublishedAricles"
+              control={control}
+              errors={errors}
+              label="Show only published articles"
+            />
+            <ToggleCheckbox
+              name="shouldShowDrafts"
+              control={control}
+              errors={errors}
+              label="Show only drafts"
+            />
+          </>
+        )}
       </form>
     </div>
   );
