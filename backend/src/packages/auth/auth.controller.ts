@@ -42,23 +42,25 @@ class AuthController extends Controller {
       validation: {
         body: userSignInValidationSchema,
       },
-      handler: (options) =>
-        this.signIn(
+      handler: (options) => {
+        return this.signIn(
           options as ApiHandlerOptions<{
             body: UserSignInRequestDto;
           }>,
-        ),
+        );
+      },
     });
 
     this.addRoute({
       path: AuthApiPath.FACEBOOK,
       method: 'POST',
-      handler: (options) =>
-        this.signInWithFacebook(
+      handler: (options) => {
+        return this.signInWithFacebook(
           options as ApiHandlerOptions<{
             body: UserSignInWithFacebookResponseDto;
           }>,
-        ),
+        );
+      },
     });
 
     this.addRoute({
@@ -67,12 +69,13 @@ class AuthController extends Controller {
       validation: {
         body: userSignUpValidationSchema,
       },
-      handler: (options) =>
-        this.signUp(
+      handler: (options) => {
+        return this.signUp(
           options as ApiHandlerOptions<{
             body: UserSignUpRequestDto;
           }>,
-        ),
+        );
+      },
     });
     this.addRoute({
       path: AuthApiPath.CURRENT,
@@ -82,10 +85,11 @@ class AuthController extends Controller {
     this.addRoute({
       path: AuthApiPath.FORGOTTEN_PASSWORD,
       method: 'POST',
-      handler: (options) =>
-        this.sendEmailResetPasswordLink(
+      handler: (options) => {
+        return this.sendEmailResetPasswordLink(
           options as ApiHandlerOptions<{ body: AuthRequestPasswordDto }>,
-        ),
+        );
+      },
       validation: {
         body: requestPasswordValidationSchema,
       },
@@ -93,10 +97,11 @@ class AuthController extends Controller {
     this.addRoute({
       path: AuthApiPath.RESET_PASSWORD,
       method: 'POST',
-      handler: (options) =>
-        this.resetPassword(
+      handler: (options) => {
+        return this.resetPassword(
           options as ApiHandlerOptions<{ body: AuthResetPasswordDto }>,
-        ),
+        );
+      },
       validation: {
         body: resetPasswordValidationSchema,
       },
@@ -108,12 +113,13 @@ class AuthController extends Controller {
       validation: {
         body: loginWithGoogleValidationSchema,
       },
-      handler: (options) =>
-        this.loginWithGoogle(
+      handler: (options) => {
+        return this.loginWithGoogle(
           options as ApiHandlerOptions<{
             body: AuthLoginWithGoogleDto;
           }>,
-        ),
+        );
+      },
     });
   }
 

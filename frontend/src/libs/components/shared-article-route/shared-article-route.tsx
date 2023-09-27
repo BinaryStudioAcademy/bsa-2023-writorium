@@ -32,7 +32,7 @@ const SharedArticleRoute: React.FC<Properties> = ({
 
   useEffect(() => {
     if (hasUser && token) {
-      void dispatch(articlesActions.geArticleIdByToken({ token }));
+      void dispatch(articlesActions.getArticleIdByToken({ token }));
     }
 
     return () => void dispatch(articlesActions.resetArticleIdByToken());

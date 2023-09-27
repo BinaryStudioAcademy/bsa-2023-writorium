@@ -1,3 +1,5 @@
+@use "src/assets/css/breakpoints.scss";
+
 .userInfoBlock {
   grid-area: info;
   width: 100%;
@@ -14,9 +16,15 @@
 }
 
 .avatar {
-  width: 162px;
+  width: 50%;
+  max-width: 162px;
   aspect-ratio: 1 / 1;
   height: auto;
+  font-size: 40px;
+}
+
+.editButton {
+  min-width: max-content;
 }
 
 .userInfo {
@@ -34,4 +42,22 @@
 
 .userEmail {
   font-size: 14px;
+}
+
+@media only screen and (max-width: breakpoints.$extra-large) {
+  .userInfoWrapper {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+@media only screen and (max-width: breakpoints.$small) {
+  .userInfoWrapper {
+    gap: 10px;
+  }
+
+  .userName {
+    font-size: 14px;
+  }
 }

@@ -12,7 +12,7 @@ type ButtonSize = 'medium' | 'small';
 type Properties = {
   variant?: ButtonVariant;
   size?: ButtonSize;
-  disabled?: boolean;
+  isDisabled?: boolean;
   label: React.ReactNode;
   type?: ValueOf<typeof ButtonType>;
   name?: string;
@@ -30,7 +30,7 @@ const Button: React.FC<Properties> = ({
   label,
   name = '',
   className = '',
-  disabled,
+  isDisabled,
   onClick,
   hasFullWidth,
   variant = 'primary',
@@ -51,7 +51,7 @@ const Button: React.FC<Properties> = ({
   const handleButtonClick = (
     event: ReactMouseEvent<HTMLButtonElement>,
   ): void => {
-    const allowClick = !disabled && !isLoading;
+    const allowClick = !isDisabled && !isLoading;
 
     if (onClick && !allowClick) {
       event.preventDefault();
@@ -65,7 +65,7 @@ const Button: React.FC<Properties> = ({
     <button
       type={type}
       name={name}
-      disabled={disabled}
+      disabled={isDisabled}
       className={getValidClassNames(
         styles.button,
         sizeClassNameMapper[size],

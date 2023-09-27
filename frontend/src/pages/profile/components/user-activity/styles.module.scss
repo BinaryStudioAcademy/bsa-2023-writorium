@@ -16,8 +16,9 @@
 }
 
 .activityWrapper {
-  display: flex;
-  width: 710px;
+  display: grid;
+  grid-template-columns: auto min(694px);
+  grid-auto-flow: column;
 }
 
 .days .monday {
@@ -135,5 +136,11 @@
 @media only screen and (max-width: breakpoints.$extra-large) {
   .wrapper {
     align-items: flex-start;
+  }
+}
+
+@media only screen and (max-width: breakpoints.$large) {
+  .title {
+    display: none;
   }
 }

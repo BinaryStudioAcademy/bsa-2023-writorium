@@ -3,6 +3,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { type AsyncThunkConfig } from '~/libs/types/types.js';
 import { type ArticleGenreStatsFilters } from '~/packages/articles/articles.js';
 import {
+  type AuthorFollowDetails,
   type UserActivityResponseDto,
   type UserArticlesGenreStatsResponseDto,
   type UserAuthResponseDto,
@@ -11,6 +12,7 @@ import {
   type UserGetAllResponseDto,
   type UserUpdateRequestDto,
 } from '~/packages/users/users.js';
+import { actions as appActions } from '~/slices/app/app.js';
 import { actions as articleActions } from '~/slices/articles/articles.js';
 
 import { name as sliceName } from './users.slice.js';
@@ -66,18 +68,34 @@ const getAllAuthors = createAsyncThunk<
 
 const toggleFollowAuthor = createAsyncThunk<
   UserFollowResponseDto,
-  number,
+  AuthorFollowDetails,
   AsyncThunkConfig
->(`${sliceName}/follow`, async (authorId, { extra, dispatch }) => {
-  const { userApi } = extra;
-  const articleAuthorFollowInfo = await userApi.toggleFollowAuthor(authorId);
+>(
+  `${sliceName}/follow`,
+  async ({ authorId, authorName }, { extra, dispatch }) => {
+    const { userApi } = extra;
+    const articleAuthorFollowInfo = await userApi.toggleFollowAuthor(authorId);
+    dispatch(
+      articleActions.updateArticleAuthorFollowInfo(articleAuthorFollowInfo),
+    );
 
-  dispatch(
-    articleActions.updateArticleAuthorFollowInfo(articleAuthorFollowInfo),
-  );
+    void dispatch(
+      appActions.notify(
+        articleAuthorFollowInfo.isFollowed
+          ? {
+              type: 'success',
+              message: `Success! You are following ${authorName} now. `,
+            }
+          : {
+              type: 'info',
+              message: `You have unfollowed ${authorName}`,
+            },
+      ),
+    );
 
-  return articleAuthorFollowInfo;
-});
+    return articleAuthorFollowInfo;
+  },
+);
 
 const getAuthorFollowersCountAndStatus = createAsyncThunk<
   UserFollowResponseDto,

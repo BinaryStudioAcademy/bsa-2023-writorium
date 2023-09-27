@@ -1,4 +1,4 @@
-type CommentEntityType = {
+type CommentEntityInstance = {
   id: number;
   text: string;
   userId: number;
@@ -6,4 +6,4 @@ type CommentEntityType = {
   createdAt: string;
 };
 
-export { type CommentEntityType };
+export { type CommentEntityInstance };

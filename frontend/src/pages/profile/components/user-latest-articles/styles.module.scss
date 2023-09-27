@@ -1,3 +1,5 @@
+@use "src/assets/css/breakpoints.scss";
+
 .wrapper {
   display: flex;
   grid-area: articles;
@@ -28,10 +30,17 @@
   align-self: flex-end;
   padding: 12px 14px;
   color: var(--light-green);
+  font-weight: 700;
   font-size: 16px;
   transition: color 0.3s ease-in;
 }
 
 .showAll:hover {
-  color: var(--light-green-80);
+  color: var(--dark-green);
+}
+
+@media only screen and (max-width: breakpoints.$large) {
+  .listTitle {
+    display: none;
+  }
 }

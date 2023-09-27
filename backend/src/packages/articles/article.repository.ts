@@ -13,6 +13,7 @@ import {
 } from './libs/constants/constants.js';
 import {
   getArticlePublishedStatusQuery,
+  getFollowedAuthorsArticles,
   getIsFavouriteSubQuery,
   getShowFavouritesQuery,
   getSortingCondition,
@@ -73,7 +74,8 @@ class ArticleRepository implements IArticleRepository {
     genreId,
     titleFilter,
     authorId,
-    showFavourites,
+    shouldShowFavourites,
+    shouldShowFollowedAuthorsArticles,
     requestUserId,
   }: {
     userId?: number;
@@ -86,7 +88,7 @@ class ArticleRepository implements IArticleRepository {
         `${DatabaseTableName.ARTICLES}.*`,
         this.getCommentsCountQuery(),
         this.getViewsCountQuery(),
-        getIsFavouriteSubQuery(Boolean(showFavourites), requestUserId),
+        getIsFavouriteSubQuery(Boolean(shouldShowFavourites), requestUserId),
       )
       .withGraphJoined(this.defaultRelationExpression)
       .withGraphFetched('reactions')
@@ -95,7 +97,15 @@ class ArticleRepository implements IArticleRepository {
       .where(getWhereGenreIdQuery(genreId))
       .where(getWhereAuthorIdQuery(authorId))
       .where(getWhereTitleLikeQuery(titleFilter))
-      .where(getShowFavouritesQuery(Boolean(showFavourites), requestUserId))
+      .where(
+        getShowFavouritesQuery(Boolean(shouldShowFavourites), requestUserId),
+      )
+      .where(
+        getFollowedAuthorsArticles(
+          Boolean(shouldShowFollowedAuthorsArticles),
+          requestUserId,
+        ),
+      )
       .where(getWherePublishedOnlyQuery(hasPublishedOnly))
       .whereNull('deletedAt')
       .orderBy(getSortingCondition(hasPublishedOnly))
@@ -104,8 +114,8 @@ class ArticleRepository implements IArticleRepository {
 
     return {
       total: articles.total,
-      items: articles.results.map((article) =>
-        ArticleEntity.initialize({
+      items: articles.results.map((article) => {
+        return ArticleEntity.initialize({
           ...article,
           coverUrl: article.cover?.url ?? null,
           author: {
@@ -123,8 +133,8 @@ class ArticleRepository implements IArticleRepository {
               }
             : null,
           isFavourite: article.isFavourite,
-        }),
-      ),
+        });
+      }),
     };
   }
 
@@ -177,6 +187,7 @@ class ArticleRepository implements IArticleRepository {
       .withGraphFetched('reactions')
       .modifyGraph('reactions', this.modifyReactionsGraph)
       .where({ 'articles.id': id })
+      .whereNull('deletedAt')
       .first();
 
     if (!article) {

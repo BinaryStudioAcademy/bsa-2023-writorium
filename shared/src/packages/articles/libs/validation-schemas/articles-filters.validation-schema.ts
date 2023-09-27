@@ -13,7 +13,8 @@ const articlesFilters = joi.object<ArticlesFilters, true>({
   genreId: joi.number().integer().positive(),
   titleFilter: joi.string().trim(),
   authorId: joi.number().integer().positive(),
-  showFavourites: joi.boolean(),
+  shouldShowFavourites: joi.boolean(),
+  shouldShowFollowedAuthorsArticles: joi.boolean(),
 });
 
 export { articlesFilters };

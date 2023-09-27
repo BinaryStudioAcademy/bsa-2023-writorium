@@ -104,11 +104,19 @@ const ArticleFilters: React.FC<Properties> = ({
           errors={errors}
         />
         <ToggleCheckbox
-          name="showFavourites"
+          name="shouldShowFavourites"
           control={control}
           errors={errors}
           label="Show only favorite articles"
         />
+        {!isMyArticlesPage && (
+          <ToggleCheckbox
+            name="shouldShowFollowedAuthorsArticles"
+            control={control}
+            errors={errors}
+            label="Show only followed authors articles"
+          />
+        )}
       </form>
     </div>
   );

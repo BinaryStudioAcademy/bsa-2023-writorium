@@ -10,7 +10,7 @@
 
 .switch {
   position: relative;
-  width: 56px;
+  min-width: 56px;
   height: 24px;
   margin-right: 15px;
   background-color: var(--overlay-alpha-5);

@@ -1,35 +1,47 @@
 @use "src/assets/css/breakpoints.scss";
 
-.container {
-  padding-bottom: 50px;
-}
-
 .promptsContainer {
   display: flex;
+  flex-direction: column-reverse;
   gap: 20px;
+}
+
+.actionBar {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.actionBarDescription {
+  color: var(--dark-blue-40);
 }
 
 .prompts {
   position: relative;
-  display: grid;
-  grid-template-columns: repeat(5, minmax(min-content, 1fr));
-  flex: 1 1 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 20px;
   list-style: none;
 }
 
-.resetPromptButton,
-.generatePromptButton {
-  position: absolute;
-  top: -20px;
+.tooltipWrapper {
+  width: 100%;
+  max-width: 220px;
 }
 
-.resetPromptButton {
-  right: 0;
+.resetPromptButton,
+.generatePromptButton {
+  align-self: flex-start;
 }
 
 .generatePromptButton {
   display: none;
+}
+
+.mobileActionButtons {
+  display: flex;
+  justify-content: space-between;
 }
 
 .shuffleButton {
@@ -54,10 +66,6 @@
   animation: spin 0.5s linear infinite;
 }
 
-.minWidth {
-  min-width: 0;
-}
-
 @keyframes spin {
   from {
     transform: rotate(0deg);
@@ -69,7 +77,7 @@
 }
 
 @media only screen and (max-width: breakpoints.$extra-large) {
-  .container {
+  .promptsContainer {
     display: none;
   }
 
@@ -77,23 +85,17 @@
     display: none;
   }
 
-  .prompts {
-    grid-template-columns: 1fr;
-    gap: 0;
-    margin-top: 20px;
-  }
-
   .generatePromptButton {
     display: block;
+  }
+
+  .prompts {
+    gap: 10px;
   }
 }
 
 @media only screen and (max-width: breakpoints.$extra-extra-large) {
   .promptsContainer {
-    gap: 10px;
-  }
-
-  .prompts {
     gap: 10px;
   }
 }

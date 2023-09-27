@@ -2,6 +2,7 @@ import {
   Avatar,
   Button,
   Icon,
+  Layout,
   Link,
   Popover,
 } from '~/libs/components/components.js';
@@ -28,43 +29,45 @@ const Header: React.FC<Properties> = ({ user }) => {
     <>
       {user && (
         <header className={styles.header}>
-          <Link to={AppRoute.ARTICLES}>
-            <Icon iconName="writoriumLogo" className={styles.logo} />
-          </Link>
-          <div className={styles.rightSide}>
-            <Link to={AppRoute.CREATE_ARTICLE} className={styles.writeLink}>
-              Write
+          <Layout className={styles.layout}>
+            <Link to={AppRoute.ARTICLES}>
+              <Icon iconName="writoriumLogo" className={styles.logo} />
             </Link>
-            <Popover
-              content={
-                <>
-                  <Link
-                    to={AppRoute.CREATE_ARTICLE}
-                    className={styles.popoverWriteLink}
-                  >
-                    Write
-                  </Link>
-                  <Link className={styles.profileLink} to={AppRoute.PROFILE}>
-                    Profile
-                  </Link>
-                  <Button
-                    variant="text"
-                    type="button"
-                    name="Logout"
-                    label="Logout"
-                    className={styles.logoutBtn}
-                    onClick={handleLogout}
-                  />
-                </>
-              }
-            >
-              <Avatar
-                className={styles.avatar}
-                username={getFullName(user.firstName, user.lastName)}
-                avatarUrl={user.avatarUrl}
-              />
-            </Popover>
-          </div>
+            <div className={styles.rightSide}>
+              <Link to={AppRoute.CREATE_ARTICLE} className={styles.writeLink}>
+                Write
+              </Link>
+              <Popover
+                content={
+                  <>
+                    <Link
+                      to={AppRoute.CREATE_ARTICLE}
+                      className={styles.popoverWriteLink}
+                    >
+                      Write
+                    </Link>
+                    <Link className={styles.profileLink} to={AppRoute.PROFILE}>
+                      Profile
+                    </Link>
+                    <Button
+                      variant="text"
+                      type="button"
+                      name="Logout"
+                      label="Logout"
+                      className={styles.logoutBtn}
+                      onClick={handleLogout}
+                    />
+                  </>
+                }
+              >
+                <Avatar
+                  className={styles.avatar}
+                  username={getFullName(user.firstName, user.lastName)}
+                  avatarUrl={user.avatarUrl}
+                />
+              </Popover>
+            </div>
+          </Layout>
         </header>
       )}
     </>

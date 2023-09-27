@@ -1,3 +1,5 @@
+@use "breakpoints.scss";
+
 :root {
   --white: #ffffff;
   --white-50: rgb(255 255 255 / 50%);
@@ -52,7 +54,11 @@
   /* z-index */
   --z-index-level-one: 100;
   --z-index-tooltip: 1000;
+  --z-index-popover: 99;
   --achievement-columns: 3;
+
+  /* layout */
+  --layout-width: 1680px;
 }
 
 input,
@@ -61,4 +67,16 @@ textarea {
   --input-shadow-color: var(--shadow-color);
   --input-text: rgb(40 40 40 / 50%);
   --input-placeholder-color: rgb(157 164 174 / 40%);
+}
+
+@media only screen and (max-width: breakpoints.$medium) {
+  :root {
+    --header-height: 80px;
+  }
+}
+
+@media only screen and (max-width: breakpoints.$small) {
+  :root {
+    --header-height: 55px;
+  }
 }

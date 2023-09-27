@@ -1,8 +1,8 @@
 import { type UserDetailsResponseDto } from '~/packages/users/users.js';
 
-import { type CommentEntityType } from './comment-entity.type.js';
+import { type CommentEntityInstance } from './comment-entity-instance.type.js';
 
-type CommentWithRelationsResponseDto = CommentEntityType & {
+type CommentWithRelationsResponseDto = CommentEntityInstance & {
   author: UserDetailsResponseDto;
 };
 

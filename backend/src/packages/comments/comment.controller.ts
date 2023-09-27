@@ -61,23 +61,25 @@ class CommentController extends Controller {
     this.addRoute({
       path: CommentsApiPath.ROOT,
       method: 'GET',
-      handler: (options) =>
-        this.findAllByArticleId(
+      handler: (options) => {
+        return this.findAllByArticleId(
           options as ApiHandlerOptions<{
             query: CommentGetAllRequestDto;
           }>,
-        ),
+        );
+      },
     });
 
     this.addRoute({
       path: CommentsApiPath.$ID,
       method: 'GET',
-      handler: (options) =>
-        this.findOneByCommentId(
+      handler: (options) => {
+        return this.findOneByCommentId(
           options as ApiHandlerOptions<{
             params: { id: number };
           }>,
-        ),
+        );
+      },
     });
 
     this.addRoute({
@@ -86,13 +88,14 @@ class CommentController extends Controller {
       validation: {
         body: commentCreateValidationSchema,
       },
-      handler: (options) =>
-        this.create(
+      handler: (options) => {
+        return this.create(
           options as ApiHandlerOptions<{
             user: UserAuthResponseDto;
             body: CommentBaseRequestDto;
           }>,
-        ),
+        );
+      },
     });
 
     this.addRoute({
@@ -101,14 +104,15 @@ class CommentController extends Controller {
       validation: {
         body: commentUpdateValidationSchema,
       },
-      handler: (options) =>
-        this.update(
+      handler: (options) => {
+        return this.update(
           options as ApiHandlerOptions<{
             params: { id: number };
             user: UserAuthResponseDto;
             body: CommentUpdateRequestDto;
           }>,
-        ),
+        );
+      },
     });
   }
 

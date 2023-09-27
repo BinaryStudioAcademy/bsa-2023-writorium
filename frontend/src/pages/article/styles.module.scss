@@ -12,15 +12,19 @@
   padding-bottom: 38px;
 }
 
-.articleCreatePageWrapper .articleFormWrapper {
-  max-width: 830px;
+.mainContentWrapper {
+  display: flex;
+  gap: 40px;
 }
 
-.editArticlePage .leftColumn {
+.editArticlePage .leftColumn,
+.articleCreatePageWrapper .leftColumn {
   flex: 60%;
+  flex-shrink: 0;
 }
 
-.editArticlePage .rightColumn {
+.editArticlePage .rightColumn,
+.articleCreatePageWrapper .rightColumn {
   flex: 40%;
 }
 
@@ -60,10 +64,14 @@
   line-height: 30px;
 }
 
-.articleCreatePageWrapper .showPrompt {
+.articleCreatePageWrapper .popover .showPrompt {
   display: none;
   padding: 0 0 24px 6px;
   color: var(--light-green);
+}
+
+.articleCreatePageWrapper .popover .showPrompt:hover {
+  color: var(--dark-green);
 }
 
 .reactionButtonsWrapper {
@@ -107,15 +115,29 @@
   color: var(--light-green);
 }
 
+.popover {
+  max-width: max-content;
+}
+
 @media only screen and (max-width: breakpoints.$medium) {
   .editArticlePage {
     flex-direction: column;
   }
+
+  .promptGenerationModal {
+    width: 320px;
+  }
+}
+
+@media only screen and (min-width: breakpoints.$medium) and (max-width: breakpoints.$extra-large) {
+  .promptGenerationModal {
+    width: 520px;
+  }
 }
 
 @media only screen and (max-width: breakpoints.$extra-large) {
-  .articleCreatePageWrapper .articleFormWrapper {
-    max-width: none;
+  .mainContentWrapper {
+    flex-direction: column;
   }
 
   .articlePageWrapper {
@@ -129,17 +151,17 @@
 
   .promptGenerationModal {
     top: 25px;
-    width: 100%;
+    left: 0;
     border: 1px solid var(--dark-gray-40);
     border-radius: 15px;
   }
 
-  .promptGenerationContainer {
-    display: block;
-    padding: 10px;
+  .mobilePromptGenerationContainer {
+    display: flex;
+    padding: 20px;
   }
 
-  .articleCreatePageWrapper .showPrompt {
+  .articleCreatePageWrapper .popover .showPrompt {
     display: block;
   }
 
@@ -149,6 +171,10 @@
 }
 
 @media print {
+  .articlePageWrapper {
+    display: block;
+  }
+
   .commentsBlockWrapper {
     display: none;
   }
