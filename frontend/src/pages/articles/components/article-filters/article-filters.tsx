@@ -118,12 +118,20 @@ const ArticleFilters: React.FC<Properties> = ({
           />
         )}
         {isMyArticlesPage && (
-          <ToggleCheckbox
-            name="shouldShowDrafts"
-            control={control}
-            errors={errors}
-            label="Show only drafts"
-          />
+          <>
+            <ToggleCheckbox
+              name="shouldShowPublishedAricles"
+              control={control}
+              errors={errors}
+              label="Show only published articles"
+            />
+            <ToggleCheckbox
+              name="shouldShowDrafts"
+              control={control}
+              errors={errors}
+              label="Show only drafts"
+            />
+          </>
         )}
       </form>
     </div>

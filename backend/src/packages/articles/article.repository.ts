@@ -77,6 +77,7 @@ class ArticleRepository implements IArticleRepository {
     authorId,
     shouldShowFavourites,
     shouldShowFollowedAuthorsArticles,
+    shouldShowPublishedAricles,
     shouldShowDrafts,
     requestUserId,
   }: {
@@ -109,7 +110,11 @@ class ArticleRepository implements IArticleRepository {
         ),
       )
       .where(getShowDraftsQuery(Boolean(shouldShowDrafts), requestUserId))
-      .where(getWherePublishedOnlyQuery(hasPublishedOnly))
+      .where(
+        getWherePublishedOnlyQuery(
+          hasPublishedOnly || shouldShowPublishedAricles,
+        ),
+      )
       .whereNull('deletedAt')
       .orderBy(getSortingCondition(hasPublishedOnly))
       .page(skip / take, take)
