@@ -12,7 +12,13 @@ type Properties = {
 };
 
 const Tags: React.FC<Properties> = ({ className, tags }) => (
-  <ul className={getValidClassNames(styles.tags, className)}>
+  <ul
+    className={getValidClassNames(
+      styles.tags,
+      className,
+      tags.length === 1 ? styles.singleTag : '',
+    )}
+  >
     {tags.map((tag) => (
       <li key={tag.category} className={styles.container}>
         <BlockWithTooltip
