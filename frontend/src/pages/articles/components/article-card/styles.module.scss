@@ -2,7 +2,6 @@
 
 .article {
   width: 100%;
-  max-width: 832px;
   padding: 20px;
   background: var(--white);
   border: 2px solid var(--pale-gray);
@@ -91,7 +90,6 @@
   display: -webkit-box;
   -webkit-line-clamp: var(--max-lines);
   -webkit-box-orient: vertical;
-  max-width: 585px;
   height: var(--height);
   margin: 14px 0 23px;
   color: var(--dark-gray);
