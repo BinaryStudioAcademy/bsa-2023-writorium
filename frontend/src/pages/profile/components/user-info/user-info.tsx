@@ -1,6 +1,6 @@
-import { Avatar, Button } from '~/libs/components/components.js';
+import { Avatar, Button, Modal } from '~/libs/components/components.js';
 import { getFullName, getValidClassNames } from '~/libs/helpers/helpers.js';
-import { useCallback, useState } from '~/libs/hooks/hooks.js';
+import { useCallback, useModal } from '~/libs/hooks/hooks.js';
 import { type UserAuthResponseDto } from '~/packages/users/users.js';
 
 import { ProfileEditForm } from '../../components/components.js';
@@ -12,41 +12,45 @@ type Properties = {
 };
 
 const UserInfo: React.FC<Properties> = ({ user, className }) => {
-  const [isEditingProfile, setIsEditingProfile] = useState(false);
+  const { isOpen, handleToggleModalOpen } = useModal();
   const userName = getFullName(user.firstName, user.lastName);
 
-  const handleEditMode = useCallback(
-    (value = true) => setIsEditingProfile(value),
-    [],
-  );
+  const handleModalClose = useCallback(() => {
+    if (isOpen) {
+      handleToggleModalOpen();
+    }
+  }, [handleToggleModalOpen, isOpen]);
 
   return (
     <div className={styles.userInfoContainer}>
       <h3 className={styles.title}>Your details</h3>
       <div className={getValidClassNames(className, styles.userInfoBlock)}>
-        {isEditingProfile ? (
-          <ProfileEditForm user={user} onEdit={handleEditMode} />
-        ) : (
-          <div className={styles.userInfoWrapper}>
-            <Avatar
-              username={userName}
-              avatarUrl={user.avatarUrl}
-              className={styles.avatar}
-            />
-            <div>
-              <div className={styles.userInfo}>
-                <p className={styles.userName}>{userName}</p>
-                <p className={styles.userEmail}>{user.email}</p>
-              </div>
-              <Button
-                className={styles.editButton}
-                variant="outlined"
-                label="Edit profile"
-                onClick={handleEditMode}
-              />
+        <div className={styles.userInfoWrapper}>
+          <Avatar
+            username={userName}
+            avatarUrl={user.avatarUrl}
+            className={styles.avatar}
+          />
+          <div>
+            <div className={styles.userInfo}>
+              <p className={styles.userName}>{userName}</p>
+              <p className={styles.userEmail}>{user.email}</p>
             </div>
+            <Button
+              className={styles.editButton}
+              variant="outlined"
+              label="Edit profile"
+              onClick={handleToggleModalOpen}
+            />
           </div>
-        )}
+        </div>
+        <Modal
+          onClose={handleModalClose}
+          isOpen={isOpen}
+          contentClassName={styles.modalEditForm}
+        >
+          <ProfileEditForm user={user} onEdit={handleModalClose} />
+        </Modal>
       </div>
     </div>
   );

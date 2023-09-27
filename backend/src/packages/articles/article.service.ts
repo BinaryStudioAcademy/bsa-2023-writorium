@@ -274,10 +274,9 @@ class ArticleService implements IService {
     id: number,
     userId?: number,
   ): Promise<ArticleWithFollowResponseDto | null> {
-    const article = await this.articleRepository.findWithIsFavourite(
-      id,
-      Number(userId),
-    );
+    const article = userId
+      ? await this.articleRepository.findWithIsFavourite(id, userId)
+      : await this.articleRepository.find(id);
 
     if (!article) {
       throw new NotFoundError(ExceptionMessage.ARTICLE_NOT_FOUND);
