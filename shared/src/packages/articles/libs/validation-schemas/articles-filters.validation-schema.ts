@@ -16,6 +16,7 @@ const articlesFilters = joi.object<ArticlesFilters, true>({
   shouldShowFavourites: joi.boolean(),
   shouldShowFollowedAuthorsArticles: joi.boolean(),
   shouldShowPublishedAricles: joi.boolean(),
+  shouldShowDrafts: joi.boolean(),
 });
 
 export { articlesFilters };
