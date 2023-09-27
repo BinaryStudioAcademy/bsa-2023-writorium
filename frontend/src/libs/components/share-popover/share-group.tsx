@@ -49,11 +49,7 @@ const ShareGroup: FC<Properties> = ({ articleId: id, articleTitle }) => {
   }
 
   return (
-    <Loader
-      isLoading={isLoading}
-      type="circular"
-      overlayClassName={styles.loader}
-    >
+    <Loader isLoading={isLoading} type="dots" overlayClassName={styles.loader}>
       {sharedLink && (
         <ul className={styles.fullWidth}>
           <li className={styles.groupItem}>
