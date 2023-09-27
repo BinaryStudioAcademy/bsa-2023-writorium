@@ -29,6 +29,10 @@
   align-items: center;
 }
 
+.avatar {
+  cursor: pointer;
+}
+
 span.avatar:hover {
   background-color: var(--light-green-80);
 }
