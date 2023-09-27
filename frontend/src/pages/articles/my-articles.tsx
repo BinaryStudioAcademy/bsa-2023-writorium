@@ -40,7 +40,7 @@ const MyArticles: React.FC = () => {
   const { articles, articlesStatus, authors, genres } = useAppSelector(
     ({ articles, users }) => ({
       articles: articles.articles,
-      articlesStatus: articles.dataStatus,
+      articlesStatus: articles.fetchArticlesDataStatus,
       genres: articles.genres,
       authors: users.authors,
     }),
