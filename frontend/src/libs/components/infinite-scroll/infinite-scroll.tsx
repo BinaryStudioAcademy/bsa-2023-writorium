@@ -7,12 +7,12 @@ type Properties = {
   hasMore: boolean;
   dataLength: number;
   isLoading: boolean;
-  fetchData: () => void;
+  onFetchData: () => void;
   className?: string;
 };
 
 const InfiniteScroll: React.FC<Properties> = ({
-  fetchData,
+  onFetchData,
   children,
   hasMore,
   dataLength,
@@ -21,7 +21,7 @@ const InfiniteScroll: React.FC<Properties> = ({
 }) => (
   <ReactInfiniteScroll
     loader={<Loader isLoading={isLoading} type="circular" hasOverlay />}
-    next={fetchData}
+    next={onFetchData}
     hasMore={hasMore}
     dataLength={dataLength}
     className={className}

@@ -51,6 +51,7 @@ type State = {
     | null;
   articleComments: CommentWithRelationsResponseDto[];
   articles: ArticleWithCountsResponseDto[];
+  fetchArticlesDataStatus: ValueOf<typeof DataStatus>;
   dataStatus: ValueOf<typeof DataStatus>;
   genres: GenreGetAllResponseDto['items'];
   fetchArticleCommentsDataStatus: ValueOf<typeof DataStatus>;
@@ -82,6 +83,7 @@ const initialState: State = {
   improvementSuggestions: null,
   sharedLink: null,
   dataStatus: DataStatus.IDLE,
+  fetchArticlesDataStatus: DataStatus.IDLE,
   fetchArticleCommentsDataStatus: DataStatus.IDLE,
   saveArticleStatus: DataStatus.IDLE,
   articleReactionDataStatus: DataStatus.IDLE,
@@ -99,7 +101,7 @@ const { reducer, actions, name } = createSlice({
   reducers: {
     resetArticles(state) {
       state.articles = initialState.articles;
-      state.dataStatus = DataStatus.IDLE;
+      state.fetchArticlesDataStatus = DataStatus.IDLE;
     },
     resetComments(state) {
       state.articleComments = initialState.articleComments;
@@ -353,8 +355,17 @@ const { reducer, actions, name } = createSlice({
     builder.addMatcher(
       isAnyOf(fetchAll.fulfilled, fetchOwn.fulfilled),
       (state, action) => {
-        state.dataStatus = DataStatus.FULFILLED;
+        state.fetchArticlesDataStatus = DataStatus.FULFILLED;
         state.articles = [...state.articles, ...action.payload.items];
+      },
+    );
+    builder.addMatcher(isAnyOf(fetchAll.pending, fetchOwn.pending), (state) => {
+      state.fetchArticlesDataStatus = DataStatus.PENDING;
+    });
+    builder.addMatcher(
+      isAnyOf(fetchAll.rejected, fetchOwn.rejected),
+      (state) => {
+        state.fetchArticlesDataStatus = DataStatus.REJECTED;
       },
     );
     builder.addMatcher(
@@ -365,8 +376,6 @@ const { reducer, actions, name } = createSlice({
     );
     builder.addMatcher(
       isAnyOf(
-        fetchAll.pending,
-        fetchOwn.pending,
         getArticle.pending,
         getAllGenres.pending,
         fetchSharedArticle.pending,
@@ -391,8 +400,6 @@ const { reducer, actions, name } = createSlice({
     );
     builder.addMatcher(
       isAnyOf(
-        fetchAll.rejected,
-        fetchOwn.rejected,
         fetchSharedArticle.rejected,
         deleteArticle.rejected,
         toggleIsFavourite.rejected,
