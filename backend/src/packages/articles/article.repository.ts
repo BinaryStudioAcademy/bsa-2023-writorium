@@ -15,6 +15,7 @@ import {
   getArticlePublishedStatusQuery,
   getFollowedAuthorsArticles,
   getIsFavouriteSubQuery,
+  getShowDraftsQuery,
   getShowFavouritesQuery,
   getSortingCondition,
   getWhereAuthorIdQuery,
@@ -77,6 +78,7 @@ class ArticleRepository implements IArticleRepository {
     shouldShowFavourites,
     shouldShowFollowedAuthorsArticles,
     shouldShowPublishedAricles,
+    shouldShowDrafts,
     requestUserId,
   }: {
     userId?: number;
@@ -107,6 +109,7 @@ class ArticleRepository implements IArticleRepository {
           requestUserId,
         ),
       )
+      .where(getShowDraftsQuery(Boolean(shouldShowDrafts), requestUserId))
       .where(
         getWherePublishedOnlyQuery(
           hasPublishedOnly || shouldShowPublishedAricles,

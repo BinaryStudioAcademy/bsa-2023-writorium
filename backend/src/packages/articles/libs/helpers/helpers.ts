@@ -5,6 +5,7 @@ export { getDetectArticleGenreCompletionConfig } from './get-detect-article-genr
 export { getFollowedAuthorsArticles } from './get-followed-authors-articles.helper.js';
 export { getIsFavouriteSubQuery } from './get-is-favourite-subquery.helper.js';
 export { getOriginFromRefererHeader } from './get-origin-from-referer-header.helper.js';
+export { getShowDraftsQuery } from './get-show-drafts-query.helper.js';
 export { getShowFavouritesQuery } from './get-show-favourites-query.helper.js';
 export { getSortingCondition } from './get-sorting-condition.helper.js';
 export { getWhereAuthorIdQuery } from './get-where-author-id-query.helper.js';

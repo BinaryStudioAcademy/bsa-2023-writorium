@@ -59,6 +59,7 @@ const ArticlesFeed: React.FC = () => {
     shouldShowFavourites: false,
     shouldShowFollowedAuthorsArticles: false,
     shouldShowPublishedAricles: false,
+    shouldShowDrafts: false,
   });
 
   const isLoadingArticles = articlesStatus === DataStatus.PENDING;
