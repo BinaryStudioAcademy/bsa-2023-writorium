@@ -1,5 +1,5 @@
 import { Layout, Spoiler } from '~/libs/components/components.js';
-import { WindowBreakpoint } from '~/libs/enums/enums.js';
+import { DataStatus, WindowBreakpoint } from '~/libs/enums/enums.js';
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
 import {
   useAppDispatch,
@@ -20,10 +20,17 @@ import styles from './styles.module.scss';
 
 const ProfilePage: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { user, userActivities } = useAppSelector(({ auth, users }) => ({
-    user: auth.user as UserAuthResponseDto,
-    userActivities: users.userActivities,
-  }));
+  const { user, userActivities, articles, articlesStatus } = useAppSelector(
+    ({ auth, users, articles }) => ({
+      user: auth.user as UserAuthResponseDto,
+      userActivities: users.userActivities,
+      articles: articles.articles,
+      articlesStatus: articles.dataStatus,
+    }),
+  );
+
+  const isLoadingArticles = articlesStatus === DataStatus.PENDING;
+  const isArticles = Boolean(articles.length) || isLoadingArticles;
 
   useEffect(() => {
     void dispatch(usersActions.getUserActivity());
@@ -55,7 +62,7 @@ const ProfilePage: React.FC = () => {
         </Spoiler>
         <Spoiler
           breakpoint={WindowBreakpoint.MEDIUM}
-          summary="Your latest articles"
+          summary={isArticles ? 'Your latest articles' : 'My articles'}
         >
           <UserLatestArticles className={styles.profileBlock} />
         </Spoiler>
