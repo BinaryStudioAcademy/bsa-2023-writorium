@@ -66,7 +66,7 @@ const UserArticlesGenresStats: React.FC<Properties> = ({ className }) => {
     GenresChartConfig.MAX_VISIBLE_GENRES,
   );
 
-  const isArticlesExist = Boolean(chartData.length);
+  const hasArticles = Boolean(chartData.length);
 
   return (
     <div className={getValidClassNames(styles.wrapper, className)}>
@@ -86,7 +86,7 @@ const UserArticlesGenresStats: React.FC<Properties> = ({ className }) => {
                   options={articleStatusOptions}
                   control={control}
                   errors={errors}
-                  isDisabled={!isArticlesExist}
+                  isDisabled={!hasArticles}
                 />
               </div>
             </form>
@@ -99,7 +99,7 @@ const UserArticlesGenresStats: React.FC<Properties> = ({ className }) => {
                 width={GenresChartConfig.SIZE}
                 height={GenresChartConfig.SIZE}
               >
-                {isArticlesExist ? (
+                {hasArticles ? (
                   <>
                     <Pie
                       cx="50%"
