@@ -42,6 +42,7 @@ import { ReactComponent as Search } from '~/assets/img/icons/search-icon.svg';
 import { ReactComponent as Share } from '~/assets/img/icons/share-icon.svg';
 import { ReactComponent as Sparkles } from '~/assets/img/icons/sparkles-icon.svg';
 import { ReactComponent as Star } from '~/assets/img/icons/star-icon.svg';
+import { ReactComponent as Stats } from '~/assets/img/icons/stats.svg';
 import { ReactComponent as TextSizeDecrease } from '~/assets/img/icons/text-decrease-icon.svg';
 import { ReactComponent as TextSizeIncrease } from '~/assets/img/icons/text-increase-icon.svg';
 import { ReactComponent as TrashBinIcon } from '~/assets/img/icons/trash-bin-icon.svg';
@@ -78,6 +79,7 @@ type IconName =
   | 'search'
   | 'share'
   | 'sparkles'
+  | 'stats'
   | 'star'
   | 'view'
   | 'writoriumLogo'
@@ -131,6 +133,7 @@ const iconNameToIcon: Record<
   search: Search,
   share: Share,
   sparkles: Sparkles,
+  stats: Stats,
   star: Star,
   view: View,
   writoriumLogo: WritoriumLogo,
