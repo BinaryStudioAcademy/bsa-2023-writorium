@@ -23,7 +23,6 @@ export {
   getDateDifferenceWithUnit,
   getDifferenceBetweenDates,
   getFormattedDate,
-  getShuffledArray,
   makePluralOrSingular,
   parseJSONSafely,
   subtractMonthsFromDate,
