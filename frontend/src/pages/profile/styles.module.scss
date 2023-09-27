@@ -3,10 +3,9 @@
 .profile {
   display: grid;
   grid-template:
-    "activity activity info"
-    "articles genres achievements"
-    / 1fr 1fr 1fr;
-  gap: 20px;
+    "activity activity info" minmax(305px, max-content)
+    "articles genres achievements" minmax(445px, max-content) / 1fr 1fr 1fr;
+  gap: 20px 20px;
   width: 100%;
   margin: 0 auto;
   padding-bottom: 20px;
@@ -18,6 +17,13 @@
 }
 
 @media only screen and (max-width: breakpoints.$extra-large) {
+  .profile {
+    grid-template:
+      "achievements info" minmax(305px, max-content)
+      "activity activity" minmax(305px, max-content)
+      "articles genres" minmax(445px, max-content) / 1fr 1fr;
+  }
+
   .userInfo {
     padding: 20px;
   }
@@ -35,8 +41,7 @@
   }
 
   .activity {
-    padding: 10px;
-    padding-right: 30px;
+    padding: 10px 30px 10px 10px;
   }
 }
 

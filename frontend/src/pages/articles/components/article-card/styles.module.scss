@@ -311,3 +311,9 @@
     gap: 10px;
   }
 }
+
+@media only screen and (max-width: breakpoints.$extra-small) {
+  .toolbar {
+    flex-direction: column;
+  }
+}

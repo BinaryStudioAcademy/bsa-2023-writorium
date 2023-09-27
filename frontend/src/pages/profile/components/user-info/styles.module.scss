@@ -3,21 +3,22 @@
 .userInfoBlock {
   grid-area: info;
   width: 100%;
-  min-height: 262px;
-  padding: 45px 37px 55px;
+  padding: 45px 10% 55px;
   background-color: var(--light-gray);
 }
 
 .userInfoWrapper {
   display: flex;
-  justify-content: flex-start;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
   gap: 19px;
+  text-align: center;
 }
 
 .avatar {
   width: 50%;
-  max-width: 162px;
+  max-width: 160px;
   aspect-ratio: 1 / 1;
   height: auto;
   font-size: 40px;
@@ -31,7 +32,6 @@
   margin-bottom: 19px;
   color: var(--black-90);
   line-height: normal;
-  word-break: break-word;
 }
 
 .userName {
