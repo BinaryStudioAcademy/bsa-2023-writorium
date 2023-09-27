@@ -53,7 +53,7 @@ Then you may fix it with such solution (for VS Code IDE):
 
 ### 🛖 Application Schema
 
-TBA
+![writorium drawio](https://github.com/BinaryStudioAcademy/bsa-2023-writorium/assets/19575839/7e8b5d48-dad9-4f4e-acb1-3ffd46b71bd8)
 
 ### 💽 DB Schema
 
