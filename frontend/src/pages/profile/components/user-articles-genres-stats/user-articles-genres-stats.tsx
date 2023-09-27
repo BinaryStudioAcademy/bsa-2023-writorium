@@ -105,6 +105,7 @@ const UserArticlesGenresStats: React.FC<Properties> = ({ className }) => {
                             index % GENRES_CHART_COLORS.length
                           ]
                         }
+                        style={{ outline: 'none' }}
                       />
                     ))}
                   </Pie>
