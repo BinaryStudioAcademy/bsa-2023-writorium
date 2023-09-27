@@ -1,5 +1,5 @@
 import { Link } from '~/libs/components/components.js';
-import { AppRoute, DataStatus } from '~/libs/enums/enums.js';
+import { AppRoute } from '~/libs/enums/enums.js';
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
 import {
   useAppDispatch,
@@ -19,13 +19,11 @@ type Properties = {
 
 const UserLatestArticles: React.FC<Properties> = ({ className }) => {
   const dispatch = useAppDispatch();
-  const { articles, articlesStatus } = useAppSelector(({ articles }) => ({
+  const { articles } = useAppSelector(({ articles }) => ({
     articles: articles.articles,
-    articlesStatus: articles.dataStatus,
   }));
 
-  const isLoadingArticles = articlesStatus === DataStatus.PENDING;
-  const isArticles = Boolean(articles.length) || isLoadingArticles;
+  const isArticles = Boolean(articles.length);
 
   useEffect(() => {
     void dispatch(

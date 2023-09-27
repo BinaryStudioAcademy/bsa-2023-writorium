@@ -1,5 +1,5 @@
 import { Layout, Spoiler } from '~/libs/components/components.js';
-import { DataStatus, WindowBreakpoint } from '~/libs/enums/enums.js';
+import { WindowBreakpoint } from '~/libs/enums/enums.js';
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
 import {
   useAppDispatch,
@@ -20,17 +20,15 @@ import styles from './styles.module.scss';
 
 const ProfilePage: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { user, userActivities, articles, articlesStatus } = useAppSelector(
+  const { user, userActivities, articles } = useAppSelector(
     ({ auth, users, articles }) => ({
       user: auth.user as UserAuthResponseDto,
       userActivities: users.userActivities,
       articles: articles.articles,
-      articlesStatus: articles.dataStatus,
     }),
   );
 
-  const isLoadingArticles = articlesStatus === DataStatus.PENDING;
-  const isArticles = Boolean(articles.length) || isLoadingArticles;
+  const isArticles = Boolean(articles.length);
 
   useEffect(() => {
     void dispatch(usersActions.getUserActivity());

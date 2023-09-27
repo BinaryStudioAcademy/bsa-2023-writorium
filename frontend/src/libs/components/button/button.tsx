@@ -9,11 +9,11 @@ type ButtonVariant = 'primary' | 'outlined' | 'text';
 
 type ButtonSize = 'medium' | 'small';
 
-type ButtonOutlineColor = 'green' | 'white';
+type outlinedButtonColor = 'green' | 'white';
 
 type Properties = {
   variant?: ButtonVariant;
-  outlinedButtonColor?: ButtonOutlineColor;
+  outlinedButtonColor?: outlinedButtonColor;
   size?: ButtonSize;
   isDisabled?: boolean;
   label: React.ReactNode;
@@ -52,11 +52,6 @@ const Button: React.FC<Properties> = ({
     small: styles.buttonSmall,
   };
 
-  const outlineColorClassNameMapper: Record<ButtonOutlineColor, string> = {
-    green: styles.green,
-    white: styles.white,
-  };
-
   const handleButtonClick = (
     event: ReactMouseEvent<HTMLButtonElement>,
   ): void => {
@@ -79,7 +74,7 @@ const Button: React.FC<Properties> = ({
         styles.button,
         sizeClassNameMapper[size],
         variantClassNameMapper[variant],
-        outlineColorClassNameMapper[outlinedButtonColor],
+        styles[outlinedButtonColor],
         hasFullWidth && styles.hasFullWidth,
         isLoading && styles.buttonLoading,
         className,
