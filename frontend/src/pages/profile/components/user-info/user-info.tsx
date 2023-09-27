@@ -19,7 +19,6 @@ const UserInfo: React.FC<Properties> = ({ user, className }) => {
     if (isOpen) {
       handleToggleModalOpen();
     }
-    return false;
   }, [handleToggleModalOpen, isOpen]);
 
   return (
