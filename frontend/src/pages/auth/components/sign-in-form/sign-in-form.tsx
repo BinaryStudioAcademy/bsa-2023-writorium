@@ -52,7 +52,7 @@ const SignInForm: React.FC<Properties> = ({
         <h2 className={styles.authFormTitle}>Hello!</h2>
         <div className={styles.socialsSignInButtons}>
           <Button
-            variant="greenOutlined"
+            variant="outlined"
             onClick={onGoogleLogin}
             label="Sign in with Google"
           />

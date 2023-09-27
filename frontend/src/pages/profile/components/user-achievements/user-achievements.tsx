@@ -60,7 +60,8 @@ const UserAchievements: React.FC<Properties> = ({ className }) => {
           <Button
             label="Show all"
             onClick={handleToggleModalOpen}
-            variant="whiteOutlined"
+            variant="outlined"
+            outlineColor="white"
           />
           <Modal
             isOpen={isOpen}

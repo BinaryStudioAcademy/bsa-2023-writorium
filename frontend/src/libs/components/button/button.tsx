@@ -5,12 +5,15 @@ import { type ReactMouseEvent, type ValueOf } from '~/libs/types/types.js';
 import { Loader } from '../components.js';
 import styles from './styles.module.scss';
 
-type ButtonVariant = 'primary' | 'greenOutlined' | 'whiteOutlined' | 'text';
+type ButtonVariant = 'primary' | 'outlined' | 'text';
 
 type ButtonSize = 'medium' | 'small';
 
+type ButtonOutlineColor = 'green' | 'white';
+
 type Properties = {
   variant?: ButtonVariant;
+  outlineColor?: ButtonOutlineColor;
   size?: ButtonSize;
   isDisabled?: boolean;
   label: React.ReactNode;
@@ -34,19 +37,24 @@ const Button: React.FC<Properties> = ({
   onClick,
   hasFullWidth,
   variant = 'primary',
+  outlineColor = 'green',
   size = 'medium',
   isLoading,
 }) => {
   const variantClassNameMapper: Record<ButtonVariant, string> = {
     text: styles.buttonText,
     primary: styles.buttonPrimary,
-    greenOutlined: styles.buttonGreenOutlined,
-    whiteOutlined: styles.buttonWhiteOutlined,
+    outlined: styles.buttonOutlined,
   };
 
   const sizeClassNameMapper: Record<ButtonSize, string> = {
     medium: styles.buttonMedium,
     small: styles.buttonSmall,
+  };
+
+  const outlineColorClassNameMapper: Record<ButtonOutlineColor, string> = {
+    green: styles.greenOutline,
+    white: styles.whiteOutline,
   };
 
   const handleButtonClick = (
@@ -71,6 +79,7 @@ const Button: React.FC<Properties> = ({
         styles.button,
         sizeClassNameMapper[size],
         variantClassNameMapper[variant],
+        outlineColorClassNameMapper[outlineColor],
         hasFullWidth && styles.hasFullWidth,
         isLoading && styles.buttonLoading,
         className,

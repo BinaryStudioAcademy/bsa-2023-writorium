@@ -40,7 +40,7 @@ const UserInfo: React.FC<Properties> = ({ user, className }) => {
               </div>
               <Button
                 className={styles.editButton}
-                variant="greenOutlined"
+                variant="outlined"
                 label="Edit profile"
                 onClick={handleEditMode}
               />

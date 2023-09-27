@@ -57,7 +57,7 @@ const FacebookLoginButton: React.FC<FacebookLoginButtonProperties> = ({
   return (
     <Button
       type="button"
-      variant="greenOutlined"
+      variant="outlined"
       label="Sign in with Facebook"
       name="Sign in with Facebook"
       isDisabled={isLoading}

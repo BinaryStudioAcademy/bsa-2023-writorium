@@ -54,51 +54,42 @@
 
 /* Primary */
 
-/* Green outlined */
-.button.buttonGreenOutlined {
-  color: var(--dark-green);
+/* Outlined */
+
+.button.buttonOutlined {
   background-color: transparent;
-  border: 2px solid var(--dark-green);
+  border: 2px solid;
 }
 
-.button.buttonGreenOutlined:disabled {
+.button.buttonOutlined.greenOutline {
+  color: var(--dark-green);
+  border-color: var(--dark-green);
+}
+
+.button.buttonOutlined.whiteOutline {
+  color: var(--white);
+  border-color: var(--white);
+}
+
+.button.buttonOutlined:disabled {
   color: var(--black-20);
   border-color: var(--disabled-gray);
 }
 
-.button.buttonGreenOutlined:not(:disabled, .buttonLoading):hover {
+.button.buttonOutlined:not(:disabled, .buttonLoading):hover {
   color: var(--light-green);
   border-color: var(--light-green);
 }
 
-.button.buttonGreenOutlined .loader {
+.button.buttonOutlined.greenOutline .loader {
   --loader-color: var(--dark-green);
 }
 
-/* Green Outlined */
-
-/* White outlined */
-.button.buttonWhiteOutlined {
-  color: var(--white);
-  background-color: transparent;
-  border: 2px solid var(--white);
-}
-
-.button.buttonWhiteOutlined:disabled {
-  color: var(--black-20);
-  border-color: var(--disabled-gray);
-}
-
-.button.buttonWhiteOutlined:not(:disabled, .buttonLoading):hover {
-  color: var(--light-green);
-  border-color: var(--light-green);
-}
-
-.button.buttonWhiteOutlined .loader {
+.button.buttonOutlined.whiteOutline .loader {
   --loader-color: var(--white);
 }
 
-/* White Outlined */
+/* Outlined */
 
 /* Text */
 .button.buttonText {
