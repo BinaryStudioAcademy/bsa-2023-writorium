@@ -13,6 +13,7 @@ import {
 } from './libs/constants/constants.js';
 import {
   getArticlePublishedStatusQuery,
+  getFollowedAuthorsArticles,
   getIsFavouriteSubQuery,
   getShowFavouritesQuery,
   getSortingCondition,
@@ -74,6 +75,7 @@ class ArticleRepository implements IArticleRepository {
     titleFilter,
     authorId,
     shouldShowFavourites,
+    shouldShowFollowedAuthorsArticles,
     requestUserId,
   }: {
     userId?: number;
@@ -97,6 +99,12 @@ class ArticleRepository implements IArticleRepository {
       .where(getWhereTitleLikeQuery(titleFilter))
       .where(
         getShowFavouritesQuery(Boolean(shouldShowFavourites), requestUserId),
+      )
+      .where(
+        getFollowedAuthorsArticles(
+          Boolean(shouldShowFollowedAuthorsArticles),
+          requestUserId,
+        ),
       )
       .where(getWherePublishedOnlyQuery(hasPublishedOnly))
       .whereNull('deletedAt')

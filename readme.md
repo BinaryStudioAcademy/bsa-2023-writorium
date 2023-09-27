@@ -88,9 +88,9 @@ erDiagram
     dateTime updated_at
     varchar key "inner usage key value"
     varchar name "readable name value"
-    text description "achivement description"
-    int breakpoint
-    text reference_table "referencing to table with records for achievements"
+    text description "achievement description"
+    int breakpoint FK
+    text reference_table FK "referencing to table with records for achievements"
   }
 
   users_achievements ||--|| achievements : achievement_id
@@ -124,6 +124,7 @@ erDiagram
     int genre_id FK
     int prompt_id FK "nullable"
     int cover_id FK "nullable"
+    dateTime deleted_at "nullable"
   }
 
   comments }o..|| users : user_id
@@ -168,6 +169,33 @@ erDiagram
     varchar name "readable name value"
   }
 
+  articles_views }o..|| users : user_id
+  articles_views ||--|| articles : article_id
+  articles_views {
+    int id PK
+    dateTime created_at
+    dateTime update_at
+    int article_id FK
+    int viewed_by_id FK
+  }
+
+  favoured_user_articles }o..|| users : user_id
+  favoured_user_articles ||--|| articles : article_id
+  favoured_user_articles {
+    int article_id PK
+    int user_id PK
+    dateTime created_at
+    dateTime update_at
+  }
+
+  user_following_authors }o--||  users : user_id
+  user_following_authors {
+    int id PK
+    dateTime created_at
+    dateTime update_at
+    int user_id FK
+    int author_id FK
+  }
 ```
 
 ### 🌑 Backend
