@@ -1,0 +1,59 @@
+.modalContent {
+  width: max-content;
+  padding: 30px;
+  text-align: unset;
+  background: var(--light-gray);
+}
+
+.promptItem {
+  display: grid;
+  grid-template-columns: 1fr 3fr 0.5fr;
+  gap: 20px;
+  margin: 10px 0;
+}
+
+.category {
+  display: flex;
+  justify-content: center;
+  padding: 0 5px;
+  background-color: var(--light-green);
+  border-radius: 5px;
+}
+
+.categoryText {
+  display: inline-block;
+  color: var(--white);
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.formWrapper {
+  width: 100%;
+  padding: 30px;
+  background: var(--light-gray);
+}
+
+.innerWrapper {
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+  margin: 0 auto;
+}
+
+.promptValue {
+  overflow: hidden;
+  text-align: left;
+  text-wrap: nowrap;
+  text-overflow: ellipsis;
+}
+
+.promptsBtn {
+  align-self: center;
+  width: 100%;
+  max-width: 180px;
+  margin-top: 20px;
+}
+
+.checkBox {
+  justify-self: end;
+}
