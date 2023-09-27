@@ -40,7 +40,7 @@ const ArticlesFeed: React.FC = () => {
   const { articles, articlesStatus, authors, genres } = useAppSelector(
     ({ articles, users }) => ({
       articles: articles.articles,
-      articlesStatus: articles.dataStatus,
+      articlesStatus: articles.fetchArticlesDataStatus,
       genres: articles.genres,
       authors: users.authors,
     }),
@@ -57,6 +57,7 @@ const ArticlesFeed: React.FC = () => {
     authorId: null,
     genreId: null,
     shouldShowFavourites: false,
+    shouldShowFollowedAuthorsArticles: false,
   });
 
   const isLoadingArticles = articlesStatus === DataStatus.PENDING;
@@ -122,8 +123,8 @@ const ArticlesFeed: React.FC = () => {
           <ArticlesList
             hasMore={hasMore}
             articlesLength={articles.length}
-            isLoading={isLoadingArticles}
             articles={articles}
+            isLoading={isLoadingArticles}
             onFetchData={handleLoadArticles}
           />
         ) : (

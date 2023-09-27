@@ -3,7 +3,10 @@ import { DataTooltipId } from '~/libs/enums/enums.js';
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
 import { type Tag } from '~/libs/types/types.js';
 
-import { TOOLTIP_OFFSET } from './libs/constants/constants.js';
+import {
+  SINGLE_ELEMENT_ARRAY_LENGTH,
+  TOOLTIP_OFFSET,
+} from './libs/constants/constants.js';
 import styles from './styles.module.scss';
 
 type Properties = {
@@ -12,7 +15,13 @@ type Properties = {
 };
 
 const Tags: React.FC<Properties> = ({ className, tags }) => (
-  <ul className={getValidClassNames(styles.tags, className)}>
+  <ul
+    className={getValidClassNames(
+      styles.tags,
+      className,
+      tags.length === SINGLE_ELEMENT_ARRAY_LENGTH && styles.singleTag,
+    )}
+  >
     {tags.map((tag) => (
       <li key={tag.category} className={styles.container}>
         <BlockWithTooltip

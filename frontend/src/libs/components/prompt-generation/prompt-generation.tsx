@@ -48,39 +48,51 @@ const PromptGeneration: React.FC<Properties> = ({ containerStyle }) => {
   );
 
   return (
-    <section className={getValidClassNames(styles.container, containerStyle)}>
-      <div className={styles.promptsContainer}>
-        <ul className={styles.prompts}>
-          {Object.values(PromptCategory).map((category) => (
-            <BlockWithTooltip
-              tooltipContent={generatedPrompt?.[category] ?? ''}
-              placement="top"
-              tooltipId={DataTooltipId.MAIN_TOOLTIP}
-              className={styles.minWidth}
-              key={category}
-            >
-              <PromptCard
-                category={category}
-                text={generatedPrompt?.[category] ?? ''}
-                isGenerating={isGenerating}
-              />
-            </BlockWithTooltip>
-          ))}
-          <Button
-            size="small"
-            className={styles.generatePromptButton}
-            label="Generate prompt"
-            onClick={handlePromptGenerate}
-          />
-          <Button
-            size="small"
-            label="Reset"
-            variant="greenOutlined"
-            isDisabled={!generatedPrompt}
-            className={styles.resetPromptButton}
-            onClick={handleResetPrompt}
-          />
-        </ul>
+    <div
+      className={getValidClassNames(styles.promptsContainer, containerStyle)}
+    >
+      <ul className={styles.prompts}>
+        {Object.values(PromptCategory).map((category) => (
+          <BlockWithTooltip
+            tooltipContent={generatedPrompt?.[category] ?? ''}
+            placement="top"
+            tooltipId={DataTooltipId.MAIN_TOOLTIP}
+            className={styles.tooltipWrapper}
+            key={category}
+          >
+            <PromptCard
+              category={category}
+              text={generatedPrompt?.[category] ?? ''}
+              isGenerating={isGenerating}
+            />
+          </BlockWithTooltip>
+        ))}
+      </ul>
+      <div className={styles.mobileActionButtons}>
+        <Button
+          size="small"
+          className={styles.generatePromptButton}
+          label="Generate prompt"
+          onClick={handlePromptGenerate}
+        />
+        <Button
+          size="small"
+          label="Reset"
+          variant="greenOutlined"
+          isDisabled={!generatedPrompt}
+          className={styles.resetPromptButton}
+          onClick={handleResetPrompt}
+        />
+      </div>
+      <div className={styles.actionBar}>
+        <div>
+          <h2>Spark Your Imagination!</h2>
+          <p className={styles.actionBarDescription}>
+            Click the shuffle button to get a unique prompt that&apos;ll fuel
+            your writing journey. Don&apos;t wait – your next masterpiece
+            awaits!
+          </p>
+        </div>
         <IconButton
           iconName="refresh"
           className={styles.shuffleButton}
@@ -88,7 +100,7 @@ const PromptGeneration: React.FC<Properties> = ({ containerStyle }) => {
           onClick={handlePromptGenerate}
         />
       </div>
-    </section>
+    </div>
   );
 };
 
