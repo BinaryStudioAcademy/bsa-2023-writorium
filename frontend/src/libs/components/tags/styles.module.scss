@@ -80,3 +80,18 @@
     border-radius: 5px 5px 0 0;
   }
 }
+
+@media only screen and (max-width: breakpoints.$extra-small) {
+  .tags {
+    gap: 4px;
+  }
+
+  .container {
+    padding: 0;
+  }
+
+  .categoryText {
+    font-size: 9px;
+    line-height: 1.4;
+  }
+}
