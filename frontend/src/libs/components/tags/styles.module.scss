@@ -1,3 +1,5 @@
+@use "src/assets/css/breakpoints.scss";
+
 .tags {
   display: grid;
   grid-auto-columns: minmax(auto, 20%);
@@ -69,5 +71,12 @@
 @media print {
   .tags {
     display: none;
+  }
+}
+
+@media only screen and (max-width: breakpoints.$medium) {
+  .category {
+    width: 100%;
+    border-radius: 5px 5px 0 0;
   }
 }
