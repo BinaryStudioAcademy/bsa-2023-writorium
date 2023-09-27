@@ -16,7 +16,7 @@ const Tags: React.FC<Properties> = ({ className, tags }) => (
     className={getValidClassNames(
       styles.tags,
       className,
-      tags.length === 1 ? styles.singleTag : '',
+      tags.length === 1 && styles.singleTag,
     )}
   >
     {tags.map((tag) => (
