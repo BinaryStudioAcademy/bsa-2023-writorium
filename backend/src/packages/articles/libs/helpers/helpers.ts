@@ -2,6 +2,7 @@ export { getArticleImprovementSuggestionsCompletionConfig } from './get-article-
 export { getArticlePublishedStatusQuery } from './get-article-published-status-query.helper.js';
 export { getArticleReadTimeCompletionConfig } from './get-article-read-time-completion-config.helper.js';
 export { getDetectArticleGenreCompletionConfig } from './get-detect-article-genre-completion-config.helper.js';
+export { getFollowedAuthorsArticles } from './get-followed-authors-articles.helper.js';
 export { getIsFavouriteSubQuery } from './get-is-favourite-subquery.helper.js';
 export { getOriginFromRefererHeader } from './get-origin-from-referer-header.helper.js';
 export { getShowFavouritesQuery } from './get-show-favourites-query.helper.js';
