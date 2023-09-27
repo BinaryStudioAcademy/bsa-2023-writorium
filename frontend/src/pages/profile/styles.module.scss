@@ -4,7 +4,7 @@
   display: grid;
   grid-template:
     "activity activity info" minmax(305px, max-content)
-    "articles genres achievements" minmax(445px, max-content) / 1fr 1fr 1fr;
+    "articles genres achievements" minmax(491px, max-content) / 1fr 1fr 1fr;
   gap: 20px 20px;
   width: 100%;
   margin: 0 auto;
@@ -21,7 +21,7 @@
     grid-template:
       "achievements info" minmax(305px, max-content)
       "activity activity" minmax(305px, max-content)
-      "articles genres" minmax(445px, max-content) / 1fr 1fr;
+      "articles genres" minmax(491px, max-content) / 1fr 1fr;
   }
 
   .userInfo {
@@ -42,6 +42,10 @@
 
   .activity {
     padding: 10px 30px 10px 10px;
+  }
+
+  .stats {
+    min-height: 482px;
   }
 }
 
