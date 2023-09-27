@@ -80,3 +80,11 @@
     border-radius: 5px 5px 0 0;
   }
 }
+
+@media only screen and (max-width: breakpoints.$extra-small) {
+  .tags {
+    grid-template-columns: 1fr 1fr;
+    grid-auto-columns: auto;
+    grid-auto-flow: row;
+  }
+}
