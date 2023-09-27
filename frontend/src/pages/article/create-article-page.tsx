@@ -19,7 +19,7 @@ const CreateArticlePage: React.FC = () => (
         }
         className={styles.popover}
         classNameContentWrapper={styles.promptGenerationModal}
-        closeOnChildrenClick={true}
+        isClosingOnChildrenClick={true}
       >
         <Button
           variant="text"
