@@ -15,6 +15,7 @@ const articlesFilters = joi.object<ArticlesFilters, true>({
   authorId: joi.number().integer().positive(),
   shouldShowFavourites: joi.boolean(),
   shouldShowFollowedAuthorsArticles: joi.boolean(),
+  shouldShowDrafts: joi.boolean(),
 });
 
 export { articlesFilters };

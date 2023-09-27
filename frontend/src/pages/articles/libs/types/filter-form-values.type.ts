@@ -4,6 +4,7 @@ type FilterFormValues = {
   genreId: number | null;
   shouldShowFavourites: boolean;
   shouldShowFollowedAuthorsArticles: boolean;
+  shouldShowDrafts: boolean;
 };
 
 export { type FilterFormValues };

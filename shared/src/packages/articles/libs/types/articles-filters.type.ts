@@ -6,6 +6,7 @@ type ArticlesFilters = PaginationParameters & {
   authorId?: number | null;
   shouldShowFavourites?: boolean;
   shouldShowFollowedAuthorsArticles?: boolean;
+  shouldShowDrafts?: boolean;
 };
 
 export { type ArticlesFilters };
