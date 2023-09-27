@@ -21,30 +21,33 @@ const UserInfo: React.FC<Properties> = ({ user, className }) => {
   );
 
   return (
-    <div className={getValidClassNames(className, styles.userInfoBlock)}>
-      {isEditingProfile ? (
-        <ProfileEditForm user={user} onEdit={handleEditMode} />
-      ) : (
-        <div className={styles.userInfoWrapper}>
-          <Avatar
-            username={userName}
-            avatarUrl={user.avatarUrl}
-            className={styles.avatar}
-          />
-          <div>
-            <div className={styles.userInfo}>
-              <p className={styles.userName}>{userName}</p>
-              <p className={styles.userEmail}>{user.email}</p>
-            </div>
-            <Button
-              className={styles.editButton}
-              variant="greenOutlined"
-              label="Edit profile"
-              onClick={handleEditMode}
+    <div className={styles.userInfoContainer}>
+      <h3 className={styles.title}>Your details</h3>
+      <div className={getValidClassNames(className, styles.userInfoBlock)}>
+        {isEditingProfile ? (
+          <ProfileEditForm user={user} onEdit={handleEditMode} />
+        ) : (
+          <div className={styles.userInfoWrapper}>
+            <Avatar
+              username={userName}
+              avatarUrl={user.avatarUrl}
+              className={styles.avatar}
             />
+            <div>
+              <div className={styles.userInfo}>
+                <p className={styles.userName}>{userName}</p>
+                <p className={styles.userEmail}>{user.email}</p>
+              </div>
+              <Button
+                className={styles.editButton}
+                variant="greenOutlined"
+                label="Edit profile"
+                onClick={handleEditMode}
+              />
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };
