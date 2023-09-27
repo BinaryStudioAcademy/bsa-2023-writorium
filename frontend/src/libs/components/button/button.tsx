@@ -13,7 +13,7 @@ type ButtonOutlineColor = 'green' | 'white';
 
 type Properties = {
   variant?: ButtonVariant;
-  outlineColor?: ButtonOutlineColor;
+  outlinedButtonColor?: ButtonOutlineColor;
   size?: ButtonSize;
   isDisabled?: boolean;
   label: React.ReactNode;
@@ -37,7 +37,7 @@ const Button: React.FC<Properties> = ({
   onClick,
   hasFullWidth,
   variant = 'primary',
-  outlineColor = 'green',
+  outlinedButtonColor = 'green',
   size = 'medium',
   isLoading,
 }) => {
@@ -53,8 +53,8 @@ const Button: React.FC<Properties> = ({
   };
 
   const outlineColorClassNameMapper: Record<ButtonOutlineColor, string> = {
-    green: styles.greenOutline,
-    white: styles.whiteOutline,
+    green: styles.green,
+    white: styles.white,
   };
 
   const handleButtonClick = (
@@ -79,7 +79,7 @@ const Button: React.FC<Properties> = ({
         styles.button,
         sizeClassNameMapper[size],
         variantClassNameMapper[variant],
-        outlineColorClassNameMapper[outlineColor],
+        outlineColorClassNameMapper[outlinedButtonColor],
         hasFullWidth && styles.hasFullWidth,
         isLoading && styles.buttonLoading,
         className,

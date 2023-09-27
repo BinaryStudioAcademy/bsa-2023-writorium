@@ -61,12 +61,12 @@
   border: 2px solid;
 }
 
-.button.buttonOutlined.greenOutline {
+.button.buttonOutlined.green {
   color: var(--dark-green);
   border-color: var(--dark-green);
 }
 
-.button.buttonOutlined.whiteOutline {
+.button.buttonOutlined.white {
   color: var(--white);
   border-color: var(--white);
 }
@@ -81,11 +81,11 @@
   border-color: var(--light-green);
 }
 
-.button.buttonOutlined.greenOutline .loader {
+.button.buttonOutlined.green .loader {
   --loader-color: var(--dark-green);
 }
 
-.button.buttonOutlined.whiteOutline .loader {
+.button.buttonOutlined.white .loader {
   --loader-color: var(--white);
 }
 
