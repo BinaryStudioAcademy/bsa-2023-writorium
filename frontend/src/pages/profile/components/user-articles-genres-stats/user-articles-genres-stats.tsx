@@ -27,13 +27,12 @@ import {
   articleStatusOptions,
   DEFAULT_FILTER_PAYLOAD,
   GENRES_CHART_COLORS,
-  GENRES_CHART_PLACEHOLDER_COLOR,
   GENRES_CHART_PLACEHOLDER_DATA,
-  GENRES_CHART_PLACEHOLDER_FONT_SIZE,
-  GENRES_CHART_PLACEHOLDER_LABEL_COLOR,
-  GENRES_CHART_PLACEHOLDER_LABEL_POSITION,
 } from './libs/constants/constants.js';
-import { GenresChartConfig } from './libs/enums/enums.js';
+import {
+  GenresChartConfig,
+  GenresChartPlaceholder,
+} from './libs/enums/enums.js';
 import { normalizeGenresStats } from './libs/helpers/helpers.js';
 import styles from './styles.module.scss';
 
@@ -138,13 +137,13 @@ const UserArticlesGenresStats: React.FC<Properties> = ({ className }) => {
                     innerRadius={GenresChartConfig.INNER_RADIUS}
                     outerRadius={GenresChartConfig.OUTER_RADIUS}
                     data={GENRES_CHART_PLACEHOLDER_DATA}
-                    fill={GENRES_CHART_PLACEHOLDER_COLOR}
+                    fill={GenresChartPlaceholder.COLOR}
                   >
                     <LabelList
                       dataKey="lable"
-                      position={GENRES_CHART_PLACEHOLDER_LABEL_POSITION}
-                      fontSize={GENRES_CHART_PLACEHOLDER_FONT_SIZE}
-                      fill={GENRES_CHART_PLACEHOLDER_LABEL_COLOR}
+                      position={GenresChartPlaceholder.LABEL_POSITION}
+                      fontSize={GenresChartPlaceholder.FONT_SIZE}
+                      fill={GenresChartPlaceholder.LABEL_COLOR}
                       stroke="none"
                     />
                   </Pie>
