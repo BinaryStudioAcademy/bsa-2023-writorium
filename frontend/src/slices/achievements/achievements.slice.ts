@@ -26,16 +26,18 @@ const { reducer, actions, name } = createSlice({
   reducers: {},
   extraReducers(builder) {
     builder.addCase(fetchOwnWithProgress.fulfilled, (state, action) => {
-      const achievementsWithParsedDescription = action.payload.map((achievement) => {
-        const parsedDescription = parseJSONSafely(
-          achievement.description,
-        ) as ParsedAchievementDescription;
+      const achievementsWithParsedDescription = action.payload.map(
+        (achievement) => {
+          const parsedDescription = parseJSONSafely(
+            achievement.description,
+          ) as ParsedAchievementDescription;
 
-        return {
-          ...achievement,
-          description: parsedDescription,
-        };
-      });
+          return {
+            ...achievement,
+            description: parsedDescription,
+          };
+        },
+      );
 
       state.ownAchievementsDataStatus = DataStatus.FULFILLED;
       state.ownAchievements = achievementsWithParsedDescription;
