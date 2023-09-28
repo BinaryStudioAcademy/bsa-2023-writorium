@@ -68,7 +68,7 @@ const ArticlePage: React.FC = () => {
 
   useArticleRoom(Number(id));
 
-  useEffect(() => {
+  const scrollToComments = useCallback(() => {
     const { hash } = location;
     const element = hash ? document.querySelector(hash) : null;
 
@@ -81,13 +81,14 @@ const ArticlePage: React.FC = () => {
   }, [location]);
 
   useEffect(() => {
-    void dispatch(articleActions.getArticle(Number(id)));
+    void dispatch(articleActions.getArticle(Number(id))).then(scrollToComments);
+
     void dispatch(articleActions.fetchAllCommentsToArticle(Number(id)));
 
     return () => {
       void dispatch(articleActions.resetComments());
     };
-  }, [dispatch, id]);
+  }, [dispatch, id, scrollToComments]);
 
   const handleCreateComment = useCallback(
     (payload: Omit<CommentBaseRequestDto, 'articleId'>): void => {
