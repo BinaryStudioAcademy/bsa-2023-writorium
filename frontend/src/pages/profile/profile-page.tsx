@@ -20,10 +20,15 @@ import styles from './styles.module.scss';
 
 const ProfilePage: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { user, userActivities } = useAppSelector(({ auth, users }) => ({
-    user: auth.user as UserAuthResponseDto,
-    userActivities: users.userActivities,
-  }));
+  const { user, userActivities, articles } = useAppSelector(
+    ({ auth, users, articles }) => ({
+      user: auth.user as UserAuthResponseDto,
+      userActivities: users.userActivities,
+      articles: articles.articles,
+    }),
+  );
+
+  const hasArticles = Boolean(articles.length);
 
   useEffect(() => {
     void dispatch(usersActions.getUserActivity());
@@ -55,7 +60,7 @@ const ProfilePage: React.FC = () => {
         </Spoiler>
         <Spoiler
           breakpoint={WindowBreakpoint.MEDIUM}
-          summary="Your latest articles"
+          summary={hasArticles ? 'Your latest articles' : 'My articles'}
         >
           <UserLatestArticles className={styles.profileBlock} />
         </Spoiler>

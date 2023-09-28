@@ -1,29 +1,36 @@
 @use "src/assets/css/breakpoints.scss";
 
-.wrapper {
+.latestArticlesContainer {
   display: flex;
   grid-area: articles;
   flex-direction: column;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .articleList {
   display: flex;
   flex-direction: column;
   row-gap: 8px;
-  max-height: 364px;
+  max-height: 415px;
+  padding-top: 2px;
   overflow: auto;
   list-style: none;
 }
 
 .article {
-  height: 116px;
+  height: 133px;
   background: var(--white);
   border: 2px solid var(--pale-gray);
-  border-radius: 10px;
+  border-radius: 7px;
 }
 
 .listTitle {
-  margin-bottom: 10px;
+  margin-bottom: 6px;
 }
 
 .showAll {
@@ -42,5 +49,13 @@
 @media only screen and (max-width: breakpoints.$large) {
   .listTitle {
     display: none;
+  }
+
+  .articleList {
+    max-height: 364px;
+  }
+
+  .article {
+    height: 116px;
   }
 }
