@@ -217,7 +217,7 @@ const ArticleCard: React.FC<Properties> = ({
                   <IconButton
                     iconName="comment"
                     className={styles.iconWrapper}
-                    label={String(commentCount)}
+                    label={commentCount.toString()}
                   />
                 </Link>
               </li>

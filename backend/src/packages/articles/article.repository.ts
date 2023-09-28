@@ -327,6 +327,8 @@ class ArticleRepository implements IArticleRepository {
           }
         : null,
       coverUrl: article.cover?.url ?? null,
+      commentCount: EMPTY_COMMENT_COUNT,
+      viewCount: EMPTY_VIEW_COUNT,
     });
   }
 
