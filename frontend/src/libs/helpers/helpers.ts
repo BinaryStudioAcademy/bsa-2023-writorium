@@ -10,6 +10,7 @@ export { getPublicationTime } from './get-publication-time/get-publication-time.
 export { getReactionConvertedToBoolean } from './get-reaction-converted-to-boolean/get-reaction-converted-to-boolean.helper.js';
 export { getReactionsInfo } from './get-reactions-info/get-reactions-info.helper.js';
 export { getValidClassNames } from './get-valid-class-names/get-valid-class-names.helper.js';
+export { modifyFontSize } from './modify-font-size/modify-font-size.helper.js';
 export { sanitizeHtml } from './sanitize-html/sanitize-html.helper.js';
 export { writeTextInClipboard } from './write-text-in-clip-board/write-text-in-clip-board.helper.js';
 export {
