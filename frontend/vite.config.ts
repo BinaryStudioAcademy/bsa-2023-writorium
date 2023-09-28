@@ -4,6 +4,7 @@ import tsconfigPathsPlugin from 'vite-tsconfig-paths';
 import svgr from 'vite-plugin-svgr';
 import path from 'path';
 import pluginRewriteAll from 'vite-plugin-rewrite-all';
+import { VitePWA } from 'vite-plugin-pwa';
 
 const config = ({ mode }: ConfigEnv): ReturnType<typeof defineConfig> => {
   const {
@@ -18,7 +19,41 @@ const config = ({ mode }: ConfigEnv): ReturnType<typeof defineConfig> => {
     build: {
       outDir: 'build',
     },
-    plugins: [tsconfigPathsPlugin(), reactPlugin(), svgr(), pluginRewriteAll()],
+    plugins: [
+      tsconfigPathsPlugin(),
+      reactPlugin(),
+      svgr(),
+      pluginRewriteAll(),
+      VitePWA({
+        registerType: 'autoUpdate',
+        includeAssets: ['favicon.ico', 'favicon.svg', 'apple-touch-icon.png'],
+        manifest: {
+          name: 'Writorium',
+          short_name: 'Writorium',
+          description: 'Unbounded space for freedom of your feather',
+          theme_color: '#2e453b',
+          start_url: '/',
+          icons: [
+            {
+              src: '/android-chrome-192x192.png',
+              sizes: '192x192',
+              type: 'image/png',
+            },
+            {
+              src: '/android-chrome-512x512.png',
+              sizes: '512x512',
+              type: 'image/png',
+            },
+            {
+              src: '/maskable_icon_x512.png',
+              sizes: '512x512',
+              type: 'image/png',
+              purpose: 'maskable',
+            },
+          ],
+        },
+      }),
+    ],
     server: {
       port: Number(VITE_APP_DEVELOPMENT_PORT),
       proxy: {
