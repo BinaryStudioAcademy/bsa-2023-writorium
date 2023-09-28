@@ -23,7 +23,6 @@ export {
   getDateDifferenceWithUnit,
   getDifferenceBetweenDates,
   getFormattedDate,
-  getShuffledArray,
   makePluralOrSingular,
   parseJSONSafely,
   subtractMonthsFromDate,
@@ -58,6 +57,7 @@ export {
 export {
   type Achievement,
   type AchievementBaseResponseDto,
+  type AchievementDescription,
   type AchievementGetAllResponseDto,
   AchievementsApiPath,
   type AchievementWithProgressResponseDto,

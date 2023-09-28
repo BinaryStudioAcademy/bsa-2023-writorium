@@ -1,9 +1,17 @@
+@use "src/assets/css/breakpoints.scss";
+
 .tags {
   display: grid;
   grid-auto-columns: minmax(auto, 20%);
   grid-auto-flow: column;
   gap: 8px;
   list-style-type: none;
+}
+
+.singleTag {
+  display: block;
+  width: fit-content;
+  min-width: 20%;
 }
 
 .container {
@@ -64,5 +72,20 @@
 @media print {
   .tags {
     display: none;
+  }
+}
+
+@media only screen and (max-width: breakpoints.$medium) {
+  .category {
+    width: 100%;
+    border-radius: 5px 5px 0 0;
+  }
+}
+
+@media only screen and (max-width: breakpoints.$extra-small) {
+  .tags {
+    grid-template-columns: 1fr 1fr;
+    grid-auto-columns: auto;
+    grid-auto-flow: row;
   }
 }

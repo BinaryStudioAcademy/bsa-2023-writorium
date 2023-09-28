@@ -13,7 +13,9 @@ import {
 } from './libs/constants/constants.js';
 import {
   getArticlePublishedStatusQuery,
+  getFollowedAuthorsArticles,
   getIsFavouriteSubQuery,
+  getShowDraftsQuery,
   getShowFavouritesQuery,
   getSortingCondition,
   getWhereAuthorIdQuery,
@@ -74,6 +76,9 @@ class ArticleRepository implements IArticleRepository {
     titleFilter,
     authorId,
     shouldShowFavourites,
+    shouldShowFollowedAuthorsArticles,
+    shouldShowPublishedAricles,
+    shouldShowDrafts,
     requestUserId,
   }: {
     userId?: number;
@@ -98,7 +103,18 @@ class ArticleRepository implements IArticleRepository {
       .where(
         getShowFavouritesQuery(Boolean(shouldShowFavourites), requestUserId),
       )
-      .where(getWherePublishedOnlyQuery(hasPublishedOnly))
+      .where(
+        getFollowedAuthorsArticles(
+          Boolean(shouldShowFollowedAuthorsArticles),
+          requestUserId,
+        ),
+      )
+      .where(getShowDraftsQuery(Boolean(shouldShowDrafts), requestUserId))
+      .where(
+        getWherePublishedOnlyQuery(
+          hasPublishedOnly || shouldShowPublishedAricles,
+        ),
+      )
       .whereNull('deletedAt')
       .orderBy(getSortingCondition(hasPublishedOnly))
       .page(skip / take, take)
@@ -179,6 +195,7 @@ class ArticleRepository implements IArticleRepository {
       .withGraphFetched('reactions')
       .modifyGraph('reactions', this.modifyReactionsGraph)
       .where({ 'articles.id': id })
+      .whereNull('deletedAt')
       .first();
 
     if (!article) {
@@ -310,6 +327,8 @@ class ArticleRepository implements IArticleRepository {
           }
         : null,
       coverUrl: article.cover?.url ?? null,
+      commentCount: EMPTY_COMMENT_COUNT,
+      viewCount: EMPTY_VIEW_COUNT,
     });
   }
 

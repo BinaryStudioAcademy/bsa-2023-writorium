@@ -7,6 +7,7 @@ import {
   Achievement,
   AchievementTooltipContent,
 } from '../../components/components.js';
+import { getAchievementDescriptionByProgress } from '../../libs/helpers/helpers.js';
 import styles from './styles.module.scss';
 
 type Properties = {
@@ -14,37 +15,41 @@ type Properties = {
   hasToShowTooltip?: boolean;
   className?: string;
   classNameAchievement?: string;
+  classNameBadge?: string;
 };
 
 const AchievementList: React.FC<Properties> = ({
   achievements,
   className,
   classNameAchievement,
+  classNameBadge,
   hasToShowTooltip = false,
-}) => {
-  return (
-    <ul className={getValidClassNames(className, styles.achievementList)}>
-      {achievements.map((achievement) => (
-        <li key={achievement.id} className={styles.achievementListItem}>
-          <BlockWithTooltip
-            tooltipContent={
-              <AchievementTooltipContent
-                description={achievement.description}
-                progress={achievement.progress}
-              />
-            }
-            tooltipId={DataTooltipId.ACHIEVEMENT_TOOLTIP}
-            hasToShowTooltip={hasToShowTooltip}
-          >
-            <Achievement
-              achievement={achievement}
-              className={classNameAchievement}
+}) => (
+  <ul className={getValidClassNames(className, styles.achievementList)}>
+    {achievements.map((achievement) => (
+      <li key={achievement.id} className={styles.achievementListItem}>
+        <BlockWithTooltip
+          tooltipContent={
+            <AchievementTooltipContent
+              description={getAchievementDescriptionByProgress(
+                achievement.progress,
+                achievement.description,
+              )}
+              progress={achievement.progress}
             />
-          </BlockWithTooltip>
-        </li>
-      ))}
-    </ul>
-  );
-};
+          }
+          tooltipId={DataTooltipId.ACHIEVEMENT_TOOLTIP}
+          hasToShowTooltip={hasToShowTooltip}
+        >
+          <Achievement
+            achievement={achievement}
+            className={classNameAchievement}
+            classNameBadge={classNameBadge}
+          />
+        </BlockWithTooltip>
+      </li>
+    ))}
+  </ul>
+);
 
 export { AchievementList };

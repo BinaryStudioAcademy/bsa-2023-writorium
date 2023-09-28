@@ -1,7 +1,19 @@
-.wrapper {
+@use "src/assets/css/breakpoints.scss";
+
+.statsContainer {
   display: flex;
   grid-area: genres;
   flex-direction: column;
+}
+
+.title {
+  margin-bottom: 6px;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   padding: 30px;
   background-color: var(--white);
 }
@@ -14,6 +26,16 @@
   align-items: center;
 }
 
+.responsiveContainer {
+  min-height: 330px;
+}
+
 .form {
   width: 100%;
+}
+
+@media only screen and (max-width: breakpoints.$large) {
+  .title {
+    display: none;
+  }
 }

@@ -1,17 +1,26 @@
-.achievementBlock {
+@use "src/assets/css/breakpoints.scss";
+
+.achievementContainer {
   display: flex;
   grid-area: achievements;
+  flex-direction: column;
+}
+
+.achievementBlock {
+  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 40px;
-  padding: 30px;
+  height: 100%;
+  padding: 30px 10%;
   text-align: center;
   background-color: var(--dark-green);
 }
 
 .achievementList {
   grid-template-columns: repeat(var(--achievement-columns), minmax(75px, 1fr));
+  align-items: baseline;
   font-size: 12px;
   column-gap: 10px;
 }
@@ -21,8 +30,8 @@
 }
 
 .title {
-  margin-bottom: 30px;
-  color: var(--white);
+  margin-bottom: 6px;
+  color: var(--black-90);
 }
 
 .modal {
@@ -37,10 +46,12 @@
 .achievementListModal {
   --achievement-columns: 4;
 
+  align-items: baseline;
   gap: 40px;
   max-height: 410px;
   padding: 20px 40px;
   overflow: auto;
+  font-size: 12px;
 }
 
 .modal .achievementTooltip {
@@ -53,4 +64,53 @@
 
 .modalCloseBtn {
   color: var(--white);
+}
+
+@media only screen and (max-width: breakpoints.$extra-large) {
+  .achievementList {
+    font-size: 10px;
+  }
+
+  .achievementBadge {
+    width: 75px;
+    height: 75px;
+  }
+
+  .achievementBadgeModal {
+    width: 100px;
+    height: 100px;
+  }
+}
+
+@media only screen and (max-width: breakpoints.$large) {
+  .title {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: breakpoints.$small) {
+  .achievementBlock {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    row-gap: 10px;
+    padding: 15px;
+  }
+
+  .achievementListModal {
+    --achievement-columns: 3;
+
+    grid-template-columns: repeat(
+      var(--achievement-columns),
+      minmax(75px, 1fr)
+    );
+    gap: 10px;
+    padding: 5px;
+    font-size: 10px;
+  }
+
+  .achievementBadgeModal {
+    width: 75px;
+    height: 75px;
+  }
 }

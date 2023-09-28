@@ -1,11 +1,17 @@
+import { type IRepository } from '~/libs/interfaces/repository.interface.js';
+
 import { type FollowModel } from './follow.model.js';
 import { type UserFollowResponseDto } from './libs/types/types.js';
 
-class FollowRepository {
+class FollowRepository implements IRepository {
   private followModel: typeof FollowModel;
 
   public constructor(followModel: typeof FollowModel) {
     this.followModel = followModel;
+  }
+
+  public async findAuthorFollowers(authorId: number): Promise<FollowModel[]> {
+    return await this.followModel.query().select().where({ authorId });
   }
 
   public async toggleFollowAuthor({
@@ -59,6 +65,26 @@ class FollowRepository {
         isFollowed: Boolean(isFollowed),
       };
     });
+  }
+
+  public find(): Promise<null> {
+    return Promise.resolve(null);
+  }
+
+  public findAll(): Promise<unknown[]> {
+    return Promise.resolve([]);
+  }
+
+  public create(): Promise<null> {
+    return Promise.resolve(null);
+  }
+
+  public update(): Promise<null> {
+    return Promise.resolve(null);
+  }
+
+  public delete(): Promise<boolean> {
+    return Promise.resolve(true);
   }
 }
 

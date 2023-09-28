@@ -3,6 +3,7 @@ export { type ReferenceTablesCounts } from './reference-tables-counts.type.js';
 export {
   type Achievement,
   type AchievementBaseResponseDto,
+  type AchievementDescription,
   type AchievementGetAllResponseDto,
   type AchievementWithProgressResponseDto,
   type UserAchievement,

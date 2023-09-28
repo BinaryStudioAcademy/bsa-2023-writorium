@@ -1,0 +1,52 @@
+.popover {
+  justify-content: center;
+  align-items: center;
+  width: 180px;
+  background-color: var(--white);
+  box-shadow: 0 0 6px -2px var(--shadow-color);
+}
+
+.loader {
+  display: flex;
+  align-items: center;
+  height: 90px;
+  padding: 10px;
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+.groupItem {
+  width: 100%;
+  color: var(--dark-gray);
+  list-style: none;
+}
+
+.groupItem:not(:last-child) {
+  border-bottom: 2px solid var(--light-gray-15);
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 15px;
+  color: inherit;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.groupItem:hover {
+  color: var(--light-green);
+  background-color: var(--light-gray-15);
+  border-color: var(--light-green);
+}
+
+.icon {
+  width: 18px;
+  height: 18px;
+  color: var(--light-green);
+}

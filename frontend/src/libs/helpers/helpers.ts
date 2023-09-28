@@ -17,7 +17,6 @@ export {
   constructUrl,
   getDateDifferenceWithUnit,
   getFormattedDate,
-  getShuffledArray,
   makePluralOrSingular,
   parseJSONSafely,
 } from 'shared/build/index.js';

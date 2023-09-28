@@ -8,11 +8,11 @@
 
 .authorWrapper {
   display: grid;
-  grid-template: repeat(2, max-content) / repeat(2, auto);
+  grid-template: repeat(2, max-content) / minmax(auto, max-content) auto;
   align-items: center;
-  row-gap: 5px;
-  padding: 25px;
-  column-gap: 15px;
+  row-gap: 3px;
+  padding: 30px 41px 21px;
+  column-gap: 16px;
   border-bottom: 2px solid rgba(172 186 215 / 20%);
 }
 
@@ -87,7 +87,7 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
-  padding: 25px;
+  padding: 32px 61px 54px;
 }
 
 .articleInfoListWrapper {
@@ -126,7 +126,8 @@
 .followButton {
   grid-area: followButton;
   justify-self: flex-start;
-  margin-top: 10px;
+  width: 100px;
+  margin-top: 5px;
 }
 
 @media only screen and (max-width: breakpoints.$medium) {

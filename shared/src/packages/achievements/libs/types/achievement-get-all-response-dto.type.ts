@@ -1,4 +1,4 @@
-import { type AchievementBaseResponseDto } from '~/packages/achievements/libs/types/achievement-base-response-dto.type.js';
+import { type AchievementBaseResponseDto } from './achievement-base-response-dto.type.js';
 
 type AchievementGetAllResponseDto = {
   items: AchievementBaseResponseDto[];

@@ -12,12 +12,15 @@ const CreateArticlePage: React.FC = () => (
   <Layout>
     <div className={styles.articleCreatePageWrapper}>
       <h1 className={styles.header}>Write your own story</h1>
-      <PromptGeneration />
       <Popover
         content={
-          <PromptGeneration containerStyle={styles.promptGenerationContainer} />
+          <PromptGeneration
+            containerStyle={styles.mobilePromptGenerationContainer}
+          />
         }
+        className={styles.popover}
         classNameContentWrapper={styles.promptGenerationModal}
+        isClosingOnChildrenClick
       >
         <Button
           variant="text"
@@ -25,8 +28,13 @@ const CreateArticlePage: React.FC = () => (
           className={styles.showPrompt}
         />
       </Popover>
-      <div className={styles.articleFormWrapper}>
-        <ArticleForm />
+      <div className={styles.mainContentWrapper}>
+        <div className={styles.leftColumn}>
+          <ArticleForm />
+        </div>
+        <div className={styles.rightColumn}>
+          <PromptGeneration />
+        </div>
       </div>
     </div>
   </Layout>

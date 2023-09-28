@@ -4,7 +4,7 @@ import {
   IconButton,
   Link,
   Popover,
-  ShareOnFacebookButton,
+  SharePopover,
   Tags,
 } from '~/libs/components/components.js';
 import {
@@ -82,7 +82,6 @@ const ArticleCard: React.FC<Properties> = ({
     reactions,
   );
   const { firstName, lastName, avatarUrl } = author;
-  const articleUrl = window.location.href;
   const articleRouteById = configureString(AppRoute.ARTICLES_$ID, {
     id: String(id),
   }) as typeof AppRoute.ARTICLES_$ID;
@@ -122,10 +121,6 @@ const ArticleCard: React.FC<Properties> = ({
   const handleDislikeReaction = (): void => {
     handleReaction(Reaction.DISLIKE);
   };
-
-  const handleSharedButtonClick = useCallback((): void => {
-    void dispatch(articlesActions.shareArticle({ id: id.toString() }));
-  }, [dispatch, id]);
 
   const handleDeleteArticle = useCallback((): void => {
     void dispatch(articlesActions.deleteArticle({ id }));
@@ -170,21 +165,23 @@ const ArticleCard: React.FC<Properties> = ({
             onClick={handleToggleIsFavourite}
             isLoading={isLoading}
           />
-          <Popover
-            classNameContentWrapper={styles.moreActions}
-            content={
-              <PopoverButtonsGroup
-                isOwnArticle={isOwnArticle}
-                article={article}
-                onDeleteButtonClick={handleDeleteButtonClick}
+          {isOwnArticle && (
+            <Popover
+              classNameContentWrapper={styles.moreActions}
+              content={
+                <PopoverButtonsGroup
+                  isOwnArticle={isOwnArticle}
+                  article={article}
+                  onDeleteButtonClick={handleDeleteButtonClick}
+                />
+              }
+            >
+              <Icon
+                className={styles.topActionsIcon}
+                iconName="ellipsisVertical"
               />
-            }
-          >
-            <Icon
-              className={styles.topActionsIcon}
-              iconName="ellipsisVertical"
-            />
-          </Popover>
+            </Popover>
+          )}
         </div>
       </div>
       <div
@@ -194,7 +191,9 @@ const ArticleCard: React.FC<Properties> = ({
           <h4 className={styles.title}>{title}</h4>
           <article
             className={getValidClassNames(styles.text, 'text-overflow')}
-            dangerouslySetInnerHTML={{ __html: sanitizeHtml(text) }}
+            dangerouslySetInnerHTML={{
+              __html: sanitizeHtml(text),
+            }}
           ></article>
         </div>
         {coverUrl && (
@@ -208,13 +207,12 @@ const ArticleCard: React.FC<Properties> = ({
         {publishedAt && (
           <>
             <ul className={styles.reactions}>
-              <li className={styles.reaction}>
+              <li>
                 <Link
                   to={{
                     pathname: articleRouteById,
                     hash: LinkHash.COMMENTS,
                   }}
-                  className={styles.reaction}
                 >
                   <IconButton
                     iconName="comment"
@@ -232,7 +230,7 @@ const ArticleCard: React.FC<Properties> = ({
                   iconName="like"
                   className={getValidClassNames(
                     styles.footerIcon,
-                    isOwnArticle ? styles.disabled : styles.reaction,
+                    isOwnArticle && styles.disabled,
                     hasAlreadyReactedWith === Reaction.LIKE && styles.pressed,
                   )}
                   label={String(likesCount)}
@@ -244,7 +242,7 @@ const ArticleCard: React.FC<Properties> = ({
                   iconName="dislike"
                   className={getValidClassNames(
                     styles.footerIcon,
-                    isOwnArticle ? styles.disabled : styles.reaction,
+                    isOwnArticle && styles.disabled,
                     hasAlreadyReactedWith === Reaction.DISLIKE &&
                       styles.pressed,
                   )}
@@ -253,16 +251,10 @@ const ArticleCard: React.FC<Properties> = ({
                 />
               </li>
             </ul>
-
-            <IconButton
-              iconName="share"
-              className={styles.iconWrapper}
-              onClick={handleSharedButtonClick}
-            />
-            <ShareOnFacebookButton
-              title={title}
-              articleUrl={articleUrl}
-              iconStyle={styles.facebookIconButton}
+            <SharePopover
+              articleId={id.toString()}
+              articleTitle={title}
+              classNameIconButton={styles.iconWrapper}
             />
           </>
         )}

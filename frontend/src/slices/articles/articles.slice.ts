@@ -24,12 +24,14 @@ import {
   fetchAllCommentsToArticle,
   fetchOwn,
   fetchSharedArticle,
-  geArticleIdByToken,
   getAllGenres,
   getArticle,
+  getArticleIdByToken,
   getImprovementSuggestions,
   getImprovementSuggestionsBySession,
+  getSharedLink,
   reactToArticle,
+  setArticleFormDataFromLocalStorage,
   setShowFavourites,
   toggleIsFavourite,
   updateArticle,
@@ -43,9 +45,13 @@ import {
 } from './libs/helpers/helpers.js';
 
 type State = {
-  article: ArticleWithFollowResponseDto | null;
+  article:
+    | ArticleWithFollowResponseDto
+    | (ArticleWithFollowResponseDto & ArticleWithCountsResponseDto)
+    | null;
   articleComments: CommentWithRelationsResponseDto[];
   articles: ArticleWithCountsResponseDto[];
+  fetchArticlesDataStatus: ValueOf<typeof DataStatus>;
   dataStatus: ValueOf<typeof DataStatus>;
   genres: GenreGetAllResponseDto['items'];
   fetchArticleCommentsDataStatus: ValueOf<typeof DataStatus>;
@@ -58,6 +64,13 @@ type State = {
   articleIdByToken: number | null;
   articleIdByTokenDataStatus: ValueOf<typeof DataStatus>;
   createCommentDataStatus: ValueOf<typeof DataStatus>;
+  sharedLink: string | null;
+  sharedLinkDataStatus: ValueOf<typeof DataStatus>;
+  articleDataFromLocalStorage: {
+    title: string | null;
+    text: string | null;
+    prompt: string | null;
+  } | null;
 };
 
 const initialState: State = {
@@ -68,7 +81,9 @@ const initialState: State = {
   genres: [],
   shouldShowFavourites: false,
   improvementSuggestions: null,
+  sharedLink: null,
   dataStatus: DataStatus.IDLE,
+  fetchArticlesDataStatus: DataStatus.IDLE,
   fetchArticleCommentsDataStatus: DataStatus.IDLE,
   saveArticleStatus: DataStatus.IDLE,
   articleReactionDataStatus: DataStatus.IDLE,
@@ -76,6 +91,8 @@ const initialState: State = {
   improvementSuggestionsDataStatus: DataStatus.IDLE,
   articleIdByTokenDataStatus: DataStatus.IDLE,
   createCommentDataStatus: DataStatus.IDLE,
+  sharedLinkDataStatus: DataStatus.IDLE,
+  articleDataFromLocalStorage: null,
 };
 
 const { reducer, actions, name } = createSlice({
@@ -84,7 +101,7 @@ const { reducer, actions, name } = createSlice({
   reducers: {
     resetArticles(state) {
       state.articles = initialState.articles;
-      state.dataStatus = DataStatus.IDLE;
+      state.fetchArticlesDataStatus = DataStatus.IDLE;
     },
     resetComments(state) {
       state.articleComments = initialState.articleComments;
@@ -95,12 +112,21 @@ const { reducer, actions, name } = createSlice({
       state.articleIdByToken = initialState.articleIdByToken;
       state.articleIdByTokenDataStatus = DataStatus.FULFILLED;
     },
+    resetSharedLink(state) {
+      state.sharedLink = initialState.sharedLink;
+      state.sharedLinkDataStatus = initialState.sharedLinkDataStatus;
+    },
   },
   extraReducers(builder) {
     builder.addCase(addArticle.fulfilled, (state, action) => {
       if (action.payload) {
         state.articles = [action.payload, ...state.articles];
       }
+    });
+
+    builder.addCase(getSharedLink.fulfilled, (state, action) => {
+      state.sharedLinkDataStatus = DataStatus.FULFILLED;
+      state.sharedLink = action.payload.link;
     });
 
     builder.addCase(createArticle.fulfilled, (state) => {
@@ -210,6 +236,12 @@ const { reducer, actions, name } = createSlice({
     builder.addCase(getArticle.rejected, (state) => {
       state.getArticleStatus = DataStatus.REJECTED;
     });
+    builder.addCase(getSharedLink.pending, (state) => {
+      state.sharedLinkDataStatus = DataStatus.PENDING;
+    });
+    builder.addCase(getSharedLink.rejected, (state) => {
+      state.sharedLinkDataStatus = DataStatus.REJECTED;
+    });
     builder.addCase(fetchSharedArticle.fulfilled, (state, action) => {
       state.dataStatus = DataStatus.FULFILLED;
       state.article = action.payload;
@@ -260,6 +292,10 @@ const { reducer, actions, name } = createSlice({
         });
         state.dataStatus = DataStatus.FULFILLED;
       }
+
+      if (article && state.article !== null) {
+        state.article = article;
+      }
     });
 
     builder.addCase(updateComment.fulfilled, (state, action) => {
@@ -269,16 +305,24 @@ const { reducer, actions, name } = createSlice({
         return comment.id === updatedComment.id ? updatedComment : comment;
       });
     });
-    builder.addCase(geArticleIdByToken.rejected, (state) => {
+    builder.addCase(getArticleIdByToken.rejected, (state) => {
       state.articleIdByTokenDataStatus = DataStatus.REJECTED;
     });
-    builder.addCase(geArticleIdByToken.pending, (state) => {
+    builder.addCase(getArticleIdByToken.pending, (state) => {
       state.articleIdByTokenDataStatus = DataStatus.PENDING;
     });
-    builder.addCase(geArticleIdByToken.fulfilled, (state, action) => {
+    builder.addCase(getArticleIdByToken.fulfilled, (state, action) => {
       state.articleIdByToken = action.payload.id;
       state.articleIdByTokenDataStatus = DataStatus.FULFILLED;
     });
+
+    builder.addCase(
+      setArticleFormDataFromLocalStorage.fulfilled,
+      (state, action) => {
+        state.articleDataFromLocalStorage = { ...action.payload };
+      },
+    );
+
     builder.addMatcher(
       isAnyOf(
         getImprovementSuggestions.fulfilled,
@@ -311,8 +355,17 @@ const { reducer, actions, name } = createSlice({
     builder.addMatcher(
       isAnyOf(fetchAll.fulfilled, fetchOwn.fulfilled),
       (state, action) => {
-        state.dataStatus = DataStatus.FULFILLED;
+        state.fetchArticlesDataStatus = DataStatus.FULFILLED;
         state.articles = [...state.articles, ...action.payload.items];
+      },
+    );
+    builder.addMatcher(isAnyOf(fetchAll.pending, fetchOwn.pending), (state) => {
+      state.fetchArticlesDataStatus = DataStatus.PENDING;
+    });
+    builder.addMatcher(
+      isAnyOf(fetchAll.rejected, fetchOwn.rejected),
+      (state) => {
+        state.fetchArticlesDataStatus = DataStatus.REJECTED;
       },
     );
     builder.addMatcher(
@@ -323,8 +376,6 @@ const { reducer, actions, name } = createSlice({
     );
     builder.addMatcher(
       isAnyOf(
-        fetchAll.pending,
-        fetchOwn.pending,
         getArticle.pending,
         getAllGenres.pending,
         fetchSharedArticle.pending,
@@ -349,8 +400,6 @@ const { reducer, actions, name } = createSlice({
     );
     builder.addMatcher(
       isAnyOf(
-        fetchAll.rejected,
-        fetchOwn.rejected,
         fetchSharedArticle.rejected,
         deleteArticle.rejected,
         toggleIsFavourite.rejected,

@@ -3,7 +3,7 @@ import {
   IconButton,
   Link,
   Popover,
-  ShareOnFacebookButton,
+  SharePopover,
   Tags,
 } from '~/libs/components/components.js';
 import { AppRoute, LinkHash, Reaction } from '~/libs/enums/enums.js';
@@ -13,12 +13,7 @@ import {
   getValidClassNames,
   sanitizeHtml,
 } from '~/libs/helpers/helpers.js';
-import {
-  useAppDispatch,
-  useCallback,
-  useModal,
-  useParams,
-} from '~/libs/hooks/hooks.js';
+import { useAppDispatch, useCallback, useModal } from '~/libs/hooks/hooks.js';
 import { type Tag, type ValueOf } from '~/libs/types/types.js';
 import { type ArticleWithFollowResponseDto } from '~/packages/articles/articles.js';
 import { ConfirmArticleDeleteDialog } from '~/pages/libs/components/components.js';
@@ -41,12 +36,6 @@ type Properties = {
   hasAlreadyReactedWith?: ValueOf<typeof Reaction> | null;
 };
 
-const onButtonClick = (): void => {
-  /**
-   * @todo implement handle logic for buttons clicked events(favorite, comment, share)
-   */
-};
-
 const ArticleView: React.FC<Properties> = ({
   tags,
   isShared = false,
@@ -60,23 +49,22 @@ const ArticleView: React.FC<Properties> = ({
   dislikesCount,
   hasAlreadyReactedWith,
 }) => {
-  const { text, title, coverUrl, author, readTime, genre, publishedAt } =
-    article;
+  const {
+    text,
+    title,
+    coverUrl,
+    author,
+    readTime,
+    genre,
+    publishedAt,
+    isFavourite,
+    id,
+  } = article;
   const { firstName, lastName, avatarUrl, followersCount, isFollowed } = author;
   const authorFullName = getFullName(firstName, lastName);
-  const articleUrl = window.location.href;
-
-  const { id } = useParams();
-
   const dispatch = useAppDispatch();
 
   const { handleToggleModalOpen, isOpen } = useModal();
-
-  const handleShareButtonClick = useCallback((): void => {
-    if (id) {
-      void dispatch(articlesActions.shareArticle({ id }));
-    }
-  }, [dispatch, id]);
 
   const handleDeleteArticle = useCallback((): void => {
     void dispatch(
@@ -89,6 +77,10 @@ const ArticleView: React.FC<Properties> = ({
       handleToggleModalOpen();
     }
   }, [handleToggleModalOpen, isOpen]);
+
+  const handleToggleFavorite = useCallback(() => {
+    void dispatch(articlesActions.toggleIsFavourite(Number(id)));
+  }, [dispatch, id]);
 
   return (
     <article
@@ -125,10 +117,10 @@ const ArticleView: React.FC<Properties> = ({
               </>
             )}
             <IconButton
-              iconName="favorite"
+              iconName={isFavourite ? 'favoriteFilled' : 'favorite'}
               className={styles.iconButton}
               iconClassName={styles.icon}
-              onClick={onButtonClick}
+              onClick={handleToggleFavorite}
             />
 
             {publishedAt && (
@@ -140,20 +132,12 @@ const ArticleView: React.FC<Properties> = ({
                 >
                   <Icon iconName="comment" className={styles.icon} />
                 </Link>
-
-                <IconButton
-                  iconName="share"
-                  className={styles.iconButton}
-                  iconClassName={styles.icon}
-                  onClick={handleShareButtonClick}
-                />
-                <ShareOnFacebookButton
-                  title={title}
-                  articleUrl={articleUrl}
-                  iconStyle={getValidClassNames(
-                    styles.iconButton,
-                    styles.facebookIconButton,
-                  )}
+                <SharePopover
+                  articleId={id.toString()}
+                  articleTitle={title}
+                  classNameContentWrapper={styles.sharePopover}
+                  classNameIconButton={styles.iconButton}
+                  classNameIcon={styles.icon}
                 />
               </>
             )}

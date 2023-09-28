@@ -1,4 +1,6 @@
-import { Layout } from '~/libs/components/components.js';
+import { Layout, Spoiler } from '~/libs/components/components.js';
+import { WindowBreakpoint } from '~/libs/enums/enums.js';
+import { getValidClassNames } from '~/libs/helpers/helpers.js';
 import {
   useAppDispatch,
   useAppSelector,
@@ -18,10 +20,15 @@ import styles from './styles.module.scss';
 
 const ProfilePage: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { user, userActivities } = useAppSelector(({ auth, users }) => ({
-    user: auth.user as UserAuthResponseDto,
-    userActivities: users.userActivities,
-  }));
+  const { user, userActivities, articles } = useAppSelector(
+    ({ auth, users, articles }) => ({
+      user: auth.user as UserAuthResponseDto,
+      userActivities: users.userActivities,
+      articles: articles.articles,
+    }),
+  );
+
+  const hasArticles = Boolean(articles.length);
 
   useEffect(() => {
     void dispatch(usersActions.getUserActivity());
@@ -30,14 +37,33 @@ const ProfilePage: React.FC = () => {
   return (
     <Layout>
       <div className={styles.profile}>
-        <UserInfo user={user} className={styles.profileBlock} />
-        <UserActivity
-          userActivities={userActivities}
-          className={styles.profileBlock}
+        <UserInfo
+          user={user}
+          className={getValidClassNames(styles.userInfo, styles.profileBlock)}
         />
-        <UserLatestArticles />
-        <UserAchievements className={styles.profileBlock} />
-        <UserArticlesGenresStats className={styles.profileBlock} />
+        <Spoiler breakpoint={WindowBreakpoint.MEDIUM} summary="Achievements">
+          <UserAchievements className={styles.profileBlock} />
+        </Spoiler>
+        <Spoiler
+          breakpoint={WindowBreakpoint.MEDIUM}
+          summary="Your writing activity"
+        >
+          <UserActivity
+            userActivities={userActivities}
+            className={getValidClassNames(styles.profileBlock, styles.activity)}
+          />
+        </Spoiler>
+        <Spoiler breakpoint={WindowBreakpoint.MEDIUM} summary="Genre stats">
+          <UserArticlesGenresStats
+            className={getValidClassNames(styles.profileBlock, styles.stats)}
+          />
+        </Spoiler>
+        <Spoiler
+          breakpoint={WindowBreakpoint.MEDIUM}
+          summary={hasArticles ? 'Your latest articles' : 'My articles'}
+        >
+          <UserLatestArticles className={styles.profileBlock} />
+        </Spoiler>
       </div>
     </Layout>
   );

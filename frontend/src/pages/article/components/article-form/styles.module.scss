@@ -1,3 +1,5 @@
+@use "src/assets/css/breakpoints.scss";
+
 .formContainer {
   display: flex;
   flex-direction: column;
@@ -27,4 +29,15 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+.modalContent {
+  background: var(--light-gray);
+}
+
+@media only screen and (max-width: breakpoints.$extra-small) {
+  .buttonWrapper {
+    justify-content: space-between;
+    gap: 6px;
+  }
 }

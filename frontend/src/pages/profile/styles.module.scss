@@ -1,12 +1,12 @@
+@use "src/assets/css/breakpoints.scss";
+
 .profile {
   display: grid;
   grid-template:
-    "activity activity info"
-    "articles genres achievements"
-    / 1fr 1fr 1fr;
-  gap: 20px;
+    "activity activity info" minmax(305px, max-content)
+    "articles genres achievements" minmax(491px, max-content) / 1fr 1fr 1fr;
+  gap: 20px 20px;
   width: 100%;
-  max-width: 1590px;
   margin: 0 auto;
   padding-bottom: 20px;
 }
@@ -14,4 +14,64 @@
 .profileBlock {
   border: 1px solid var(--pastel-gray);
   border-radius: 7px;
+}
+
+@media only screen and (max-width: breakpoints.$extra-large) {
+  .profile {
+    grid-template:
+      "achievements info" minmax(305px, max-content)
+      "activity activity" minmax(305px, max-content)
+      "articles genres" minmax(491px, max-content) / 1fr 1fr;
+  }
+
+  .userInfo {
+    padding: 20px;
+  }
+
+  .stats {
+    padding: 15px;
+  }
+}
+
+@media only screen and (max-width: breakpoints.$large) {
+  .profile {
+    display: flex;
+    flex-direction: column;
+    max-width: 600px;
+  }
+
+  .activity {
+    padding: 10px 30px 10px 10px;
+  }
+
+  .stats {
+    min-height: 436px;
+  }
+}
+
+@media only screen and (max-width: breakpoints.$medium) {
+  .profile {
+    gap: 15px;
+    max-width: 500px;
+  }
+
+  .userInfo {
+    margin-bottom: 5px;
+  }
+}
+
+@media only screen and (max-width: breakpoints.$small) {
+  .profile {
+    gap: 10px;
+    padding-bottom: 5px;
+  }
+
+  .userInfo {
+    padding: 12px 10px 15px;
+  }
+
+  .stats {
+    min-height: 426px;
+    padding: 10px;
+  }
 }

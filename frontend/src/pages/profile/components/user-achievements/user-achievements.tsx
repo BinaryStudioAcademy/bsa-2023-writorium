@@ -44,39 +44,49 @@ const UserAchievements: React.FC<Properties> = ({ className }) => {
   const isLoading = ownAchievementsDataStatus === DataStatus.PENDING;
 
   return (
-    <div className={getValidClassNames(className, styles.achievementBlock)}>
+    <div className={styles.achievementContainer}>
       <h3 className={styles.title}>Achievements</h3>
-      <Loader isLoading={isLoading} type="dots">
-        <AchievementList
-          achievements={achievementsList.slice(
-            FIRST_ITEM_INDEX,
-            NUMBER_OF_ACHIEVEMENTS_TO_DISPLAY,
-          )}
-          className={styles.achievementList}
-        />
-        <Button hasFullWidth label="Show all" onClick={handleToggleModalOpen} />
-        <Modal
-          isOpen={isOpen}
-          onClose={handleToggleModalOpen}
-          className={styles.modal}
-          contentClassName={styles.modalContent}
-          closeBtnClassName={styles.modalCloseBtn}
-        >
-          <div>
-            <h2 className={styles.title}>Achievements</h2>
-            <AchievementList
-              hasToShowTooltip={true}
-              achievements={achievementsList}
-              className={styles.achievementListModal}
-              classNameAchievement={styles.achievementItem}
-            />
-          </div>
-          <Tooltip
-            id={DataTooltipId.ACHIEVEMENT_TOOLTIP}
-            className={styles.achievementTooltip}
+      <div className={getValidClassNames(className, styles.achievementBlock)}>
+        <Loader isLoading={isLoading} type="dots">
+          <AchievementList
+            achievements={achievementsList.slice(
+              FIRST_ITEM_INDEX,
+              NUMBER_OF_ACHIEVEMENTS_TO_DISPLAY,
+            )}
+            className={styles.achievementList}
+            classNameAchievement={styles.previewAchievementItem}
+            classNameBadge={styles.achievementBadge}
           />
-        </Modal>
-      </Loader>
+          <Button
+            label="Show all"
+            onClick={handleToggleModalOpen}
+            variant="outlined"
+            outlinedButtonColor="white"
+          />
+          <Modal
+            isOpen={isOpen}
+            onClose={handleToggleModalOpen}
+            className={styles.modal}
+            contentClassName={styles.modalContent}
+            closeBtnClassName={styles.modalCloseBtn}
+          >
+            <div>
+              <h2 className={styles.title}>Achievements</h2>
+              <AchievementList
+                hasToShowTooltip={true}
+                achievements={achievementsList}
+                className={styles.achievementListModal}
+                classNameAchievement={styles.achievementItem}
+                classNameBadge={styles.achievementBadgeModal}
+              />
+            </div>
+            <Tooltip
+              id={DataTooltipId.ACHIEVEMENT_TOOLTIP}
+              className={styles.achievementTooltip}
+            />
+          </Modal>
+        </Loader>
+      </div>
     </div>
   );
 };

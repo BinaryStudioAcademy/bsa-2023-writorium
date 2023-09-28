@@ -1,29 +1,47 @@
-.userInfoBlock {
+@use "src/assets/css/breakpoints.scss";
+
+.userInfoContainer {
+  display: flex;
   grid-area: info;
+  flex-direction: column;
+}
+
+.title {
+  margin-bottom: 6px;
+}
+
+.userInfoBlock {
   width: 100%;
-  min-height: 262px;
-  padding: 45px 37px 55px;
+  height: 100%;
+  padding: 45px 10% 55px;
   background-color: var(--light-gray);
 }
 
 .userInfoWrapper {
   display: flex;
-  justify-content: flex-start;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
   gap: 19px;
+  text-align: center;
 }
 
 .avatar {
-  width: 162px;
+  width: 50%;
+  max-width: 160px;
   aspect-ratio: 1 / 1;
   height: auto;
+  font-size: 40px;
+}
+
+.editButton {
+  min-width: max-content;
 }
 
 .userInfo {
   margin-bottom: 19px;
   color: var(--black-90);
   line-height: normal;
-  word-break: break-word;
 }
 
 .userName {
@@ -34,4 +52,32 @@
 
 .userEmail {
   font-size: 14px;
+}
+
+.modalEditForm {
+  max-width: 400px;
+}
+
+@media only screen and (max-width: breakpoints.$extra-large) {
+  .userInfoWrapper {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+@media only screen and (max-width: breakpoints.$large) {
+  .title {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: breakpoints.$small) {
+  .userInfoWrapper {
+    gap: 10px;
+  }
+
+  .userName {
+    font-size: 14px;
+  }
 }
