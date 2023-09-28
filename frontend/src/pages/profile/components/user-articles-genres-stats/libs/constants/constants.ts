@@ -11,10 +11,15 @@ const GENRES_CHART_COLORS = [
   '#EAFCFF',
   '#E6F4F1',
 ];
+const GENRES_CHART_PLACEHOLDER_DATA = [{ lable: 'No data', count: 1 }];
 
 const DEFAULT_FILTER_PAYLOAD: ArticleGenreStatsFilters = {
   articlePublishedStatus: null,
 } as const;
 
-export { DEFAULT_FILTER_PAYLOAD, GENRES_CHART_COLORS };
+export {
+  DEFAULT_FILTER_PAYLOAD,
+  GENRES_CHART_COLORS,
+  GENRES_CHART_PLACEHOLDER_DATA,
+};
 export { articleStatusOptions } from './article-status-select-options.constant.js';

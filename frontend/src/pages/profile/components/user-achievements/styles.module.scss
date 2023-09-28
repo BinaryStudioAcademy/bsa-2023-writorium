@@ -1,12 +1,18 @@
 @use "src/assets/css/breakpoints.scss";
 
-.achievementBlock {
+.achievementContainer {
   display: flex;
   grid-area: achievements;
+  flex-direction: column;
+}
+
+.achievementBlock {
+  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 40px;
+  height: 100%;
   padding: 30px 10%;
   text-align: center;
   background-color: var(--dark-green);
@@ -24,8 +30,8 @@
 }
 
 .title {
-  margin-bottom: 30px;
-  color: var(--white);
+  margin-bottom: 6px;
+  color: var(--black-90);
 }
 
 .modal {

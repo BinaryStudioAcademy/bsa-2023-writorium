@@ -21,6 +21,7 @@
 .articleCreatePageWrapper .leftColumn {
   flex: 60%;
   flex-shrink: 0;
+  width: 0;
 }
 
 .editArticlePage .rightColumn,
@@ -143,6 +144,11 @@
   .articlePageWrapper {
     display: flex;
     flex-direction: column;
+  }
+
+  .editArticlePage .leftColumn,
+  .articleCreatePageWrapper .leftColumn {
+    width: 100%;
   }
 
   .commentsBlockWrapper {
