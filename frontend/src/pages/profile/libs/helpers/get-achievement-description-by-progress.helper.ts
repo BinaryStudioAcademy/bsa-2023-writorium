@@ -1,10 +1,10 @@
-import { type ParsedAchievementDescription } from '~/packages/achievements/achievements.js';
+import { type AchievementDescription } from '~/packages/achievements/achievements.js';
 
 import { AchievementStatusThreshold } from '../enums/enums.js';
 
 const getAchievementDescriptionByProgress = (
   progress: number,
-  description: ParsedAchievementDescription,
+  description: AchievementDescription,
 ): string => {
   if (progress < AchievementStatusThreshold.EARLY_STAGE) {
     return description.notStarted;

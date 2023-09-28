@@ -1,8 +1,8 @@
-type ParsedAchievementDescription = {
+type AchievementDescription = {
   notStarted: string;
   earlyStage: string;
   inProgress: string;
   done: string;
 };
 
-export { type ParsedAchievementDescription };
+export { type AchievementDescription };

@@ -1,5 +1,4 @@
 export {
-  type AchievementWithParsedDescription,
+  type AchievementDescription,
   type AchievementWithProgressResponseDto,
-  type ParsedAchievementDescription,
 } from 'shared/build/index.js';

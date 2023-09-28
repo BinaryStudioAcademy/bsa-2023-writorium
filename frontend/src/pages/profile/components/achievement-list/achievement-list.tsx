@@ -1,7 +1,7 @@
 import { BlockWithTooltip } from '~/libs/components/components.js';
 import { DataTooltipId } from '~/libs/enums/enums.js';
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
-import { type AchievementWithParsedDescription } from '~/packages/achievements/achievements.js';
+import { type AchievementWithProgressResponseDto } from '~/packages/achievements/achievements.js';
 
 import {
   Achievement,
@@ -11,7 +11,7 @@ import { getAchievementDescriptionByProgress } from '../../libs/helpers/helpers.
 import styles from './styles.module.scss';
 
 type Properties = {
-  achievements: AchievementWithParsedDescription[];
+  achievements: AchievementWithProgressResponseDto[];
   hasToShowTooltip?: boolean;
   className?: string;
   classNameAchievement?: string;

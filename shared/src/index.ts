@@ -57,11 +57,10 @@ export {
 export {
   type Achievement,
   type AchievementBaseResponseDto,
+  type AchievementDescription,
   type AchievementGetAllResponseDto,
   AchievementsApiPath,
-  type AchievementWithParsedDescription,
   type AchievementWithProgressResponseDto,
-  type ParsedAchievementDescription,
   PercentageProgress,
   type UserAchievement,
 } from './packages/achievements/achievements.js';
