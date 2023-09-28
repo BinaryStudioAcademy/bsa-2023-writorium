@@ -22,33 +22,36 @@ const UserInfo: React.FC<Properties> = ({ user, className }) => {
   }, [handleToggleModalOpen, isOpen]);
 
   return (
-    <div className={getValidClassNames(className, styles.userInfoBlock)}>
-      <div className={styles.userInfoWrapper}>
-        <Avatar
-          username={userName}
-          avatarUrl={user.avatarUrl}
-          className={styles.avatar}
-        />
-        <div>
-          <div className={styles.userInfo}>
-            <p className={styles.userName}>{userName}</p>
-            <p className={styles.userEmail}>{user.email}</p>
-          </div>
-          <Button
-            className={styles.editButton}
-            variant="outlined"
-            label="Edit profile"
-            onClick={handleToggleModalOpen}
+    <div className={styles.userInfoContainer}>
+      <h3 className={styles.title}>Your details</h3>
+      <div className={getValidClassNames(className, styles.userInfoBlock)}>
+        <div className={styles.userInfoWrapper}>
+          <Avatar
+            username={userName}
+            avatarUrl={user.avatarUrl}
+            className={styles.avatar}
           />
+          <div>
+            <div className={styles.userInfo}>
+              <p className={styles.userName}>{userName}</p>
+              <p className={styles.userEmail}>{user.email}</p>
+            </div>
+            <Button
+              className={styles.editButton}
+              variant="outlined"
+              label="Edit profile"
+              onClick={handleToggleModalOpen}
+            />
+          </div>
         </div>
+        <Modal
+          onClose={handleModalClose}
+          isOpen={isOpen}
+          contentClassName={styles.modalEditForm}
+        >
+          <ProfileEditForm user={user} onEdit={handleModalClose} />
+        </Modal>
       </div>
-      <Modal
-        onClose={handleModalClose}
-        isOpen={isOpen}
-        contentClassName={styles.modalEditForm}
-      >
-        <ProfileEditForm user={user} onEdit={handleModalClose} />
-      </Modal>
     </div>
   );
 };
