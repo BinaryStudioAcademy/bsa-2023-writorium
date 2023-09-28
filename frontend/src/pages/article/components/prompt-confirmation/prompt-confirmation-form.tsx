@@ -66,13 +66,16 @@ const PromptConfirmationForm: React.FC<Properties> = ({
         name="ConfirmPromptsForm"
         onSubmit={handleFormSubmit}
       >
+        <span className={styles.header}>
+          Please, select the prompts that you have used
+        </span>
         {Object.entries(prompt).map(([key, value]) => {
           const castedKey = key as keyof typeof prompt;
           if (castedKey === PromptCategory.GENRE) {
             return;
           }
           return (
-            <div className={styles.promptItem} key={self.crypto.randomUUID()}>
+            <div className={styles.promptItem} key={castedKey}>
               <div className={styles.category}>
                 <span className={styles.categoryText}>{key}</span>
               </div>

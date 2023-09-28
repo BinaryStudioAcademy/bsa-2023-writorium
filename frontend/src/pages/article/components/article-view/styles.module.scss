@@ -157,7 +157,7 @@
 
 @media only screen and (max-width: breakpoints.$medium) {
   .buttonsWrapper {
-    top: 25px;
+    top: 10px;
     flex-direction: row;
     align-items: start;
     gap: 10px;
@@ -303,5 +303,18 @@
     font-family: Raleway, sans-serif;
     font-style: normal;
     line-height: normal;
+  }
+}
+
+@media only screen and (max-width: breakpoints.$extra-small) {
+  .buttonsWrapper {
+    top: 6px;
+    left: 6px;
+    gap: 6px;
+  }
+
+  .iconButton {
+    width: 20px;
+    height: 20px;
   }
 }
