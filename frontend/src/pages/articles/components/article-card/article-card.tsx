@@ -192,7 +192,6 @@ const ArticleCard: React.FC<Properties> = ({
           <h4 className={styles.title}>{title}</h4>
           <article
             className={getValidClassNames(styles.text, 'text-overflow')}
-            style={{ fontSize: 14 }}
             dangerouslySetInnerHTML={{
               __html: sanitizeHtml(modifyFontSize(text, '14px')),
             }}
