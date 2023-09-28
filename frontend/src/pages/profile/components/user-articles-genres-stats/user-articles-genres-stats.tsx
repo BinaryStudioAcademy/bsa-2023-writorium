@@ -1,5 +1,6 @@
 import {
   Cell,
+  LabelList,
   Legend,
   Pie,
   PieChart as RechartsPieChart,
@@ -26,8 +27,12 @@ import {
   articleStatusOptions,
   DEFAULT_FILTER_PAYLOAD,
   GENRES_CHART_COLORS,
+  GENRES_CHART_PLACEHOLDER_DATA,
 } from './libs/constants/constants.js';
-import { GenresChartConfig } from './libs/enums/enums.js';
+import {
+  GenresChartConfig,
+  GenresChartPlaceholder,
+} from './libs/enums/enums.js';
 import { normalizeGenresStats } from './libs/helpers/helpers.js';
 import styles from './styles.module.scss';
 
@@ -61,6 +66,7 @@ const UserArticlesGenresStats: React.FC<Properties> = ({ className }) => {
   );
 
   const isLoading = userArticlesGenresStatsStatus === DataStatus.PENDING;
+  const hasArticles = Boolean(chartData.length);
 
   return (
     <div className={styles.statsContainer}>
@@ -77,43 +83,70 @@ const UserArticlesGenresStats: React.FC<Properties> = ({ className }) => {
                   options={articleStatusOptions}
                   control={control}
                   errors={errors}
+                  isDisabled={!hasArticles}
                 />
               </div>
             </form>
-            <ResponsiveContainer width="100%" height="100%">
+            <ResponsiveContainer
+              width="100%"
+              height="100%"
+              className={styles.responsiveContainer}
+            >
               <RechartsPieChart
                 width={GenresChartConfig.SIZE}
                 height={GenresChartConfig.SIZE}
               >
-                <Pie
-                  cx="50%"
-                  cy="50%"
-                  label={false}
-                  dataKey="count"
-                  labelLine={false}
-                  data={chartData}
-                  innerRadius={GenresChartConfig.INNER_RADIUS}
-                  outerRadius={GenresChartConfig.OUTER_RADIUS}
-                >
-                  {chartData.map((entry, index) => (
-                    <Cell
-                      key={entry.key as React.Key}
-                      fill={
-                        GENRES_CHART_COLORS?.[
-                          index % GENRES_CHART_COLORS.length
-                        ]
-                      }
-                      style={{ outline: 'none' }}
+                {hasArticles ? (
+                  <>
+                    <Pie
+                      cx="50%"
+                      cy="50%"
+                      label={false}
+                      dataKey="count"
+                      labelLine={false}
+                      data={chartData}
+                      innerRadius={GenresChartConfig.INNER_RADIUS}
+                      outerRadius={GenresChartConfig.OUTER_RADIUS}
+                    >
+                      {chartData.map((entry, index) => (
+                        <Cell
+                          key={entry.key as React.Key}
+                          fill={
+                            GENRES_CHART_COLORS?.[
+                              index % GENRES_CHART_COLORS.length
+                            ]
+                          }
+                          style={{ outline: 'none' }}
+                        />
+                      ))}
+                    </Pie>
+                    <Legend
+                      layout="vertical"
+                      align="center"
+                      verticalAlign="bottom"
+                      content={<GenresList genresStatistics={chartData} />}
                     />
-                  ))}
-                </Pie>
-                <Legend
-                  layout="vertical"
-                  align="center"
-                  verticalAlign="bottom"
-                  content={<GenresList genresStatistics={chartData} />}
-                />
-                <Tooltip />
+                    <Tooltip />
+                  </>
+                ) : (
+                  <Pie
+                    cx="50%"
+                    cy="50%"
+                    dataKey="count"
+                    innerRadius={GenresChartConfig.INNER_RADIUS}
+                    outerRadius={GenresChartConfig.OUTER_RADIUS}
+                    data={GENRES_CHART_PLACEHOLDER_DATA}
+                    fill={GenresChartPlaceholder.COLOR}
+                  >
+                    <LabelList
+                      dataKey="lable"
+                      position={GenresChartPlaceholder.LABEL_POSITION}
+                      fontSize={GenresChartPlaceholder.FONT_SIZE}
+                      fill={GenresChartPlaceholder.LABEL_COLOR}
+                      stroke="none"
+                    />
+                  </Pie>
+                )}
               </RechartsPieChart>
             </ResponsiveContainer>
           </Loader>
