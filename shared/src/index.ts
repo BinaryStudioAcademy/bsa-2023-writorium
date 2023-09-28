@@ -60,7 +60,9 @@ export {
   type AchievementBaseResponseDto,
   type AchievementGetAllResponseDto,
   AchievementsApiPath,
+  type AchievementWithParsedDescription,
   type AchievementWithProgressResponseDto,
+  type ParsedAchievementDescription,
   PercentageProgress,
   type UserAchievement,
 } from './packages/achievements/achievements.js';

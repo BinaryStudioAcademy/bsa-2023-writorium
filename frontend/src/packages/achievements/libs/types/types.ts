@@ -1,1 +1,5 @@
-export { type AchievementWithProgressResponseDto } from 'shared/build/index.js';
+export {
+  type AchievementWithParsedDescription,
+  type AchievementWithProgressResponseDto,
+  type ParsedAchievementDescription,
+} from 'shared/build/index.js';

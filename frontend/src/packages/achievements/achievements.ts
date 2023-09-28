@@ -12,4 +12,8 @@ const achievementsApi = new AchievementsApi({
 
 export { achievementsApi };
 export { PercentageProgress } from './libs/enums/enums.js';
-export { type AchievementWithProgressResponseDto } from './libs/types/types.js';
+export {
+  type AchievementWithParsedDescription,
+  type AchievementWithProgressResponseDto,
+  type ParsedAchievementDescription,
+} from './libs/types/types.js';
