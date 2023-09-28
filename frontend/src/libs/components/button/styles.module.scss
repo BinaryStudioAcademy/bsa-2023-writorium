@@ -55,10 +55,20 @@
 /* Primary */
 
 /* Outlined */
+
 .button.buttonOutlined {
-  color: var(--dark-green);
   background-color: transparent;
-  border: 2px solid var(--dark-green);
+  border: 2px solid;
+}
+
+.button.buttonOutlined.green {
+  color: var(--dark-green);
+  border-color: var(--dark-green);
+}
+
+.button.buttonOutlined.white {
+  color: var(--white);
+  border-color: var(--white);
 }
 
 .button.buttonOutlined:disabled {
@@ -71,8 +81,12 @@
   border-color: var(--light-green);
 }
 
-.button.buttonOutlined .loader {
+.button.buttonOutlined.green .loader {
   --loader-color: var(--dark-green);
+}
+
+.button.buttonOutlined.white .loader {
+  --loader-color: var(--white);
 }
 
 /* Outlined */
