@@ -1,7 +1,11 @@
 import { type IEntity } from '~/libs/interfaces/interfaces.js';
 import { type WithNullableKeys } from '~/libs/types/types.js';
 
-import { type Achievement, type ReferenceTable } from './libs/types/types.js';
+import {
+  type Achievement,
+  type AchievementDescription,
+  type ReferenceTable,
+} from './libs/types/types.js';
 
 type AchievementEntityPayload = Omit<Achievement, 'id'>;
 
@@ -12,7 +16,7 @@ class AchievementEntity implements IEntity {
 
   private 'name': string;
 
-  private 'description': string;
+  private 'description': AchievementDescription;
 
   private 'breakpoint': number;
 

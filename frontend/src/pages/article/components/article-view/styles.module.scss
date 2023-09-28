@@ -9,7 +9,8 @@
 
 .body:not(.hasCover) {
   display: flex;
-  flex-direction: row-reverse;
+  flex-direction: column;
+  align-items: baseline;
 }
 
 .coverWrapper {
@@ -27,20 +28,14 @@
 
 .buttonsWrapper {
   position: absolute;
-  top: 5%;
+  top: 10px;
   left: 13px;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 11px;
-  height: 90%;
+  gap: 15px;
 }
 
 .body:not(.hasCover) .buttonsWrapper {
   position: static;
-  justify-content: flex-start;
-  margin-left: 25px;
 }
 
 .iconButton {
@@ -97,7 +92,7 @@
 }
 
 .body:not(.hasCover) .textWrapper {
-  padding-top: 40px;
+  padding-top: 25px;
 }
 
 .title {
@@ -157,14 +152,7 @@
 
 @media only screen and (max-width: breakpoints.$medium) {
   .buttonsWrapper {
-    top: 10px;
-    flex-direction: row;
-    align-items: start;
     gap: 10px;
-  }
-
-  .body:not(.hasCover) .textWrapper {
-    padding-top: 18px;
   }
 
   .iconButton {
@@ -201,15 +189,6 @@
 }
 
 @media only screen and (min-width: breakpoints.$medium) and (max-width: breakpoints.$extra-large) {
-  .buttonsWrapper {
-    bottom: 5%;
-    gap: 15px;
-  }
-
-  .body:not(.hasCover) .textWrapper {
-    padding-top: 18px;
-  }
-
   .authorName {
     font-size: 18px;
   }
@@ -250,13 +229,8 @@
 }
 
 @media only screen and (max-width: breakpoints.$extra-large) {
-  .body:not(.hasCover) .buttonsWrapper {
-    flex-direction: row;
-  }
-
-  .body:not(.hasCover) {
-    display: flex;
-    flex-direction: column;
+  .body:not(.hasCover) .textWrapper {
+    padding-top: 18px;
   }
 
   .title {

@@ -83,7 +83,7 @@ const UserArticlesGenresStats: React.FC<Properties> = ({ className }) => {
                   options={articleStatusOptions}
                   control={control}
                   errors={errors}
-                  isDisabled={!hasArticles}
+                  isDisabled={!hasArticles && !filters.articlePublishedStatus}
                 />
               </div>
             </form>
