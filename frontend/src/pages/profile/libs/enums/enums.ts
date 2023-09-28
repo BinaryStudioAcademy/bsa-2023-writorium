@@ -1,4 +1,3 @@
-export { AchievementDescriptionThreshold } from './achievement-description-threshold.enum.js';
 export { AchievementItemConfig } from './achievement-item-config.enum.js';
 export { AchievementStatusThreshold } from './achievement-status-threshold.enum.js';
 export { ActivityBreakpoint } from './activity-breakpoint.enum.js';
