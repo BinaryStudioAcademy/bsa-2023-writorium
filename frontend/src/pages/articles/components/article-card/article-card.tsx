@@ -21,7 +21,6 @@ import {
   getReactionConvertedToBoolean,
   getReactionsInfo,
   getValidClassNames,
-  modifyFontSize,
   sanitizeHtml,
 } from '~/libs/helpers/helpers.js';
 import {
@@ -193,7 +192,7 @@ const ArticleCard: React.FC<Properties> = ({
           <article
             className={getValidClassNames(styles.text, 'text-overflow')}
             dangerouslySetInnerHTML={{
-              __html: sanitizeHtml(modifyFontSize(text, '14px')),
+              __html: sanitizeHtml(text),
             }}
           ></article>
         </div>
