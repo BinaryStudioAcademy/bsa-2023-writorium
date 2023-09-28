@@ -13,7 +13,7 @@ import {
   useMemo,
   useModal,
 } from '~/libs/hooks/hooks.js';
-import { type AchievementWithProgressResponseDto } from '~/packages/achievements/achievements.js';
+import { type AchievementWithParsedDescription } from '~/packages/achievements/achievements.js';
 import { actions as achievementsActions } from '~/slices/achievements/achievements.js';
 
 import { NUMBER_OF_ACHIEVEMENTS_TO_DISPLAY } from '../../libs/constants/constants.js';
@@ -37,7 +37,7 @@ const UserAchievements: React.FC<Properties> = ({ className }) => {
     void dispatch(achievementsActions.fetchOwnWithProgress());
   }, [dispatch]);
 
-  const achievementsList: AchievementWithProgressResponseDto[] = useMemo(() => {
+  const achievementsList: AchievementWithParsedDescription[] = useMemo(() => {
     return [...ownAchievements].sort((a, b) => b.progress - a.progress);
   }, [ownAchievements]);
 
