@@ -60,66 +60,63 @@ const UserArticlesGenresStats: React.FC<Properties> = ({ className }) => {
     GenresChartConfig.MAX_VISIBLE_GENRES,
   );
 
+  const isLoading = userArticlesGenresStatsStatus === DataStatus.PENDING;
+
   return (
     <div className={styles.statsContainer}>
       <h3 className={styles.title}>Genres Stats</h3>
       <div className={getValidClassNames(styles.wrapper, className)}>
         <div className={styles.chartWrapper}>
-          {userArticlesGenresStatsStatus === DataStatus.PENDING && (
-            <Loader isLoading type="dots" />
-          )}
-          {userArticlesGenresStatsStatus === DataStatus.FULFILLED && (
-            <>
-              <form className={styles.form} name="FiltersForm">
-                <div>
-                  <Select
-                    name="articlePublishedStatus"
-                    placeholder="Choose article status..."
-                    label=""
-                    options={articleStatusOptions}
-                    control={control}
-                    errors={errors}
-                  />
-                </div>
-              </form>
-              <ResponsiveContainer width="100%" height="100%">
-                <RechartsPieChart
-                  width={GenresChartConfig.SIZE}
-                  height={GenresChartConfig.SIZE}
+          <Loader isLoading={isLoading} type="dots">
+            <form className={styles.form} name="FiltersForm">
+              <div>
+                <Select
+                  name="articlePublishedStatus"
+                  placeholder="Choose article status..."
+                  label=""
+                  options={articleStatusOptions}
+                  control={control}
+                  errors={errors}
+                />
+              </div>
+            </form>
+            <ResponsiveContainer width="100%" height="100%">
+              <RechartsPieChart
+                width={GenresChartConfig.SIZE}
+                height={GenresChartConfig.SIZE}
+              >
+                <Pie
+                  cx="50%"
+                  cy="50%"
+                  label={false}
+                  dataKey="count"
+                  labelLine={false}
+                  data={chartData}
+                  innerRadius={GenresChartConfig.INNER_RADIUS}
+                  outerRadius={GenresChartConfig.OUTER_RADIUS}
                 >
-                  <Pie
-                    cx="50%"
-                    cy="50%"
-                    label={false}
-                    dataKey="count"
-                    labelLine={false}
-                    data={chartData}
-                    innerRadius={GenresChartConfig.INNER_RADIUS}
-                    outerRadius={GenresChartConfig.OUTER_RADIUS}
-                  >
-                    {chartData.map((entry, index) => (
-                      <Cell
-                        key={entry.key as React.Key}
-                        fill={
-                          GENRES_CHART_COLORS?.[
-                            index % GENRES_CHART_COLORS.length
-                          ]
-                        }
-                        style={{ outline: 'none' }}
-                      />
-                    ))}
-                  </Pie>
-                  <Legend
-                    layout="vertical"
-                    align="center"
-                    verticalAlign="bottom"
-                    content={<GenresList genresStatistics={chartData} />}
-                  />
-                  <Tooltip />
-                </RechartsPieChart>
-              </ResponsiveContainer>
-            </>
-          )}
+                  {chartData.map((entry, index) => (
+                    <Cell
+                      key={entry.key as React.Key}
+                      fill={
+                        GENRES_CHART_COLORS?.[
+                          index % GENRES_CHART_COLORS.length
+                        ]
+                      }
+                      style={{ outline: 'none' }}
+                    />
+                  ))}
+                </Pie>
+                <Legend
+                  layout="vertical"
+                  align="center"
+                  verticalAlign="bottom"
+                  content={<GenresList genresStatistics={chartData} />}
+                />
+                <Tooltip />
+              </RechartsPieChart>
+            </ResponsiveContainer>
+          </Loader>
         </div>
       </div>
     </div>

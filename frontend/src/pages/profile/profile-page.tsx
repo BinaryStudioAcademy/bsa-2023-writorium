@@ -28,7 +28,7 @@ const ProfilePage: React.FC = () => {
     }),
   );
 
-  const isArticles = Boolean(articles.length);
+  const hasArticles = Boolean(articles.length);
 
   useEffect(() => {
     void dispatch(usersActions.getUserActivity());
@@ -60,7 +60,7 @@ const ProfilePage: React.FC = () => {
         </Spoiler>
         <Spoiler
           breakpoint={WindowBreakpoint.MEDIUM}
-          summary={isArticles ? 'Your latest articles' : 'My articles'}
+          summary={hasArticles ? 'Your latest articles' : 'My articles'}
         >
           <UserLatestArticles className={styles.profileBlock} />
         </Spoiler>

@@ -23,7 +23,7 @@ const UserLatestArticles: React.FC<Properties> = ({ className }) => {
     articles: articles.articles,
   }));
 
-  const isArticles = Boolean(articles.length);
+  const hasArticles = Boolean(articles.length);
 
   useEffect(() => {
     void dispatch(
@@ -40,10 +40,10 @@ const UserLatestArticles: React.FC<Properties> = ({ className }) => {
   return (
     <div className={styles.latestArticlesContainer}>
       <h3 className={styles.listTitle}>
-        {isArticles ? 'Your latest articles' : 'My articles'}
+        {hasArticles ? 'Your latest articles' : 'My articles'}
       </h3>
       <div className={getValidClassNames(className, styles.wrapper)}>
-        {isArticles ? (
+        {hasArticles ? (
           <>
             <ul className={styles.articleList}>
               {articles.map((article) => (
