@@ -48,7 +48,7 @@ const TextEditor = <T extends FieldValues>({
   const hasError = Boolean(error);
 
   const handleEditorUpdate: EditorOptions['onUpdate'] = ({ editor }): void => {
-    field.onChange(editor.getHTML());
+    field.onChange(editor.getHTML().replaceAll('<p></p>', '<br>'));
   };
 
   const wrapperReference = useReference<HTMLDivElement>(null);
