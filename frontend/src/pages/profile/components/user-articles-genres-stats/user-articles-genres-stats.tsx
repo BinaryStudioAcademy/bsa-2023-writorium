@@ -65,17 +65,15 @@ const UserArticlesGenresStats: React.FC<Properties> = ({ className }) => {
     GenresChartConfig.MAX_VISIBLE_GENRES,
   );
 
+  const isLoading = userArticlesGenresStatsStatus === DataStatus.PENDING;
   const hasArticles = Boolean(chartData.length);
 
   return (
-    <div className={getValidClassNames(styles.wrapper, className)}>
+    <div className={styles.statsContainer}>
       <h3 className={styles.title}>Genres Stats</h3>
-      <div className={styles.chartWrapper}>
-        {userArticlesGenresStatsStatus === DataStatus.PENDING && (
-          <Loader isLoading type="dots" />
-        )}
-        {userArticlesGenresStatsStatus === DataStatus.FULFILLED && (
-          <>
+      <div className={getValidClassNames(styles.wrapper, className)}>
+        <div className={styles.chartWrapper}>
+          <Loader isLoading={isLoading} type="dots">
             <form className={styles.form} name="FiltersForm">
               <div>
                 <Select
@@ -118,6 +116,7 @@ const UserArticlesGenresStats: React.FC<Properties> = ({ className }) => {
                               index % GENRES_CHART_COLORS.length
                             ]
                           }
+                          style={{ outline: 'none' }}
                         />
                       ))}
                     </Pie>
@@ -150,8 +149,8 @@ const UserArticlesGenresStats: React.FC<Properties> = ({ className }) => {
                 )}
               </RechartsPieChart>
             </ResponsiveContainer>
-          </>
-        )}
+          </Loader>
+        </div>
       </div>
     </div>
   );

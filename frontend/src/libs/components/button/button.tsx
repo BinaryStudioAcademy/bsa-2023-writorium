@@ -9,8 +9,11 @@ type ButtonVariant = 'primary' | 'outlined' | 'text';
 
 type ButtonSize = 'medium' | 'small';
 
+type outlinedButtonColor = 'green' | 'white';
+
 type Properties = {
   variant?: ButtonVariant;
+  outlinedButtonColor?: outlinedButtonColor;
   size?: ButtonSize;
   isDisabled?: boolean;
   label: React.ReactNode;
@@ -34,6 +37,7 @@ const Button: React.FC<Properties> = ({
   onClick,
   hasFullWidth,
   variant = 'primary',
+  outlinedButtonColor = 'green',
   size = 'medium',
   isLoading,
 }) => {
@@ -70,6 +74,7 @@ const Button: React.FC<Properties> = ({
         styles.button,
         sizeClassNameMapper[size],
         variantClassNameMapper[variant],
+        styles[outlinedButtonColor],
         hasFullWidth && styles.hasFullWidth,
         isLoading && styles.buttonLoading,
         className,
