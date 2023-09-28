@@ -1,17 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 import { DataStatus } from '~/libs/enums/enums.js';
-import { parseJSONSafely } from '~/libs/helpers/helpers.js';
 import { type ValueOf } from '~/libs/types/types.js';
-import {
-  type AchievementWithParsedDescription,
-  type ParsedAchievementDescription,
-} from '~/packages/achievements/achievements.js';
+import { type AchievementWithProgressResponseDto } from '~/packages/achievements/achievements.js';
 
 import { fetchOwnWithProgress } from './actions.js';
 
 type State = {
-  ownAchievements: AchievementWithParsedDescription[];
+  ownAchievements: AchievementWithProgressResponseDto[];
   ownAchievementsDataStatus: ValueOf<typeof DataStatus>;
 };
 
@@ -26,21 +22,8 @@ const { reducer, actions, name } = createSlice({
   reducers: {},
   extraReducers(builder) {
     builder.addCase(fetchOwnWithProgress.fulfilled, (state, action) => {
-      const achievementsWithParsedDescription = action.payload.map(
-        (achievement) => {
-          const parsedDescription = parseJSONSafely(
-            achievement.description,
-          ) as ParsedAchievementDescription;
-
-          return {
-            ...achievement,
-            description: parsedDescription,
-          };
-        },
-      );
-
       state.ownAchievementsDataStatus = DataStatus.FULFILLED;
-      state.ownAchievements = achievementsWithParsedDescription;
+      state.ownAchievements = action.payload;
     });
     builder.addCase(fetchOwnWithProgress.pending, (state) => {
       state.ownAchievementsDataStatus = DataStatus.PENDING;
