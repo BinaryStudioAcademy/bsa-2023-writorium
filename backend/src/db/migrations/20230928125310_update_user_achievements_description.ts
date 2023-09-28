@@ -193,27 +193,39 @@ const UPDATED_ACHIEVEMENTS = [
 const TABLE_NAME = 'achievements';
 
 const ColumnName = {
-  ID: 'id',
   KEY: 'key',
-  NAME: 'name',
   DESCRIPTION: 'description',
-  CREATED_AT: 'created_at',
-  UPDATED_AT: 'updated_at',
 } as const;
 
 async function up(knex: Knex): Promise<void> {
+  await knex.schema.alterTable(TABLE_NAME, (table) => {
+    table.dropColumn(ColumnName.DESCRIPTION);
+  });
+
+  await knex.schema.alterTable(TABLE_NAME, (table) => {
+    table.jsonb(ColumnName.DESCRIPTION);
+  });
+
   for (const achievement of UPDATED_ACHIEVEMENTS) {
     await knex(TABLE_NAME)
       .where(ColumnName.KEY, achievement.key)
-      .update({ description: JSON.stringify(achievement.description) });
+      .update({ [ColumnName.DESCRIPTION]: achievement.description });
   }
 }
 
 async function down(knex: Knex): Promise<void> {
+  await knex.schema.alterTable(TABLE_NAME, (table) => {
+    table.dropColumn(ColumnName.DESCRIPTION);
+  });
+
+  await knex.schema.alterTable(TABLE_NAME, (table) => {
+    table.text(ColumnName.DESCRIPTION);
+  });
+
   for (const achievement of ACHIEVEMENTS) {
     await knex(TABLE_NAME)
       .where(ColumnName.KEY, achievement.key)
-      .update({ description: achievement.description });
+      .update({ [ColumnName.DESCRIPTION]: achievement.description });
   }
 }
 
