@@ -444,7 +444,7 @@ class ArticleService implements IService {
       }),
     );
 
-    if (payload.publishedAt) {
+    if (payload.publishedAt && !article.publishedAt) {
       void this.articleSocketService.handleNewArticle(
         updatedArticle.toObjectWithRelationsAndCounts(),
       );
