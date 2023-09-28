@@ -102,6 +102,10 @@
   overflow-wrap: break-word;
 }
 
+.body .text * {
+  font-size: 14px !important; /* stylelint-disable-line declaration-no-important */
+}
+
 .coverWrapper {
   grid-area: cover;
   flex-shrink: 0;

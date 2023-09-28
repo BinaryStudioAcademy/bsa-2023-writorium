@@ -57,6 +57,7 @@ export {
 export {
   type Achievement,
   type AchievementBaseResponseDto,
+  type AchievementDescription,
   type AchievementGetAllResponseDto,
   AchievementsApiPath,
   type AchievementWithProgressResponseDto,
