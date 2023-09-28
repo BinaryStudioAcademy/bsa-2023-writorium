@@ -6,6 +6,8 @@ const DEFAULT_FILTER_PAYLOAD: FilterFormValues = {
   genreId: null,
   shouldShowFavourites: false,
   shouldShowFollowedAuthorsArticles: false,
+  shouldShowPublishedAricles: false,
+  shouldShowDrafts: false,
 } as const;
 
 export { DEFAULT_FILTER_PAYLOAD };
