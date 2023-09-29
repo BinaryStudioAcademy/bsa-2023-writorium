@@ -59,7 +59,8 @@
 
   /* layout */
   --layout-width: 1680px;
-  --layout-padding: 60px;
+  --layout-side-padding: 60px;
+  --layout-top-padding: 30px;
 }
 
 input,
@@ -72,26 +73,27 @@ textarea {
 
 @media only screen and (max-width: breakpoints.$extra-large) {
   :root {
-    --layout-padding: 40px;
+    --layout-side-padding: 40px;
   }
 }
 
 @media only screen and (max-width: breakpoints.$medium) {
   :root {
     --header-height: 80px;
-    --layout-padding: 30px;
+    --layout-side-padding: 30px;
   }
 }
 
 @media only screen and (max-width: breakpoints.$small) {
   :root {
     --header-height: 55px;
-    --layout-padding: 20px;
+    --layout-side-padding: 20px;
+    --layout-top-padding: 10px;
   }
 }
 
 @media only screen and (max-width: breakpoints.$extra-small) {
   :root {
-    --layout-padding: 15px;
+    --layout-side-padding: 15px;
   }
 }

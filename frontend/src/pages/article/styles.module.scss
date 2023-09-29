@@ -1,5 +1,9 @@
 @use "src/assets/css/breakpoints.scss";
 
+.layout {
+  padding-top: var(--layout-top-padding);
+}
+
 .articlePageWrapper {
   display: grid;
   grid-template-columns: 1fr 400px;

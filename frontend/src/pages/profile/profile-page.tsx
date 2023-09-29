@@ -33,7 +33,7 @@ const ProfilePage: React.FC = () => {
   }, [dispatch]);
 
   return (
-    <Layout>
+    <Layout className={styles.layout}>
       <div className={styles.profile}>
         <UserInfo
           user={user}

@@ -9,7 +9,7 @@ import { ArticleForm } from './components/components.js';
 import styles from './styles.module.scss';
 
 const CreateArticlePage: React.FC = () => (
-  <Layout>
+  <Layout className={styles.layout}>
     <div className={styles.articleCreatePageWrapper}>
       <h1 className={styles.header}>Write your own story</h1>
       <Popover

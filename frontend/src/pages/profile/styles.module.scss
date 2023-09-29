@@ -1,5 +1,9 @@
 @use "src/assets/css/breakpoints.scss";
 
+.layout {
+  padding-top: var(--layout-top-padding);
+}
+
 .profile {
   display: grid;
   grid-template:

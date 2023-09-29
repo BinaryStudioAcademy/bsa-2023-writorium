@@ -7,7 +7,7 @@
 .tabsWrapper {
   position: relative;
   display: flex;
-  padding-top: calc(var(--layout-padding) * 0.5);
+  padding-top: calc(var(--layout-side-padding) * 0.5);
   background: var(--light-gray);
   border-bottom: 1px solid var(--gray);
 }
@@ -61,8 +61,8 @@
 
 .filterButton {
   position: fixed;
-  top: calc(var(--header-height) + var(--layout-padding) * 0.5);
-  right: var(--layout-padding);
+  top: calc(var(--header-height) + var(--layout-side-padding) * 0.5);
+  right: var(--layout-side-padding);
   z-index: 50;
   display: flex;
   justify-content: center;
@@ -104,16 +104,18 @@
 
 @media only screen and (max-width: breakpoints.$small) {
   .tabsWrapper {
-    padding-top: calc(var(--layout-padding) * 0.8);
+    top: calc(var(--header-height) + 7px);
+    padding-top: calc(var(--layout-side-padding) * 0.8);
   }
 
   .filterButton {
-    top: calc(var(--header-height) + var(--layout-padding));
+    top: calc(var(--header-height) + var(--layout-side-padding));
     width: 25px;
     height: 25px;
+    padding-bottom: 0;
   }
 
   .modalContent {
-    padding: var(--layout-padding);
+    padding: var(--layout-side-padding);
   }
 }

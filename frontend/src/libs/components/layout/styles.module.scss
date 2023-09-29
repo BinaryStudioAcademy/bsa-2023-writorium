@@ -3,12 +3,5 @@
 .layout {
   max-width: var(--layout-width);
   margin: 0 auto;
-  padding: 30px var(--layout-padding);
-}
-
-@media only screen and (max-width: breakpoints.$small) {
-  .layout {
-    padding-top: 10px;
-    padding-bottom: 30px;
-  }
+  padding: 30px var(--layout-side-padding);
 }
