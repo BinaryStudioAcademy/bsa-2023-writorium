@@ -71,7 +71,7 @@ const UserAchievements: React.FC<Properties> = ({ className }) => {
             closeBtnClassName={styles.modalCloseBtn}
           >
             <div>
-              <h2 className={styles.title}>Achievements</h2>
+              <h2 className={styles.modalTitle}>Achievements</h2>
               <AchievementList
                 hasToShowTooltip={true}
                 achievements={achievementsList}
