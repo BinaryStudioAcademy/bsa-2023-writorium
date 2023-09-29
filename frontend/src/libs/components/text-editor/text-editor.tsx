@@ -19,6 +19,7 @@ import { Toolbar } from './libs/components/components.js';
 import { TEXT_EDITOR_PLACEHOLDER_TEXT } from './libs/constants/constants.js';
 import {
   FontSize,
+  Indent,
   Placeholder,
   StarterKit,
   TextAlign,
@@ -67,6 +68,7 @@ const TextEditor = <T extends FieldValues>({
     Upperline,
     StarterKit,
     TextStyle,
+    Indent,
     FontSize.configure({
       baseFontSize: getWrapperFontSize(wrapperReference.current),
     }),

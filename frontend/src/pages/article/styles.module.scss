@@ -7,11 +7,6 @@
   gap: 40px 20px;
 }
 
-.articleCreatePageWrapper,
-.editArticlePage {
-  padding-bottom: 38px;
-}
-
 .mainContentWrapper {
   display: flex;
   gap: 40px;
@@ -139,6 +134,7 @@
 @media only screen and (max-width: breakpoints.$large) {
   .mainContentWrapper {
     flex-direction: column;
+    gap: 0;
   }
 
   .articlePageWrapper {

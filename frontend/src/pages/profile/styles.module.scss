@@ -41,15 +41,21 @@
   }
 
   .achievements {
-    min-height: 244px;
+    min-height: 245px;
   }
 
   .activity {
+    align-items: normal;
+    min-height: 255px;
     padding: 10px 30px 10px 10px;
   }
 
   .stats {
     min-height: 436px;
+  }
+
+  .latestArticles {
+    min-height: 168px;
   }
 }
 
