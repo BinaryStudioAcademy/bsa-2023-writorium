@@ -82,6 +82,12 @@
   background: var(--light-gray);
 }
 
+@media only screen and (max-width: breakpoints.$extra-large) {
+  .articlesWrapper {
+    gap: 30px;
+  }
+}
+
 @media only screen and (max-width: breakpoints.$large) {
   .tabsWrapper {
     position: sticky;
