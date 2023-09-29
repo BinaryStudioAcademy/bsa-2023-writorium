@@ -63,9 +63,21 @@
   line-height: normal;
 }
 
-@media only screen and (max-width: breakpoints.$extra-large) {
+@media only screen and (min-width: breakpoints.$large) and (max-width: breakpoints.$extra-large) {
+  .filterGroup {
+    padding: 15px 20px;
+  }
+}
+
+@media only screen and (max-width: breakpoints.$large) {
   .title {
     position: static;
     margin-block: 10px;
+  }
+}
+
+@media only screen and (max-width: breakpoints.$small) {
+  .filterGroup {
+    padding: 15px 20px;
   }
 }
