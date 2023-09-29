@@ -23,6 +23,7 @@ class SocketService {
       SocketNamespace.ARTICLES,
       SocketNamespace.COMMENTS,
       SocketNamespace.REACTIONS,
+      SocketNamespace.APPLICATION,
     ];
 
     for (const namespace of appNamespaces) {
