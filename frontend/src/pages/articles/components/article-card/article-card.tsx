@@ -157,7 +157,6 @@ const ArticleCard: React.FC<Properties> = ({
             </span>
           )}
         </div>
-
         <div className={styles.toolbar}>
           <IconButton
             className={styles.topActionsIcon}
