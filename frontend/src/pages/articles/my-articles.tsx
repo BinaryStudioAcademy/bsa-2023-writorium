@@ -63,6 +63,9 @@ const MyArticles: React.FC = () => {
   });
 
   const isLoadingArticles = articlesStatus === DataStatus.PENDING;
+  const isFilterSelected = Boolean(
+    Object.entries(getActiveFilters(filters)).length,
+  );
   const { hasMore, loadMore, resetSkip } = usePagination();
   const handleLoadArticles = useCallback(() => {
     void loadMore(async (skip: number, take: number) => {
@@ -130,7 +133,9 @@ const MyArticles: React.FC = () => {
             onFetchData={handleLoadArticles}
           />
         ) : (
-          <EmptyArticlesPlaceholder />
+          <EmptyArticlesPlaceholder
+            shouldShowFilterMessage={isFilterSelected}
+          />
         )}
         {shouldHideFilters ? (
           <div className={styles.filterButtonWrapper}>
