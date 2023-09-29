@@ -24,15 +24,13 @@ import styles from './styles.module.scss';
 
 const ProfilePage: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { user, userActivities, articles } = useAppSelector(
+  const { user, userActivities } = useAppSelector(
     ({ auth, users, articles }) => ({
       user: auth.user as UserAuthResponseDto,
       userActivities: users.userActivities,
       articles: articles.articles,
     }),
   );
-
-  const hasArticles = Boolean(articles.length);
 
   const { width } = useGetWindowDimensions();
   const shouldBeReversed = checkIsPassingWindowBreakpoint(
@@ -77,9 +75,14 @@ const ProfilePage: React.FC = () => {
         </Spoiler>
         <Spoiler
           breakpoint={WindowBreakpoint.MEDIUM}
-          summary={hasArticles ? 'Your latest articles' : 'My articles'}
+          summary="Your latest articles"
         >
-          <UserLatestArticles className={styles.profileBlock} />
+          <UserLatestArticles
+            className={getValidClassNames(
+              styles.profileBlock,
+              styles.latestArticles,
+            )}
+          />
         </Spoiler>
       </div>
     </Layout>
