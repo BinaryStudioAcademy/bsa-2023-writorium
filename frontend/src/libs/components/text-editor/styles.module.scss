@@ -1,3 +1,5 @@
+@use "src/assets/css/breakpoints.scss";
+
 .textEditorWrapper {
   display: flex;
   flex-direction: column;
@@ -52,4 +54,10 @@ ol {
 
 .textEditor.hasError {
   border-color: var(--red);
+}
+
+@media only screen and (max-width: breakpoints.$medium) {
+  .textEditor {
+    font-size: 16px;
+  }
 }
