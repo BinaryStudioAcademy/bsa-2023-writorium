@@ -166,7 +166,7 @@ const ArticlePage: React.FC = () => {
 
   return (
     <Loader isLoading={isLoading} hasOverlay type="circular">
-      <Layout className={styles.layout}>
+      <Layout>
         <div className={styles.articlePageWrapper}>
           {article && (
             <>

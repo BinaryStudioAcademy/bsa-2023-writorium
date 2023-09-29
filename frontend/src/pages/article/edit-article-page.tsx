@@ -18,7 +18,7 @@ const EditArticlePage: React.FC = () => {
   }
 
   return (
-    <Layout className={styles.layout}>
+    <Layout>
       <div className={styles.editArticlePage}>
         <div className={styles.leftColumn}>
           <ArticleForm articleForUpdate={article} />

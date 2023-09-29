@@ -104,7 +104,6 @@
 
 @media only screen and (max-width: breakpoints.$small) {
   .tabsWrapper {
-    top: calc(var(--header-height) + 7px);
     padding-top: calc(var(--layout-side-padding) * 0.8);
   }
 
