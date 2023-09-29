@@ -5,8 +5,8 @@ import {
   DEFAULT_INDENT_LEVEL,
   DEFAULT_OPTIONS_TYPES,
   INDENT_LEVELS,
-  INDENT_PROPERTIES,
 } from './libs/constants/constants.js';
+import { IndentProperty } from './libs/enums/enums.js';
 import { updateIndentLevel } from './libs/helpers/helpers.js';
 import {
   type IndentOptions,
@@ -29,7 +29,7 @@ const Indent = Extension.create<IndentOptions>({
 
   defaultOptions: {
     types: DEFAULT_OPTIONS_TYPES,
-    indentLevels: INDENT_LEVELS,
+    indentLevels: [...INDENT_LEVELS],
     defaultIndentLevel: DEFAULT_INDENT_LEVEL,
   },
 
@@ -73,7 +73,7 @@ const Indent = Extension.create<IndentOptions>({
           transaction = transaction.setSelection(selection);
           transaction = updateIndentLevel(
             transaction,
-            INDENT_PROPERTIES.more,
+            IndentProperty.MORE,
             editor.extensionManager.extensions,
           );
 
@@ -94,7 +94,7 @@ const Indent = Extension.create<IndentOptions>({
           }
           transaction = updateIndentLevel(
             transaction,
-            INDENT_PROPERTIES.less,
+            IndentProperty.LESS,
             editor.extensionManager.extensions,
           );
 
