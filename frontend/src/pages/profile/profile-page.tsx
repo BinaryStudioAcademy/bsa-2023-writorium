@@ -42,7 +42,12 @@ const ProfilePage: React.FC = () => {
           className={getValidClassNames(styles.userInfo, styles.profileBlock)}
         />
         <Spoiler breakpoint={WindowBreakpoint.MEDIUM} summary="Achievements">
-          <UserAchievements className={styles.profileBlock} />
+          <UserAchievements
+            className={getValidClassNames(
+              styles.profileBlock,
+              styles.achievements,
+            )}
+          />
         </Spoiler>
         <Spoiler
           breakpoint={WindowBreakpoint.MEDIUM}
