@@ -244,6 +244,9 @@
 }
 
 .topActionsIcon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 35px;
   height: 35px;
   margin: -5px -5px 0 0;
