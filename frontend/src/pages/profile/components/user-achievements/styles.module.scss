@@ -34,6 +34,10 @@
   color: var(--black-90);
 }
 
+.modalTitle {
+  color: var(--white);
+}
+
 .modal {
   overflow: hidden;
   box-shadow: 0 0 6px var(--translucent-dark-blue-gray);
@@ -97,12 +101,16 @@
       minmax(75px, 1fr)
     );
     gap: 10px;
-    padding: 5px;
+    padding: 10px 5px 5px;
     font-size: 10px;
   }
 
   .achievementBadgeModal {
     width: 75px;
     height: 75px;
+  }
+
+  .modalTitle {
+    font-size: 18px;
   }
 }
