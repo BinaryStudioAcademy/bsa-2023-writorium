@@ -8,26 +8,24 @@ const ArticlesPage: React.FC = () => {
   useArticlesFeedRoom();
 
   return (
-    <Layout>
-      <div className={styles.wrapper}>
-        <div className={styles.tabsWrapper}>
-          <Link
-            to={AppRoute.ARTICLES}
-            className={styles.tab}
-            activeClassName={styles.activeTab}
-          >
-            Feed
-          </Link>
-          <Link
-            to={AppRoute.ARTICLES_MY_ARTICLES}
-            className={styles.tab}
-            activeClassName={styles.activeTab}
-          >
-            My articles
-          </Link>
-        </div>
-        <RouterOutlet />
+    <Layout className={styles.layout}>
+      <div className={styles.tabsWrapper}>
+        <Link
+          to={AppRoute.ARTICLES}
+          className={styles.tab}
+          activeClassName={styles.activeTab}
+        >
+          Feed
+        </Link>
+        <Link
+          to={AppRoute.ARTICLES_MY_ARTICLES}
+          className={styles.tab}
+          activeClassName={styles.activeTab}
+        >
+          My articles
+        </Link>
       </div>
+      <RouterOutlet />
     </Layout>
   );
 };

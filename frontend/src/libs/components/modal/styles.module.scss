@@ -37,19 +37,19 @@
   }
 }
 
-@media only screen and (min-width: breakpoints.$medium) and (max-width: breakpoints.$large) {
+@media only screen and (min-width: breakpoints.$medium) and (max-width: breakpoints.$extra-medium) {
   .content {
     width: 88%;
   }
 }
 
-@media only screen and (min-width: breakpoints.$large) and (max-width: breakpoints.$extra-large) {
+@media only screen and (min-width: breakpoints.$extra-medium) and (max-width: breakpoints.$large) {
   .content {
     width: 850px;
   }
 }
 
-@media only screen and (min-width: breakpoints.$extra-large) and (max-width: breakpoints.$extra-extra-large) {
+@media only screen and (min-width: breakpoints.$large) and (max-width: breakpoints.$extra-extra-large) {
   .content {
     width: 900px;
   }

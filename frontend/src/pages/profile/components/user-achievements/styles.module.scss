@@ -70,7 +70,7 @@
   color: var(--white);
 }
 
-@media only screen and (max-width: breakpoints.$extra-large) {
+@media only screen and (max-width: breakpoints.$large) {
   .achievementList {
     font-size: 10px;
   }
@@ -86,7 +86,7 @@
   }
 }
 
-@media only screen and (max-width: breakpoints.$large) {
+@media only screen and (max-width: breakpoints.$extra-medium) {
   .title {
     display: none;
   }
