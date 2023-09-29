@@ -1,12 +1,15 @@
 @use "src/assets/css/breakpoints.scss";
 
-.wrapper {
-  width: 100%;
+.layout {
+  padding-top: 0;
 }
 
 .tabsWrapper {
   position: relative;
   display: flex;
+  padding-top: calc(var(--layout-padding) * 0.5);
+  background: var(--light-gray);
+  border-bottom: 1px solid var(--gray);
 }
 
 .tab {
@@ -47,18 +50,9 @@
 }
 
 .articlesWrapper {
-  display: grid;
-  grid-template-columns: 3fr 1fr;
+  display: flex;
+  justify-content: space-between;
   gap: 50px;
-  border-top: 1px solid var(--gray);
-}
-
-.filterButtonWrapper {
-  position: sticky;
-  top: calc(var(--header-height) + 15px);
-  max-height: 400px;
-  padding-block-start: 15px;
-  background: var(--light-gray);
 }
 
 .filterPopoverWrapper {
@@ -66,26 +60,54 @@
 }
 
 .filterButton {
+  position: fixed;
+  top: calc(var(--header-height) + var(--layout-padding) * 0.5);
+  right: var(--layout-padding);
+  z-index: 50;
   display: flex;
   justify-content: center;
   align-items: center;
   width: 30px;
   height: 30px;
+  padding-bottom: 10px;
   color: var(--light-green);
   background: transparent;
 }
 
 .modalContent {
   width: max-content;
+  max-width: 95%;
   padding: 30px;
   text-align: unset;
   background: var(--light-gray);
 }
 
+@media only screen and (max-width: breakpoints.$extra-large) {
+  .tabsWrapper {
+    position: sticky;
+    top: calc(var(--header-height) + 2px);
+    z-index: 50;
+  }
+}
+
 @media only screen and (max-width: breakpoints.$large) {
   .articlesWrapper {
-    grid-template-columns: 1fr 30px;
     gap: 10px;
-    width: 100%;
+  }
+}
+
+@media only screen and (max-width: breakpoints.$small) {
+  .tabsWrapper {
+    padding-top: calc(var(--layout-padding) * 0.8);
+  }
+
+  .filterButton {
+    top: calc(var(--header-height) + var(--layout-padding));
+    width: 25px;
+    height: 25px;
+  }
+
+  .modalContent {
+    padding: var(--layout-padding);
   }
 }
