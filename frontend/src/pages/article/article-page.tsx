@@ -93,7 +93,11 @@ const ArticlePage: React.FC = () => {
   const handleCreateComment = useCallback(
     (payload: Omit<CommentBaseRequestDto, 'articleId'>): void => {
       void dispatch(
-        articleActions.createComment({ ...payload, articleId: article.id }),
+        articleActions.createComment({
+          ...payload,
+          articleId: article.id,
+          articleAuthorId: article.userId,
+        }),
       );
     },
     [article, dispatch],
