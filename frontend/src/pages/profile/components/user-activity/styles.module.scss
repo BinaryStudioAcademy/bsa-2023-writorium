@@ -140,10 +140,6 @@
 }
 
 @media only screen and (max-width: breakpoints.$large) {
-  .wrapper {
-    align-items: flex-start;
-  }
-
   .title {
     display: none;
   }
