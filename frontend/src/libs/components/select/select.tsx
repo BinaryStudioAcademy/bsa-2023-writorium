@@ -72,6 +72,7 @@ const Select = <
     <label className={cssStyles.label}>
       <span className={cssStyles.title}>{label}</span>
       <ReactSelect
+        className={cssStyles.select}
         {...restProperties}
         onChange={handleChange}
         placeholder={placeholder}

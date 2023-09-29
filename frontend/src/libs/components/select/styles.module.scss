@@ -1,3 +1,5 @@
+@use "src/assets/css/breakpoints.scss";
+
 .title {
   color: var(--dark-gray);
   font-weight: 700;
@@ -8,4 +10,10 @@
   display: flex;
   flex-direction: column;
   width: 100%;
+}
+
+@media only screen and (max-width: breakpoints.$medium) {
+  .select {
+    font-size: 16px;
+  }
 }

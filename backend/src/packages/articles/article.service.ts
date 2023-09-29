@@ -382,9 +382,11 @@ class ArticleService implements IService {
       }),
     );
 
-    void this.articleSocketService.handleNewArticle(
-      article.toObjectWithRelationsAndCounts(),
-    );
+    if (payload.publishedAt) {
+      void this.articleSocketService.handleNewArticle(
+        article.toObjectWithRelationsAndCounts(),
+      );
+    }
 
     const countOfOwnArticles =
       await this.articleRepository.countArticlesByUserId(payload.userId);
@@ -441,6 +443,12 @@ class ArticleService implements IService {
         viewCount: null,
       }),
     );
+
+    if (payload.publishedAt && !article.publishedAt) {
+      void this.articleSocketService.handleNewArticle(
+        updatedArticle.toObjectWithRelationsAndCounts(),
+      );
+    }
 
     return updatedArticle.toObjectWithRelationsAndCounts();
   }

@@ -1,4 +1,5 @@
 export { FontSize } from './font-size/font-size.extension.js';
+export { Indent } from './indent/indent.extension.js';
 export { Upperline } from './upperline/upperline.extension.js';
 export { Placeholder } from '@tiptap/extension-placeholder';
 export { TextAlign } from '@tiptap/extension-text-align';

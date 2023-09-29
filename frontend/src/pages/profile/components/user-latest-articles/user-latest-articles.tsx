@@ -1,5 +1,5 @@
-import { Link } from '~/libs/components/components.js';
-import { AppRoute } from '~/libs/enums/enums.js';
+import { Link, Loader } from '~/libs/components/components.js';
+import { AppRoute, DataStatus } from '~/libs/enums/enums.js';
 import { getValidClassNames } from '~/libs/helpers/helpers.js';
 import {
   useAppDispatch,
@@ -19,9 +19,12 @@ type Properties = {
 
 const UserLatestArticles: React.FC<Properties> = ({ className }) => {
   const dispatch = useAppDispatch();
-  const { articles } = useAppSelector(({ articles }) => ({
-    articles: articles.articles,
-  }));
+  const { articles, fetchArticlesDataStatus } = useAppSelector(
+    ({ articles }) => ({
+      articles: articles.articles,
+      fetchArticlesDataStatus: articles.fetchArticlesDataStatus,
+    }),
+  );
 
   const hasArticles = Boolean(articles.length);
 
@@ -37,31 +40,36 @@ const UserLatestArticles: React.FC<Properties> = ({ className }) => {
     };
   }, [dispatch]);
 
+  const isLoading = fetchArticlesDataStatus === DataStatus.PENDING;
+
   return (
     <div className={styles.latestArticlesContainer}>
-      <h3 className={styles.listTitle}>
-        {hasArticles ? 'Your latest articles' : 'My articles'}
-      </h3>
+      <h3 className={styles.listTitle}>Your latest articles</h3>
       <div className={getValidClassNames(className, styles.wrapper)}>
-        {hasArticles ? (
-          <>
-            <ul className={styles.articleList}>
-              {articles.map((article) => (
-                <li key={article.id}>
-                  <ArticleShortCard
-                    article={article}
-                    className={styles.article}
-                  />
-                </li>
-              ))}
-            </ul>
-            <Link to={AppRoute.ARTICLES_MY_ARTICLES} className={styles.showAll}>
-              Show all
-            </Link>
-          </>
-        ) : (
-          <EmptyArticlesPlaceholder />
-        )}
+        <Loader isLoading={isLoading} type="dots">
+          {hasArticles ? (
+            <>
+              <ul className={styles.articleList}>
+                {articles.map((article) => (
+                  <li key={article.id}>
+                    <ArticleShortCard
+                      article={article}
+                      className={styles.article}
+                    />
+                  </li>
+                ))}
+              </ul>
+              <Link
+                to={AppRoute.ARTICLES_MY_ARTICLES}
+                className={styles.showAll}
+              >
+                Show all
+              </Link>
+            </>
+          ) : (
+            <EmptyArticlesPlaceholder />
+          )}
+        </Loader>
       </div>
     </div>
   );

@@ -23,6 +23,7 @@ type State = {
   authors: UserDetailsAuthorResponseDto[];
   userArticlesGenresStats: UserArticlesGenreStatsItem[];
   userArticlesGenresStatsStatus: ValueOf<typeof DataStatus>;
+  userActivitiesDataStatus: ValueOf<typeof DataStatus>;
 };
 
 const initialState: State = {
@@ -32,6 +33,7 @@ const initialState: State = {
   userArticlesGenresStats: [],
   dataStatus: DataStatus.IDLE,
   userArticlesGenresStatsStatus: DataStatus.IDLE,
+  userActivitiesDataStatus: DataStatus.IDLE,
 };
 
 const { reducer, actions, name } = createSlice({
@@ -45,6 +47,7 @@ const { reducer, actions, name } = createSlice({
     });
     builder.addCase(getUserActivity.fulfilled, (state, action) => {
       state.userActivities = action.payload;
+      state.userActivitiesDataStatus = DataStatus.FULFILLED;
     });
     builder.addCase(getAllAuthors.fulfilled, (state, action) => {
       state.dataStatus = DataStatus.FULFILLED;
@@ -61,19 +64,22 @@ const { reducer, actions, name } = createSlice({
     builder.addCase(getUserArticlesGenresStats.pending, (state) => {
       state.userArticlesGenresStatsStatus = DataStatus.PENDING;
     });
+    builder.addCase(getUserActivity.pending, (state) => {
+      state.userActivitiesDataStatus = DataStatus.PENDING;
+    });
     builder.addCase(getUserArticlesGenresStats.rejected, (state) => {
       state.userArticlesGenresStatsStatus = DataStatus.REJECTED;
     });
+    builder.addCase(getUserActivity.rejected, (state) => {
+      state.userActivitiesDataStatus = DataStatus.REJECTED;
+    });
+    builder.addCase(loadAll.rejected, (state) => {
+      state.dataStatus = DataStatus.REJECTED;
+    });
     builder.addMatcher(
-      isAnyOf(loadAll.pending, getUserActivity.pending, getAllAuthors.pending),
+      isAnyOf(loadAll.pending, getAllAuthors.pending),
       (state) => {
         state.dataStatus = DataStatus.PENDING;
-      },
-    );
-    builder.addMatcher(
-      isAnyOf(loadAll.rejected, getUserActivity.rejected),
-      (state) => {
-        state.dataStatus = DataStatus.REJECTED;
       },
     );
   },

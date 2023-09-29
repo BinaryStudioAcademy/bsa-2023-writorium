@@ -4,7 +4,7 @@
   display: grid;
   grid-template:
     "activity activity info" minmax(305px, max-content)
-    "articles genres achievements" minmax(491px, max-content) / 1fr 1fr 1fr;
+    "articles genres achievements" minmax(497px, max-content) / 1fr 1fr 1fr;
   gap: 20px 20px;
   width: 100%;
   margin: 0 auto;
@@ -21,7 +21,7 @@
     grid-template:
       "achievements info" minmax(305px, max-content)
       "activity activity" minmax(305px, max-content)
-      "articles genres" minmax(491px, max-content) / 1fr 1fr;
+      "articles genres" minmax(495px, max-content) / 1fr 1fr;
   }
 
   .userInfo {
@@ -40,12 +40,22 @@
     max-width: 600px;
   }
 
+  .achievements {
+    min-height: 245px;
+  }
+
   .activity {
+    align-items: normal;
+    min-height: 255px;
     padding: 10px 30px 10px 10px;
   }
 
   .stats {
     min-height: 436px;
+  }
+
+  .latestArticles {
+    min-height: 414px;
   }
 }
 
@@ -68,6 +78,12 @@
 
   .userInfo {
     padding: 12px 10px 15px;
+  }
+
+  .achievements {
+    row-gap: 10px;
+    min-height: 200px;
+    padding: 15px;
   }
 
   .stats {

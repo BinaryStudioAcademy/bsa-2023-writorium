@@ -1,3 +1,5 @@
+@use "src/assets/css/breakpoints.scss";
+
 .label {
   display: flex;
   flex-direction: column;
@@ -48,4 +50,11 @@
 .textarea {
   resize: none;
   padding: 20px 16px;
+}
+
+@media only screen and (max-width: breakpoints.$medium) {
+  .input {
+    padding: 13px 0 13px 18px;
+    font-size: 16px;
+  }
 }

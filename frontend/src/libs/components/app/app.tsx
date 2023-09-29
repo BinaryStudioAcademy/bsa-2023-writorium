@@ -11,6 +11,7 @@ import { DataStatus } from '~/libs/enums/enums.js';
 import {
   useAppDispatch,
   useAppSelector,
+  useArticlesFeedRoom,
   useEffect,
   useNavigate,
 } from '~/libs/hooks/hooks.js';
@@ -27,6 +28,7 @@ const App: React.FC = () => {
   }));
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  useArticlesFeedRoom();
 
   const hasUser = Boolean(user);
 
