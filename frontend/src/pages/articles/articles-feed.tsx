@@ -133,13 +133,11 @@ const ArticlesFeed: React.FC = () => {
           <EmptyArticlesPlaceholder />
         )}
         {shouldHideFilters ? (
-          <div className={styles.filterButtonWrapper}>
-            <IconButton
-              iconName="filter"
-              className={styles.filterButton}
-              onClick={handleToggleModalOpen}
-            />
-          </div>
+          <IconButton
+            iconName="filter"
+            className={styles.filterButton}
+            onClick={handleToggleModalOpen}
+          />
         ) : (
           <ArticleFilters
             genreSelectOptions={getSelectGenresOptions(genres)}
