@@ -10,7 +10,7 @@
   border-bottom: 2px solid var(--light-gray-15);
 }
 
-.layout {
+.header > .layout {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -110,6 +110,12 @@ img.avatar:hover {
   .popoverWriteLink:hover {
     background-color: var(--light-gray-15);
     border-color: var(--light-green);
+  }
+}
+
+@media only screen and (max-width: breakpoints.$medium) {
+  .header > .layout {
+    padding: 30px;
   }
 }
 
