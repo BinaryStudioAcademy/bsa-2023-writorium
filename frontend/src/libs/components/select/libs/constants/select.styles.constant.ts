@@ -28,7 +28,7 @@ const getDefaultStyles = <
         state.isFocused || state.hasValue || state.menuIsOpen
           ? Color.BLACK
           : Color.INPUT_TEXT,
-      fontSize: '14px',
+      fontSize: 'inherit',
       fontFamily: 'Lato, sans-serif',
       background:
         state.isFocused || state.hasValue || state.menuIsOpen
@@ -76,7 +76,7 @@ const getDefaultStyles = <
     }),
     placeholder: (styles) => ({
       ...styles,
-      fontSize: '14px',
+      fontSize: 'inherit',
       color: Color.INPUT_PLACEHOLDER_COLOR,
     }),
     clearIndicator: (styles) => ({
