@@ -128,9 +128,9 @@ const UPDATED_ACHIEVEMENTS = [
   {
     key: 'write_first_comment',
     description: {
-      notStarted: NOT_STARTED_COMMENT_ACHIEVEMENT_DESCRIPTION,
-      earlyStage: NOT_STARTED_COMMENT_ACHIEVEMENT_DESCRIPTION,
-      inProgress: NOT_STARTED_COMMENT_ACHIEVEMENT_DESCRIPTION,
+      notStarted: NOT_STARTED_ARTICLE_ACHIEVEMENT_DESCRIPTION,
+      earlyStage: NOT_STARTED_ARTICLE_ACHIEVEMENT_DESCRIPTION,
+      inProgress: NOT_STARTED_ARTICLE_ACHIEVEMENT_DESCRIPTION,
       done: 'Congratulations on leaving your first comment! 🎉 Your voice matters, and you are making an impact in the community.',
     },
   },

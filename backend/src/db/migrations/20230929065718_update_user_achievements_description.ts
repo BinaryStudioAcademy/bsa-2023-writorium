@@ -1,62 +1,5 @@
 import { type Knex } from 'knex';
 
-const ACHIEVEMENTS = [
-  {
-    key: 'write_first_article',
-    description: 'Congratulations on writing your first article!',
-  },
-  {
-    key: 'write_5_articles',
-    description: 'You have written 5 articles! Keep up the great work!',
-  },
-  {
-    key: 'write_10_articles',
-    description: 'You have reached 10 articles! Your dedication is inspiring!',
-  },
-  {
-    key: 'write_15_articles',
-    description: '15 articles written! You are a writing machine!',
-  },
-  {
-    key: 'write_25_articles',
-    description:
-      '25 articles written! Your commitment to writing is impressive!',
-  },
-  {
-    key: 'write_50_articles',
-    description:
-      'Wow, you have written 50 articles! You are a prolific writer!',
-  },
-  {
-    key: 'write_first_comment',
-    description:
-      'You left your first comment! Keep engaging with the community!',
-  },
-  {
-    key: 'write_5_comments',
-    description: 'You have written 5 comments! Your insights are valuable!',
-  },
-  {
-    key: 'write_10_comments',
-    description:
-      'You have left 10 comments! Your contributions are appreciated!',
-  },
-  {
-    key: 'write_15_comments',
-    description:
-      '15 comments made! You are actively participating in discussions!',
-  },
-  {
-    key: 'write_25_comments',
-    description:
-      '25 comments written! You are an engaged member of the community!',
-  },
-  {
-    key: 'write_50_comments',
-    description: '50 comments made! Your feedback and discussions matter!',
-  },
-];
-
 const NOT_STARTED_ARTICLE_ACHIEVEMENT_DESCRIPTION =
   'Get started on your writing journey! Your first article is just a few keystrokes away. Dive in and share your thoughts with the world.';
 const NOT_STARTED_COMMENT_ACHIEVEMENT_DESCRIPTION =
@@ -198,14 +141,6 @@ const ColumnName = {
 } as const;
 
 async function up(knex: Knex): Promise<void> {
-  await knex.schema.alterTable(TABLE_NAME, (table) => {
-    table.dropColumn(ColumnName.DESCRIPTION);
-  });
-
-  await knex.schema.alterTable(TABLE_NAME, (table) => {
-    table.jsonb(ColumnName.DESCRIPTION);
-  });
-
   for (const achievement of UPDATED_ACHIEVEMENTS) {
     await knex(TABLE_NAME)
       .where(ColumnName.KEY, achievement.key)
@@ -213,20 +148,6 @@ async function up(knex: Knex): Promise<void> {
   }
 }
 
-async function down(knex: Knex): Promise<void> {
-  await knex.schema.alterTable(TABLE_NAME, (table) => {
-    table.dropColumn(ColumnName.DESCRIPTION);
-  });
-
-  await knex.schema.alterTable(TABLE_NAME, (table) => {
-    table.text(ColumnName.DESCRIPTION);
-  });
-
-  for (const achievement of ACHIEVEMENTS) {
-    await knex(TABLE_NAME)
-      .where(ColumnName.KEY, achievement.key)
-      .update({ [ColumnName.DESCRIPTION]: achievement.description });
-  }
-}
+async function down(): Promise<void> {}
 
 export { down, up };
