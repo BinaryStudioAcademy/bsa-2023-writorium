@@ -63,7 +63,7 @@ const ProfilePage: React.FC = () => {
         </Spoiler>
         <Spoiler
           breakpoint={WindowBreakpoint.MEDIUM}
-          summary={'Your latest articles'}
+          summary="Your latest articles"
         >
           <UserLatestArticles
             className={getValidClassNames(
