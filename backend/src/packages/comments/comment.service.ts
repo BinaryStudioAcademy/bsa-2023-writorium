@@ -81,10 +81,10 @@ class CommentService implements IService {
       comment.toObjectWithRelations();
 
     this.socketService.io
-      .of(SocketNamespace.COMMENTS)
+      .of(SocketNamespace.APPLICATION)
       .to(
-        configureString(SocketRoom.ARTICLE_$ID, {
-          id: String(payload.articleId),
+        configureString(SocketRoom.USER_ID, {
+          id: String(payload.articleAuthorId),
         }),
       )
       .emit(CommentsSocketEvent.NEW_COMMENT, socketEventPayload);
