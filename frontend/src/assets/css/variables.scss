@@ -70,7 +70,7 @@ textarea {
   --input-placeholder-color: rgb(157 164 174 / 40%);
 }
 
-@media only screen and (max-width: breakpoints.$extra-large) {
+@media only screen and (max-width: breakpoints.$large) {
   :root {
     --layout-padding: 40px;
   }

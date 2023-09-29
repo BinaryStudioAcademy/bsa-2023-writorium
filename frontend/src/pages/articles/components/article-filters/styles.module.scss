@@ -63,7 +63,7 @@
   line-height: normal;
 }
 
-@media only screen and (max-width: breakpoints.$extra-large) {
+@media only screen and (max-width: breakpoints.$large) {
   .title {
     position: static;
     margin-block: 10px;
