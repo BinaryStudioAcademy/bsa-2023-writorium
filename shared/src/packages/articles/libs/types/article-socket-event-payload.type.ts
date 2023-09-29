@@ -5,6 +5,7 @@ type ArticleSocketEventPayload = {
   [ArticleSocketEvent.NEW_ARTICLE]: {
     isByFollowingAuthor: boolean;
     article: ArticleWithCountsResponseDto;
+    socketUserId: number;
   };
 };
 
