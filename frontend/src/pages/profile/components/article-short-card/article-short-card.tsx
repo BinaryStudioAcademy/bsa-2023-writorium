@@ -17,7 +17,15 @@ type Properties = {
 };
 
 const ArticleShortCard: FC<Properties> = ({
-  article: { id, title, reactions, userId, commentCount, viewCount },
+  article: {
+    id,
+    title,
+    reactions,
+    userId,
+    commentCount,
+    viewCount,
+    publishedAt,
+  },
   className,
 }) => {
   const { likesCount, dislikesCount } = getReactionsInfo(userId, reactions);
@@ -34,30 +42,36 @@ const ArticleShortCard: FC<Properties> = ({
         </Link>
       </h3>
       <ul className={styles.reactions}>
-        <li className={styles.reaction}>
-          <Link
-            to={{
-              pathname: articleRouteById,
-              hash: LinkHash.COMMENTS,
-            }}
-            className={styles.reaction}
-          >
-            <Icon iconName="comment" />
-            <span className={styles.reactionText}>{commentCount}</span>
-          </Link>
-        </li>
-        <li className={styles.reaction}>
-          <Icon iconName="view" />
-          <span className={styles.reactionText}>{viewCount}</span>
-        </li>
-        <li className={styles.reaction}>
-          <Icon iconName="like" />
-          <span className={styles.reactionText}>{likesCount}</span>
-        </li>
-        <li className={styles.reaction}>
-          <Icon iconName="dislike" />
-          <span className={styles.reactionText}>{dislikesCount}</span>
-        </li>
+        {publishedAt ? (
+          <>
+            <li className={styles.reaction}>
+              <Link
+                to={{
+                  pathname: articleRouteById,
+                  hash: LinkHash.COMMENTS,
+                }}
+                className={styles.reaction}
+              >
+                <Icon iconName="comment" />
+                <span className={styles.reactionText}>{commentCount}</span>
+              </Link>
+            </li>
+            <li className={styles.reaction}>
+              <Icon iconName="view" />
+              <span className={styles.reactionText}>{viewCount}</span>
+            </li>
+            <li className={styles.reaction}>
+              <Icon iconName="like" />
+              <span className={styles.reactionText}>{likesCount}</span>
+            </li>
+            <li className={styles.reaction}>
+              <Icon iconName="dislike" />
+              <span className={styles.reactionText}>{dislikesCount}</span>
+            </li>
+          </>
+        ) : (
+          <p className={styles.draft}>draft</p>
+        )}
       </ul>
     </div>
   );

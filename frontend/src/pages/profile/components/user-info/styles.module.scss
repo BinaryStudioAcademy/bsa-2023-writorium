@@ -58,7 +58,7 @@
   max-width: 400px;
 }
 
-@media only screen and (max-width: breakpoints.$extra-large) {
+@media only screen and (max-width: breakpoints.$large) {
   .userInfoWrapper {
     display: flex;
     flex-direction: column;
@@ -66,7 +66,7 @@
   }
 }
 
-@media only screen and (max-width: breakpoints.$large) {
+@media only screen and (max-width: breakpoints.$extra-medium) {
   .title {
     display: none;
   }

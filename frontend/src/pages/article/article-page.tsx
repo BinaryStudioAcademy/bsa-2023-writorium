@@ -201,58 +201,64 @@ const ArticlePage: React.FC = () => {
               />
             </>
           )}
-          <div className={styles.commentsBlockWrapper}>
-            <h2
-              className={getValidClassNames(styles.anchor, 'visually-hidden')}
-              id={LinkHash.COMMENTS}
-            >
-              Comments
-            </h2>
-            {hasComments && (
-              <p className={styles.commentCount}>
-                Discussion ({articleComments.length})
-              </p>
-            )}
-            <CommentForm
-              onSubmit={handleCreateComment}
-              isLoading={createCommentDataStatus === DataStatus.PENDING}
-            />
-            {hasComments && (
-              <ul className={styles.commentList}>
-                {articleComments.map(({ author, ...comment }) => (
-                  <li key={comment.id}>
-                    <CommentCard user={author} comment={comment} />
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
           {article?.publishedAt && (
-            <div className={styles.reactionButtonsWrapper}>
-              <IconButton
-                iconName="like"
-                iconClassName={styles.reactionIcon}
-                className={getValidClassNames(
-                  styles.reactionButton,
-                  isArticleOwner && styles.disabled,
-                  hasAlreadyReactedWith === Reaction.LIKE && styles.pressed,
+            <>
+              <div className={styles.commentsBlockWrapper}>
+                <h2
+                  className={getValidClassNames(
+                    styles.anchor,
+                    'visually-hidden',
+                  )}
+                  id={LinkHash.COMMENTS}
+                >
+                  Comments
+                </h2>
+                {hasComments && (
+                  <p className={styles.commentCount}>
+                    Discussion ({articleComments.length})
+                  </p>
                 )}
-                label={String(likesCount)}
-                onClick={handleLikeReaction}
-              />
-              <IconButton
-                iconName="dislike"
-                iconClassName={styles.reactionIcon}
-                className={getValidClassNames(
-                  styles.iconButton,
-                  styles.reactionButton,
-                  isArticleOwner && styles.disabled,
-                  hasAlreadyReactedWith === Reaction.DISLIKE && styles.pressed,
+                <CommentForm
+                  onSubmit={handleCreateComment}
+                  isLoading={createCommentDataStatus === DataStatus.PENDING}
+                />
+                {hasComments && (
+                  <ul className={styles.commentList}>
+                    {articleComments.map(({ author, ...comment }) => (
+                      <li key={comment.id}>
+                        <CommentCard user={author} comment={comment} />
+                      </li>
+                    ))}
+                  </ul>
                 )}
-                label={String(dislikesCount)}
-                onClick={handleDislikeReaction}
-              />
-            </div>
+              </div>
+              <div className={styles.reactionButtonsWrapper}>
+                <IconButton
+                  iconName="like"
+                  iconClassName={styles.reactionIcon}
+                  className={getValidClassNames(
+                    styles.reactionButton,
+                    isArticleOwner && styles.disabled,
+                    hasAlreadyReactedWith === Reaction.LIKE && styles.pressed,
+                  )}
+                  label={String(likesCount)}
+                  onClick={handleLikeReaction}
+                />
+                <IconButton
+                  iconName="dislike"
+                  iconClassName={styles.reactionIcon}
+                  className={getValidClassNames(
+                    styles.iconButton,
+                    styles.reactionButton,
+                    isArticleOwner && styles.disabled,
+                    hasAlreadyReactedWith === Reaction.DISLIKE &&
+                      styles.pressed,
+                  )}
+                  label={String(dislikesCount)}
+                  onClick={handleDislikeReaction}
+                />
+              </div>
+            </>
           )}
         </div>
       </Layout>

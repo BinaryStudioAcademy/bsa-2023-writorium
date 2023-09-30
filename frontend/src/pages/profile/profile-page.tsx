@@ -1,10 +1,14 @@
 import { Layout, Spoiler } from '~/libs/components/components.js';
 import { WindowBreakpoint } from '~/libs/enums/enums.js';
-import { getValidClassNames } from '~/libs/helpers/helpers.js';
+import {
+  checkIsPassingWindowBreakpoint,
+  getValidClassNames,
+} from '~/libs/helpers/helpers.js';
 import {
   useAppDispatch,
   useAppSelector,
   useEffect,
+  useGetWindowDimensions,
 } from '~/libs/hooks/hooks.js';
 import { type UserAuthResponseDto } from '~/packages/users/users.js';
 import { actions as usersActions } from '~/slices/users/users.js';
@@ -20,7 +24,7 @@ import styles from './styles.module.scss';
 
 const ProfilePage: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { user, userActivities, articles } = useAppSelector(
+  const { user, userActivities } = useAppSelector(
     ({ auth, users, articles }) => ({
       user: auth.user as UserAuthResponseDto,
       userActivities: users.userActivities,
@@ -28,7 +32,11 @@ const ProfilePage: React.FC = () => {
     }),
   );
 
-  const hasArticles = Boolean(articles.length);
+  const { width } = useGetWindowDimensions();
+  const shouldBeReversed = checkIsPassingWindowBreakpoint(
+    WindowBreakpoint.LARGE,
+    width,
+  );
 
   useEffect(() => {
     void dispatch(usersActions.getUserActivity());
@@ -54,7 +62,9 @@ const ProfilePage: React.FC = () => {
           summary="Your writing activity"
         >
           <UserActivity
-            userActivities={userActivities}
+            userActivities={
+              shouldBeReversed ? [...userActivities].reverse() : userActivities
+            }
             className={getValidClassNames(styles.profileBlock, styles.activity)}
           />
         </Spoiler>
@@ -65,9 +75,14 @@ const ProfilePage: React.FC = () => {
         </Spoiler>
         <Spoiler
           breakpoint={WindowBreakpoint.MEDIUM}
-          summary={hasArticles ? 'Your latest articles' : 'My articles'}
+          summary="Your latest articles"
         >
-          <UserLatestArticles className={styles.profileBlock} />
+          <UserLatestArticles
+            className={getValidClassNames(
+              styles.profileBlock,
+              styles.latestArticles,
+            )}
+          />
         </Spoiler>
       </div>
     </Layout>

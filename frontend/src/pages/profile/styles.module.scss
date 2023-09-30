@@ -16,7 +16,7 @@
   border-radius: 7px;
 }
 
-@media only screen and (max-width: breakpoints.$extra-large) {
+@media only screen and (max-width: breakpoints.$large) {
   .profile {
     grid-template:
       "achievements info" minmax(305px, max-content)
@@ -33,7 +33,7 @@
   }
 }
 
-@media only screen and (max-width: breakpoints.$large) {
+@media only screen and (max-width: breakpoints.$extra-medium) {
   .profile {
     display: flex;
     flex-direction: column;
@@ -41,15 +41,21 @@
   }
 
   .achievements {
-    min-height: 244px;
+    min-height: 245px;
   }
 
   .activity {
+    align-items: normal;
+    min-height: 255px;
     padding: 10px 30px 10px 10px;
   }
 
   .stats {
     min-height: 436px;
+  }
+
+  .latestArticles {
+    min-height: 168px;
   }
 }
 
