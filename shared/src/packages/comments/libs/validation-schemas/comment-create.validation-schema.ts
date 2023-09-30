@@ -8,6 +8,7 @@ const commentCreate = joi.object<CommentBaseRequestDto, true>({
     'string.empty': CommentValidationMessage.COMMENT_TEXT_REQUIRE,
   }),
   articleId: joi.number().integer().positive(),
+  articleAuthorId: joi.number().integer().positive(),
 });
 
 export { commentCreate };

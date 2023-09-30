@@ -10,6 +10,7 @@ import {
 import { DataStatus } from '~/libs/enums/enums.js';
 import {
   useAppDispatch,
+  useApplicationRoom,
   useAppSelector,
   useArticlesFeedRoom,
   useEffect,
@@ -35,6 +36,8 @@ const App: React.FC = () => {
   const isLoading = !(
     dataStatus === DataStatus.FULFILLED || dataStatus == DataStatus.REJECTED
   );
+
+  useApplicationRoom(user ? user.id : null);
 
   useEffect(() => {
     if (redirectTo) {
