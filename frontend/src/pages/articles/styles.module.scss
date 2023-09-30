@@ -50,8 +50,8 @@
 }
 
 .articlesWrapper {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr 400px;
   gap: 50px;
 }
 
@@ -84,6 +84,7 @@
 
 @media only screen and (max-width: breakpoints.$extra-large) {
   .articlesWrapper {
+    grid-template-columns: 1fr 350px;
     gap: 30px;
   }
 }
@@ -93,6 +94,10 @@
     position: sticky;
     top: calc(var(--header-height) + 2px);
     z-index: 50;
+  }
+
+  .articlesWrapper {
+    grid-template-columns: 1fr;
   }
 }
 
