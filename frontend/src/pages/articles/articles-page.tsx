@@ -4,7 +4,7 @@ import { AppRoute } from '~/libs/enums/enums.js';
 import styles from './styles.module.scss';
 
 const ArticlesPage: React.FC = () => (
-  <Layout>
+  <Layout className={styles.layout}>
     <div className={styles.wrapper}>
       <div className={styles.tabsWrapper}>
         <Link
