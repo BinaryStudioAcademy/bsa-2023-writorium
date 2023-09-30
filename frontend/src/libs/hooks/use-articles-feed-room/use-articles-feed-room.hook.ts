@@ -1,5 +1,11 @@
 import { AppRoute } from '~/libs/enums/app-route.enum.js';
-import { useEffect, useLocation } from '~/libs/hooks/hooks.js';
+import { getFullName } from '~/libs/helpers/helpers.js';
+import {
+  useAppDispatch,
+  useAppSelector,
+  useEffect,
+  useLocation,
+} from '~/libs/hooks/hooks.js';
 import { SocketNamespace, SocketRoom } from '~/libs/packages/socket/socket.js';
 import {
   type ArticleReactionsSocketEventPayload,
@@ -9,15 +15,16 @@ import {
   ArticleReactionsSocketEvent,
   ArticleSocketEvent,
 } from '~/packages/articles/articles.js';
+import { actions as appActions } from '~/slices/app/app.js';
 import { actions as articleActions } from '~/slices/articles/articles.js';
 
-import { useAppDispatch } from '../use-app-dispatch/use-app-dispatch.hook.js';
 import { useSocketNamespace } from '../use-socket-namespace/use-socket-namespace.hook.js';
 
 const { NEW_ARTICLE } = ArticleSocketEvent;
 const { NEW_REACTION } = ArticleReactionsSocketEvent;
 
 const useArticlesFeedRoom = (): void => {
+  const { user } = useAppSelector(({ auth }) => auth);
   const dispatch = useAppDispatch();
   const location = useLocation();
 
@@ -40,8 +47,24 @@ const useArticlesFeedRoom = (): void => {
     articlesSocket?.on(
       NEW_ARTICLE,
       (newArticle: ArticleSocketEventPayload[typeof NEW_ARTICLE]) => {
-        if (location.pathname === AppRoute.ARTICLES) {
-          void dispatch(articleActions.addArticle(newArticle));
+        if (user?.id === newArticle.socketUserId) {
+          if (location.pathname === AppRoute.ARTICLES) {
+            void dispatch(articleActions.addArticle(newArticle));
+          }
+
+          if (newArticle.isByFollowingAuthor) {
+            const { author } = newArticle.article;
+
+            void dispatch(
+              appActions.notify({
+                type: 'info',
+                message: `New article from ${getFullName(
+                  author.firstName,
+                  author.lastName,
+                )}`,
+              }),
+            );
+          }
         }
       },
     );
@@ -52,7 +75,13 @@ const useArticlesFeedRoom = (): void => {
         void dispatch(articleActions.addReactionToArticlesFeed(reaction));
       },
     );
-  }, [dispatch, articlesSocketReference, reactionsSocketReference, location]);
+  }, [
+    dispatch,
+    articlesSocketReference,
+    reactionsSocketReference,
+    location,
+    user,
+  ]);
 };
 
 export { useArticlesFeedRoom };

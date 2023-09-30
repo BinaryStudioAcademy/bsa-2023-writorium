@@ -10,7 +10,7 @@ import { useAppSelector, useEffect, useReference } from '../hooks.js';
 const useSocketNamespace = (
   namespace: ValueOf<typeof SocketNamespace>,
   roomId: string,
-  dependecies?: DependencyList,
+  dependencies?: DependencyList,
 ): MutableRefObject<Socket | null> => {
   const userId = useAppSelector((state) => state.auth.user?.id);
   const socketInstanceReference = useReference<Socket | null>(null);
@@ -35,7 +35,7 @@ const useSocketNamespace = (
     namespace,
     socketInstanceReference,
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    ...(dependecies ?? []),
+    ...(dependencies ?? []),
   ]);
 
   return socketInstanceReference;
