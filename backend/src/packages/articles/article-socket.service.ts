@@ -64,6 +64,7 @@ class ArticleSocketService {
       this.namespace.to(SocketRoom.ARTICLES_FEED).emit(NEW_ARTICLE, {
         article,
         isByFollowingAuthor: authorFollowersIds.has(socketUserId),
+        socketUserId,
       });
     }
   }

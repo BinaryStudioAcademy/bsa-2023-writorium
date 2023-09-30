@@ -66,29 +66,15 @@ const addArticle = createAsyncThunk<
   | null,
   ArticleSocketEventPayload[typeof ArticleSocketEvent.NEW_ARTICLE],
   AsyncThunkConfig
->(`${sliceName}/add-article`, (socketPayload, { getState, dispatch }) => {
+>(`${sliceName}/add-article`, (socketPayload, { getState }) => {
   const {
     auth: { user },
   } = getState();
 
-  const { article, isByFollowingAuthor } = socketPayload;
+  const { article } = socketPayload;
 
   if (user?.id === article.userId) {
     return null;
-  }
-
-  if (isByFollowingAuthor) {
-    const { author } = article;
-
-    void dispatch(
-      appActions.notify({
-        type: 'info',
-        message: `New article from ${getFullName(
-          author.firstName,
-          author.lastName,
-        )}`,
-      }),
-    );
   }
 
   return article;

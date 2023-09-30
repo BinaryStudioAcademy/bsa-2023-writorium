@@ -1,14 +1,11 @@
 import { Layout, Link, RouterOutlet } from '~/libs/components/components.js';
 import { AppRoute } from '~/libs/enums/enums.js';
-import { useArticlesFeedRoom } from '~/libs/hooks/hooks.js';
 
 import styles from './styles.module.scss';
 
-const ArticlesPage: React.FC = () => {
-  useArticlesFeedRoom();
-
-  return (
-    <Layout className={styles.layout}>
+const ArticlesPage: React.FC = () => (
+  <Layout className={styles.layout}>
+    <div className={styles.wrapper}>
       <div className={styles.tabsWrapper}>
         <Link
           to={AppRoute.ARTICLES}
@@ -26,8 +23,8 @@ const ArticlesPage: React.FC = () => {
         </Link>
       </div>
       <RouterOutlet />
-    </Layout>
-  );
-};
+    </div>
+  </Layout>
+);
 
 export { ArticlesPage };
