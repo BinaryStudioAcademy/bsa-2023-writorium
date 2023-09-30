@@ -47,7 +47,7 @@
   color: var(--dark-green);
 }
 
-@media only screen and (max-width: breakpoints.$large) {
+@media only screen and (max-width: breakpoints.$extra-medium) {
   .listTitle {
     display: none;
   }

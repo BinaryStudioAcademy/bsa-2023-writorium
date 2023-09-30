@@ -1,10 +1,14 @@
 import { Layout, Spoiler } from '~/libs/components/components.js';
 import { WindowBreakpoint } from '~/libs/enums/enums.js';
-import { getValidClassNames } from '~/libs/helpers/helpers.js';
+import {
+  checkIsPassingWindowBreakpoint,
+  getValidClassNames,
+} from '~/libs/helpers/helpers.js';
 import {
   useAppDispatch,
   useAppSelector,
   useEffect,
+  useGetWindowDimensions,
 } from '~/libs/hooks/hooks.js';
 import { type UserAuthResponseDto } from '~/packages/users/users.js';
 import { actions as usersActions } from '~/slices/users/users.js';
@@ -26,6 +30,12 @@ const ProfilePage: React.FC = () => {
       userActivities: users.userActivities,
       articles: articles.articles,
     }),
+  );
+
+  const { width } = useGetWindowDimensions();
+  const shouldBeReversed = checkIsPassingWindowBreakpoint(
+    WindowBreakpoint.LARGE,
+    width,
   );
 
   useEffect(() => {
@@ -52,7 +62,9 @@ const ProfilePage: React.FC = () => {
           summary="Your writing activity"
         >
           <UserActivity
-            userActivities={userActivities}
+            userActivities={
+              shouldBeReversed ? [...userActivities].reverse() : userActivities
+            }
             className={getValidClassNames(styles.profileBlock, styles.activity)}
           />
         </Spoiler>
